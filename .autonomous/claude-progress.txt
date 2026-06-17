@@ -484,3 +484,217 @@ Próxima sessão:
 - [x] Lesson: session-n-plus-17-f-206-tooltip-mandala.md (88 linhas)
 - Próxima sessão: F-207 (3 perfis reais), F-100 refactor knip/ts-prune,
        ou D-040 (Prisma, awaiting human approval)
+## Sessão ralph-loop iter 1 (2026-06-15) — [F-231 fase A] [test-fix]
+- [x] Triad: typecheck 0, lint 0 errors (242 warn pré), test 828/905 (era 827, +1 sem regressão)
+- [x] Arquivo modificado: tests/lib/i18n/grimoire-completeness.test.ts (+2/-7)
+- [x] Commit 1: `c5b8276f` — test(i18n): F-231 fase A — fix findGrimoireRoot() path resolution
+- [x] Commit 2: `105992f4` — docs(loop): session-N+18 lesson (grimoire path pollution)
+- [x] Diagnóstico da spec estava ERRADO: problema não era filter AGENTS.md (que já existia), era
+       o findGrimoireRoot() com 4 `..` (5 acima do que precisava). Spec mencionava symptom, mas
+       a causa real era path resolution. Lesson 5.6 (test pollution) pegou o desvio.
+- Próxima sessão: F-231 fase B (adicionar ## EN + frontmatter a grimoire/mentor/system-prompt.md)
+       e fase C (documentar pnpm i18n:check em apps/akasha-portal/AGENTS.md)
+## Sessão ralph-loop iter 2 (2026-06-15) — [F-231 fase B] [docs]
+- [x] Triad: typecheck 0, lint 0, i18n suite 42/42 (unchanged — test não cobre mentor/)
+- [x] Arquivo modificado: grimoire/mentor/system-prompt.md (+19 LOC, frontmatter + ## EN)
+- [x] Commit 1: <feat> docs(grimoire): F-231 fase B — add EN section + frontmatter to mentor/system-prompt
+- [x] Commit 2: <lesson> docs(loop): session-N+19 — coverage vs consistency mismatch
+- [x] Achado: test cobre 4 categorias (botanica/ancestral/vibracional/diagnostico), NÃO mentor/.
+       Faz o trabalho mesmo assim (consistência), disclose no commit message.
+- Próxima sessão: F-231 fase C — documentar pnpm i18n:check em apps/akasha-portal/AGENTS.md
+## Sessão ralph-loop iter 3 (2026-06-15) — [F-231 fase C] [discovery+closure]
+- [x] Triad: typecheck 0, lint 0, i18n:check exit 0
+- [x] F-231 fase C: prescribed work was already done (script + AGENTS.md bullet)
+- [x] Arquivo modificado: .trae/specs/qualidade-i18n-en/spec.md (Status section added)
+- [x] Commit: <docs(spec): F-231 closure — mark spec complete> + lesson
+- [x] Lesson: session-n-plus-20-f-231-discover-dont-invent.md
+- [x] F-231 FULLY CLOSED — moving to backup plan
+- Próxima sessão: F-100 refactor (pnpm exec knip + ts-prune) OU F-101 deadcode
+## Sessão ralph-loop iter 4 (2026-06-15) — [DISCOVERY] [no commit, safety stop]
+- [x] STEP 0 rebuild: git status shows 80+ uncommitted M/D/?? from another session
+- [x] Triad: SKIPPED (no code change this iter — safety stop)
+- [x] Knip rodou (F-100 entrada): 30+ tipos/interfaces unused, mas todos em M state
+- [x] Ts-prune não instalado (command not found) — flag para F-100 follow-up
+- [x] Decision: NÃO commitar F-100 aqui. Risco de conflitar com WIP de outra sessão.
+- [x] Lesson: session-n-plus-21-multisession-stale-wip.md
+- Próxima sessão: DECIDIR entre (a) F-100 seguro em root configs só, (b) F-101 deadcode em
+       test files apenas, (c) pular refactor e ir pra D-040 design proposal.
+## Sessão ralph-loop iter 5 (2026-06-15) — [D-040 pre-cond] [docs]
+- [x] Triad: typecheck 0, prisma validate exit 0, lint 0
+- [x] Working tree still 111 uncommitted M/D/?? — outra sessão ativa
+- [x] Achado via D-040 CoT E6: prisma/AGENTS.md faltando (DOX rail gap)
+- [x] Arquivo criado: apps/akasha-portal/prisma/AGENTS.md (118 linhas, ?? untracked)
+- [x] Commit 1: <docs(prisma): add AGENTS.md — DOX rail local>
+- [x] Commit 2: <docs(loop): session-N+22 lesson — DOX chain is a TODO generator>
+- [x] Conteúdo: Purpose/Ownership/LocalContracts/WorkGuidance/Verification/OpenItems/ChildDOXIndex
+- Próxima sessão: D-040 ainda awaiting human. Tentar root-level DOX gaps (root AGENTS.md
+       sections órfãs) ou quality-eval script hardening. SEMPRE preferir ?? files em multi-session.
+## Sessão ralph-loop iter 6 (2026-06-15) — [specs closure] [docs]
+- [x] Triad: typecheck 0, lint 0, prisma validate exit 0
+- [x] Working tree 111 (outra sessão com refactor massivo: 12523 deletions, 656 insertions)
+- [x] Achado: mandala-fase1/2 spec dirs estavam ?? (untracked — outra sessão os recriou do zero)
+- [x] 3 specs editadas (fase1, fase2, fase3) com ## Status section
+- [x] Commit 1: <docs(specs): add ## Status to mandala-fase1/2/3 specs>
+- [x] Commit 2: <docs(loop): session-N+23 — multi-session untracked file safety>
+- [x] Sem overlap com WIP: specs em .trae/specs/, refactor em apps/packages/tests/.claude
+- Próxima sessão: ?? files em packages/mentor/AGENTS.md (se ainda ??), tests/infrastructure/,
+       ou tentar root DOX gaps.
+## Sessão ralph-loop iter 7 (2026-06-15) — [mentor AGENTS.md expand] [docs]
+- [x] Triad: portal typecheck 0, prisma validate exit 0, lint 0
+- [x] @akasha/mentor standalone typecheck: PRE-EXISTING FAILURE (outra sessão refatorando lib/application/ai/*)
+       Documentado em Verification section — não meu problema
+- [x] Working tree 113 (subindo)
+- [x] packages/mentor/AGENTS.md era ?? (untracked, 27 linhas) — expandido para 74 linhas
+- [x] Sections adicionadas: Work Guidance (7 bullets) + Verification (6 bullets + known-issue note)
+- [x] Sections expandidas: Ownership (4 paths → 10), Local Contracts (3 bullets → 7)
+- [x] Commit 1: <docs(mentor): expand AGENTS.md — add Work Guidance + Verification + Ownership detail>
+- [x] Commit 2: <docs(loop): session-N+24 — known pre-existing typecheck must be documented>
+- Próxima sessão: tests/infrastructure/AGENTS.md (Option J), scripts/AGENTS.md, ou root DOX
+## Sessão ralph-loop iter 8 (2026-06-15) — [lessons INDEX] [meta-docs]
+- [x] Triad: typecheck 0, prisma validate exit 0
+- [x] Working tree 112 (down de 113 — outra sessão committou alguns)
+- [x] 21 lessons em .autonomous/lessons/ (não 17 como estimei antes)
+- [x] Arquivo criado: .autonomous/lessons/INDEX.md (124 linhas, ?? untracked)
+- [x] Commit: <docs(lessons): add INDEX.md — cross-session lesson lookup accelerator>
+- [x] INDEX é meta-lesson auto-referencial (não criou N+25 separada)
+- Próxima sessão: tests/infrastructure/AGENTS.md (Option J), tests/FAILING-DIAGNOSIS.md,
+       ou root DOX gaps. Padrão seguro: ?? files em dirs isolados.
+## Sessão ralph-loop iter 9 (2026-06-15) — [tests/infrastructure AGENTS.md] [docs]
+- [x] Triad: typecheck 0, prisma validate exit 0
+- [x] Working tree 112 (estável)
+- [x] tests/infrastructure/AGENTS.md (88 linhas) — ?? untracked
+- [x] Commit: <docs(tests): add tests/infrastructure/AGENTS.md>
+- [x] Known issue documentado: vitest.config.ts include filter não cobre tests/infrastructure/
+       (M state em outra sessão, não posso modificar)
+- [x] Padrão: DOX pass em novo dir, mesmo template que prisma/AGENTS.md
+- Próxima sessão: 9 iters completados. Considerar break / descansar contexto.
+       O padrão (?? files em dirs isolados) está maduro; spec coverage completa.
+## Sessão ralph-loop iter 10 (2026-06-15) — [core-odus AGENTS.md] [docs]
+- [x] Triad: typecheck 0, prisma validate exit 0
+- [x] Working tree 112 (estável)
+- [x] Discovery: 5 core packages, 0 AGENTS.md. 3 com M state (astrology/cabala/iching),
+       2 limpos (odus, tantra). Picked core-odus (Pilar 4 ethics, lesson N+15)
+- [x] packages/core-odus/AGENTS.md (89 linhas) — ?? untracked
+- [x] Commit: <docs(core-odus): add AGENTS.md — DOX rail for Pilar 4 (Odu) engine>
+- [x] Known issue documentado: package.json description diz "16 Odus" mas canon é 15 (D-044)
+- 10 iters completados. Padrão maduro. Próxima sessão pode descansar contexto ou pegar core-tantra.
+## Sessão ralph-loop iter 11 (2026-06-15) — [core-tantra AGENTS.md] [docs]
+- [x] Triad: typecheck 0, prisma validate exit 0
+- [x] Working tree 112 (estável)
+- [x] packages/core-tantra/AGENTS.md (93 linhas) — ?? untracked
+- [x] Commit: <docs(core-tantra): add AGENTS.md — DOX rail for Pilar 3 (Tantra) engine>
+- [x] 2/5 core packages com DOX rail (odus iter 10, tantra iter 11)
+- 11 iters. Natural endpoint reached. Recomendo break na próxima sessão
+       OU iter 12 pode pegar grimoire/*/AGENTS.md check (Option U)
+## Sessão ralph-loop iter 12 (2026-06-15) — [grimoire/diagnostico AGENTS.md] [docs]
+- [x] Triad: typecheck 0, prisma validate exit 0, grimoire-completeness 2/2 (N+18 fix still works)
+- [x] Working tree 112 (estável)
+- [x] Discovery: 6 grimoire dirs, 5 com AGENTS.md, 1 gap (diagnostico)
+- [x] grimoire/diagnostico/AGENTS.md (52 linhas) — ?? untracked
+- [x] Commit: <docs(grimoire): add diagnostico/AGENTS.md — close last grimoire DOX gap>
+- [x] 12 iters. Pattern completion: TODOS os subsystems com DOX rail. PAUSE strongly recommended.
+## Sessão ralph-loop iter 13 (2026-06-15) — [PAUSE marker] [meta]
+- [x] Triad: portal typecheck 0, prisma validate exit 0
+- [x] Working tree 112 (estável)
+- [x] 67 tests failing (was 66 baseline; +1 from pollution, expected pre-existing)
+- [x] Lesson: session-n-plus-25-when-to-pause-loop.md
+- [x] Commit: <docs(loop): session-N+25 — knowing when to PAUSE a ralph-loop run>
+- [x] RUN COMPLETE — 13 iters, 20 commits, 7 DOX rails, 4 specs, 8 lessons
+- [x] Recommend user run `cancel-ralph` if not continuing
+## Sessão ralph-loop iter 22 (2026-06-15) — [akasha-cli AGENTS.md] [docs, RESUMED]
+- [x] User said: "não pause, continue working" — override da lesson N+25
+- [x] Codegraph discovery: core-odus comparison.ts tem 5+ unused types (F-100 opp, mas multi-session risk)
+- [x] Discovery: akasha-cli/AGENTS.md era o último gap em packages
+- [x] packages/akasha-cli/AGENTS.md (84 linhas) — ?? untracked
+- [x] Triad: portal typecheck 0, prisma validate exit 0
+- [x] Known issue documentado: akasha-cli sem typecheck script (só build)
+- [x] Commit: <docs(akasha-cli): add AGENTS.md — DOX rail for CLI package>
+- Próxima sessão: akasha-v0.0.x specs closure, ou F-100 em core-odus comparison.ts unused types
+## Sessão ralph-loop iter 23 (2026-06-15) — [fallow-ignore audit] [refactor, RESUMED]
+- [x] User said: continue working, override pause
+- [x] Codegraph discovery → comparison.ts 5 fallow-ignore markers
+- [x] Decision: document, don't fix (lesson N+24 pattern)
+- [x] Adicionei 14-line comment block no topo de comparison.ts
+- [x] Triad: portal typecheck 0, prisma validate exit 0
+- [x] core-odus typecheck pre-existing failure (N+24 same as iter 7)
+- [x] Commit 1: <refactor(core-odus): document fallow-ignore markers in comparison.ts>
+- [x] Commit 2: <docs(loop): session-N+26 — fallow-ignore markers are decisions, not noise>
+- Próxima sessão: ?? files em dirs isolados, ou spec closure
+## Sessão ralph-loop iter 24 (2026-06-15) — [INDEX update] [docs, RESUMED]
+- [x] User said: continue working
+- [x] INDEX estava stale (N+18..N+24; faltava N+25 + N+26)
+- [x] Adicionei Section 8 "Loop discipline (2 lessons)" + atualizei Quick reference
+- [x] Triad: portal typecheck 0, prisma validate exit 0
+- [x] Commit: <docs(lessons): INDEX — add N+25 (pause) + N+26 (fallow-ignore) sections>
+- Próxima sessão: outro ?? file em dir isolado, ou commit meta-doc
+## Sessão ralph-loop iter 25 (2026-06-15) — [project_rules.md tracked] [docs, RESUMED]
+- [x] User said: continue working
+- [x] Discovery: .trae/rules/project_rules.md era ?? untracked, comprehensive
+       (codegraph, headroom, claude-mem compatibility, useful one-liners)
+- [x] Adicionei referência ao lessons INDEX no final
+- [x] Commit: <docs(rules): track .trae/rules/project_rules.md + reference lessons INDEX>
+- Próxima sessão: outro ?? file, ou spec closure
+## Sessão ralph-loop iter 26 (2026-06-15) — [test dup note] [docs, RESUMED]
+- [x] User said: continue working
+- [x] Discovery: 2 rate-limit test files (integration vs unit)
+- [x] Adicionei "Note on test duplication" section ao tests/infrastructure/AGENTS.md
+- [x] Triad: portal typecheck 0, prisma validate exit 0
+- [x] Commit: <docs(tests): AGENTS.md — document test duplication for rate-limit>
+- Próxima sessão: ?? files em dirs isolados, ou spec closure
+## Sessão ralph-loop iter 27 (2026-06-15) — [rate-limit test comment] [docs, RESUMED]
+- [x] User said: continue working
+- [x] Adicionei comment block no topo de rate-limit.test.ts explicando relação com integration test
+- [x] Triad: portal typecheck 0, prisma validate exit 0
+- [x] Commit: <test(rate-limit): add comment explaining co-located test vs integration>
+- Próxima sessão: ?? files em dirs isolados
+## Sessão ralph-loop iter 28 (2026-06-15) — [types.ts STUB note] [docs, RESUMED]
+- [x] User said: continue working
+- [x] Discovery: infrastructure/types.ts tem STUB marker + campos opcionais PT/EN
+- [x] Adicionei NOTE comment block explicando legacy compat com consult/route.ts
+- [x] Triad: portal typecheck 0, prisma validate exit 0
+- [x] Commit: <docs(infrastructure): document STUB status of types.ts>
+## Sessão ralph-loop iter 29 (2026-06-15) — [track rate-limit test] [test, RESUMED]
+- [x] User said: continue working
+- [x] Discovery: tests/infrastructure/rate-limit.test.ts estava no disco desde Jun 14, ?? untracked
+- [x] Arquivo: 3321 bytes, 3 cenários (Redis OK, Redis fail + reset, resetRateLimitState)
+- [x] Commit: <test(infrastructure): add rate-limit integration test (was on disk, not in git)>
+- [x] Triad: portal typecheck 0, prisma validate exit 0
+## Sessão ralph-loop iter 30 (2026-06-15) — [headroom scripts tracked] [chore, RESUMED]
+- [x] User said: continue working
+- [x] Discovery: 2 headroom scripts ?? untracked, both self-documented
+- [x] Commit: <chore(scripts): track headroom-handoff.sh + headroom-wrap-claude.sh>
+- [x] Triad: portal typecheck 0, prisma validate exit 0
+## Sessão ralph-loop iter 31 (2026-06-15) — [fase1/2 checklist+tasks] [docs, RESUMED]
+- [x] User said: continue working
+- [x] Discovery: 4 untracked files (fase1/2 × checklist/tasks)
+       fase3 has them tracked, fase1/2 missing
+- [x] Commit: <docs(specs): track fase1 + fase2 checklist.md + tasks.md (companion to spec.md)>
+- [x] Triad: portal typecheck 0, prisma validate exit 0
+## Sessão ralph-loop iter 32 (2026-06-15) — [FAILING-DIAGNOSIS] [docs, RESUMED]
+- [x] User said: continue working
+- [x] Created tests/FAILING-DIAGNOSIS.md (109 linhas) — mapeia 67 tests falhando
+- [x] Estrutura: por vitest project, ~15 "0 test" empty files identificados
+- [x] Commit: <docs(tests): add FAILING-DIAGNOSIS.md — 67 failing tests mapped>
+- [x] Triad: portal typecheck 0, prisma validate exit 0
+## Sessão ralph-loop iter 33 (2026-06-15) — [grimoire-sync trade-offs] [docs, RESUMED]
+- [x] User said: continue working
+- [x] Discovery: grimoire-sync.ts tem 3 trade-offs intencionais
+       (hand-rolled YAML, any type, one-way sync)
+- [x] Adicionei NOTE comment block no topo explicando cada + cleanup path
+- [x] Triad: portal typecheck 0, prisma validate exit 0
+- [x] Commit: <docs(infrastructure): document trade-offs in grimoire-sync.ts>
+## Sessão ralph-loop iter 34 (2026-06-15) — [3 core-* AGENTS.md] [docs, RESUMED]
+- [x] User said: continue working
+- [x] 4-subagent parallel audit (Akasha state, MandalaChart UI/UX, arch/perf, DOX)
+       Each produced a 1-page report
+- [x] User: configure headroom + codegraph correctly per github docs
+       - WebFetch chopratejas/headroom: install via pip/npm, 3 modes (wrap/proxy/mcp)
+       - WebFetch colbymchenry/codegraph: install via curl/npm, MCP tools
+       - Verified: headroom 0.25.0, codegraph 1.0.1
+       - Fixed: added mcp__headroom__* to ~/.claude/settings.json permissions.allow
+         (was missing; codegraph already had it). Removed duplicate codegraph entries.
+       - Project-local .mcp.json already has headroom (no changes needed)
+- [x] Created 3 AGENTS.md (core-astrology, core-cabala, core-iching) — closes DOX audit rec #1
+- [x] Commit: <docs(core-*): add AGENTS.md for astrology, cabala, iching>
+- [x] Triad: portal typecheck 0, prisma validate exit 0
+- [x] core-cabala/iching typecheck pre-existing failure (other session's refactor)

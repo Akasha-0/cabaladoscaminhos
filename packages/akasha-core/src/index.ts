@@ -48,11 +48,12 @@ export {
 export {
   // Classes
   CorrelationEngine,
-  
+  PracticeUsageTracker,
+
   // Funções
   createCorrelationEngine,
   quickScore,
-  
+
   // Tipos
   type AkashaCode,
   type LifeArea,
@@ -60,6 +61,7 @@ export {
   type ScoredPractice,
   type PracticeRecommendation,
   type RecommendationContext,
+  type PracticeUsageMap,
 } from './correlation-engine';
 
 export {

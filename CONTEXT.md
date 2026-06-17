@@ -1,187 +1,109 @@
-# Cabala dos Caminhos — Índice Central
+# Contexto do Projeto
 
-## Visão Geral do Projeto
+O mapa canonico do repositorio agora vive em `docs/00_README.md`.
 
-**Cabala dos Caminhos** é uma plataforma de tecnologia espiritual que correlaciona múltiplos sistemas místicos ancestrais — Cabala, Ifá, Astrologia, Numerologia, Tarot, I Ching, Tantra e Chakras — para fornecer autoconhecimento unificado e práticas diárias.
-
-O produto principal é o **Akasha** — um oráculo vivo mobile-first que entrega diagnóstico unificado, ritual diário e agente conversacional com IA.
-
----
-
-## Estrutura do Monorepo
-
-```
-cabaladoscaminhos/
-├── CONTEXT.md                    ← Este arquivo (índice central)
-├── AGENTS.md                     ← Regras para agentes de IA
-├── CLAUDE.md                     ← Diretrizes comportamentais
-├── README.md                     ← Visão geral do projeto
-├── .trae/specs/                  ← Histórico de especificações
-├── docs/                         ← Documentação técnica
-├── memory/                       ← Histórico de ciclos de desenvolvimento
-├── packages/                     ← Motores espirituais agnósticos
-│   ├── core-astrology/           ← Swiss Ephemeris, mapa natal, trânsitos
-│   ├── core-cabala/              ← Caminho de Vida, sefirot
-│   ├── core-iching/              ← Hexagramas, bagua
-│   ├── core-odus/                ← Odús de Ifá, Merindilogun
-│   └── core-tantra/              ← 11 Corpos Espirituais
-├── apps/akasha-portal/          ← Aplicação principal (Next.js)
-├── grimoire/                     ← Conteúdo sagrado (Markdown)
-├── tests/                        ← Suite de testes
-└── prisma.config.ts              ← Schema do banco de dados
-```
+- Indice mestre: `docs/00_README.md`
+- Visao do produto: `docs/25_visao-akasha.md`
+- Arquitetura tecnica: `docs/03_architecture-spec.md`
+- Pesquisa consolidada em docs: `docs/pesquisa/README.md`
+- Trilha research-first: `.autonomous/VISION.md` e `.autonomous/app_spec.txt`
 
 ---
 
-## Como Navegar
+## Glossario de Termos Canonicos
 
-### Specs (`.trae/specs/`)
-- `akasha-v0.0.7/` — Especificação atual de desenvolvimento
-- Cada versão contém: `spec.md`, `tasks.md`, `checklist.md`
+### Mandala Akáshica
 
-### Documentação (`docs/`)
-| Arquivo | Conteúdo |
-|---------|----------|
-| `01_product-brief.md` | Visão de produto Akasha |
-| `02_prd.md` | Requisitos detalhados |
-| `03_architecture-spec.md` | Arquitetura técnica |
-| `04_data-model.md` | Modelo de dados |
-| `05_uiux-spec.md` | Especificação UI/UX |
-| `06_ai-engine-spec.md` | Motor de IA e síntese |
-| `08_roadmap.md` | Roadmap atual |
-| `25_visao-akasha.md` | Visão completa do Akasha |
-| `26_identidade-akasha.md` | Identidade visual e verbal |
+A Mandala e o artefato central da experiencia Akasha — uma visualizacao SVG dos 5 Pilares da existencia, onde cada camada representa um sistema oracular. O usuario interage com a Mandala para explorar seu perfil nos 5 sistemas (Odus, Cabala, Tantra, Astrologia, I Ching).
 
-### Memória (`memory/`)
-- `cycle-[NNN].md` — Ciclos de desenvolvimento (489-516+)
-- `cycle-[NNN]-review.md` — Revisões de ciclo
+### 5 Pilares (Camadas da Mandala)
 
-### Arquitetura de 5 Camadas (`apps/akasha-portal/src/`)
-- `app/` — Next.js App Router (páginas e API routes)
-- `components/` — Componentes React (UI, mapa, astrologia)
-- `lib/` — Core libraries (engines, AI, Prisma client)
-- `hooks/` — React hooks customizados
-- `types/` — Definições TypeScript
+| Pilar | Camada SVG | Dominio | Descricao |
+|-------|-----------|---------|-----------|
+| Pilar 1 | Cabala | Numerologia Cabalistica | Arvore da Vida, Sefirot, Numeros de vida |
+| Pilar 2 | Astrologia | Mapa Natal | Signos, planetas, aspectos |
+| Pilar 3 | Tantra | Corpos Energeticos | 11 corpos, chakras, Alma/Karma/Destino |
+| Pilar 4 | Odus | Ifa/Candomble | Odu de nascimento, Orixa, Preceitos |
+| Pilar 5 | I Ching | Oraculo Chines | Hexagrama, trigramas |
 
----
+### KabalisticMap
 
-## Stack Tecnológica
+O mapa cabalistico e gerado por `buildKabalisticMap()` em `@akasha/core-cabala`. Contem os numeros de vida (Life Path, Expression, Motivation, Mission, Impression) e meta-informacoes cabalisticas (sefira regente, letra hebraica, taro regente).
 
-| Categoria | Tecnologia |
-|-----------|------------|
-| Framework | Next.js 16 (App Router + Turbopack) |
-| Linguagem | TypeScript 5 (strict) |
-| UI | Tailwind CSS 4 + shadcn/ui |
-| Database | Prisma 7 + PostgreSQL + pgvector |
-| Cache | Redis |
-| Auth | Supabase SSR + JWT |
-| IA | OpenAI API + Ollama (embeddings locais) |
-| Testing | Vitest + Playwright |
-| Payments | Stripe |
-| Deploy | Docker + PM2 (VPS Linux) |
+Campos exportados para a Mandala (Nivel 3):
+- Life Path, Expression, Motivation, Mission, Impression
+- Sefira Regente, Letra Hebraica, Taro Regente
+- 4 Desafios (first, second, main, last)
+- 4 Pinalculos (first, second, third, fourth)
+- 3 Ciclos de Vida (first, second, third)
 
----
+### Sefira / Sefirot
 
-## Como Verificar Status do Projeto
+As 10 emocoes da Arvore da Vida Cabalistica. Cada Sefira tem: nome, nome divino, cor, anjo regente, qualidade, essencia, letra hebraica, elemento. Mapeadas por numero de Life Path em `SEFIROT_PATHS`.
 
-### Execução de Testes
-```bash
-pnpm test:run          # Modo CI (sem watch)
-pnpm test              # Com UI interativa
-```
+### ONE Akasha Profile
 
-### Verificação de Tipos
-```bash
-pnpm typecheck
-```
+Sistema de 9 tipos de personalidade derivado da correlacao dos 5 pilares (inspirado em Human Design + Gene Keys). Gerado por `synthesis-engine.ts` + `narrative-generator.ts` (template-based, sem LLM). Mostra: tipo, estrategia, autoridade, diretiva diaria, area de crescimento, armadilha de sombra.
 
-### Lint
-```bash
-pnpm lint
-```
+### TantricMap
 
-### Quality Gates
-```bash
-pnpm quality
-```
+O mapa tantrico e gerado por `buildTantricMap()` em `@akasha/core-tantra`. Contem Alma, Karma, Dom Divino, Destino, Caminho Tantrico e os 5 corpos numerologicos (fisico, pranico, emocional, mental, espiritual) derivados da data de nascimento. Todos os 11 corpos sao ativos (nao ha logica de atividade/inatividade implementada).
 
-### Análise de Código Morto
-```bash
-pnpm fallow
-```
+### AstrologyMap
 
-### Histórico do Git
-```bash
-git log --oneline -15          # Últimos commits
-git tag --sort=-creatordate | head -5  # Tags recentes
-```
+O mapa astrologico e gerado por `getBirthChart()` em `@akasha/core-astrology`. Contem signo ascendente, Meio do Ceu, planeta dominante, posicoes dos 10 planetas e aspectos. Para a Mandala, expomos: ascendente, meio do ceu, planeta dominante, 10 planetas nos signos e 5 aspectos principais.
 
----
+### OduBirth
 
-## Padrão de Versionamento
+O Odu de nascimento e o sistema oracular de Ifa/Candomble. Cada Odu tem: nome, orixa regente, elemento, preceitos, quizilas. O modelo existe em `@akasha/core-odux`.
 
-| Tipo | Formato | Exemplo |
-|------|---------|---------|
-| Specs | `akasha-vX.Y.Z` | `akasha-v0.0.7` |
-| Tags Git | `vX.Y.Z` | `v1.2.3` |
-| Ciclos | `cycle-[NNN]` | `cycle-516` |
-
----
-
-## Fluxo de Desenvolvimento
-
-1. **Ler spec atual** em `.trae/specs/akasha-vX.Y.Z/spec.md`
-2. **Consultar documentação** em `docs/architecture-spec.md` para estrutura
-3. **Implementar** seguindo a arquitetura de 5 camadas
-4. **Verificar** com `pnpm test:run && pnpm typecheck && pnpm lint`
-5. **Commit** atômico por tarefa completada
-
----
-
-## Arquitetura em 3 Camadas (Motores de IA)
+### Fluxo de Dados da Mandala
 
 ```
-┌─────────────────────────────────────────────┐
-│  CAMADA 1 — Motor Determinístico            │
-│  packages/core-* (Swiss Ephemeris, cálculos)│
-│  Precisão matemática, sem IA                │
-├─────────────────────────────────────────────┤
-│  CAMADA 2 — Grafo de Conhecimento           │
-│  Cruzamento de correspondências            │
-│  (odú ↔ planeta ↔ chakra ↔ tarô)           │
-├─────────────────────────────────────────────┤
-│  CAMADA 3 — Síntese com IA (RAG)           │
-│  LLM + Grimório (pgvector + Ollama local)  │
-│  Texto hiper-personalizado e fiel à tradição│
-└─────────────────────────────────────────────┘
+mandala/page.tsx (Server)
+  └─> /api/akasha/mandala/route.ts
+       └─> buildKabalisticMap()   [core-cabala]
+       └─> getBirthChart()        [core-astrology]
+       └─> buildTantricMap()      [core-tantra]
+       └─> getBirthOdu()          [core-odux]
+       └─> computeBirthHexagram() [core-iching]
+       Retorna: MandalaData (formato simplificado)
+  └─> MandalaChart.tsx (Client)
+       ├─> SVG de 5 camadas concéntricas
+       └─> InfoPanels interativos (resumo + expandido)
+  └─> MandalaNarrativeLoader
+       └─> /api/akasha/daily/route.ts
+            └─> buildDailyContent()
+                 └─> synthesis-engine.ts (template-based)
 ```
 
----
+### Levels de Profundidade por Pilar
 
-## Arquitetura de 5 Camadas (Aplicação)
+| Pilar | Nivel | Conteudo |
+|-------|-------|----------|
+| Cabala | 3 | Life Path, Expression, Motivation, Mission, Impression + Sefira, Letra, Taro + Desafios (4) + Pinalculos (4) + Ciclos (3) |
+| Astrologia | Planetas+Aspectos | 10 planetas nos signos + 5 aspectos principais + anel zodiacal expandido |
+| Tantra | 3 | Alma/Karma/Dom/Destino + significado dos 5 corpos numerologicos |
+| Odus | 2 | Odu + Orixa + Elemento + Preceitos + Quizilas + Mythos/Archetype |
+| I Ching | 1 | Hexagrama + Trigramas + Linhas |
 
-```
-┌──────────────────────────────────────────────┐
-│  interface/     — Rotas, actions, API       │
-├──────────────────────────────────────────────┤
-│  application/    — Casos de uso             │
-├──────────────────────────────────────────────┤
-│  domain/         — Lógica pura (sem I/O)     │
-│  └── domain/types/ — Tipos compartilhados   │
-├──────────────────────────────────────────────┤
-│  infrastructure/ — Prisma, Redis, external  │
-├──────────────────────────────────────────────┤
-│  shared/         — Utils, constants         │
-└──────────────────────────────────────────────┘
-```
+### Hierarquia de InfoPanel
 
-> **Padrão de Tipos:** Tipos usados por múltiplas camadas devem residir em `domain/types/`. Ver `docs/03_architecture-spec.md` e ADR (T10).
+Cada camada tem dois niveis de detalhe:
+- **Resumo** (ao clicar): 4-6 campos principais
+- **Expandido** (botao "Ver mais"): Todos os campos do nivel
 
----
+### Design Visual
 
-## Links Úteis
+Estilo **Elegante/Mistico**: fundo escuro, paleta dourado + cobre, tipografia serifada para titulos, animacoes suaves. Centro da Mandala pulsa com energia do Odu. Animacao de entrada: a Mandala desenha a si mesma ao carregar.
 
-- **Site:** https://cabaladoscaminhos.com
-- **Documentação:** `docs/`
-- **Progresso:** `PROGRESS.md`
-- **Contributing:** `CONTRIBUTING.md`
+### Implementacao em Fasess
+
+| Fase | Escopo | Dependencias |
+|------|--------|-------------|
+| 1 | API route: expor todos campos KabalisticMap (Nivel 3) + 10 planetas + aspectos | Nenhuma |
+| 2 | MandalaChart: InfoPanels com dois niveis (resumo + expandido) | Fase 1 |
+| 3 | SVG Layer 4: anel zodiacal expandido com 10 planetas | Fase 1, 2 |
+| 4 | Campos Tantricos: significados reais dos 5 corpos numerologicos | Fase 1 |
+| 5 | Orientacao pratica: Mandato + Ritual + Dashboard de energia | Fase 1, 2 |
+| 6 | Animacao de entrada + centro respirante | Fase 2 |

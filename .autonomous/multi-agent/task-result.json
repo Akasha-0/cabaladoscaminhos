@@ -1,0 +1,50 @@
+{
+  "all_ok": true,
+  "summary": "2/2 agents succeeded in 155.7s",
+  "results": [
+    {
+      "agent_id": "577970f6",
+      "type": "missing_tests",
+      "success": true,
+      "message": "Agent 577970f6 completed missing_tests",
+      "exit_code": 0
+    },
+    {
+      "agent_id": "381bfff0",
+      "type": "large_file",
+      "success": true,
+      "message": "Agent 381bfff0 completed large_file",
+      "exit_code": 0
+    }
+  ],
+  "improvements": [
+    {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "2 changed files lack tests",
+      "files": [
+        "apps/akasha-portal/src/lib/application/auth/akasha-guard.test.ts",
+        "apps/akasha-portal/src/lib/grimoire/sync.ts"
+      ]
+    },
+    {
+      "type": "large_file",
+      "priority": 4,
+      "description": "26 oversized files",
+      "files": [
+        {
+          "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
+          "lines": 827
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts",
+          "lines": 785
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
+          "lines": 773
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 'use client';
 
 import { createBrowserClient } from '@supabase/ssr';
-import { User } from '@supabase/supabase-js';
+import { User, AuthChangeEvent, Session } from '@supabase/supabase-js';
 import { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -102,13 +102,11 @@ export function SupabaseProvider({
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event: string, session: any) => {
-      console.log('[SupabaseProvider] Auth event:', event);
+    } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, session: Session | null) => {
       setUser(session?.user ?? null);
       setIsLoading(false);
 
       if (event === 'SIGNED_OUT') {
-        console.log('[SupabaseProvider] User signed out');
         router.push('/login');
       }
     });

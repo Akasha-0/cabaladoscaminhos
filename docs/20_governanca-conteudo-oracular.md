@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Documento 20 — Governança do Grimório Digital & Motor de Inteligência
 
 ## Sistema Akasha

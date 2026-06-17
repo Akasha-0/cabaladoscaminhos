@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Static Test - No JS</title>
+  <style>
+    body { font-family: system-ui; background: #0f172a; color: white; padding: 2rem; }
+    h1 { color: #fbbf24; }
+    a { color: #7c3aed; margin: 0.5rem; }
+    .box { background: #1e293b; padding: 1.5rem; border-radius: 1rem; margin: 1rem 0; }
+    button { padding: 1rem 2rem; background: #7c3aed; color: white; border: none; border-radius: 0.5rem; cursor: pointer; margin: 0.5rem; }
+    button:hover { background: #6d28d9; }
+    .green { background: #059669; }
+    .red { background: #dc2626; }
+    pre { background: #0f172a; padding: 1rem; border-radius: 0.5rem; overflow: auto; }
+  </style>
+</head>
+<body>
+  <h1>🔑 STATIC HTML TEST (No React)</h1>
+  
+  <div class="box">
+    <h2>1. Login (this page)</h2>
+    <p>This is a plain HTML page - no Next.js, no React.</p>
+    <p>Click below to set localStorage and redirect to dashboard.</p>
+    
+    <button class="green" onclick="login()">Login & Go to Dashboard</button>
+    <button onclick="checkStorage()">Check localStorage</button>
+    <button class="red" onclick="clearStorage()">Clear Storage</button>
+    
+    <pre id="output">Click a button to test...</pre>
+  </div>
+  
+  <div class="box">
+    <h2>2. Links</h2>
+    <a href="/static-test.html">This page</a>
+    <a href="/login">/login</a>
+    <a href="/dashboard">/dashboard</a>
+  </div>
+
+  <script>
+    const AUTH_KEY = 'cabala_auth_user';
+    
+    function login() {
+      const user = { id: 'test-' + Date.now(), email: 'test@example.com', name: 'Test User' };
+      localStorage.setItem(AUTH_KEY, JSON.stringify(user));
+      document.getElementById('output').innerHTML = '✅ Login OK!\n\n' + JSON.stringify(user);
+      setTimeout(() => { window.location.href = '/dashboard'; }, 1000);
+    }
+    
+    function checkStorage() {
+      const stored = localStorage.getItem(AUTH_KEY);
+      document.getElementById('output').innerHTML = stored ? '✅ ' + stored : '❌ EMPTY';
+    }
+    
+    function clearStorage() {
+      localStorage.removeItem(AUTH_KEY);
+      document.getElementById('output').innerHTML = '🗑️ Cleared';
+    }
+  </script>
+</body>
+</html>

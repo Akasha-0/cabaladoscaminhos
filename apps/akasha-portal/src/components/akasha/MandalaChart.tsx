@@ -2,64 +2,35 @@
 
 import { useState } from 'react';
 import { MandalaAtmosphere } from '@/components/akasha/MandalaAtmosphere';
-import {
-  significadoPorPilar,
-  significadoGenericoDoPilar,
-  type Pilar,
-  type SignificadoCurado,
-} from '@/lib/grimoire/significados-curados';
+import { IchingInfoPanel } from '@/components/akasha/IchingInfoPanel';
+import { AstrologyInfoPanel, type AstrologyAspect } from '@/components/akasha/AstrologyInfoPanel';
+import { OduInfoPanel } from '@/components/akasha/OduInfoPanel';
+import { ELEMENT_GUIDANCE, dominantElement } from '@/components/akasha/mandala-elements';
+import { LIFE_PATH_MEANINGS } from '@/components/akasha/mandala-meanings';
 import { useCockpitStore } from '@/stores/cockpit-store';
+import { formatDegreeToZodiac, GLYPHS_BY_PLANET, PLANET_COLORS, longitudeToSvgAngle } from '@/lib/shared/zodiac';
+import {
+  describeArc,
+  PARTICLES,
+  PILAR_COLORS,
+  PILAR_LABEL_BY_LAYER,
+  STARS,
+  toXY,
+  ZODIAC_NAMES,
+  ZODIAC_SIGNS,
+  type Layer,
+} from '@/components/akasha/mandala-geometry';
+import {
+  buildAstroSegments,
+  buildKabVerts,
+  buildPlanetDots,
+  buildTantricNodes,
+  buildTooltipByLayer,
+  buildTrianglePath,
+} from '@/components/akasha/mandala-layers';
+import { KabalaInfoPanel, TantricBodyInfoPanel } from '@/components/akasha/MandalaInfoPanels';
 
-function resolveSig(pilar: Pilar, id: string | number | null | undefined): SignificadoCurado {
-  if (id == null) return significadoGenericoDoPilar(pilar);
-  return significadoPorPilar(pilar, id) ?? significadoGenericoDoPilar(pilar);
-}
-
-function SignificadoEmbed({
-  significado,
-  color,
-}: {
-  significado: SignificadoCurado;
-  color: string;
-}) {
-  return (
-    <div
-      style={{
-        marginTop: 10,
-        padding: '10px 12px',
-        background: `${color}10`,
-        border: `1px solid ${color}33`,
-        borderLeft: `3px solid ${color}`,
-        borderRadius: 8,
-        fontSize: '0.8rem',
-        lineHeight: 1.45,
-      }}
-    >
-      <p
-        style={{
-          color: '#F4F5FF',
-          margin: 0,
-          fontStyle: 'italic',
-          fontFamily: 'var(--font-lora, serif)',
-        }}
-      >
-        {significado.essencia}
-      </p>
-      <p style={{ color: '#A7AECF', margin: '6px 0 0', fontSize: '0.75rem' }}>
-        <strong style={{ color }}>Missão:</strong> {significado.missao}
-      </p>
-      {significado.requer_terreiro && (
-        <p style={{ color: '#FB5781', margin: '6px 0 0', fontSize: '0.7rem', fontStyle: 'italic' }}>
-          ⚠ Interpretação profunda requer babalaô/yaô de confiança (R-022 §4.4).
-        </p>
-      )}
-      <p style={{ color: '#5C6691', margin: '6px 0 0', fontSize: '0.65rem' }}>
-        via {significado.fonte}
-      </p>
-    </div>
-  );
-}
-interface MandalaData {
+export interface MandalaData {
   incomplete: boolean;
   odus: {
     oduName: string;
@@ -76,7 +47,26 @@ interface MandalaData {
     expression: number | null;
     expressionMaster: boolean;
     motivation: number | null;
+    impression: number | null;
+    mission: number | null;
     personalYear: number | null;
+    personalMonth: number | null;
+    personalDay: number | null;
+    sefira: string | null;
+    hebrewLetter: string | null;
+    tarotCard: { major: number; name: string; meaning: string } | null;
+    challenges: { first: number; second: number; main: number; last: number } | null;
+    pinnacles: {
+      first: { number: number; ageEnd: number; meaning: string } | null;
+      second: { number: number; ageStart: number; ageEnd: number; meaning: string } | null;
+      third: { number: number; ageStart: number; ageEnd: number; meaning: string } | null;
+      fourth: { number: number; ageStart: number; meaning: string } | null;
+    } | null;
+    lifeCycles: {
+      first: { number: number; ageStart: number; ageEnd: number } | null;
+      second: { number: number; ageStart: number; ageEnd: number } | null;
+      third: { number: number; ageStart: number } | null;
+    } | null;
   };
   tantra: {
     soul: number | null;
@@ -90,7 +80,19 @@ interface MandalaData {
     ascendant: string | null;
     midheaven: string | null;
     dominantPlanet: string | null;
-    planets: Array<{ name: string; sign: string; degree: number; house: number }>;
+    // Mandala Fase 3 (spec mandala-fase3-zodiac-tantra):
+    // absoluteLongitude (0-360°) é usado pelo MandalaChart para posicionar
+    // os planetas na eclíptica. `degree` permanece para InfoPanel
+    // (compat: grau dentro do signo, 0-30°).
+    planets: Array<{
+      name: string;
+      sign: string;
+      degree: number;
+      absoluteLongitude: number | null;
+      retrograde?: boolean;
+      house: number;
+    }>;
+    aspects: AstrologyAspect[];
     elementalBalance: { fire: number; earth: number; air: number; water: number };
   };
   iching: {
@@ -119,171 +121,8 @@ interface Props {
   data: MandalaData;
 }
 
-type Layer = 1 | 2 | 3 | 4 | 5;
-
-const toXY = (angleDeg: number, r: number, cx = 200, cy = 200) => ({
-  x: cx + r * Math.cos(((angleDeg - 90) * Math.PI) / 180),
-  y: cy + r * Math.sin(((angleDeg - 90) * Math.PI) / 180),
-});
-
-const ZODIAC_SIGNS = ['♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓'];
-const ZODIAC_NAMES = [
-  'Áries',
-  'Touro',
-  'Gêmeos',
-  'Câncer',
-  'Leão',
-  'Virgem',
-  'Libra',
-  'Escorpião',
-  'Sagitário',
-  'Capricórnio',
-  'Aquário',
-  'Peixes',
-];
-
-const ELEMENT_COLORS: Record<string, string> = {
-  fire: '#FB5781',
-  earth: '#F0B429',
-  air: '#7C5CFF',
-  water: '#2DD4BF',
-};
-
-// Pilar colors — keyed by VISUAL LAYER (1..5 inside-out).
-// Layer 1 = Odus core (Pilar 4) | Layer 2 = Cabala geometry (Pilar 1)
-// Layer 3 = Tantric web (Pilar 3) | Layer 4 = Astrological ring (Pilar 2)
-// Layer 5 = I-Ching node (Pilar 5)
-// Cabala usa indigo para distinguir-se de Astrologia (roxo/ar).
-const PILAR_COLORS: Record<Layer, string> = {
-  1: '#F0B429',
-  2: '#5C7CFF',
-  3: '#2DD4BF',
-  4: '#7C5CFF',
-  5: '#A0763A',
-};
-const PILAR_LABEL_BY_LAYER: Record<Layer, string> = {
-  1: 'Odus',
-  2: 'Cabala',
-  3: 'Tântrica',
-  4: 'Astrologia',
-  5: 'I-Ching',
-};
-const ELEMENT_LABELS: Record<string, string> = {
-  fire: 'Fogo',
-  earth: 'Terra',
-  air: 'Ar',
-  water: 'Água',
-};
-const ELEMENT_GUIDANCE: Record<string, { balance: string; ritual: string }> = {
-  fire: {
-    balance:
-      'Elemento dominante Fogo — energia de ação, liderança e expansão. Para equilibrar: aterrar com práticas de Terra (corpo, natureza, alimentos raiz).',
-    ritual:
-      'Ritual: banhos de ervas de terra (alecrim, patchouli), caminhar descalço, meditação com pedras.',
-  },
-  earth: {
-    balance:
-      'Elemento dominante Terra — energia de estrutura, paciência e materialização. Para equilibrar: aquecer com Fogo (movimento, expressão, criatividade).',
-    ritual:
-      'Ritual: dança livre, uso de cores vibrantes, incenso de canela ou cravo para ativar a chama interna.',
-  },
-  air: {
-    balance:
-      'Elemento dominante Ar — energia mental, comunicação e movimento. Para equilibrar: ancorar com Água (emoção, intuição, descanso).',
-    ritual: 'Ritual: banhos de água fria com pétalas de rosa, meditação aquática, chás calmantes.',
-  },
-  water: {
-    balance:
-      'Elemento dominante Água — energia emocional, intuição e profundidade. Para equilibrar: estruturar com Terra (rotinas, corpo, alimentação consciente).',
-    ritual:
-      'Ritual: caminhadas na natureza, dieta baseada em raízes e tubérculos, pedras de jaspe ou hematita.',
-  },
-};
-
-const LIFE_PATH_MEANINGS: Record<number, string> = {
-  1: 'Caminho do Pioneiro — sua missão é liderar e inaugurar novos caminhos. Aprenda a agir independentemente.',
-  2: 'Caminho do Diplomata — cooperação, harmonia e parceria são seu veículo de crescimento.',
-  3: 'Caminho do Criador — expressão, comunicação e criatividade são o seu propósito sagrado.',
-  4: 'Caminho do Construtor — estrutura, disciplina e trabalho constante constroem seu legado.',
-  5: 'Caminho da Liberdade — mudança, aventura e versatilidade são sua escola de vida.',
-  6: 'Caminho do Guardião — responsabilidade, cuidado e serviço ao próximo definem sua essência.',
-  7: 'Caminho do Buscador — introspecção, espiritualidade e sabedoria são seu norte.',
-  8: 'Caminho do Realizador — poder, abundância e autoridade são os temas centrais da sua existência.',
-  9: 'Caminho do Humanista — compaixão universal, conclusões e entrega ao coletivo.',
-  11: 'Número Mestre 11 — Iluminador. Canal entre os planos, alta sensibilidade intuitiva e missão espiritual.',
-  22: 'Número Mestre 22 — Construtor de Mundos. Capacidade de manifestar visões grandiosas na matéria.',
-  33: 'Número Mestre 33 — Mestre Cósmico. Serviço incondicional, amor universal, cura e ensino.',
-};
-
-const TANTRIC_BODY_WISDOM: Record<number, { desc: string; challenge: string; activate: string }> = {
-  1: {
-    desc: 'Corpo da Alma',
-    challenge: 'Encontrar propósito humilde',
-    activate: 'Meditação Ong Namo',
-  },
-  2: {
-    desc: 'Mente Negativa',
-    challenge: 'Discernir sem paralisar',
-    activate: 'Respiração de fogo',
-  },
-  3: { desc: 'Mente Positiva', challenge: 'Confiar no processo', activate: 'Sat Kriya — 3 min' },
-  4: { desc: 'Mente Neutra', challenge: 'Observar sem reagir', activate: 'Meditação do coração' },
-  5: { desc: 'Corpo Físico', challenge: 'Encarnar totalmente', activate: 'Movimento consciente' },
-  6: {
-    desc: 'Linha do Arco',
-    challenge: 'Proteger o campo áurico',
-    activate: 'Ser humano íntegro',
-  },
-  7: { desc: 'Aura', challenge: 'Expandir sem dissolver', activate: 'Projeção e Proteção' },
-  8: { desc: 'Corpo Prânico', challenge: 'Sustentar a vitalidade', activate: 'Pranayama diário' },
-  9: { desc: 'Corpo Sutil', challenge: 'Escutar o infinalível', activate: 'Escuta da intuição' },
-  10: {
-    desc: 'Corpo Radiante',
-    challenge: 'Brilhar corajosamente',
-    activate: 'Ação corajosa cotidiana',
-  },
-  11: {
-    desc: 'Mente Divina',
-    challenge: 'Manter-se aberto ao infinito',
-    activate: 'Gratidão e rendição',
-  },
-};
-
-// Stars data — fixed positions seeded deterministically
-const STARS = Array.from({ length: 30 }, (_, i) => {
-  const angle = (i * 137.508) % 360; // golden angle spacing
-  const radius = 60 + ((i * 47) % 130);
-  const pos = toXY(angle, radius);
-  const opacity = 0.08 + (i % 5) * 0.03;
-  const delay = (i * 0.37) % 3;
-  return { x: pos.x, y: pos.y, opacity, delay };
-});
-
-// Particle dots on outer edge
-const PARTICLES = Array.from({ length: 12 }, (_, i) => {
-  const angle = i * 30;
-  const pos = toXY(angle, 198);
-  const delay = (i * 0.4) % 4;
-  return { x: pos.x, y: pos.y, delay };
-});
-
-function describeArc(cx: number, cy: number, r: number, startDeg: number, endDeg: number): string {
-  const start = toXY(startDeg, r, cx, cy);
-  const end = toXY(endDeg, r, cx, cy);
-  const largeArc = endDeg - startDeg > 180 ? 1 : 0;
-  return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArc} 1 ${end.x} ${end.y}`;
-}
-
-function dominantElement(balance: {
-  fire: number;
-  earth: number;
-  air: number;
-  water: number;
-}): string {
-  const entries = Object.entries(balance) as [string, number][];
-  const sorted = entries.sort((a, b) => b[1] - a[1]);
-  return sorted[0][0];
-}
+// LIFE_PATH_MEANINGS, TANTRIC_BODY_WISDOM, resolveSig and SignificadoEmbed
+// are imported from @/components/akasha/mandala-meanings.
 
 export default function MandalaChart({ data }: Props) {
   const [activeLayer, setActiveLayer] = useState<null | Layer>(null);
@@ -294,81 +133,27 @@ export default function MandalaChart({ data }: Props) {
   // Pause ring rotation when Layer 4 is selected
   const ringPaused = activeLayer === 4;
 
+  // Per-layer derivations (extracted to @/components/akasha/mandala-layers
+  // to keep this component focused on rendering). See mandala-layers.ts
+  // for the implementations of tooltipByLayer, astroSegments, planetDots,
+  // tantricNodes, kabVerts and trianglePath.
+
   // Per-layer curated tooltip text (F-206) — maps visual layer → Pilar id
   // and resolves a short essence from the grimoire for native <title> hover.
-  // Per-layer curated tooltip text (F-206) — maps visual layer → Pilar id
-  // and resolves a short essence from the grimoire for native <title> hover.
-  const tooltipByLayer: Record<Layer, string> = {
-    1: (() => {
-      // Layer 1 = Odus core → Pilar 4 (odu)
-      const sig = resolveSig('odu', data.odus.oduName);
-      return `Pilar 4 · ${PILAR_LABEL_BY_LAYER[1]} (${data.odus.oduName}) — ${sig.essencia}`;
-    })(),
-    2: (() => {
-      // Layer 2 = Cabala → Pilar 1 (cabala)
-      const sig = resolveSig('cabala', data.kabala.lifePath);
-      return `Pilar 1 · ${PILAR_LABEL_BY_LAYER[2]} (Vida ${data.kabala.lifePath ?? '?'}) — ${sig.essencia}`;
-    })(),
-    3: (() => {
-      // Layer 3 = Tantra → Pilar 3 (tantrica)
-      const sig = resolveSig('tantrica', data.tantra.soul);
-      return `Pilar 3 · ${PILAR_LABEL_BY_LAYER[3]} (Alma ${data.tantra.soul ?? '?'}) — ${sig.essencia}`;
-    })(),
-    4: (() => {
-      // Layer 4 = Astrologia → Pilar 2 (astrologia)
-      const sig = resolveSig('astrologia', data.astrology.ascendant);
-      return `Pilar 2 · ${PILAR_LABEL_BY_LAYER[4]} (Asc ${data.astrology.ascendant ?? '?'}) — ${sig.essencia}`;
-    })(),
-    5: (() => {
-      // Layer 5 = I-Ching → Pilar 5 (iching)
-      const sig = resolveSig('iching', data.iching.hexagramNumber);
-      const hex = data.iching.available
-        ? `Hex ${data.iching.hexagramNumber} · ${data.iching.hexagramName}`
-        : 'Hex do dia (requer Pilar 5)';
-      return `Pilar 5 · ${PILAR_LABEL_BY_LAYER[5]} (${hex}) — ${sig.essencia}`;
-    })(),
-  };
+  const tooltipByLayer = buildTooltipByLayer(data);
 
-  const astroSegments = ZODIAC_SIGNS.map((sym, i) => {
-    const startDeg = i * 30;
-    const endDeg = (i + 1) * 30;
-    const midDeg = startDeg + 15;
-    const labelPos = toXY(midDeg, 190);
-    return { sym, name: ZODIAC_NAMES[i], startDeg, endDeg, midDeg, labelPos };
-  });
+  const astroSegments = buildAstroSegments();
 
-  const planetDots = data.astrology.planets.map((p) => ({
-    ...p,
-    pos: toXY((p.degree / 360) * 360, 178),
-  }));
+  // Mandala Fase 3 (spec mandala-fase3-zodiac-tantra):
+  // - Uses `absoluteLongitude` (0-360°) to distribute planets on the
+  //   ecliptic correctly; falls back to `degree` for backwards compat.
+  const planetDots = buildPlanetDots(data.astrology.planets);
 
-  const tantricNodes = Array.from({ length: 11 }, (_, i) => {
-    const angleDeg = i * (360 / 11);
-    const pos = toXY(angleDeg, 138);
-    const body = data.tantra.bodies.find((b) => b.index === i + 1);
-    const wisdom = TANTRIC_BODY_WISDOM[i + 1];
-    return {
-      i,
-      angleDeg,
-      pos,
-      active: body?.active ?? true,
-      label: i + 1,
-      name: wisdom?.desc ?? `Corpo ${i + 1}`,
-    };
-  });
+  const tantricNodes = buildTantricNodes(data.tantra.bodies);
 
-  const kabVerts = [
-    { angleDeg: 0, value: data.kabala.lifePath, master: data.kabala.lifePathMaster, label: 'VP' },
-    {
-      angleDeg: 120,
-      value: data.kabala.expression,
-      master: data.kabala.expressionMaster,
-      label: 'EX',
-    },
-    { angleDeg: 240, value: data.kabala.motivation, master: false, label: 'MO' },
-  ].map((v) => ({ ...v, pos: toXY(v.angleDeg, 80) }));
+  const kabVerts = buildKabVerts(data.kabala);
 
-  const trianglePath = `M ${kabVerts[0].pos.x} ${kabVerts[0].pos.y} L ${kabVerts[1].pos.x} ${kabVerts[1].pos.y} L ${kabVerts[2].pos.x} ${kabVerts[2].pos.y} Z`;
+  const trianglePath = buildTrianglePath(kabVerts);
 
   const elem = dominantElement(data.astrology.elementalBalance);
   const inactiveBodies = tantricNodes.filter((n) => !n.active);
@@ -409,8 +194,8 @@ export default function MandalaChart({ data }: Props) {
         .mandala-pulse { animation: pulse-ori 3s ease-in-out infinite; }
         .mandala-pulse-2 { animation: pulse-ori 3s ease-in-out infinite; animation-delay: 0.5s; }
         .mandala-pulse-3 { animation: pulse-ori 3s ease-in-out infinite; animation-delay: 1s; }
-        .ring-astrological { animation: ring-rotate 120s linear infinite; }
-        .ring-astrological-paused { animation: ring-rotate 120s linear infinite; animation-play-state: paused; }
+        .ring-astrological { animation: none; }
+        .ring-astrological-paused { animation: none; }
         .synergy-active { animation: dash-flow 3s linear infinite; }
         .synergy-alert { animation: dash-flow 1.5s linear infinite; }
         .star-twinkle { animation: twinkle 4s ease-in-out infinite; }
@@ -420,7 +205,7 @@ export default function MandalaChart({ data }: Props) {
         }
       `}</style>
 
-      {/* Layer selector — ordered by Pilar number (1..5) */}
+      {/* Layer selector — ordered by layer (1..5) */}
       <div className="flex gap-2 flex-wrap justify-center">
         {([1, 2, 3, 4, 5] as Layer[]).map((layer) => {
           const color = PILAR_COLORS[layer];
@@ -440,7 +225,7 @@ export default function MandalaChart({ data }: Props) {
                 transition: 'all 0.2s',
               }}
             >
-              P{layer} · {label}
+              C{layer} · {label}
             </button>
           );
         })}
@@ -507,7 +292,7 @@ export default function MandalaChart({ data }: Props) {
             );
           })}
 
-          {/* ── Layer 4 — Astrological Ring (rotating) ── */}
+          {/* ── Layer 4 — Movimento Celeste (rotating) ── */}
           <g
             opacity={opacity(4)}
             onClick={() => setActiveLayer(activeLayer === 4 ? null : 4)}
@@ -551,14 +336,59 @@ export default function MandalaChart({ data }: Props) {
                 </text>
               </g>
             ))}
-            {/* Planet dots with tooltip */}
+            {/* Mandala Fase 3: 12 casas astrológicas (linha tracejada + número) */}
+            {Array.from({ length: 12 }, (_, h) => {
+              const houseLong = h * 30; // casa 1 = 0° (ascendente), incrementa 30°
+              const angle = longitudeToSvgAngle(houseLong);
+              const innerPos = toXY(angle, 152);
+              const outerPos = toXY(angle, 168);
+              return (
+                <g key={`house-${h + 1}`}>
+                  <line
+                    x1={innerPos.x}
+                    y1={innerPos.y}
+                    x2={outerPos.x}
+                    y2={outerPos.y}
+                    stroke="rgba(255,255,255,0.20)"
+                    strokeWidth="0.5"
+                    strokeDasharray="2 3"
+                  />
+                  <text
+                    x={toXY(angle, 145).x}
+                    y={toXY(angle, 145).y}
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    fontSize="6"
+                    fill="rgba(255,255,255,0.45)"
+                    fontWeight="500"
+                  >
+                    {h + 1}
+                  </text>
+                </g>
+              );
+            })}
+
+            {/* Planet glifos (Fase 3) — 10 planetas com glifos unicode + cor + aria-label */}
             {planetDots.map((p, i) => (
-              <g key={i} filter="url(#glow-akasha)">
-                <circle cx={p.pos.x} cy={p.pos.y} r="3.5" fill="#7C5CFF" opacity="0.9">
+              <g key={`planet-${p.name}-${i}`} filter="url(#glow-akasha)">
+                <text
+                  x={p.pos.x}
+                  y={p.pos.y}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  fontSize="13"
+                  fontWeight="600"
+                  fill={p.color}
+                  opacity="0.95"
+                  role="img"
+                  aria-label={`${p.name} em ${p.sign} casa ${p.house}${p.retrograde ? ' retrógrado' : ''}`}
+                >
+                  {p.glyph}
+                  {p.retrograde ? '℞' : ''}
                   <title>
                     {p.name}: {p.sign} casa {p.house}
                   </title>
-                </circle>
+                </text>
               </g>
             ))}
             {/* Ring label */}
@@ -570,7 +400,7 @@ export default function MandalaChart({ data }: Props) {
               fill="rgba(124,92,255,0.5)"
               letterSpacing="2"
             >
-              ASTROLOGIA
+              MOVIMENTO CELESTE
             </text>
 
             {/* ── D — Particle dots on outer edge ── */}
@@ -587,7 +417,7 @@ export default function MandalaChart({ data }: Props) {
             ))}
           </g>
 
-          {/* ── Layer 3 — Tantric Web ── */}
+          {/* ── Layer 3 — Corpo e Energia ── */}
           <g
             opacity={opacity(3)}
             onClick={() => setActiveLayer(activeLayer === 3 ? null : 3)}
@@ -643,7 +473,7 @@ export default function MandalaChart({ data }: Props) {
             ))}
           </g>
 
-          {/* ── Layer 5 — I-Ching (5º sistema, v0.0.5 T6) ── */}
+          {/* ── Layer 5 — Mutação do Caminho ── */}
           <g
             opacity={opacity(5)}
             onClick={() => setActiveLayer(activeLayer === 5 ? null : 5)}
@@ -695,7 +525,7 @@ export default function MandalaChart({ data }: Props) {
                 fill="rgba(160,118,58,0.7)"
                 letterSpacing="1.5"
               >
-                I-CHING
+                MUTAÇÃO DO CAMINHO
               </text>
             </g>
           </g>
@@ -718,7 +548,7 @@ export default function MandalaChart({ data }: Props) {
             />
           ))}
 
-          {/* ── Layer 2 — Kabbalistic Geometry (P1 Cabala — indigo) ── */}
+          {/* ── Layer 2 — Número de Vida ── */}
           <g
             opacity={opacity(2)}
             onClick={() => setActiveLayer(activeLayer === 2 ? null : 2)}
@@ -778,7 +608,7 @@ export default function MandalaChart({ data }: Props) {
             ))}
           </g>
 
-          {/* ── Layer 1 — Odus Core ── */}
+          {/* ── Layer 1 — Ancestralidade ── */}
           <g
             opacity={opacity(1)}
             onClick={() => setActiveLayer(activeLayer === 1 ? null : 1)}
@@ -848,281 +678,20 @@ export default function MandalaChart({ data }: Props) {
 
       {/* === Info Panels === */}
       {activeLayer === 4 && (
-        <InfoPanel color="#7C5CFF" title="Astrologia — O Céu" subtitle="Anel Cósmico · Camada 4">
-          <Row label="Ascendente" value={data.astrology.ascendant} />
-          <Row label="Meio do Céu" value={data.astrology.midheaven} />
-          <Row label="Planeta dominante" value={data.astrology.dominantPlanet} />
-          {data.astrology.planets.slice(0, 5).map((p) => (
-            <Row key={p.name} label={p.name} value={`${p.sign} — casa ${p.house}`} />
-          ))}
-          <Divider />
-          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            {(Object.entries(data.astrology.elementalBalance) as [string, number][]).map(
-              ([el, val]) => (
-                <span
-                  key={el}
-                  style={{
-                    padding: '3px 10px',
-                    borderRadius: '100px',
-                    fontSize: '0.6875rem',
-                    background: `${ELEMENT_COLORS[el]}18`,
-                    border: `1px solid ${ELEMENT_COLORS[el]}44`,
-                    color: ELEMENT_COLORS[el],
-                  }}
-                >
-                  {ELEMENT_LABELS[el]} {val}%
-                </span>
-              )
-            )}
-          </div>
-          {elemGuidance && (
-            <>
-              <Divider />
-              <Insight color="#7C5CFF">{elemGuidance.balance}</Insight>
-              <Insight color="#2DD4BF">{elemGuidance.ritual}</Insight>
-            </>
-          )}
-          <SignificadoEmbed
-            significado={resolveSig(
-              'astrologia',
-              data.astrology.ascendant ?? data.astrology.dominantPlanet
-            )}
-            color="#7C5CFF"
-          />
-        </InfoPanel>
+        <AstrologyInfoPanel astrology={data.astrology} elemGuidance={elemGuidance} />
       )}
 
       {activeLayer === 3 && (
-        <InfoPanel
-          color="#2DD4BF"
-          title="Numerologia Tântrica — Os 11 Corpos"
-          subtitle="Teia de Conexão · Camada 3"
-        >
-          <Row label="Caminho Tântrico" value={data.tantra.tantricPath} />
-          <Row label="Alma" value={data.tantra.soul} />
-          <Row label="Karma" value={data.tantra.karma} />
-          <Row label="Dom Divino" value={data.tantra.divineGift} />
-          <Divider />
-          {inactiveBodies.length === 0 ? (
-            <Insight color="#2DD4BF">
-              Todos os 11 Corpos estão ativos — seu campo espiritual está em fluxo.
-            </Insight>
-          ) : (
-            <>
-              <p style={{ fontSize: '0.75rem', color: '#A7AECF', marginBottom: '0.5rem' }}>
-                Corpos em tensão (indicados em magenta na Mandala):
-              </p>
-              {inactiveBodies.map((n) => {
-                const w = TANTRIC_BODY_WISDOM[n.i + 1];
-                return (
-                  <div key={n.i} style={{ marginBottom: '0.5rem' }}>
-                    <p style={{ fontSize: '0.8125rem', color: '#FB5781', fontWeight: 600 }}>
-                      Corpo {n.i + 1} — {w?.desc}
-                    </p>
-                    <p style={{ fontSize: '0.75rem', color: '#A7AECF' }}>
-                      Desafio: {w?.challenge} · Ativar: {w?.activate}
-                    </p>
-                  </div>
-                );
-              })}
-            </>
-          )}
-          <SignificadoEmbed
-            significado={resolveSig('tantrica', data.tantra.destiny ?? data.tantra.soul ?? 1)}
-            color="#2DD4BF"
-          />
-        </InfoPanel>
+        <TantricBodyInfoPanel tantra={data.tantra} inactiveBodies={inactiveBodies} />
       )}
 
       {activeLayer === 2 && (
-        <InfoPanel
-          color={PILAR_COLORS[2]}
-          title="Numerologia Cabalística — O Contrato de Alma"
-          subtitle="Geometria Interna · Camada 2"
-        >
-          <Row
-            label="Caminho de Vida"
-            value={data.kabala.lifePath}
-            master={data.kabala.lifePathMaster}
-          />
-          <Row
-            label="Expressão"
-            value={data.kabala.expression}
-            master={data.kabala.expressionMaster}
-          />
-          <Row label="Motivação" value={data.kabala.motivation} />
-          <Row label="Ano Pessoal" value={data.kabala.personalYear} />
-          {lpMeaning && (
-            <>
-              <Divider />
-              <Insight color={PILAR_COLORS[2]}>{lpMeaning}</Insight>
-            </>
-          )}
-          <SignificadoEmbed
-            significado={resolveSig('cabala', data.kabala.lifePath)}
-            color={PILAR_COLORS[2]}
-          />
-        </InfoPanel>
+        <KabalaInfoPanel kabala={data.kabala} lpMeaning={lpMeaning} />
       )}
 
-      {activeLayer === 1 && (
-        <InfoPanel
-          color="#F0B429"
-          title={`Odu: ${data.odus.oduName}`}
-          subtitle="Núcleo — Ori · Camada 1"
-        >
-          <Row
-            label="Odu de Nascimento"
-            value={`${data.odus.oduName}${data.odus.oduNumber ? ` (${data.odus.oduNumber})` : ''}`}
-          />
-          <Row label="Orixá(s) regente(s)" value={data.odus.orixaRegency.join(', ')} />
-          <Row label="Força Elemental" value={data.odus.elementalForce} />
-          {data.odus.provisional && (
-            <p style={{ fontSize: '0.6875rem', color: '#5C6691', marginTop: '0.25rem' }}>
-              * Cálculo provisório — confirmar com linhagem de referência.
-            </p>
-          )}
-          {data.odus.preceitos && data.odus.preceitos.length > 0 && (
-            <>
-              <Divider />
-              <p
-                style={{
-                  fontSize: '0.75rem',
-                  color: '#F0B429',
-                  fontWeight: 600,
-                  marginBottom: '0.35rem',
-                }}
-              >
-                Preceitos do Odu
-              </p>
-              {data.odus.preceitos.map((p, i) => (
-                <p key={i} style={{ fontSize: '0.8125rem', color: '#A7AECF' }}>
-                  ✦ {p}
-                </p>
-              ))}
-            </>
-          )}
-          {data.odus.quizilas && data.odus.quizilas.length > 0 && (
-            <>
-              <Divider />
-              <p
-                style={{
-                  fontSize: '0.75rem',
-                  color: '#FB5781',
-                  fontWeight: 600,
-                  marginBottom: '0.35rem',
-                }}
-              >
-                Quizilás (evitar)
-              </p>
-              {data.odus.quizilas.map((q, i) => (
-                <p key={i} style={{ fontSize: '0.8125rem', color: '#A7AECF' }}>
-                  ⚠ {q}
-                </p>
-              ))}
-            </>
-          )}
-          {(!data.odus.preceitos || data.odus.preceitos.length === 0) && (
-            <Insight color="#F0B429">
-              As quizilás e preceitos específicos do seu Odu serão exibidos quando o Grimório for
-              sincronizado. Consulte o Oráculo para orientação ancestral personalizada.
-            </Insight>
-          )}
-          <SignificadoEmbed significado={resolveSig('odu', data.odus.oduName)} color="#F0B429" />
-        </InfoPanel>
-      )}
+      {activeLayer === 1 && <OduInfoPanel odu={data.odus} />}
 
-      {activeLayer === 5 && (
-        <InfoPanel
-          color="#A0763A"
-          title="I-Ching — O Hexagrama do Ori"
-          subtitle="Sabedoria Ancestral Chinesa · Camada 5"
-        >
-          {data.iching.available ? (
-            <>
-              <Row
-                label="Hexagrama"
-                value={
-                  data.iching.hexagramChineseName
-                    ? `${data.iching.hexagramNumber} — ${data.iching.hexagramName} (${data.iching.hexagramChineseName})`
-                    : `${data.iching.hexagramNumber} — ${data.iching.hexagramName}`
-                }
-              />
-              <Row
-                label="Trigrama superior"
-                value={
-                  data.iching.upperTrigram != null && data.iching.upperTrigramName
-                    ? `${data.iching.upperTrigram} — ${data.iching.upperTrigramName}`
-                    : data.iching.upperTrigramName
-                }
-              />
-              <Row
-                label="Trigrama inferior"
-                value={
-                  data.iching.lowerTrigram != null && data.iching.lowerTrigramName
-                    ? `${data.iching.lowerTrigram} — ${data.iching.lowerTrigramName}`
-                    : data.iching.lowerTrigramName
-                }
-              />
-              {Array.isArray(data.iching.lines) && data.iching.lines.length === 6 && (
-                <>
-                  <Divider />
-                  <p
-                    style={{
-                      fontSize: '0.75rem',
-                      color: '#A0763A',
-                      fontWeight: 600,
-                      marginBottom: '0.35rem',
-                    }}
-                  >
-                    As 6 Linhas (de baixo para cima)
-                  </p>
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column-reverse',
-                      gap: '4px',
-                      alignItems: 'center',
-                    }}
-                  >
-                    {data.iching.lines.map((yang, i) => (
-                      <span
-                        key={i}
-                        style={{
-                          fontFamily: 'monospace',
-                          fontSize: '0.875rem',
-                          color: yang ? '#F4F5FF' : '#A0763A',
-                          letterSpacing: '0.15em',
-                        }}
-                      >
-                        {yang ? '———' : '— — —'}
-                      </span>
-                    ))}
-                  </div>
-                </>
-              )}
-              <Divider />
-              <Row label="Data de nascimento" value={data.iching.birthDate} />
-              {data.iching.birthTime && <Row label="Hora" value={data.iching.birthTime} />}
-              {data.iching.provisional && (
-                <p style={{ fontSize: '0.6875rem', color: '#5C6691', marginTop: '0.25rem' }}>
-                  * Cálculo provisório — hora de nascimento não informada.
-                </p>
-              )}
-              <SignificadoEmbed
-                significado={resolveSig('iching', data.iching.hexagramNumber)}
-                color="#A0763A"
-              />
-            </>
-          ) : (
-            <Insight color="#A0763A">
-              O hexagrama do seu Ori será calculado quando você completar o perfil. Forneça data e
-              hora de nascimento para que o algoritmo determinístico (akasha.v0.0.4.trigramas-mod8)
-              revele o trigrama superior e inferior do seu nascimento.
-            </Insight>
-          )}
-        </InfoPanel>
-      )}
+      {activeLayer === 5 && <IchingInfoPanel iching={data.iching} />}
 
       {activeLayer === null && (
         <p style={{ fontSize: '0.75rem', color: '#5C6691', textAlign: 'center' }}>
@@ -1130,103 +699,5 @@ export default function MandalaChart({ data }: Props) {
         </p>
       )}
     </div>
-  );
-}
-
-function InfoPanel({
-  color,
-  title,
-  subtitle,
-  children,
-}: {
-  color: string;
-  title: string;
-  subtitle: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div
-      style={{
-        background: 'rgba(11,14,28,0.88)',
-        border: `1px solid ${color}33`,
-        backdropFilter: 'blur(12px)',
-        borderRadius: '14px',
-        padding: '1.25rem',
-        width: '100%',
-        maxWidth: 400,
-      }}
-    >
-      <p
-        style={{
-          fontSize: '0.6875rem',
-          color,
-          letterSpacing: '0.08em',
-          marginBottom: '0.25rem',
-          textTransform: 'uppercase',
-        }}
-      >
-        {subtitle}
-      </p>
-      <p
-        style={{
-          fontFamily: 'var(--font-cinzel), serif',
-          fontSize: '0.9375rem',
-          color: '#F4F5FF',
-          fontWeight: 600,
-          marginBottom: '0.75rem',
-        }}
-      >
-        {title}
-      </p>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>{children}</div>
-    </div>
-  );
-}
-
-function Row({
-  label,
-  value,
-  master,
-}: {
-  label: string;
-  value: string | number | null | undefined;
-  master?: boolean;
-}) {
-  if (value === null || value === undefined) return null;
-  return (
-    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'baseline' }}>
-      <span style={{ fontSize: '0.75rem', color: '#5C6691', minWidth: '120px', flexShrink: 0 }}>
-        {label}
-      </span>
-      <span style={{ fontSize: '0.8125rem', color: '#F4F5FF' }}>
-        {String(value)}
-        {master && (
-          <span style={{ color: '#9D86FF', fontSize: '0.6875rem', marginLeft: 4 }}>★ Mestre</span>
-        )}
-      </span>
-    </div>
-  );
-}
-
-function Insight({ color, children }: { color: string; children: React.ReactNode }) {
-  return (
-    <p
-      style={{
-        fontSize: '0.8125rem',
-        color: '#A7AECF',
-        lineHeight: 1.6,
-        borderLeft: `2px solid ${color}55`,
-        paddingLeft: '0.75rem',
-        marginTop: '0.25rem',
-      }}
-    >
-      {children}
-    </p>
-  );
-}
-
-function Divider() {
-  return (
-    <hr style={{ border: 'none', borderTop: '1px solid rgba(38,48,79,0.6)', margin: '0.5rem 0' }} />
   );
 }

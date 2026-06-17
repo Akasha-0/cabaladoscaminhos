@@ -106,3 +106,17 @@
 **Impacto**: typecheck quebra a cada ciclo se w-main nao restaurar; w-main desperdiça tempo restaurando arquivos de dominio w2.
 **Nota**: arquivo `apps/akasha-portal/src/components/akasha/test_write.txt` tambem aparece como untracked (w2 domain, possivelmente do mesmo processo).
 **Acao requerida**: HUMAN configura AMAB para NAO modificar working copy de nenhum dominio; ou cria worktree para w2 para isolar dominios.
+
+---
+
+### 2026-06-13 — DEC-011: Consolidação do Painel Akasha e Redirecionamentos (Ciclo 12)
+
+**Domínio**: w2 (UI & Routing)
+**Problema**: A interface antiga continha rotas soltas e páginas redundantes (ex: `/meu-dia` sem link, `/dashboard` fora do locale prefix). Havia exposição excessiva de nomes de mapas/sistemas brutos (Astrologia, Cabala) e floats ilegíveis no Ascendente.
+**Decisão**:
+- Mover `/dashboard` para a rota localizada `src/app/[locale]/(akasha)/dashboard/page.tsx` para herdar o layout geral de autenticação.
+- Compactar a narrativa diária e rituais de `/meu-dia` como uma aba ("Meu Dia") no novo Dashboard tabulado, reduzindo a complexidade de rotas.
+- Adicionar redirecionamentos nos antigos arquivos `/dashboard` e `/meu-dia` para manter a compatibilidade e a navegação fluida de usuários com PWAs instalados.
+- Unificar a terminologia da mandala para "Camadas do Akasha (C1..C5)" e formatar a exibição de graus astrológicos (ex: `Asc 343.7259` -> `Peixes 13°`).
+**Regra aplicada**: AGENTS.md + Visão de Produto — fazer mais com menos, mobile-first, profundidade prática sem jargão/floats técnicos soltos.
+**Próximo**: Testar a responsividade da sidebar e gaveta (drawer) em resoluções mobile reais e no emulador do Capacitor.

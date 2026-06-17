@@ -49,7 +49,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   const cookieStore = await cookies();
   const session = cookieStore.get('akasha_session')?.value;
-  if (session) redirect(`/${locale}/mandala`);
+  if (session) redirect(`/${locale}/dashboard`);
 
   return (
     <div

@@ -12,7 +12,6 @@ export interface InputHandlerOptions {
     onSubmit?: (text: string) => void | Promise<void>;
     onCancel?: () => void;
 }
-export declare const DEFAULT_COMMANDS: Command[];
 export declare class InputHandler {
     private screen;
     private input;

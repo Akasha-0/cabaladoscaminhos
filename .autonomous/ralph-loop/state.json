@@ -1,0 +1,1455 @@
+{
+  "iteration": 0,
+  "phase": "QA",
+  "phase_iteration": 0,
+  "version": "0.0.0",
+  "pending_features": [
+    {
+      "id": "D-040-progress",
+      "phase": 5,
+      "category": "design",
+      "priority": "P1",
+      "description": "D-040 Prisma migration setup COMPLETO (migrations/20260611000000_init_akasha_v3 criada via sessão #37 do loop). Awaiting HUMAN APPROVAL para rodar `prisma migrate dev --name 040` per STEP 5.5. Migration consolida 5 migrations antigas (v2 → v3 single migration). Após approval, marcar D-040 como passes:true e rodar migration.",
+      "questions": [
+        "Migration setup está em migrations/20260611000000_init_akasha_v3/",
+        "Schema consolidado em schema.prisma",
+        "Aguardando humano revisar e rodar `pnpm exec prisma migrate dev --name 040`"
+      ],
+      "passes": false,
+      "status": "migration_setup_complete_awaiting_human_apply"
+    },
+    {
+      "id": "F-223",
+      "phase": 9,
+      "category": "feature",
+      "priority": "P0",
+      "description": "A 'Caixa' Akasha — Página ÚNICA unificada com 9 dimensões de vida. Substitui navegação por 5 abas por uma página onde o usuário vê SUA VIDA, não os mapas. Cada dimensão (Saúde, Dinheiro, Trabalho, Amor, Sexualidade, Propósito, Família, Espiritualidade, Superação) mostra: contribuição de cada Pilar + síntese prática + ação recomendada. Usa significados-curados.ts + traducao-areas.ts existentes. Estrutura: accordion vertical mobile-first.",
+      "passes": false,
+      "depends": [
+        "R-023"
+      ],
+      "timebox": "120 min"
+    },
+    {
+      "id": "F-224",
+      "phase": 9,
+      "category": "feature",
+      "priority": "P0",
+      "description": "'Meu Dia' — Homepage mobile redesenhada (inspiração Co-Star + AstroSage). ONE SCREEN: saudação + clima energético (1 frase) + prática do dia específica (não genérica — baseada no Corpo Tântrico em tensão HOJE) + janela de clareza (horário favorável) + alerta. Sem abas. Scroll revela mais. Botão 'Ver minha Caixa' → F-223.",
+      "passes": false,
+      "depends": [
+        "R-023",
+        "F-223"
+      ],
+      "timebox": "90 min"
+    },
+    {
+      "id": "F-225",
+      "phase": 9,
+      "category": "feature",
+      "priority": "P0",
+      "description": "Sexualidade Deep Dive — Expandir Sexualidade de 1 frase/pilar para análise COMPLETA. (1) Tantra + 11 Corpos × Sexualidade, (2) Cabala + Números Mestres + caminhos sexuais, (3) Odu + padrão sexual por Odu, (4) Astrologia + Venus/Marte/Lilith/Casa 8 separados, (5) I Ching + hexagramas relevantes. Base: traducao-areas.ts.",
+      "passes": false,
+      "depends": [
+        "R-023"
+      ],
+      "timebox": "120 min"
+    },
+    {
+      "id": "F-226",
+      "phase": 9,
+      "category": "feature",
+      "priority": "P1",
+      "description": "Narrative Generator — Motor de Síntese conectando dados brutos → narrativa de vida. Usuário vê 'Você é um Canal. Seu 11 significa...' em vez de 'Caminho de Vida: 11'. Usa RAG (pgvector + Ollama) + significados-curados.ts. Gera parágrafos narrativos por dimensão de vida.",
+      "passes": false,
+      "depends": [
+        "R-023",
+        "F-223"
+      ],
+      "timebox": "150 min"
+    },
+    {
+      "id": "F-227",
+      "phase": 9,
+      "category": "feature",
+      "priority": "P1",
+      "description": "Akasha Authority — Framework de decisão: 'Antes de decisão importante: isso vem da paz (Corpo 3) ou ansiedade (Corpo 4)? Se ansiedade, espere. Se paz, aja.' UI: aparece antes de ações importantes + integração no 'Meu Dia'.",
+      "passes": false,
+      "depends": [
+        "R-023",
+        "F-224"
+      ],
+      "timebox": "60 min"
+    },
+    {
+      "id": "F-228",
+      "phase": 9,
+      "category": "research",
+      "priority": "P1",
+      "description": "Mobile App Strategy — Comparar React Native (Expo) vs Capacitor vs Flutter vs PWA-first para app nativo iOS/Android. Análise: custo reescrever vs adaptar, notifications push, App Store review, 30% fee vs benefícios, público brasileiro (baixa renda — web ou Store?).",
+      "passes": false,
+      "timebox": "30 min"
+    }
+  ],
+  "done_features": [],
+  "findings": [
+    {
+      "feature": "D-040",
+      "type": "codegraph_architecture",
+      "summary": "## Exploration: architecture D-040 Schema Prisma com 5 Pilares. Design proposal (NÃO aplicado): unificar 5 Pilares em BirthChart (Pilar 5 sai de User.ichingMap), criar MandalaSnapshot cache, MandatoDi...",
+      "compressed_id": "ab555c8b4bf6",
+      "ratio_estimate": "1.00"
+    }
+  ],
+  "last_action": null,
+  "last_updated": "2026-06-17T01:35:28.412041+00:00",
+  "errors": [
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": false
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": false
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": false
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": false
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
+      "tests": false,
+      "lint": true
+    }
+  ],
+  "tokens_saved_headroom": 0,
+  "codegraph_queries": 1,
+  "start_time": "2026-06-15T21:26:38.262200+00:00"
+}

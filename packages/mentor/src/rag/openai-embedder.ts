@@ -19,9 +19,6 @@ export class OpenAIEmbedder {
 
   constructor(apiKey?: string) {
     this.apiKey = apiKey || process.env.OPENAI_API_KEY || '';
-    if (!this.apiKey) {
-      console.warn('OpenAIEmbedder: OPENAI_API_KEY not set');
-    }
   }
 
   /**

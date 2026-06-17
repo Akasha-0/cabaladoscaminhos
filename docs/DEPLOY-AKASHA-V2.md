@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Deploy Runbook — `refactor-akasha-v2` → produção
 
 > Procedimento passo-a-passo para aplicar o PR #4 em produção. Executar em janela de manutenção, com rollback preparado.

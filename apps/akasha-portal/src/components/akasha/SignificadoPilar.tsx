@@ -7,7 +7,7 @@
  *
  * Layout:
  *   ┌─────────────────────────────────────────┐
- *   │ ✦ Pilar · Título                        │
+ *   │ ✦ Dimensão · Título                        │
  *   │                                         │
  *   │  O que é:                               │
  *   │  Essência (significado central)         │
@@ -22,9 +22,9 @@
  *   │  Ação concreta em 2ª pessoa             │
  *   │                                         │
  *   │  ↔ Conexão:                             │
- *   │  Como ressoa com os outros Pilares      │
+ *   │  Como ressoa com as outras Dimensões      │
  *   │                                         │
- *   │ via Fonte                               │
+ *   │ via Akasha                               │
  *   └─────────────────────────────────────────┘
  */
 
@@ -49,7 +49,7 @@ export interface SignificadoPilarProps {
   };
 }
 
-const PILAR_ICONE: Record<SignificadoCurado['pilar'], string> = {
+const DIMENSAO_ICONE: Record<SignificadoCurado['pilar'], string> = {
   cabala: '✡',
   astrologia: '☉',
   tantrica: '◈',
@@ -57,12 +57,12 @@ const PILAR_ICONE: Record<SignificadoCurado['pilar'], string> = {
   iching: '☯',
 };
 
-const PILAR_NOME: Record<SignificadoCurado['pilar'], string> = {
-  cabala: 'Cabala',
-  astrologia: 'Astrologia',
-  tantrica: 'Tântrica',
-  odu: 'Odu',
-  iching: 'I Ching',
+const DIMENSAO_NOME: Record<SignificadoCurado['pilar'], string> = {
+  cabala: 'Ancestralidade',
+  astrologia: 'Movimento Celeste',
+  tantrica: 'Corpo & Energia',
+  odu: 'Ancestralidade',
+  iching: 'Mutação do Caminho',
 };
 
 export function SignificadoPilar({
@@ -97,7 +97,7 @@ export function SignificadoPilar({
       {/* Cabeçalho: Pilar + Título */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
         <span aria-hidden style={{ fontSize: '1.2rem', color: cor, lineHeight: 1 }}>
-          {PILAR_ICONE[pilar]}
+          {DIMENSAO_ICONE[pilar]}
         </span>
         <strong
           style={{
@@ -107,7 +107,7 @@ export function SignificadoPilar({
             letterSpacing: '0.04em',
           }}
         >
-          {PILAR_NOME[pilar]} · {titulo}
+          {DIMENSAO_NOME[pilar]} · {titulo}
         </strong>
         {destaque && (
           <span

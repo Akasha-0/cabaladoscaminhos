@@ -11,7 +11,7 @@
  *   - Fonte
  *   - Sinônimos (cross-refs entre sistemas)
  *
- * Pilar 4 (Odu) marca `requer_terreiro` em TODOS os termos (R-022).
+ * Pilar 4 (Odu) marca `requer_terreiro` em todos os termos (R-022).
  */
 
 import { glossarioPorSistema, coberturaGlossario, type SistemaGlossario } from '@/lib/grimoire/glossario';

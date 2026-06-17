@@ -1,0 +1,287 @@
+[2026-06-16T13:01:21Z] [SUP] Cleaning stale state...
+[2026-06-16T13:01:21Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-16T13:01:21Z] [SUP]   Cleanup complete.
+[2026-06-16T13:01:21Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T13:01:21Z] [SUP] ✅ DAEMON RUNNING PID=3950108
+[2026-06-16T13:01:29Z] [SUP] === SUPERVISOR MONITOR STARTING (PID=3950274) ===
+[2026-06-16T13:01:29Z] [SUP] === SUPERVISOR MONITOR STARTING (PID=3950274) ===
+[2026-06-16T13:01:29Z] [SUP] Daemon: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/akasha-loop-daemon.py
+[2026-06-16T13:01:29Z] [SUP] Daemon: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/akasha-loop-daemon.py
+[2026-06-16T13:01:29Z] [SUP] PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T13:01:29Z] [SUP] PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T13:01:29Z] [SUP] Log: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-supervisor.log
+[2026-06-16T13:01:29Z] [SUP] Log: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-supervisor.log
+[2026-06-16T13:01:29Z] [SUP] Stdout: /tmp/daemon-stdout.log
+[2026-06-16T13:01:29Z] [SUP] Stdout: /tmp/daemon-stdout.log
+[2026-06-16T13:01:29Z] [SUP] Stderr: /tmp/daemon-stderr.log
+[2026-06-16T13:01:29Z] [SUP] Stderr: /tmp/daemon-stderr.log
+[2026-06-16T13:01:29Z] [SUP] Cleaning stale state...
+[2026-06-16T13:01:29Z] [SUP] Cleaning stale state...
+[2026-06-16T13:01:29Z] [SUP]   Removed stale socket: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.sock
+[2026-06-16T13:01:29Z] [SUP]   Removed stale socket: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.sock
+[2026-06-16T13:01:30Z] [SUP]   Removed stale PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T13:01:30Z] [SUP]   Removed stale PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T13:01:30Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-16T13:01:30Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-16T13:01:30Z] [SUP]   Cleanup complete.
+[2026-06-16T13:01:30Z] [SUP]   Cleanup complete.
+[2026-06-16T13:01:30Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T13:01:30Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T13:01:30Z] [SUP]   Killing stale daemon from state.json PID=3950108
+[2026-06-16T13:01:30Z] [SUP]   Killing stale daemon from state.json PID=3950108
+[2026-06-16T13:01:31Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T13:01:31Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T13:01:31Z] [SUP] ✅ DAEMON RUNNING PID=3950368
+[2026-06-16T13:01:31Z] [SUP] ✅ DAEMON RUNNING PID=3950368
+[2026-06-16T13:01:34Z] [SUP] Daemon confirmed alive PID=3950368 (attempt 1)
+[2026-06-16T13:01:34Z] [SUP] Daemon confirmed alive PID=3950368 (attempt 1)
+[2026-06-16T13:07:45Z] [SUP] === SUPERVISOR MONITOR STARTING (PID=3971461) ===
+[2026-06-16T13:07:45Z] [SUP] Daemon: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/akasha-loop-daemon.py
+[2026-06-16T13:07:45Z] [SUP] PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T13:07:45Z] [SUP] Log: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-supervisor.log
+[2026-06-16T13:07:45Z] [SUP] Stdout: /tmp/daemon-stdout.log
+[2026-06-16T13:07:45Z] [SUP] Stderr: /tmp/daemon-stderr.log
+[2026-06-16T13:07:45Z] [SUP] Cleaning stale state...
+[2026-06-16T13:07:45Z] [SUP]   Removed stale PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T13:07:45Z] [SUP]   Cleanup complete.
+[2026-06-16T13:07:45Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T13:07:45Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T13:07:45Z] [SUP] ✅ DAEMON RUNNING PID=3971493
+.autonomous/multi-agent/run-loop-supervised.sh, linha 147: 3950368 Morto                      setsid python3 "$DAEMON" < /dev/null >> "$STDOUT_LOG" 2>> "$STDERR_LOG"
+[2026-06-16T13:07:48Z] [SUP] Daemon confirmed alive PID=3971493 (attempt 1)
+[2026-06-16T13:12:27Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T13:12:27Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T13:12:27Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T13:12:27Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T13:12:27Z] [SUP] ✅ DAEMON RUNNING PID=3978540
+[2026-06-16T13:12:27Z] [SUP] ✅ DAEMON RUNNING PID=3978540
+[2026-06-16T13:12:30Z] [SUP] Daemon confirmed alive PID=3978540 (attempt 131)
+[2026-06-16T13:12:30Z] [SUP] Daemon confirmed alive PID=3978540 (attempt 131)
+.autonomous/multi-agent/run-loop-supervised.sh, linha 147: 3978540 Morto                      setsid python3 "$DAEMON" < /dev/null >> "$STDOUT_LOG" 2>> "$STDERR_LOG"
+[2026-06-16T13:20:36Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T13:20:36Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T13:20:36Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T13:20:36Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T13:20:36Z] [SUP] ✅ DAEMON RUNNING PID=4001069
+[2026-06-16T13:20:36Z] [SUP] ✅ DAEMON RUNNING PID=4001069
+[2026-06-16T13:20:36Z] [SUP] === SUPERVISOR MONITOR STARTING (PID=4001078) ===
+[2026-06-16T13:20:36Z] [SUP] Daemon: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/akasha-loop-daemon.py
+[2026-06-16T13:20:36Z] [SUP] PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T13:20:36Z] [SUP] Log: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-supervisor.log
+[2026-06-16T13:20:36Z] [SUP] Stdout: /tmp/daemon-stdout.log
+[2026-06-16T13:20:36Z] [SUP] Stderr: /tmp/daemon-stderr.log
+[2026-06-16T13:20:36Z] [SUP] Cleaning stale state...
+[2026-06-16T13:20:36Z] [SUP]   Removed stale socket: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.sock
+[2026-06-16T13:20:36Z] [SUP]   Removed stale PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T13:20:36Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-16T13:20:36Z] [SUP]   Cleanup complete.
+[2026-06-16T13:20:36Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T13:20:36Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T13:20:36Z] [SUP] ✅ DAEMON RUNNING PID=4001142
+[2026-06-16T13:20:39Z] [SUP] Daemon confirmed alive PID=4001142 (attempt 228)
+[2026-06-16T13:20:39Z] [SUP] Daemon confirmed alive PID=4001142 (attempt 228)
+[2026-06-16T13:20:39Z] [SUP] Daemon confirmed alive PID=4001142 (attempt 1)
+.autonomous/multi-agent/run-loop-supervised.sh, linha 147: 4001069 Morto                      setsid python3 "$DAEMON" < /dev/null >> "$STDOUT_LOG" 2>> "$STDERR_LOG"
+[2026-06-16T13:23:45Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T13:23:45Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T13:23:45Z] [SUP]   Killing stale daemon from state.json PID=4019425
+[2026-06-16T13:23:45Z] [SUP]   Killing stale daemon from state.json PID=4019425
+[2026-06-16T13:23:46Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T13:23:46Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T13:23:46Z] [SUP] ✅ DAEMON RUNNING PID=4020884
+[2026-06-16T13:23:46Z] [SUP] ✅ DAEMON RUNNING PID=4020884
+[2026-06-16T13:23:49Z] [SUP] Daemon confirmed alive PID=4020884 (attempt 265)
+[2026-06-16T13:23:49Z] [SUP] Daemon confirmed alive PID=4020884 (attempt 265)
+.autonomous/multi-agent/run-loop-supervised.sh, linha 147: 4020884 Morto                      setsid python3 "$DAEMON" < /dev/null >> "$STDOUT_LOG" 2>> "$STDERR_LOG"
+[2026-06-16T13:30:47Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T13:30:47Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T13:30:47Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T13:30:47Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T13:30:47Z] [SUP] ✅ DAEMON RUNNING PID=4061069
+[2026-06-16T13:30:47Z] [SUP] ✅ DAEMON RUNNING PID=4061069
+[2026-06-16T13:30:49Z] [SUP] === SUPERVISOR MONITOR STARTING (PID=4061107) ===
+[2026-06-16T13:30:49Z] [SUP] Daemon: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/akasha-loop-daemon.py
+[2026-06-16T13:30:49Z] [SUP] PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T13:30:49Z] [SUP] Log: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-supervisor.log
+[2026-06-16T13:30:49Z] [SUP] Stdout: /tmp/daemon-stdout.log
+[2026-06-16T13:30:49Z] [SUP] Stderr: /tmp/daemon-stderr.log
+[2026-06-16T13:30:49Z] [SUP] Cleaning stale state...
+[2026-06-16T13:30:49Z] [SUP]   Removed stale PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T13:30:49Z] [SUP]   Cleanup complete.
+[2026-06-16T13:30:49Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T13:30:49Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T13:30:49Z] [SUP] ✅ DAEMON RUNNING PID=4061163
+[2026-06-16T13:30:50Z] [SUP] Daemon confirmed alive PID=4061163 (attempt 348)
+[2026-06-16T13:30:50Z] [SUP] Daemon confirmed alive PID=4061163 (attempt 348)
+[2026-06-16T13:30:52Z] [SUP] Daemon confirmed alive PID=4061163 (attempt 1)
+.autonomous/multi-agent/run-loop-supervised.sh, linha 147: 4061069 Morto                      setsid python3 "$DAEMON" < /dev/null >> "$STDOUT_LOG" 2>> "$STDERR_LOG"
+[2026-06-16T13:38:11Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T13:38:11Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T13:38:11Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T13:38:11Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T13:38:11Z] [SUP] ✅ DAEMON RUNNING PID=4081426
+[2026-06-16T13:38:11Z] [SUP] ✅ DAEMON RUNNING PID=4081426
+[2026-06-16T13:38:14Z] [SUP] Daemon confirmed alive PID=4081426 (attempt 436)
+[2026-06-16T13:38:14Z] [SUP] Daemon confirmed alive PID=4081426 (attempt 436)
+[2026-06-16T13:46:44Z] [SUP] === SUPERVISOR MONITOR STARTING (PID=4112725) ===
+[2026-06-16T13:46:44Z] [SUP] Daemon: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/akasha-loop-daemon.py
+[2026-06-16T13:46:44Z] [SUP] PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T13:46:44Z] [SUP] Log: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-supervisor.log
+[2026-06-16T13:46:44Z] [SUP] Stdout: /tmp/daemon-stdout.log
+[2026-06-16T13:46:44Z] [SUP] Stderr: /tmp/daemon-stderr.log
+[2026-06-16T13:46:44Z] [SUP] Cleaning stale state...
+[2026-06-16T13:46:44Z] [SUP]   Removed stale PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T13:46:44Z] [SUP]   Cleanup complete.
+[2026-06-16T13:46:44Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T13:46:44Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T13:46:44Z] [SUP] ✅ DAEMON RUNNING PID=4112780
+[2026-06-16T13:46:47Z] [SUP] Daemon confirmed alive PID=4112780 (attempt 1)
+[2026-06-16T14:28:24Z] [SUP] Stopping daemon PID=4112780
+[2026-06-16T14:28:24Z] [SUP] Supervisor stop complete
+[2026-06-16T14:28:26Z] [SUP] Cleaning stale state...
+[2026-06-16T14:28:26Z] [SUP]   Killing stale agent ta-1781619864-2 (PID=78808)
+[2026-06-16T14:28:26Z] [SUP]   Killing stale agent ta-1781619864-0 (PID=78809)
+[2026-06-16T14:28:26Z] [SUP]   Killing stale agent ta-1781619864-1 (PID=78810)
+[2026-06-16T14:28:26Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-16T14:28:26Z] [SUP]   Cleanup complete.
+[2026-06-16T14:28:26Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T14:28:26Z] [SUP] ✅ DAEMON RUNNING PID=109140
+[2026-06-16T14:43:09Z] [SUP] Stopping daemon PID=109140
+[2026-06-16T14:43:09Z] [SUP] Supervisor stop complete
+[2026-06-16T14:43:11Z] [SUP] Cleaning stale state...
+[2026-06-16T14:43:11Z] [SUP]   Killing stale agent ta-1781620443-1 (PID=133087)
+[2026-06-16T14:43:11Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-16T14:43:11Z] [SUP]   Cleanup complete.
+[2026-06-16T14:43:11Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T14:43:11Z] [SUP] ✅ DAEMON RUNNING PID=191454
+[2026-06-16T14:59:30Z] [SUP] Stopping daemon PID=191454
+[2026-06-16T14:59:31Z] [SUP] Supervisor stop complete
+[2026-06-16T14:59:33Z] [SUP] Cleaning stale state...
+[2026-06-16T14:59:33Z] [SUP]   Killing stale agent ta-1781621800-2 (PID=300585)
+[2026-06-16T14:59:33Z] [SUP]   Killing stale agent ta-1781621800-0 (PID=300587)
+[2026-06-16T14:59:33Z] [SUP]   Killing stale agent ta-1781621800-3 (PID=300586)
+[2026-06-16T14:59:33Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-16T14:59:33Z] [SUP]   Cleanup complete.
+[2026-06-16T14:59:33Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T14:59:33Z] [SUP] ✅ DAEMON RUNNING PID=328547
+[2026-06-16T15:11:30Z] [SUP] Stopping daemon PID=328547
+[2026-06-16T15:11:31Z] [SUP] Supervisor stop complete
+[2026-06-16T15:11:33Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T15:11:33Z] [SUP] Cleaning stale state...
+[2026-06-16T15:11:33Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-16T15:11:33Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T15:11:33Z] [SUP]   Cleanup complete.
+[2026-06-16T15:11:33Z] [SUP] ✅ DAEMON RUNNING PID=417719
+[2026-06-16T15:11:33Z] [SUP] ⚠️  DAEMON ALREADY RUNNING PID=417719 (not restarting)
+[2026-06-16T15:11:36Z] [SUP] Daemon confirmed alive PID=417719 (attempt 1009)
+[2026-06-16T15:13:55Z] [SUP] Stopping daemon PID=417719
+[2026-06-16T15:13:55Z] [SUP] Supervisor stop complete
+[2026-06-16T15:13:57Z] [SUP] Cleaning stale state...
+[2026-06-16T15:13:57Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-16T15:13:57Z] [SUP]   Cleanup complete.
+[2026-06-16T15:13:57Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T15:13:57Z] [SUP] ✅ DAEMON RUNNING PID=432213
+[2026-06-16T15:29:40Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T15:29:40Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T15:29:40Z] [SUP] ✅ DAEMON RUNNING PID=494079
+[2026-06-16T15:29:43Z] [SUP] Daemon confirmed alive PID=494079 (attempt 1225)
+[2026-06-16T15:30:03Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T15:30:03Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T15:30:03Z] [SUP] ✅ DAEMON RUNNING PID=495596
+[2026-06-16T15:30:06Z] [SUP] Daemon confirmed alive PID=495596 (attempt 1229)
+[2026-06-16T15:50:11Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T15:50:11Z] [SUP]   Killing stale daemon from state.json PID=0
+[2026-06-16T15:51:45Z] [SUP] === SUPERVISOR MONITOR STARTING (PID=612062) ===
+[2026-06-16T15:51:45Z] [SUP] Daemon: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/akasha-loop-daemon.py
+[2026-06-16T15:51:45Z] [SUP] PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T15:51:45Z] [SUP] Log: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-supervisor.log
+[2026-06-16T15:51:45Z] [SUP] Stdout: /tmp/daemon-stdout.log
+[2026-06-16T15:51:45Z] [SUP] Stderr: /tmp/daemon-stderr.log
+[2026-06-16T15:51:45Z] [SUP] Cleaning stale state...
+[2026-06-16T15:51:45Z] [SUP]   Removed stale PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T15:51:45Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-16T15:51:45Z] [SUP]   Cleanup complete.
+[2026-06-16T15:51:45Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T15:51:45Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T15:51:45Z] [SUP] ✅ DAEMON RUNNING PID=612102
+[2026-06-16T15:51:48Z] [SUP] Daemon confirmed alive PID=612102 (attempt 1)
+[2026-06-16T16:09:07Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T16:09:07Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T16:09:07Z] [SUP] ✅ DAEMON RUNNING PID=733778
+[2026-06-16T16:09:10Z] [SUP] Daemon confirmed alive PID=733778 (attempt 205)
+[2026-06-16T16:11:21Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T16:11:21Z] [SUP]   Killing stale daemon from state.json PID=0
+[2026-06-16T16:12:01Z] [SUP] Supervisor stop complete
+[2026-06-16T16:12:02Z] [SUP] === SUPERVISOR MONITOR STARTING (PID=750493) ===
+[2026-06-16T16:12:02Z] [SUP] Daemon: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/akasha-loop-daemon.py
+[2026-06-16T16:12:02Z] [SUP] PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T16:12:02Z] [SUP] Log: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-supervisor.log
+[2026-06-16T16:12:02Z] [SUP] Stdout: /tmp/daemon-stdout.log
+[2026-06-16T16:12:03Z] [SUP] Cleaning stale state...
+[2026-06-16T16:12:03Z] [SUP]   Removed stale socket: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.sock
+[2026-06-16T16:12:03Z] [SUP]   Removed stale PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T16:12:03Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-16T16:12:03Z] [SUP]   Cleanup complete.
+[2026-06-16T16:12:03Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T16:12:04Z] [SUP] ✅ DAEMON RUNNING PID=750704
+[2026-06-16T16:14:06Z] [SUP] === SUPERVISOR MONITOR STARTING (PID=759062) ===
+[2026-06-16T16:14:06Z] [SUP] Daemon: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/akasha-loop-daemon.py
+[2026-06-16T16:14:06Z] [SUP] PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T16:14:06Z] [SUP] Log: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-supervisor.log
+[2026-06-16T16:14:06Z] [SUP] Stdout: /tmp/daemon-stdout.log
+[2026-06-16T16:14:06Z] [SUP] Stderr: /tmp/daemon-stderr.log
+[2026-06-16T16:14:06Z] [SUP] Cleaning stale state...
+[2026-06-16T16:14:06Z] [SUP]   Removed stale socket: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.sock
+[2026-06-16T16:14:06Z] [SUP]   Removed stale PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T16:14:06Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-16T16:14:06Z] [SUP]   Cleanup complete.
+[2026-06-16T16:14:06Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T16:14:06Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T16:14:06Z] [SUP] ✅ DAEMON RUNNING PID=759115
+[2026-06-16T16:14:09Z] [SUP] Daemon confirmed alive PID=759115 (attempt 1)
+[2026-06-16T16:14:35Z] [SUP] === SUPERVISOR MONITOR STARTING (PID=766249) ===
+[2026-06-16T16:14:35Z] [SUP] Daemon: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/akasha-loop-daemon.py
+[2026-06-16T16:14:35Z] [SUP] PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T16:14:35Z] [SUP] Log: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-supervisor.log
+[2026-06-16T16:14:35Z] [SUP] Stdout: /tmp/daemon-stdout.log
+[2026-06-16T16:14:35Z] [SUP] Stderr: /tmp/daemon-stderr.log
+[2026-06-16T16:14:35Z] [SUP] Cleaning stale state...
+[2026-06-16T16:14:35Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-16T16:14:35Z] [SUP]   Cleanup complete.
+[2026-06-16T16:14:35Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T16:14:35Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T16:14:35Z] [SUP] ✅ DAEMON RUNNING PID=766323
+[2026-06-16T16:14:38Z] [SUP] Daemon confirmed alive PID=766323 (attempt 1)
+[2026-06-16T16:21:07Z] [SUP] === SUPERVISOR MONITOR STARTING (PID=828150) ===
+[2026-06-16T16:21:07Z] [SUP] Daemon: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/akasha-loop-daemon.py
+[2026-06-16T16:21:07Z] [SUP] PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T16:21:07Z] [SUP] Log: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-supervisor.log
+[2026-06-16T16:21:07Z] [SUP] Stdout: /tmp/daemon-stdout.log
+[2026-06-16T16:21:07Z] [SUP] Stderr: /tmp/daemon-stderr.log
+[2026-06-16T16:21:07Z] [SUP] Cleaning stale state...
+[2026-06-16T16:21:07Z] [SUP]   Removed stale socket: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.sock
+[2026-06-16T16:21:07Z] [SUP]   Removed stale PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-16T16:21:07Z] [SUP]   Killing stale agent ta-1781626849-0 (PID=825174)
+[2026-06-16T16:21:07Z] [SUP]   Killing stale agent ta-1781626849-1 (PID=825176)
+[2026-06-16T16:21:07Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-16T16:21:07Z] [SUP]   Cleanup complete.
+[2026-06-16T16:21:07Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T16:21:08Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T16:21:08Z] [SUP] ✅ DAEMON RUNNING PID=828315
+[2026-06-16T16:21:11Z] [SUP] Daemon confirmed alive PID=828315 (attempt 1)
+[2026-06-17T00:18:34Z] [SUP] === SUPERVISOR MONITOR STARTING (PID=2917142) ===
+[2026-06-17T00:18:34Z] [SUP] Daemon: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/akasha-loop-daemon.py
+[2026-06-17T00:18:34Z] [SUP] PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-17T00:18:34Z] [SUP] Log: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-supervisor.log
+[2026-06-17T00:18:34Z] [SUP] Stdout: /tmp/daemon-stdout.log
+[2026-06-17T00:18:34Z] [SUP] Stderr: /tmp/daemon-stderr.log
+[2026-06-17T00:18:35Z] [SUP] Cleaning stale state...
+[2026-06-17T00:18:35Z] [SUP]   Removed stale PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-17T00:18:35Z] [SUP]   Killing stale agent ta-1781655442-1 (PID=2902322)
+[2026-06-17T00:18:35Z] [SUP]   Killing stale agent ta-1781655442-0 (PID=2902321)
+[2026-06-17T00:18:35Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-17T00:18:35Z] [SUP]   Cleanup complete.
+[2026-06-17T00:18:35Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-17T00:18:35Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-17T00:18:35Z] [SUP] ✅ DAEMON RUNNING PID=2917703
+[2026-06-17T00:18:38Z] [SUP] Daemon confirmed alive PID=2917703 (attempt 1)

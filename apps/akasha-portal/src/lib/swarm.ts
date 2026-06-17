@@ -1,12 +1,17 @@
+/**
+ * Swarm / Knowledge Base module.
+ * @deprecated Movido para application/swarm/knowledge-base.ts
+ */
+
 export interface KnowledgeEntry {
   id: string;
   title: string;
   content: string;
   tags: string[];
   source: string;
-  domain: string;  // Área temática (tarot, iching, odas, etc.)
-  key: string;     // Identificador único dentro do domínio
-  data: Record<string, unknown>;  // Dados específicos do domínio
+  domain: string;
+  key: string;
+  data: Record<string, unknown>;
 }
 
 export interface KnowledgeBase {
@@ -16,17 +21,12 @@ export interface KnowledgeBase {
 }
 
 /**
- * Retorna a base de conhecimento do Grimório para RAG
- * 
- * STUB: Implementação real na Onda 3 (Oráculo Vivo)
- * Por enquanto retorna stub funcional para tests passarem.
+ * @deprecated Use application/swarm/knowledge-base.ts
  */
-export function getKnowledgeBase(library?: string): KnowledgeBase {
+export function getKnowledgeBase(_library?: string): KnowledgeBase {
   return {
     entries: [],
-    async load() {
-      // Stub: não faz nada
-    },
+    async load() {},
     getRelevant(domains: string[]) {
       return {
         entries: this.entries.filter(e => domains.includes(e.domain)),

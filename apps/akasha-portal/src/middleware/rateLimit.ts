@@ -1,38 +1,19 @@
-import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { checkRateLimit } from '@/lib/rate-limit';
-
-function rateLimitMiddleware(
-  identifier: string,
-  windowMs: number = 60000,
-  maxRequests: number = 10
-) {
-  const result = checkRateLimit(identifier, {
-    windowMs,
-    maxRequests
-  });
-
-  if (!result.allowed) {
-    return NextResponse.json(
-      {
-        error: 'Rate limit excedido',
-        retryAfter: Math.ceil(result.resetIn / 1000)
-      },
-      {
-        status: 429,
-        headers: {
-          'Retry-After': Math.ceil(result.resetIn / 1000).toString(),
-          'X-RateLimit-Remaining': result.remaining.toString()
-        }
-      }
-    );
-  }
-
-  return null;
-}
+import {
+  API_RATE_LIMIT_CONFIG,
+  API_RATE_LIMIT_KEY_PREFIX,
+  checkMemoryRateLimit,
+  type RateLimitResult,
+} from '@/lib/infrastructure/rate-limit';
 
 export function extractIdentifier(request: NextRequest): string {
-  const ip = request.headers.get('x-forwarded-for') || 'unknown';
+  const forwardedFor = request.headers.get('x-forwarded-for');
+  const ip = forwardedFor?.split(',')[0]?.trim() || 'unknown';
   const userId = request.headers.get('x-user-id') || ip;
   return userId;
+}
+
+export function checkApiRateLimit(request: NextRequest): RateLimitResult {
+  const identifier = extractIdentifier(request);
+  return checkMemoryRateLimit(`${API_RATE_LIMIT_KEY_PREFIX}:${identifier}`, API_RATE_LIMIT_CONFIG);
 }

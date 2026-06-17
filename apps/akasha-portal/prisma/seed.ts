@@ -25,7 +25,6 @@ async function main() {
       role: 'ADMIN',
     },
   });
-  console.log('✅ Usuário admin criado/atualizado.');
 }
 
 main()

@@ -1,17 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { generateRequestId } from '@/lib/shared/logging';
-import { checkRateLimit } from '@/lib/rate-limit';
-import { extractIdentifier } from '@/middleware/rateLimit';
+import { checkApiRateLimit } from '@/middleware/rateLimit';
 import { defaultLocale, locales, type Locale } from '@/i18n/config';
-
-// ============================================
-// Rate Limiting Configuration
-// ============================================
-
-const RATE_LIMIT_CONFIG = {
-  windowMs: 60 * 1000, // 1 minute
-  maxRequests: 100, // 100 requests per minute
-};
 
 // ============================================
 // CORS Configuration
@@ -36,7 +26,6 @@ function getCorsOrigin(requestOrigin: string | null): string | null {
     return null;
   }
   // Production without ALLOWED_ORIGINS: reject all cross-origin requests
-  console.warn('[middleware] ALLOWED_ORIGINS não definido — CORS desabilitado em produção');
   return null;
 }
 function buildCorsHeaders(origin: string | null): Record<string, string> {
@@ -171,8 +160,7 @@ export async function middleware(request: NextRequest) {
       return response;
     }
 
-    const identifier = extractIdentifier(request);
-    const rateLimitResult = checkRateLimit(identifier, RATE_LIMIT_CONFIG);
+    const rateLimitResult = checkApiRateLimit(request);
 
     if (!rateLimitResult.allowed) {
       const tooMany = NextResponse.json(

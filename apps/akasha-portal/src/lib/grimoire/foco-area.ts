@@ -59,7 +59,6 @@ const PRATICAS_FOCO: Record<Area, string> = {
   proposito: 'Escreva 1 frase: "O que eu faria HOJE se soubesse que ninguém vai julgar?" Aja como se a resposta fosse SIM.',
   criatividade: 'Crie 1 coisa em 5 min — sem editar, sem mostrar, sem julgar. A criação pede movimento, não perfeição.',
   espiritualidade: 'Sente 10 min em silêncio TOTAL. Sem música, sem mantra, sem intenção. Apenas esteja.',
-  sexualidade: 'Escreva em 1 frase: "O que meu corpo pede HOJE que minha mente ainda não admite?" Acolha sem agir.',
 };
 
 const SOMBRAS_FOCO: Record<Area, string> = {
@@ -71,13 +70,11 @@ const SOMBRAS_FOCO: Record<Area, string> = {
   proposito: 'Tens adiado a pergunta "para quê?" até que ela virou ruído. Responda HOJE.',
   criatividade: 'Tens julgado a criação antes de criar. Crie primeiro, julhe depois (ou nunca).',
   espiritualidade: 'Tens praticado para performar, não para silenciar. Volte ao simples.',
-  sexualidade: 'Tens separado corpo de espírito. Eles são UM. Honre o corpo como templo da vida.',
 };
 
 const EMOJI: Record<Area, string> = {
   paz: '☮', saude: '♥', relacoes: '◉', dinheiro: '◆',
   trabalho: '⚒', proposito: '✶', criatividade: '✎', espiritualidade: '✦',
-  sexualidade: '⟁',
 };
 
 /** Gera o Foco do Dia dado Pilar principal + Área escolhida. */

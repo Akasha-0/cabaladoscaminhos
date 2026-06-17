@@ -54,7 +54,7 @@ async function main() {
     newestUpdatedAt,
   };
 
-  console.log(JSON.stringify(status, null, 2));
+  process.stdout.write(JSON.stringify(status, null, 2));
   await prisma.$disconnect();
 }
 

@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import { prisma } from '@/lib/infrastructure/prisma';
 import { AKASHA_TOKEN_COOKIE, verifyAkashaToken } from './akasha-jwt';
 
@@ -15,13 +14,8 @@ async function loadAkashaUser(id: string) {
     return null;
   }
 }
-
 async function resolveAkashaUser(request: NextRequest) {
-  const cookieStore = await cookies();
-  const token =
-    cookieStore.get(AKASHA_TOKEN_COOKIE)?.value ??
-    request.cookies.get(AKASHA_TOKEN_COOKIE)?.value ??
-    null;
+  const token = request.cookies.get(AKASHA_TOKEN_COOKIE)?.value ?? null;
 
   if (!token) return null;
 

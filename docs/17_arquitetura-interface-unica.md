@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Documento 17 — Arquitetura da Interface Única (Mesa Real) & Plano de Enxugamento
 
 ## Cabala dos Caminhos — LEGADO B2B

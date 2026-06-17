@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Documento 06 — Motor de IA (Arquitetura de 3 Camadas)
 ## Sistema Akasha
 

@@ -160,12 +160,6 @@ async function checkDependencies(): Promise<DiagnosticResult> {
 }
 
 export async function diagnostico(): Promise<void> {
-  console.log();
-  console.log(pc.bold(pc.cyan('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')));
-  console.log(pc.bold(pc.cyan('  🔍  Diagnóstico Completo do Sistema')));
-  console.log(pc.bold(pc.cyan('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')));
-  console.log();
-
   const results: DiagnosticResult[] = [];
 
   const checks = [
@@ -182,7 +176,15 @@ export async function diagnostico(): Promise<void> {
     results.push(result);
   }
 
-  // Mostrar resultados
+  const divider = pc.bold(pc.cyan('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'));
+  const lines: string[] = [
+    '',
+    divider,
+    pc.bold(pc.cyan('  🔍  Diagnóstico Completo do Sistema')),
+    divider,
+    '',
+  ];
+
   for (const result of results) {
     const icon = result.status === 'ok' ? pc.green('✓') :
                  result.status === 'warning' ? pc.yellow('!') :
@@ -191,27 +193,29 @@ export async function diagnostico(): Promise<void> {
     const statusColor = result.status === 'ok' ? pc.green :
                          result.status === 'warning' ? pc.yellow : pc.red;
 
-    console.log(`  ${icon} ${pc.bold(result.name)}`);
-    console.log(`     ${statusColor(result.message)}`);
+    lines.push(`  ${icon} ${pc.bold(result.name)}`);
+    lines.push(`     ${statusColor(result.message)}`);
     if (result.suggestion) {
-      console.log(`     ${pc.dim('→')} ${pc.cyan(result.suggestion)}`);
+      lines.push(`     ${pc.dim('→')} ${pc.cyan(result.suggestion)}`);
     }
-    console.log();
+    lines.push('');
   }
 
   // Resumo
   const errors = results.filter(r => r.status === 'error').length;
   const warnings = results.filter(r => r.status === 'warning').length;
 
-  console.log(pc.bold(pc.cyan('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')));
-  console.log();
+  lines.push(divider);
+  lines.push('');
 
   if (errors === 0 && warnings === 0) {
-    console.log(pc.green('  ✅ Sistema OK!'));
+    lines.push(pc.green('  ✅ Sistema OK!'));
   } else if (errors === 0) {
-    console.log(pc.yellow(`  ⚠ ${warnings} warning(s) encontrado(s)`));
+    lines.push(pc.yellow(`  ⚠ ${warnings} warning(s) encontrado(s)`));
   } else {
-    console.log(pc.red(`  ❌ ${errors} erro(s) e ${warnings} warning(s)`));
+    lines.push(pc.red(`  ❌ ${errors} erro(s) e ${warnings} warning(s)`));
   }
-  console.log();
+  lines.push('');
+
+  process.stdout.write(lines.join('\n') + '\n');
 }

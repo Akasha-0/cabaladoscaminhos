@@ -1,6 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { prisma } from '@/lib/infrastructure/prisma';
+import { findAspects, type Aspecto } from '@akasha/core-astrology';
+
+const MAIN_ASPECT_TYPES = ['conjunção', 'oposição', 'trino', 'quadratura', 'sextil'];
+
+// Interpretações简短的 para aspectos principais
+const ASPECT_INTERPRETATIONS: Record<string, string> = {
+  conjunção: 'União de energias — potencial para ação concentrada ou conflito dependendo dos planetas envolvidos.',
+  oposição: 'Tensão entre duas forças — oportunidade para integração e equilíbrio através do autoconhecimento.',
+  trino: 'Fluxo harmonioso de energias — facilidade, talento natural e oportunidades favoráveis.',
+  quadratura: 'Tensão construtiva — fonte de dinamismo, desafios que exigem superação para crescimento.',
+  sextil: 'Oportunidades discretas — ângulos favoráveis para ação e pequenos avanços.',
+};
+
+function interpretAspect(aspect: Aspecto): string {
+  const base = ASPECT_INTERPRETATIONS[aspect.tipo] ?? 'Aspecto astrológico.';
+  const planets = `${aspect.planeta1}–${aspect.planeta2}`;
+  const nature = aspect.nature === 'harmony' ? 'Harmonioso' : aspect.nature === 'tension' ? 'Tensivo' : 'Neutro';
+  return `${nature}: ${base} Planetas: ${planets}.`;
+}
 
 // Os 11 nomes dos Corpos Tântricos (Kundalini Yoga / Yogi Bhajan)
 const TANTRIC_BODY_NAMES = [
@@ -44,6 +63,23 @@ export async function GET(request: NextRequest) {
   const userBirthDate = user?.birthDate ?? null;
   const userBirthTime = user?.birthTime ?? null;
 
+  // Preparar dados astrológicos para cálculo de aspectos
+  const rawPlanets: Record<string, any> = astrologyMap?.planeta ?? {};
+  const planetPositions = Object.values(rawPlanets);
+
+  // Calcular aspectos astrológicos
+  const allAspects = findAspects(planetPositions);
+  const mainAspects = allAspects
+    .filter((a) => MAIN_ASPECT_TYPES.includes(a.tipo))
+    .slice(0, 5)
+    .map((a) => ({
+      planet1: a.planeta1,
+      planet2: a.planeta2,
+      aspect: a.tipo,
+      orb: Math.round(a.orb * 100) / 100,
+      interpretation: interpretAspect(a),
+    }));
+
   // Retornar estrutura MandalaData
   const data = {
     incomplete: chart.incomplete,
@@ -66,7 +102,17 @@ export async function GET(request: NextRequest) {
       expression: kabalisticMap?.expression ?? null,
       expressionMaster: kabalisticMap?.expressionMaster ?? false,
       motivation: kabalisticMap?.motivation ?? null,
+      impression: kabalisticMap?.impression ?? null,
+      mission: kabalisticMap?.mission ?? null,
       personalYear: kabalisticMap?.personalCycles?.personalYear ?? null,
+      personalMonth: kabalisticMap?.personalCycles?.personalMonth ?? null,
+      personalDay: kabalisticMap?.personalCycles?.personalDay ?? null,
+      sefira: kabalisticMap?.sefirotPath ?? null,
+      hebrewLetter: kabalisticMap?.hebrewLetter ?? null,
+      tarotCard: kabalisticMap?.rulingArcana?.lifePath ?? null,
+      challenges: kabalisticMap?.challenges ?? null,
+      pinnacles: kabalisticMap?.pinnacles ?? null,
+      lifeCycles: kabalisticMap?.lifeCycles ?? null,
     },
 
     // Tântrica (Layer 3) — 11 Corpos
@@ -95,13 +141,20 @@ export async function GET(request: NextRequest) {
       ascendant: astrologyMap?.ascendant ?? null,
       midheaven: astrologyMap?.midheaven ?? null,
       dominantPlanet: astrologyMap?.dominantPlanet ?? null,
-      // Planetas principais para marcar no anel
-      planets: (astrologyMap?.planets ?? []).slice(0, 10).map((p: any) => ({
-        name: p.planet ?? p.name,
-        sign: p.sign,
-        degree: p.degree ?? 0,
-        house: p.house ?? 1,
+      // Todos os planetas disponíveis (sem limite artificial)
+      planets: Object.values(rawPlanets).map((p: any) => ({
+        name: p.planeta ?? p.name,
+        sign: p.signo ?? p.sign,
+        degree: p.grauNoSigno ?? p.degree ?? 0,
+        // Mandala Fase 3 (spec mandala-fase3-zodiac-tantra): passar longitude absoluta
+        // (0-360°) para que o MandalaChart posicione os planetas na eclíptica correta.
+        // Antes desta mudança, o MandalaChart usava `degree` (0-30° = grau dentro do
+        // signo), clusterizando todos os planetas no arco 0-30°.
+        absoluteLongitude: typeof p.longitude === 'number' ? p.longitude : null,
+        retrograde: Boolean(p.retrograde ?? p.retrogrado ?? false),
+        house: p.casa ?? p.house ?? 1,
       })),
+      aspects: mainAspects,
       elementalBalance: astrologyMap?.elementalChart ?? { fire: 0, earth: 0, air: 0, water: 0 },
     },
 

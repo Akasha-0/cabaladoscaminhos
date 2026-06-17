@@ -22,6 +22,7 @@
     "grimoire:sync": "tsx scripts/sync-grimoire.ts",
     "grimoire:status": "tsx scripts/grimoire-status.ts",
     "grimoire:audit": "tsx scripts/grimoire-audit.ts",
+    "i18n:check": "node ../../scripts/check-i18n-parity.mjs",
     "fallow": "fallow --skip dupes,health",
     "fallow:all": "fallow",
     "typecheck": "tsc --noEmit"
@@ -49,6 +50,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.40.0",
+    "gray-matter": "^4.0.3",
     "lucide-react": "^1.16.0",
     "next": "16.2.6",
     "openai": "^6.39.0",

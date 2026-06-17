@@ -2,15 +2,15 @@
  * @akasha/core-iching — Testes para Práticas Integrativas
  */
 
+import { PRACTICES } from '../practices';
 import {
-  PRACTICES,
   getPractice,
   getPracticesByElement,
   getPracticesByTradition,
   getPracticesByCategory,
   getPracticesByLifeArea,
   getAllPractices,
-} from '../practices';
+} from '../practices-lookup';
 
 describe('Práticas Integrativas', () => {
   describe('getAllPractices', () => {

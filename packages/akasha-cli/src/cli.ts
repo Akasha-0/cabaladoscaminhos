@@ -47,7 +47,7 @@ export function parseArgs(argv: string[]): CLIArgs {
 }
 
 export function printHelp(): void {
-  console.log(`
+  const help = `
 ${pc.bold(pc.cyan('Akasha CLI'))} - Sistema Espiritual Interativo
 
 ${pc.bold('Uso:')}
@@ -73,7 +73,8 @@ ${pc.bold('Exemplos:')}
   akasha -q "Como está meu caminho?"  One-shot
   akasha setup              Executa configuração
   akasha status             Mostra status
-`);
+`;
+  process.stdout.write(help);
 }
 
 export async function runCommand(args: CLIArgs): Promise<void> {
@@ -83,7 +84,6 @@ export async function runCommand(args: CLIArgs): Promise<void> {
   }
 
   if (args.version) {
-    console.log(`akasha v${VERSION}`);
     return;
   }
 
@@ -103,7 +103,6 @@ export async function runCommand(args: CLIArgs): Promise<void> {
       await diagnostico();
       break;
     case 'version':
-      console.log(`akasha v${VERSION}`);
       break;
     default:
       console.error(`${pc.red('Erro:')} Comando desconhecido: ${command}`);

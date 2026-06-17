@@ -1,0 +1,10 @@
+{
+  "phase": "RELEASE",
+  "iteration": 16,
+  "current_features": [
+    "large_file"
+  ],
+  "retry_count": 0,
+  "running": true,
+  "daemon_pid": 2917703
+}

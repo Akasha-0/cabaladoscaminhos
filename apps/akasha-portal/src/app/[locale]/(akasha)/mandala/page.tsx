@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import MandalaChart from '@/components/akasha/MandalaChart';
+import { formatDegreeToZodiac } from '@/lib/shared/zodiac';
 import { MandalaNarrativeLoader } from '@/components/akasha/MandalaNarrativeLoader';
 
 export const metadata = {
@@ -133,7 +134,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
             marginBottom: '0.4rem',
           }}
         >
-          POR QUE ESSES 5 EIXOS?
+          POR QUE ESSAS 5 CAMADAS?
         </p>
         <h2
           style={{
@@ -144,7 +145,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
             marginBottom: '1.1rem',
           }}
         >
-          Sua Mandala lê você em cinco linguagens
+          Sua Mandala lê você em cinco camadas
         </h2>
         <p
           style={{
@@ -155,10 +156,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
             marginBottom: '1.25rem',
           }}
         >
-          Akasha não funde as cinco tradições — mantém cada uma com sua voz e mostra os{' '}
-          <em>isomorfismos</em>: como o mesmo ciclo aparece em Céu, Verbo, Anatomia, Terra e
-          Mutação. <strong>“Cicatriz vira Joia”</strong>: cada Pilar ilumina uma sombra e aponta um
-          dom.
+          O Akasha unifica a sabedoria das tradições ancestrais sob uma única linguagem toroidal. Cada Camada ilumina uma dimensão do seu ser — revelando de onde você veio e como deve direcionar sua energia vital.
         </p>
 
         <div
@@ -171,63 +169,63 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
           <PilarCard
             icone="◯"
             cor="#7C5CFF"
-            titulo="Pilar 2 · Astrologia"
-            eixo="O Céu — Quando Agir"
+            titulo="Camada 4 · Cenário Cósmico"
+            eixo="O Céu — Alinhamento Estelar"
             valor={
               data.astrology?.ascendant
-                ? `Asc ${data.astrology.ascendant}`
+                ? `Ascendente: ${formatDegreeToZodiac(data.astrology.ascendant)}`
                 : 'Sem hora de nascimento'
             }
-            explicacao="O mapa de bordo: Sol, Lua, Ascendente e trânsitos. Mostra o cenário do céu no momento em que você respira pela primeira vez — e como ele se move hoje."
-            fonte="Brennan 2017 (Whole Sign)"
+            explicacao="O cenário do céu no momento da sua primeira respiração. Mapeia seu Ascendente, planetas dominantes e trânsitos como uma bússola de navegação no tempo."
+            fonte="Astrologia Tropical (Casas Inteiras)"
           />
           <PilarCard
             icone="△"
             cor="#7C5CFF"
-            titulo="Pilar 1 · Numerologia Cabalística"
-            eixo="O Verbo — Identidade"
-            valor={data.kabala?.lifePath ? `Life Path ${data.kabala.lifePath}` : 'Em cálculo'}
-            explicacao="O contrato de alma: Mispar Hechrachi do seu nome e data revela propósito oculto. O número fala a frequência com que sua essência vibra."
-            fonte="Sefer Yetzirah"
+            titulo="Camada 2 · Contrato de Alma"
+            eixo="O Verbo — Geometria Sagrada"
+            valor={data.kabala?.lifePath ? `Caminho de Vida ${data.kabala.lifePath}` : 'Em cálculo'}
+            explicacao="A vibração numérica do seu nome e caminho. Revela a frequência geométrica que sua alma escolheu para navegar esta encarnação."
+            fonte="Estudos de Cabala (Sefer Yetzirah)"
           />
           <PilarCard
             icone="⬡"
             cor="#2DD4BF"
-            titulo="Pilar 3 · Numerologia Tântrica"
-            eixo="A Anatomia — Energia"
+            titulo="Camada 3 · Vitalidade"
+            eixo="A Anatomia — Canais de Energia"
             valor={
               data.tantra?.soul != null
-                ? `Corpo ${data.tantra.soul} · ${data.tantra?.karma ?? '—'}`
+                ? `Corpo Principal: ${data.tantra.soul} · Karma: ${data.tantra?.karma ?? '—'}`
                 : 'Mapeando 11 corpos'
             }
-            explicacao="Seus 11 corpos espirituais (Kundalini/Yogi Bhajan): alma, mente negativa/positiva/neutra, físico, prânico, sutil, radiante, mente divina. Onde a energia trava, há trabalho."
-            fonte="Yogi Bhajan · Taittiriya Upanishad"
+            explicacao="O mapeamento dos seus 11 corpos sutis e fluxo de energia. Identifica onde a energia flui livremente e onde estão os bloqueios que requerem práticas de ativação."
+            fonte="Yogi Bhajan / 11 Corpos Sutis"
           />
           <PilarCard
             icone="✦"
             cor="#F0B429"
-            titulo="Pilar 4 · Odus de Nascimento"
-            eixo="A Terra — Ori"
+            titulo="Camada 1 · Alinhamento de Ori"
+            eixo="A Terra — Força Elemental"
             valor={
               data.odus?.oduName
                 ? `${data.odus.oduName}${data.odus?.elementalForce ? ' · ' + data.odus.elementalForce : ''}`
                 : 'Aguardando terreiro'
             }
-            explicacao="A bússola ancestral: o Odu que rege seu Ori no Candomblé/Ifá, os Orixás regentes e os rituais de correção. Requer consentimento e vínculo com axé/terreiro."
-            fonte="Ifá 16 Odu · tradição oral iorubá"
+            explicacao="Sua âncora de manifestação. Representa a força elemental que rege seu alinhamento com a Terra e as quizilas (desvios) que você deve evitar para proteger sua energia."
+            fonte="Sabedoria Tradicional dos Odus"
           />
           <PilarCard
             icone="☯"
             cor="#E0E7FF"
-            titulo="Pilar 5 · I Ching"
-            eixo="A Mutação — Ciclos"
+            titulo="Camada 5 · Chave de Origem"
+            eixo="A Mutação — Ciclo Evolutivo"
             valor={
               data.iching?.hexagramNumber
-                ? `Hex ${data.iching.hexagramNumber}${data.iching?.hexagramName ? ' · ' + data.iching.hexagramName : ''}`
+                ? `Hexagrama ${data.iching.hexagramNumber}${data.iching?.hexagramName ? ' · ' + data.iching.hexagramName : ''}`
                 : 'Calculando mutação'
             }
-            explicacao="O oráculo de jornada: o hexagrama natal (sua semente) e o do dia (a mutação) revelam o movimento do caminho. Cada linha traz Shadow→Gift→Siddhi."
-            fonte="Wilhelm/Baynes 1950"
+            explicacao="O hexagrama de origem que rege sua semente evolutiva. Mostra a transição da Sombra para o Dom e a realização máxima (Siddhi) ao longo da sua vida."
+            fonte="64 Hexagramas do I Ching"
           />
         </div>
 

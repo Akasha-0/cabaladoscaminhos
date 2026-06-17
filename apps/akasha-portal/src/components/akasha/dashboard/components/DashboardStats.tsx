@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { Sparkles, Flame, Trophy, BarChart3 } from 'lucide-react';
 import { useDashboardData } from '../hooks/useDashboardData';
 import { StatsCard } from './StatsCard';
 
@@ -9,7 +10,7 @@ interface DashboardStatsProps {
 }
 
 export function DashboardStats({ userId }: DashboardStatsProps) {
-  const { data, loading, error } = useDashboardData({ userId });
+  const { data, loading } = useDashboardData({ userId });
 
   // Skeleton loading
   if (loading) {
@@ -54,26 +55,26 @@ export function DashboardStats({ userId }: DashboardStatsProps) {
         title="Total"
         value={stats.totalRituals}
         subtitle="rituais completados"
-        icon="✨"
+        icon={<Sparkles size={24} className="text-amber-400" />}
       />
       <StatsCard
         title="Sequência"
         value={stats.currentStreak}
         subtitle="dias consecutivos"
-        icon="🔥"
+        icon={<Flame size={24} className="text-orange-400" />}
       />
       <StatsCard
         title="Recorde"
         value={stats.longestStreak}
         subtitle="maior sequência"
-        icon="🏆"
+        icon={<Trophy size={24} className="text-yellow-400" />}
       />
       <StatsCard
         title="Taxa"
         value={stats.completionRate}
         suffix="%"
         subtitle="rituais cumpridos"
-        icon="📊"
+        icon={<BarChart3 size={24} className="text-cyan-400" />}
       />
     </motion.div>
   );

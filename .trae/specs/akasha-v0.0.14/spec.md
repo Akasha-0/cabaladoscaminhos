@@ -2,7 +2,7 @@
 
 **Data:** 2026-06-09
 **Versão:** akasha-v0.0.14
-**Status:** Draft
+**Status:** ✅ Completa (verified 2026-06-15: code implemented, see tasks.md for completion status)
 
 ---
 

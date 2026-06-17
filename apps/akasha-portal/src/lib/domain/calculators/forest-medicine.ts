@@ -11,7 +11,7 @@
 // - Alerta Espiritual (Ori Quente / Bloqueios): baseado na assinatura elemental
 //   e tabus (quizilas) do Odu natal.
 
-import type { ForestMedicineMap } from '@/types';
+import type { ForestMedicineMap } from '@akasha/types';
 
 function reduceNumber(n: number): number {
   let r = n;

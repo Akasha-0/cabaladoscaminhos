@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Documento 12 — Agente Oracular Interativo (Q&A / Voz do Akasha)
 ## Sistema Akasha
 

@@ -1,24 +1,17 @@
 /**
- * Orixá Planet Correlations
- * 
- * STUB: Implementação real virá do Grimório
+ * Orixá-planet correlation.
+ * STUB: Mapeamento Orixá ↔ planeta astrológico.
  */
 
-export interface OrixaPlanet {
-  orixa: string;
-  planet: string;
-  house: number;
-  aspects: string[];
-}
-
-/**
- * Retorna a correlação planetária de um orixá
- */
-export function getOrixaPlanet(orixa: string): OrixaPlanet {
-  return {
-    orixa,
-    planet: 'Sol',
-    house: 1,
-    aspects: [],
+export function getOrixaPlanet(orixaName: string): string {
+  // Stub: mapeamento básico
+  const map: Record<string, string> = {
+    Oxum: 'Venus',
+    Oxumar: 'Saturn',
+    Iansã: 'Mars',
+    Xangô: 'Mars',
+    Iemanjá: 'Moon',
+    Oxalá: 'Jupiter',
   };
+  return map[orixaName] ?? 'Sun';
 }

@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Análise Fallow - akasha-v0.0.8
 
 **Data:** 2026-06-08  

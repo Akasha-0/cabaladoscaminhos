@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cabala - Login</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      min-height: 100vh; 
+      background: #0f172a; 
+      color: white; 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .container {
+      width: 100%;
+      max-width: 400px;
+      background: #1e293b;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    h1 {
+      color: #fbbf24;
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .subtitle {
+      color: #94a3b8;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    input {
+      width: 100%;
+      padding: 1rem;
+      background: #0f172a;
+      border: 1px solid #475569;
+      color: white;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+    input:focus {
+      outline: none;
+      border-color: #7c3aed;
+    }
+    button {
+      width: 100%;
+      padding: 1rem;
+      background: #7c3aed;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #6d28d9;
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+    .hint {
+      color: #64748b;
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.875rem;
+    }
+    /* Dashboard styles */
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .btn-logout {
+      background: #dc2626;
+    }
+    .btn-logout:hover {
+      background: #b91c1c;
+    }
+    .card {
+      background: #0f172a;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .success {
+      color: #4ade80;
+      font-size: 1.5rem;
+      text-align: center;
+      margin: 1rem 0;
+    }
+    .user-info {
+      color: #94a3b8;
+    }
+    .user-info span {
+      color: white;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <!-- LOGIN VIEW -->
+  <div id="login-view" class="container">
+    <h1>✦ CABALA ✦</h1>
+    <p class="subtitle">Acesse sua conta</p>
+    
+    <input type="email" id="email" value="demo@cabala.com" placeholder="Email">
+    <input type="password" id="password" value="Demo123456" placeholder="Senha">
+    
+    <button onclick="handleLogin()">ENTRAR</button>
+    
+    <p id="login-error" style="color: #f87171; text-align: center; margin-top: 1rem; font-size: 0.875rem;"></p>
+    
+    <p class="hint">Email: demo@cabala.com<br>Senha: Demo123456</p>
+  </div>
+
+  <!-- DASHBOARD VIEW -->
+  <div id="dashboard-view" class="container hidden">
+    <div class="dashboard-header">
+      <h1>✦ Dashboard ✦</h1>
+      <button class="btn-logout" onclick="handleLogout()">Sair</button>
+    </div>
+    
+    <div class="card">
+      <h2 style="color: #fbbf24; margin-bottom: 1rem;">Bem-vindo!</h2>
+      <p class="user-info">Email: <span id="user-email"></span></p>
+    </div>
+    
+    <div class="card">
+      <p class="success">✅ Login Funcionou!</p>
+      <p class="user-info" style="text-align: center; margin-top: 0.5rem;">Você está no dashboard.</p>
+    </div>
+  </div>
+
+  <script>
+    const loginView = document.getElementById('login-view');
+    const dashboardView = document.getElementById('dashboard-view');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const errorEl = document.getElementById('login-error');
+    const userEmailEl = document.getElementById('user-email');
+
+    // Check if already logged in
+    const savedEmail = localStorage.getItem('cabala_email');
+    if (savedEmail) {
+      showDashboard(savedEmail);
+    }
+
+    function handleLogin() {
+      errorEl.textContent = '';
+      
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      // Simple validation
+      if (!email || !password) {
+        errorEl.textContent = 'Preencha email e senha';
+        return;
+      }
+
+      // For demo: accept hardcoded credentials
+      if (email === 'demo@cabala.com' && password === 'Demo123456') {
+        localStorage.setItem('cabala_email', email);
+        showDashboard(email);
+        return;
+      }
+
+      // For other credentials, try API
+      fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success || data.user) {
+          localStorage.setItem('cabala_email', email);
+          showDashboard(email);
+        } else {
+          errorEl.textContent = data.error || 'Email ou senha incorretos';
+        }
+      })
+      .catch(() => {
+        errorEl.textContent = 'Erro de conexão';
+      });
+    }
+
+    function showDashboard(email) {
+      loginView.classList.add('hidden');
+      dashboardView.classList.remove('hidden');
+      userEmailEl.textContent = email;
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('cabala_email');
+      loginView.classList.remove('hidden');
+      dashboardView.classList.add('hidden');
+      emailInput.value = 'demo@cabala.com';
+      passwordInput.value = 'Demo123456';
+      errorEl.textContent = '';
+    }
+  </script>
+</body>
+</html>

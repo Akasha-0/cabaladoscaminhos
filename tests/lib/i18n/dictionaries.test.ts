@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import ptBR from '../../../src/i18n/pt-BR.json';
-import en from '../../../src/i18n/en.json';
+import ptBR from '../../../apps/akasha-portal/src/i18n/pt-BR.json';
+import en from '../../../apps/akasha-portal/src/i18n/en.json';
 
 type Dict = Record<string, unknown>;
 

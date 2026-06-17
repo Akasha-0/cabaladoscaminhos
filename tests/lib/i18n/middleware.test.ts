@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { defaultLocale, locales, type Locale } from '../../../src/i18n/config';
+import { defaultLocale, locales, type Locale } from '../../../apps/akasha-portal/src/i18n/config';
 
 /** Mirror of the detection logic in middleware.ts (kept here to avoid
  *  importing the side-effectful middleware in the test runner). */

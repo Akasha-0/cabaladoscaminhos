@@ -6,13 +6,7 @@ import { syncGrimoire } from '../src/lib/infrastructure/grimoire-sync';
 import { prisma } from '../src/lib/infrastructure/prisma';
 
 async function main() {
-  console.log('Starting Grimoire Synchronization...');
-  const result = await syncGrimoire();
-  console.log('Grimoire Sync Finished.');
-  console.log(`Synced count: ${result.count}`);
-  if (result.warnings.length > 0) {
-    console.warn('Warnings:', result.warnings);
-  }
+  await syncGrimoire();
 }
 
 main()

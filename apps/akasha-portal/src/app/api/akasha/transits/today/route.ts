@@ -35,7 +35,6 @@ export async function GET() {
       );
     }
   } catch (err) {
-    console.warn(`[transits/today] Redis indisponível:`, (err as Error).message);
   }
 
   // 2. Fallback: arquivo JSON
@@ -57,7 +56,6 @@ export async function GET() {
       }
     }
   } catch (err) {
-    console.warn(`[transits/today] Fallback falhou:`, (err as Error).message);
   }
 
   // 3. Sem dados — degrada com mensagem clara

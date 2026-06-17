@@ -14,15 +14,15 @@
 import { type FocoDoDia } from '@/lib/grimoire/foco-area';
 import { AREA_LABEL, AREA_ICONE } from '@/lib/grimoire/traducao-areas';
 
-const PILAR_NOME = {
-  cabala: 'Cabala',
-  astrologia: 'Astrologia',
-  tantrica: 'Tântrica',
-  odu: 'Odu',
-  iching: 'I Ching',
+const DIMENSAO_NOME = {
+  cabala: 'Ancestralidade',
+  astrologia: 'Movimento Celeste',
+  tantrica: 'Corpo & Energia',
+  odu: 'Ancestralidade',
+  iching: 'Mutação do Caminho',
 } as const;
 
-const CORES_PILAR = {
+const CORES_DIMENSAO = {
   cabala: '#7C5CFF',
   astrologia: '#2DD4BF',
   tantrica: '#F0B429',
@@ -31,7 +31,7 @@ const CORES_PILAR = {
 } as const;
 
 export function FocoDoDiaPanel({ foco }: { foco: FocoDoDia }) {
-  const cor = CORES_PILAR[foco.pilar];
+  const cor = CORES_DIMENSAO[foco.pilar];
   return (
     <article
       data-pilar={foco.pilar}
@@ -78,7 +78,7 @@ export function FocoDoDiaPanel({ foco }: { foco: FocoDoDia }) {
             HOJE · {AREA_LABEL[foco.area]}
           </h3>
           <span style={{ fontSize: '0.65rem', color: cor, letterSpacing: '0.08em' }}>
-            · {PILAR_NOME[foco.pilar]} principal
+            · {DIMENSAO_NOME[foco.pilar]}
           </span>
           {foco.requer_terreiro && (
             <span
@@ -115,7 +115,7 @@ export function FocoDoDiaPanel({ foco }: { foco: FocoDoDia }) {
             textTransform: 'uppercase',
           }}
         >
-          O que {PILAR_NOME[foco.pilar]} diz para você HOJE
+          O que {DIMENSAO_NOME[foco.pilar]} diz para você HOJE
         </span>
         <p
           style={{
@@ -141,7 +141,7 @@ export function FocoDoDiaPanel({ foco }: { foco: FocoDoDia }) {
               textTransform: 'uppercase',
             }}
           >
-            Ecos dos outros Pilares
+            Ecos das outras Dimensões
           </span>
           <div style={{ marginTop: 6, display: 'flex', flexDirection: 'column', gap: 4 }}>
             {foco.ecos_dos_pilares.map((eco, i) => (
@@ -172,7 +172,7 @@ export function FocoDoDiaPanel({ foco }: { foco: FocoDoDia }) {
               textTransform: 'uppercase',
             }}
           >
-            Como os Pilares se FALAM sobre {AREA_LABEL[foco.area]}
+            Como as Dimensões se FALAM sobre {AREA_LABEL[foco.area]}
           </span>
           <div style={{ marginTop: 6, display: 'flex', flexDirection: 'column', gap: 4 }}>
             {foco.conexoes.map((c) => (
@@ -185,9 +185,9 @@ export function FocoDoDiaPanel({ foco }: { foco: FocoDoDia }) {
                   margin: 0,
                 }}
               >
-                <span style={{ color: CORES_PILAR[c.origem] }}>{PILAR_NOME[c.origem]}</span>
+                <span style={{ color: CORES_DIMENSAO[c.origem] }}>{DIMENSAO_NOME[c.origem]}</span>
                 <span style={{ margin: '0 6px' }}>→</span>
-                <span style={{ color: CORES_PILAR[c.destino] }}>{PILAR_NOME[c.destino]}</span>
+                <span style={{ color: CORES_DIMENSAO[c.destino] }}>{DIMENSAO_NOME[c.destino]}</span>
                 : {c.frase}
               </p>
             ))}

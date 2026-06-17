@@ -15,7 +15,7 @@ export function StatsCard({ title, value, subtitle, icon, suffix }: StatsCardPro
   const animatedValue = useCountUp(value, 2000);
 
   return (
-    <div className="relative overflow-hidden rounded-xl bg-slate-800/50 p-6 backdrop-blur-sm transition-all hover:bg-slate-800/70">
+    <div className="relative overflow-hidden rounded-xl bg-[#0B0E1C]/60 border border-white/5 p-6 backdrop-blur-sm transition-all hover:bg-[#0B0E1C]/80 hover:border-white/10">
       {/* Header */}
       <div className="mb-4 flex items-center justify-between">
         <span className="text-sm font-medium uppercase tracking-wider text-slate-400">

@@ -14,7 +14,6 @@ import type { Area } from '../traducao-areas';
 export type DimensaoId =
   | 'saude'
   | 'trabalho'
-  | 'sexualidade'
   | 'amor'
   | 'criacao'
   | 'proposito'
@@ -52,10 +51,9 @@ export const DIMENSAO_DE_AREA: Record<Area, DimensaoId> = {
   proposito: 'proposito',
   criatividade: 'criacao',
   espiritualidade: 'espiritualidade',
-  sexualidade: 'sexualidade',
 };
 
-// ─── Definição das 9 Dimensões ────────────────────────────────────────
+// ─── Definição das 8 Dimensões ────────────────────────────────────────
 
 export const DIMENSOES: readonly Dimensao[] = [
   {
@@ -75,15 +73,6 @@ export const DIMENSOES: readonly Dimensao[] = [
     chakraCor: '#C4763E',
     pilaresPrimarios: ['cabala'],
     pilaresSecundarios: ['astrologia', 'tantrica'],
-  },
-  {
-    id: 'sexualidade',
-    titulo: 'Sexualidade & Desejo',
-    descricao: 'Como é sua sexualidade? O que te atrai?',
-    icone: '◉',
-    chakraCor: '#C43E8E',
-    pilaresPrimarios: ['tantrica'],
-    pilaresSecundarios: ['cabala', 'astrologia', 'odu'],
   },
   {
     id: 'amor',
@@ -145,20 +134,18 @@ export const DIMENSOES: readonly Dimensao[] = [
 export const DIMENSAO_POR_ID: Record<DimensaoId, Dimensao> = {
   saude: DIMENSOES[0],
   trabalho: DIMENSOES[1],
-  sexualidade: DIMENSOES[2],
-  amor: DIMENSOES[3],
-  criacao: DIMENSOES[4],
-  proposito: DIMENSOES[5],
-  familia: DIMENSOES[6],
-  espiritualidade: DIMENSOES[7],
-  superacao: DIMENSOES[8],
+  amor: DIMENSOES[2],
+  criacao: DIMENSOES[3],
+  proposito: DIMENSOES[4],
+  familia: DIMENSOES[5],
+  espiritualidade: DIMENSOES[6],
+  superacao: DIMENSOES[7],
 };
 
 /** Cor de fundo do card por dimensão. */
 export const DIMENSAO_BG: Record<DimensaoId, string> = {
   saude: 'rgba(196,62,62,0.08)',
   trabalho: 'rgba(196,118,62,0.08)',
-  sexualidade: 'rgba(196,62,142,0.08)',
   amor: 'rgba(196,62,94,0.08)',
   criacao: 'rgba(196,196,62,0.08)',
   proposito: 'rgba(142,196,62,0.08)',
@@ -166,12 +153,10 @@ export const DIMENSAO_BG: Record<DimensaoId, string> = {
   espiritualidade: 'rgba(62,142,196,0.08)',
   superacao: 'rgba(142,62,196,0.08)',
 };
-
 /** Cor da borda do card por dimensão. */
 export const DIMENSAO_BORDER: Record<DimensaoId, string> = {
   saude: 'rgba(196,62,62,0.25)',
   trabalho: 'rgba(196,118,62,0.25)',
-  sexualidade: 'rgba(196,62,142,0.25)',
   amor: 'rgba(196,62,94,0.25)',
   criacao: 'rgba(196,196,62,0.25)',
   proposito: 'rgba(142,196,62,0.25)',

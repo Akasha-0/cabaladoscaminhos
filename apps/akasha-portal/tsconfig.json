@@ -34,6 +34,7 @@
     "node_modules",
     ".next",
     "tests",
-    "scripts"
+    "scripts",
+    "src/lib/application/akasha/synthesis-engine.test.ts"
   ]
 }

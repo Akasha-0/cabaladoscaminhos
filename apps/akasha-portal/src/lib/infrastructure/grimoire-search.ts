@@ -1,3 +1,28 @@
+// Grimoire search — combines chart context (5 Pilares) with text search
+// to retrieve relevant grimoire entries for the Mentor module.
+//
+// Architecture (see searchGrimoire function):
+//   1. JSONB filter on grimoire.metadata by chartCtx fields
+//      (element, oduId, pillarsConsulted) — Postgres-only filter
+//   2. Text matching on grimoire.conteudo using chartCtx signals
+//      (e.g. Odu nome, signo solar)
+//   3. Optional: Ollama embedding for semantic search (degrades
+//      gracefully — see tests/lib/grimoire/search.test.ts which has
+//      6 failing tests, likely related to this Ollama dependency)
+//
+// Related files:
+//   - apps/akasha-portal/src/lib/infrastructure/grimoire-sync.ts:
+//     one-way filesystem → DB sync (this file reads from DB)
+//   - apps/akasha-portal/src/lib/infrastructure/types.ts:
+//     STUB for legacy compat with consult/route.ts (see N+24 note
+//     in types.ts header)
+//   - tests/lib/grimoire/search.test.ts: 6 failing tests
+//   - tests/infrastructure/rate-limit.test.ts: NOT related (different
+//     test scope; rate limit not search)
+//
+// Re-export abaixo é retrocompat com consult/route.ts. Não remover
+// sem migrar consult/route.ts também (N+20 lesson pattern).
+
 import { prisma } from '@/lib/infrastructure/prisma';
 // Re-export para retrocompat com consult/route.ts
 export type { ChartContext, GrimoireContext } from './types';
@@ -212,13 +237,6 @@ export async function searchGrimoireHybrid(
     const relaxed: Record<string, unknown> = { elemento };
     const relaxedResults = await runHybridQuery(relaxed, vectorStr, limit);
     if (relaxedResults.length > 0) {
-      console.info(
-        JSON.stringify({
-          event: 'grimoire.search.fallback',
-          reason: 'composite_filter_zero_results',
-          relaxedTag: 'elemento',
-        })
-      );
       return relaxedResults;
     }
   }

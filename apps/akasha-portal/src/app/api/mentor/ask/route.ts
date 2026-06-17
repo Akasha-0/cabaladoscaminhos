@@ -6,8 +6,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/infrastructure/prisma';
+import {
+  MENTOR_RATE_LIMIT_CONFIG,
+  MENTOR_RATE_LIMIT_KEY_PREFIX,
+  checkRedisRateLimit,
+  formatMentorRateLimitError,
+} from '@/lib/infrastructure/rate-limit';
 import { checkCredits, deductCredit, noCreditsMessage } from '@/lib/application/mentor/credits';
-import { checkRateLimit, rateLimitErrorMessage } from '@/lib/application/mentor/rate-limit';
 import { streamMentorResponse } from '@/lib/application/mentor/llm-router';
 import { loadUserMaps } from '@akasha/mentor/maps';
 import type { MentorMessage } from '@akasha/mentor/types';
@@ -38,10 +43,14 @@ export async function POST(request: NextRequest) {
     const { question, userId, sessionHistory = [] } = parsed;
 
     // 2. Rate limit check
-    const rateLimit = await checkRateLimit(userId);
+    const rateLimit = await checkRedisRateLimit(
+      `${MENTOR_RATE_LIMIT_KEY_PREFIX}:${userId}`,
+      MENTOR_RATE_LIMIT_CONFIG.maxRequests,
+      Math.ceil(MENTOR_RATE_LIMIT_CONFIG.windowMs / 1000)
+    );
     if (!rateLimit.allowed) {
       return NextResponse.json(
-        { error: rateLimitErrorMessage(rateLimit.resetIn) },
+        { error: formatMentorRateLimitError() },
         { status: 429 }
       );
     }
@@ -89,8 +98,7 @@ export async function POST(request: NextRequest) {
           }
 
           // Deduct credit after successful response
-          const newBalance = await deductCredit(userId);
-          console.log(`Mentor chat: deducted 1 credit from ${userId}, new balance: ${newBalance}`);
+          await deductCredit(userId);
 
           controller.close();
         } catch (error) {

@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Documento 24 — Guia de Desenvolvimento para Agentes de IA
 
 ## Sistema Akasha · **LEIA ISTO PRIMEIRO**

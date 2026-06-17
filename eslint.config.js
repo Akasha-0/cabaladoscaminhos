@@ -20,7 +20,22 @@ export default [
     },
   },
   {
-    files: ["**/*.ts", "**/*.tsx"],
+    files: [
+      "packages/**/*.ts",
+      "packages/**/*.tsx",
+      "apps/akasha-portal/src/**/*.ts",
+      "apps/akasha-portal/src/**/*.tsx",
+      "apps/akasha-portal/src/**/*.js",
+      "tests/**/*.ts",
+      "tests/**/*.tsx",
+    ],
+    ignores: [
+      "**/node_modules/**",
+      "**/.next/**",
+      "**/coverage/**",
+      "**/dist/**",
+      "**/build/**",
+    ],
     languageOptions: {
       parser: tsparser,
       parserOptions: {
@@ -67,17 +82,5 @@ export default [
       "no-redeclare": "off",
       "react-hooks/exhaustive-deps": "off",
     },
-  },
-  {
-    ignores: [
-      "node_modules/**",
-      ".next/**",
-      "dist/**",
-      "build/**",
-      "coverage/**",
-      "apps/akasha-portal/public/sw.js",
-      "apps/akasha-portal/next.config.js",
-      "apps/akasha-portal/src/app/[locale]/(akasha)/onboarding/page.tsx",
-    ],
   },
 ];

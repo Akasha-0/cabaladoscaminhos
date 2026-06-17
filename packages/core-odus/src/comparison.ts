@@ -1,6 +1,14 @@
 // Odu Comparison Tool - Cabala Dos Caminhos
 // Compare two Ifa/Odu readings for similarities and differences
 
+// F-101 cleanup (Jun 2026): Removed `export` from 4 unused types
+// (ElementalAlignment, OrixaOverlap, QuizilaCompatibility, EboAlignment).
+// They are used ONLY as return types of internal helpers within this file
+// and have no external consumer. The fallow-ignore markers documented
+// the situation; cleanup was the obvious next step.
+// Lesson N+26: surface don't hide — kept the comments explaining WHY.
+// Public API changes (OduReading, OduComparison) are preserved.
+
 import { OduInfo, odusData } from './calculos';
 
 /**
@@ -13,10 +21,9 @@ export interface OduReading {
 }
 
 /**
- * Elemental alignment between two readings
+ * Elemental alignment between two readings (internal type)
  */
-// fallow-ignore-next-line unused-type
-export interface ElementalAlignment {
+interface ElementalAlignment {
   matches: string[];
   conflicts: string[];
   neutral: string[];
@@ -24,10 +31,9 @@ export interface ElementalAlignment {
 }
 
 /**
- * Orixá overlap between readings
+ * Orixá overlap between readings (internal type)
  */
-// fallow-ignore-next-line unused-type
-export interface OrixaOverlap {
+interface OrixaOverlap {
   shared: string[];
   uniqueA: string[];
   uniqueB: string[];
@@ -35,10 +41,9 @@ export interface OrixaOverlap {
 }
 
 /**
- * Quizila compatibility analysis
+ * Quizila compatibility analysis (internal type)
  */
-// fallow-ignore-next-line unused-type
-export interface QuizilaCompatibility {
+interface QuizilaCompatibility {
   sharedConstraints: string[];
   conflictingConstraints: string[];
   totalConflicts: number;
@@ -46,10 +51,9 @@ export interface QuizilaCompatibility {
 }
 
 /**
- * Ebó alignment between readings
+ * Ebó alignment between readings (internal type)
  */
-// fallow-ignore-next-line unused-type
-export interface EboAlignment {
+interface EboAlignment {
   sharedPractices: string[];
   complementaryPractices: string[];
   incompatiblePractices: string[];
@@ -59,7 +63,6 @@ export interface EboAlignment {
 /**
  * Complete comparison result
  */
-// fallow-ignore-next-line unused-type
 export interface OduComparison {
   id: string;
   readingA: OduReading;

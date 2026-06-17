@@ -1,11 +1,11 @@
-import {
+import type {
   AstrologyMap,
   KabalisticMap,
   TantricMap,
   OduBirth,
   ForestMedicineMap,
   EnergyHealingMap
-} from '@/types';
+} from '@akasha/types';
 
 export interface HologramDimension {
   title: string;

@@ -1,77 +1,25 @@
 /**
  * @akasha/core-astrology
- * Motor determinístico de Astrologia — Swiss Ephemeris (puro TypeScript)
- * Sem dependências de framework. Input: Date + coordenadas. Output: JSON.
+ * Motor de Astrologia — Mapa Natal e Trânsitos.
+ *
+ * Usado pelo portal em: spiritual-engine.ts, transit-engine.ts, daily-context-builder.ts, mapa-alma.ts.
  */
 
-// Tipos
-export type { PosicaoPlaneta, Casa, MapaNatal, Planeta, Signo, Aspecto, AspectoTipo, AspectoNature } from './tipos';
+// Tipos públicos
+export type { BirthChart } from './birth-chart';
+export type {
+  MapaNatal,
+  Planeta,
+  Signo,
+  Aspecto,
+  Casa,
+  PosicaoPlaneta,
+} from './tipos';
 
-// Swiss Ephemeris
-// 88° Solar Arc (F-208) — Momento Pré-natal Akasha
-export { findPrenatalMoment } from './prenatal-date';
-// Tríade Sombra/Dom/Graça (F-209) — Pilar 2 sub-estados
-// Ayanamsa opt-in (F-212) — R-018 D1 (tropical default + Jyotish opt-in)
-export type { AyanamsaTipo } from './ayanamsa';
-export {
-  AYANAMSA_OFFSETS,
-  AYANAMSA_NOMES_PT,
-  tropicalParaSideral,
-  sideralParaTropical,
-} from './ayanamsa';
-
-// Rahu/Ketu nodais lunares (F-211) — Pilar 2 primários Jyotish
-export type { NodosLunares } from './nodes';
-export {
-  NODAL_CYCLE_DAYS,
-  calcularRahuLongitude,
-  calcularKetuLongitude,
-  calcularNodosLunares,
-  longitudeToCasa,
-} from './nodes';
-
-export type { TrinityLevel, TrinityCount } from './trinity';
-export { classifyAspect, countTrinity, dominantTrinity } from './trinity';
-
-
-export { toJulianDate, normalizeDegrees, getSigno, getGrauNoSigno, calcularPosicao, calcularCasas } from './swiss-ephemeris';
-
-// Posições planetárias
-export type { PlanetPosition } from './planet-positions';
-// Vimshottari Dasha (F-210) — Pilar 2 dimensão temporal Jyotish
-export type { Graha, DashaPeriod, VimshottariResult } from './dasha';
-export {
-  MAHADASHA_DURATIONS,
-  DASHA_ORDER,
-  TOTAL_DASHA_YEARS,
-  NAKSHATRA_LORDS,
-  NAKSHATRA_SPAN,
-  getNakshatra,
-  getNakshatraLord,
-  calcularVimshottari,
-} from './dasha';
-
-export { getPositions } from './planet-positions';
-
-// Posições avançadas
-export type { PlanetaryPosition } from './planetas/positions';
-export { getPlanetaryPositions } from './planetas/positions';
-
-// Mapa natal
-export { calcularMapaNatal } from './planetas/posicoes';
-
-// Casas
-export type { HouseSystem, HouseCusp, Houses } from './houses';
-export { calculateHouses } from './houses';
-
-// Aspectos
-export { findAspects } from './aspect-finder';
-export { calcularAspectos } from './planetas/aspectos';
-
-// Birth chart
-export type { BirthChartInput, BirthChart } from './birth-chart';
+// Mapa natal e trânsitos
 export { getBirthChart } from './birth-chart';
+export { getPositions, type PlanetPosition } from './planet-positions';
+export { findAspects } from './aspect-finder';
 
-// Trânsitos
-export type { Transito } from './trânsitos/calculator';
-export { calcularTrânsitosAtivos } from './trânsitos/calculator';
+// Utilitários
+export { getSigno, getGrauNoSigno, normalizeDegrees, calcularPosicao } from './swiss-ephemeris';

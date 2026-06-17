@@ -1,7 +1,7 @@
 # Research INDEX — Sistema Akasha (Fase 0)
 
 > **Mapa vivo** de toda a pesquisa realizada.
-> Última atualização: 2026-06-11 — R-022b ✅ Ethics Charter v1 (governança consolidada).
+> Última atualização: 2026-06-15 — F-228 ✅ Mobile App Strategy v1 (PWA-first + Capacitor upgrade path).
 
 ---
 
@@ -46,6 +46,7 @@
 | RQ-025 | Tech stack | ✅ | tech_decisions.md | R-024 |
 | R-022b | **Ethics Charter v1** (governança) | ✅ | ethics/ethics_charter_v1.md | R-022, R-023, R-021 |
 | R-030 | Akasha Core Algorithm (TS puro) | ✅ | packages/akasha-core/src/akasha-core.ts | R-022 |
+| F-228 | **Mobile App Strategy v1** (PWA + Capacitor upgrade path) | ✅ | [tech/mobile-app-strategy.md](tech/mobile-app-strategy.md) | 30 min | P1 |
 | D-043 | 10 perfis representativos (fixtures+tests) | ✅ | packages/akasha-core/src/profiles-fixtures.ts + profiles.test.ts | R-030 |
 | D-044 | Validação knowledge base (correlation-map) | ✅ | packages/akasha-core/src/correlation-validation.test.ts | R-030 |
 | D-040 | Schema Prisma 5 Pilares (design proposal) | 🟡 design | .autonomous/research/designs/d-040-prisma-5-pilares-design.md | R-030, D-044 |

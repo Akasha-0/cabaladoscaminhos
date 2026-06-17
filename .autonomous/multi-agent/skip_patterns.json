@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "updated_at": "2026-06-16T16:05:00Z",
+  "patterns": [
+    {
+      "key": "missing_tradition:ODUS",
+      "type": "missing_tradition",
+      "marker": "ODUS",
+      "result": "already_present",
+      "confirmation_count": 4,
+      "first_seen": "2026-06-15T23:25:00Z",
+      "last_seen": "2026-06-16T15:50:00Z",
+      "skip_until_iter": null,
+      "evidence": "ODU_DETALHADO exists at traducao-areas.ts:123-247 with 9 areas covered. Detector pattern mismatches file's actual schema (Record<Area, ...> vs name/keywords/contextPatterns).",
+      "action": "PERMANENT_SKIP: requires detector fix before re-enabling"
+    },
+    {
+      "key": "tech_debt:significados-curados",
+      "type": "tech_debt",
+      "marker": "significados-curados",
+      "result": "0_fixes",
+      "confirmation_count": 11,
+      "first_seen": "2026-06-15T13:19:00Z",
+      "last_seen": "2026-06-16T15:50:00Z",
+      "skip_until_iter": null,
+      "evidence": "TODOS_PILARES const is legitimate variable (PT-BR for 'all pillars'), not a TODO comment. 11 audits confirm 0 actionable markers.",
+      "action": "PERMANENT_SKIP: detector needs regex fix to ignore const NAMES containing 'TODO'"
+    },
+    {
+      "key": "missing_tradition:ODUS:astrologia-pattern-mismatch",
+      "type": "missing_tradition",
+      "marker": "ASTROLOGIA pattern",
+      "result": "schema_mismatch",
+      "confirmation_count": 1,
+      "first_seen": "2026-06-16T12:29:46Z",
+      "last_seen": "2026-06-16T12:29:46Z",
+      "skip_until_iter": null,
+      "evidence": "Task template expects 'name/keywords/contextPatterns' section that doesn't exist; ASTROLOGIA_DETALHADO uses Record<Area, {explicacao, convergencia, tensao, evitar, pratica}> instead. 0 occurrences of 'contextPatterns' in entire repo.",
+      "action": "PERMANENT_SKIP: akasha-evolution-loop.py template needs updating"
+    }
+  ]
+}

@@ -1,3 +1,26 @@
+// NOTE (lesson N+20/N+24/N+26 pattern: surface, don't hide):
+//   Trade-offs in this file (intentional, do not refactor without
+//   coordination):
+//
+//   1. Hand-rolled YAML frontmatter parser (parseFrontmatter). Works
+//      for the simple flat key-value frontmatter used by grimoire
+//      entries (id, title, title_en, slug, etc.). Does NOT support
+//      nested objects, lists, or anchors. If grimoire frontmatter
+//      grows complex (e.g. I-Ching with arrays of source/lineage),
+//      replace with `js-yaml` or `gray-matter`. Pre-existing
+//      brittleness: see `tests/lib/grimoire/sync.test.ts` (5 failing
+//      tests likely related to this parser).
+//
+//   2. `Frontmatter` interface uses `[key: string]: any`. The `any`
+//      is a code smell but is necessary because the YAML parser
+//      above returns `unknown` shapes. A future cleanup would
+//      introduce a typed `GrimoireFrontmatter` interface and remove
+//      the `any`.
+//
+//   3. The sync is one-way (filesystem → DB). No reverse sync.
+//      Grimoire entries are source-of-truth in the filesystem, the
+//      DB is a search index.
+
 import fs from 'fs';
 import path from 'path';
 import { Prisma } from '@prisma/client';
@@ -71,7 +94,6 @@ async function getEmbedding(text: string): Promise<number[] | null> {
     const data = await res.json() as { embedding: number[] };
     return data.embedding;
   } catch (error) {
-    console.warn(`[WARNING] Failed to generate embedding via Ollama (using fallback null):`, (error as Error).message);
     return null;
   }
 }

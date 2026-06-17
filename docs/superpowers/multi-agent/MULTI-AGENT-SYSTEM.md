@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Sistema Multi-Agente de Evolução Contínua — Sistema Akasha
 
 > **Norte:** Doc 25.

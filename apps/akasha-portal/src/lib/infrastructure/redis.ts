@@ -8,6 +8,7 @@ interface RedisLike {
   set(key: string, value: string | number, ...args: unknown[]): Promise<unknown>;
   incr(key: string): Promise<number>;
   expire(key: string, seconds: number): Promise<unknown>;
+  ttl(key: string): Promise<number>;
   ping(): Promise<string>;
   quit(): Promise<unknown>;
   disconnect(): void;
@@ -68,6 +69,17 @@ function createInMemoryStore(): RedisLike {
       if (!entry) return 0;
       entry.expiresAt = Date.now() + seconds * 1000;
       return 1;
+    },
+
+    async ttl(key: string): Promise<number> {
+      const entry = memoryStore.get(key);
+      if (!entry) return -2;
+      if (entry.expiresAt === undefined) return -1;
+      if (Date.now() > entry.expiresAt) {
+        memoryStore.delete(key);
+        return -2;
+      }
+      return Math.max(0, Math.ceil((entry.expiresAt - Date.now()) / 1000));
     },
 
     async ping(): Promise<string> {
@@ -132,6 +144,8 @@ async function createRedisClient(
 // Singleton client
 let redisClient: RedisLike | null = null;
 let useMemory = false;
+let reconnectAttempts = 0;
+const MAX_RECONNECT_INTERVAL_MS = 30_000;
 
 export async function getRedisClient(): Promise<RedisLike> {
   if (redisClient) return redisClient;
@@ -148,17 +162,38 @@ export async function getRedisClient(): Promise<RedisLike> {
     return redisClient;
   }
 
+  const connect = async (): Promise<RedisLike> => {
+    const onDisconnect = () => {
+      useMemory = true;
+      redisClient = createInMemoryStore();
+      // Reset reconnect counter so next getRedisClient() call tries Redis again
+      reconnectAttempts = 0;
+    };
+    return createRedisClient(redisUrl as string, onDisconnect);
+  };
+
   try {
-    redisClient = await createRedisClient(
-      redisUrl as string,
-      () => {
-        useMemory = true;
-        redisClient = createInMemoryStore();
-      }
-    );
+    redisClient = await connect();
   } catch {
     useMemory = true;
     redisClient = createInMemoryStore();
+    // Attempt async reconnection in background with exponential back-off.
+    // On next getRedisClient() call (e.g., next request), if reconnect
+    // succeeds, the new client replaces the memory store.
+    const delayMs = Math.min(100 * 2 ** reconnectAttempts, MAX_RECONNECT_INTERVAL_MS);
+    reconnectAttempts++;
+    setTimeout(async () => {
+      try {
+        const fresh = await connect();
+        if (redisClient && redisClient !== fresh) {
+          redisClient = fresh;
+          useMemory = false;
+          reconnectAttempts = 0;
+        }
+      } catch {
+        // silent — will retry on next scheduled attempt
+      }
+    }, delayMs);
   }
 
   return redisClient;

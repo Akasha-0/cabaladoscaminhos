@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
+  type Wing,
   WINGS,
   getWing,
   getAllWings,
@@ -14,7 +15,7 @@ describe('@akasha/core-iching — Asas (Wings)', () => {
     });
 
     it('cada Asa tem ID único de 1 a 10', () => {
-      const ids = WINGS.map((w) => w.id);
+      const ids = WINGS.map((w: Wing) => w.id);
       expect(new Set(ids).size).toBe(10);
       expect(ids).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
     });
@@ -31,7 +32,7 @@ describe('@akasha/core-iching — Asas (Wings)', () => {
     it('todos os 64 hexagramas pertencem a pelo menos uma Asa', () => {
       const covered = new Set<number>();
       for (const wing of WINGS) {
-        wing.hexagrams.forEach((h) => covered.add(h));
+        wing.hexagrams.forEach((h: number) => covered.add(h));
       }
       expect(covered.size).toBe(64);
     });

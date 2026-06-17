@@ -1,0 +1,604 @@
+[2026-06-16T21:27:52Z] ═══ RALPH LOOP CONTINUOUS RUNNER STARTING ═══
+[2026-06-16T21:27:52Z] PID=2107599
+[2026-06-16T21:27:52Z] Promise: NÃO PARE, CONTINUE EVOLVENDO O PROJETO SEM PARAR. SEMPRE FAZENDO MELHORIAS.
+    ...<2 lines>...
+            stderr=b''.join(stderr_seq) if stderr_seq else None)
+subprocess.TimeoutExpired: Command '['pnpm', '--filter', 'akasha-portal', 'typecheck']' timed out after 120 seconds
+    ...<2 lines>...
+            stderr=b''.join(stderr_seq) if stderr_seq else None)
+subprocess.TimeoutExpired: Command '['pnpm', '--filter', 'akasha-portal', 'typecheck']' timed out after 120 seconds
+    ...<2 lines>...
+            stderr=b''.join(stderr_seq) if stderr_seq else None)
+subprocess.TimeoutExpired: Command '['pnpm', '--filter', 'akasha-portal', 'typecheck']' timed out after 120 seconds
+[2026-06-16T21:35:57Z] ═══ RALPH LOOP CONTINUOUS RUNNER STARTING ═══
+[2026-06-16T21:35:57Z] PID=2157222
+[2026-06-16T21:35:57Z] Promise: NÃO PARE, CONTINUE EVOLVENDO O PROJETO SEM PARAR. SEMPRE FAZENDO MELHORIAS.
+[2026-06-16T21:36:24Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:36:24Z]   → QA failed — will retry next iteration
+  done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:36:36Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:36:36Z]   → QA failed — will retry next iteration
+  done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:37:17Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:37:17Z]   → QA failed — will retry next iteration
+  done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:37:24Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:37:24Z]   → QA failed — will retry next iteration
+  done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:38:15Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:38:15Z]   → QA failed — will retry next iteration
+  done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:38:21Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:38:21Z]   → QA failed — will retry next iteration
+  done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:39:04Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:39:04Z]   → QA failed — will retry next iteration
+  done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:39:17Z] ═══ RALPH LOOP CONTINUOUS RUNNER STARTING ═══
+[2026-06-16T21:39:17Z] PID=2169713
+[2026-06-16T21:39:17Z] Promise: NÃO PARE, CONTINUE EVOLVENDO O PROJETO SEM PARAR. SEMPRE FAZENDO MELHORIAS.
+[2026-06-16T21:40:17Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:40:17Z]   → QA failed — will retry next iteration
+  done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:40:53Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:40:53Z]   → QA failed — will retry next iteration
+  done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:41:27Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:41:27Z]   → QA failed — will retry next iteration
+  done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:42:07Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:42:07Z]   → QA failed — will retry next iteration
+  done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:52:14Z] 🚀 RALPH CONTINUOUS RUNNER STARTED (PID=2213485)
+[2026-06-16T21:52:14Z] Promise: NÃO PARE, CONTINUE EVOLVENDO O PROJETO SEM PARAR. SEMPRE FAZENDO MELHORIAS.
+[2026-06-16T21:52:42Z] [2026-06-16T21:52:42Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:52:42Z] [2026-06-16T21:52:42Z]   → QA failed — will retry next iteration
+[2026-06-16T21:52:42Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:53:16Z] [2026-06-16T21:53:16Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:53:16Z] [2026-06-16T21:53:16Z]   → QA failed — will retry next iteration
+[2026-06-16T21:53:16Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:53:54Z] [2026-06-16T21:53:54Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:53:54Z] [2026-06-16T21:53:54Z]   → QA failed — will retry next iteration
+[2026-06-16T21:53:54Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:54:27Z] [2026-06-16T21:54:27Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:54:27Z] [2026-06-16T21:54:27Z]   → QA failed — will retry next iteration
+[2026-06-16T21:54:27Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:55:02Z] [2026-06-16T21:55:02Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:55:02Z] [2026-06-16T21:55:02Z]   → QA failed — will retry next iteration
+[2026-06-16T21:55:02Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:55:35Z] [2026-06-16T21:55:35Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:55:35Z] [2026-06-16T21:55:35Z]   → QA failed — will retry next iteration
+[2026-06-16T21:55:35Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:56:41Z] [2026-06-16T21:56:41Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:56:41Z] [2026-06-16T21:56:41Z]   → QA failed — will retry next iteration
+[2026-06-16T21:56:41Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:57:15Z] [2026-06-16T21:57:15Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:57:15Z] [2026-06-16T21:57:15Z]   → QA failed — will retry next iteration
+[2026-06-16T21:57:15Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:57:53Z] [2026-06-16T21:57:53Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:57:53Z] [2026-06-16T21:57:53Z]   → QA failed — will retry next iteration
+[2026-06-16T21:57:53Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:58:26Z] [2026-06-16T21:58:26Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:58:26Z] [2026-06-16T21:58:26Z]   → QA failed — will retry next iteration
+[2026-06-16T21:58:26Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:58:26Z] ❤️  Ralph iter=10 phase=QA errors=22
+[2026-06-16T21:59:01Z] [2026-06-16T21:59:01Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:59:01Z] [2026-06-16T21:59:01Z]   → QA failed — will retry next iteration
+[2026-06-16T21:59:01Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T21:59:35Z] [2026-06-16T21:59:35Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T21:59:35Z] [2026-06-16T21:59:35Z]   → QA failed — will retry next iteration
+[2026-06-16T21:59:35Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:00:14Z] [2026-06-16T22:00:14Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:00:14Z] [2026-06-16T22:00:14Z]   → QA failed — will retry next iteration
+[2026-06-16T22:00:14Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:01:39Z] [2026-06-16T22:01:38Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:01:39Z] [2026-06-16T22:01:38Z]   → QA failed — will retry next iteration
+[2026-06-16T22:01:39Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:02:25Z] [2026-06-16T22:02:25Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:02:25Z] [2026-06-16T22:02:25Z]   → QA failed — will retry next iteration
+[2026-06-16T22:02:25Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:03:01Z] [2026-06-16T22:03:01Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:03:01Z] [2026-06-16T22:03:01Z]   → QA failed — will retry next iteration
+[2026-06-16T22:03:01Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:03:34Z] [2026-06-16T22:03:34Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:03:34Z] [2026-06-16T22:03:34Z]   → QA failed — will retry next iteration
+[2026-06-16T22:03:34Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:04:10Z] [2026-06-16T22:04:10Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:04:10Z] [2026-06-16T22:04:10Z]   → QA failed — will retry next iteration
+[2026-06-16T22:04:10Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:04:44Z] [2026-06-16T22:04:44Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:04:44Z] [2026-06-16T22:04:44Z]   → QA failed — will retry next iteration
+[2026-06-16T22:04:44Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:05:23Z] [2026-06-16T22:05:23Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:05:23Z] [2026-06-16T22:05:23Z]   → QA failed — will retry next iteration
+[2026-06-16T22:05:23Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:05:23Z] ❤️  Ralph iter=20 phase=QA errors=32
+[2026-06-16T22:07:02Z] [2026-06-16T22:07:02Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:07:02Z] [2026-06-16T22:07:02Z]   → QA failed — will retry next iteration
+[2026-06-16T22:07:02Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:07:38Z] [2026-06-16T22:07:38Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:07:38Z] [2026-06-16T22:07:38Z]   → QA failed — will retry next iteration
+[2026-06-16T22:07:38Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:08:12Z] [2026-06-16T22:08:12Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:08:12Z] [2026-06-16T22:08:12Z]   → QA failed — will retry next iteration
+[2026-06-16T22:08:12Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:08:45Z] [2026-06-16T22:08:45Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:08:45Z] [2026-06-16T22:08:45Z]   → QA failed — will retry next iteration
+[2026-06-16T22:08:45Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:09:22Z] [2026-06-16T22:09:22Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:09:22Z] [2026-06-16T22:09:22Z]   → QA failed — will retry next iteration
+[2026-06-16T22:09:22Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:10:00Z] [2026-06-16T22:10:00Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:10:00Z] [2026-06-16T22:10:00Z]   → QA failed — will retry next iteration
+[2026-06-16T22:10:00Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:11:58Z] [2026-06-16T22:11:58Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:11:58Z] [2026-06-16T22:11:58Z]   → QA failed — will retry next iteration
+[2026-06-16T22:11:58Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:12:32Z] [2026-06-16T22:12:32Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:12:32Z] [2026-06-16T22:12:32Z]   → QA failed — will retry next iteration
+[2026-06-16T22:12:32Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:13:05Z] [2026-06-16T22:13:05Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:13:05Z] [2026-06-16T22:13:05Z]   → QA failed — will retry next iteration
+[2026-06-16T22:13:05Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:13:39Z] [2026-06-16T22:13:39Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:13:39Z] [2026-06-16T22:13:39Z]   → QA failed — will retry next iteration
+[2026-06-16T22:13:39Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:13:39Z] ❤️  Ralph iter=30 phase=QA errors=42
+[2026-06-16T22:14:17Z] [2026-06-16T22:14:17Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:14:17Z] [2026-06-16T22:14:17Z]   → QA failed — will retry next iteration
+[2026-06-16T22:14:17Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:14:56Z] [2026-06-16T22:14:56Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:14:56Z] [2026-06-16T22:14:56Z]   → QA failed — will retry next iteration
+[2026-06-16T22:14:56Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:16:18Z] [2026-06-16T22:16:18Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:16:18Z] [2026-06-16T22:16:18Z]   → QA failed — will retry next iteration
+[2026-06-16T22:16:18Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:16:52Z] [2026-06-16T22:16:52Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:16:52Z] [2026-06-16T22:16:52Z]   → QA failed — will retry next iteration
+[2026-06-16T22:16:52Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:17:24Z] [2026-06-16T22:17:24Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:17:24Z] [2026-06-16T22:17:24Z]   → QA failed — will retry next iteration
+[2026-06-16T22:17:24Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:17:57Z] [2026-06-16T22:17:57Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:17:57Z] [2026-06-16T22:17:57Z]   → QA failed — will retry next iteration
+[2026-06-16T22:17:57Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:18:30Z] [2026-06-16T22:18:30Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:18:30Z] [2026-06-16T22:18:30Z]   → QA failed — will retry next iteration
+[2026-06-16T22:18:30Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:19:03Z] [2026-06-16T22:19:03Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:19:03Z] [2026-06-16T22:19:03Z]   → QA failed — will retry next iteration
+[2026-06-16T22:19:03Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:19:38Z] [2026-06-16T22:19:38Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:19:38Z] [2026-06-16T22:19:38Z]   → QA failed — will retry next iteration
+[2026-06-16T22:19:38Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:20:50Z] [2026-06-16T22:20:50Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:20:50Z] [2026-06-16T22:20:50Z]   → QA failed — will retry next iteration
+[2026-06-16T22:20:50Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:20:50Z] ❤️  Ralph iter=40 phase=QA errors=52
+[2026-06-16T22:21:26Z] [2026-06-16T22:21:26Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:21:26Z] [2026-06-16T22:21:26Z]   → QA failed — will retry next iteration
+[2026-06-16T22:21:26Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:22:04Z] [2026-06-16T22:22:04Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:22:04Z] [2026-06-16T22:22:04Z]   → QA failed — will retry next iteration
+[2026-06-16T22:22:04Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:22:39Z] [2026-06-16T22:22:39Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:22:39Z] [2026-06-16T22:22:39Z]   → QA failed — will retry next iteration
+[2026-06-16T22:22:39Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:23:14Z] [2026-06-16T22:23:14Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:23:14Z] [2026-06-16T22:23:14Z]   → QA failed — will retry next iteration
+[2026-06-16T22:23:14Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:23:48Z] [2026-06-16T22:23:48Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:23:48Z] [2026-06-16T22:23:48Z]   → QA failed — will retry next iteration
+[2026-06-16T22:23:48Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:24:57Z] [2026-06-16T22:24:57Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:24:57Z] [2026-06-16T22:24:57Z]   → QA failed — will retry next iteration
+[2026-06-16T22:24:57Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:25:34Z] [2026-06-16T22:25:34Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:25:34Z] [2026-06-16T22:25:34Z]   → QA failed — will retry next iteration
+[2026-06-16T22:25:34Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:26:08Z] [2026-06-16T22:26:08Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:26:08Z] [2026-06-16T22:26:08Z]   → QA failed — will retry next iteration
+[2026-06-16T22:26:08Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:26:48Z] [2026-06-16T22:26:48Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:26:48Z] [2026-06-16T22:26:48Z]   → QA failed — will retry next iteration
+[2026-06-16T22:26:48Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:27:22Z] [2026-06-16T22:27:22Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:27:22Z] [2026-06-16T22:27:22Z]   → QA failed — will retry next iteration
+[2026-06-16T22:27:22Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:27:22Z] ❤️  Ralph iter=50 phase=QA errors=62
+[2026-06-16T22:27:57Z] [2026-06-16T22:27:57Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:27:57Z] [2026-06-16T22:27:57Z]   → QA failed — will retry next iteration
+[2026-06-16T22:27:57Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:28:40Z] [2026-06-16T22:28:40Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:28:40Z] [2026-06-16T22:28:40Z]   → QA failed — will retry next iteration
+[2026-06-16T22:28:40Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:30:18Z] [2026-06-16T22:30:18Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:30:18Z] [2026-06-16T22:30:18Z]   → QA failed — will retry next iteration
+[2026-06-16T22:30:18Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:30:51Z] [2026-06-16T22:30:51Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:30:51Z] [2026-06-16T22:30:51Z]   → QA failed — will retry next iteration
+[2026-06-16T22:30:51Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:31:27Z] [2026-06-16T22:31:27Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:31:27Z] [2026-06-16T22:31:27Z]   → QA failed — will retry next iteration
+[2026-06-16T22:31:27Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:31:59Z] [2026-06-16T22:31:59Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:31:59Z] [2026-06-16T22:31:59Z]   → QA failed — will retry next iteration
+[2026-06-16T22:31:59Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:32:33Z] [2026-06-16T22:32:33Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:32:33Z] [2026-06-16T22:32:33Z]   → QA failed — will retry next iteration
+[2026-06-16T22:32:33Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:33:09Z] [2026-06-16T22:33:09Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:33:09Z] [2026-06-16T22:33:09Z]   → QA failed — will retry next iteration
+[2026-06-16T22:33:09Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:34:13Z] [2026-06-16T22:34:13Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:34:13Z] [2026-06-16T22:34:13Z]   → QA failed — will retry next iteration
+[2026-06-16T22:34:13Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:34:50Z] [2026-06-16T22:34:50Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:34:50Z] [2026-06-16T22:34:50Z]   → QA failed — will retry next iteration
+[2026-06-16T22:34:50Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:34:50Z] ❤️  Ralph iter=60 phase=QA errors=72
+[2026-06-16T22:35:25Z] [2026-06-16T22:35:25Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:35:25Z] [2026-06-16T22:35:25Z]   → QA failed — will retry next iteration
+[2026-06-16T22:35:25Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:36:05Z] [2026-06-16T22:36:05Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:36:05Z] [2026-06-16T22:36:05Z]   → QA failed — will retry next iteration
+[2026-06-16T22:36:05Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:36:44Z] [2026-06-16T22:36:44Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:36:44Z] [2026-06-16T22:36:44Z]   → QA failed — will retry next iteration
+[2026-06-16T22:36:44Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:37:21Z] [2026-06-16T22:37:21Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:37:21Z] [2026-06-16T22:37:21Z]   → QA failed — will retry next iteration
+[2026-06-16T22:37:21Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:38:21Z] [2026-06-16T22:38:21Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:38:21Z] [2026-06-16T22:38:21Z]   → QA failed — will retry next iteration
+[2026-06-16T22:38:21Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:39:04Z] [2026-06-16T22:39:04Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:39:04Z] [2026-06-16T22:39:04Z]   → QA failed — will retry next iteration
+[2026-06-16T22:39:04Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:39:39Z] [2026-06-16T22:39:39Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:39:39Z] [2026-06-16T22:39:39Z]   → QA failed — will retry next iteration
+[2026-06-16T22:39:39Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:40:13Z] [2026-06-16T22:40:13Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:40:13Z] [2026-06-16T22:40:13Z]   → QA failed — will retry next iteration
+[2026-06-16T22:40:13Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:40:51Z] [2026-06-16T22:40:51Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:40:51Z] [2026-06-16T22:40:51Z]   → QA failed — will retry next iteration
+[2026-06-16T22:40:51Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:41:29Z] [2026-06-16T22:41:29Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:41:29Z] [2026-06-16T22:41:29Z]   → QA failed — will retry next iteration
+[2026-06-16T22:41:29Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:41:29Z] ❤️  Ralph iter=70 phase=QA errors=82
+[2026-06-16T22:42:11Z] [2026-06-16T22:42:11Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:42:11Z] [2026-06-16T22:42:11Z]   → QA failed — will retry next iteration
+[2026-06-16T22:42:11Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:43:20Z] [2026-06-16T22:43:20Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:43:20Z] [2026-06-16T22:43:20Z]   → QA failed — will retry next iteration
+[2026-06-16T22:43:20Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:43:54Z] [2026-06-16T22:43:54Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:43:54Z] [2026-06-16T22:43:54Z]   → QA failed — will retry next iteration
+[2026-06-16T22:43:54Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:44:31Z] [2026-06-16T22:44:31Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:44:31Z] [2026-06-16T22:44:31Z]   → QA failed — will retry next iteration
+[2026-06-16T22:44:31Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:45:12Z] [2026-06-16T22:45:12Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:45:12Z] [2026-06-16T22:45:12Z]   → QA failed — will retry next iteration
+[2026-06-16T22:45:12Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:45:54Z] [2026-06-16T22:45:54Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:45:54Z] [2026-06-16T22:45:54Z]   → QA failed — will retry next iteration
+[2026-06-16T22:45:54Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:46:43Z] [2026-06-16T22:46:43Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:46:43Z] [2026-06-16T22:46:43Z]   → QA failed — will retry next iteration
+[2026-06-16T22:46:43Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:48:11Z] [2026-06-16T22:48:11Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:48:11Z] [2026-06-16T22:48:11Z]   → QA failed — will retry next iteration
+[2026-06-16T22:48:11Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:48:49Z] [2026-06-16T22:48:49Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:48:49Z] [2026-06-16T22:48:49Z]   → QA failed — will retry next iteration
+[2026-06-16T22:48:49Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:49:23Z] [2026-06-16T22:49:23Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:49:23Z] [2026-06-16T22:49:23Z]   → QA failed — will retry next iteration
+[2026-06-16T22:49:23Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:49:23Z] ❤️  Ralph iter=80 phase=QA errors=92
+[2026-06-16T22:49:59Z] [2026-06-16T22:49:59Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:49:59Z] [2026-06-16T22:49:59Z]   → QA failed — will retry next iteration
+[2026-06-16T22:49:59Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:50:34Z] [2026-06-16T22:50:34Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:50:34Z] [2026-06-16T22:50:34Z]   → QA failed — will retry next iteration
+[2026-06-16T22:50:34Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:51:13Z] [2026-06-16T22:51:13Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:51:13Z] [2026-06-16T22:51:13Z]   → QA failed — will retry next iteration
+[2026-06-16T22:51:13Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:52:22Z] [2026-06-16T22:52:22Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:52:22Z] [2026-06-16T22:52:22Z]   → QA failed — will retry next iteration
+[2026-06-16T22:52:22Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:53:02Z] [2026-06-16T22:53:02Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:53:02Z] [2026-06-16T22:53:02Z]   → QA failed — will retry next iteration
+[2026-06-16T22:53:02Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:53:41Z] [2026-06-16T22:53:41Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:53:41Z] [2026-06-16T22:53:41Z]   → QA failed — will retry next iteration
+[2026-06-16T22:53:41Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:54:15Z] [2026-06-16T22:54:15Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:54:15Z] [2026-06-16T22:54:15Z]   → QA failed — will retry next iteration
+[2026-06-16T22:54:15Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:54:51Z] [2026-06-16T22:54:51Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:54:51Z] [2026-06-16T22:54:51Z]   → QA failed — will retry next iteration
+[2026-06-16T22:54:51Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:55:29Z] [2026-06-16T22:55:29Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:55:29Z] [2026-06-16T22:55:29Z]   → QA failed — will retry next iteration
+[2026-06-16T22:55:29Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:56:17Z] [2026-06-16T22:56:17Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T22:56:17Z] [2026-06-16T22:56:17Z]   → QA failed — will retry next iteration
+[2026-06-16T22:56:17Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:56:17Z] ❤️  Ralph iter=90 phase=QA errors=102
+[2026-06-16T22:57:24Z] [2026-06-16T22:57:24Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:57:24Z] [2026-06-16T22:57:24Z]   → QA failed — will retry next iteration
+[2026-06-16T22:57:24Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:57:59Z] [2026-06-16T22:57:59Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:57:59Z] [2026-06-16T22:57:59Z]   → QA failed — will retry next iteration
+[2026-06-16T22:57:59Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:58:33Z] [2026-06-16T22:58:33Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:58:33Z] [2026-06-16T22:58:33Z]   → QA failed — will retry next iteration
+[2026-06-16T22:58:33Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:59:10Z] [2026-06-16T22:59:10Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:59:10Z] [2026-06-16T22:59:10Z]   → QA failed — will retry next iteration
+[2026-06-16T22:59:10Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T22:59:48Z] [2026-06-16T22:59:48Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T22:59:48Z] [2026-06-16T22:59:48Z]   → QA failed — will retry next iteration
+[2026-06-16T22:59:48Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:00:24Z] [2026-06-16T23:00:24Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T23:00:24Z] [2026-06-16T23:00:24Z]   → QA failed — will retry next iteration
+[2026-06-16T23:00:24Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:01:40Z] [2026-06-16T23:01:39Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T23:01:40Z] [2026-06-16T23:01:39Z]   → QA failed — will retry next iteration
+[2026-06-16T23:01:40Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:02:16Z] [2026-06-16T23:02:16Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T23:02:16Z] [2026-06-16T23:02:16Z]   → QA failed — will retry next iteration
+[2026-06-16T23:02:16Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:02:50Z] [2026-06-16T23:02:50Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T23:02:50Z] [2026-06-16T23:02:50Z]   → QA failed — will retry next iteration
+[2026-06-16T23:02:50Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:03:26Z] [2026-06-16T23:03:25Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T23:03:26Z] [2026-06-16T23:03:25Z]   → QA failed — will retry next iteration
+[2026-06-16T23:03:26Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:03:26Z] ❤️  Ralph iter=100 phase=QA errors=112
+[2026-06-16T23:04:00Z] [2026-06-16T23:04:00Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T23:04:00Z] [2026-06-16T23:04:00Z]   → QA failed — will retry next iteration
+[2026-06-16T23:04:00Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:04:37Z] [2026-06-16T23:04:37Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T23:04:37Z] [2026-06-16T23:04:37Z]   → QA failed — will retry next iteration
+[2026-06-16T23:04:37Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:05:54Z] [2026-06-16T23:05:54Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T23:05:54Z] [2026-06-16T23:05:54Z]   → QA failed — will retry next iteration
+[2026-06-16T23:05:54Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:06:28Z] [2026-06-16T23:06:28Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T23:06:28Z] [2026-06-16T23:06:28Z]   → QA failed — will retry next iteration
+[2026-06-16T23:06:28Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:07:03Z] [2026-06-16T23:07:03Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T23:07:03Z] [2026-06-16T23:07:03Z]   → QA failed — will retry next iteration
+[2026-06-16T23:07:03Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:07:38Z] [2026-06-16T23:07:38Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T23:07:38Z] [2026-06-16T23:07:38Z]   → QA failed — will retry next iteration
+[2026-06-16T23:07:38Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:08:15Z] [2026-06-16T23:08:15Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T23:08:15Z] [2026-06-16T23:08:15Z]   → QA failed — will retry next iteration
+[2026-06-16T23:08:15Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:08:50Z] [2026-06-16T23:08:49Z]   → QA results: typecheck=✅ tests=❌ lint=✅
+[2026-06-16T23:08:50Z] [2026-06-16T23:08:49Z]   → QA failed — will retry next iteration
+[2026-06-16T23:08:50Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:09:25Z] [2026-06-16T23:09:25Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:09:25Z] [2026-06-16T23:09:25Z]   → QA failed — will retry next iteration
+[2026-06-16T23:09:25Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:10:35Z] [2026-06-16T23:10:35Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:10:35Z] [2026-06-16T23:10:35Z]   → QA failed — will retry next iteration
+[2026-06-16T23:10:35Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:10:35Z] ❤️  Ralph iter=110 phase=QA errors=122
+[2026-06-16T23:11:14Z] [2026-06-16T23:11:14Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:11:14Z] [2026-06-16T23:11:14Z]   → QA failed — will retry next iteration
+[2026-06-16T23:11:14Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:11:48Z] [2026-06-16T23:11:48Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:11:48Z] [2026-06-16T23:11:48Z]   → QA failed — will retry next iteration
+[2026-06-16T23:11:48Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:12:24Z] [2026-06-16T23:12:24Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:12:24Z] [2026-06-16T23:12:24Z]   → QA failed — will retry next iteration
+[2026-06-16T23:12:24Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:13:03Z] [2026-06-16T23:13:03Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:13:03Z] [2026-06-16T23:13:03Z]   → QA failed — will retry next iteration
+[2026-06-16T23:13:03Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:13:42Z] [2026-06-16T23:13:42Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:13:42Z] [2026-06-16T23:13:42Z]   → QA failed — will retry next iteration
+[2026-06-16T23:13:42Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:14:55Z] [2026-06-16T23:14:55Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:14:55Z] [2026-06-16T23:14:55Z]   → QA failed — will retry next iteration
+[2026-06-16T23:14:55Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:15:27Z] [2026-06-16T23:15:27Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:15:27Z] [2026-06-16T23:15:27Z]   → QA failed — will retry next iteration
+[2026-06-16T23:15:27Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:16:04Z] [2026-06-16T23:16:04Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:16:04Z] [2026-06-16T23:16:04Z]   → QA failed — will retry next iteration
+[2026-06-16T23:16:04Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:16:38Z] [2026-06-16T23:16:38Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:16:38Z] [2026-06-16T23:16:38Z]   → QA failed — will retry next iteration
+[2026-06-16T23:16:38Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:17:12Z] [2026-06-16T23:17:12Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:17:12Z] [2026-06-16T23:17:12Z]   → QA failed — will retry next iteration
+[2026-06-16T23:17:12Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:17:12Z] ❤️  Ralph iter=120 phase=QA errors=132
+[2026-06-16T23:17:49Z] [2026-06-16T23:17:49Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:17:49Z] [2026-06-16T23:17:49Z]   → QA failed — will retry next iteration
+[2026-06-16T23:17:49Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:18:44Z] [2026-06-16T23:18:44Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:18:44Z] [2026-06-16T23:18:44Z]   → QA failed — will retry next iteration
+[2026-06-16T23:18:44Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:20:11Z] [2026-06-16T23:20:11Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:20:11Z] [2026-06-16T23:20:11Z]   → QA failed — will retry next iteration
+[2026-06-16T23:20:11Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:20:50Z] [2026-06-16T23:20:50Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:20:50Z] [2026-06-16T23:20:50Z]   → QA failed — will retry next iteration
+[2026-06-16T23:20:50Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:21:24Z] [2026-06-16T23:21:23Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:21:24Z] [2026-06-16T23:21:23Z]   → QA failed — will retry next iteration
+[2026-06-16T23:21:24Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:21:56Z] [2026-06-16T23:21:56Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:21:56Z] [2026-06-16T23:21:56Z]   → QA failed — will retry next iteration
+[2026-06-16T23:21:56Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:22:29Z] [2026-06-16T23:22:29Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:22:29Z] [2026-06-16T23:22:29Z]   → QA failed — will retry next iteration
+[2026-06-16T23:22:29Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:23:03Z] [2026-06-16T23:23:02Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:23:03Z] [2026-06-16T23:23:02Z]   → QA failed — will retry next iteration
+[2026-06-16T23:23:03Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:24:16Z] [2026-06-16T23:24:16Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:24:16Z] [2026-06-16T23:24:16Z]   → QA failed — will retry next iteration
+[2026-06-16T23:24:16Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:24:50Z] [2026-06-16T23:24:50Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:24:50Z] [2026-06-16T23:24:50Z]   → QA failed — will retry next iteration
+[2026-06-16T23:24:50Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:24:50Z] ❤️  Ralph iter=130 phase=QA errors=142
+[2026-06-16T23:25:23Z] [2026-06-16T23:25:23Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:25:23Z] [2026-06-16T23:25:23Z]   → QA failed — will retry next iteration
+[2026-06-16T23:25:23Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:25:56Z] [2026-06-16T23:25:56Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:25:56Z] [2026-06-16T23:25:56Z]   → QA failed — will retry next iteration
+[2026-06-16T23:25:56Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:26:29Z] [2026-06-16T23:26:29Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:26:29Z] [2026-06-16T23:26:29Z]   → QA failed — will retry next iteration
+[2026-06-16T23:26:29Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:27:02Z] [2026-06-16T23:27:02Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:27:02Z] [2026-06-16T23:27:02Z]   → QA failed — will retry next iteration
+[2026-06-16T23:27:02Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:27:36Z] [2026-06-16T23:27:36Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:27:36Z] [2026-06-16T23:27:36Z]   → QA failed — will retry next iteration
+[2026-06-16T23:27:36Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:28:50Z] [2026-06-16T23:28:50Z]   → QA results: typecheck=❌ tests=❌ lint=❌
+[2026-06-16T23:28:50Z] [2026-06-16T23:28:50Z]   → QA failed — will retry next iteration
+[2026-06-16T23:28:50Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:29:23Z] [2026-06-16T23:29:23Z]   → QA results: typecheck=❌ tests=❌ lint=❌
+[2026-06-16T23:29:23Z] [2026-06-16T23:29:23Z]   → QA failed — will retry next iteration
+[2026-06-16T23:29:23Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:29:56Z] [2026-06-16T23:29:56Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:29:56Z] [2026-06-16T23:29:56Z]   → QA failed — will retry next iteration
+[2026-06-16T23:29:56Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:30:29Z] [2026-06-16T23:30:29Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:30:29Z] [2026-06-16T23:30:29Z]   → QA failed — will retry next iteration
+[2026-06-16T23:30:29Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:31:02Z] [2026-06-16T23:31:02Z]   → QA results: typecheck=❌ tests=❌ lint=❌
+[2026-06-16T23:31:02Z] [2026-06-16T23:31:02Z]   → QA failed — will retry next iteration
+[2026-06-16T23:31:02Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:31:02Z] ❤️  Ralph iter=140 phase=QA errors=152
+[2026-06-16T23:31:35Z] [2026-06-16T23:31:35Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:31:35Z] [2026-06-16T23:31:35Z]   → QA failed — will retry next iteration
+[2026-06-16T23:31:35Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:32:09Z] [2026-06-16T23:32:09Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:32:09Z] [2026-06-16T23:32:09Z]   → QA failed — will retry next iteration
+[2026-06-16T23:32:09Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:33:24Z] [2026-06-16T23:33:24Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:33:24Z] [2026-06-16T23:33:24Z]   → QA failed — will retry next iteration
+[2026-06-16T23:33:24Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:33:57Z] [2026-06-16T23:33:57Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:33:57Z] [2026-06-16T23:33:57Z]   → QA failed — will retry next iteration
+[2026-06-16T23:33:57Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:34:30Z] [2026-06-16T23:34:30Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:34:30Z] [2026-06-16T23:34:30Z]   → QA failed — will retry next iteration
+[2026-06-16T23:34:30Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:35:03Z] [2026-06-16T23:35:03Z]   → QA results: typecheck=❌ tests=❌ lint=❌
+[2026-06-16T23:35:03Z] [2026-06-16T23:35:03Z]   → QA failed — will retry next iteration
+[2026-06-16T23:35:03Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:35:37Z] [2026-06-16T23:35:37Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:35:37Z] [2026-06-16T23:35:37Z]   → QA failed — will retry next iteration
+[2026-06-16T23:35:37Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:36:09Z] [2026-06-16T23:36:09Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:36:09Z] [2026-06-16T23:36:09Z]   → QA failed — will retry next iteration
+[2026-06-16T23:36:09Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:36:44Z] [2026-06-16T23:36:44Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:36:44Z] [2026-06-16T23:36:44Z]   → QA failed — will retry next iteration
+[2026-06-16T23:36:44Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:37:51Z] [2026-06-16T23:37:51Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:37:51Z] [2026-06-16T23:37:51Z]   → QA failed — will retry next iteration
+[2026-06-16T23:37:51Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:37:51Z] ❤️  Ralph iter=150 phase=QA errors=162
+[2026-06-16T23:38:23Z] [2026-06-16T23:38:23Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:38:23Z] [2026-06-16T23:38:23Z]   → QA failed — will retry next iteration
+[2026-06-16T23:38:23Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:38:54Z] [2026-06-16T23:38:54Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:38:54Z] [2026-06-16T23:38:54Z]   → QA failed — will retry next iteration
+[2026-06-16T23:38:54Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:39:26Z] [2026-06-16T23:39:26Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:39:26Z] [2026-06-16T23:39:26Z]   → QA failed — will retry next iteration
+[2026-06-16T23:39:26Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:40:06Z] [2026-06-16T23:40:06Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:40:06Z] [2026-06-16T23:40:06Z]   → QA failed — will retry next iteration
+[2026-06-16T23:40:06Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:40:50Z] [2026-06-16T23:40:50Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:40:50Z] [2026-06-16T23:40:50Z]   → QA failed — will retry next iteration
+[2026-06-16T23:40:50Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:41:59Z] [2026-06-16T23:41:59Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:41:59Z] [2026-06-16T23:41:59Z]   → QA failed — will retry next iteration
+[2026-06-16T23:41:59Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:42:46Z] [2026-06-16T23:42:46Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:42:46Z] [2026-06-16T23:42:46Z]   → QA failed — will retry next iteration
+[2026-06-16T23:42:46Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:43:22Z] [2026-06-16T23:43:22Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:43:22Z] [2026-06-16T23:43:22Z]   → QA failed — will retry next iteration
+[2026-06-16T23:43:22Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:44:02Z] [2026-06-16T23:44:02Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:44:02Z] [2026-06-16T23:44:02Z]   → QA failed — will retry next iteration
+[2026-06-16T23:44:02Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:44:39Z] [2026-06-16T23:44:39Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:44:39Z] [2026-06-16T23:44:39Z]   → QA failed — will retry next iteration
+[2026-06-16T23:44:39Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:44:39Z] ❤️  Ralph iter=160 phase=QA errors=172
+[2026-06-16T23:45:13Z] [2026-06-16T23:45:13Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:45:13Z] [2026-06-16T23:45:13Z]   → QA failed — will retry next iteration
+[2026-06-16T23:45:13Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:45:59Z] [2026-06-16T23:45:59Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:45:59Z] [2026-06-16T23:45:59Z]   → QA failed — will retry next iteration
+[2026-06-16T23:45:59Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:47:19Z] [2026-06-16T23:47:19Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:47:19Z] [2026-06-16T23:47:19Z]   → QA failed — will retry next iteration
+[2026-06-16T23:47:19Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:48:41Z] [2026-06-16T23:48:41Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:48:41Z] [2026-06-16T23:48:41Z]   → QA failed — will retry next iteration
+[2026-06-16T23:48:41Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:49:15Z] [2026-06-16T23:49:15Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:49:15Z] [2026-06-16T23:49:15Z]   → QA failed — will retry next iteration
+[2026-06-16T23:49:15Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:49:56Z] [2026-06-16T23:49:56Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:49:56Z] [2026-06-16T23:49:56Z]   → QA failed — will retry next iteration
+[2026-06-16T23:49:56Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:50:38Z] [2026-06-16T23:50:38Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:50:38Z] [2026-06-16T23:50:38Z]   → QA failed — will retry next iteration
+[2026-06-16T23:50:38Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:51:55Z] [2026-06-16T23:51:55Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:51:55Z] [2026-06-16T23:51:55Z]   → QA failed — will retry next iteration
+[2026-06-16T23:51:55Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:53:20Z] [2026-06-16T23:53:20Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:53:20Z] [2026-06-16T23:53:20Z]   → QA failed — will retry next iteration
+[2026-06-16T23:53:20Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:54:31Z] [2026-06-16T23:54:31Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:54:31Z] [2026-06-16T23:54:31Z]   → QA failed — will retry next iteration
+[2026-06-16T23:54:31Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:54:31Z] ❤️  Ralph iter=170 phase=QA errors=182
+[2026-06-16T23:55:27Z] [2026-06-16T23:55:27Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:55:27Z] [2026-06-16T23:55:27Z]   → QA failed — will retry next iteration
+[2026-06-16T23:55:27Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:56:26Z] [2026-06-16T23:56:26Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:56:26Z] [2026-06-16T23:56:26Z]   → QA failed — will retry next iteration
+[2026-06-16T23:56:26Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:57:05Z] [2026-06-16T23:57:05Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:57:05Z] [2026-06-16T23:57:05Z]   → QA failed — will retry next iteration
+[2026-06-16T23:57:05Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:57:44Z] [2026-06-16T23:57:44Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:57:44Z] [2026-06-16T23:57:44Z]   → QA failed — will retry next iteration
+[2026-06-16T23:57:44Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:58:23Z] [2026-06-16T23:58:23Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:58:23Z] [2026-06-16T23:58:23Z]   → QA failed — will retry next iteration
+[2026-06-16T23:58:23Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:59:00Z] [2026-06-16T23:59:00Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:59:00Z] [2026-06-16T23:59:00Z]   → QA failed — will retry next iteration
+[2026-06-16T23:59:00Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:59:46Z] [2026-06-16T23:59:45Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:59:46Z] [2026-06-16T23:59:45Z]   → QA failed — will retry next iteration
+[2026-06-16T23:59:46Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-17T00:01:08Z] [2026-06-17T00:01:08Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-17T00:01:08Z] [2026-06-17T00:01:08Z]   → QA failed — will retry next iteration
+[2026-06-17T00:01:08Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens

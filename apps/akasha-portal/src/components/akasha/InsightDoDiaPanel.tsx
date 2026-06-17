@@ -24,7 +24,7 @@ const C = {
   txtMut: '#5C6691',
 } as const;
 
-const CORES_PILAR: Record<Pilar, string> = {
+const CORES_DIMENSAO: Record<Pilar, string> = {
   cabala: C.violeta,
   astrologia: C.aurora,
   tantrica: C.dourado,
@@ -32,12 +32,12 @@ const CORES_PILAR: Record<Pilar, string> = {
   iching: C.ocre,
 };
 
-const PILAR_NOME: Record<Pilar, string> = {
-  cabala: 'Cabala',
-  astrologia: 'Astrologia',
-  tantrica: 'Tântrica',
-  odu: 'Odu',
-  iching: 'I Ching',
+const DIMENSAO_NOME: Record<Pilar, string> = {
+  cabala: 'Ancestralidade',
+  astrologia: 'Movimento Celeste',
+  tantrica: 'Corpo & Energia',
+  odu: 'Ancestralidade',
+  iching: 'Mutação do Caminho',
 };
 
 export function InsightDoDiaPanel({ insight }: { insight: InsightDoDia }) {
@@ -74,7 +74,7 @@ export function InsightDoDiaPanel({ insight }: { insight: InsightDoDia }) {
             textTransform: 'uppercase',
           }}
         >
-          ✦ Insight do dia · síntese dos 5 Pilares
+          ✦ Insight do dia · síntese Akasha
         </span>
         <h2
           style={{
@@ -127,14 +127,14 @@ export function InsightDoDiaPanel({ insight }: { insight: InsightDoDia }) {
               key={p}
               style={{
                 fontSize: '0.65rem',
-                color: CORES_PILAR[p],
-                border: `1px solid ${CORES_PILAR[p]}55`,
+                color: CORES_DIMENSAO[p],
+                border: `1px solid ${CORES_DIMENSAO[p]}55`,
                 borderRadius: 4,
                 padding: '2px 8px',
                 letterSpacing: '0.05em',
               }}
             >
-              {PILAR_NOME[p]}
+              {DIMENSAO_NOME[p]}
             </span>
           ))}
         </div>
@@ -156,9 +156,9 @@ export function ConexoesPilaresPanel({ conexoes }: { conexoes: ConexaoPilar[] })
         <article
           key={`${c.origem}-${c.destino}`}
           style={{
-            background: `${CORES_PILAR[c.origem]}0a`,
-            border: `1px solid ${CORES_PILAR[c.origem]}33`,
-            borderLeft: `3px solid ${CORES_PILAR[c.origem]}`,
+            background: `${CORES_DIMENSAO[c.origem]}0a`,
+            border: `1px solid ${CORES_DIMENSAO[c.origem]}33`,
+            borderLeft: `3px solid ${CORES_DIMENSAO[c.origem]}`,
             borderRadius: 8,
             padding: '0.7rem 0.85rem',
           }}
@@ -171,12 +171,12 @@ export function ConexoesPilaresPanel({ conexoes }: { conexoes: ConexaoPilar[] })
               marginBottom: 4,
             }}
           >
-            <span style={{ color: CORES_PILAR[c.origem], fontWeight: 600 }}>
-              {PILAR_NOME[c.origem]}
+            <span style={{ color: CORES_DIMENSAO[c.origem], fontWeight: 600 }}>
+              {DIMENSAO_NOME[c.origem]}
             </span>
             <span style={{ margin: '0 6px' }}>→</span>
-            <span style={{ color: CORES_PILAR[c.destino], fontWeight: 600 }}>
-              {PILAR_NOME[c.destino]}
+            <span style={{ color: CORES_DIMENSAO[c.destino], fontWeight: 600 }}>
+              {DIMENSAO_NOME[c.destino]}
             </span>
           </div>
           <p

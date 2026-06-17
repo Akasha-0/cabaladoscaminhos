@@ -95,11 +95,11 @@ export function ErrorState({
   );
 }
 
-class ErrorBoundary extends React.Component<
+export class ErrorBoundary extends React.Component<
   { children: React.ReactNode; fallback?: React.ReactNode },
   { hasError: boolean; error: Error | null }
 > {
-  state = { hasError: false, error: null };
+  override state = { hasError: false, error: null };
 
   static getDerivedStateFromError(error: Error) {
     return { hasError: true, error };

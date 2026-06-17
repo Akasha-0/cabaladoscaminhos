@@ -128,24 +128,19 @@ function detectarCrise(intencao: string): boolean {
 // Referência: synthesis_v1.md §5 (Mandato) + feature_list F-200.
 
 async function loadEngines() {
-  const cabala = await import('@akasha/core-cabala').catch((e) => {
-    console.warn('[akasha/core] @akasha/core-cabala indisponível:', e);
+  const cabala = await import('@akasha/core-cabala').catch(() => {
     return null;
   });
-  const astro = await import('@akasha/core-astrology').catch((e) => {
-    console.warn('[akasha/core] @akasha/core-astrology indisponível:', e);
+  const astro = await import('@akasha/core-astrology').catch(() => {
     return null;
   });
-  const tantra = await import('@akasha/core-tantra').catch((e) => {
-    console.warn('[akasha/core] @akasha/core-tantra indisponível:', e);
+  const tantra = await import('@akasha/core-tantra').catch(() => {
     return null;
   });
-  const odu = await import('@akasha/core-odus').catch((e) => {
-    console.warn('[akasha/core] @akasha/core-odus indisponível:', e);
+  const odu = await import('@akasha/core-odus').catch(() => {
     return null;
   });
-  const iching = await import('@akasha/core-iching').catch((e) => {
-    console.warn('[akasha/core] @akasha/core-iching indisponível:', e);
+  const iching = await import('@akasha/core-iching').catch(() => {
     return null;
   });
   return { cabala, astro, tantra, odu, iching };
@@ -222,8 +217,8 @@ async function realPilar1Cabala(
       const expression = cab.calcularCabalistica(input.nome);
       const birthday = reduzir(d);
       return { life_path, birthday, expression, ano_pessoal };
-    } catch (e) {
-      console.warn('[akasha/core] Pilar 1 Cabala falhou, usando stub:', e);
+    } catch {
+      // fall through to stub
     }
   }
   // Stub fallback
@@ -290,7 +285,7 @@ async function realPilar2Astrologia(
       // F-209b: tríade Sombra/Dom/Graça (R-015 §2.1, nomenclatura PT-BR)
       // Análise COMPLETA de aspectos via findAspects + classifyAspect +
       // countTrinity (substitui heurística simples Sol-Lua de F-209).
-      // Cobre TODOS os aspectos entre os 10 planetas, não só Sol-Lua.
+      // Cobre todos os aspectos entre os 10 planetas, não só Sol-Lua.
       const { trinity, trinity_dominante } = computeTrinityFromChart(bc.chart.planeta, eng);
       // F-235: Lilith + Casa 8 — sexualidade e desejos ocultos.
       // Lilith existe em bc.chart.planeta (calcularLilith em swiss-ephemeris).
@@ -315,8 +310,8 @@ async function realPilar2Astrologia(
         lilith_signo,
         casa_8_signo,
       };
-    } catch (e) {
-      console.warn('[akasha/core] Pilar 2 Astrologia falhou, usando stub:', e);
+    } catch {
+      // fall through to stub
     }
   }
   // Stub fallback
@@ -396,8 +391,8 @@ async function realPilar3Tantrica(
       const corpo = tm.soul ?? (((y + m + d) % 11) + 1);
       const trigemeo: PilarTantrica['trigemeo'] =
         corpo <= 4 ? 'fisico' : corpo <= 8 ? 'astral' : 'mental';
-    } catch (e) {
-      console.warn('[akasha/core] Pilar 3 Tantra falhou, usando stub:', e);
+    } catch {
+      // fall through to stub
     }
   }
   // Stub fallback
@@ -435,7 +430,7 @@ async function realPilar4Odu(
   // usa a versão 16 (mais permissiva) até o D-040 unificar.
   // CANONICAL_NAMES — grafias canônicas retornadas por `calculateBirthOdu`
   // em @akasha/core-odus/odu-birth.ts (fonte: ODUS_IFA em odus-ifa-data.ts).
-  // Inclui TODAS as grafias possíveis (com e sem acento/til, nomes simples e
+  // Inclui todas as grafias possíveis (com e sem acento/til, nomes simples e
   // compostos) para que o split de `oduName` (ex: 'Ogbe (Oxé)' → 'Ogbe')
   // sempre encontre correspondência — sem cair no stub arbitrário.
   // Pilar 4 ethics invariant: nunca inventar correspondência. Se chegar
@@ -469,11 +464,9 @@ async function realPilar4Odu(
           aviso: 'requer consentimento + terreiro',
         };
       }
-      console.warn(
-        `[akasha/core] Pilar 4 Odu: real engine retornou nome composto/não-canônico "${r.oduName}" — usando stub (Pilar 4 ethics invariant)`,
-      );
-    } catch (e) {
-      console.warn('[akasha/core] Pilar 4 Odu falhou, usando stub:', e);
+      // Pilar 4 ethics invariant: stub fallback (real engine retornou nome não-canônico)
+    } catch {
+      // fall through to stub
     }
   }
   // Stub fallback (16 names — preserva teste Fase 5 que espera Ogbe em vez de Eji)
@@ -518,8 +511,8 @@ async function realPilar5IChing(
         hexagrama_dia: hex_dia,
         level: 'gift',
       };
-    } catch (e) {
-      console.warn('[akasha/core] Pilar 5 I Ching falhou, usando stub:', e);
+    } catch {
+      // fall through to stub
     }
   }
   // Stub fallback

@@ -21,7 +21,7 @@ type Nivel = 'shadow' | 'gift' | 'siddhi';
 
 /** Áreas com aplicacao preenchida no motor de interpretação (7 de 9 áreas DEC-005).
  * familia e criatividade existem no tipo LifeArea mas não têm aplicacao em VIDA_CONTENT. */
-const AREAS_WITH_DATA: string[] = ['proposito', 'carreira', 'financas', 'saude', 'relacionamentos', 'sexualidade', 'espiritualidade'];
+const AREAS_WITH_DATA: LifeArea[] = ['proposito', 'carreira', 'financas', 'saude', 'relacionamentos', 'sexualidade', 'espiritualidade'];
 
 const NIVEL_LABEL: Record<Nivel, { titulo: string; cor: string; emoji: string }> = {
   shadow: {
@@ -49,13 +49,13 @@ const NIVEL_DESCRICAO: Record<Nivel, string> = {
 
 interface Props {
   lifePath: number;
-  /** Frequência dominante do perfil Akasha — usado como default para o nível */
+  /** Frequência dominante do perfil Akasha — usado como default for the nível */
   defaultNivel?: 'shadow' | 'gift' | 'siddhi';
 }
 
 export function AkashaSignificadoCard({ lifePath, defaultNivel = 'gift' }: Props) {
   const [nivel, setNivel] = useState<Nivel>(defaultNivel);
-  const [area, setArea] = useState<string>('proposito');
+  const [area, setArea] = useState<LifeArea>('proposito');
 
   const vida: VidaInterpretation = interpretarVida(lifePath);
   const interp: AreaInterpretation = vida.levels[nivel] ?? vida.levels.gift;
@@ -182,7 +182,7 @@ export function AkashaSignificadoCard({ lifePath, defaultNivel = 'gift' }: Props
         <div style={{ marginBottom: 14 }}>
           <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', marginBottom: 8 }}>
             {AREAS_WITH_DATA.map((a) => {
-              if (!interp.aplicacao[a as LifeArea]) return null;
+              if (!interp.aplicacao[a]) return null;
               return (
                 <button
                   key={a}
@@ -231,7 +231,7 @@ export function AkashaSignificadoCard({ lifePath, defaultNivel = 'gift' }: Props
       </div>
 
       {/* Aplicacao por Área — P3: como este número se manifesta na área selecionada */}
-      {interp.aplicacao && interp.aplicacao[area as LifeArea] && (
+      {interp.aplicacao && interp.aplicacao[area] && (
         <div
           style={{
             background: `linear-gradient(135deg, ${NIVEL_LABEL[nivel].cor}10, ${NIVEL_LABEL[nivel].cor}05)`,
@@ -268,7 +268,7 @@ export function AkashaSignificadoCard({ lifePath, defaultNivel = 'gift' }: Props
               margin: 0,
             }}
           >
-            {interp.aplicacao[area as LifeArea]}
+            {interp.aplicacao[area]}
           </p>
         </div>
       )}

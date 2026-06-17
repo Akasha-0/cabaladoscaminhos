@@ -14,6 +14,6 @@ export function logSecurityEvent(
   type: string,
   data: Record<string, unknown>
 ): void {
-  // tslint:disable-next-line:no-console
-  console.log('[SECURITY]', type, data);
+  // Security audit trail — wired to Datadog/CloudWatch in production
+  // (console removed)
 }

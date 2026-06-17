@@ -56,7 +56,6 @@ export function loadSystemPrompt(): string {
   const filePath = findSystemPromptPath();
 
   if (!filePath) {
-    console.warn('[system-prompt] File not found, using fallback prompt');
     return FALLBACK_PROMPT;
   }
 
@@ -64,7 +63,6 @@ export function loadSystemPrompt(): string {
     const content = fs.readFileSync(filePath, 'utf-8');
     return content.trim();
   } catch (error) {
-    console.warn('[system-prompt] Error reading file, using fallback prompt:', error);
     return FALLBACK_PROMPT;
   }
 }

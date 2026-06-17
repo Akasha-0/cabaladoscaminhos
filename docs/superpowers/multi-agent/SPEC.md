@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Multi-Agent System — Spec de Integração
 
 > **Norte:** Doc 25.

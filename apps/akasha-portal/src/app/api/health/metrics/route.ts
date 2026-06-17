@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { searchParamsToObject } from '@/lib/interface/api/query-params';
 import type { SpiritualCorrelations } from '@/lib/domain/types/spiritual-correlations';
 import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/interface/api/spiritual-filters';
-import { calculateSpiritualStatsInline } from '@/lib/interface/api/spiritual-stats';
 
 // ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 
@@ -174,10 +173,7 @@ export async function GET(request: NextRequest) {
     entries = entries.filter((e) => e.spiritualCorrelations?.orixa === orixa);
   }
 
-  // Calculate spiritual stats using shared utility
-  const spiritualStatsBase = calculateSpiritualStatsInline(entries);
   const spiritualStats = {
-    ...spiritualStatsBase,
     avgValue: entries.reduce((sum, e) => sum + e.value, 0) / (entries.length || 1),
   };
   return NextResponse.json({

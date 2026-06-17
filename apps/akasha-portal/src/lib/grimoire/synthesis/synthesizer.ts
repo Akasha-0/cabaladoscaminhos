@@ -19,7 +19,6 @@ import {
 import type { Pilar } from '../significados-curados';
 import {
   gerarNarrativaDimensao,
-  gerarNarrativaSexualidade,
   gerarPerfilGeral,
 } from './narrative-generator';
 
@@ -86,7 +85,7 @@ export interface AkashaAuthority {
  * - Autoridade: derivada do Corpo Tântrico + Casa 8 (intuição corporal)
  * - Área de foco: a área com mais marcadores activos nos pilares
  */
-export function deriveAkashaAuthority(pilares: PilaresDados): AkashaAuthority {
+export function deriveAkashaAuthority(pilares: Partial<PilaresDados>): AkashaAuthority {
   const lp = pilares.cabala?.life_path;
   const luaSigno = pilares.astrologia?.lua_signo;
   const casa8Signo = pilares.astrologia?.casa_8_signo;
@@ -214,8 +213,6 @@ export interface CaixaSintese {
   readonly caminhoDeVida: string;
   /** Narrativa curta do perfil (header da página) */
   readonly perfilGeral: string;
-  /** Sexualidade deep dive — texto completo sobre sexualidade */
-  readonly sexualidadeNarrativa: string;
   /** Akasha Authority — sistema de decisão diário */
   readonly autoridade: AkashaAuthority;
 }
@@ -225,7 +222,6 @@ export interface CaixaSintese {
 const ALERTAS: Record<DimensaoId, string> = {
   saude: 'Evite forçar o corpo quando sentir exaustão — seu corpo capta antes da mente.',
   trabalho: 'Evite decisões financeiras em dias de alta tensão emocional.',
-  sexualidade: 'Evite agir por impulso quando o Corpo 4 (Mente Negativa) está em tensão.',
   amor: 'Evite decisões relacionais quando a Lua está em tensão com Marte.',
   criacao: 'Evite forçar criação — sua criatividade flui melhor no estado de paz.',
   proposito: 'Evite questionar seu propósito em momentos de baixa energia.',
@@ -237,7 +233,6 @@ const ALERTAS: Record<DimensaoId, string> = {
 const PRAKTIKAS: Record<DimensaoId, string> = {
   saude: '3 respirações profundas ao acordar, antes de qualquer decisão.',
   trabalho: 'Revise suas intenções antes de abrir o email corporativo.',
-  sexualidade: 'Observe o desejo sem agir — notice where it lives in your body.',
   amor: 'Escute mais do que fale em conversas importantes hoje.',
   criacao: 'Dedique 20 minutos a algo artístico sem objetivo — só pelo prazer.',
   proposito: 'Pergunte a si mesmo: "Estou vivendo minha missão ou minha zona de conforto?"',
@@ -289,15 +284,11 @@ export function sintetizarMapa(pilares: PilaresDados): CaixaSintese {
     const contribuicoesUnicas = Array.from(porPilar.values());
 
     // v2: narrativa profunda em vez de concatenação de frases curtas
-    const synthes =
-      dimensao.id === 'sexualidade'
-        ? gerarNarrativaSexualidade(pilares)
-        : gerarNarrativaDimensao(dimensao.id, pilares);
+    const synthes = gerarNarrativaDimensao(dimensao.id, pilares);
 
     const aplicavel =
       dimensao.id === 'trabalho' ||
       dimensao.id === 'amor' ||
-      dimensao.id === 'sexualidade' ||
       dimensao.id === 'proposito';
 
     dimensoes.push({
@@ -329,7 +320,6 @@ export function sintetizarMapa(pilares: PilaresDados): CaixaSintese {
     dimensoes,
     caminhoDeVida: caminhoStr,
     perfilGeral: gerarPerfilGeral(pilares),
-    sexualidadeNarrativa: gerarNarrativaSexualidade(pilares),
     autoridade: deriveAkashaAuthority(pilares),
   };
 }

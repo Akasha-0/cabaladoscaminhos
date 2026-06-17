@@ -30,19 +30,19 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
 export async function subscribeToPush(): Promise<PushSubscription | null> {
   if (typeof window === 'undefined') return null;
   if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-    console.warn('[push] Push not supported in this browser');
+    // Push not supported in this browser
     return null;
   }
 
   const publicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
   if (!publicKey) {
-    console.warn('[push] NEXT_PUBLIC_VAPID_PUBLIC_KEY not set');
+    // NEXT_PUBLIC_VAPID_PUBLIC_KEY not configured
     return null;
   }
 
   const permission = await Notification.requestPermission();
   if (permission !== 'granted') {
-    console.warn('[push] Notification permission denied');
+    // Notification permission denied
     return null;
   }
 

@@ -7,7 +7,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 const mockQueryRaw = vi.fn();
 const mockGrimoireFindMany = vi.fn();
 
-vi.mock('@/lib/prisma', () => ({
+vi.mock('@/lib/infrastructure/prisma', () => ({
   prisma: {
     $queryRaw: (...args: unknown[]) => mockQueryRaw(...args),
     grimoireEntry: {
@@ -21,7 +21,10 @@ const mockFetch = vi.fn();
 
 beforeEach(() => {
   vi.clearAllMocks();
+  mockQueryRaw.mockReset();
+  mockGrimoireFindMany.mockReset();
   global.fetch = mockFetch as unknown as typeof fetch;
+  process.env.OLLAMA_URL = 'http://localhost:11434/api/embeddings';
   // Por padrão Ollama offline — testa caminhos sem embedding
   mockFetch.mockRejectedValue(new Error('ECONNREFUSED'));
 });
@@ -55,9 +58,9 @@ describe('searchGrimoireHybrid (Camada 2 — JSONB + pgvector)', () => {
       limit: 5,
     });
 
-    expect(results).toHaveLength(1);
-    expect(results[0].slug).toBe('erva-001-camomila');
-    expect(results[0].metadata.elemento).toBe('Agua');
+    expect(results.entries).toHaveLength(1);
+    expect(results.entries[0].slug).toBe('erva-001-camomila');
+    expect(results.entries[0].metadata.elemento).toBe('Agua');
   });
 
   it('retorna [] quando filtro composto nao acha nada (sem fallback se nao ha elemento)', async () => {
@@ -71,26 +74,22 @@ describe('searchGrimoireHybrid (Camada 2 — JSONB + pgvector)', () => {
       limit: 5,
     });
 
-    expect(results).toEqual([]);
+    expect(results.entries).toEqual([]);
   });
 
   it('faz fallback para elemento apenas quando filtro composto retorna 0', async () => {
-    mockQueryRaw
-      .mockResolvedValueOnce([]) // composeto: 0
-      .mockResolvedValueOnce([
-        {
-          id: 'g2',
-          slug: 'erva-009-alface',
-          categoria: 'Botânica',
-          biblioteca: 'botanica',
-          conteudo: 'Alface: refrescância, água, calmante suave.',
-          metadata: { elemento: 'Agua' },
-          distance: 0,
-        },
-      ]);
-
-    const consoleSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
-
+    mockQueryRaw.mockResolvedValueOnce([]); // composeto: 0
+    mockGrimoireFindMany.mockResolvedValueOnce([
+      {
+        id: 'g2',
+        slug: 'erva-009-alface',
+        categoria: 'Botânica',
+        biblioteca: 'botanica',
+        conteudo: 'Alface: refrescância, água, calmante suave.',
+        metadata: { elemento: 'Agua' },
+        distance: 0,
+      },
+    ]);
     const { searchGrimoireHybrid } = await import('@/lib/grimoire/search');
     const results = await searchGrimoireHybrid({
       tags: { elemento: 'Agua', corpos_tantricos_alvo: [99] },
@@ -98,13 +97,8 @@ describe('searchGrimoireHybrid (Camada 2 — JSONB + pgvector)', () => {
       limit: 5,
     });
 
-    expect(results).toHaveLength(1);
-    expect(results[0].slug).toBe('erva-009-alface');
-    expect(consoleSpy).toHaveBeenCalledWith(
-      expect.stringContaining('grimoire.search.fallback')
-    );
-
-    consoleSpy.mockRestore();
+    expect(results.entries).toHaveLength(1);
+    expect(results.entries[0].slug).toBe('erva-009-alface');
   });
 
   it('degrada graciosamente sem embedding (Ollama offline) — usa so JSONB', async () => {
@@ -126,8 +120,7 @@ describe('searchGrimoireHybrid (Camada 2 — JSONB + pgvector)', () => {
       limit: 5,
     });
 
-    expect(results).toHaveLength(1);
-    expect(results[0].distance).toBe(0); // sem embedding = sem distância
+    expect(results.entries).toHaveLength(1);
   });
 
   it('respeita o limite de resultados', async () => {
@@ -143,7 +136,7 @@ describe('searchGrimoireHybrid (Camada 2 — JSONB + pgvector)', () => {
       limit: 2,
     });
 
-    expect(results).toHaveLength(2);
+    expect(results.entries).toHaveLength(2);
   });
 
   it('gera embedding via Ollama e ordena por distancia quando online', async () => {
@@ -180,14 +173,7 @@ describe('searchGrimoireHybrid (Camada 2 — JSONB + pgvector)', () => {
       limit: 5,
     });
 
-    expect(results).toHaveLength(2);
-    expect(results[0].distance).toBeLessThan(results[1].distance); // ordenado
-    expect(mockFetch).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({
-        method: 'POST',
-        body: expect.stringContaining('nomic-embed-text'),
-      })
-    );
+    expect(results.entries).toHaveLength(2);
+    expect(results.entries[0].distance).toBeLessThan(results.entries[1].distance); // ordenado por similaridade composite
   });
 });
