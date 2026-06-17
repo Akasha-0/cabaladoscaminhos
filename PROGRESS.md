@@ -1866,3 +1866,33 @@ Auditoria identificou que P8 (Conexoes) estava quase completo mas sem capacidade
 - **UX gap vs. missing feature**: A infraestrutura (schema, POST, GET list, DELETE) existia; faltava a experiencia de "re-ver uma analise salva". UX final e tão importante quanto a engine.
 - **`Stage` tipo ja previa `'details'`**: O tipo `Stage` em ConexoesClient ja tinha `'details'` como estado possivel, mas nunca era usado. A wiring completa реализует o que ja estava preparado.
 - **`akasha-core.calcular()` nao substitui `computeBirthChartMaps`**: `AkashaInputSchema` requer `local_nascimento` (cidade) + `intencao_inicial` (obrigatorio); chart route usa coordenadas numericas. Inputs incompativeis — o chart route continua a fazer 5 chamadas diretas aos engines.
+
+
+## Iter37 — P7: Frequency Trends per-area visualization in EvolutionPatterns
+
+### Resumo
+
+P7 (History Patterns) persistia `dominantFrequency` (shadow/gift/siddhi) e `alignmentScore` por area por dia em `AreaHistoryEntry`, e ja mostrava `FrequencyBar` (distribuicao agregada) e `AlignmentTrends` (sparklines de alignment score). Mas `dominantFrequency` por area nunca foi visualizado como historico — apenas contado para deteccao de streaks.
+
+A iter37 adiciona `FrequencyTrends`: um grafico de barras coloridas por area mostrando a evolucao da frequencia (shadow/gift/siddhi) ao longo dos ultimos 10 dias. Cada barra tem altura proporcional a frequencia (shadow=0%, gift=50%, siddhi=100%) e cor dedicada (rosa/turquesa/roxo).
+
+### Alteracoes
+
+**`EvolutionPatterns.tsx` — FrequencyTrends component**
+- Nova secao "Evolucao da Frequencia" inserida entre "Frequencia por Area" e "Tendencia de Alinhamento"
+- `type Freq = 'shadow' | 'gift' | 'siddhi'` — tipo local
+- `freqToScore(f)` — mapeia frequencia para score (siddhi=100, gift=50, shadow=0)
+- `FrequencyTrends({ history })` — mini bar chart por area (ultimos 10 entries), cor dedicada, label "Siddhi"/"Dom"/"Sombra"
+- Cada barra tem `title` tooltip com a frequencia exata
+
+**`EvolutionPatterns.tsx` — main JSX**
+- Nova secao renderizada conditionally quando `history.areaHistory.length > 0`
+
+### Verificacao
+- TypeScript: 0 erros no modulo
+- Testes: 1376 pass, 0 fail
+
+### Lessons Learned
+- **Dado persistido mas nao visualizado**: O campo `dominantFrequency` era salvo mas nunca renderizado como tendencia historica. A diferenca entre `FrequencyBar` (distribuicao agregada) e `FrequencyTrends` (evolucao temporal) justifica a separacao visual.
+- **`AlignmentTrends` vs `FrequencyTrends`**: AlignmentTrends mostra score de modulacao do ciclo (0-100, subjetivo ao ciclo atual). FrequencyTrends mostra a frequencia fundamental (shadow/gift/siddhi, determinada pelos mapas natais). Sao metricas ortogonais.
+- **Edit tool multi-hunk confusion**: Edicoes sobrepostas no mesmo arquivo podem criar snapshots duplicados. Estrategia: usar Python para edicoes multi-ponto em vez de multiplos `edit` calls sequenciais.
