@@ -2048,3 +2048,30 @@ Build: succeeds
 ### Lessons Learned
 Tunable weights scope: module-level override is process-scoped (single Lambda/process). For multi-instance prod: set via AKASHA_TRADICAO_WEIGHTS env var on startup, or implement DB-backed override with cache-busting.
 Validation-first pattern: isValidWeights() before mutating module state prevents bad overrides from silently corrupting the synthesis matrix.
+
+
+## Iter43 (2026-06-17): Cut Redirect-Only /mapa Entry Point + IDOR Security Fixes
+
+### Resumo
+Removed the pure-redirect /mapa entry point per MAPA.md. Fixed two IDOR vulnerabilities in mentor routes.
+
+### Alteracoes
+
+/mapa entry point cut:
+  - Removed [locale]/(akasha)/mapa/page.tsx (pure redirect, no independent value)
+  - Updated /mapa links in not-found.tsx and ConexoesClient.tsx to /mapa/significado
+
+IDOR security fixes (v0.85.2):
+  - mentor/ask/route.ts: Removed userId from body schema; uses requireAkashaApi for authenticated user ID
+  - mentor/history/route.ts: Removed userId from query params; uses requireAkashaApi
+
+MAPA.md: /mapa marked as cortada (Iter43); Cortes table updated
+
+### Verificacao
+TypeScript: 0 errors
+Tests: 1385 passed / 17 skipped
+Build: succeeds (/mapa no longer in route table)
+
+### Lessons Learned
+IDOR via body/query param: always derive user identity from auth context, never from request.
+Stale staged changes: files already committed can still appear staged if shell git state diverges.
