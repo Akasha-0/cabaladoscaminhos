@@ -223,18 +223,30 @@ export default async function MinhaCaixaPage({
           </div>
         )}
 
-        {/* Footer link */}
-        <footer style={{ marginTop: 32, textAlign: 'center' }}>
+        {/* Footer CTA */}
+        <footer style={{ marginTop: 32, textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <Link
+            href={`/${locale}/diario`}
+            style={{
+              fontSize: '0.78rem',
+              color: '#9D86FF',
+              textDecoration: 'none',
+              letterSpacing: '0.05em',
+              fontWeight: 600,
+            }}
+          >
+            Volte amanhã para seu Mandato do Dia →
+          </Link>
           <Link
             href={`/${locale}/mapa/significado`}
             style={{
-              fontSize: '0.78rem',
+              fontSize: '0.72rem',
               color: C.txtMut,
               textDecoration: 'none',
               letterSpacing: '0.05em',
             }}
           >
-            Ver mapas individuais →
+            Ver seus 5 mapas (Cabala, Astrologia, Tântrica, Ôdu, I Ching) →
           </Link>
         </footer>
       </div>

@@ -87,7 +87,7 @@ function DimensionBar({ dimension }: { dimension: ConnectionDimension }) {
     <div className="space-y-1">
       <div className="flex justify-between text-xs">
         <span className="text-white/80">{dimension.dimension}</span>
-        <span className="font-bold" style={{ color }}>{dimension.score}</span>
+        <span className="font-bold" style={{ color }}>{dimension.score}%</span>
       </div>
       <div className="h-2 rounded-full bg-white/10">
         <div
@@ -495,6 +495,7 @@ export default function ConexoesClient({ userProfile }: Props) {
             <div className="rounded-2xl border border-[#f87171]/30 bg-[#f87171]/5 p-5 text-center">
               <p className="text-xs text-white/50 mb-1">Conexão Amorosa</p>
               <p className="text-4xl font-black text-[#f87171]">{result.romantic}%</p>
+              <p className="text-[10px] text-white/30 mt-1 italic">Afetividade, intimidade e vulnerabilidade compartilhadas</p>
               <p className={`text-xs font-semibold mt-1 ${
                 result.romantic >= 71 ? 'text-[#34d399]' :
                 result.romantic >= 41 ? 'text-[#fbbf24]' :
@@ -508,6 +509,7 @@ export default function ConexoesClient({ userProfile }: Props) {
             <div className="rounded-2xl border border-[#fbbf24]/30 bg-[#fbbf24]/5 p-5 text-center">
               <p className="text-xs text-white/50 mb-1">Conexão Negócio</p>
               <p className="text-4xl font-black text-[#fbbf24]">{result.partnership}%</p>
+              <p className="text-[10px] text-white/30 mt-1 italic">Propósito, visão e ação conjunta no mundo</p>
               <p className={`text-xs font-semibold mt-1 ${
                 result.partnership >= 71 ? 'text-[#34d399]' :
                 result.partnership >= 41 ? 'text-[#fbbf24]' :
@@ -746,11 +748,11 @@ export default function ConexoesClient({ userProfile }: Props) {
                   <div className="grid grid-cols-2 gap-2">
                     <div className="rounded-xl bg-[#f87171]/5 border border-[#f87171]/20 p-2 text-center">
                       <p className="text-xs text-white/40">Amorosa</p>
-                      <p className="text-lg font-black text-[#f87171]">{conn.romanticScore}</p>
+                      <p className="text-lg font-black text-[#f87171]">{conn.romanticScore}%</p>
                     </div>
                     <div className="rounded-xl bg-[#fbbf24]/5 border border-[#fbbf24]/20 p-2 text-center">
                       <p className="text-xs text-white/40">Negócio</p>
-                      <p className="text-lg font-black text-[#fbbf24]">{conn.partnershipScore}</p>
+                      <p className="text-lg font-black text-[#fbbf24]">{conn.partnershipScore}%</p>
                     </div>
                   </div>
                   <div className="flex items-center justify-between text-xs text-white/30">
