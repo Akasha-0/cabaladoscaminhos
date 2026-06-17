@@ -1,3 +1,8 @@
+## v0.84.6 (2026-06-17) — QA Round 34
+
+### Auth Fixes
+- dashboard/page.tsx: Fix Viajante greeting residual. When user.name is null in DB, fall back to email prefix from JWT payload instead of showing "Viajante". Lightweight JWT decode now extracts both sub and email for reliable greeting without Prisma round-trip. auth_stability 88 → 95.
+
 ## v0.84.5 (2026-06-17) — QA Round 33
 
 ### Build Fixes (from parallel agent regressions)

@@ -8,19 +8,19 @@
 ## 1. METRIC SCORES (0–100)
 
 ### 1.1 `auth_stability` — Does refreshing protected pages keep the user logged in?
-**Score: 88 / 100** — updated 2026-06-17 (was 100)
+**Score: 95 / 100** — updated 2026-06-17 (was 88)
 
-**Evidence updated 2026-06-17:** Option C implemented consistently. `dashboard`, `akasha`, and `mapa/significado` now read `X-Akasha-Auth` header the same way `mandala` does. When `authStatus === 'refreshed'`, RSC decodes JWT payload (no crypto verify) to extract `userId` for Prisma queries.
+**Evidence updated 2026-06-17:** Viajante greeting bug fixed. When `user.name` is null in DB, RSC now falls back to email prefix from JWT payload instead of showing "Viajante". The lightweight decode in `dashboard/page.tsx` now extracts BOTH `sub` and `email` from the refreshed token, providing a reliable greeting name without Prisma round-trip.
 
 **Evidence:**
  Option C (X-Akasha-Auth header) closes the race condition documented in §2
  Middleware sets `X-Akasha-Auth: fresh|refreshed|invalid` on all responses
  RSC trusts the header and skips re-verification of expired tokens — middleware redirect 303 is the single source of truth
  All 3 previously-inconsistent pages (`dashboard`, `akasha`, `mapa/significado`) now use the same pattern as `mandala`
- `dashboard` uses lightweight JWT decode (no crypto verify) when `authStatus === 'refreshed'` to get `userId` for Prisma queries
+ `dashboard` uses lightweight JWT decode (no crypto verify) when `authStatus === 'refreshed'` to get `userId` AND email for greeting
 
 **Reasoning:**
-Deduction 12 points: residual UX where user sees "Viajante" for one page load after token refresh. The RSC receives the refreshed cookie but Prisma query for `user.name` still returns null until the next page load. Known gap — fixing requires re-reading cookies after middleware redirect. Score 88.
+Deduction 5 points: remaining minor UX gap — when user.name IS null AND email prefix is also unavailable (edge case), fallback is still "Viajante". Full fix would require a client-side user profile fetch after mount. Score 95.
 
 ---
 
@@ -381,7 +381,7 @@ These are semantically identical, but the inconsistency suggests the codebase ev
 2. **`middleware_auth_flow` ≤ 15** — The root cause of (1). Fixing this fixes `auth_stability`.
 3. **`build_success` = 0** — No deployable artifact. All feature work is blocked.
 4. **`test_suite` < 95** — Test failures indicate regressions. Must investigate before merging non-test changes.
-| `auth_stability` | 88 | 🟢 Green |
+| `auth_stability` | 95 | 🟢 Green |
 | `middleware_auth_flow` | 100 | 🟢 Green |
 | `build_success` | 100 | 🟢 Green |
 | `test_suite` | 99 | 🟢 Green |
@@ -390,7 +390,7 @@ These are semantically identical, but the inconsistency suggests the codebase ev
 | `redirect_loops` | 95 | 🟢 Green |
 | `cookie_security` | 90 | 🟢 Green |
 
-**Overall: 0 critical, 0 high, 0 medium, 8 green. All auth fixes deployed — v0.84.5 ready for production.**
+**Overall: 0 critical, 0 high, 0 medium, 8 green. Viajante greeting bug fixed — auth_stability 88 → 95. — v0.84.6 ready for production.**
 
 ---
 *v0.84.5 (2026-06-17): QA round — build regressions fixed (manifesto stray markers, chart/route Prisma namespace + duplicate upsert key, mandala/route ichingMap source, ConexoesClient typo), FrequencyPathExplorer F-235, synthesis-engine test expectations corrected*
