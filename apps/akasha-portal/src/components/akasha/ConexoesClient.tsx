@@ -367,7 +367,7 @@ export default function ConexoesClient({ userProfile }: Props) {
                     onChange={(e) => setRawData({ ...rawData, birthTime: e.target.value })}
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#6350E0]"
                   />
-                  <p className="text-xs text-white/60 mt-1">Necesária para Ascendente e Casas — sem ela, Síncronia perde precisão</p>
+*                  <p className="text-xs text-white/60 mt-1">Necessária para Ascendente e Casas — sem ela, Síncronia perde precisão</p>
                 </div>
               </div>
               <div>

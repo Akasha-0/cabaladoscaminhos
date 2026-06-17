@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
   const kabalisticMap = chart.kabalisticMap as any;
   const tantricMap = chart.tantricMap as any;
   const oduBirth = chart.oduBirth as any;
-  const ichingMap = (user?.ichingMap ?? null) as any;
+  const ichingMap = (chart?.ichingMap ?? null) as any;
   const userBirthDate = user?.birthDate ?? null;
   const userBirthTime = user?.birthTime ?? null;
 
