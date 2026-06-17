@@ -51,10 +51,11 @@ export async function POST(request: NextRequest) {
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
   const payload = verifyAkashaToken(token, 'access');
   if (!payload) {
-    // Share Target sem auth — redirect para onboarding com intent preserved
+    // Share Target sem auth — redirect para login com return URL preservado
     const url = new URL(request.url);
+    const locale = 'pt-BR';
     return NextResponse.redirect(
-      new URL(`/onboarding?return=${encodeURIComponent('/compartilhar/receber')}`, url.origin),
+      new URL(`/${locale}/login?return=${encodeURIComponent('/' + locale + '/compartilhar/receber')}`, url.origin),
       303
     );
   }

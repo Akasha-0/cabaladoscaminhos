@@ -1222,3 +1222,12 @@ Cada entrada inclui campo `fonte: string` com base numerológica tradicional par
 - Suite synthesis-engine: 99/99 ✅
 - Suite completa: 1361/1361 ✅, 17 skipped, 0 failures
 - ROADMAP.md item 56 ✅ (marcação em falta da iter18)
+
+## Iter21 — Odu mapeamentos (AKASHA v3)
+**Data:** 2026-06-17
+
+### ROADMAP item: odu/ — Prioridade 1
+
+- Criado mapeamentos/odu/numeros.ts (14.7KB, 16 Odu)
+- traduzOdu enriquecida com orixa/elemento/frequencia/proibicao
+- Suite: 1361/1361 pass

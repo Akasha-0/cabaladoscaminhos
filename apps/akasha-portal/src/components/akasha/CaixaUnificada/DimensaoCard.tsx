@@ -156,11 +156,15 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
 
       {/* Síntese narrativa — visível mesmo fechado */}
       {/* Renderiza apenas o primeiro parágrafo quando fechado */}
-      <div style={{ marginTop: 10, fontSize: '0.88rem', color: 'rgba(232,224,255,0.75)', lineHeight: 1.5 }}>
+            <div style={{ marginTop: 10, fontSize: '0.88rem', color: 'rgba(232,224,255,0.75)', lineHeight: 1.5 }}>
         {(() => {
           const paras = sintese.synthes ? sintese.synthes.split('\n\n').filter(Boolean) : [];
           if (paras.length === 0) return null;
-          return <p style={{ margin: 0, lineHeight: 1.55 }}>{aberto ? paras.slice(1).join('\n\n') : paras[0]}</p>;
+          // Collapsed: show paragraph 1 (truncated at 120 chars)
+          // Expanded: show paragraphs 2+ (Akasha Authority + Prática provide behavioral framing)
+          const content = aberto ? paras.slice(1).join('\n\n') : paras[0];
+          const truncated = !aberto && content.length > 120 ? content.slice(0, 117) + '\u2026' : content;
+          return <p style={{ margin: 0, lineHeight: 1.55 }}>{truncated}</p>;
         })()}
       </div>
       {/* Conteúdo expandido */}

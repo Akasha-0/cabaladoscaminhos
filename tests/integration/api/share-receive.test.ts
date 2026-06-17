@@ -42,11 +42,11 @@ describe('POST /api/share/receive (F-240)', () => {
     vi.clearAllMocks();
   });
 
-  it('redirect 303 para /onboarding quando sem auth', async () => {
+  it('redirect 303 para /login quando sem auth', async () => {
     mockCookieStore.get.mockReturnValue(undefined);
     const res = await POST(makeRequestWithUrl('http://localhost/api/share/receive') as any);
     expect(res.status).toBe(303);
-    expect(res.headers.get('Location')).toMatch(/onboarding/);
+    expect(res.headers.get('Location')).toMatch(/\/login/);
   });
 
   it('redirect 303 para /onboarding com return path', async () => {

@@ -30,8 +30,8 @@ export default async function CompartilharReceberPage({ params, searchParams }: 
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
   const payload = authStatus === 'refreshed' ? null : verifyAkashaToken(token, 'access');
 
-  if (!payload) {
-    redirect(`/${locale}/onboarding?return=/compartilhar/receber`);
+  if (!payload && authStatus !== 'refreshed') {
+    redirect(`/${locale}/login?return=${encodeURIComponent('/' + locale + '/compartilhar/receber')}`);
   }
 
   // Se recebeu intent via query (fallback), forward para /oraculo

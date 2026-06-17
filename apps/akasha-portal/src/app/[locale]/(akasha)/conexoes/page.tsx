@@ -25,10 +25,20 @@ export default async function ConexoesPage({
     birthLatitude: number | null;
     birthLongitude: number | null;
     birthTimezone: string | null;
+  };
+
+  let fetchedUser: {
+    name: string | null;
+    birthDate: Date | null;
+    birthTime: string | null;
+    birthCity: string | null;
+    birthLatitude: number | null;
+    birthLongitude: number | null;
+    birthTimezone: string | null;
   } | null = null;
 
   try {
-    const user = await prisma.user.findUnique({
+    fetchedUser = await prisma.user.findUnique({
       where: { id: userId },
       select: {
         name: true,
@@ -40,19 +50,22 @@ export default async function ConexoesPage({
         birthTimezone: true,
       },
     });
-    if (!user) redirect(`/${locale}/onboarding`);
+    if (!fetchedUser) {
+      redirect(`/${locale}/login?return=${encodeURIComponent('/' + locale + '/conexoes')}`);
+    }
     userProfile = {
-      name: user.name ?? '',
-      birthDate: user.birthDate ? user.birthDate.toISOString().split('T')[0] : null,
-      birthTime: user.birthTime ?? null,
-      birthCity: user.birthCity ?? null,
-      birthLatitude: user.birthLatitude ?? null,
-      birthLongitude: user.birthLongitude ?? null,
-      birthTimezone: user.birthTimezone ?? null,
+      name: fetchedUser.name ?? '',
+      birthDate: fetchedUser.birthDate ? fetchedUser.birthDate.toISOString().split('T')[0] : null,
+      birthTime: fetchedUser.birthTime ?? null,
+      birthCity: fetchedUser.birthCity ?? null,
+      birthLatitude: fetchedUser.birthLatitude ?? null,
+      birthLongitude: fetchedUser.birthLongitude ?? null,
+      birthTimezone: fetchedUser.birthTimezone ?? null,
     };
   } catch {
-    redirect(`/${locale}/onboarding`);
+    redirect(`/${locale}/login?return=${encodeURIComponent('/' + locale + '/conexoes')}`);
   }
+
 
   return <ConexoesClient userProfile={userProfile} />;
 }

@@ -17,7 +17,7 @@
 
 **Entregáveis restantes (futuro):**
 - [x] `cabala/`: número → frequência, elemento, séfira, caminho — DONE (iter20): `mapeamentos/cabala/numeros.ts` criado com 12 entradas (1-9 + 11, 22, 33); `traduzCabala` enriquecido com séfira/elemento/caminho/fonte; Ano Pessoal agora coberto
-- [ ] `odu/`: odu → frequência, elemento, orixá regente, proibição
+- [x] `odu/`: odu → frequência, elemento, orixá regente, proibição ✅ Iter21 — `mapeamentos/odu/numeros.ts` criado (16 Odu, fonte enriquecida em `traduzOdu`)
 - [ ] `astrologia/`: planeta → frequência, elemento, signo, casa
 - [ ] `tantra/`: corpo (1-11) → frequência, chakra, elemento
 - [x] Integração em `synthesis-engine/area-builders.ts` — área narrativa deriva de `mapeamentos/` e não de lógica inline (Iteração 6/7: synthesizePrimitives() chamado em buildAkashaSynthesis, 6 area functions aceitam _synthesizedProfile opcional)

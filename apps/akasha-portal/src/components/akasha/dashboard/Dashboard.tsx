@@ -644,10 +644,18 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                         </div>
                         <h3 className="text-xl font-bold font-cinzel text-white leading-tight">{dailyData.ritual.titulo}</h3>
                         <div className="flex items-center gap-3 text-xs text-[#A7AECF]/70">
-                          <span className="flex items-center gap-1">
-                            <Wind size={12} className="text-[#2DD4BF]" />
-                            <span className="text-[10px] text-[#A7AECF]/50 mr-1">elemento</span>{dailyData.ritual.elemento || dailyData.ritual.cor || '15 min'}
-                          </span>
+                          {dailyData.ritual.elemento ? (
+                            <span className="flex items-center gap-1">
+                              <Wind size={12} className="text-[#2DD4BF]" />
+                              <span className="text-[10px] text-[#A7AECF]/50 mr-1">elemento</span>
+                              <span className="text-xs text-white">{dailyData.ritual.elemento}</span>
+                            </span>
+                          ) : (
+                            <span className="flex items-center gap-1">
+                              <span className="text-[10px] text-[#A7AECF]/50">duração</span>
+                              <span className="text-xs text-white">{dailyData.ritual.cor || '15 min'}</span>
+                            </span>
+                          )}
                         </div>
                       </div>
                       <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7C5CFF]/20 to-[#2DD4BF]/10 border border-[#7C5CFF]/20 flex items-center justify-center shadow-[0_0_20px_rgba(124,92,255,0.15)]">

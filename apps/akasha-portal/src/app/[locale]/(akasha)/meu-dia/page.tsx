@@ -21,13 +21,16 @@ export default async function MeuDiaPage({ params }: MeuDiaPageProps) {
   const payload = authStatus === 'refreshed' ? null : verifyAkashaToken(token, 'access');
 
   if (!payload && authStatus !== 'refreshed') {
-    redirect(`/${locale}/onboarding`);
+    redirect(`/${locale}/login?return=${encodeURIComponent('/' + locale + '/meu-dia')}`);
   }
 
-  const user = await prisma.user.findUnique({
-    where: { id: payload!.sub },
-    select: { name: true },
-  });
+  const userId = payload?.sub;
+  const user = userId
+    ? await prisma.user.findUnique({
+        where: { id: userId },
+        select: { name: true },
+      })
+    : null;
 
   const displayName = user?.name?.split(' ')[0] ?? 'Viajante';
 

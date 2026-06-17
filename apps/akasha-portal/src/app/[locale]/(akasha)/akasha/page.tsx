@@ -281,9 +281,9 @@ export default async function MinhaCaixaPage({
             }}
           >
             {renderNarrative(sintese.perfilGeral).map((node, i) => (
-              <div key={i} style={{ color: C.txtPri, fontSize: '0.92rem', lineHeight: 1.55, margin: 0 }}>
+              <p key={i} style={{ color: C.txtPri, fontSize: '0.92rem', lineHeight: 1.55, margin: '0 0 6px 0' }}>
                 {node}
-              </div>
+              </p>
             ))}
           </section>
         )}

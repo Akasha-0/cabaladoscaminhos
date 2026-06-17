@@ -12,6 +12,7 @@ import type {
 } from './types';
 import { PESOS_TRADICAO_DOMINIO, PRIMITIVOS } from './types';
 import { NUMEROS_CABALA, getNumeroCabala } from './cabala/numeros';
+import { ODUS_NUMEROLOGIA } from './odu/numeros';
 import type {
   PilarIChing,
   PilarCabala,
@@ -385,6 +386,10 @@ const ODU_PRIMITIVOS: Record<string, { primitivo: Primitivo; intensidade: number
 
 function traduzOdu(odu: PilarOdu): PrimitiveContribution[] {
   const principal = ODU_PRIMITIVOS[odu.odu_principal];
+
+  // Look up enriched Odu data for fonte enrichment
+  const oduEntry = ODUS_NUMEROLOGIA[odu.odu_principal] ?? null;
+
   if (!principal) {
     return [{
       primitivo: 'Conexao',
@@ -394,22 +399,35 @@ function traduzOdu(odu: PilarOdu): PrimitiveContribution[] {
     }];
   }
 
+  // Build enriched fonte with orixá, elemento, frequência, proibição
+  const enrichedFonte = oduEntry
+    ? `${principal.fonte}; orixá(s): ${oduEntry.orixas.join('/')}, ` +
+      `elemento: ${oduEntry.elemento}, frequência: ${oduEntry.frequencia}, ` +
+      `proibição: ${oduEntry.proibicao.split(';')[0].split(',')[0]} [${odu.fonte}]`
+    : `${principal.fonte} [${odu.fonte}]`;
+
   const results: PrimitiveContribution[] = [{
     primitivo: principal.primitivo,
     intensidade: principal.intensidade,
     polaridade: principal.polaridade,
-    fonte: `${principal.fonte} [${odu.fonte}]`,
+    fonte: enrichedFonte,
   }];
 
   // Odu secundário pesa 50%
   if (odu.odu_secundario) {
     const sec = ODU_PRIMITIVOS[odu.odu_secundario];
+    const secEntry = ODUS_NUMEROLOGIA[odu.odu_secundario] ?? null;
     if (sec) {
+      const secEnrichedFonte = secEntry
+        ? `${sec.fonte}; orixá(s): ${secEntry.orixas.join('/')}, ` +
+          `elemento: ${secEntry.elemento}, frequência: ${secEntry.frequencia}, ` +
+          `proibição: ${secEntry.proibicao.split(';')[0].split(',')[0]} (secundário) [${odu.fonte}]`
+        : `${sec.fonte} (secundário) [${odu.fonte}]`;
       results.push({
         primitivo: sec.primitivo,
         intensidade: Math.round(sec.intensidade * 0.5),
         polaridade: sec.polaridade,
-        fonte: `${sec.fonte} (secundário) [${odu.fonte}]`,
+        fonte: secEnrichedFonte,
       });
     }
   }
