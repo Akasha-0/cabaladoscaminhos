@@ -362,7 +362,7 @@ export default async function DiarioPage({
     <div style={wrapStyle}>
       <h1 className="sr-only">Diário Energético</h1>
       {/* ── Tela 1: O Mandato (3 frases) ─────────────────────────────────── */}
-      <div style={screenStyle}>
+      <div style={screenStyle} role="region" aria-label="Tela 1 de 5 — Mandato">
         <div style={innerStyle}>
         <div style={screenNumStyle}>01\u00A0/\u00A005 — Mandato</div>
 
@@ -430,7 +430,7 @@ export default async function DiarioPage({
             </div>
           ) : (
             <div style={cardStyle(pilarInfo.cor)}>
-                A Voz do Akasha
+              <h2 style={{ ...headlineStyle, color: pilarInfo.cor }}>A Voz do Akasha</h2>
               <span style={{fontSize:'0.72rem', color:C.txtMut, fontStyle:'italic', display:'block', marginBottom:4}}>Três frases que condensam a mensagem energética do seu mapa para hoje.</span>
               {frases.map((f, i) => (
                 <p
@@ -460,7 +460,7 @@ export default async function DiarioPage({
                 </div>
               )}
 
-              <div style={{textAlign:'center', marginTop:8}}><span style={{fontSize:'0.7rem', color:C.txtMut}}>↓ Continue para a pergunta do dia</span></div>
+              <div style={{textAlign:'center', marginTop:8}}><span style={{fontSize:'0.7rem', color:C.txtMut}} aria-label='Continue para a pergunta do dia'>Continue para a pergunta do dia ↓</span></div>
               {/* Fontes citadas — proveniência obrigatória (Ethics §1) */}
               {mandato.cita_fontes.length > 0 && (
                 <details className="mt-2" aria-label="Fontes e referências desta análise">
@@ -479,7 +479,7 @@ export default async function DiarioPage({
       </div>
 
       {/* Tela 2: A Pergunta do Dia */}
-      <div style={screenStyle}>
+      <div style={screenStyle} role="region" aria-label="Tela 2 de 5 — Pergunta do Dia">
         <div style={innerStyle}>
           <div style={screenNumStyle}>02\u00A0/\u00A005 — Pergunta</div>
           <div style={cardStyle(C.violeta)}>
@@ -517,7 +517,7 @@ export default async function DiarioPage({
       
 
       {/* Tela 3: O Micro-Ritual */}
-      <div id="tela-3" style={screenStyle}>
+      <div id="tela-3" style={screenStyle} role="region" aria-label="Tela 3 de 5 — Micro-Ritual">
         <div style={innerStyle}>
           <div style={screenNumStyle}>03\u00A0/\u00A005 — Ritual</div>
           <div style={cardStyle(C.aurora)}>
