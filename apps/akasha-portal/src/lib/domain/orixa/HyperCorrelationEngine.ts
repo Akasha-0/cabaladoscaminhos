@@ -35,6 +35,12 @@ import {
   getOrixaNumeros,
   ORIXAS_UNIFIED,
 } from './types';
+import {
+  getElementFromSigno,
+  getElementFromNumber,
+  calculateCorrelationStrength,
+  getElement,
+} from './element-correlation';
 
 // ════════════════════════════════════════════════════════════════════════════
 // TYPE DEFINITIONS
@@ -166,89 +172,6 @@ const MASTER_NUMBERS = {
   22: { name: 'Mestria Material', element: 'Terra', sephirah: 22 },
   33: { name: 'Serviço Divino', element: 'Fogo', sephirah: 33 },
 };
-
-// ════════════════════════════════════════════════════════════════════════════
-// HELPER FUNCTIONS
-// ════════════════════════════════════════════════════════════════════════════
-
-function getElementFromSigno(signo: string): string {
-  const map: Record<string, string> = {
-    aries: 'Fogo',
-    touro: 'Terra',
-    gemeos: 'Ar',
-    cancer: 'Água',
-    leao: 'Fogo',
-    virgem: 'Terra',
-    libra: 'Ar',
-    escorpiao: 'Água',
-    sagitario: 'Fogo',
-    capricornio: 'Terra',
-    aquario: 'Ar',
-    peixes: 'Água',
-  };
-  return map[signo.toLowerCase()] ?? 'Ar';
-}
-
-function getElementFromNumber(num: number): string {
-  const base = num % 9 || 9;
-  if (base === 1 || base === 9) return 'Fogo';
-  if (base === 2 || base === 8) return 'Água';
-  if (base === 3 || base === 7) return 'Terra';
-  if (base === 4 || base === 6) return 'Ar';
-  return 'Éter';
-}
-
-function calculateCorrelationStrength(
-  tradition1: string,
-  entity1: string,
-  tradition2: string,
-  entity2: string
-): number {
-  // Base correlation strength
-  let strength = 0.5;
-
-  // Element matching increases strength
-  const elem1 = getElement(entity1) || '';
-  const elem2 = getElement(entity2) || '';
-  if (elem1 && elem2 && elem1 === elem2) {
-    strength += 0.3;
-  }
-
-  // Direct known correlations
-  const knownCorrelations: Array<[string, string, number]> = [
-    ['oxum', 'venus', 0.95],
-    ['ogum', 'marte', 0.95],
-    ['iemanja', 'lua', 0.95],
-    ['oxala', 'sol', 0.95],
-    ['xango', 'jupiter', 0.9],
-  ];
-
-  for (const [orixa, planeta, corr] of knownCorrelations) {
-    if (
-      (entity1.toLowerCase().includes(orixa) && entity2.toLowerCase().includes(planeta)) ||
-      (entity1.toLowerCase().includes(planeta) && entity2.toLowerCase().includes(orixa))
-    ) {
-      strength = Math.max(strength, corr);
-    }
-  }
-
-  return Math.min(strength, 1.0);
-}
-
-function getElement(entity: string): string | null {
-  // Try Orixá
-  const orixa = getOrixa(entity);
-  if (orixa) return orixa.elemento;
-
-  // Try planet
-  for (const [element, planets] of Object.entries(ELEMENT_PLANETS)) {
-    if (planets.some((p) => entity.toLowerCase().includes(p.toLowerCase()))) {
-      return element;
-    }
-  }
-
-  return null;
-}
 
 // ════════════════════════════════════════════════════════════════════════════
 // MAIN ENGINE
