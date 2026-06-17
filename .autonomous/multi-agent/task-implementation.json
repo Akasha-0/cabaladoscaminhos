@@ -1,17 +1,26 @@
 {
   "improvements": [
     {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "2 changed files lack tests",
+      "files": [
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts"
+      ]
+    },
+    {
       "type": "large_file",
       "priority": 4,
       "description": "26 oversized files",
       "files": [
         {
-          "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
-          "lines": 847
-        },
-        {
           "file": "apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts",
           "lines": 785
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts",
+          "lines": 775
         },
         {
           "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
@@ -20,5 +29,5 @@
       ]
     }
   ],
-  "iteration": 1
+  "iteration": 2
 }
