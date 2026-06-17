@@ -1,8 +1,8 @@
 {
   "results": [
     {
-      "success": false,
-      "message": "Skipped — practices.ts already refactored: lookup helpers extracted to practices-lookup.ts in a prior session; remaining content is pure static PRACTICES data array (no functions to extract)",
+      "success": true,
+      "message": "packages/core-iching/src/practices.ts is pure data (PRACTICES constant only) — no helper functions to extract; helpers already extracted to practices-queries.ts, practices-data.ts, practices-cristais.ts, practices-cromoterapia.ts",
       "type": "large_file"
     }
   ]

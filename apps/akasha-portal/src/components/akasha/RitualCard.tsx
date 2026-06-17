@@ -149,10 +149,9 @@ export function RitualCard({ ritual }: Props) {
                 {ritual.pratica.howTo}
               </p>
               {ritual.pratica.warnings && ritual.pratica.warnings.length > 0 && (
-                  <p className="text-xs text-[#FB5781]">
-                    <AlertTriangle size={12} className="inline mr-1 flex-shrink-0 text-[#FB5781]" /> {ritual.pratica.warnings[0]}
-                  </p>
-                </div>
+                <p className="text-xs text-[#FB5781]">
+                  <AlertTriangle size={12} className="inline mr-1 flex-shrink-0 text-[#FB5781]" />{ritual.pratica.warnings[0]}
+                </p>
               )}
             </div>
           </section>

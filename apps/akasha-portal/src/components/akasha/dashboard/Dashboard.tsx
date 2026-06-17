@@ -12,8 +12,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Sparkles, Calendar, Moon, Sun, Cloud, AlertCircle, Check, Loader, 
-  RefreshCw, TrendingUp, Award, Flame, UserCheck, X, Info, ChevronRight, HelpCircle,
+  Sparkles, Moon, Sun, Cloud, Loader, 
+  RefreshCw, TrendingUp, Award, UserCheck, X, Info, 
   Clock, Wind, CheckCircle, Heart
 } from 'lucide-react';
 import { ThemeToggle } from '../ThemeToggle';
@@ -26,12 +26,13 @@ import { useAkashaSynthesis } from './hooks/useAkashaSynthesis';
 import { AkashaLifeAreasDashboard } from './AkashaLifeAreasDashboard';
 import { sintetizarMapa } from '@/lib/grimoire/synthesis/synthesizer';
 import type { CaixaSintese, DimensaoSintese } from '@/lib/grimoire/synthesis/synthesizer';
+import type { PilaresDados } from '@/lib/grimoire/significados-curados';
 import { AREA_ICONE, AREA_LABEL } from '@/lib/grimoire/traducao-areas';
 
 interface DashboardProps {
   userId: string;
   userName?: string;
-  initialPilares?: any;
+  initialPilares?: PilaresDados;
 }
 
 type TabType = 'daily' | 'profile' | 'progress';
@@ -65,17 +66,6 @@ const ESTRATEGIA_LABEL: Record<string, string> = {
   surrender: 'Entregue',
 };
 
-const DIMENSAO_ICONE: Record<string, string> = {
-  saude: '◈',
-  trabalho: '◉',
-  sexualidade: '◉',
-  amor: '♥',
-  criacao: '✦',
-  proposito: '★',
-  familia: '⬡',
-  espiritualidade: '✧',
-  superacao: '⛾',
-};
 
 // Helper to determine greeting based on local hour
 function getGreeting(): string {
