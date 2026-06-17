@@ -1,5 +1,5 @@
 {
-  "phase": "IMPLEMENTATION_WAIT",
+  "phase": "RELEASE",
   "iteration": 2,
   "current_features": [
     "missing_tests",

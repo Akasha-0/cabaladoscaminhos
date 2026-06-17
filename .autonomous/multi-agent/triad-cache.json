@@ -1,15 +1,8 @@
 {
   "triad": {
     "typecheck": {
-      "pass": false,
-      "errors": [
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(33,7): error TS2353: Object literal may only specify known properties, and 'avoid' does not exist in type 'AstrologicalMapping'.",
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(91,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(157,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(223,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(421,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(619,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'."
-      ]
+      "pass": true,
+      "errors": []
     },
     "lint": {
       "pass": true,
@@ -17,10 +10,10 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1679,
+      "passed": 1747,
       "failed": 219
     }
   },
-  "git_head": "3fc9eab80fdf032dc62da6ff22be2512b269cd44",
-  "cached_at": 1781656411.8302352
+  "git_head": "3ff85e865ebab0942e0dba2cea469a67f500d5de",
+  "cached_at": 1781657073.7812636
 }

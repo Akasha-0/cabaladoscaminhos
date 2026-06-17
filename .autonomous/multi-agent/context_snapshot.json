@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-17T00:37:37.420755+00:00",
+  "generated_at": "2026-06-17T00:43:32.907377+00:00",
   "version": "0.57.0",
   "features": {
     "pending_features": [
@@ -1065,22 +1065,15 @@
     "pending_count": 1058
   },
   "git": {
-    "untracked": 5,
-    "modified": 10,
-    "total": 15,
+    "untracked": 1,
+    "modified": 2,
+    "total": 3,
     "has_changes": true
   },
   "triad": {
     "typecheck": {
-      "pass": false,
-      "errors": [
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(33,7): error TS2353: Object literal may only specify known properties, and 'avoid' does not exist in type 'AstrologicalMapping'.",
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(91,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(157,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(223,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(421,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(619,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'."
-      ]
+      "pass": true,
+      "errors": []
     },
     "lint": {
       "pass": true,
@@ -1088,7 +1081,7 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1679,
+      "passed": 1747,
       "failed": 219
     }
   },
@@ -1097,19 +1090,6 @@
     "ok": true
   },
   "improvement_candidates": [
-    {
-      "type": "typecheck_errors",
-      "priority": 9,
-      "description": "6 TypeScript errors",
-      "errors": [
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(33,7): error TS2353: Object literal may only specify known properties, and 'avoid' does not exist in type 'AstrologicalMapping'.",
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(91,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(157,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(223,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(421,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(619,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'."
-      ]
-    },
     {
       "type": "tech_debt",
       "priority": 5,
@@ -1126,7 +1106,7 @@
       "files": [
         {
           "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts",
-          "lines": 775
+          "lines": 809
         },
         {
           "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
@@ -1141,9 +1121,8 @@
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "2 changed files lack tests",
+      "description": "1 changed files lack tests",
       "files": [
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
         "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts"
       ]
     },
@@ -1155,7 +1134,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "3fc9eab80fdf032dc62da6ff22be2512b269cd44",
+  "git_head": "3ff85e865ebab0942e0dba2cea469a67f500d5de",
   "decision_factors": {
     "has_pending_features": true
   }
