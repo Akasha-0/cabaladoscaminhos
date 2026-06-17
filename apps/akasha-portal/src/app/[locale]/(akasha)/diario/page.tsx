@@ -479,9 +479,7 @@ export default async function DiarioPage({
         <div style={innerStyle}>
         <div style={screenNumStyle}>02\u00A0/\u000505 — Pergunta</div>
           <div style={cardStyle(C.violeta)}>
-            <span style={labelStyle(C.violeta)}>
-              A Pergunta do Dia <span style={stubBadge}>template (F-204: LLM)</span>
-            </span>
+              A Pergunta do Dia
             <h2 style={{ ...headlineStyle, color: C.violeta, fontSize: '1.35rem' }}>{pergunta}</h2>
             <div style={dividerStyle} />
             <span style={labelStyle(C.txtMut)}>Por que esta pergunta?</span>
@@ -524,9 +522,7 @@ export default async function DiarioPage({
         <div style={innerStyle}>
         <div style={screenNumStyle}>03\u00A0/\u000505 — Ritual</div>
           <div style={cardStyle(C.aurora)}>
-            <span style={labelStyle(C.aurora)}>
-              O Micro-Ritual <span style={stubBadge}>template (F-204: LLM)</span>
-            </span>
+              O Micro-Ritual
             <h2 style={{ ...headlineStyle, color: C.aurora }}>{ritual.titulo}</h2>
             <p style={bodyStyle}>{ritual.instrucao}</p>
             <div style={{ marginTop: 14 }}>
@@ -590,8 +586,7 @@ export default async function DiarioPage({
             <div style={innerStyle}>
               <div style={screenNumStyle}>05\u00A0/\u000505 — Para suas áreas</div>
               <p style={{ ...bodyStyle, color: C.txtSec, marginBottom: 8 }}>
-                O Significado do Pilar principal traduzido para 8 áreas da sua vida.
-                Você vive em áreas — paz, saúde, relações, dinheiro, trabalho, propósito, criatividade, espiritualidade — e cada área pede uma leitura própria.
+                O pilar {pilarInfo.nome} traduzido para cada área da sua vida.
               </p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 10 }}>
                 {AREAS.map((a) => {

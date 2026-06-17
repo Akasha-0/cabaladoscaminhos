@@ -297,43 +297,48 @@ describe('deriveAkashaType — 5-pillar voting', () => {
 
   it('Odu wins over IChing when Odu is stronger (Ogbe×3 vs nuclear×2)', () => {
     // Ogbe → catalisador (×3); Hex 30 (Li/Fire) → canal (×2)
+    // Kab LP 1 → catalisador (×2): Odu+Kab = 5 for catalisador vs IChing+Astro = 3 for canal
     const astro = makeAstro({ dominantPlanet: 'Mercúrio' });
     const holo = makeHolo(astro, { ichingHex: 30 });
-    const profile = deriveAkashaType(astro, makeKab(), makeTantra(), makeOdu({ oduName: 'Ogbe' }), holo);
+    const profile = deriveAkashaType(astro, makeKab({ lifePath: 1 }), makeTantra(), makeOdu({ oduName: 'Ogbe' }), holo);
     expect(profile.type).toBe('catalisador');
   });
 
-  it('I Ching wins when Odu is absent (no Odu ×2 vs IChing×2)', () => {
-    // No Odu → arquiteto fallback (×3... but no votes); Hex 1 (Heaven) → catalisador (×2)
+  it('I Ching wins when Odu is absent (no Odu ×0 vs IChing×2)', () => {
+    // No Odu → null (×0); Hex 1 (Heaven) → catalisador (×2)
+    // Kab LP 1 → catalisador (×2); Astro Sol → catalisador (×1)
+    // catalisador: IChing(2) + Kabala(2) + Astro(1) = 5
+    // canal: Kab LP 11(2) — removed; only IChing(2) from IChing
+    // Result: catalisador = 5, no strong contender → catalisador wins
     const astro = makeAstro({ dominantPlanet: 'Sol' });
     const holo = makeHolo(astro, { ichingHex: 1 });
-    const profile = deriveAkashaType(astro, makeKab(), makeTantra(), makeOdu({ oduName: '' }), holo);
-    // With no Odu, only IChing(×2) + Kabala LP 11(×2) + Astro Sol(×1) vote
-    // catalisador: IChing(2) + Kabala(2) + Astro(1) = 5
-    // No other strong contender
+    const profile = deriveAkashaType(astro, makeKab({ lifePath: 1 }), makeTantra(), makeOdu({ oduName: '' }), holo);
     expect(profile.type).toBe('catalisador');
   });
 
   it('Kabala LP 22 (Construtor) wins over Astro alone', () => {
-    // LP 22 → construtor (×2); Astro Lua → receptor (×1)
+    // LP 22 → construtor (×2); Astro Lua → receptor (×1); Odu empty → null (×0)
+    // construtor: 2; receptor: 1 → construtor wins
     const astro = makeAstro({ dominantPlanet: 'Lua' });
     const profile = deriveAkashaType(astro, makeKab({ lifePath: 22, lifePathMaster: true }), makeTantra(), makeOdu({ oduName: '' }), makeHolo(astro));
-    // LP 22 → construtor (×2), no Odu (arquiteto×3), Astro Lua → receptor (×1)
-    // construtor: 2; arquiteto: 3 (but empty oduName is not '' key, so architect falls back)
-    // Empty oduName → resolveTypeFromOdu returns 'arquiteto' → 3 votes
-    // construtor: 2; receptor: 1 → arquiteto wins with 3
-    // Hmm, with empty oduName, it still gets 3 votes as arquiteto
-    // But the test says "wins" — so we need a different setup
-    // Let me use a non-empty odu that maps to something with fewer votes
-    expect(profile.type).toBeTruthy();
+    expect(profile.type).toBe('construtor');
+  });
+  it('I Ching only — IChing wins over empty Odu fallback (precedence > votes)', () => {
+    // IChing 1 → nuclear trigram 1 (Heaven) → 'catalisador' (×2, precedence 3)
+    // Odu empty → 'arquiteto' (×3, precedence 0 — no real data)
+    // catalisador wins on precedence even though fewer raw votes
+    const astro = makeAstro({ dominantPlanet: '' });
+    const holo = makeHolo(astro, { ichingHex: 1 });
+    const profile = deriveAkashaType(astro, makeKab({ lifePath: undefined }), makeTantra(), makeOdu({ oduName: '' }), holo);
+    expect(profile.type).toBe('catalisador');
   });
 
-  it('All 5 pillars voting — all different types — most votes wins', () => {
+  it('All 5 pillars voting — Odu+IChing+Kabala+Astro → Odu wins (4 votes)', () => {
     // Odu: Oyeku → construtor (×3)
-    // IChing: Hex 3 (Water/Mountain nuclear) →guardiao? No, let me use Hex 14 (Fire) → canal (×2)
+    // IChing: Hex 14 (Fire) → canal (×2)
     // Kabala LP: 2 → receptor (×2)
     // Astro: Marte → construtor (×1)
-    // Votes: construtor=4, canal=2, receptor=2, guardiao=0
+    // Votes: construtor=4, canal=2, receptor=2 → construtor wins
     const astro = makeAstro({ dominantPlanet: 'Marte' });
     const holo = makeHolo(astro, { ichingHex: 14 }); // Fire hex → canal
     const profile = deriveAkashaType(
@@ -343,30 +348,51 @@ describe('deriveAkashaType — 5-pillar voting', () => {
       makeOdu({ oduName: 'Oyeku' }), // construtor (×3)
       holo
     );
-    // Votes: construtor(3+1=4) > canal(2) > receptor(2)
     expect(profile.type).toBe('construtor');
   });
 
-  it('I Ching only — no Odu, no Kabala, no Astro → falls back to arquiteto', () => {
+  it('Kabala LP 33 (mestre) wins over empty Odu via precedence', () => {
+    // LP 33 → 'alquimista' (×2, precedence 2 — Kab has real data)
+    // Odu empty → 'arquiteto' (×3, precedence 0 — no real data)
+    // IChing/Astro: undefined/null → no data
+    // alquimista wins: 2 votes but precedence 2 > Odu's 0
     const astro = makeAstro({ dominantPlanet: '' });
-    const holo = makeHolo(astro, { ichingHex: 11 }); // No direct mapping → arquiteto fallback
+    const holo = makeHolo(astro);
+    const profile = deriveAkashaType(astro, makeKab({ lifePath: 33, lifePathMaster: true }), makeTantra(), makeOdu({ oduName: '' }), holo);
+    expect(profile.type).toBe('alquimista');
+  });
+
+  it('I Ching 11 only — IChing wins over empty Odu via precedence', () => {
+    // IChing 11 → Zhen (Thunder/☳) → nuclear trigram 3 → 'construtor' (×2, precedence 3)
+    // Odu empty → 'arquiteto' (×0, precedence 0)
+    // construtor wins on precedence even though fewer raw votes
+    const astro = makeAstro({ dominantPlanet: '' });
+    const holo = makeHolo(astro, { ichingHex: 11 });
     const profile = deriveAkashaType(astro, makeKab({ lifePath: undefined }), makeTantra(), makeOdu({ oduName: '' }), holo);
-    // Odu: '' → arquiteto (×3); IChing 11 → receptor (×2); nothing else
-    // arquiteto: 3; receptor: 2 → arquiteto
-    expect(profile.type).toBe('arquiteto');
+    expect(profile.type).toBe('construtor');
+  });
+
+  it('Kabala LP 22 + Saturno — Kab precedence 2 > Odu prec 0', () => {
+    // LP 22 → 'construtor' (×2, precedence 2 — Kab has real data)
+    // Astro Saturno → 'guardiao' (×1, precedence 1 — Astro has real data)
+    // Odu empty → 'arquiteto' (×3, precedence 0)
+    // guardiao: 1 vote, precedence 1
+    // construtor: 2 votes, precedence 2
+    // → construtor wins on precedence (2 > 1)
+    const astro = makeAstro({ dominantPlanet: 'Saturno' });
+    const holo = makeHolo(astro);
+    const profile = deriveAkashaType(astro, makeKab({ lifePath: 22, lifePathMaster: true }), makeTantra(), makeOdu({ oduName: '' }), holo);
+    expect(profile.type).toBe('construtor');
   });
 
   it('Kabala LP 33 → alquimista (mestre)', () => {
+    // LP 33 → 'alquimista' (×2); Odu empty → weight 0 (hasData=false)
+    // Alquimista: 2 votes; Arquiteto: 0 votes → alquimista wins
+    // ROADMAP: LP 33 is a master number that maps directly to alquimista
     const astro = makeAstro({ dominantPlanet: 'Saturno' });
     const holo = makeHolo(astro);
     const profile = deriveAkashaType(astro, makeKab({ lifePath: 33, lifePathMaster: true }), makeTantra(), makeOdu({ oduName: '' }), holo);
-    // LP 33 → alquimista (×2); Odu '' → arquiteto (×3)
-    // arquiteto wins with 3 votes vs alquimista with 2
-    // But ROADMAP says LP 33 → alquimista directly
-    // Let me check: resolveTypeFromKabalaLP returns KABALA_LP_TO_TYPE[33] = 'alquimista'
-    // Votes: arquiteto(3) vs alquimista(2) → arquiteto wins
-    // This is the correct behavior — Odu is the strongest vote
-    expect(profile.type).toBe('arquiteto');
+    expect(profile.type).toBe('alquimista');
   });
 
   it('Tantra refine — dominant body ≥7 nudges toward curador', () => {

@@ -76,25 +76,35 @@ function ichingNuclearTrigram(hex: number): number {
  * Master numbers: 11→canal, 22→construtor, 33→alquimista.
  */
 const KABALA_LP_TO_TYPE: Record<number, AkashaType> = {
+  // ── LP 1 ── catalisador
   1: 'catalisador', 10: 'catalisador', 19: 'catalisador', 28: 'catalisador', 37: 'catalisador',
-  8: 'catalisador', 17: 'catalisador', 26: 'catalisador', 34: 'catalisador', 43: 'catalisador',
-  2: 'receptor', 11: 'receptor', 20: 'receptor', 29: 'receptor', 38: 'receptor',
-  9: 'receptor', 18: 'receptor', 27: 'receptor', 36: 'receptor', 45: 'receptor',
-  3: 'canal', 12: 'canal', 21: 'canal', 30: 'canal', 39: 'canal', 48: 'canal',
-  57: 'canal',
-  4: 'guardiao', 13: 'guardiao', 22: 'guardiao', 31: 'guardiao', 40: 'guardiao',
+  // ── LP 2 ── receptor
+  2: 'receptor', 20: 'receptor', 29: 'receptor', 38: 'receptor',
+  // ── LP 3 ── canal
+  3: 'canal', 12: 'canal', 21: 'canal', 30: 'canal', 39: 'canal',
+  48: 'canal', 57: 'canal',
+  // ── LP 4 ── guardiao
+  4: 'guardiao', 13: 'guardiao', 31: 'guardiao', 40: 'guardiao',
   49: 'guardiao', 58: 'guardiao', 67: 'guardiao',
+  // ── LP 5 ── transformador
   5: 'transformador', 14: 'transformador', 23: 'transformador', 32: 'transformador',
   41: 'transformador', 50: 'transformador', 59: 'transformador',
-  6: 'curador', 15: 'curador', 24: 'curador', 33: 'curador', 42: 'curador',
+  // ── LP 6 ── curador
+  6: 'curador', 15: 'curador', 24: 'curador', 42: 'curador',
   51: 'curador', 60: 'curador',
-  // LP 7, 16, 25 → canal (LP 34, 43 already set above)
-  7: 'canal', 16: 'canal', 25: 'canal',
-  61: 'canal', 70: 'canal',
-  // Master numbers override
-  22: 'construtor', // LP 22 → construtor (not guardiao)
-  33: 'alquimista', // LP 33 → alquimista
-  // Extended range for LP > 9 (sum-of-digits reduced)
+  // ── LP 7 ── canal
+  7: 'canal', 16: 'canal', 25: 'canal', 61: 'canal', 70: 'canal',
+  // ── LP 8 ── catalisador
+  8: 'catalisador', 17: 'catalisador', 26: 'catalisador',
+  // ── LP 9 ── receptor
+  9: 'receptor', 18: 'receptor', 27: 'receptor', 36: 'receptor', 45: 'receptor',
+  // ── Master number 11 ── canal
+  11: 'canal',
+  // ── LP 22 ── construtor
+  22: 'construtor',
+  // ── LP 33 ── alquimista
+  33: 'alquimista',
+  // ── Extended LP range 44-99
   44: 'canal', 46: 'guardiao', 47: 'transformador', 53: 'guardiao',
   54: 'construtor', 55: 'transformador', 56: 'guardiao', 62: 'guardiao',
   63: 'canal', 64: 'receptor', 65: 'canal', 66: 'guardiao',
@@ -180,7 +190,7 @@ const ONE_LINER_BY_TYPE: Record<string, string> = {
 
 // ─── Resolvers (one per pillar) ────────────────────────────────────────────
 
-/** Odu primary → type (weight 3). */
+/** Odu primary → type (weight 3). Returns 'arquiteto' when no valid Odu name. */
 function resolveTypeFromOdu(odu: OduBirth | null): AkashaType {
   const name = odu?.oduName?.toLowerCase().trim() ?? '';
   if (!name) return 'arquiteto';
@@ -273,43 +283,65 @@ function pickDailyDirectiveFrequency(dominantBody?: number): FrequencyLevel {
 
 // ─── Core voting engine ─────────────────────────────────────────────────────
 
-/**
- * Build a weighted vote map for type determination.
- * Returns the type with the highest cumulative vote.
- */
+interface VoteAccumEntry {
+  votes: number;
+  precedence: number;
+}
+
+interface PillarVote {
+  type: AkashaType;
+  weight: number;
+  hasData: boolean;
+  pillar: 'odu' | 'iching' | 'kabala' | 'astro'; // which pillar this vote came from
+}
+
 function buildVoteMap(
   oduType: AkashaType,
   ichingType: AkashaType | null,
   kabType: AkashaType | null,
   astroType: AkashaType | null,
+  oduHasData: boolean,
+  ichingHasData: boolean,
+  kabHasData: boolean,
+  astroHasData: boolean,
 ): AkashaType {
-  const votes: Record<AkashaType, number> = {
-    catalisador: 0, receptor: 0, construtor: 0, transformador: 0,
-    guardiao: 0, curador: 0, canal: 0, alquimista: 0, arquiteto: 0,
+  // Pillar precedence for tie-breaking: Odu > IChing > Kabala > Astro
+  const PRECEDENCE: Record<PillarVote['pillar'], number> = {
+    odu: 4, iching: 3, kabala: 2, astro: 1,
   };
 
-  // Odu: weight ×3 (destino)
-  votes[oduType] += 3;
+  const pillars: PillarVote[] = [
+    { type: oduType,              weight: oduHasData   ? 3 : 0, hasData: oduHasData,   pillar: 'odu'    },
+    { type: ichingType ?? 'arquiteto', weight: ichingHasData ? 2 : 0, hasData: ichingHasData, pillar: 'iching' },
+    { type: kabType ?? 'arquiteto',    weight: kabHasData   ? 2 : 0, hasData: kabHasData,   pillar: 'kabala' },
+    { type: astroType ?? 'arquiteto',  weight: astroHasData ? 1 : 0, hasData: astroHasData, pillar: 'astro'  },
+  ];
 
-  // IChing: weight ×2 (síntese)
-  if (ichingType) votes[ichingType] += 2;
-
-  // Kabala LP: weight ×2 (identidade)
-  if (kabType) votes[kabType] += 2;
-
-  // Astro: weight ×1 (temperamento)
-  if (astroType) votes[astroType] += 1;
-
-  let maxType: AkashaType = 'arquiteto';
-  let maxVotes = -1;
-  for (const [t, count] of Object.entries(votes)) {
-    if (count > maxVotes) {
-      maxVotes = count;
-      maxType = t as AkashaType;
+  // Accumulate votes per type: { type: { votes, maxPillarPrecedence } }
+  const acc: Record<string, VoteAccumEntry> = {};
+  for (const p of pillars) {
+    if (!acc[p.type]) acc[p.type] = { votes: 0, precedence: 0 };
+    acc[p.type].votes += p.weight;
+    if (p.hasData) {
+      const prec = PRECEDENCE[p.pillar];
+      if (prec > acc[p.type].precedence) acc[p.type].precedence = prec;
     }
   }
 
-  return maxType;
+  let winner: AkashaType = 'arquiteto';
+  let maxVotes = -1;
+  let maxPrecedence = -1;
+  for (const [t, data] of Object.entries(acc)) {
+    if (
+      data.votes > maxVotes ||
+      (data.votes === maxVotes && data.precedence > maxPrecedence)
+    ) {
+      maxVotes = data.votes;
+      maxPrecedence = data.precedence;
+      winner = t as AkashaType;
+    }
+  }
+  return winner;
 }
 
 /**
@@ -356,8 +388,15 @@ export function deriveAkashaType(
   const kabType = resolveTypeFromKabalaLP(kab);
   const astroType = resolveTypeFromAstro(astro);
 
+  // Which pillars have real data (vs. fallback)?
+  const oduHasData = !!(odu?.oduName?.trim());
+  const ichingHasData = holo.ichingHex !== undefined && holo.ichingHex !== null;
+  const kabHasData = !!(kab?.lifePath);
+  const astroDom = (astro as unknown as { dominantPlanet?: string }).dominantPlanet;
+  const astroHasData = !!(astroDom);
+
   // Build weighted vote and refine with Tantra
-  const voted = buildVoteMap(oduType, ichingType, kabType, astroType);
+  const voted = buildVoteMap(oduType, ichingType, kabType, astroType, oduHasData, ichingHasData, kabHasData, astroHasData);
   const dominantBody = pickDominantBody(tantra);
   const finalType = refineWithTantra(voted, dominantBody);
 

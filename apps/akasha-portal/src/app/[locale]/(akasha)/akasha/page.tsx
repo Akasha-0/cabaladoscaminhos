@@ -1,7 +1,7 @@
 /**
  * Akasha — F-223 v3
  *
- * Página ÚNICA com 9 dimensões de vida.
+ * Página ÚNICA com 8 dimensões de vida.
  * Substitui a navegação por 5 mapas separados.
  *
  * v3: 9→8 dimensões corrigido; perfilGeral cor neutra; caminhoDeVida com subtítulo.
@@ -164,9 +164,9 @@ export default async function MinhaCaixaPage({
           </section>
         )}
 
-        {/* 9 Dimensões — accordion mobile-first */}
+        {/* 8 Dimensões — accordion mobile-first */}
         {sintese ? (
-          <nav aria-label="9 dimensões de vida" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <nav aria-label="8 dimensões de vida" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {sintese.dimensoes
               .map((dim, i) => (
                 <DimensaoCard key={dim.dimensoesId} sintese={dim} index={i} />

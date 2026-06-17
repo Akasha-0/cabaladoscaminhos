@@ -121,8 +121,15 @@ const PROTECTED_PATH_PREFIXES = [
 ];
 
 function shouldRefreshAuth(pathname: string): boolean {
+  // Strip locale prefix (e.g. /pt-BR, /en) before checking protected paths.
+  // Without this, /pt-BR/dashboard fails the /dashboard prefix check and
+  // auth refresh never fires → expired access token → redirect to /onboarding.
+  const segments = pathname.split('/'); // ['', 'pt-BR', 'dashboard']
+  const pathWithoutLocale = (segments.length >= 2 && (locales as readonly string[]).includes(segments[1]))
+    ? '/' + segments.slice(2).join('/')
+    : pathname;
   return PROTECTED_PATH_PREFIXES.some(
-    (prefix) => pathname.startsWith(prefix) || pathname.includes('/akasha')
+    (prefix) => pathWithoutLocale.startsWith(prefix) || pathWithoutLocale.includes('/akasha')
   );
 }
 

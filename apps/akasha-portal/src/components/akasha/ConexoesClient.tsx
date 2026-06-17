@@ -536,7 +536,7 @@ export default function ConexoesClient({ userProfile }: Props) {
             <div className="flex items-center justify-between text-sm">
               <span className="text-white/50 flex items-center gap-1">
                 Sincronia Espiritual
-                <span title="Sincronia Espiritual representa como a autoridade espiritual (Odu de Nascimento) dos dois mapas se relacionam." className="cursor-help text-white/30 hover:text-white/50 transition-colors">
+                <span title="Como a autoridade espiritual dos dois mapas se relacionam." className="cursor-help text-white/30 hover:text-white/50 transition-colors">
                   <Info size={12} />
                 </span>
               </span>
@@ -551,12 +551,9 @@ export default function ConexoesClient({ userProfile }: Props) {
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
               <p className="text-xs text-white/50 mb-1">Sincronia Odu</p>
               <p className="text-lg font-black text-[#7C5CFF]">{result.oduSync.score}</p>
-              <p className="text-xs text-white/40 mt-1">{result.oduSync.description}</p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
               <p className="text-xs text-white/50 mb-1 flex items-center gap-1">
                 Sincronia Corporal
-                <span title="Sincronia Corporal avalia a compatibilidade entre os corpos tântricos (fisico, emocional, mental, espiritual) de cada mapa." className="cursor-help text-white/30 hover:text-white/50 transition-colors">
+                <span title="Compatibilidade entre os corpos tântricos dos dois mapas." className="cursor-help text-white/30 hover:text-white/50 transition-colors">
                   <Info size={12} />
                 </span>
               </p>
@@ -565,13 +562,17 @@ export default function ConexoesClient({ userProfile }: Props) {
             </div>
           </div>
 
-          {/* Narrative */}
+          {/* Narrative — split into sentences for readability */}
           {result.narrative && (
             <div className="rounded-2xl border border-[#7C5CFF]/20 bg-[#7C5CFF]/5 px-6 py-5">
               <p className="text-xs font-bold text-[#7C5CFF]/80 uppercase tracking-wider mb-2">Sua Conexão</p>
-              <p className="text-sm text-white/80 leading-relaxed italic border-l-2 border-[#7C5CFF]/50 pl-4">
-                {result.narrative}
-              </p>
+              <div className="space-y-2">
+                {result.narrative.split(/(?<=[.!?])\s+/).filter(Boolean).map((sentence, i) => (
+                  <p key={i} className="text-sm text-white/75 leading-relaxed border-l-2 border-[#7C5CFF]/40 pl-4">
+                    {sentence.trim()}
+                  </p>
+                ))}
+              </div>
             </div>
           )}
 

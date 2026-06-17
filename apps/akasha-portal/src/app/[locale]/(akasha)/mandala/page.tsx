@@ -79,7 +79,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
           letterSpacing: '0.05em',
         }}
       >
-        {saudacao} sua Mandala Akáshica aguarda
+        {saudacao} · sua Mandala Akáshica aguarda
       </p>
 
       {/* Incomplete data badge */}
@@ -176,7 +176,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
                 ? `Ascendente: ${formatDegreeToZodiac(data.astrology.ascendant)}`
                 : 'Sem hora de nascimento'
             }
-            explicacao="O cenário do céu no momento da sua primeira respiração. Mapeia seu Ascendente, planetas dominantes e trânsitos como uma bússola de navegação no tempo."
+            explicacao="O céu no momento do seu primeiro suspiro. Ascendente, planetas dominantes e trânsitos — sua bússola de navegação temporal."
             fonte="Astrologia Tropical (Casas Inteiras)"
           />
           <PilarCard
@@ -185,7 +185,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
             titulo="Camada 2 — Número de Vida"
             eixo="O Verbo — Geometria Sagrada"
             valor={data.kabala?.lifePath ? `Caminho de Vida ${data.kabala.lifePath}` : 'Em cálculo'}
-            explicacao="A vibração numérica do seu nome e caminho. Revela a frequência geométrica que sua alma escolheu para navegar esta encarnação."
+            explicacao="A frequência numérica do seu caminho de vida. Traduz sua alma em geometria sagrada."
             fonte="Estudos de Cabala (Sefer Yetzirah)"
           />
           <PilarCard
@@ -198,7 +198,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
                 ? `Corpo Principal: ${data.tantra.soul} · Karma: ${data.tantra?.karma ?? '—'}`
                 : 'Mapeando 11 corpos'
             }
-            explicacao="O mapeamento dos seus 11 corpos sutis e fluxo de energia. Identifica onde a energia flui livremente e onde estão os bloqueios que requerem práticas de ativação."
+            explicacao="Seus 11 corpos sutis mapeados. Sinaliza onde a energia flui — e onde você precisa ativar."
             fonte="Yogi Bhajan / 11 Corpos Sutis"
           />
           <PilarCard
@@ -211,7 +211,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
                 ? `${data.odus.oduName}${data.odus?.elementalForce ? ' · ' + data.odus.elementalForce : ''}`
                 : 'Aguardando terreiro'
             }
-            explicacao="Sua âncora de manifestação. Representa a força elemental que rege seu alinhamento com a Terra e as quizilas (desvios) que você deve evitar para proteger sua energia."
+            explicacao="Sua âncora de manifestação. A força elemental que rege seu alinhamento com a Terra."
             fonte="Sabedoria Tradicional dos Odus"
           />
           <PilarCard
@@ -224,7 +224,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
                 ? `Hexagrama ${data.iching.hexagramNumber}${data.iching?.hexagramName ? ' · ' + data.iching.hexagramName : ''}`
                 : 'Calculando mutação'
             }
-            explicacao="O hexagrama de origem que rege sua semente evolutiva. Mostra a transição da Sombra para o Dom e a realização máxima (Siddhi) ao longo da sua vida."
+            explicacao="Sua semente evolutiva em hexagrama. Traça a jornada da Sombra ao Dom ao longo da sua vida."
             fonte="64 Hexagramas do I Ching"
           />
         </div>

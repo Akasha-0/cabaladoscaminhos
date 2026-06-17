@@ -11,19 +11,22 @@ export async function upsertPushSubscription(
   userAgent?: string | null
 ): Promise<void> {
   const { endpoint, keys } = subscription;
+  const ua = userAgent ?? null;
+  const p256dh = keys?.p256dh ?? null;
+  const auth = keys?.auth ?? null;
   await prisma.pushSubscription.upsert({
     where: { endpoint },
     update: {
-      p256dh: keys?.p256dh,
-      auth: keys?.auth,
-      userAgent: userAgent ?? null,
+      p256dh,
+      auth,
+      userAgent: ua,
     },
     create: {
       userId,
       endpoint,
-      p256dh: keys?.p256dh,
-      auth: keys?.auth,
-      userAgent: userAgent ?? null,
+      p256dh,
+      auth,
+      userAgent: ua,
     },
   });
 }

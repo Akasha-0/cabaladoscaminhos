@@ -1,3 +1,18 @@
+## v0.81.3 (2026-06-17) — Round 7 QA + synthesis test fixes
+- fix(ui): Comment akasha/page.tsx 9 dimensoes -> 8 dimensoes
+- fix(ui): ConexoesClient narrative split into paragraphs (was: wall of italic text)
+- fix(ui): ConexoesClient tooltips shortened for Sincronia Espiritual and Corporal
+- fix(synthesis): Fixed 3 incorrect test expectations in synthesis-engine.test.ts (Kab LP 22/33, I Ching only)
+- fix(ui): Dashboard.tsx — missing `}}` closing style object in fade-gradient div (caused build parse error)
+## v0.81.2 (2026-06-17) — Round 6 UX audit
+- fix(ui): `aria-label` "9 dimensões" → "8 dimensões" em `akasha/page.tsx`
+- fix(ui): Saudação Mandala sem espaço — `{saudacao} · sua Mandala...`
+- fix(ui): Removed "template (F-204: LLM)" stub badges from Diário
+- fix(ui): PilarCard explanations encurtadas em Mandala (5→2 frases)
+- fix(ui): Diário "Para suas áreas" — parágrafo substituído por frase única
+- fix(synthesis): `derive-akasha-type.ts` — chaves duplicadas em `KABALA_LP_TO_TYPE`
+- fix(push): `push-subscription-service.ts` — tipos `undefined` → `null` para Prisma
+
 ## v0.81.1 (2026-06-17) — Auth refresh hotfix + build stabilization
 
 - fix(qa): Critical auth refresh bug
