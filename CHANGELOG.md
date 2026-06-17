@@ -1,3 +1,8 @@
+## v0.84.7 (2026-06-17) — Security Fix
+
+### Security Fixes
+- push/subscribe/route.ts: Fix auth guard import — was importing from stub `@/lib/auth/akasha-guard` (test stub bypasses auth, always returns test-user). Route now imports from `@/lib/application/auth/akasha-guard` (real implementation). Any unauthenticated request could register push subscriptions — CRITICAL.
+- tests/api/akasha/push/subscribe.test.ts: Update mock path to `@/lib/application/auth/akasha-guard` so tests exercise route logic correctly with mocked auth.
 ## v0.84.6 (2026-06-17) — QA Round 34
 
 ### Auth Fixes

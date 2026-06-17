@@ -46,7 +46,7 @@ vi.mock('@/lib/push/push-subscription-service', () => ({
 }));
 
 const mockRequireAkashaApi = vi.fn();
-vi.mock('@/lib/auth/akasha-guard', () => ({
+vi.mock('@/lib/application/auth/akasha-guard', () => ({
   requireAkashaApi: (...args: unknown[]) => mockRequireAkashaApi(...args),
 }));
 
