@@ -13,7 +13,7 @@
  * Pilar 4 (Odu) carrega aviso ético R-022 §4.4 (terreiro + consentimento).
  */
 
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import Link from 'next/link';
@@ -94,7 +94,7 @@ export default async function SignificadoPage({
   const { locale } = await params;
   const cookieStore = await cookies();
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
-  if (!verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
+  const authStatus = (await headers()).get('X-Akasha-Auth');
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia`,

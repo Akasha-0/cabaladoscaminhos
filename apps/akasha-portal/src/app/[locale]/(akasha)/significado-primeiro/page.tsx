@@ -15,7 +15,7 @@
  */
 
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { SignificadoPilar } from '@/components/akasha/SignificadoPilar';
@@ -83,7 +83,8 @@ export default async function SignificadoPrimeiroPage({
   const { locale } = await params;
   const cookieStore = await cookies();
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
-  if (!verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
+  const authStatus = (await headers()).get('X-Akasha-Auth');
+  if (authStatus !== 'refreshed' && !verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia`,

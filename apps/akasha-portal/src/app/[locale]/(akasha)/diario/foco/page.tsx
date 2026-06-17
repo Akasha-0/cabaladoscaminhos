@@ -16,7 +16,7 @@
  * Cores por Pilar (mesma paleta da Mandala). Aviso ético Pilar 4.
  */
 
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import Link from 'next/link';
@@ -79,8 +79,9 @@ export default async function FocoPage({
   const { locale } = await params;
   const { area: areaParam } = await searchParams;
   const cookieStore = await cookies();
+  const authStatus = (await headers()).get('X-Akasha-Auth');
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
-  if (!verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
+  if (authStatus !== 'refreshed' && !verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia`,

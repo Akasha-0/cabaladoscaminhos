@@ -1,5 +1,5 @@
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import ContaClient from './ContaClient';
 
@@ -13,18 +13,18 @@ export default async function ContaPage({
   const { locale } = await params;
   const cookieStore = await cookies();
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
-  if (!token || !verifyAkashaToken(token, 'access')) {
+  const authStatus = (await headers()).get('X-Akasha-Auth');
+  if (authStatus !== 'refreshed' && (!token || !verifyAkashaToken(token, 'access'))) {
     redirect(`/${locale}/login`);
   }
-
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
-  const headers = { Cookie: `akasha_session=${token}` };
-
+  const requestHeaders = { Cookie: `akasha_session=${token}` };
   const [meRes, credRes, subRes] = await Promise.all([
-    fetch(`${baseUrl}/api/akasha/auth/me`, { headers, cache: 'no-store' }),
-    fetch(`${baseUrl}/api/akasha/credits`, { headers, cache: 'no-store' }),
-    fetch(`${baseUrl}/api/akasha/subscription`, { headers, cache: 'no-store' }),
+    fetch(`${baseUrl}/api/akasha/auth/me`, { headers: requestHeaders, cache: 'no-store' }),
+    fetch(`${baseUrl}/api/akasha/credits`, { headers: requestHeaders, cache: 'no-store' }),
+    fetch(`${baseUrl}/api/akasha/subscription`, { headers: requestHeaders, cache: 'no-store' }),
   ]);
+
 
   if (!meRes.ok) redirect(`/${locale}/login`);
 

@@ -384,7 +384,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
 
               {/* Cosmic Vibe Grid — selectable chips that filter/highlight sections */}
               <p className="text-[10px] text-[#A7AECF]/40 text-center tracking-wide">
-                Toque para filtrar · cada chip destaca sua dimensão abaixo
+                Toque para filtrar · cada bloco destaca sua dimensão abaixo
               </p>
               <div id="daily-vibe" className="grid grid-cols-3 gap-2.5">
 
@@ -402,7 +402,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       <Cloud size={16} className="text-[#2DD4BF]" />
                     </div>
                   </div>
-                  <p className="text-[11px] text-[#2DD4BF]/40 uppercase tracking-widest font-mono font-semibold">Clima</p>
+                  <p className="text-[11px] text-[#2DD4BF]/40 uppercase tracking-widest font-mono font-semibold">Tempo</p>
                   <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.climate ?? 'Estável'}</p>
                   {activeFilterChip === 'clima' && (
                     <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#2DD4BF] flex items-center justify-center">
@@ -573,7 +573,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                     <div>
                       <p className="text-[10px] text-[#F0B429] font-bold uppercase tracking-wider font-mono">Foco Prioritário de Hoje</p>
                       <h3 className="text-base font-bold font-cinzel text-white leading-none mt-1">{dimFoco?.titulo}</h3>
-                      <p className="text-[10px] text-[#A7AECF]/50 mt-0.5">A energia de hoje torna esta dimensão especialmente ativa</p>
+                      <p className="text-[10px] text-[#A7AECF]/50 mt-0.5">A energia de hoje favorece fortemente esta dimensão — aproveite o momento</p>
                     </div>
                   </div>
                   <span className="shrink-0 px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#F0B429] text-[#06070F] shadow-[0_0_8px_rgba(240,180,41,0.4)]">
@@ -645,8 +645,8 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                         <h3 className="text-xl font-bold font-cinzel text-white leading-tight">{dailyData.ritual.titulo}</h3>
                         <div className="flex items-center gap-3 text-xs text-[#A7AECF]/70">
                           <span className="flex items-center gap-1">
-                            <Zap size={12} className="text-[#2DD4BF]" />
-                            {dailyData.ritual.cor || '15 min'}
+                            <Wind size={12} className="text-[#2DD4BF]" />
+                            <span className="text-[10px] text-[#A7AECF]/50 mr-1">elemento</span>{dailyData.ritual.elemento || dailyData.ritual.cor || '15 min'}
                           </span>
                         </div>
                       </div>

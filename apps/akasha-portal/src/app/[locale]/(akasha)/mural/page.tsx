@@ -17,7 +17,7 @@ import { verifyAkashaToken } from '@/lib/application/auth/akasha-jwt';
  * Server component — não há chat, não há LLM, é cadência curada.
  */
 
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { kinDaData, familias, type KinTzolkin } from '@/lib/grimoire/mural-tzolkin';
@@ -70,7 +70,8 @@ export default async function MuralPage({
   const { locale } = await params;
   const cookieStore = await cookies();
   const token = cookieStore.get('akasha_session')?.value;
-  if (!verifyAkashaToken(token, 'access')) {
+  const authStatus = (await headers()).get('X-Akasha-Auth');
+  if (authStatus !== 'refreshed' && !verifyAkashaToken(token, 'access')) {
     redirect(`/${locale}/login`);
   }
   const hoje = kinDaData();

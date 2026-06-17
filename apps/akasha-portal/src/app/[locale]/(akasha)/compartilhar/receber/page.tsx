@@ -13,7 +13,7 @@
  */
 
 import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 
 export const dynamic = 'force-dynamic';
@@ -26,8 +26,9 @@ interface PageProps {
 export default async function CompartilharReceberPage({ params, searchParams }: PageProps) {
   const { locale } = await params;
   const cookieStore = await cookies();
+  const authStatus = (await headers()).get('X-Akasha-Auth');
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
-  const payload = verifyAkashaToken(token, 'access');
+  const payload = authStatus === 'refreshed' ? null : verifyAkashaToken(token, 'access');
 
   if (!payload) {
     redirect(`/${locale}/onboarding?return=/compartilhar/receber`);

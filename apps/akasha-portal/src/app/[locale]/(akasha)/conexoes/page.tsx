@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import ConexoesClient from '@/components/akasha/ConexoesClient';
 import { prisma } from '@/lib/infrastructure/prisma';
@@ -12,12 +12,10 @@ export default async function ConexoesPage({
   const { locale } = await params;
   const cookieStore = await cookies();
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
-  if (!token) redirect(`/${locale}/onboarding`);
-
-  const payload = verifyAkashaToken(token, 'access');
-  if (!payload) redirect(`/${locale}/onboarding`);
-
-  const userId = payload.sub;
+  const authStatus = (await headers()).get('X-Akasha-Auth');
+  let payload = authStatus === 'refreshed' ? null : verifyAkashaToken(token, 'access');
+  if (!payload) redirect(`/${locale}/login`);
+  const userId = payload!.sub;
 
   let userProfile: {
     name: string;

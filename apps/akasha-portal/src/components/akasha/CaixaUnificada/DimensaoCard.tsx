@@ -44,7 +44,7 @@ export function renderNarrative(text: string, skipFirst = false): React.ReactNod
       );
     }
     return (
-      <span key={i} style={{ display: 'block', marginBottom: 4 }}>
+      <p key={i} style={{ margin: '0 0 6px 0', lineHeight: 1.55 }}>
         {parts.map((part, j) =>
           j % 2 === 1 ? (
             <strong key={j} style={{ color: '#E8D0FF' }}>
@@ -54,7 +54,7 @@ export function renderNarrative(text: string, skipFirst = false): React.ReactNod
             <span key={j}>{part}</span>
           )
         )}
-      </span>
+      </p>
     );
   });
 }
@@ -73,15 +73,12 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
   const hintTexto = locale in HINT ? HINT[locale] : HINT.pt;
   return (
     <article
-      onClick={() => setAberto((v) => !v)}
 
-      aria-expanded={undefined}
       style={{
         background: DIMENSAO_BG[sintese.dimensoesId] ?? 'rgba(255,255,255,0.04)',
         border: `1px solid ${DIMENSAO_BORDER[sintese.dimensoesId] ?? 'rgba(255,255,255,0.1)'}`,
         borderRadius: 16,
         padding: '16px 20px',
-        cursor: 'pointer',
         transition: 'all 0.2s ease',
         opacity: 0,
         animation: `fadeSlideIn 0.4s ease ${index * 60}ms forwards`,
@@ -159,26 +156,12 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
 
       {/* Síntese narrativa — visível mesmo fechado */}
       {/* Renderiza apenas o primeiro parágrafo quando fechado */}
-      <div
-        style={{
-          marginTop: 10,
-          fontSize: '0.88rem',
-          color: 'rgba(232,224,255,0.75)',
-          lineHeight: 1.5,
-          overflow: 'hidden',
-          maxHeight: aberto ? 'none' : '3.6em',
-          maskImage: aberto ? 'none' : 'linear-gradient(to bottom, black 50%, transparent 100%)',
-          WebkitMaskImage: aberto ? 'none' : 'linear-gradient(to bottom, black 50%, transparent 100%)',
-        }}
-      >
+      <div style={{ marginTop: 10, fontSize: '0.88rem', color: 'rgba(232,224,255,0.75)', lineHeight: 1.5 }}>
         {(() => {
           const paras = sintese.synthes ? sintese.synthes.split('\n\n').filter(Boolean) : [];
           if (paras.length === 0) return null;
-          const text = aberto ? paras.slice(1).join('\n\n') : paras[0];
-          return <p style={{ margin: 0, lineHeight: 1.55 }}>{text}</p>;
+          return <p style={{ margin: 0, lineHeight: 1.55 }}>{aberto ? paras.slice(1).join('\n\n') : paras[0]}</p>;
         })()}
-      </div>
-
       </div>
       {/* Conteúdo expandido */}
       {aberto && (
@@ -277,6 +260,7 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
           )}
         </div>
       )}
+      </div>
     </article>
   );
 }

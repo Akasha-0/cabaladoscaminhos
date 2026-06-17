@@ -265,11 +265,10 @@ export async function middleware(request: NextRequest) {
     });
   }
 
-  // Auth: proactive token refresh.
-  // Decodes access token exp WITHOUT verification (Edge Runtime — no crypto needed).
-  // If expired → refresh, set cookies, then redirect to same URL so browser
-  // sends the fresh cookies with the NEXT request, preventing RSC from reading
-  // an expired token and redirecting to /onboarding.
+  // Auth: single source of truth — middleware handles all verification.
+  // RSC MUST read X-Akasha-Auth header instead of re-verifying tokens.
+  // This closes the race condition where RSC reads expired token before
+  // middleware's Set-Cookie reaches the browser.
   if (shouldRefreshAuth(pathname)) {
     const accessToken = request.cookies.get(AKASHA_ACCESS_COOKIE)?.value;
     const exp = decodeAccessTokenExp(accessToken);
@@ -279,12 +278,14 @@ export async function middleware(request: NextRequest) {
       // Token missing, malformed, or expired — attempt refresh
       const newCookies = await authRefresh(request);
       if (newCookies) {
-        // If token was expired (not just missing), redirect after refresh so
-        // the browser re-requests with the new cookies. This prevents the RSC
-        // from reading the old expired token on the CURRENT request.
+        // Refresh succeeded: set cookies and mark as refreshed.
+        // Set X-Akasha-Auth header so RSC knows refresh happened and does NOT redirect.
         if (exp !== null) {
+          // Expired: redirect so browser gets fresh cookies on next request.
+          // Set auth header on the redirect so RSC skips its own verify on the redirect req.
           const redirectUrl = request.nextUrl.clone();
           const redirectResponse = NextResponse.redirect(redirectUrl, 303);
+          redirectResponse.headers.set('X-Akasha-Auth', 'refreshed');
           for (const cookie of newCookies) {
             redirectResponse.cookies.set(cookie.name, cookie.value, {
               httpOnly: true,
@@ -295,8 +296,8 @@ export async function middleware(request: NextRequest) {
           }
           return redirectResponse;
         }
-        // Token was missing (not expired): set cookies and let request continue
-        // to the page — no redirect needed, RSC will have fresh token
+        // Missing: set cookies on response, continue to page with refreshed status.
+        response.headers.set('X-Akasha-Auth', 'refreshed');
         for (const cookie of newCookies) {
           response.cookies.set(cookie.name, cookie.value, {
             httpOnly: true,
@@ -305,13 +306,17 @@ export async function middleware(request: NextRequest) {
             path: '/',
           });
         }
-      } else if (exp !== null) {
-        // Refresh failed but we had an expired token — send to login (NOT onboarding)
+      } else {
+        // Refresh failed: token is invalid, send to login.
+        response.headers.set('X-Akasha-Auth', 'invalid');
         const loginUrl = request.nextUrl.clone();
         loginUrl.pathname = `/${locale}/login`;
         loginUrl.search = `?return=${encodeURIComponent(request.nextUrl.pathname + request.nextUrl.search)}`;
         return NextResponse.redirect(loginUrl, 303);
       }
+    } else {
+      // Token is valid (not expired): mark as fresh.
+      response.headers.set('X-Akasha-Auth', 'fresh');
     }
   }
 

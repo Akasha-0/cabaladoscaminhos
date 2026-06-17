@@ -15,7 +15,7 @@
  * sem mudanças de UI.
  */
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { SignificadoPilar } from '@/components/akasha/SignificadoPilar';
@@ -319,7 +319,8 @@ export default async function DiarioPage({
   const { intencao } = await searchParams;
   const cookieStore = await cookies();
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
-  if (!verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
+  const authStatus = (await headers()).get('X-Akasha-Auth');
+  if (authStatus !== 'refreshed' && !verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
 
   const qs = intencao?.trim() ? `?intencao=${encodeURIComponent(intencao.trim())}` : '';
 

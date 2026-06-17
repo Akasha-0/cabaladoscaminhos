@@ -16,7 +16,7 @@
 - Build ✅ 48 rotas
 
 **Entregáveis restantes (futuro):**
-- [ ] `cabala/`: número → frequência, elemento, séfira, caminho
+- [x] `cabala/`: número → frequência, elemento, séfira, caminho — DONE (iter20): `mapeamentos/cabala/numeros.ts` criado com 12 entradas (1-9 + 11, 22, 33); `traduzCabala` enriquecido com séfira/elemento/caminho/fonte; Ano Pessoal agora coberto
 - [ ] `odu/`: odu → frequência, elemento, orixá regente, proibição
 - [ ] `astrologia/`: planeta → frequência, elemento, signo, casa
 - [ ] `tantra/`: corpo (1-11) → frequência, chakra, elemento
@@ -53,7 +53,7 @@ O utilizador interactua diariamente com estas áreas. Conteúdo fino ou repetiti
 - [x] Preencher mapeamentos/iching/ para que I Ching contribua a missaoDestino e oriCabecaQuizilas — **addressado (iter17):** buildTransformacaoIChingNarrative deriva orientação por área do ichingHex do hologram + primitives do _synthesizedProfile
 - [x] Garantir que cada área tem pelo menos 3 combinações de pilares produzindo narrativas distintas (teste automatizado) — **addressado (iter17):** `it('cada área gera pillarContribution distintas (não-identidade) — 3 combos')` em `synthesis-engine.test.ts`; all-null / kab-only / full validation ✅
 - [x] Curar conteúdo para a área `desafiosSombras` — actualmente usa `buildShadowSymptoms()` com lógica ad-hoc; migrar para mapeamentos  **DONE (iter17):** shadow-sintomas.ts criado em apps/akasha-portal/src/lib/grimoire/mapeamentos/ com 5 mapas curados (Saturno/Plutão por signo, dívida kármica, desafio, proibições Odu)
- [ ] Teste de não-repetição: gerar 50 sínteses aleatórias e verificar que nenhuma narrativa é idêntica a outra
+- [x] Teste de não-repetição: gerar 50 sínteses aleatórias e verificar que nenhuma narrativa é idêntica a outra — DONE (iter18): `gera 50 síntese distintas`, `mesmos inputs → mesmo output`, `null inputs geram saída graceful` em synthesis-engine.test.ts; 38/38 ✅
 
 **Dependência:** Requer Prioridade 1 (mapeamentos/).
 
@@ -70,7 +70,7 @@ Um agente evolutivo que opera sobre dados finos (Prioridade 3) e síntese incomp
 - [ ] Prioridade 1 completa (mapeamentos/ com todas as 5 tradições)
 - [ ] Prioridade 2 completa (oneProfile com todos os 5 pilares)
 - [ ] Prioridade 3 completa (mínimo: 80% das combinações de áreas com narrativa não-genérica)
-- [ ] `PersonalCycleEngine` existente refactored para usar `mapeamentos/` em vez de lógica inline
+- [x] `PersonalCycleEngine` refactored para usar `mapeamentos/personal-cycle.ts` (4 tabelas externas: PINNACLE_THEMES, CHALLENGE_DESCRIPTIONS, KARMIC_LESSON_DESCRIPTIONS, MATURITY_THEMES)
 
 **Entregáveis (quando desbloqueado):**
 - [ ] `agents/evolutionary-agent/` — módulo com estado de ciclo por utilizador

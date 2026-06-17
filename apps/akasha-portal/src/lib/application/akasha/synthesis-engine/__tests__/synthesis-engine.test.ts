@@ -646,8 +646,8 @@ describe('buildAkashaSynthesis — determinism & non-repetition', () => {
   });
 
   it('mesmos inputs → mesmo output (determinismo)', () => {
-    expect(s1.oneProfile?.type).toBe(s2.oneProfile?.type);
-    const kab   = makeRandomKab(makeRng(12345));
+    const astro  = makeRandomAstro(makeRng(12345));
+    const kab    = makeRandomKab(makeRng(12345));
     const tantra = makeRandomTantra(makeRng(12345));
     const odu   = makeRandomOdu(makeRng(12345));
     const holo  = makeRandomHolo(makeRng(12345));
@@ -657,8 +657,8 @@ describe('buildAkashaSynthesis — determinism & non-repetition', () => {
 
     expect(s1.akashaProfile.dominantFrequency).toBe(s2.akashaProfile.dominantFrequency);
     expect(s1.akashaProfile.transformationStage).toBe(s2.akashaProfile.transformationStage);
-    expect(s1.oneProfile.type).toBe(s2.oneProfile.type);
-    expect(synth.oneProfile?.type).toBeTruthy();
+    expect(s1.oneProfile?.type).toBe(s2.oneProfile?.type);
+    expect(s1.akashaProfile.activeSequence).toBe(s2.akashaProfile.activeSequence);
 
     const fp1 = extractNarrativeFingerprint(s1).join('\x00');
     const fp2 = extractNarrativeFingerprint(s2).join('\x00');
@@ -669,7 +669,7 @@ describe('buildAkashaSynthesis — determinism & non-repetition', () => {
     const holo = makeRandomHolo(makeRng(99999));
     const synth = buildAkashaSynthesis(null, null, null, null, holo, TODAY);
     expect(synth).toBeDefined();
-    expect(synth.oneProfile.type).toBeTruthy();
+    expect(synth.oneProfile?.type).toBeTruthy();
     expect(synth.synthesisParagraph).toBeTruthy();
   });
 });

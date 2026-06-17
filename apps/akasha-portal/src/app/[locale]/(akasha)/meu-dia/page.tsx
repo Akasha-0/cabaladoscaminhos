@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { MyDayScreen } from '@/components/akasha/MyDayScreen';
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
@@ -17,15 +17,15 @@ export default async function MeuDiaPage({ params }: MeuDiaPageProps) {
   const { locale } = await params;
   const cookieStore = await cookies();
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
-  const payload = verifyAkashaToken(token, 'access');
+  const authStatus = (await headers()).get('X-Akasha-Auth');
+  const payload = authStatus === 'refreshed' ? null : verifyAkashaToken(token, 'access');
 
-  if (!payload) {
+  if (!payload && authStatus !== 'refreshed') {
     redirect(`/${locale}/onboarding`);
   }
 
-  // Buscar dados do usuário para saudação
   const user = await prisma.user.findUnique({
-    where: { id: payload.sub },
+    where: { id: payload!.sub },
     select: { name: true },
   });
 

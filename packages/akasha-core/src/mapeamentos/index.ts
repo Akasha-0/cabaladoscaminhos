@@ -11,6 +11,7 @@ import type {
   Dominio,
 } from './types';
 import { PESOS_TRADICAO_DOMINIO, PRIMITIVOS } from './types';
+import { NUMEROS_CABALA, getNumeroCabala } from './cabala/numeros';
 import type {
   PilarIChing,
   PilarCabala,
@@ -167,54 +168,54 @@ function traduzIChing(iching: PilarIChing): PrimitiveContribution[] {
 /**
  * Tradutor Cabala — deriva PrimitiveContributions do PilarCabala.
  *
- * Mapeamento do número de Life Path para primitivo:
- *   1→Transformacao  2→Expansao  3→Ordem  4→Expressao  5→Amor
- *   6→Poder          7→Sabedoria 8→Movimento  9→Servico
- *   11→Intuicao      22→Conexao  33→Materializacao
- * Master numbers (11, 22, 33) recebem +1 intensidade.
- * Expression e Life Path em Agreement = +1 intensidade (convergência interna).
+ * Usa NUMEROS_CABALA (mapeamentos/cabala/numeros.ts) para cada número:
+ * Life Path (peso primário), Expression (peso 60%), Ano Pessoal (peso 40%).
+ * Master numbers (11, 22, 33) recebem intensidade 8; Agreement LP=Exp = +1.
+ * Cada PrimitiveContribution carrega séfira, elemento e fonte enriquecida.
  */
-const LIFE_PATH_PRIMITIVO: Record<number, Primitivo> = {
-  1:  'Transformacao',
-  2:  'Expansao',
-  3:  'Ordem',
-  4:  'Expressao',
-  5:  'Amor',
-  6:  'Poder',
-  7:  'Sabedoria',
-  8:  'Movimento',
-  9:  'Servico',
-  11: 'Intuicao',
-  22: 'Conexao',
-  33: 'Materializacao',
-};
-
 function traduzCabala(cabala: PilarCabala): PrimitiveContribution[] {
   const results: PrimitiveContribution[] = [];
 
-  const lpPrimitivo = LIFE_PATH_PRIMITIVO[cabala.life_path];
-  if (lpPrimitivo) {
-    const isMaster = [11, 22, 33].includes(cabala.life_path);
+  // ── Life Path (peso primário) ──────────────────────────────────────────
+  const lpData = getNumeroCabala(cabala.life_path);
+  if (lpData) {
     const isAgreement = cabala.expression === cabala.life_path;
-    const intensidade = isMaster ? 8 : 5;
-    const finalIntensity = isAgreement ? Math.min(10, intensidade + 1) : intensidade;
+    const isMaster = lpData.mestre !== null;
+    const baseIntensity = isMaster ? 8 : 5;
+    const finalIntensity = isAgreement ? Math.min(10, baseIntensity + 1) : baseIntensity;
+    const masters = isMaster
+      ? ` (Número Mestre ${lpData.numero}, séfira ${lpData.sefira})`
+      : '';
+    const convergence = isAgreement ? ', convergência com Expression' : '';
     results.push({
-      primitivo: lpPrimitivo,
+      primitivo: lpData.primitivo,
       intensidade: finalIntensity,
-      polaridade: 'ambas',
-      fonte: `Cabalá — Life Path ${cabala.life_path} (Número ${isMaster ? 'Mestre ' : ''}de ${cabala.life_path}) → ${lpPrimitivo}${isAgreement ? ', convergence com Expression' : ''}`,
+      polaridade: lpData.polaridade,
+      fonte: `Cabalá — Life Path ${cabala.life_path}${masters} → ${lpData.primitivo} (${lpData.arquetipo})${convergence}. Elemento: ${lpData.elemento}. Caminho: ${lpData.caminhoTreeOfLife ?? 'séfira direta'}. [${lpData.fonte}]`,
     });
   }
 
-  // Expression number — peso secundário (60%)
-  const expPrimitivo = LIFE_PATH_PRIMITIVO[cabala.expression];
-  if (expPrimitivo && expPrimitivo !== lpPrimitivo) {
+  // ── Expression number (peso secundário 60%) ───────────────────────────
+  const expData = getNumeroCabala(cabala.expression);
+  if (expData && expData.numero !== cabala.life_path) {
     const intensidade = Math.round(5 * 0.6);
     results.push({
-      primitivo: expPrimitivo,
+      primitivo: expData.primitivo,
       intensidade,
-      polaridade: 'ambas',
-      fonte: `Cabalá — Expression ${cabala.expression} → ${expPrimitivo} (peso secundário)`,
+      polaridade: expData.polaridade,
+      fonte: `Cabalá — Expression ${cabala.expression} → ${expData.primitivo} (${expData.arquetipo}, séfira ${expData.sefira}). Peso secundário (60%). [${expData.fonte}]`,
+    });
+  }
+
+  // ── Ano Pessoal (peso terciário 40%) ─────────────────────────────────
+  const apData = getNumeroCabala(cabala.ano_pessoal);
+  if (apData) {
+    const intensidade = Math.round(4 * 0.4);
+    results.push({
+      primitivo: apData.primitivo,
+      intensidade,
+      polaridade: apData.polaridade,
+      fonte: `Cabalá — Ano Pessoal ${cabala.ano_pessoal} → ${apData.primitivo}. Ciclo de ${apData.descricao.slice(0, 80)}... [${apData.fonte}]`,
     });
   }
 

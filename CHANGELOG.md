@@ -1,3 +1,38 @@
+## v0.83.3 (2026-06-17) — Auth Race Condition Fix — Option C: X-Akasha-Auth header
+- fix(middleware): Option C — X-Akasha-Auth header como fonte única de verdade para auth.
+-   Middleware seta X-Akasha-Auth: fresh|refreshed|invalid em todas as respostas.
+-   RSC não faz mais verifyAkashaToken quando header é 'refreshed'.
+-   Fecha o race condition onde RSC lia token expirado antes do middleware fazer redirect.
+- fix(auth): 15 páginas RSC atualizadas para confiar no header X-Akasha-Auth em vez de
+-   re-verificar tokens expirados (dashboard, diario, diario/foco, akasha, mandala,
+-   minha-caixa, mural, oraculo, mapa/significado, significado-primeiro, conta,
+-   meu-dia, conexoes, compartilhar/receber, login).
+- fix(layout): (akasha) group layout com X-Akasha-Auth header trust.
+- fix(dashboard): redirect /onboarding → /login para consistência.
+- fix(diario/foco): cookieStore era undefined após authStatus — corrigido.
+- fix(mandala): cookieStore/token indefinido — restaurado.
+- fix(mapa/significado): locale indefinido — restaurado de params.
+- fix(conta): variável headers shadowava import — renomeada para requestHeaders.
+- fix(conexoes): payload!.sub com null assertion quando authStatus === 'refreshed'.
+- fix(dashboard): payload!.sub com null assertions nas chamadas Prisma.
+- fix(meu-dia): payload!.sub com null assertion após redirect.
+- build: 49/49 static pages · EXIT 0 · TypeScript 0 errors
+- tests: 1361 passed · 17 skipped
+
+## v0.83.2 (2026-06-17) — UX Round 21 — Semantic ARIA + accordion accessibility + behavioral framing
+- fix(DimensaoCard): renderNarrative — span→<p> semantic paragraphs for screen readers
+- fix(DimensaoCard): removed invalid role="button" from <article> landmark; header now proper <button> with aria-expanded + aria-controls
+- fix(DimensaoCard): accordion mask — screen readers now see only first paragraph when collapsed (not full masked content)
+- fix(DimensaoCard): closed preview shows only paragraph 1 (not all paragraphs with CSS mask)
+- fix(DimensaoCard): added role="region" + aria-labelledby on expanded panel wrapper
+- fix(akasha/page): autoridade + perfilGeral sections now have aria-labelledby pointing to their h2 headings
+- fix(akasha/page): added id="autoridade-heading" + id="perfil-heading" for ARIA landmark association
+- fix(diario): Tela 4 + Tela 5 now have role="region" + aria-label ("Tela 4 de 5 — Significado dos Pilares" etc.)
+- fix(dashboard): Ritual card — Zap icon replaced with Wind; shows elemento field when available
+- fix(mandala): Pináculos row labels with behavioral framing ("1º Pináculo — primeira fase de crescimento" etc.)
+- fix(mandala): Ciclos row labels with behavioral framing ("1º Ciclo — primeiro ritmo de vida" etc.)
+- build: 49/49 static pages · EXIT 0
+
 ## v0.83.1 (2026-06-17) — UX Round 20 — Semantic headings + aria + behavioral framing + accordion dedup
 - fix(akasha/perfilGeral): outer wrapper changed from <p> to <div> — invalid HTML (block inside inline)
 - fix(DimensaoCard/accordion): collapsed preview now uses skipFirst=true — first paragraph hidden, expanded section shows only additive content (no duplication)

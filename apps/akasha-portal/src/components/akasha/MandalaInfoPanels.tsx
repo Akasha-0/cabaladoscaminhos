@@ -225,7 +225,7 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                 {kabala.pinnacles.first && (
                   <>
                     <Row
-                      label="1º Pináculo"
+                      label="1º Pináculo — primeira fase de crescimento"
                       value={`${kabala.pinnacles.first.number} (até ${kabala.pinnacles.first.ageEnd})`}
                     />
                     {kabala.pinnacles.first.meaning && (
@@ -236,7 +236,7 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                 {kabala.pinnacles.second && (
                   <>
                     <Row
-                      label="2º Pináculo"
+                      label="2º Pináculo — maturação da identidade"
                       value={`${kabala.pinnacles.second.number} (${kabala.pinnacles.second.ageStart}–${kabala.pinnacles.second.ageEnd})`}
                     />
                     {kabala.pinnacles.second.meaning && (
@@ -247,7 +247,7 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                 {kabala.pinnacles.third && (
                   <>
                     <Row
-                      label="3º Pináculo"
+                      label="3º Pináculo — construção do propósito"
                       value={`${kabala.pinnacles.third.number} (${kabala.pinnacles.third.ageStart}–${kabala.pinnacles.third.ageEnd})`}
                     />
                     {kabala.pinnacles.third.meaning && (
@@ -258,7 +258,7 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                 {kabala.pinnacles.fourth && (
                   <>
                     <Row
-                      label="4º Pináculo"
+                      label="4º Pináculo — integração da sabedoria"
                       value={`${kabala.pinnacles.fourth.number} (depois de ${kabala.pinnacles.fourth.ageStart})`}
                     />
                     {kabala.pinnacles.fourth.meaning && (
@@ -283,19 +283,19 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                 </p>
                 {kabala.lifeCycles.first && (
                   <Row
-                    label="1º Ciclo"
+                    label="1º Ciclo — primeiro ritmo de vida"
                     value={`${kabala.lifeCycles.first.number} (${kabala.lifeCycles.first.ageStart}–${kabala.lifeCycles.first.ageEnd})`}
                   />
                 )}
                 {kabala.lifeCycles.second && (
                   <Row
-                    label="2º Ciclo"
+                    label="2º Ciclo — expansão das possibilidades"
                     value={`${kabala.lifeCycles.second.number} (${kabala.lifeCycles.second.ageStart}–${kabala.lifeCycles.second.ageEnd})`}
                   />
                 )}
                 {kabala.lifeCycles.third && (
                   <Row
-                    label="3º Ciclo"
+                    label="3º Ciclo — amadurecimento espiritual"
                     value={`${kabala.lifeCycles.third.number} (a partir de ${kabala.lifeCycles.third.ageStart})`}
                   />
                 )}

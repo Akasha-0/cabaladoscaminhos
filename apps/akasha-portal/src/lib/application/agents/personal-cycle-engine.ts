@@ -455,26 +455,16 @@ function calculatePinnacles(
   const p4Num = reduce(month + year);
 
   const makePinnacle = (num: number, start: number, end: number | null, period: string, keyQ: string): Pinnacle => {
-    const themes: Record<number, Omit<Pinnacle, 'number' | 'startAge' | 'endAge' | 'period' | 'keyQuestion'>> = {
-      1: { theme: 'Iniciativa, independência, construção da identidade', opportunities: ['Começar a vida adulta', 'Tomar decisões próprias', 'Liderar'], challenges: ['Egocentrismo', 'Pressão por resultados', 'Solidão'] },
-      2: { theme: 'Cooperação, paciência, desenvolvimento de talentos', opportunities: ['Parcerias', 'Diplomacia', 'Aprofundamento'], challenges: ['Indecisão', 'Dependência', 'Autocrítica'] },
-      3: { theme: 'Expressão criativa, alegria, expansão social', opportunities: ['Arte', 'Comunicação', 'Viagens'], challenges: ['Dispersão', 'Superficialidade', 'Fofoca'] },
-      4: { theme: 'Trabalho duro, construção de base, segurança', opportunities: ['Carreira', 'Saúde', 'Família'], challenges: ['Rigidez', 'Trabalho excessivo', 'Limites rígidos'] },
-      5: { theme: 'Mudança, liberdade, aventura, transformação', opportunities: ['Viagens', 'Mudanças', 'Aprendizados'], challenges: ['Impulsividade', 'Instabilidade', 'Excessos'] },
-      6: { theme: 'Amor, responsabilidade, lar, comunidade', opportunities: ['Casamento', 'Filhos', 'Serviço'], challenges: ['Sacrifício', 'Controle', 'Perfeccionismo'] },
-      7: { theme: 'Introspecção, estudo, espiritualidade, sabedoria', opportunities: ['Terapia', 'Estudo', 'Desenvolvimento espiritual'], challenges: ['Isolamento', 'Ansiedade', 'Paralisia'] },
-      8: { theme: 'Poder, abundância, reconhecimento, autoridade', opportunities: ['Negócios', 'Investimentos', 'Carreira'], challenges: ['Workaholic', 'Materialismo', 'Pressão'] },
-      9: { theme: 'Humanitarismo, encerramento, compaixão, arte', opportunities: ['Voluntariado', 'Arte curativa', 'Viagens'], challenges: ['Melancolia', 'Soltar', 'Apego'] },
-    };
-
-    const t = themes[num] || themes[1];
+    const t = PINNACLE_THEMES[num] ?? PINNACLE_THEMES[1];
     return {
       number: num,
       startAge: start,
       endAge: end,
       period,
       keyQuestion: keyQ,
-      ...t,
+      theme: t.theme,
+      opportunities: t.opportunities,
+      challenges: t.challenges,
     };
   };
 
@@ -517,61 +507,20 @@ function calculateChallenges(
 
   const allNumbers = [firstChallenge, secondChallenge, thirdChallenge, fourthChallenge];
 
-  const descriptions: Record<number, Omit<Challenge, 'level' | 'number' | 'name'>> = {
-    0: {
-      description: 'Você tem um dom natural mas deve aprender a equilibrar',
-      howToOvercome: 'Meditação, presença e atenção ao próximo',
-      lifeArea: 'Equilíbrio interior',
-    },
-    1: {
-      description: 'Tendência ao egocentrismo e à independência excessiva',
-      howToOvercome: 'Pratique escuta ativa, colaboração e generosidade',
-      lifeArea: 'Relacionamentos',
-    },
-    2: {
-      description: 'Sensibilidade extrema e medo de conflito',
-      howToOvercome: 'Desenvolva coragem para falar verdades, terapia',
-      lifeArea: 'Comunicação',
-    },
-    3: {
-      description: 'Dificuldade de focar e terminar o que começa',
-      howToOvercome: 'Disciplina, organização e um projeto por vez',
-      lifeArea: 'Trabalho e criatividade',
-    },
-    4: {
-      description: 'Rigidez, teimosia e resistência à mudança',
-      howToOvercome: 'Flexibilidade, viagens e abertura ao novo',
-      lifeArea: 'Mudanças e adaptação',
-    },
-    5: {
-      description: 'Impulsividade, excessos e instabilidade',
-      howToOvercome: 'Disciplina, rotina, moderação',
-      lifeArea: 'Estabilidade',
-    },
-    6: {
-      description: 'Perfeccionismo, controle e sacrifício excessivo',
-      howToOvercome: 'Aceitar imperfeição, soltar, confiar',
-      lifeArea: 'Amor e serviço',
-    },
-    7: {
-      description: 'Isolamento, análise em excesso e desconfiança',
-      howToOvercome: 'Comunidade, partilha, confiar no mistério',
-      lifeArea: 'Conexão e fé',
-    },
-    8: {
-      description: 'Materialismo, workaholismo e poder descontrolado',
-      howToOvercome: 'Espiritualidade, equilíbrio vida-trabalho',
-      lifeArea: 'Carreira e abundância',
-    },
-  };
-
   return [
-    { level: 1, name: 'Primeiro Desafio', number: allNumbers[0], ...descriptions[allNumbers[0]] },
-    { level: 2, name: 'Segundo Desafio', number: allNumbers[1], ...descriptions[allNumbers[1]] },
-    { level: 3, name: 'Terceiro Desafio', number: allNumbers[2], ...descriptions[allNumbers[2]] },
-    { level: 4, name: 'Quarto Desafio', number: allNumbers[3], ...descriptions[allNumbers[3]] },
+    { level: 1, name: 'Primeiro Desafio', number: allNumbers[0], ...CHALLENGE_DESCRIPTIONS[allNumbers[0]] },
+    { level: 2, name: 'Segundo Desafio', number: allNumbers[1], ...CHALLENGE_DESCRIPTIONS[allNumbers[1]] },
+    { level: 3, name: 'Terceiro Desafio', number: allNumbers[2], ...CHALLENGE_DESCRIPTIONS[allNumbers[2]] },
+    { level: 4, name: 'Quarto Desafio', number: allNumbers[3], ...CHALLENGE_DESCRIPTIONS[allNumbers[3]] },
   ];
 }
+
+import {
+  PINNACLE_THEMES,
+  CHALLENGE_DESCRIPTIONS,
+  KARMIC_LESSON_DESCRIPTIONS,
+  MATURITY_THEMES,
+} from '@/lib/grimoire/mapeamentos/personal-cycle';
 
 // ============================================================
 // LIÇÕES CÁRMICAS
@@ -600,24 +549,12 @@ function calculateKarmicLessons(
   const allDigits = [...dateDigits, ...nameDigits];
   const present = new Set(allDigits);
 
-  const lessons: Record<number, Omit<KarmicLesson, 'missing'>> = {
-    1: { description: 'Lição de independência, liderança e auto-confiança', howToLearn: 'Pratique tomar decisões sozinho, confie na sua voz', lifeArea: 'Autonomia' },
-    2: { description: 'Lição de paciência, diplomacia e cooperação', howToLearn: 'Medite sobre timing, cultive parcerias, espere', lifeArea: 'Relacionamentos' },
-    3: { description: 'Lição de expressão, criatividade e comunicação', howToLearn: 'Escreva, fale, cante, dance — se expresse!', lifeArea: 'Comunicação' },
-    4: { description: 'Lição de disciplina, estrutura e trabalho árduo', howToLearn: 'Construa rotinas, persevere, honre o processo', lifeArea: 'Trabalho' },
-    5: { description: 'Lição de liberdade, mudança e adaptação', howToLearn: 'Viaje, experimente, rompa zonas de conforto', lifeArea: 'Liberdade' },
-    6: { description: 'Lição de amor, responsabilidade e serviço', howToLearn: 'Cuide de outros com equilíbrio, honre o lar', lifeArea: 'Amor e família' },
-    7: { description: 'Lição de introspecção, fé e sabedoria', howToLearn: 'Estude filosofia, medite, mergulhe no silêncio', lifeArea: 'Espiritualidade' },
-    8: { description: 'Lição de poder, abundância e manifestação', howToLearn: 'Desenvolva valor próprio, gerencie recursos', lifeArea: 'Abundância' },
-    9: { description: 'Lição de compaixão, encerramento e serviço', howToLearn: 'Voluntarie, perdoe, solte o que não serve', lifeArea: 'Humanitarismo' },
-  };
-
   const missing: KarmicLesson[] = [];
   for (let n = 1; n <= 9; n++) {
     if (!present.has(n)) {
       missing.push({
         missing: n,
-        ...lessons[n],
+        ...KARMIC_LESSON_DESCRIPTIONS[n],
       });
     }
   }
@@ -637,25 +574,14 @@ function calculateMaturityNumber(
   const number = reduce(lifePath + expression, true);
   const year = age >= 35 ? 35 : 45; // Ativa depois dos 35
 
-  const themes: Record<number, Omit<MaturityNumber, 'number' | 'year'>> = {
-    1: { theme: 'Liderança madura', description: 'Sua maturidade traz autoridade e independência. Você se torna referência.', gifts: ['Visão', 'Coragem', 'Liderança'], challenges: ['Solidão', 'Arrogância', 'Pressão'] },
-    2: { theme: 'Diplomacia madura', description: 'Sua maturidade traz paciência e parcerias profundas.', gifts: ['Empatia', 'Mediação', 'Cooperação'], challenges: ['Indecisão', 'Dependência', 'Autossabotagem'] },
-    3: { theme: 'Expressão madura', description: 'Sua maturidade traz criatividade e comunicação elevada.', gifts: ['Arte', 'Carisma', 'Otimismo'], challenges: ['Dispersão', 'Fofoca', 'Superficialidade'] },
-    4: { theme: 'Construção madura', description: 'Sua maturidade traz estabilidade e realizações concretas.', gifts: ['Disciplina', 'Persistência', 'Confiabilidade'], challenges: ['Rigidez', 'Workaholic', 'Medo'] },
-    5: { theme: 'Liberdade madura', description: 'Sua maturidade traz sabedoria através da experiência.', gifts: ['Adaptabilidade', 'Versatilidade', 'Coragem'], challenges: ['Impulsividade', 'Inquietude', 'Excessos'] },
-    6: { theme: 'Amor maduro', description: 'Sua maturidade traz responsabilidade e compaixão profunda.', gifts: ['Amor', 'Cura', 'Compaixão'], challenges: ['Sacrifício', 'Controle', 'Perfeccionismo'] },
-    7: { theme: 'Sabedoria madura', description: 'Sua maturidade traz introspecção e conhecimento profundo.', gifts: ['Sabedoria', 'Intuição', 'Análise'], challenges: ['Isolamento', 'Ansiedade', 'Desconfiança'] },
-    8: { theme: 'Poder maduro', description: 'Sua maturidade traz abundância e reconhecimento.', gifts: ['Poder', 'Manifestação', 'Autoridade'], challenges: ['Workaholic', 'Materialismo', 'Ganância'] },
-    9: { theme: 'Compaixão madura', description: 'Sua maturidade traz humanitarismo e encerramento sábio.', gifts: ['Compaixão', 'Sabedoria', 'Generosidade'], challenges: ['Melancolia', 'Apego', 'Sacrifício'] },
-    11: { theme: 'Iluminação madura', description: 'Sua maturidade traz inspiração e dom espiritual.', gifts: ['Intuição', 'Inspiração', 'Cura'], challenges: ['Sensibilidade', 'Ansiedade', 'Isolamento'] },
-    22: { theme: 'Construtor mestre', description: 'Sua maturidade traz capacidade de construir legados.', gifts: ['Manifestação', 'Visão', 'Disciplina'], challenges: ['Pressão', 'Perfeccionismo', 'Sobrecarga'] },
-    33: { theme: 'Mestre curador', description: 'Sua maturidade traz cura e serviço compassivo.', gifts: ['Cura', 'Amor', 'Compaixão'], challenges: ['Sacrifício', 'Codependência', 'Esgotamento'] },
-  };
-
+  const t = MATURITY_THEMES[number] ?? MATURITY_THEMES[1];
   return {
     number,
     year,
-    ...(themes[number] || themes[1]),
+    theme: t.theme,
+    description: t.description,
+    gifts: t.gifts,
+    challenges: t.challenges,
   };
 }
 

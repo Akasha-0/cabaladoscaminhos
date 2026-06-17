@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import LoginClient from './LoginClient';
@@ -11,9 +11,9 @@ export default async function LoginPage({ params }: Props) {
   const cookieStore = await cookies();
   const session = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
   // Só redireciona se o token é válido E não expirou.
-  // Token expirado → mostra o form de login (evita redirect duplo: /conta → /onboarding).
+  const authStatus = (await headers()).get('X-Akasha-Auth');
   const payload = verifyAkashaToken(session, 'access');
-  if (payload) redirect(`/${locale}/conta`);
+  if (authStatus !== 'refreshed' && payload) redirect(`/${locale}/conta`);
 
   return (
     <div

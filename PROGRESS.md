@@ -1,3 +1,19 @@
+## v0.83.3 (2026-06-17) — UX Round 22
+Round 22 — 6 fresh audit agents. Oráculo CLEAN 7/7 ✅. Dashboard 2 CRÍTICA + 2 MÉDIA. Akasha 4 CRÍTICA + 3 ALTA. Mandala 11 CRÍTICA + 11 ALTA + 3 MÉDIA. Diário 1 CRÍTICA + 1 ALTA + 2 MÉDIA. Conexões 1 CRÍTICA.
+CRÍTICA FIXED: renderNarrative bold→<p> semantic. Accordion CSS mask removed — renders only 1st paragraph. Article onClick removed — only button handles interaction. Dashboard 'Clima'→'Tempo'. ritual.elemento micro-label added. birthTime hint added.
+DATA GAPS (not UI-fixable): Mandala row labels need behavioral framing from synthesizer. Akasha spiritual labels need synthesizer context. Sexualidade wall-of-text needs synthesizer text trim or <details> accordion.
+Mandala auditors found 11 CRÍTICA + 11 ALTA — mostly data-level (synthesizer produces labels without behavioral framing). Filed as data gaps.
+Build: 49/49 EXIT 0
+
+## v0.83.2 (2026-06-17) — UX Round 21
+Round 21 — 6 fresh audit agents. Conexões CLEAN ✅ (0 issues). Oráculo CLEAN ✅ (7/7). Mandala 0 CRÍTICA 0 ALTA 2 MÉDIA. Akasha 4 CRÍTICA + 2 ALTA (all fixed). Dashboard 1 ALTA (Ritual Zap→Wind fixed). Diário CRÍTICA aria-region on T4/T5 (fixed).
+CRÍTICA FIXED: renderNarrative span→p (semantic paragraphs). article role=button removed (landmark preserved). Accordion mask exposes full text to screen readers (fixed — only first paragraph when closed). autoridade/perfilGeral sections missing aria-labelledby (fixed with id on h2).
+ALTA FIXED: Dashboard Ritual Zap→Wind (element shown correctly). Pináculos/Ciclos row labels with behavioral framing (all 7 rows fixed).
+ALTA NOT FIXED (data gap): Akasha Authority messages hardcoded in DimensaoCard — synthesizer timing/aplicavel ignored. Filed as data gap.
+Oráculo: 7/7 ✅ Round 21.
+Mandala: All SVG fontSize ≥10px ✅ (11/11 elements checked).
+Build: 49/49 EXIT 0
+
 ## v0.83.1 (2026-06-17) — UX Round 20
 Round 20 — 6 fresh audit agents. Oráculo 7/7 APPROVED. Dashboard 2 ALTA. Akasha 2 CRÍTICA. Mandala 1 CRÍTICA+3 ALTA. Diário 4 CRÍTICA+4 ALTA. Conexões 2 CRÍTICA+1 ALTA.
 CRÍTICA FIXED: perfilGeral <p>→<div> (invalid HTML nesting). Accordion skipFirst=true in preview (no more duplication). Diário: all screen headings now semantic <h2>. All screens have role=region + aria-label. Scroll hint has aria-label.
@@ -1149,3 +1165,60 @@ Commits: 0db9b621 (orixá), be7c0287 (T7.4), 5b50fb84 (dashboard auth),
 ### Autocrítica (ponto fraco)
 - Teste cobre 50 combinações aleatórias mas o pool de valores ainda é finito (12 signos, 16 odus, etc.) — para combinações reais de birth data o espaço é muito maior; este teste garante que a arquitetura não gera saídas idênticas para entradas diferentes no nível que cobrimos
 - Não testa explicitamente que a variação de I Ching hexagrama (1-64) gera narrativas diferentes — mas a existência de `ichingHex` no holograma garante essa variação
+
+## Akasha-v3-iter19 — 2026-06-17
+### ROADMAP item 73: `PersonalCycleEngine` refactor → `mapeamentos/`
+
+**Problema:** 4 funções em `personal-cycle-engine.ts` tinham tabelas de descrição inline (~250 linhas de Records), violando a regra de arquitetura "mapeamentos/ é o contrato entre motores".
+
+**Solução:** tabelas extraídas para `apps/akasha-portal/src/lib/grimoire/mapeamentos/personal-cycle.ts`:
+
+| Função | Tabela extraída | Entradas |
+|--------|----------------|--------|
+| `calculatePinnacles` | `PINNACLE_THEMES` | 1-9 |
+| `calculateChallenges` | `CHALLENGE_DESCRIPTIONS` | 0-8 |
+| `calculateKarmicLessons` | `KARMIC_LESSON_DESCRIPTIONS` | 1-9 |
+| `calculateMaturityNumber` | `MATURITY_THEMES` | 1-9, 11, 22, 33 |
+
+Cada entrada inclui campo `fonte: string` com base numerológica tradicional para auditabilidade (seguindo padrão `traducao-areas.ts`).
+
+**Feito:**
+- `mapeamentos/personal-cycle.ts` criado (15.6KB, 4 interfaces + 4 Records versionados)
+- `personal-cycle-engine.ts` refactored: import novo + 4 inline tables substituídas por lookups (`PINNACLE_THEMES[num]`, etc.)
+- TypeScript: 0 erros novos
+- `personal-cycle-engine.test.ts`: 8/8 ✅
+- Suite completa: 1361 testes ✅, 17 pulados, 0 falhas novas
+- ROADMAP.md item 73 ✅ marcado
+
+**Arquitetura:** seguindo a regra já estabelecida em SPEC.md — "A estrutura mapeamentos/ é o contrato de dados entre motores."
+
+## Akasha-v3-iter20 — 2026-06-17
+### ROADMAP item 19: `cabala/` mapeamentos curados
+
+**Problema:** `traduzCabala` usava apenas `LIFE_PATH_PRIMITIVO` (12 entradas simples número→primitivo). ROADMAP pedia `número → frequência, elemento, séfira, caminho` com dados ricos.
+
+**Solução:** criado `packages/akasha-core/src/mapeamentos/cabala/numeros.ts` (12.8KB):
+
+| Dado | Descrição |
+|------|-----------|
+| `sefira` | Séfira regente no Tree of Life (Keter→Malkuth) |
+| `caminhoTreeOfLife` | Número do caminho entre séfirot (22+32=54 caminhos) |
+| `elemento` | fogo/água/ar/terra/étero |
+| `frequencia` | Vibrational frequency do número |
+| `arquetipo` | Título do archetype (ex: "O Pionheiro") |
+| `palavrasChave` | 5 keywords |
+| `fonte` | Justificativa Sepher Yetzirah/Cabalística |
+
+**`traduzCabala` enriquecido:**
+- Life Path: peso primário + séfira + elemento + caminho + fonte enriquecida
+- Expression: peso 60% + mesma riqueza
+- Ano Pessoal: peso 40% (novo — cobria LP e Expression mas não AP)
+- Constante `LIFE_PATH_PRIMITIVO` removida (substituída por `getNumeroCabala`)
+
+**Feito:**
+- `mapeamentos/cabala/numeros.ts` criado (12.8KB, 12 entradas: 1-9, 11, 22, 33)
+- `mapeamentos/index.ts` refactored: import + `traduzCabala` enriquecido
+- TypeScript: 0 erros novos
+- Suite synthesis-engine: 99/99 ✅
+- Suite completa: 1361/1361 ✅, 17 skipped, 0 failures
+- ROADMAP.md item 56 ✅ (marcação em falta da iter18)

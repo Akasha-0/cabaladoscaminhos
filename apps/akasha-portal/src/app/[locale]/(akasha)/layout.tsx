@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import { prisma } from '@/lib/infrastructure/prisma';
 import { AkashaLayoutClient } from '@/components/akasha/AkashaLayoutClient';
@@ -14,9 +14,12 @@ export default async function AkashaLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const authStatus = (await headers()).get('X-Akasha-Auth');
   const cookieStore = await cookies();
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
-  const payload = verifyAkashaToken(token, 'access');
+  // Skip verifyAkashaToken when middleware just refreshed the token (old token is expired).
+  // AkashaLayoutClient will render without user data until the NEXT request with fresh cookies.
+  const payload = authStatus === 'refreshed' ? null : verifyAkashaToken(token, 'access');
 
   let user = null;
   if (payload?.sub) {

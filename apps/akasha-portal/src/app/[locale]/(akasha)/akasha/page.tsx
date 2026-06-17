@@ -10,7 +10,7 @@ import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/a
  */
 
 import { significadoPorPilar } from '@/lib/grimoire/significados-curados';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { DimensaoCard, renderNarrative } from '@/components/akasha/CaixaUnificada';
@@ -43,7 +43,8 @@ export default async function MinhaCaixaPage({
   const { locale } = await params;
   const cookieStore = await cookies();
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
-  if (!verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
+  const authStatus = (await headers()).get('X-Akasha-Auth');
+  if (authStatus !== 'refreshed' && !verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia`,
@@ -160,11 +161,12 @@ export default async function MinhaCaixaPage({
           <>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
               <span style={{ color: C.dourado, fontSize: '1rem' }}>✦</span>
-              <h2 style={{ fontFamily: 'var(--font-cinzel, serif)', color: C.txtPri, fontSize: '0.95rem', margin: 0, fontWeight: 600 }}>
+              <h2 id="autoridade-heading" style={{ fontFamily: 'var(--font-cinzel, serif)', color: C.txtPri, fontSize: '0.95rem', margin: 0, fontWeight: 600 }}>
                 Sua Autoridade Akasha
               </h2>
             </div>
             <section
+              aria-labelledby="autoridade-heading"
               style={{
                 background: 'rgba(255,255,255,0.04)',
                 border: '1px solid rgba(240,180,41,0.3)',
@@ -262,13 +264,14 @@ export default async function MinhaCaixaPage({
         {/* Header do perfil */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
           <span style={{ color: C.violeta, fontSize: '1rem' }}>✦</span>
-          <h2 style={{ fontFamily: 'var(--font-cinzel, serif)', color: C.txtPri, fontSize: '0.95rem', margin: 0, fontWeight: 600 }}>
+          <h2 id="perfil-heading" style={{ fontFamily: 'var(--font-cinzel, serif)', color: C.txtPri, fontSize: '0.95rem', margin: 0, fontWeight: 600 }}>
             Seu Perfil Akasha
           </h2>
         </div>
         {/* Perfil geral narrativo */}
         {sintese && sintese.perfilGeral && (
           <section
+            aria-labelledby="perfil-heading"
             style={{
               background: 'rgba(255,255,255,0.04)',
               border: '1px solid rgba(255,255,255,0.1)',

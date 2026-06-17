@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { Dashboard } from '@/components/akasha/dashboard/Dashboard';
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
@@ -23,21 +23,22 @@ function parseHora(time: string | null | undefined): string | undefined {
 
 export default async function LocalizedDashboardPage({ params }: DashboardPageProps) {
   const { locale } = await params;
+  const authStatus = (await headers()).get('X-Akasha-Auth');
   const cookieStore = await cookies();
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
-  const payload = verifyAkashaToken(token, 'access');
-
-  if (!payload) {
-    redirect(`/${locale}/onboarding`);
+  let payload: ReturnType<typeof verifyAkashaToken> = null;
+  if (authStatus !== 'refreshed') {
+    payload = verifyAkashaToken(token, 'access');
+    if (!payload) redirect(`/${locale}/login`);
   }
 
   const [user, birthChart] = await Promise.all([
     prisma.user.findUnique({
-      where: { id: payload.sub },
+      where: { id: payload!.sub },
       select: { name: true, birthDate: true, birthTime: true, birthCity: true },
     }),
     prisma.birthChart.findUnique({
-      where: { userId: payload.sub },
+      where: { userId: payload!.sub },
     }),
   ]);
 
@@ -63,7 +64,7 @@ export default async function LocalizedDashboardPage({ params }: DashboardPagePr
 
   return (
     <Dashboard 
-      userId={payload.sub} 
+      userId={payload!.sub}
       userName={user?.name ?? 'Viajante'} 
       initialPilares={initialPilares}
       locale={locale}
