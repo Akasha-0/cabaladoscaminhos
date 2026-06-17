@@ -21,15 +21,18 @@ import { DashboardStats } from './components/DashboardStats';
 import { StreakCalendar } from './StreakCalendar';
 import { ProgressChart } from './ProgressChart';
 import { RitualHistory } from './RitualHistory';
+import { EvolutionPatterns } from './EvolutionPatterns';
 import { useDashboardData } from './hooks/useDashboardData';
 import { useAkashaSynthesis } from './hooks/useAkashaSynthesis';
 import { useCyclePersistence } from './hooks/useCyclePersistence';
+import type { CycleHistoryData } from './hooks/useCyclePersistence';
 import { AkashaLifeAreasDashboard } from './AkashaLifeAreasDashboard';
 import { MeuCiclo } from './MeuCiclo';
 import { sintetizarMapa } from '@/lib/grimoire/synthesis/synthesizer';
 import type { CaixaSintese, DimensaoSintese } from '@/lib/grimoire/synthesis/synthesizer';
 import type { PilaresDados } from '@/lib/grimoire/significados-curados';
 import { AREA_ICONE, AREA_LABEL } from '@/lib/grimoire/traducao-areas';
+import { DailyInsightCard } from '../DailyInsightCard';
 
 interface DashboardProps {
   userId: string;
@@ -127,10 +130,12 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
   const [selectedDimension, setSelectedDimension] = useState<DimensaoSintese | null>(null);
   const [dimFocoExpanded, setDimFocoExpanded] = useState(false);
   const [ritualExpanded, setRitualExpanded] = useState(false);
+  const [cycleHistory, setCycleHistory] = useState<CycleHistoryData | null>(null);
+  const [cycleHistoryLoading, setCycleHistoryLoading] = useState(false);
 
   const { data: statsData, loading: statsLoading, refetch: refetchStats } = useDashboardData({ userId });
   const { data: dailyData, synthesis, loading: synthesisLoading, refetch: refetchSynthesis } = useAkashaSynthesis({ userId });
-  const { persistCycle } = useCyclePersistence({ userId });
+  const { persistCycle, getCycleHistory } = useCyclePersistence({ userId });
 
   // Fetch /api/akasha/mandato-do-dia and run local synthesis
   const fetchMandato = async () => {
@@ -195,6 +200,16 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
     if (!dailyData) return;
     void persistCycle(dailyData);
   }, [dailyData, persistCycle]);
+
+  // P7 (iter34): Load cycle history for pattern display in Evolution tab
+  useEffect(() => {
+    if (!getCycleHistory) return;
+    setCycleHistoryLoading(true);
+    void getCycleHistory(30).then((data) => {
+      setCycleHistory(data);
+      setCycleHistoryLoading(false);
+    });
+  }, [getCycleHistory]);
 
   const handleCompleteRitual = async () => {
     if (!dailyData?.ritual) return;
@@ -276,7 +291,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
         </div>
         <div className="mt-8 text-center space-y-2 relative z-10">
           <p className="text-lg font-bold font-cinzel text-white tracking-wider"><Sparkles size={18} className="inline mr-1 text-[#9D86FF]" /> AKASHA</p>
-          <p className="text-sm text-[#A7AECF] font-cinzel tracking-widest animate-pulse">SINTONIZANDO SUA ENERGIA...</p>
+          <p className="text-sm text-[#A7AECF] font-cinzel tracking-widest animate-pulse">Carregando seu alinhamento…</p>
         </div>
         {/* Orbiting dots */}
         <div className="absolute w-64 h-64">
@@ -315,7 +330,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
       <header className="sticky top-0 z-40 bg-[#06070F]/80 backdrop-blur-md border-b border-[#7C5CFF]/15 px-4 py-3 md:px-6">
         <div className="flex items-center justify-between max-w-4xl mx-auto">
           <div className="flex flex-col">
-            <span className="text-[10px] text-[#A7AECF] uppercase tracking-widest font-mono">Painel</span>
+            <span className="text-[10px] text-[#A7AECF] uppercase tracking-widest font-mono">{getFormattedDate()}</span>
             <h1 className="text-lg font-bold font-cinzel text-white tracking-wider">AKASHA OS</h1>
           </div>
           <div className="flex items-center gap-3">
@@ -336,7 +351,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
       <div className="px-4 pt-6 max-w-2xl mx-auto relative z-10">
         <div role="tablist" className="bg-[#0B0E1C]/80 border border-white/10 rounded-full p-1 flex items-center justify-between backdrop-blur-md">
           {[
-            { id: 'daily', label: 'Alinhamento', icon: Sparkles },
+            { id: 'daily', label: 'Meu Dia', icon: Sparkles },
             { id: 'profile', label: 'Áreas da Vida', icon: Award },
             { id: 'progress', label: 'Evolução', icon: TrendingUp },
           ].map((tab) => {
@@ -394,6 +409,29 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                   </p>
                 )}
               </div>
+              {/* Insight Principal do Dia — UX improvement */}
+              {dailyData && (
+                <DailyInsightCard
+                  insight={
+                    detSintese?.perfilGeral
+                      ? detSintese.perfilGeral.substring(0, 120) + (detSintese.perfilGeral.length > 120 ? '...' : '')
+                      : `Hoje é um dia de ${dailyData.overallTheme ?? 'transformação'}.`
+                  }
+                  action={
+                    dailyData.ritual?.titulo
+                      ? `Pratique: ${dailyData.ritual.titulo}`
+                      : 'Respire e observe seus pensamentos'
+                  }
+                  why={
+                    detSintese?.caminhoDeVida
+                      ? detSintese.caminhoDeVida
+                      : undefined
+                  }
+                  category={dailyData.overallTheme === 'Ação' ? 'acao' : dailyData.overallTheme === 'Reflexão' ? 'reflexao' : 'transformacao'}
+                  isPrimary={true}
+                />
+              )}
+
 
               {/* Cosmic Vibe Grid — selectable chips that filter/highlight sections */}
               <p className="text-[10px] text-[#A7AECF]/40 text-center tracking-wide">
@@ -853,6 +891,9 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                 <h3 className="text-sm font-semibold font-cinzel mb-4 text-[#A7AECF]">Intensidade das Práticas</h3>
                 <ProgressChart userId={userId} />
               </div>
+
+              {/* P7 (iter34): Evolution patterns from stored cycle history */}
+              <EvolutionPatterns history={cycleHistory} loading={cycleHistoryLoading} />
 
               <RitualHistory userId={userId} onAction={() => setActiveTab('daily')} />
             </motion.div>

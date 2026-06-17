@@ -1,5 +1,6 @@
 'use client';
 
+import { SuggestedQuestions } from '@/components/akasha/SuggestedQuestions';
 import { Sparkles } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
@@ -255,17 +256,17 @@ export default function OraculoPage() {
           gap: '20px',
         }}
       >
-        {/* Welcome state */}
+        {/* Welcome state — UX Improved: Guided with suggestions */}
         {messages.length === 0 && (
           <div
             style={{
               margin: 'auto',
               textAlign: 'center',
-              maxWidth: '520px',
+              maxWidth: '560px',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: '16px',
+              gap: '20px',
             }}
           >
             <div
@@ -306,8 +307,27 @@ export default function OraculoPage() {
                 O que você precisa compreender hoje?
               </p>
               <p style={{ margin: '10px 0 0', fontSize: '0.78rem', color: 'rgba(167,174,207,0.6)', lineHeight: 1.5 }}>
-                Digite sua pergunta no campo abaixo — o oráculo responde com uma síntese espiritual personalizada.
+                Escolha uma pergunta sugerida ou digite a sua:
               </p>
+            </div>
+
+            {/* Sugestões de perguntas — UX improvement */}
+            <div style={{
+              width: '100%',
+              padding: '16px 20px',
+              background: 'rgba(11,14,28,0.5)',
+              borderRadius: '14px',
+              border: '1px solid rgba(124,92,255,0.15)',
+            }}>
+              <SuggestedQuestions
+                lifeArea="proposito"
+                onSelectQuestion={(question) => {
+                  setInput(question);
+                  // Scroll para o campo de input
+                  document.getElementById('oracle-input')?.focus();
+                }}
+                maxQuestions={3}
+              />
             </div>
           </div>
         )}
@@ -482,6 +502,7 @@ export default function OraculoPage() {
           </span>
         </div>
         <textarea
+          id="oracle-input"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
@@ -493,7 +514,7 @@ export default function OraculoPage() {
           disabled={loading}
           placeholder="Descreva sua situação ou pergunta (Shift+Enter = quebra de linha)…"
           rows={3}
-          aria-label="Sua pergunta ao oráculo" 
+          aria-label="Sua pergunta ao oráculo"
           style={{
             width: '100%',
             resize: 'none',
