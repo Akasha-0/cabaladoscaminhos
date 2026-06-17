@@ -52,4 +52,3 @@ export function StatsCard({ title, value, subtitle, icon, suffix }: StatsCardPro
     </div>
   );
 }
-}

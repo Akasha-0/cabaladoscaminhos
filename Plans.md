@@ -4,6 +4,25 @@
 
 
 
+## cc: Ralph-loop UI/UX improvements (2026-06-17T01:34:00Z)
+- [~] **PLN-UI/UX-001** — ralph_loop_ui_improvements | 0.13.2
+  - Improvement: UI/UX consistency improvements to Dashboard
+  - Type: ux_improvement
+  - Priority: 7
+  - Phases: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE
+  - File: `apps/akasha-portal/src/components/akasha/dashboard/components/DashboardStats.tsx`
+    - Changed: Replaced emoji icons (✨🔥🏆📊) with Lucide icons (Sparkles/Flame/Trophy/BarChart3)
+    - Color-coded icons: amber/orange/yellow/cyan matching each metric
+  - File: `apps/akasha-portal/src/components/akasha/dashboard/components/StatsCard.tsx`
+    - Changed: Updated dark theme consistency from `bg-slate-800/50` to `bg-[#0B0E1C]/60`
+    - Added subtle border `border-white/5` matching dashboard aesthetic
+    - Improved hover state with `hover:border-white/10`
+  - File: `apps/akasha-portal/src/components/akasha/dashboard/Dashboard.tsx`
+    - Changed: Replaced 🧘 emoji with Lucide `<Heart>` icon in ritual card
+    - Changed: Improved tab active state contrast from `/20` to `/30` background opacity
+  - Verification: TypeScript typecheck ✅ passed
+  - Blocker: Pre-existing test failures (473 failed tests) due to missing modules, auth mocking issues
+
 ## cc: AKASHA-loop iter 2 | missing_tests (2026-06-16T00:53:04Z)
 - [~] **PLN-002** — missing_tests | 0.2.1
   - Improvement: 2 changed files lack tests
@@ -1217,6 +1236,7 @@
 - [~] **PLN-013[1]** -- large_file | 26 oversized files
 - [~] **PLN-014[1]** -- large_file | 26 oversized files
 - [~] **PLN-015[1]** -- large_file | 26 oversized files
+- [~] **PLN-016[1]** -- large_file | 26 oversized files
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)

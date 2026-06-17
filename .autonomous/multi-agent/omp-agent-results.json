@@ -2,7 +2,7 @@
   "results": [
     {
       "success": false,
-      "message": "No extraction possible from apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts — file is pure static data (single LIFE_AREAS constant, no functions)",
+      "message": "No helpers to extract: apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts contains only static LIFE_AREAS data (809 lines). Helper life-areas-data-utils.ts was already extracted in a prior iteration.",
       "type": "large_file"
     }
   ]

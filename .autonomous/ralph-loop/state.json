@@ -102,7 +102,7 @@
     }
   ],
   "last_action": null,
-  "last_updated": "2026-06-17T01:27:56.120219+00:00",
+  "last_updated": "2026-06-17T01:35:28.412041+00:00",
   "errors": [
     {
       "iteration": 0,
@@ -1431,6 +1431,13 @@
       "iteration": 0,
       "phase": "QA",
       "typecheck": false,
+      "tests": false,
+      "lint": true
+    },
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": true,
       "tests": false,
       "lint": true
     },
