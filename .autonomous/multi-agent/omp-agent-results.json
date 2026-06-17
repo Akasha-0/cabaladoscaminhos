@@ -2,7 +2,7 @@
   "results": [
     {
       "success": true,
-      "message": "packages/core-iching/src/practices.ts is pure data (PRACTICES constant only) — no helper functions to extract; helpers already extracted to practices-queries.ts, practices-data.ts, practices-cristais.ts, practices-cromoterapia.ts",
+      "message": "Skipped: packages/core-iching/src/practices.ts is already pure data (no helper functions to extract)",
       "type": "large_file"
     }
   ]

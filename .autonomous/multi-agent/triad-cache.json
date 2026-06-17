@@ -2,18 +2,23 @@
   "triad": {
     "typecheck": {
       "pass": false,
-      "errors": []
+      "errors": [
+        "packages/akasha-core/src/index.test.ts(26,41): error TS2345: Argument of type '\"Ogbe\"' is not assignable to parameter of type 'IfaOdu'.",
+        "packages/akasha-core/src/index.test.ts(74,39): error TS2345: Argument of type '\"Ogbe\"' is not assignable to parameter of type 'IfaOdu'.",
+        "packages/akasha-core/src/index.test.ts(96,60): error TS2345: Argument of type '\"chakra\"' is not assignable to parameter of type 'Tradition'.",
+        "packages/akasha-core/src/index.test.ts(141,5): error TS2322: Type '\"meditation\"' is not assignable to type 'PracticeCategory'."
+      ]
     },
     "lint": {
-      "pass": false,
+      "pass": true,
       "warnings": 0
     },
     "tests": {
       "pass": false,
-      "passed": 0,
-      "failed": 1
+      "passed": 1776,
+      "failed": 219
     }
   },
-  "git_head": "6f52bd27e4a675ccd6a07f53dc59355fb461637d",
-  "cached_at": 1781662308.1301215
+  "git_head": "38343fa8567f5b7d1512f8a16bee6890741d0375",
+  "cached_at": 1781663047.565547
 }

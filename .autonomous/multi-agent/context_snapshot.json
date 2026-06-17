@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-17T02:11:30.873828+00:00",
-  "version": "0.78.0",
+  "generated_at": "2026-06-17T02:22:17.630958+00:00",
+  "version": "0.79.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-UI/UX-001** — ralph_loop_ui_improvements | 0.13.2",
@@ -1080,43 +1080,54 @@
       "- [~] **PLN-020[2]** -- large_file | 28 oversized files",
       "- [~] **PLN-021[1]** -- large_file | 28 oversized files",
       "- [~] **PLN-022[1]** -- large_file | 28 oversized files",
+      "- [~] **PLN-023[1]** -- large_file | 28 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2",
       "- [~] **PLN-AE-003** — Ralph-loop continuous | QA cycling (v0.12.1)"
     ],
-    "pending_count": 1080
+    "pending_count": 1081
   },
   "git": {
-    "untracked": 1,
-    "modified": 13,
-    "total": 14,
+    "untracked": 2,
+    "modified": 17,
+    "total": 19,
     "has_changes": true
   },
   "triad": {
     "typecheck": {
       "pass": false,
-      "errors": []
+      "errors": [
+        "packages/akasha-core/src/index.test.ts(26,41): error TS2345: Argument of type '\"Ogbe\"' is not assignable to parameter of type 'IfaOdu'.",
+        "packages/akasha-core/src/index.test.ts(74,39): error TS2345: Argument of type '\"Ogbe\"' is not assignable to parameter of type 'IfaOdu'.",
+        "packages/akasha-core/src/index.test.ts(96,60): error TS2345: Argument of type '\"chakra\"' is not assignable to parameter of type 'Tradition'.",
+        "packages/akasha-core/src/index.test.ts(141,5): error TS2322: Type '\"meditation\"' is not assignable to type 'PracticeCategory'."
+      ]
     },
     "lint": {
-      "pass": false,
+      "pass": true,
       "warnings": 0
     },
     "tests": {
       "pass": false,
-      "passed": 0,
-      "failed": 1
+      "passed": 1776,
+      "failed": 219
     }
   },
   "codegraph": {
-    "pending_files": 0,
+    "pending_files": 1,
     "ok": true
   },
   "improvement_candidates": [
     {
       "type": "typecheck_errors",
       "priority": 9,
-      "description": "0 TypeScript errors",
-      "errors": []
+      "description": "4 TypeScript errors",
+      "errors": [
+        "packages/akasha-core/src/index.test.ts(26,41): error TS2345: Argument of type '\"Ogbe\"' is not assignable to parameter of type 'IfaOdu'.",
+        "packages/akasha-core/src/index.test.ts(74,39): error TS2345: Argument of type '\"Ogbe\"' is not assignable to parameter of type 'IfaOdu'.",
+        "packages/akasha-core/src/index.test.ts(96,60): error TS2345: Argument of type '\"chakra\"' is not assignable to parameter of type 'Tradition'.",
+        "packages/akasha-core/src/index.test.ts(141,5): error TS2322: Type '\"meditation\"' is not assignable to type 'PracticeCategory'."
+      ]
     },
     {
       "type": "tech_debt",
@@ -1154,7 +1165,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "6f52bd27e4a675ccd6a07f53dc59355fb461637d",
+  "git_head": "38343fa8567f5b7d1512f8a16bee6890741d0375",
   "decision_factors": {
     "has_pending_features": true
   }
