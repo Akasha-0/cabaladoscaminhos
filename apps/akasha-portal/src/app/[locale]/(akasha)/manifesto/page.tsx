@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { PlainEnglishPlanet } from '@/components/akasha/PlainEnglishPlanet';
 
 type ManifestoContent = {
   userName: string;
@@ -436,9 +437,13 @@ export default function ManifestoPage() {
               <div style={labelStyle}>Posições Planetárias</div>
               <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
                 {astrology.mainPlanets.map((p, i) => (
-                  <div key={i} style={{ color: 'rgba(244,245,255,0.78)', fontSize: '0.85rem' }}>
-                    <strong style={{ color: '#F4F5FF' }}>{p.name}</strong> em {p.sign}
-                  </div>
+                  <PlainEnglishPlanet
+                    key={i}
+                    planet={p.name}
+                    sign={p.sign}
+                    degree={0}
+                    variant="compact"
+                  />
                 ))}
               </div>
             </div>
