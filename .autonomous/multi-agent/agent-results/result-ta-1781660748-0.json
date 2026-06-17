@@ -1,1 +1,0 @@
-{"success": false, "message": "No helper functions to extract from apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts — file contains only the static LIFE_AREAS constant (pure data, no logic). Prior extraction already removed all helpers.", "type": "large_file"}

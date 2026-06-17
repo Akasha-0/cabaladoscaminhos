@@ -4,27 +4,23 @@
  * Exporta o Correlation Map, guardrails e tipos fundamentais
  */
 
+export type {
+  Tradition,
+  CrossTraditionCorrelation,
+  CorrelationMap,
+  IfaOdu,
+  Sefirah,
+} from './correlation-map';
+
 export {
-  // Tipos
-  type Tradition,
-  type CrossTraditionCorrelation,
-  type CorrelationMap,
-  type IfaOdu,
-  type Sefirah,
-  
-  // Constantes
   IFA_ODUS,
   SEFIRot,
   ICHING_NAMES,
-  
-  // Mapas
   ifaToIchingMap,
   ichingToIfaMap,
   sefirotToTrigramMap,
   ifaToCabalaMap,
   correlationMap,
-  
-  // Funções
   findCorrelations,
   getIchingsByIfa,
   getIfasByIching,
@@ -33,14 +29,38 @@ export {
   getCorrelationStrength,
   getFullCorrelation,
   buildIchingToIfaMap,
-} from './correlation-map.js';
+} from './correlation-map';
 
 export {
-  // Funções de guardrails
   isSafePractice,
   validatePractice,
-  
-  // Tipos
   type Practice,
   type ValidationResult,
-} from './practices-guardrails.js';
+} from './practices-guardrails';
+
+// akasha-core.ts
+export { AkashaInputSchema, calcular } from './akasha-core';
+export type {
+  AkashaInput,
+  PilarCabala,
+  PilarTrinityLevel,
+  PilarAstrologia,
+  PilarTantrica,
+  PilarOdu,
+  PilarIChing,
+  MandalaResumo,
+  MandatoEsqueleto,
+  AkashaLeitura,
+} from './akasha-core';
+
+// dashboard-service.ts
+export { DashboardService, calculateStreak } from './dashboard-service';
+
+// interpretation-engine/queries.ts
+export { interpretarVida, interpretarVidaArea } from './interpretation-engine/queries';
+
+// recommendation-generator.ts
+export { generateHybrid } from './recommendation-generator';
+
+// ritual-calculator.ts
+export { buildRitual } from './ritual-calculator';

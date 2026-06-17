@@ -3,8 +3,12 @@
     {
       "type": "large_file",
       "priority": 4,
-      "description": "26 oversized files",
+      "description": "28 oversized files",
       "files": [
+        {
+          "file": "packages/core-iching/src/practices.ts",
+          "lines": 993
+        },
         {
           "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts",
           "lines": 809
@@ -12,13 +16,9 @@
         {
           "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
           "lines": 773
-        },
-        {
-          "file": "apps/akasha-portal/src/components/akasha/dashboard/Dashboard.tsx",
-          "lines": 766
         }
       ]
     }
   ],
-  "iteration": 18
+  "iteration": 19
 }
