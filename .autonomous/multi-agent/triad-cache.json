@@ -10,11 +10,11 @@
     },
     "tests": {
       "pass": true,
-      "passed": 1376,
+      "passed": 1385,
       "failed": 0
     }
   },
-  "git_head": "5dc24875",
-  "cached_at": "2026-06-17T20:30:00Z",
-  "feature_summary": "v0.84.10: EvolutionPatterns locale removal (client-safe pt-BR bundle); login open-redirect security fix; dashboard call site cleaned. Iter38+39+40 fully committed."
+  "git_head": "c29538ab",
+  "cached_at": "2026-06-17T20:45:00Z",
+  "feature_summary": "v0.84.11: Tunable PESOS_TRADICAO_DOMINIO weights — getTradicaoWeights/setTradicaoWeights runtime override API; SPEC.md §13 reconciled (Layer 7 wired, Iter38/39 done, tunable weights in progress). Iter42 complete."
 }

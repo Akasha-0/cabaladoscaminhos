@@ -286,26 +286,29 @@ export async function middleware(request: NextRequest) {
           const redirectResponse = NextResponse.redirect(redirectUrl, 303);
           redirectResponse.headers.set('X-Akasha-Auth', 'refreshed');
           for (const cookie of newCookies) {
-            // Access token (akasha_session) gets strict; refresh stays lax.
-            const isAccess = cookie.name === 'akasha_session';
+            // NOTE: sameSite='lax' — 'strict' blocked cookie on 303 redirect navigations,
+            // causing 'refresh → ✦ Iniciar Jornada'. Cookie is httpOnly + cryptographically
+            // signed; CSRF risk minimal vs UX breakage from dropped cookies.
             redirectResponse.cookies.set(cookie.name, cookie.value, {
               httpOnly: true,
-              sameSite: isAccess ? 'strict' : 'lax',
+              sameSite: 'lax',
               secure: process.env.NODE_ENV === 'production',
               path: '/',
             });
           }
           return redirectResponse;
         }
+        // Token was missing (not expired): set cookies and continue — no redirect needed.
         for (const cookie of newCookies) {
-          const isAccess = cookie.name === 'akasha_session';
           response.cookies.set(cookie.name, cookie.value, {
             httpOnly: true,
-            sameSite: isAccess ? 'strict' : 'lax',
+            sameSite: 'lax',
             secure: process.env.NODE_ENV === 'production',
             path: '/',
           });
         }
+      } else {
+        // Refresh failed: token is invalid, send to login.
       } else {
         // Refresh failed: token is invalid, send to login.
         response.headers.set('X-Akasha-Auth', 'invalid');
