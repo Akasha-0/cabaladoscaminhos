@@ -2,7 +2,7 @@
   "results": [
     {
       "success": false,
-      "message": "life-areas-data.ts contains only static LIFE_AREAS constant (809 lines pure data, no functions). Prior cycle already extracted life-areas-data-utils.ts. Nothing left to extract.",
+      "message": "life-areas-data.ts contains only the static LIFE_AREAS constant (pure data, no helper functions to extract). Prior session already extracted life-areas-data-utils.ts.",
       "type": "large_file"
     }
   ]
