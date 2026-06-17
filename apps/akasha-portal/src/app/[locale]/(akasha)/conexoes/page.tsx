@@ -11,9 +11,10 @@ export default async function ConexoesPage({
 }) {
   const { locale } = await params;
   const cookieStore = await cookies();
-  const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
   const authStatus = (await headers()).get('X-Akasha-Auth');
-  let payload = authStatus === 'refreshed' ? null : verifyAkashaToken(token, 'access');
+  const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
+  // Always verify: cookies are fresh on the 303-redirect target request.
+  const payload = verifyAkashaToken(token, 'access');
   if (!payload) redirect(`/${locale}/login`);
   const userId = payload!.sub;
 

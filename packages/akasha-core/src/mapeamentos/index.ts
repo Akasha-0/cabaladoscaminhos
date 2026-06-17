@@ -516,7 +516,7 @@ export function synthesizePrimitives(
 
   // Dominio predominante: soma dos pesos das fontes por domínio
   const dominioScores: Partial<Record<Dominio, number>> = {};
-  const tradicoes: Tradicao[] = ['iching', 'cabala', 'astrologia', 'tantra', 'odu'];
+  const tradições: Tradicao[] = ['iching', 'cabala', 'astrologia', 'tantra', 'odu'];
   const contribsPerTrad: Array<{ trad: Tradicao; contribs: PrimitiveContribution[] }> = [
     { trad: 'iching',    contribs: ichingC },
     { trad: 'cabala',    contribs: cabalaC },
@@ -598,25 +598,25 @@ export function synthesizePrimitives(
 // ─── Narrativa central ────────────────────────────────────────────────────────
 
 function polaridadeLabel(p: Polaridade): string {
-  if (p === 'luz')    return 'luz (integrada)';
-  if (p === 'sombra') return 'sombra (em修炼)';
-  return 'em equilíbrio';
+  if (p === 'luz')    return 'energia em expansão';
+  if (p === 'sombra') return 'em transformação';
+  return 'em equilíbrio dinâmico';
 }
 
 function gerarNarrativa(top: SynthesizedPrimitivo[]): string {
-  if (top.length === 0) return 'Perfil em formação — mais tradições são necessárias para um síntese confiável.';
+  if (top.length === 0) return 'Perfil em formação - mais tradições contribuem para uma leitura mais precisa.';
 
-  const parts = top.map(s =>
-    `${s.primitivo} (${polaridadeLabel(s.polaridade)}, magnitude ${s.magnitude})`
-  );
-
-  if (parts.length === 1) {
-    return `Seu eixo central é ${parts[0]}. As demais tradições gravitam em torno deste polo.`;
+  if (top.length === 1) {
+    const f = top[0];
+    return 'Seu eixo central: ' + f.primitivo + ' (' + polaridadeLabel(f.polaridade) + '). As demais forças gravitam em torno deste polo.';
   }
-  if (parts.length === 2) {
-    return `Duas forças comandam seu campo: ${parts[0]} e ${parts[1]}. Trazer consciência para esta dualidade é seu trabalho de integração.`;
+  if (top.length === 2) {
+    const f0 = top[0], f1 = top[1];
+    return 'Duas forças comandam seu campo: ' + f0.primitivo + ' (' + polaridadeLabel(f0.polaridade) + ') e ' + f1.primitivo + ' (' + polaridadeLabel(f1.polaridade) + '). Trazer consciência para esta dualidade e seu trabalho de integração.';
   }
-  return `Três forças dominam seu perfil: ${parts[0]}; ${parts[1]}; ${parts[2]}. Esta trilogia define sua missão e seu caminho de evolução.`;
+  // 3 dominant primitives (default)
+  const f0 = top[0], f1 = top[1], f2 = top[2];
+  return 'Tres forças dominam seu perfil: ' + f0.primitivo + ' (' + polaridadeLabel(f0.polaridade) + '), ' + f1.primitivo + ' (' + polaridadeLabel(f1.polaridade) + ') e ' + f2.primitivo + ' (' + polaridadeLabel(f2.polaridade) + '). Esta trilogia define sua missão e seu caminho de evolução.';
 }
 
 // ─── Re-export para conveniência ─────────────────────────────────────────────

@@ -28,8 +28,10 @@ export default async function CompartilharReceberPage({ params, searchParams }: 
   const cookieStore = await cookies();
   const authStatus = (await headers()).get('X-Akasha-Auth');
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
-  const payload = authStatus === 'refreshed' ? null : verifyAkashaToken(token, 'access');
-
+  // Always verify: on the 303-redirect target request, cookies are already fresh.
+  const payload = verifyAkashaToken(token, 'access');
+  // Redirect to login when no valid session (skip during middleware refresh — authStatus='refreshed'
+  // means the redirect target will carry fresh cookies and succeed on next request).
   if (!payload && authStatus !== 'refreshed') {
     redirect(`/${locale}/login?return=${encodeURIComponent('/' + locale + '/compartilhar/receber')}`);
   }

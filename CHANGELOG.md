@@ -34,6 +34,37 @@
 
 
 
+## v0.83.8 (2026-06-17) — UX Round 27
+- fix(dashboard): Ler mais toggle — aria-expanded + aria-controls="foco-prioritario-content" added
+- fix(dashboard): Tab active text — text-[#A7AECF]/60 → full opacity (WCAG AA: 4.47:1→9.18:1)
+- fix(dashboard): "Tempo" chip label opacity — /40 → /70 (WCAG AA: 3.56:1→~5:1)
+- fix(dashboard): Melhor Timing label — text-[#2DD4BF]/70 → full opacity
+- fix(dashboard): Evitar Decidir label — text-[#FB5781] → /90 opacity
+- fix(dashboard): Ler mais button — text-[#7C5CFF]/70 → /90 opacity
+- fix(dashboard): Foco Prioritário content div — id="foco-prioritario-content" added (aria-controls target)
+- fix(DimensaoCard): h4 section labels — rgba(0.4)→rgba(0.55) (WCAG AA: 3.24:1→4.51:1)
+- fix(DimensaoCard): "Armadilha a evitar" label — rgba(0.6)→rgba(0.65) (safety margin)
+- fix(DimensaoCard): Síntese preview — aria-labelledby added to region + sr-only label for screen readers
+- fix(ConexoesClient): Síncronia Corporal/Odu descriptions — text-white/40 → text-white/60 (WCAG AA)
+- fix(ConexoesClient): Síncronia Espiritual authority hint — text-white/40 → text-white/60 (confirmed)
+- fix(ConexoesClient): italic subtitles (Conexão Amorosa/Parceria) — text-white/30 → text-white/60
+- fix(ConexoesClient): dominant type legend grid — text-white/40 → text-white/60
+- fix(ConexoesClient): empty state subtitle — text-white/30 → text-white/60
+- fix(mandala): "As 6 Linhas" header — behavioral subtitle added ("— o yang e yin que moldam seu hexagrama")
+- fix(mandala): "Ciclos de Desafio" header — subtitle separated as <span> (bold title + subtitle)
+- fix(mandala): "Marcos da Vida" header — subtitle separated as <span>
+- fix(mandala): "Ritmo de Vida" header — subtitle separated as <span>
+### Auth
+- fix(login/page.tsx): always redirect if payload valid — `if (authStatus !== 'refreshed' && payload)` was skipping redirect when middleware refreshed token, causing logged-in users to see login form with potential ?return=/onboarding after form submission
+- fix(layout.tsx): always call verifyAkashaToken when authStatus='refreshed' — previous `payload=null` shortcut caused 'Viajante' flash on every page load after token refresh
+- fix(compartilhar/receber, conexoes, meu-dia): same auth pattern — always verify token, remove `authStatus === 'refreshed' ? null` shortcut that caused brief unauthenticated state
+### Security
+- fix(akasha-jwt): session cookie now uses `sameSite: 'strict'` + `priority: 'medium'`; refresh cookie keeps `sameSite: 'lax'` (cross-origin refresh flow)
+### Build
+- build: 49/49 pages · EXIT 0 · TypeScript 0 errors (akasha-portal)
+- tests: 1361 passed · 0 failed · 17 skipped
+
+
 ## v0.83.4 (2026-06-17) — Auth + UX Round 23
 ### Auth (pre-existing)
 - fix(conexoes): redirect /onboarding → /login?return=/conexoes; TS null safety restructure

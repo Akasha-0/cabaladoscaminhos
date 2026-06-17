@@ -182,7 +182,7 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
           {/* Prática */}
           {sintese.praktika && (
             <section>
-              <h4 style={{ fontSize: '0.75rem', color: 'rgba(232,224,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
+              <h4 style={{ fontSize: '0.75rem', color: 'rgba(232,224,255,0.55)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
                 ▸ Como aplicar
               </h4>
               <p style={{ fontSize: '0.85rem', color: 'rgba(232,224,255,0.75)', lineHeight: 1.5, margin: 0 }}>
@@ -193,7 +193,7 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
 
           {sintese.alerta && (
             <section>
-              <h4 style={{ fontSize: '0.75rem', color: 'rgba(255,180,100,0.6)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
+              <h4 style={{ fontSize: '0.75rem', color: 'rgba(255,180,100,0.65)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
                 <AlertTriangle size={12} className="inline mr-1" style={{ color: 'rgba(255,180,100,0.6)' }} /> Armadilha a evitar
               </h4>
               <p style={{ fontSize: '0.85rem', color: 'rgba(255,200,150,0.75)', lineHeight: 1.5, margin: 0 }}>
@@ -241,7 +241,7 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
           {/* Pilares desta dimensão */}
           {sintese.contribuicoes.length > 0 && (
             <section>
-              <h4 style={{ fontSize: '0.75rem', color: 'rgba(232,224,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 8px' }}>
+              <h4 style={{ fontSize: '0.75rem', color: 'rgba(232,224,255,0.55)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 8px' }}>
                 ▸ Pilares desta dimensão
               </h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>

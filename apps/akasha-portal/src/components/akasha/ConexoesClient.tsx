@@ -496,7 +496,7 @@ export default function ConexoesClient({ userProfile }: Props) {
             <div className="rounded-2xl border border-[#f87171]/30 bg-[#f87171]/5 p-5 text-center">
               <p className="text-xs text-white/50 mb-1">Conexão Amorosa</p>
               <p className="text-4xl font-black text-[#f87171]">{result.romantic}%</p>
-              <p className="text-[10px] text-white/30 mt-1 italic">Afetividade, intimidade e vulnerabilidade compartilhadas</p>
+              <p className="text-[10px] text-white/60 mt-1 italic">Afetividade, intimidade e vulnerabilidade compartilhadas</p>
               <p className={`text-xs font-semibold mt-1 ${
                 result.romantic >= 71 ? 'text-[#34d399]' :
                 result.romantic >= 41 ? 'text-[#fbbf24]' :
@@ -510,7 +510,7 @@ export default function ConexoesClient({ userProfile }: Props) {
             <div className="rounded-2xl border border-[#fbbf24]/30 bg-[#fbbf24]/5 p-5 text-center">
               <p className="text-xs text-white/50 mb-1">Conexão Parceria</p>
               <p className="text-4xl font-black text-[#fbbf24]">{result.partnership}%</p>
-              <p className="text-[10px] text-white/30 mt-1 italic">Propósito, visão e ação conjunta no mundo</p>
+              <p className="text-[10px] text-white/60 mt-1 italic">Propósito, visão e ação conjunta no mundo</p>
               <p className={`text-xs font-semibold mt-1 ${
                 result.partnership >= 71 ? 'text-[#34d399]' :
                 result.partnership >= 41 ? 'text-[#fbbf24]' :
@@ -541,12 +541,12 @@ export default function ConexoesClient({ userProfile }: Props) {
           {/* Summary */}
           <div role="region" aria-label="Síncronia Espiritual" className="rounded-2xl border border-white/10 bg-white/5 p-5 space-y-3">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-white/50">Tipo dominante</span>
+              <span className="text-white/60">Tipo dominante</span>
               <span className="font-bold text-white">{DOMINANT_LABELS[result.dominantType]}</span>
             </div>
             <div className="space-y-1">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-white/50">Sincronia Espiritual</span>
+                <span className="text-white/60">Sincronia Espiritual</span>
                 <span className="font-bold text-xs" style={{ color: authColor }}>
                   {AUTHORITY_LABELS[result.authorityMatch]}
                 </span>
@@ -564,13 +564,13 @@ export default function ConexoesClient({ userProfile }: Props) {
             <div role="region" aria-label="Síncronia Corporal" className="rounded-2xl border border-white/10 bg-white/5 p-4">
               <p className="text-xs text-white/50 mb-1">Síncronia Corporal</p>
               <p className="text-lg font-black text-[#2DD4BF]">{result.bodySync.score}%</p>
-              <p className="text-xs text-white/40 mt-1">{result.bodySync.description}</p>
+              <p className="text-xs text-white/60 mt-1">{result.bodySync.description}</p>
               <p className="text-xs text-white/60 mt-1">Compatibilidade entre os corpos tântricos dos dois mapas.</p>
             </div>
             <div role="region" aria-label="Síncronia Odu" className="rounded-2xl border border-white/10 bg-white/5 p-4">
               <p className="text-xs text-white/50 mb-1">Síncronia Odu</p>
               <p className="text-lg font-black text-[#a78bfa]">{result.oduSync.score}%</p>
-              <p className="text-xs text-white/40 mt-1">{result.oduSync.description}</p>
+              <p className="text-xs text-white/60 mt-1">{result.oduSync.description}</p>
               <p className="text-xs text-white/60 mt-1">
                 {result.oduSync.sharedOdu ? 'Odu compartilhado — destino comum.' :
                  result.oduSync.complementaryOdu ? 'Odu complementar — sombras que se equilibram.' :
@@ -591,7 +591,7 @@ export default function ConexoesClient({ userProfile }: Props) {
                   return (
                     <div key={blockIdx}>
                       {block.label && (
-                        <p className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-1.5">
+                        <p className="text-xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                           {block.label}
                         </p>
                       )}
@@ -631,7 +631,7 @@ export default function ConexoesClient({ userProfile }: Props) {
 
           {/* Dimensions */}
           {result.dimensions.length > 0 && (
-            <div className="space-y-3">
+            <div role="region" aria-label="Dimensões da Conexão" className="space-y-3">
               <h3 className="font-bold text-sm text-white/60">Dimensões da Conexão</h3>
               {result.dimensions.map((dim, i) => (
                 <DimensionBar key={i} dimension={dim} />
@@ -641,7 +641,7 @@ export default function ConexoesClient({ userProfile }: Props) {
           {/* Dominant type legend */}
           <div className="rounded-xl border border-white/10 bg-white/5 p-3">
             <p className="text-[10px] text-white/30 mb-2 uppercase tracking-wider">Tipo dominante: significado</p>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px] text-white/40">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px] text-white/60">
               <span><span className="text-[#f87171]">Amorosa</span> —afetividade em primeiro plano</span>
               <span><span className="text-[#fbbf24]">Parceria</span> —propósito compartilhado</span>
               <span><span className="text-[#c084fc]">Desafiadora</span> —contraste como motor</span>
@@ -650,9 +650,9 @@ export default function ConexoesClient({ userProfile }: Props) {
           </div>
 
           {/* Post-results guidance */}
-          <div className="rounded-xl border border-[#7C5CFF]/20 bg-[#7C5CFF]/5 p-4">
+          <div role="region" aria-label="Orientações de interpretação" className="rounded-xl border border-[#7C5CFF]/20 bg-[#7C5CFF]/5 p-4">
             <p className="text-xs text-[#7C5CFF]/80 mb-2 font-semibold">O que fazer com estes resultados</p>
-            <ul className="space-y-1.5 text-[11px] text-white/50">
+            <ul className="space-y-1.5 text-[11px] text-white/60">
               <li className="flex gap-2">
                 <span className="text-[#7C5CFF]/60 shrink-0">→</span>
                 Scores altos (71+): reconheça o terreno fértil — aproveite para decisões conjuntas importantes.
@@ -762,7 +762,7 @@ export default function ConexoesClient({ userProfile }: Props) {
             <div className="rounded-2xl border border-white/10 bg-white/5 p-8 text-center">
               <Heart size={32} className="text-white/20 mx-auto mb-3" />
               <p className="text-sm text-white/50">Nenhuma conexão salva ainda.</p>
-              <p className="text-xs text-white/30 mt-1">Faça uma análise e ela aparecerá aqui.</p>
+              <p className="text-xs text-white/60 mt-1">Faça uma análise e ela aparecerá aqui.</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -772,12 +772,12 @@ export default function ConexoesClient({ userProfile }: Props) {
                     onClick={() => handleDelete(conn.id)}
                     disabled={deletingId === conn.id}
                     className="absolute top-3 right-3 p-1.5 rounded-lg hover:bg-white/10 text-white/30 hover:text-white/60 transition-colors disabled:opacity-50"
-                    title="Remover conexão"
+                    aria-label="Remover conexão"
                   >
                     {deletingId === conn.id ? (
                       <div className="w-4 h-4 border border-white/30 border-t-white/60 rounded-full animate-spin" />
                     ) : (
-                      <X size={14} />
+                      <><span className="sr-only">Remover conexão</span><X size={14} aria-hidden /></>
                     )}
                   </button>
                   <div className="flex items-center justify-between">

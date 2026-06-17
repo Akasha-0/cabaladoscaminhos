@@ -14,12 +14,14 @@ export default async function AkashaLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  // Always verify the token. When middleware refreshed an expired token (authStatus='refreshed'),
+  // the 303 redirect carries fresh Set-Cookie — the redirect target request arrives with valid
+  // cookies. verifyAkashaToken therefore succeeds and user renders correctly.
+  // Previous: authStatus === 'refreshed' ? null : ... set payload=null, causing 'Viajante' flash.
   const authStatus = (await headers()).get('X-Akasha-Auth');
   const cookieStore = await cookies();
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
-  // Skip verifyAkashaToken when middleware just refreshed the token (old token is expired).
-  // AkashaLayoutClient will render without user data until the NEXT request with fresh cookies.
-  const payload = authStatus === 'refreshed' ? null : verifyAkashaToken(token, 'access');
+  const payload = verifyAkashaToken(token, 'access');
 
   let user = null;
   if (payload?.sub) {

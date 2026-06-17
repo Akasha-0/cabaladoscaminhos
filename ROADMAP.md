@@ -68,7 +68,7 @@ Um agente evolutivo que opera sobre dados finos (Prioridade 3) e síntese incomp
 
 **Pré-requisitos para iniciar:**
 - [x] Prioridade 1 completa (mapeamentos/ com todas as 5 tradições: cabala/✅ iter20, odu/✅ iter21, astrologia/✅ iter22, tantra/✅ iter22, iching/✅ baseline)
-- [ ] Prioridade 2 completa (oneProfile com todos os 5 pilares)
+- [x] Prioridade 2 completa (oneProfile com todos os 5 pilares — todas as 5 tradições integradas em synthesizePrimitives + deriveAkashaType + UI Iter23-25)
 - [ ] Prioridade 3 completa (mínimo: 80% das combinações de áreas com narrativa não-genérica)
 - [x] `PersonalCycleEngine` refactored para usar `mapeamentos/personal-cycle.ts` (4 tabelas externas: PINNACLE_THEMES, CHALLENGE_DESCRIPTIONS, KARMIC_LESSON_DESCRIPTIONS, MATURITY_THEMES)
 
@@ -116,3 +116,12 @@ Um agente evolutivo que opera sobre dados finos (Prioridade 3) e síntese incomp
   - AkashaTypeProfileUI.ts: 1 campo adicionado
   - OneProfileCard: badge com 3 variantes de cor + estado oculto para null
   - TypeScript: 0 erros ✅ | synthesis-engine tests: 38/38 ✅ | Build: 49/49 ✅
+
+## Progress Update (2026-06-17 — Iteração 25)
+
+- [x] `narrativaCentral` visível na UI — `SynthesizedProfile.narrativaCentral` (top-3 primitivos dominantes com polaridades + tensão) agora exposta em duas superfícies:
+  - `OneProfileCard` (dashboard): card com gradiente roxo→turquesa após Growth+Shadow
+  - `MandalaNarrative` (página mandala): card com icon Brain e delay 0.2s após synthesisParagraph
+  - 4 ficheiros: `useAkashaSynthesis.ts`, `AkashaLifeAreasDashboard.tsx`, `MandalaNarrative.tsx`, `MandalaNarrativeLoader.tsx`
+  - Build: 49/49 ✅ | Suite: 1361/1361 ✅ | TypeScript portal: 0 erros ✅
+- [x] Prioridade 2 marcada completa no ROADMAP — todas as 5 tradições integradas: synthesizePrimitives → deriveAkashaType → AkashaSynthesis → UI (Iter23-25)

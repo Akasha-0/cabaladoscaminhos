@@ -28,6 +28,7 @@
  *   └─────────────────────────────────────────┘
  */
 
+import { useState } from 'react';
 import type { SignificadoCurado } from '@/lib/grimoire/significados-curados';
 
 export interface SignificadoPilarProps {
@@ -205,24 +206,15 @@ export function SignificadoPilar({
 
       {/* F-235 — Sexualidade: Lilith + Casa 8 (apenas Pilar 2 Astrologia) */}
       {showSexualidade && sexualidade && (
-        <section
-          data-f="f-235-sexualidade"
+        <details
           style={{
             background: `linear-gradient(135deg, ${cor}10 0%, rgba(251,87,129,0.06) 100%)`,
             border: `1px solid ${cor}44`,
             borderRadius: '10px',
             padding: '0.7rem 0.85rem',
+            marginTop: 6,
           }}
         >
-          <details
-            style={{
-              background: `linear-gradient(135deg, ${cor}10 0%, rgba(251,87,129,0.06) 100%)`,
-              border: `1px solid ${cor}44`,
-              borderRadius: '10px',
-              padding: '0.7rem 0.85rem',
-              marginTop: 6,
-            }}
-          >
             <summary
               style={{
                 color: '#FB5781',
@@ -290,39 +282,49 @@ export function SignificadoPilar({
               {sexualidade.lilith_signo &&
                 sexualidade.casa_8_signo &&
                 sexualidade.lilith_signo === sexualidade.casa_8_signo && (
-                  <details
-                    style={{
-                      fontSize: '0.75rem',
-                      color: '#A7AECF',
-                      fontStyle: 'italic',
-                      margin: '4px 0 0',
-                      border: `1px solid ${cor}22`,
-                      borderRadius: '6px',
-                      padding: '0.5rem 0.6rem',
-                    }}
-                  >
-                    <summary
-                      style={{
-                        color: '#FB5781',
-                        fontSize: '0.72rem',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        userSelect: 'none',
-                        listStyle: 'none',
-                      }}
-                    >
-                      Lilith e Casa 8 no mesmo signo — mostrar mais
-                    </summary>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 3, marginTop: 6 }}>
-                      <span>• Sua assinatura sexual é reconhecível: um padrão fixo, não situacional.</span>
-                      <span>• O que é reprimido aqui tende a se expressar por outros canais (projeção, obsessão, transformação).</span>
-                      <span>• Não é necessário "aceitar" — é necessário notar o padrão e escolher conscientemente.</span>
-                    </div>
-                  </details>
+                  {(() => {
+                    const [mostrar, setMostrar] = useState(false);
+                    return (
+                      <div
+                        style={{
+                          fontSize: '0.75rem',
+                          color: '#A7AECF',
+                          fontStyle: 'italic',
+                          margin: '4px 0 0',
+                          border: `1px solid ${cor}22`,
+                          borderRadius: '6px',
+                          padding: '0.5rem 0.6rem',
+                        }}
+                      >
+                        <button
+                          onClick={() => setMostrar(!mostrar)}
+                          style={{
+                            color: '#FB5781',
+                            fontSize: '0.72rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            background: 'none',
+                            border: 'none',
+                            padding: 0,
+                            fontFamily: 'inherit',
+                          }}
+                          aria-expanded={mostrar}
+                        >
+                          Lilith e Casa 8 no mesmo signo — {mostrar ? 'ocultar' : 'mostrar mais'}
+                        </button>
+                        {mostrar && (
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 3, marginTop: 6 }}>
+                            <span>• Sua assinatura sexual é reconhecível: um padrão fixo, não situacional.</span>
+                            <span>• O que é reprimido aqui tende a se expressar por outros canais (projeção, obsessão, transformação).</span>
+                            <span>• Não é necessário "aceitar" — é necessário notar o padrão e escolher conscientemente.</span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
                 )}
             </div>
           </details>
-        </section>
       )}
 
       {/* Prática */}

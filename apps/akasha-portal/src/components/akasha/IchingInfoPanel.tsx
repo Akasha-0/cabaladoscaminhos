@@ -72,8 +72,11 @@ export function IchingInfoPanel({ iching }: { iching: IchingInfo }) {
                       marginBottom: '0.35rem',
                     }}
                   >
-                    As 6 Linhas (de baixo para cima)
-                  </p>
+                    As 6 Linhas (de baixo para cima){' '}
+            <span style={{ color: '#A7AECF', fontWeight: 400 }}>
+              — o yang e yin que moldam seu hexagrama
+            </span>
+          </p>
                   <div
                     style={{
                       display: 'flex',

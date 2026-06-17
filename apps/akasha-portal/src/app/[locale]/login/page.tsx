@@ -10,10 +10,12 @@ export default async function LoginPage({ params }: Props) {
   const { locale } = await params;
   const cookieStore = await cookies();
   const session = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
-  // Só redireciona se o token é válido E não expirou.
+  // Redirect if user already has a valid access token (any authStatus — fresh, refreshed, or invalid).
+  // Previously: authStatus !== 'refreshed' && payload → skipped redirect when middleware refreshed token.
+  // Result: logged-in user saw login form, ?return=/onboarding possible after form submission.
   const authStatus = (await headers()).get('X-Akasha-Auth');
   const payload = verifyAkashaToken(session, 'access');
-  if (authStatus !== 'refreshed' && payload) redirect(`/${locale}/conta`);
+  if (payload) redirect(`/${locale}/conta`);
 
   return (
     <div

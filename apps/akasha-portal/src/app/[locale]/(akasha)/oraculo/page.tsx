@@ -232,7 +232,7 @@ export default function OraculoPage() {
           }}
         >
           <span style={{ color: '#7C5CFF' }}>✦</span>
-          <span>
+          <span aria-label={`${balance === null ? 'Carregando' : balance} créditos restantes`}>
             <span style={{ fontWeight: 700, color: '#F4F5FF' }}>
               {balance === null ? '…' : balance}
             </span>{' '}
@@ -381,12 +381,13 @@ export default function OraculoPage() {
                 </span>
               )}
               {msg.role === 'oracle' && msg.content === '' && loading ? (
-                <span style={{ color: '#5C6691', fontStyle: 'italic', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                <span aria-live="polite" style={{ color: '#5C6691', fontStyle: 'italic', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                   O Akasha responde
-                  <span style={{ display: 'inline-flex', gap: '3px' }}>
+                  <span aria-hidden="true" style={{ display: 'inline-flex', gap: '3px' }}>
                     {[0, 1, 2].map((i) => (
                       <span
                         key={i}
+                        className="oracle-pulse-dot"
                         style={{
                           width: '5px',
                           height: '5px',
@@ -398,7 +399,7 @@ export default function OraculoPage() {
                       />
                     ))}
                   </span>
-                  <style>{`@keyframes oraclePulse { 0%, 60%, 100% { opacity: 0.3; transform: scale(0.8); } 30% { opacity: 1; transform: scale(1); } }`}</style>
+                  <style>{`@keyframes oraclePulse { 0%, 60%, 100% { opacity: 0.3; transform: scale(0.8); } 30% { opacity: 1; transform: scale(1); } } @media (prefers-reduced-motion: reduce) { .oracle-pulse-dot { animation: none; } }`}</style>
                 </span>
               ) : (
                 <div style={{ verticalAlign: 'middle' }}>{renderOracleText(msg.content)}</div>
@@ -483,6 +484,7 @@ export default function OraculoPage() {
           disabled={loading}
           placeholder="Descreva sua situação ou pergunta (Shift+Enter = quebra de linha)…"
           rows={3}
+          aria-label="Sua pergunta ao oráculo" 
           style={{
             width: '100%',
             resize: 'none',
@@ -517,6 +519,8 @@ export default function OraculoPage() {
           <button
             type="submit"
             disabled={loading || !input.trim() || input.length > 200 || (balance !== null && balance === 0)}
+            aria-disabled={loading || !input.trim() || input.length > 200 || (balance !== null && balance === 0)}
+            aria-label={loading ? 'Consultar — carregando resposta' : !input.trim() ? 'Consultar — digite sua pergunta' : input.length > 200 ? `Consultar — máximo 200 caracteres (${input.length} digitados)` : balance !== null && balance === 0 ? 'Consultar — sem créditos' : 'Enviar pergunta ao Oráculo I Ching'}
             style={{
               padding: '10px 32px',
               borderRadius: '9999px',

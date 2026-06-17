@@ -39,13 +39,17 @@ export class AkashaJwtSecretMissingError extends Error {
 // Cookie helpers
 // ============================================================================
 
-function cookieOptions(opts: { maxAge: number }): Record<string, unknown> {
+function cookieOptions(opts: {
+  maxAge: number;
+  sameSite?: 'lax' | 'strict';
+}): Record<string, unknown> {
   return {
     httpOnly: true,
-    sameSite: 'lax' as const,
+    sameSite: (opts.sameSite ?? 'lax') as 'lax' | 'strict',
     path: '/',
     secure: process.env.NODE_ENV === 'production',
     maxAge: opts.maxAge,
+    priority: 'medium' as const,
   };
 }
 
@@ -131,7 +135,7 @@ export function setAkashaSessionCookie(response: CookieResponse, token: string):
   response.cookies.set(
     AKASHA_TOKEN_COOKIE,
     token,
-    cookieOptions({ maxAge: AKASHA_ACCESS_TTL_SECONDS })
+    cookieOptions({ maxAge: AKASHA_ACCESS_TTL_SECONDS, sameSite: 'strict' })
   );
 }
 

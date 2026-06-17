@@ -16,10 +16,12 @@ interface MeuDiaPageProps {
 export default async function MeuDiaPage({ params }: MeuDiaPageProps) {
   const { locale } = await params;
   const cookieStore = await cookies();
-  const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
   const authStatus = (await headers()).get('X-Akasha-Auth');
-  const payload = authStatus === 'refreshed' ? null : verifyAkashaToken(token, 'access');
-
+  const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
+  // Always verify: cookies are fresh on the 303-redirect target request.
+  const payload = verifyAkashaToken(token, 'access');
+  // Redirect to login when no valid session (authStatus='refreshed' means middleware
+  // redirect target will carry fresh cookies — skip redirect, let the redirect cycle complete).
   if (!payload && authStatus !== 'refreshed') {
     redirect(`/${locale}/login?return=${encodeURIComponent('/' + locale + '/meu-dia')}`);
   }

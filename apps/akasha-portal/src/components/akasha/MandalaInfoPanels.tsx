@@ -218,8 +218,11 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                     marginBottom: '0.35rem',
                   }}
                 >
-                  Ciclos de Desafio — provas que moldam seu caminho
-                </p>
+                  Ciclos de Desafio{' '}
+            <span style={{ color: '#A7AECF', fontWeight: 400 }}>
+              — provas que moldam seu caminho
+            </span>
+          </p>
                 <Row label="1º Desafio — o que enfrentar primeiro" value={kabala.challenges.first} />
                 <Row label="2º Desafio — o que superar" value={kabala.challenges.second} />
                 <Row label="Desafio Principal — a prova central" value={kabala.challenges.main} />
@@ -237,8 +240,11 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                     marginBottom: '0.35rem',
                   }}
                 >
-                  Marcos da Vida — transições que redefinem seu caminho
-                </p>
+                  Marcos da Vida{' '}
+            <span style={{ color: '#A7AECF', fontWeight: 400 }}>
+              — transições que redefinem seu caminho
+            </span>
+          </p>
                 {kabala.pinnacles.first && (
                   <>
                     <Row
@@ -296,8 +302,11 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                     marginBottom: '0.35rem',
                   }}
                 >
-                  Ritmo de Vida — ciclos que pedem consciência
-                </p>
+                  Ritmo de Vida{' '}
+            <span style={{ color: '#A7AECF', fontWeight: 400 }}>
+              — ciclos que pedem consciência
+            </span>
+          </p>
                 {kabala.lifeCycles.first && (
                   <Row
                     label="1º Ciclo — primeiro ritmo de vida"

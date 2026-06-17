@@ -128,6 +128,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
   const [loadingMandato, setLoadingMandato] = useState(!initialPilares);
   const [selectedDimension, setSelectedDimension] = useState<DimensaoSintese | null>(null);
   const [dimFocoExpanded, setDimFocoExpanded] = useState(false);
+  const [ritualExpanded, setRitualExpanded] = useState(false);
 
   const { data: statsData, loading: statsLoading, refetch: refetchStats } = useDashboardData({ userId });
   const { data: dailyData, synthesis, loading: synthesisLoading, refetch: refetchSynthesis } = useAkashaSynthesis({ userId });
@@ -309,7 +310,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
       <header className="sticky top-0 z-40 bg-[#06070F]/80 backdrop-blur-md border-b border-[#7C5CFF]/15 px-4 py-3 md:px-6">
         <div className="flex items-center justify-between max-w-4xl mx-auto">
           <div className="flex flex-col">
-            <span className="text-[10px] text-[#A7AECF]/60 uppercase tracking-widest font-mono">Painel</span>
+            <span className="text-[10px] text-[#A7AECF] uppercase tracking-widest font-mono">Painel</span>
             <h1 className="text-lg font-bold font-cinzel text-white tracking-wider">AKASHA OS</h1>
           </div>
           <div className="flex items-center gap-3">
@@ -376,7 +377,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                   {getGreeting()}, <span className="text-[#9D86FF]">{userName}</span>
                 </h2>
                 {detSintese?.caminhoDeVida && (
-                  <p className="text-xs text-[#A7AECF]/60 font-medium tracking-wide">
+                  <p className="text-xs text-[#A7AECF] font-medium tracking-wide">
                     <Sparkles size={12} className="inline mr-1 text-[#9D86FF]" />{detSintese.caminhoDeVida}
                   </p>
                 )}
@@ -547,12 +548,12 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       <p className="text-white/85 leading-relaxed">{detSintese.autoridade.timing.melhor}</p>
                     </div>
                     <div className="space-y-2">
-                      <p className="text-[11px] text-[#FB5781] uppercase tracking-wider font-mono font-semibold">Evitar Decidir</p>
+                      <p className="text-[11px] text-[#FB5781]/90 uppercase tracking-wider font-mono font-semibold">Evitar Decidir</p>
                       <p className="text-white/85 mt-0.5 leading-relaxed">{detSintese.autoridade.timing.pior}</p>
                     </div>
                   </div>
 
-                  <div className="pt-2 border-t border-white/5 text-[11px] text-[#A7AECF]/60 flex items-center justify-between">
+                  <div className="pt-2 border-t border-white/5 text-[11px] text-[#A7AECF]/90 flex items-center justify-between">
                     <span>
                       Autoridade: <strong className="text-white capitalize" title="Sua energia de comando hoje — como você exerce autoridade">{detSintese.autoridade.autoridade}</strong>
                     </span>
@@ -571,7 +572,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       <Sparkles size={20} className="text-[#9D86FF]" />
                     </div>
                     <div>
-                      <h3 className="text-[10px] text-[#F0B429] font-bold uppercase tracking-wider font-mono">Foco Prioritário de Hoje</h3>
+                      <p className="text-[10px] text-[#F0B429] font-bold uppercase tracking-wider font-mono">Foco Prioritário de Hoje</p>
                       <p className="text-base font-bold font-cinzel text-white leading-none mt-1">{dimFoco?.titulo}</p>
                       <p className="text-[10px] text-[#A7AECF]/50 mt-0.5">A energia de hoje favorece fortemente esta dimensão — aproveite o momento</p>
                     </div>
@@ -581,7 +582,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                   </span>
                 </div>
 
-                <div className="relative" style={{ maxHeight: dimFocoExpanded ? 'none' : '4.5em', overflow: 'hidden' }}>
+                <div id="foco-prioritario-content" className="relative" style={{ maxHeight: dimFocoExpanded ? 'none' : '4.5em', overflow: 'hidden' }}>
                   <div className="space-y-1">
                     {renderNarrative(dimFoco?.synthes ?? '')}
                   </div>
@@ -602,10 +603,13 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                 </div>
                 <button
                   onClick={() => setDimFocoExpanded(!dimFocoExpanded)}
-                  className="text-xs text-[#7C5CFF]/70 hover:text-[#7C5CFF] transition-colors px-3 py-2 min-h-11 rounded-lg"
+                  aria-expanded={dimFocoExpanded}
+                  aria-controls="foco-prioritario-content"
+                  className="text-xs text-[#7C5CFF]/90 hover:text-[#7C5CFF] transition-colors px-3 py-2 min-h-11 rounded-lg"
                 >
                   {dimFocoExpanded ? <><ChevronUp size={12} className="inline" /> Mostrar menos</> : <><ChevronDown size={12} className="inline" /> Ler mais</>}
                 </button>
+                {/* aria-controls target is the div above */}
 
                 {dimFoco?.praktika && (
                   <div className="bg-[#2DD4BF]/5 border border-[#2DD4BF]/15 rounded-xl p-3.5 space-y-1">
@@ -663,12 +667,34 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       </div>
                     </div>
 
-                    {/* Instruction with styled container */}
-                    <div className="bg-[#0B0E1C]/80 rounded-xl p-4 mb-4 border border-white/5">
-                      <p className="text-sm text-[#A7AECF] leading-relaxed">
-                        {dailyData.ritual.instrucao}
-                      </p>
+                    {/* Instruction with truncation */}
+                    <div className="relative" style={{ maxHeight: ritualExpanded ? 'none' : '4.5em', overflow: 'hidden' }}>
+                      <div className="bg-[#0B0E1C]/80 rounded-xl p-4 mb-2 border border-white/5">
+                        <p className="text-sm text-[#A7AECF] leading-relaxed">
+                          {dailyData.ritual.instrucao}
+                        </p>
+                      </div>
+                      {!ritualExpanded && (
+                        <div
+                          aria-hidden
+                          style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            height: '2.5em',
+                            background: 'linear-gradient(to bottom, transparent, #06070F 85%)',
+                            pointerEvents: 'none',
+                          }}
+                        />
+                      )}
                     </div>
+                    <button
+                      onClick={() => setRitualExpanded(!ritualExpanded)}
+                      className="text-xs text-[#7C5CFF]/70 hover:text-[#7C5CFF] transition-colors px-3 py-2 min-h-11 rounded-lg"
+                    >
+                      {ritualExpanded ? <><ChevronUp size={12} className="inline" /> Mostrar menos</> : <><ChevronDown size={12} className="inline" /> Ver instrução completa</>}
+                    </button>
 
                     {/* Completion Button - Enhanced Design */}
                     <div className="pt-2">
@@ -855,7 +881,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                 {/* Close Button */}
                 <button
                   onClick={() => setSelectedDimension(null)}
-                  className="absolute top-4 right-4 p-2 text-[#A7AECF]/60 hover:text-white rounded-lg hover:bg-white/5 transition-colors"
+                  className="absolute top-4 right-4 p-2 text-[#A7AECF]/90 hover:text-white rounded-lg hover:bg-white/5 transition-colors"
                   aria-label="Fechar"
                 >
                   <X size={18} />
