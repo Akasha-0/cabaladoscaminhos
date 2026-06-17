@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-17T00:52:36.514997+00:00",
-  "version": "0.58.0",
+  "generated_at": "2026-06-17T00:56:06.416019+00:00",
+  "version": "0.59.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -1059,16 +1059,17 @@
       "- [~] **PLN-002[1]** -- missing_tests | 2 changed files lack tests",
       "- [~] **PLN-002[2]** -- large_file | 26 oversized files",
       "- [~] **PLN-003[1]** -- large_file | 26 oversized files",
+      "- [~] **PLN-004[1]** -- large_file | 26 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2",
       "- [~] **PLN-AE-003** — Ralph-loop continuous | QA cycling (v0.12.1)"
     ],
-    "pending_count": 1059
+    "pending_count": 1060
   },
   "git": {
     "untracked": 2,
-    "modified": 12,
-    "total": 14,
+    "modified": 11,
+    "total": 13,
     "has_changes": true
   },
   "triad": {
@@ -1120,14 +1121,6 @@
       ]
     },
     {
-      "type": "missing_tests",
-      "priority": 6,
-      "description": "1 changed files lack tests",
-      "files": [
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data-utils.ts"
-      ]
-    },
-    {
       "type": "missing_tradition",
       "priority": 8,
       "description": "ODUS missing from traducao-areas",
@@ -1135,7 +1128,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "e18d062f1cbdeff552f4a9ca6ccc4de12933a86e",
+  "git_head": "2a4246c9dfb13a75ca713e53b4276be2b43dd4aa",
   "decision_factors": {
     "has_pending_features": true
   }

@@ -1,8 +1,8 @@
 {
   "results": [
     {
-      "success": true,
-      "message": "Extracted helper from apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts",
+      "success": false,
+      "message": "File apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts is data-only (809 lines of static LIFE_AREAS constant). No helper functions to extract — purely a data definition file, not an oversized code file.",
       "type": "large_file"
     }
   ]
