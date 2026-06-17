@@ -5,9 +5,17 @@
 
 export type Layer = 1 | 2 | 3 | 4 | 5;
 
+// round to N significant figures to eliminate floating-point divergence between
+// Node.js (server) and V8/browser (client) that causes React hydration mismatches
+const round = (v: number, sig = 10) => {
+  if (v === 0) return 0;
+  const mag = Math.pow(10, sig - Math.ceil(Math.log10(Math.abs(v))));
+  return Math.round(v * mag) / mag;
+};
+
 export const toXY = (angleDeg: number, r: number, cx = 200, cy = 200) => ({
-  x: cx + r * Math.cos(((angleDeg - 90) * Math.PI) / 180),
-  y: cy + r * Math.sin(((angleDeg - 90) * Math.PI) / 180),
+  x: round(cx + r * Math.cos(((angleDeg - 90) * Math.PI) / 180)),
+  y: round(cy + r * Math.sin(((angleDeg - 90) * Math.PI) / 180)),
 });
 
 export const ZODIAC_SIGNS = [
