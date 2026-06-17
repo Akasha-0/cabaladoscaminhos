@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 
 import { PILAR_COLORS } from '@/components/akasha/mandala-geometry';

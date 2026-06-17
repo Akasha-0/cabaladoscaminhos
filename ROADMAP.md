@@ -125,3 +125,11 @@ Um agente evolutivo que opera sobre dados finos (Prioridade 3) e síntese incomp
   - 4 ficheiros: `useAkashaSynthesis.ts`, `AkashaLifeAreasDashboard.tsx`, `MandalaNarrative.tsx`, `MandalaNarrativeLoader.tsx`
   - Build: 49/49 ✅ | Suite: 1361/1361 ✅ | TypeScript portal: 0 erros ✅
 - [x] Prioridade 2 marcada completa no ROADMAP — todas as 5 tradições integradas: synthesizePrimitives → deriveAkashaType → AkashaSynthesis → UI (Iter23-25)
+
+## Progress Update (2026-06-17 — Iteração 27)
+
+- [x] Prioridade 3 — I Ching integrado na síntese de áreas — generateAreaNarrativeFull agora inclui I Ching como 5ª voz na integratedNarrative
+  Bug: hasCount não contava I Ching; templates SYNTHESIS só tinham 4 params; ichingBlock era descartado
+  Fix: ParaFn tipo 5-param opcional; ichingCore extraído via coreOf(); hasIChing flag; 24 templates actualizados; fallbackSynthesis actualizado; 7 call sites passam ichingCore
+  Todas as 5 tradições (Cabala/Astrologia/Tantra/Odu/I Ching) contribuem para o narrative integrado
+  TypeScript: 0 erros | Suite: 1361/1361 | 93 files passed | 4 skipped

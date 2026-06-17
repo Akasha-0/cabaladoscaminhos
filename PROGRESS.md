@@ -48,6 +48,11 @@ Build: 49/49 EXIT 0 · TypeScript 0 errors
 Build: 49/49 EXIT 0 · TypeScript 0 errors
 
 
+## v0.83.9 (2026-06-17) — UX Round 29
+Round 29 — 6 auditors (Oráculo+M29+CX+DI completed; Akasha+Dashboard failed/excluded; manual Dashboard review). CRÍTICA: SVG ring label opacity 0.5→0.7 (Mandala M29-1); Conexões legend contrast 10px/30%/60%→12px/70%/80% (CX29-1/2). HIGH: Síncronia Odu/Corporal/Espiritual — all jargon replaced with behavioral plain PT (CX29-3/4/5); Diário Tela 4 instruction p→h3 (DI29-4); Oráculo guidance card not implemented (OC29-1, needs streaming state). MÉDIA: behavioral instruction "Leia em voz alta" moved before frases (DI29-1); cost hint always visible (OC29-2); pillars role=group (OC29-3); welcome h2 (OC29-4); Nova consulta aria-label (OC29-5). M29-2 Kabala: FALSE POSITIVE (behavioral subtitles already present). DI29-3 heading: FALSE POSITIVE.
+Build: 49/49 ✅ · TypeScript 0 errors · v0.83.9
+
+
 ## v0.83.6 (2026-06-17) — UX Round 25
 Round 25 — 6 fresh audit agents. Dashboard 2 CRÍTICA + 5 ALTA + 2 MÉDIA. Akasha 2 CRÍTICA + 1 ALTA + 1 MÉDIA. Mandala 0 CRÍTICA + 0 ALTA + 2 MÉDIA. Diário 1 CRÍTICA + 0 ALTA + 2 MÉDIA. Conexões 1 CRÍTICA + 0 ALTA. Oráculo 1 CRÍTICA + 1 ALTA.
 CRÍTICA FIXED: akasha footer contrast rgba(0.35)→rgba(0.65). DimensaoCard description rgba(0.5)→rgba(0.58). diario Tela 3 screen-number div→<h2>. dashboard "Diretriz de Decisão" <span>→<h3>. dashboard Ler mais toggle + "Ver análise completa" link — touch targets ≥44px. Conexões Síncronia Espiritual hint text-white/40→text-white/60. oráculo h1 aria-label redundante removido. oráculo credit hint — empty span condition fixed.
@@ -1468,3 +1473,12 @@ em vez de:
 **Correção de bugs durante iteração:** O script Python de restauração de diacríticos corrompeu `Transformacao` → `Transformação` (cedilha+til) em 19 posições de nomes de primitivos. Corrigido com operação bytes `b"Transforma\xc3\xa7\xc3\xa3o"` → `b'Transformacao'` (16 replacements) + revertido o regex para não voltar a corromper.
 
 **Mais fraco:** A tentativa inicial de restaurar diacríticos via Python regex accidentalmente alterou `Transformacao` nos nomes dos primitivos (19 ocorrências). Corrigido via operação bytes. O método mais seguro seria ter usado o `edit` tool directamente com os caracteres UTF-8, mas o `edit` tool tem problemas de escape com caracteres especiais.
+## Iter27 — Prioridade 3: I Ching integrado na síntese de áreas
+
+Problema: generateAreaNarrativeFull nunca incluía I Ching na integratedNarrative. hasCount só contava Kab/Astro/Tantra/Odu; templates SYNTHESIS só recebiam 4 params; sistema anuncia 5 tradições mas usava apenas 4.
+
+Solução em narrative-generator.ts: (1) ParaFn tipo 5-param opcional; (2) ichingCore extraído; (3) hasIChing flag; (4) 24 templates SYNTHESIS actualizados; (5) paragraph 0 de cada área com I Ching como 5ª voz; (6) fallbackSynthesis actualizado; (7) 7 call sites passam ichingCore.
+
+Verificação: TypeScript 0 erros | 1361 testes | 93 files passed.
+
+Cobertura após Iter27: Cabala ✅ Astrologia ✅ Tantra ✅ Odu ✅ I Ching ✅ integrado na síntese.

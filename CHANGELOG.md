@@ -1,4 +1,44 @@
-## ## v0.83.8 (2026-06-17) — UX Round 28 (continuação suffix)
+## ## v0.83.9 (2026-06-17) — UX Round 29
+
+### UX Audit Round 29 (6 auditors)
+
+#### Mandala (ComprehensiveAntelope → M29 auditor failed; manual review)
+- **M29-1 (CRÍTICA)**: SVG ring label "MOVIMENTO CELESTE" fill opacity 0.5→0.7 (WCAG AA ≥3:1)
+- **M29-2 (HIGH)**: FALSE POSITIVE — Kabala rows já têm behavioral subtitles (Rounds anteriores)
+
+#### Conexões (MagnificentSnail audit R29)
+- **CX29-1 (CRÍTICA)**: Legend title text-white/30→/70 + subtitles /60→/80 + 10px→12px (CR 2.7→4.8:1)
+- **CX29-2 (CRÍTICA)**: Saved section legend same fix (text-white/40→/80 + 10px→12px)
+- **CX29-3 (HIGH)**: Síncronia Odu subtitle — jargon "sombras que se equilibram" → behavioral plain PT
+- **CX29-4 (HIGH)**: Síncronia Corporal "corpo tântrico" jargon replaced with behavioral explanation
+- **CX29-5 (HIGH)**: Síncronia Espiritual subtitle — all 3 phrases replaced with behavioral plain PT
+
+#### Diário (WateryFerret audit R29)
+- **DI29-1 (MEDIUM)**: Behavioral instruction "Leia em voz alta" movida ANTES das frases (antes estava depois)
+- **DI29-2 (MEDIUM)**: frases de长度 guard — not implemented (data synthesizer concern)
+- **DI29-3 (MEDIUM)**: FALSE POSITIVE — heading hierarchy ok (h3s are siblings, not nested)
+- **DI29-4 (HIGH)**: Screen 4 intro instruction `<p>` → `<h3>` (critical guidance for AT)
+
+#### Oráculo (SufficientWolverine audit R29)
+- **OC29-1 (HIGH)**: Oracle response — no actionable guidance card (not implemented — requires state + streaming completion tracking)
+- **OC29-2 (MEDIUM)**: Cost hint always visible + char counter (moved outside input.length condition)
+- **OC29-3 (MEDIUM)**: Tradições consultadas — wrapped in `role="group"` + `aria-labelledby`
+- **OC29-4 (MEDIUM)**: Welcome state — added `<h2>Bem-vindo ao Oráculo</h2>` for AT landmark
+- **OC29-5 (MEDIUM)**: "Nova consulta" button — `sr-only` label "Nova consulta — limpar conversa e recomeçar"
+
+### QA Fixes (continuous iteration)
+- **Parse error**: `SignificadoPilar.tsx:285` — IIFE with `useState` in Server Component context (JSX invalid). Fixed by extracting `LilithCasa8Details` to own `'use client'` file.
+- **Cookie security**: `middleware.ts` inline cookie-set was using `sameSite: 'lax'` for access token. Fixed: access cookie (`akasha_session`) now uses `sameSite: 'strict'` on both redirect and non-redirect paths.
+- **Stale comment**: middleware.ts comment referenced `/onboarding` redirect target (stale) — updated to `/login`.
+- **Missing 'use client'**: `IchingInfoPanel.tsx`, `AstrologyInfoPanel.tsx`, `MandalaInfoPanels.tsx` all used `useState`/`onClick` without `'use client'`. All fixed.
+- **Unnecessary 'use client'**: `SignificadoPilar.tsx` (after LilithCasa8Details extraction) and `mandala-meanings.tsx` (pure server data/component). Both removed.
+- **Dead code**: `generateAllAreaNarratives` — zero callers in codebase, removed.
+- **odu-narrative-engine.ts**: parse error (missing semicolon) + type error (OduBirth vs required string). Fixed by passing primitives.
+- **Build**: 49/49 pages · EXIT 0 · TypeScript 0 errors
+- **Tests**: 1361 passed · 17 skipped
+
+
+## v0.83.8 (2026-06-17) — UX Round 28 (continuação suffix)
 
 ### Dashboard
 - **D28-001 (CRÍTICA)**: Ler mais `text-[#7C5CFF]/70` → `/90`

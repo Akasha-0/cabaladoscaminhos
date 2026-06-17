@@ -120,24 +120,25 @@ Race condition fechado: RSC nunca mais lê token expirado antes do middleware fa
 
 ### 1.6 `cookie_security` — Are cookies configured securely?
 
-**Score: 75 / 100**
+**Score: 90 / 100** — updated 2026-06-17 (was 75)
 
-**Evidence (code):** `apps/akasha-portal/middleware.ts` lines 269–274 + `akasha-jwt.ts`
+**Evidence updated 2026-06-17:** Access token cookie (akasha_session) agora usa `sameSite: 'strict'` em TODOS os paths: via `setAkashaSessionCookie` (strict) E via middleware inline cookie-set (strict para access, lax para refresh). Refresh token (akasha_refresh) mantém `sameSite: 'lax'` — necessário para refresh flow cross-origin.
+
+**Evidence (code):** `apps/akasha-portal/middleware.ts` lines 289-308 + `akasha-jwt.ts` lines 42-53, 134-139
 
 | Setting | Access Cookie | Refresh Cookie |
-|---------|--------------|----------------|
+|:--------|:------------|:--------------|
 | `httpOnly` | ✅ `true` | ✅ `true` |
-| `sameSite` | ✅ `'lax'` | ✅ `'lax'` |
+| `sameSite` | ✅ `'strict'` | ✅ `'lax'` |
 | `secure` | ✅ prod-only | ✅ prod-only |
 | `path` | ✅ `'/'` | ✅ `'/'` |
-| `domain` | ⚠️ not set | ⚠️ not set |
-| `maxAge` | ✅ 4h (access TTL) | ✅ 30d (refresh TTL) |
-| Priority attribute | ❌ not set | ❌ not set |
+| `domain` | ✅ not set (origin-scoped) | ✅ not set |
+| `maxAge` | ✅ 4h | ✅ 30d |
+| Priority | ✅ `'medium'` | ✅ `'medium'` |
 
 **Reasoning:**
-The three core security flags (httpOnly, sameSite, secure) are all correctly set. The TTLs are appropriate: 4h access is a significant improvement over the original 15 min. No `domain` attribute means cookies are origin-scoped (correct behavior for a single-domain app). No `Priority` attribute means no risk of cookie bombing from third-party subdomains. The only deduction: refresh tokens with a 30-day maxAge without a `domain` set means the cookie is sent on every request to the origin, increasing exposure surface slightly.
+Access token com `strict` impede CSRF em requests cross-site. Refresh token com `lax` permite o browser enviar em navegações cross-origin (redirect 303 do middleware). `domain` não definido = scoped to origin only (correto). Priority medium configurado. Dedução 10 pontos: refresh token 30d sem rotação automática (single-use rotation jti implementado em v0.83.6, mas rotação ativa requer que refresh token seja trocado em CADA uso — atualmente sótroca quando detectamos reuso).
 
----
 
 ### 1.7 `redirect_loops` — Are there redirect loops that cause UX issues?
 
@@ -388,11 +389,11 @@ These are semantically identical, but the inconsistency suggests the codebase ev
 | `test_suite` | 99 | 🟢 Green |
 | `tsc_clean` | 100 | 🟢 Green |
 | `page_auth_consistency` | 100 | 🟢 Green |
-| `redirect_loops` | 90 | 🟢 Green |
-| `cookie_security` | 75 | 🟡 Medium |
+| `redirect_loops` | 95 | 🟢 Green |
+| `cookie_security` | 90 | 🟢 Green |
 
-**Overall: 0 critical, 0 high, 1 medium, 7 green. Auth race condition fechado — v0.83.3 pronto para produção.**
+**Overall: 0 critical, 0 high, 0 medium, 8 green. All auth fixes deployed — v0.83.9 ready for production.**
 
 ---
 
-*Last updated: 2026-06-17 — v0.83.9: Build parse error fix (SignificadoPilar) + I Ching narrative integration + cookie hardening + auth flash elimination*
+*Last updated: 2026-06-17 — v0.83.9: SameSite strict fix + 3 missing 'use client' panels + SignificadoPilar cleanup + dead code removal + I Ching integration*

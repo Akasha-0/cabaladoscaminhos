@@ -552,9 +552,9 @@ export default function ConexoesClient({ userProfile }: Props) {
                 </span>
               </div>
               <p className="text-[10px] text-white/60 pl-0.5">
-                {result.authorityMatch === 'aligned' ? 'Autoridades compatíveis — decisões alinhadas' :
-                 result.authorityMatch === 'complementary' ? 'Autoridades complementares — diferenças sombreadas' :
-                 'Contrastes entre tipos de decisão'}
+                {result.authorityMatch === 'aligned' ? 'Compatíveis — quando decidem juntos, costumam escolher o mesmo caminho.' :
+                 result.authorityMatch === 'complementary' ? 'Complementares — um impulsiona onde o outro hesita.' :
+                 'Contrastantes — diferentes formas de tomar decisões. Usem isso como força.'}
               </p>
             </div>
           </div>
@@ -565,16 +565,26 @@ export default function ConexoesClient({ userProfile }: Props) {
               <p className="text-xs text-white/50 mb-1">Síncronia Corporal</p>
               <p className="text-lg font-black text-[#2DD4BF]">{result.bodySync.score}%</p>
               <p className="text-xs text-white/60 mt-1">{result.bodySync.description}</p>
-              <p className="text-xs text-white/60 mt-1">Compatibilidade entre os corpos tântricos dos dois mapas.</p>
+              <p className="text-xs text-white/60 mt-1">Como seus corpos e energetemas respondem um ao outro.</p>
+              <p className="text-[10px] text-white/50 mt-1">
+                {result.bodySync.score >= 71 ? 'Alta: sintonia forte — corpos em ressonância, projetos físicos fluem juntos.' :
+                 result.bodySync.score >= 41 ? 'Média: atenção à vitalidade — cuidem do ritmo de repouso juntos.' :
+                 'Baixa: desgaste conjunto — priorizem saúde antes de projetos grandes.'}
+              </p>
             </div>
             <div role="region" aria-label="Síncronia Odu" className="rounded-2xl border border-white/10 bg-white/5 p-4">
               <p className="text-xs text-white/50 mb-1">Síncronia Odu</p>
               <p className="text-lg font-black text-[#a78bfa]">{result.oduSync.score}%</p>
+              <p className="text-[10px] text-white/50 mt-1">
+                {result.oduSync.score >= 71 ? 'Ressonância ancestral intensa — destinos entrelaçados.' :
+                 result.oduSync.score >= 41 ? 'Ciclos que se cruzam gradualmente — paciência e atenção.' :
+                 'Caminhos ainda se buscam — construam pontes com paciência.'}
+              </p>
               <p className="text-xs text-white/60 mt-1">{result.oduSync.description}</p>
               <p className="text-xs text-white/60 mt-1">
-                {result.oduSync.sharedOdu ? 'Odu compartilhado — destino comum.' :
-                 result.oduSync.complementaryOdu ? 'Odu complementar — sombras que se equilibram.' :
-                 'Odu distinto — caminhos independentes.'}
+                {result.oduSync.sharedOdu ? 'Destino comum — vocações e ciclos compartilhados.' :
+                 result.oduSync.complementaryOdu ? 'Caminhos complementares — cada um cobre o que o outro não vê.' :
+                 'Caminhos independentes — construam projetos próprios juntos.'}
               </p>
             </div>
           </div>
@@ -640,8 +650,8 @@ export default function ConexoesClient({ userProfile }: Props) {
           )}
           {/* Dominant type legend */}
           <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-            <p className="text-[10px] text-white/30 mb-2 uppercase tracking-wider">Tipo dominante: significado</p>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px] text-white/60">
+            <p className="text-xs text-white/70 mb-2 uppercase tracking-wider">Tipo dominante: significado</p>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-white/80">
               <span><span className="text-[#f87171]">Amorosa</span> —afetividade em primeiro plano</span>
               <span><span className="text-[#fbbf24]">Parceria</span> —propósito compartilhado</span>
               <span><span className="text-[#c084fc]">Desafiadora</span> —contraste como motor</span>
@@ -749,8 +759,8 @@ export default function ConexoesClient({ userProfile }: Props) {
 
           {/* Dominant type legend — same as results view */}
           <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-            <p className="text-[10px] text-white/30 mb-2 uppercase tracking-wider">Tipo dominante: significado</p>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px] text-white/40">
+            <p className="text-xs text-white/70 mb-2 uppercase tracking-wider">Tipo dominante: significado</p>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-white/80">
               <span><span className="text-[#f87171]">Amorosa</span> —afetividade em primeiro plano</span>
               <span><span className="text-[#fbbf24]">Parceria</span> —propósito compartilhado</span>
               <span><span className="text-[#c084fc]">Desafiadora</span> —contraste como motor</span>

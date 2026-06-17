@@ -403,7 +403,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       <Cloud size={16} className="text-[#2DD4BF]" />
                     </div>
                   </div>
-                  <p className="text-[11px] text-[#2DD4BF]/70 uppercase tracking-widest font-mono font-semibold">Tempo</p>
+                  <p className="text-[11px] text-[#2DD4BF]/70 uppercase tracking-widest font-mono font-semibold">Clima</p>
                   <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.climate ?? 'Estável'}</p>
                   {activeFilterChip === 'clima' && (
                     <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#2DD4BF] flex items-center justify-center">
@@ -531,11 +531,11 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       Regra Prática de Alinhamento
                     </p>
                     <div className="grid grid-cols-[auto_1fr] gap-x-2 gap-y-1.5 items-start">
-                      <span className="text-[10px] text-white/50 uppercase tracking-wider font-mono mt-px">Antes de agir:</span>
+                      <span className="text-[10px] text-white/70 uppercase tracking-wider font-mono mt-px">Antes de agir:</span>
                       <p className="text-xs text-white/85 leading-relaxed">
                         {detSintese.autoridade.regra.condicao}
                       </p>
-                      <span className="text-[10px] text-[#9D86FF] uppercase tracking-wider font-mono mt-px">Faça isto:</span>
+                      <span className="text-[10px] text-[#7C5CFF] uppercase tracking-wider font-mono mt-px">Faça isto:</span>
                       <p className="text-xs text-[#9D86FF] leading-relaxed font-medium">
                         {detSintese.autoridade.regra.accao}
                       </p>
@@ -668,7 +668,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                     </div>
 
                     {/* Instruction with truncation */}
-                    <div className="relative" style={{ maxHeight: ritualExpanded ? 'none' : '4.5em', overflow: 'hidden' }}>
+                    <div className="relative" style={{ maxHeight: ritualExpanded ? 'none' : '7.5em', overflow: 'hidden' }}>
                       <div className="bg-[#0B0E1C]/80 rounded-xl p-4 mb-2 border border-white/5">
                         <p className="text-sm text-[#A7AECF] leading-relaxed">
                           {dailyData.ritual.instrucao}
@@ -691,7 +691,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                     </div>
                     <button
                       onClick={() => setRitualExpanded(!ritualExpanded)}
-                      className="text-xs text-[#7C5CFF]/70 hover:text-[#7C5CFF] transition-colors px-3 py-2 min-h-11 rounded-lg"
+                      className="text-xs text-[#7C5CFF]/90 hover:text-[#7C5CFF] transition-colors px-3 py-2 min-h-11 rounded-lg"
                     >
                       {ritualExpanded ? <><ChevronUp size={12} className="inline" /> Mostrar menos</> : <><ChevronDown size={12} className="inline" /> Ver instrução completa</>}
                     </button>

@@ -46,6 +46,7 @@ interface MandalaNarrativeProps {
       growthEdge: string;
       shadowTrap: string;
       dimensionOrigin: string | null;
+      typeConfidence?: 'alta' | 'media' | 'baixa' | null;
     } | null;
     areas: Record<string, AreaNarrative>;
     synthesisParagraph: string;
@@ -234,6 +235,24 @@ export function MandalaNarrative({ synthesis, loading }: MandalaNarrativeProps) 
               <p className="text-xs text-white/40 uppercase tracking-widest font-medium mb-1">Seu Tipo Akasha</p>
               <h2 className="text-2xl font-bold text-white leading-tight">{oneProfile.typeName}</h2>
               <p className="text-sm text-white/60 mt-1 italic">{oneProfile.corePattern}</p>
+              {oneProfile.typeConfidence && (
+                <div
+                  className={`inline-flex items-center gap-1.5 mt-2 px-2.5 py-1 rounded-full text-xs font-semibold border ${
+                    oneProfile.typeConfidence === 'alta'
+                      ? 'bg-[#30D158]/15 border-[#30D158]/30 text-[#30D158]'
+                      : oneProfile.typeConfidence === 'media'
+                      ? 'bg-[#FFD60A]/15 border-[#FFD60A]/30 text-[#FFD60A]'
+                      : 'bg-[#FF375F]/15 border-[#FF375F]/30 text-[#FF375F]'
+                  }`}
+                >
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-current" />
+                  {oneProfile.typeConfidence === 'alta'
+                    ? 'Alta convergência — perfil bem definido'
+                    : oneProfile.typeConfidence === 'media'
+                    ? 'Convergência média — perfil em formação'
+                    : 'Baixa convergência — mais dados fortalecem o perfil'}
+                </div>
+              )}
             </div>
             <span
               className="px-3 py-1 rounded-full text-xs font-semibold shrink-0"

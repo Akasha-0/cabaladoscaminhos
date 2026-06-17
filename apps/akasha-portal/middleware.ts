@@ -138,8 +138,7 @@ const PROTECTED_PATH_PREFIXES = [
 
 function shouldRefreshAuth(pathname: string): boolean {
   // Strip locale prefix (e.g. /pt-BR, /en) before checking protected paths.
-  // Without this, /pt-BR/dashboard fails the /dashboard prefix check and
-  // auth refresh never fires → expired access token → redirect to /onboarding.
+  // auth refresh never fires → expired access token → redirect to /login.
   const segments = pathname.split('/'); // ['', 'pt-BR', 'dashboard']
   const pathWithoutLocale = (segments.length >= 2 && (locales as readonly string[]).includes(segments[1]))
     ? '/' + segments.slice(2).join('/')
@@ -287,21 +286,22 @@ export async function middleware(request: NextRequest) {
           const redirectResponse = NextResponse.redirect(redirectUrl, 303);
           redirectResponse.headers.set('X-Akasha-Auth', 'refreshed');
           for (const cookie of newCookies) {
+            // Access token (akasha_session) gets strict; refresh stays lax.
+            const isAccess = cookie.name === 'akasha_session';
             redirectResponse.cookies.set(cookie.name, cookie.value, {
               httpOnly: true,
-              sameSite: 'lax',
+              sameSite: isAccess ? 'strict' : 'lax',
               secure: process.env.NODE_ENV === 'production',
               path: '/',
             });
           }
           return redirectResponse;
         }
-        // Missing: set cookies on response, continue to page with refreshed status.
-        response.headers.set('X-Akasha-Auth', 'refreshed');
         for (const cookie of newCookies) {
+          const isAccess = cookie.name === 'akasha_session';
           response.cookies.set(cookie.name, cookie.value, {
             httpOnly: true,
-            sameSite: 'lax',
+            sameSite: isAccess ? 'strict' : 'lax',
             secure: process.env.NODE_ENV === 'production',
             path: '/',
           });

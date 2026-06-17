@@ -1,5 +1,3 @@
-'use client';
-
 /**
  * SignificadoPilar — F-219 (Camada de Significado)
  *

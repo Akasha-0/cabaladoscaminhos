@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import { Divider, InfoPanel, Insight, Row } from '@/components/akasha/MandalaChartInfoPanel';
 import { SignificadoEmbed, resolveSig } from '@/components/akasha/mandala-meanings';

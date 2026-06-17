@@ -280,6 +280,9 @@ export default function OraculoPage() {
             >
               <Sparkles size={24} style={{ color: '#9D86FF' }} />
             </div>
+            <h2 style={{ fontSize: '1.1rem', fontWeight: 600, color: '#2DD4BF', margin: 0 }}>
+              Bem-vindo ao Oráculo
+            </h2>
             <div
               style={{
                 padding: '20px 28px',
@@ -324,7 +327,8 @@ export default function OraculoPage() {
                 transition: 'all 0.2s ease',
               }}
             >
-              Nova consulta
+              <span aria-hidden>Nova consulta</span>
+              <span className="sr-only">Nova consulta — limpar conversa e recomeçar</span>
             </button>
           </div>
         )}
@@ -410,8 +414,8 @@ export default function OraculoPage() {
             {msg.role === 'oracle' &&
               msg.pillarsConsulted &&
               msg.pillarsConsulted.length > 0 && (
-                <>
-                  <span style={{ fontSize: '0.75rem', color: '#5C6691', fontWeight: 500 }}>
+                <div role="group" aria-labelledby={`pillars-label-${i}`} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span id={`pillars-label-${i}`} style={{ fontSize: '0.75rem', color: '#5C6691', fontWeight: 500 }}>
                     Tradições que ressoaram
                   </span>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', paddingLeft: '4px' }}>
@@ -436,7 +440,7 @@ export default function OraculoPage() {
                       );
                     })}
                   </div>
-                </>
+                </div>
               )}
           </div>
         ))}
@@ -458,20 +462,21 @@ export default function OraculoPage() {
           flexShrink: 0,
         }}
       >
-        {input.length > 0 && (
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '4px' }}>
-            <span style={{ fontSize: '0.7rem', color: input.length > 200 ? '#FB5781' : 'rgba(255,255,255,0.4)' }}>
-              {balance !== null && balance > 0 && input.length <= 200 ? ' · 1 crédito' : ''}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '4px', gap: '8px' }}>
+          {balance !== null && balance > 0 && (
+            <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)' }}>
+              1 crédito
             </span>
-          </div>
-        )}
-        {input.length === 0 && (
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '4px' }}>
-            <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.3)' }}>
-              Máx. 200 caracteres
+          )}
+          {balance === null && (
+            <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.25)' }}>
+              1–3 créditos
             </span>
-          </div>
-        )}
+          )}
+          <span style={{ fontSize: '0.7rem', color: input.length > 200 ? '#FB5781' : 'rgba(255,255,255,0.3)' }}>
+            {input.length}/200
+          </span>
+        </div>
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -520,7 +525,7 @@ export default function OraculoPage() {
             type="submit"
             disabled={loading || !input.trim() || input.length > 200 || (balance !== null && balance === 0)}
             aria-disabled={loading || !input.trim() || input.length > 200 || (balance !== null && balance === 0)}
-            aria-label={loading ? 'Consultar — carregando resposta' : !input.trim() ? 'Consultar — digite sua pergunta' : input.length > 200 ? `Consultar — máximo 200 caracteres (${input.length} digitados)` : balance !== null && balance === 0 ? 'Consultar — sem créditos' : 'Enviar pergunta ao Oráculo I Ching'}
+            aria-label={loading ? 'Consultar — carregando resposta' : !input.trim() ? 'Consultar — digite sua pergunta' : input.length > 200 ? `Consultar — máximo 200 caracteres (${input.length} digitados)` : balance !== null && balance === 0 ? 'Consultar — sem créditos' : 'Enviar pergunta ao Oráculo Akasha'}
             style={{
               padding: '10px 32px',
               borderRadius: '9999px',

@@ -413,7 +413,7 @@ export default function MandalaChart({ data }: Props) {
               y="14"
               textAnchor="middle"
               fontSize="10"
-              fill="rgba(124,92,255,0.5)"
+              fill="rgba(124,92,255,0.7)"
               letterSpacing="2"
             >
               MOVIMENTO CELESTE

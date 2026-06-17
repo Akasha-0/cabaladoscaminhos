@@ -432,7 +432,8 @@ export default async function DiarioPage({
           ) : (
             <div style={cardStyle(pilarInfo.cor)}>
               <h2 style={{ ...headlineStyle, color: pilarInfo.cor }}>A Voz do Akasha</h2>
-              <span style={{fontSize:'0.72rem', color:C.txtMut, fontStyle:'italic', display:'block', marginBottom:4}}>Três frases que condensam a mensagem energética do seu mapa para hoje.</span>
+              <span style={{fontSize:'0.68rem', color:C.txtSec, display:'block', marginBottom:6}}>Leia em voz alta. Observe o que mais ressoa.</span>
+              <span style={{fontSize:'0.72rem', color:C.txtMut, fontStyle:'italic', display:'block', marginBottom:8}}>Três frases que condensam a mensagem energética do seu mapa para hoje.</span>
               {frases.map((f, i) => (
                 <p
                   key={i}
@@ -445,7 +446,6 @@ export default async function DiarioPage({
                   {f}
                 </p>
               ))}
-              <span style={{fontSize:'0.68rem', color:C.txtSec, display:'block', marginTop:4}}>Leia em voz alta. Observe o que mais ressoa.</span>
 
               {/* Pilares relevantes como badges coloridos */}
               {mandato.pilares_relevantes.length > 0 && (
@@ -549,13 +549,19 @@ export default async function DiarioPage({
           <div style={screenStyle} role="region" aria-label="Tela 4 de 5 — Significado dos Pilares">
             <div style={innerStyle}>
             <h2 style={screenNumStyle}>04\u00A0/\u00A005 — Significado dos Pilares</h2>
-              <p style={{...bodyStyle, color:C.txtSec, marginBottom:8}} >Leia cada Pilar na ordem. Para cada um: note a <em>Sombra</em> primeiro (o que tende a recusar), depois a <em>Prática</em> (o antídoto). Ao final, veja como se conectam.</p>
+              <h3 style={{ fontSize: '0.8rem', fontWeight: 600, color: C.txtSec, marginBottom: 8, letterSpacing: '0.02em', lineHeight: 1.4 }}>
+                Leia cada Pilar na ordem. Para cada um: note a <em>Sombra</em> primeiro (o que tende a recusar), depois a <em>Prática</em> (o antídoto). Ao final, veja como se conectam.
+              </h3>
               {ordem.map((p) => (
                 <div key={p} style={{ marginBottom: 14 }}>
                   <SignificadoPilar
                     significado={sigs[p]}
                     cor={coresPorPilar[p]}
                     destaque={p === pilarPrincipal}
+                    sexualidade={p === 'astrologia' ? {
+                      lilith_signo: (payload.pilares.astrologia as { lilith_signo?: string | null; casa_8_signo?: string | null }).lilith_signo,
+                      casa_8_signo: (payload.pilares.astrologia as { lilith_signo?: string | null; casa_8_signo?: string | null }).casa_8_signo,
+                    } : undefined}
                   />
                 </div>
               ))}
