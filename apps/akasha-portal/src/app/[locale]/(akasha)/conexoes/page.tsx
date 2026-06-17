@@ -13,9 +13,20 @@ export default async function ConexoesPage({
   const cookieStore = await cookies();
   const authStatus = (await headers()).get('X-Akasha-Auth');
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
-  // Always verify: cookies are fresh on the 303-redirect target request.
-  const payload = verifyAkashaToken(token, 'access');
-  if (!payload) redirect(`/${locale}/login`);
+  // Option C: trust X-Akasha-Auth header instead of re-verifying on every render.
+  let userId: string;
+  if (authStatus === 'refreshed') {
+    try {
+      const decoded = JSON.parse(Buffer.from(token?.split('.')[1] ?? '', 'base64').toString('utf8')) as { sub?: string };
+      userId = decoded?.sub ?? '';
+    } catch {
+      userId = '';
+    }
+  } else {
+    const payload = verifyAkashaToken(token, 'access');
+    if (!payload) redirect(`/${locale}/login`);
+    userId = payload!.sub;
+  }
   const userId = payload!.sub;
 
   let userProfile: {

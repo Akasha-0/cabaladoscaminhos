@@ -35,6 +35,27 @@ export function assessAreaFrequency(
   if (kab?.lifePathMaster) giftScore += 2;
   if (tantra?.soul === 1 || tantra?.soul === 22) giftScore += 1;
 
+  // ─── Siddhi path ────────────────────────────────────────────────────────────
+  // Siddhi = absence of shadow signals + strong mastery/soul alignment.
+  // Requires no karmic debt, no challenging aspects, no hard Pluto/Saturn aspects,
+  // AND multiple mastery signals (lifePathMaster + soul ∈ {1, 22, 33}).
+  const noShadow =
+    !kab?.karmicDebts?.length &&
+    !kab?.challenges?.first &&
+    !kab?.challenges?.second &&
+    !pluto &&
+    !saturn;
+  const soulMaster = tantra?.soul === 1 || tantra?.soul === 22 || tantra?.soul === 33;
+  const hasMasterLifePath = !!kab?.lifePathMaster;
+
+  if (noShadow && hasMasterLifePath && soulMaster) {
+    return { frequency: 'siddhi', intensity: 3 };
+  }
+  if (noShadow && hasMasterLifePath) {
+    return { frequency: 'siddhi', intensity: 2 };
+  }
+
+  // ─── Shadow / Gift paths ────────────────────────────────────────────────────
   if (shadowScore > giftScore && shadowScore >= 2) {
     return { frequency: 'shadow', intensity: Math.min(3, shadowScore) as 1 | 2 | 3 };
   }
@@ -55,9 +76,13 @@ export function deriveDominantFrequency(
   const areas = [v, c, car, o, m, d];
   const shadows = areas.filter(a => a.frequency === 'shadow').length;
   const gifts = areas.filter(a => a.frequency === 'gift').length;
+  const siddhis = areas.filter(a => a.frequency === 'siddhi').length;
+  // Siddhi wins if 3+ areas are at siddhi frequency
+  if (siddhis >= 3) return 'siddhi';
   if (gifts > shadows) return 'gift';
   return 'shadow';
 }
+
 
 export function computeOverallScore(
   v: AreaNarrative,
@@ -70,8 +95,12 @@ export function computeOverallScore(
   const areas = [v, c, car, o, m, d];
   let giftCount = 0;
   areas.forEach(a => {
-    if (a.frequency === 'gift') giftCount += 1;
-    giftCount += (a.intensity - 1) * 0.3;
+    if (a.frequency === 'siddhi') {
+      giftCount += 1.5 + (a.intensity - 1) * 0.3;
+    } else if (a.frequency === 'gift') {
+      giftCount += 1 + (a.intensity - 1) * 0.3;
+    }
+    // shadow areas contribute nothing to the score
   });
   return Math.min(100, Math.round((giftCount / areas.length) * 100));
 }

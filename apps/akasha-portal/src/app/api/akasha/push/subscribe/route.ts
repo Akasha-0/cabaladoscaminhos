@@ -43,7 +43,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<SubscribeResp
   const sub = body.subscription!;
   await upsertPushSubscription(
     user.id,
-    { endpoint: sub.endpoint as string, keys: sub.keys },
+    { endpoint: sub.endpoint as string, keys: sub.keys ?? { p256dh: '', auth: '' } },
     req.headers.get('user-agent') ?? undefined,
   );
   await prisma.user.update({
