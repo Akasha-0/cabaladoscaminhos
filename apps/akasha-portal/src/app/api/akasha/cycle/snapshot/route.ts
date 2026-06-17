@@ -43,6 +43,13 @@ interface CycleSnapshotPayload {
     frequency: string;
     intensity: number;
     pillarContribution: Record<string, string>;
+    dailyRitual?: {
+      title: string;
+      instruction: string;
+      duration: string;
+      element: string;
+      color: string;
+    };
   }>;
 }
 
@@ -146,6 +153,11 @@ export async function POST(req: NextRequest) {
               cycleBoost: modEntry?.suggestedBoost ?? null,
               alignmentScore: modEntry?.alignmentScore ?? null,
               dominantPillar,
+              ritualTitle: areaData.dailyRitual?.title ?? null,
+              ritualInstruction: areaData.dailyRitual?.instruction ?? null,
+              ritualDuration: areaData.dailyRitual?.duration ?? null,
+              ritualElement: areaData.dailyRitual?.element ?? null,
+              ritualColor: areaData.dailyRitual?.color ?? null,
             },
             create: {
               userId: user.id,
@@ -156,6 +168,11 @@ export async function POST(req: NextRequest) {
               cycleBoost: modEntry?.suggestedBoost ?? null,
               alignmentScore: modEntry?.alignmentScore ?? null,
               dominantPillar,
+              ritualTitle: areaData.dailyRitual?.title ?? null,
+              ritualInstruction: areaData.dailyRitual?.instruction ?? null,
+              ritualDuration: areaData.dailyRitual?.duration ?? null,
+              ritualElement: areaData.dailyRitual?.element ?? null,
+              ritualColor: areaData.dailyRitual?.color ?? null,
             },
           });
         })

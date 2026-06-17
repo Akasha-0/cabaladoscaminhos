@@ -279,6 +279,7 @@ export function buildAkashaSynthesis(
       dailyDecision,
       synthesisParagraph,
       synthesizedProfile: _synthesizedProfile,
+      procedenciaTop: _synthesizedProfile?.procedenciaTop,
     };
   } catch (err) {
     // Log error so we can fix it, but return a graceful fallback so dashboard still shows content

@@ -139,6 +139,8 @@ export interface AreaNarrative {
   sexualidade?: SexualArchetype;
   expandedNarrative?: AreaNarrativeFull;
   chainOfReasoning?: string[];
+  /** §5: Procedência (tradição, símbolo, intensidade) para a narrativa desta área */
+  procedencia?: import('@akasha/core').ProcedenciaEntry[];
 }
 
 // ─── Full Synthesis Output ─────────────────────────────────────────────────
@@ -156,6 +158,8 @@ export interface AkashaSynthesis {
   dailyDecision: DailyDecision;
   synthesisParagraph: string;
   synthesizedProfile?: import('@akasha/core').SynthesizedProfile;
+  /** §5: Top-N procedência (tradição, símbolo, intensidade) da síntese akáshica */
+  procedenciaTop?: import('@akasha/core').ProcedenciaEntry[];
   transformationSequence?: {
     currentPhase: string;
     nextPhase: string;

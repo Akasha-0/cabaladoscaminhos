@@ -37,6 +37,11 @@ export interface CycleHistoryData {
     cycleBoost: string | null;
     alignmentScore: number | null;
     dominantPillar: string | null;
+    ritualTitle: string | null;
+    ritualInstruction: string | null;
+    ritualDuration: string | null;
+    ritualElement: string | null;
+    ritualColor: string | null;
   }>;
   exercises: Array<{
     id: string;
@@ -86,15 +91,32 @@ export function useCyclePersistence({
           frequency: string;
           intensity: number;
           pillarContribution: Record<string, string>;
+          dailyRitual?: {
+            title: string;
+            instruction: string;
+            duration: string;
+            element: string;
+            color: string;
+          };
         }> = {};
 
         if (synthesis?.areas) {
           for (const [area, narrative] of Object.entries(synthesis.areas)) {
             if (narrative) {
+              const dr = narrative.dailyRitual;
               areas[area] = {
                 frequency: narrative.frequency ?? 'shadow',
                 intensity: narrative.intensity ?? 1,
                 pillarContribution: (narrative as unknown as Record<string, unknown>).pillarContribution as Record<string, string> ?? {},
+                ...(dr ? {
+                  dailyRitual: {
+                    title: dr.title,
+                    instruction: dr.instruction,
+                    duration: dr.duration,
+                    element: dr.element,
+                    color: dr.color,
+                  },
+                } : {}),
               };
             }
           }

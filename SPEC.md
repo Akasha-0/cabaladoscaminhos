@@ -429,7 +429,7 @@ Heuristic scoring:
 ## 13. Known Gaps (Priority Order)
 
 2. **[MEDIUM] Siddhi frequency:** ✅ Implemented (June 2026). `assessAreaFrequency()` detects siddhi signal (noShadow + lifePathMaster + soulMaster ∈ {1,22,33}); `deriveDominantFrequency()` returns siddhi when 3+ of 6 areas reach it. `computeOverallScore()` weights siddhi areas 1.5×. `FrequencyPathExplorer` component renders the shadow→gift→siddhi journey with practices.
-4. **[MEDIUM] Ritual database:** `ritual-storage.ts` is in-memory user-config storage (Map); ritual content is generated from hologram data. Content database of ritual scripts does not exist.
+4. **[MEDIUM] Ritual database:** ✅ Persistence implemented (June 2026). `AreaHistoryEntry` now stores `ritualTitle`, `ritualInstruction`, `ritualDuration`, `ritualElement`, `ritualColor` per area per day. `RitualTrendsSection` in `EvolutionPatterns` displays per-area ritual history. Ritual content still generated from hologram data — curated ritual script database remains a future gap.
 5. **[MEDIUM] Layer 7 (Agente Evolutivo):** Not implemented. `personal-cycle-engine.ts` exists but is not wired in.
 6. **[LOW] Procedência audit trail:** No formal `(tradição, símbolo, intensidade)` attached to each output claim.
 7. **[LOW] Tunable domain weights:** No `tradição × domínio` matrix yet; weights are hard-coded heuristics (Cabala×3, Astrologia×3, Odu×2, Tantra×2, I Ching×1).

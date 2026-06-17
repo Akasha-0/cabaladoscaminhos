@@ -1,4 +1,14 @@
-## v0.84.7 (2026-06-17) — Security Fix
+## v0.84.8 (2026-06-17) — Auth UX Fixes
+
+### Bug Fixes (3 interrelated auth/UX issues causing page refresh → onboarding loop)
+
+- **CRITICAL — Edge Runtime crash on token refresh**: `dashboard/page.tsx:40` — `Buffer.from(token.split('.')[1], 'base64')` is not available in Edge Runtime. Replaced with `atob()` for Edge-compatible base64 decoding. This was the direct crash when `authStatus === 'refreshed'`, causing the dashboard to fail and fallback to the onboarding redirect.
+- **Login ignores return URL for already-logged-in users**: `login/page.tsx` — Added `searchParams` prop to server component. When a logged-in user with `birthDate` visits `/login?return=/dashboard`, they are now redirected to `return` (or `/conta`) instead of showing the login form.
+- **Onboarding re-shows if localStorage is cleared**: `onboarding/page.tsx` — Refactored into a server wrapper (`page.tsx`) that queries `birthDate` from Prisma as the authoritative server-side proof of onboarding completion, and a client component (`OnboardingClient.tsx`) that handles the interactive form. Post-registration redirect uses `returnTo` prop instead of hardcoded `/dashboard`.
+
+### Build Fix
+- `packages/akasha-core/src/mapeamentos/index.ts:621` — Fix missing closing `}` of `gerarNarrativa` function (was removed by incomplete diff application). Also restored `const narrativaCentral = gerarNarrativa(top3)` declaration that was removed but still referenced in the return statement. Parse error `'import', and 'export' cannot be used outside of module code` at line 629 is now resolved.
+
 
 ### Security Fixes
 - push/subscribe/route.ts: Fix auth guard import — was importing from stub `@/lib/auth/akasha-guard` (test stub bypasses auth, always returns test-user). Route now imports from `@/lib/application/auth/akasha-guard` (real implementation). Any unauthenticated request could register push subscriptions — CRITICAL.

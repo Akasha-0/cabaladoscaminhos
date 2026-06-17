@@ -134,3 +134,23 @@ export const PESOS_TRADICAO_DOMINIO: Record<Tradicao, Record<Dominio, number>> =
     espiritualidade: 0.9,
   },
 };
+// ─── Procedência (tradição × símbolo × intensidade) ─────────────────────────────
+/**
+ * Entrada de procedência — rastro de origem de uma afirmação interpretativa.
+ * Satisfaz o princípio constitucional §5: toda afirmação carrega
+ * (tradição, símbolo, intensidade) que a originou.
+ *
+ * O símbolo é a etiqueta limpa da fonte (e.g. "Ogbe", "Hexagrama 26",
+ * "Sol em Leão", "Life Path 7"). A fonte completa fica em PrimitiveContribution.fonte.
+ */
+export interface ProcedenciaEntry {
+  tradicao: Tradicao;
+  /** Símbolo limpo dentro da tradição — e.g. "Ogbe", "Hexagrama 26", "Life Path 7" */
+  simbolo: string;
+  /** Intensidade 0–10 da contribuição original */
+  intensidade: number;
+  primitivo: Primitivo;
+  polaridade: Polaridade;
+  /** Primeiros 120 chars da fonte original — suficiente para identificar, não para justificar */
+  fonteResumo: string;
+}

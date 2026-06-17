@@ -85,6 +85,8 @@ export interface AreaNarrativeUI {
    * Ex: "Venus em Touro (Astrologia) + Lua em 4º (Astrologia) → afeto profundo pelo lar"
    */
   chainOfReasoning?: string[];
+  /** §5: Procedência (tradição, símbolo, intensidade) para a narrativa desta área */
+  procedencia?: import('@akasha/core').ProcedenciaEntry[];
 }
 export interface ExpandedNarrativeUI {
   cabalaNarrative: string;
@@ -122,7 +124,6 @@ export interface AkashaTypeProfileUI {
   shadowTrap: string;
   typeConfidence: 'alta' | 'media' | 'baixa' | null;
 }
-
 export interface AkashaSynthesisUI {
   akashaProfile: {
     dominantFrequency: 'shadow' | 'gift' | 'siddhi';
@@ -140,6 +141,8 @@ export interface AkashaSynthesisUI {
   /** F-232: Narrativa Central Akáshica — síntese dos 3 primitivos dominantes com polaridades
    *  Derivada de SynthesizedProfile.narrativaCentral (synthesizePrimitives de 5 tradições) */
   narrativaCentral: string | null;
+  /** §5: Top-N procedência (tradição, símbolo, intensidade) da síntese akáshica */
+  procedenciaTop?: import('@akasha/core').ProcedenciaEntry[];
 }
 
 export interface CycleSnapshotUI {

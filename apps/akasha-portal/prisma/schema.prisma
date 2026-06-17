@@ -301,6 +301,11 @@ model AreaHistoryEntry {
   cycleBoost       String?
   alignmentScore   Int?
   dominantPillar   String?
+  ritualTitle       String?
+  ritualInstruction String?
+  ritualDuration    String?
+  ritualElement     String?
+  ritualColor      String?
 
   createdAt        DateTime @default(now())
 

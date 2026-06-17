@@ -37,7 +37,8 @@ export default async function LocalizedDashboardPage({ params }: DashboardPagePr
     // Middleware already verified this token when setting X-Akasha-Auth: refreshed.
     // Using email prefix for greeting fallback when user.name is null in DB.
     try {
-      const decoded = JSON.parse(Buffer.from(token?.split('.')[1] ?? '', 'base64').toString('utf8')) as { sub?: string; email?: string };
+      // atob() is available in Edge Runtime; Buffer is Node.js-only.
+      const decoded = JSON.parse(atob(token?.split('.')[1] ?? '')) as { sub?: string; email?: string };
       payload = decoded?.sub ? { sub: decoded.sub, email: decoded.email } : null;
     } catch {
       payload = null;

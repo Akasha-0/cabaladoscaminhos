@@ -463,6 +463,8 @@ export interface SynthesizedProfile {
   dominioPredominante: Dominio;
   tensaoPrincipal?: Tensao;
   narrativaCentral: string;
+  /** §5: Top-N entradas de procedência — (tradição, símbolo, intensidade) por primitivo dominante */
+  procedenciaTop?: import('./types').ProcedenciaEntry[];
 }
 
 // ─── Síntese principal ───────────────────────────────────────────────────────
@@ -586,12 +588,12 @@ export function synthesizePrimitives(
   // 6. Narrativa central: baseada nos top-3 dominantes
   const top3 = sorted.filter(s => s.dominante).slice(0, 3);
   const narrativaCentral = gerarNarrativa(top3);
-
   return {
     primitivos: synthesized,
     dominioPredominante,
     tensaoPrincipal,
     narrativaCentral,
+    procedenciaTop: extractProcedenciaTop({ primitivos: synthesized, dominioPredominante, narrativaCentral }),
   };
 }
 
@@ -618,14 +620,87 @@ function gerarNarrativa(top: SynthesizedPrimitivo[]): string {
   const f0 = top[0], f1 = top[1], f2 = top[2];
   return 'Tres forças dominam seu perfil: ' + f0.primitivo + ' (' + polaridadeLabel(f0.polaridade) + '), ' + f1.primitivo + ' (' + polaridadeLabel(f1.polaridade) + ') e ' + f2.primitivo + ' (' + polaridadeLabel(f2.polaridade) + '). Esta trilogia define sua missão e seu caminho de evolução.';
 }
+// ─── Procedência — helpers (satisfaz §5: toda afirmação tem procedência) ─────────
+
+/**
+ * Extrai a tradição de uma string fonte usando heurísticas cheap.
+ * Ordem de matching: iching → odu → cabala → astrologia → tantra.
+ */
+export function deriveTradicao(fonte: string): Tradicao {
+  const lower = fonte.toLowerCase();
+  if (lower.includes('hexagrama')) return 'iching';
+  if (lower.includes('ifá') || lower.includes(' odu ') || lower.includes('orixá') || lower.includes('iwure')) return 'odu';
+  if (lower.includes('life path') || lower.includes('caminho') || lower.includes('sefira') || lower.includes('cabalá') || lower.includes('cabala')) return 'cabala';
+  if (lower.includes('planeta') || lower.includes('sol em') || lower.includes('lua em') || lower.includes('ascendente') || lower.includes('astrologia') || lower.includes('signo')) return 'astrologia';
+  if (lower.includes('corpo') || lower.includes('chakra') || lower.includes('tântrico') || lower.includes('tantra')) return 'tantra';
+  return 'iching';
+}
+
+/**
+ * Extrai o símbolo limpo de uma string fonte.
+ * Regexes para I Ching, Odu, Cabala, Astrologia, Tantra.
+ */
+export function extractSimbolo(fonte: string): string {
+  // I Ching: "Hexagrama N"
+  const hex = fonte.match(/hexagrama\s*(\d+)/i);
+  if (hex) return `Hexagrama ${hex[1]}`;
+  // Odu: "Odu Ogbe" or "Ogbe (N)"
+  const odu = fonte.match(/(?:Odu\s+)?([A-Z][a-zé]+)(?:\s+\(\d+\))?/);
+  if (fonte.toLowerCase().includes('ifá') || fonte.toLowerCase().includes('orixá') || odu) {
+    return odu ? odu[1] : 'Odu';
+  }
+  // Cabala: "Life Path N" or "Expression N" or "Caminho N"
+  const lp = fonte.match(/life\s*path\s*(\d+)/i);
+  if (lp) return `Life Path ${lp[1]}`;
+  const exp = fonte.match(/expression\s*(\d+)/i);
+  if (exp) return `Expression ${exp[1]}`;
+  // Astrologia: "Sol em Leão"
+  const astro = fonte.match(/(sol|lua|ascendente|planeta)\s+em\s+(\w+)/i);
+  if (astro) return `${astro[1].charAt(0).toUpperCase() + astro[1].slice(1)} em ${astro[2]}`;
+  // Fallback: primeiros 40 chars
+  return fonte.slice(0, 40).replace(/\[.*?\]/g, '').trim() || fonte.slice(0, 20);
+}
+
+/**
+ * Extrai as top-N ProcedenciaEntry de um SynthesizedProfile.
+ * Deduplica por (primitivo, tradicao) — mantém a entry de maior intensidade.
+ * Ordena por intensidade descrescente.
+ */
+export function extractProcedenciaTop(
+  profile: SynthesizedProfile,
+  limit = 10,
+): import('./types').ProcedenciaEntry[] {
+  const seen = new Map<string, import('./types').ProcedenciaEntry>();
+  for (const sp of profile.primitivos) {
+    for (const c of sp.contributions) {
+      const key = `${c.primitivo}::${deriveTradicao(c.fonte)}`;
+      const existing = seen.get(key);
+      if (!existing || c.intensidade > existing.intensidade) {
+        seen.set(key, {
+          tradicao: deriveTradicao(c.fonte),
+          simbolo: extractSimbolo(c.fonte),
+          intensidade: c.intensidade,
+          primitivo: c.primitivo,
+          polaridade: c.polaridade,
+          fonteResumo: c.fonte.slice(0, 120),
+        });
+      }
+    }
+  }
+  return Array.from(seen.values())
+    .sort((a, b) => b.intensidade - a.intensidade)
+    .slice(0, limit);
+}
 
 // ─── Re-export para conveniência ─────────────────────────────────────────────
 
 export { PRIMITIVOS, PESOS_TRADICAO_DOMINIO } from './types';
+
 export type {
   Primitivo,
   Polaridade,
   PrimitiveContribution,
   Tradicao,
   Dominio,
+  ProcedenciaEntry,
 } from './types';
