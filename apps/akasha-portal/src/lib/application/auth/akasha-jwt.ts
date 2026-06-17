@@ -131,11 +131,17 @@ type CookieResponse = {
   cookies: { set: (name: string, value: string, opts?: Record<string, unknown>) => void };
 };
 
+// NOTE: sameSite='lax' (not 'strict') is intentional.
+// 'strict' prevents the browser from sending the cookie during 303/307 redirect
+// navigations initiated by the server (e.g., auth refresh 303 redirect).
+// Lax sends the cookie on top-level cross-origin navigations but blocks subrequests.
+// The cookie is httpOnly (JS cannot read it) and the token is cryptographically
+// signed — CSRF risk is minimal for an auth session cookie.
 export function setAkashaSessionCookie(response: CookieResponse, token: string): void {
   response.cookies.set(
     AKASHA_TOKEN_COOKIE,
     token,
-    cookieOptions({ maxAge: AKASHA_ACCESS_TTL_SECONDS, sameSite: 'strict' })
+    cookieOptions({ maxAge: AKASHA_ACCESS_TTL_SECONDS, sameSite: 'lax' })
   );
 }
 

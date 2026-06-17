@@ -10,7 +10,7 @@ import type {
   Tradicao,
   Dominio,
 } from './types';
-import { PESOS_TRADICAO_DOMINIO, PRIMITIVOS } from './types';
+import { PESOS_TRADICAO_DOMINIO, PRIMITIVOS, getTradicaoWeights } from './types';
 import { NUMEROS_CABALA, getNumeroCabala } from './cabala/numeros';
 import { ODUS_NUMEROLOGIA } from './odu/numeros';
 import { PLANETAS_NUMEROLOGIA } from './astrologia/numeros';
@@ -528,7 +528,7 @@ export function synthesizePrimitives(
   ];
 
   for (const { trad, contribs } of contribsPerTrad) {
-    const pesos = PESOS_TRADICAO_DOMINIO[trad];
+    const pesos = getTradicaoWeights()[trad];
     for (const c of contribs) {
       // Para cada domínio, soma o peso da tradição × intensidade
       for (const dominio of Object.keys(pesos) as Dominio[]) {

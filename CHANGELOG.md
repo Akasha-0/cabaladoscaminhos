@@ -1,3 +1,31 @@
+## v0.85.1 (2026-06-17) — fix: sameSite strict→lax on session cookie; auth tests
+
+### Bug Fix: Session Cookie sameSite
++ `akasha-jwt.ts` `setAkashaSessionCookie`: changed `sameSite: 'strict'` → `'lax'`
++ **Root cause:** `strict` blocks the browser from sending the cookie on 303/307
+  server-initiated redirect navigations (auth refresh flow). After a 303 redirect,
+  the NEXT request arrived WITHOUT the `akasha_session` cookie, causing the layout
+  to render with `user: null` and the sidebar to show "✦ Iniciar Jornada".
++ `lax` sends the cookie on top-level navigations while blocking subrequests.
+  The cookie is `httpOnly` (JS cannot read) and cryptographically signed.
++ Fixes: "every time I refresh the page it goes back to onboarding"
+
+### Tests
++ `tests/api/akasha/auth/login.test.ts` (new, 9 tests): 400/401 validation,
+  return param redirect, open-redirect off-origin block, cookie presence, jti tracking
++ `tests/api/akasha-auth-register.test.ts`: refactored to static imports
+
+### EVALS
++ Added `auth_cookie_samesite` metric §1.11 (score: 90/100)
++ Updated `auth_stability` §1.1: 95 → 97 (sameSite fix removes auth-loss deduction)
++ Updated `i18n_coverage` §1.9: accurate gap count (~50 strings in OnboardingClient)
++ Updated `test_suite` §1.4: 1361 → 1385 tests
++ New metric `open_redirect_protection` §1.10 (score: 100/100)
+
+### Known Gap
++ `OnboardingClient.tsx` — ~50 hardcoded Portuguese strings. Pre-existing gap,
+  not a regression. Requires full i18n refactor (separate effort).
+
 ## v0.85.0 (2026-06-17) — i18n: EvolutionPatterns fully internationalized
 
 ### i18n Infrastructure

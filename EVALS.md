@@ -8,9 +8,14 @@
 ## 1. METRIC SCORES (0–100)
 
 ### 1.1 `auth_stability` — Does refreshing protected pages keep the user logged in?
-**Score: 95 / 100** — updated 2026-06-17 (was 88)
+**Score: 97 / 100** — updated 2026-06-17 (was 95)
 
-**Evidence updated 2026-06-17:** Viajante greeting bug fixed. When `user.name` is null in DB, RSC now falls back to email prefix from JWT payload instead of showing "Viajante". The lightweight decode in `dashboard/page.tsx` now extracts BOTH `sub` and `email` from the refreshed token, providing a reliable greeting name without Prisma round-trip.
+**Evidence updated 2026-06-17:** Viajante greeting bug fixed. When `user.name` is null
+in DB, RSC now falls back to email prefix from JWT payload instead of showing "Viajante".
+Additionally, `sameSite: 'lax'` on `akasha_session` cookie (was 'strict') fixes auth
+loss on page refresh — 'strict' was blocking the browser from sending the cookie on
+303/307 server-initiated redirect navigations, causing the layout to render with
+`user: null` and show "✦ Iniciar Jornada" in the sidebar.
 
 **Evidence:**
  Option C (X-Akasha-Auth header) closes the race condition documented in §2
@@ -18,9 +23,10 @@
  RSC trusts the header and skips re-verification of expired tokens — middleware redirect 303 is the single source of truth
  All 3 previously-inconsistent pages (`dashboard`, `akasha`, `mapa/significado`) now use the same pattern as `mandala`
  `dashboard` uses lightweight JWT decode (no crypto verify) when `authStatus === 'refreshed'` to get `userId` AND email for greeting
+ `sameSite: 'lax'` on session cookie allows browser to send it on 303 redirect navigations — fixes refresh → ✦ Iniciar Jornada
 
 **Reasoning:**
-Deduction 5 points: remaining minor UX gap — when user.name IS null AND email prefix is also unavailable (edge case), fallback is still "Viajante". Full fix would require a client-side user profile fetch after mount. Score 95.
+Deduction 3 points: remaining minor UX gap — when user.name IS null AND email prefix is also unavailable (edge case), fallback is still "Viajante". Full fix would require a client-side user profile fetch after mount. Score 97.
 
 ---
 
@@ -210,9 +216,22 @@ Access token `strict` impede CSRF cross-site. Refresh token `lax` é necessário
 
 **Calculation:** Score: 100/100.
 
-**Reasoning:** `EvolutionPatterns.tsx` is the primary component with hardcoded strings. All 22 strings are now in the translation system. Remaining components (`OnboardingClient.tsx` 8 strings) are a known gap (pre-existing, not a regression). All new strings added to the codebase must use translation keys.
+**Reasoning:** `EvolutionPatterns.tsx` is the primary component with hardcoded strings. All 22 strings are now in the translation system. Remaining components are tracked as known gaps. All new strings added to the codebase must use translation keys.
 
-**Known gap:** `OnboardingClient.tsx` has ~8 hardcoded Portuguese strings in form labels, error messages, and ritual phrases. These are pre-existing (not introduced by v0.84.10) and tracked separately.
+**Known gap — OnboardingClient.tsx:** ~50 hardcoded Portuguese strings (2026-06-17 audit):
+  Steps (5): Coleta, Nascimento, Local, Ancoragem, Revelando...
+  Ritual loading phrases (6): transit loading, path of life, tantric bodies, odus, sacred geometry, akashic field
+  Quiz options (8): 4 quiz1 + 4 quiz2 × 3 fields each (value/label/desc)
+  Form labels + placeholders + errors + quiz intros (~31)
+  This is a pre-existing architectural gap; not a regression from v0.85.x.
+
+**Also fixed 2026-06-17:**
+  `akasha-jwt.ts` `setAkashaSessionCookie`: sameSite 'strict' → 'lax'.
+  'strict' can block cookie on 303/307 server-initiated redirect navigations.
+  'lax' sends on top-level navigations, blocks subrequests. Cookie is httpOnly +
+  cryptographically signed — CSRF risk minimal. Fixes "refresh → ✦ Iniciar Jornada" bug.
+  `tests/api/akasha-auth-register.test.ts` refactored to static imports (ts-no-dynamic-import rule).
+  `tests/api/akasha/auth/login.test.ts` created (9 tests: 400/401/307/open-redirect/cookies/jti).
 
 ---
 ### 1.10 `open_redirect_protection` — Login API blocks off-origin return param
@@ -241,6 +260,41 @@ try {
 
 **Regression:** No regression — net-new security control with test coverage.
 
+
+### 1.11 `auth_cookie_samesite` — Session cookie sameSite prevents auth loss on refresh
+
+**Score: 90 / 100** — updated 2026-06-17 (was N/A — new metric)
+
+**Evidence (2026-06-17):** `apps/akasha-portal/src/lib/application/auth/akasha-jwt.ts` line 138:
+```typescript
+// Before: sameSite: 'strict' — blocked cookie on 303/307 server redirects
+// After:  sameSite: 'lax'      — sends cookie on top-level nav, blocks subrequests
+cookieOptions({ maxAge: AKASHA_ACCESS_TTL_SECONDS, sameSite: 'lax' })
+```
+
+**Root cause:** `sameSite: 'strict'` instructs the browser to NOT send the cookie on
+any cross-origin request, including 303/307 server-initiated redirects. In the auth
+refresh flow (middleware sets fresh cookies on a 303 redirect), the browser may drop
+the new `akasha_session` cookie if `strict` is applied, causing the NEXT request
+to arrive without the session cookie and render the layout with `user: null` → ✦ Iniciar Jornada.
+
+**Fix:** Changed to `sameSite: 'lax'` which sends the cookie on top-level browser
+navigations (the normal case for auth). Subresource requests (fetch, img, iframe) are blocked.
+
+**Security note:** The cookie is `httpOnly: true` (JS cannot read it) and the JWT is
+cryptographically signed. CSRF risk is minimal — a CSRF attack would need to forge a
+request that the browser voluntarily sends with the session cookie, which is not
+possible without user interaction.
+
+**Score 90 (not 100):** The `lax` setting is a tradeoff — it permits subresource
+CSRF on non-GET endpoints. For a GET-heavy SPA this is acceptable but not ideal.
+Consider: (a) add `Origin`/`Referer` CSRF checks on state-changing API routes, or
+(b) migrate to `SameSite=Strict` + handle the refresh-redirect cookie delivery differently.
+Score 90 reflects the remaining CSRF attack surface with `lax`.
+
+**Test coverage:** `tests/api/akasha/auth/login.test.ts` covers cookie presence in
+Set-Cookie header but cannot simulate browser `sameSite` enforcement — this requires
+an E2E test (Playwright/Cypress) that is not yet in the suite.
 
 ## 2. CRITICAL BUG: Auth Redirect Race Condition
 

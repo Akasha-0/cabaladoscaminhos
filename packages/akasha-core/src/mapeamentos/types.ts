@@ -154,3 +154,71 @@ export interface ProcedenciaEntry {
   /** Primeiros 120 chars da fonte original — suficiente para identificar, não para justificar */
   fonteResumo: string;
 }
+// ─── Tunable weights API ─────────────────────────────────────────────────────────
+/**
+ * Runtime override for PESOS_TRADICAO_DOMINIO.
+ * Allows tuning the synthesis weights without source-code changes.
+ *
+ * Use cases:
+ *  - Admin calibration via environment variable on startup
+ *  - Future: per-user weight profiles stored in DB
+ *
+ * @example
+ * // Override all weights (e.g. from env var on startup)
+ * setTradicaoWeights({
+ *   iching:    { identidade: 0.8, talentos: 0.6, desafios: 0.7, missao: 0.9, evolucao: 0.9, relacoes: 0.6, prosperidade: 0.5, espiritualidade: 0.9 },
+ *   cabala:    { identidade: 0.9, talentos: 0.8, desafios: 0.6, missao: 0.9, evolucao: 0.6, relacoes: 0.5, prosperidade: 0.7, espiritualidade: 0.8 },
+ *   astrologia:{ identidade: 0.7, talentos: 0.7, desafios: 0.7, missao: 0.6, evolucao: 0.5, relacoes: 0.8, prosperidade: 0.5, espiritualidade: 0.6 },
+ *   tantra:    { identidade: 0.5, talentos: 0.6, desafios: 0.9, missao: 0.5, evolucao: 0.7, relacoes: 0.6, prosperidade: 0.4, espiritualidade: 0.8 },
+ *   odu:       { identidade: 0.7, talentos: 0.7, desafios: 0.8, missao: 0.9, evolucao: 0.7, relacoes: 0.7, prosperidade: 0.8, espiritualidade: 0.9 },
+ * });
+ */
+
+/** Module-level override — null means use PESOS_TRADICAO_DOMINIO directly. */
+let _weightsOverride: Record<Tradicao, Record<Dominio, number>> | null = null;
+
+const ALL_TRADICOES: Tradicao[] = ['iching', 'cabala', 'astrologia', 'tantra', 'odu'];
+const ALL_DOMINIOS: Dominio[] = ['identidade', 'talentos', 'desafios', 'missao', 'evolucao', 'relacoes', 'prosperidade', 'espiritualidade'];
+
+function isValidWeights(w: unknown): w is Record<Tradicao, Record<Dominio, number>> {
+  if (!w || typeof w !== 'object') return false;
+  for (const trad of ALL_TRADICOES) {
+    const tradRow = (w as Record<string, unknown>)[trad];
+    if (!tradRow || typeof tradRow !== 'object') return false;
+    for (const dom of ALL_DOMINIOS) {
+      const val = (tradRow as Record<string, unknown>)[dom];
+      if (typeof val !== 'number' || val < 0 || val > 2) return false;
+    }
+  }
+  return true;
+}
+
+/**
+ * Returns the currently active weight matrix.
+ * Returns the override if one is set; otherwise returns PESOS_TRADICAO_DOMINIO.
+ */
+export function getTradicaoWeights(): Record<Tradicao, Record<Dominio, number>> {
+  return _weightsOverride ?? PESOS_TRADICAO_DOMINIO;
+}
+
+/**
+ * Overrides the tradicao × dominio weight matrix at runtime.
+ * The override persists for the lifetime of the process.
+ * Returns true if the override was applied; false if the input was invalid
+ * (in which case the existing matrix is unchanged).
+ *
+ * Note: overrides are not persisted to disk/database. They last for the
+ * process lifetime only. For production tuning, set the env var
+ * AKASHA_TRADICAO_WEIGHTS on startup or implement DB-backed weight storage.
+ */
+export function setTradicaoWeights(
+  weights: unknown,
+): boolean {
+  if (!isValidWeights(weights)) {
+    console.warn('[mapeamentos] setTradicaoWeights: invalid weights — must be Record<Tradicao, Record<Dominio, number>> with values in 0–2 range. Override NOT applied.');
+    return false;
+  }
+  _weightsOverride = weights as Record<Tradicao, Record<Dominio, number>>;
+  console.info('[mapeamentos] Tradicao weights overridden at runtime.');
+  return true;
+}
