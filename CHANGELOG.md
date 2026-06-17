@@ -1,7 +1,8 @@
 ## v0.84.6 (2026-06-17) — QA Round 34
 
 ### Auth Fixes
-- dashboard/page.tsx: Fix Viajante greeting residual. When user.name is null in DB, fall back to email prefix from JWT payload instead of showing "Viajante". Lightweight JWT decode now extracts both sub and email for reliable greeting without Prisma round-trip. auth_stability 88 → 95.
+- dashboard/page.tsx: Fix Viajante greeting residual. When user.name is null in DB, fall back to email prefix from JWT payload. Lightweight JWT decode now extracts both sub and email. auth_stability 88 → 95.
+- akasha-jwt.ts: clearCookieOptions uses sameSite 'strict' (was 'lax'). setAkashaRefreshCookie passes sameSite 'lax' explicitly. cookie_security 90 → 92.
 
 ## v0.84.5 (2026-06-17) — QA Round 33
 
