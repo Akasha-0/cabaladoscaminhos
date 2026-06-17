@@ -229,7 +229,7 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
                     proposito: 'No Propósito & Destino: esta escolha aproxima você de quem veio ser? Confie no caminho — não na validação.',
                     familia: 'Na Família & Ancestralidade: esta dinâmica repete um padrão antigo ou já é sua escolha adulta? Liberdade inclui dizer não.',
                     espiritualidade: 'Na Espiritualidade & Transcendência: esta prática ancora você no presente ou foge dele? O divino habita na simplicidade.',
-                    superacao: 'Na Superação & Desafios: o que te desafia hoje é um師父 ou um espelho? Ambos pedem a mesma coisa: presença.',
+                    superacao: 'Na Superação & Desafios: o que te desafia hoje é um mestre ou um espelho? Ambos pedem a mesma coisa: presença.',
                   };
                   return map[id] ?? 'Antes de decidir nesta área: pergunte — isso vem da sua paz interior ou da sua ansiedade? Se ansiedade, espere. Se paz, aja.';
                 })()}
