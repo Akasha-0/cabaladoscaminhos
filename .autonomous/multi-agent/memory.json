@@ -909,6 +909,60 @@
       "outcome": "failure",
       "summary": "Agent 2a427cf7 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
       "details": {}
+    },
+    {
+      "ts": "2026-06-17T00:07:25.803826+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 2 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-17T00:10:33.604934+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent c22435fb failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-17T00:10:33.604961+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "missing_tests",
+      "outcome": "failure",
+      "summary": "Agent 1c4bb585 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-17T00:11:42.898068+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 2 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-17T00:14:21.511072+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "missing_tests",
+      "outcome": "success",
+      "summary": "Agent 577970f6 completed missing_tests",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-17T00:14:21.511101+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "success",
+      "summary": "Agent 381bfff0 completed large_file",
+      "details": {}
     }
   ],
   "task_history": [],
@@ -1699,47 +1753,17 @@
     }
   ],
   "error_patterns": {
-    "b55c038d": 7,
-    "f2d048e4": 33,
+    "b55c038d": 8,
+    "f2d048e4": 34,
     "d92babc3": 1
   },
   "success_patterns": {
     "e796b93c": 3,
-    "b55c038d": 6,
+    "b55c038d": 7,
     "d92babc3": 8,
-    "f2d048e4": 6
+    "f2d048e4": 7
   },
   "recent_decisions": [
-    {
-      "ts": "2026-06-16T23:37:44.123026+00:00",
-      "type": "large_file",
-      "description": "26 oversized files"
-    },
-    {
-      "ts": "2026-06-16T23:42:19.206993+00:00",
-      "type": "large_file",
-      "description": "26 oversized files"
-    },
-    {
-      "ts": "2026-06-16T23:48:34.421351+00:00",
-      "type": "missing_tests",
-      "description": "1 changed files lack tests"
-    },
-    {
-      "ts": "2026-06-16T23:48:34.421368+00:00",
-      "type": "large_file",
-      "description": "26 oversized files"
-    },
-    {
-      "ts": "2026-06-16T23:53:16.463343+00:00",
-      "type": "missing_tests",
-      "description": "15 changed files lack tests"
-    },
-    {
-      "ts": "2026-06-16T23:53:16.463463+00:00",
-      "type": "large_file",
-      "description": "26 oversized files"
-    },
     {
       "ts": "2026-06-16T23:56:11.814459+00:00",
       "type": "missing_tests",
@@ -1757,6 +1781,36 @@
     },
     {
       "ts": "2026-06-17T00:03:06.598589+00:00",
+      "type": "large_file",
+      "description": "26 oversized files"
+    },
+    {
+      "ts": "2026-06-17T00:07:26.861910+00:00",
+      "type": "missing_tests",
+      "description": "2 changed files lack tests"
+    },
+    {
+      "ts": "2026-06-17T00:07:26.861922+00:00",
+      "type": "large_file",
+      "description": "26 oversized files"
+    },
+    {
+      "ts": "2026-06-17T00:11:43.918171+00:00",
+      "type": "missing_tests",
+      "description": "2 changed files lack tests"
+    },
+    {
+      "ts": "2026-06-17T00:11:43.918295+00:00",
+      "type": "large_file",
+      "description": "26 oversized files"
+    },
+    {
+      "ts": "2026-06-17T00:16:07.308334+00:00",
+      "type": "missing_tests",
+      "description": "1 changed files lack tests"
+    },
+    {
+      "ts": "2026-06-17T00:16:07.308351+00:00",
       "type": "large_file",
       "description": "26 oversized files"
     }

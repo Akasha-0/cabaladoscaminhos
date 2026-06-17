@@ -7,6 +7,16 @@
 # Exit 0 = ambos OK. Exit 1 = problema.
 # Sem output = tudo funcionando.
 
+# Salva estado de -e antes do set -euo pipefail.
+# O script é sourced pelo .bashrc, então opções do shell vazariam
+# para o shell interativo, e qualquer comando com exit != 0 (ex: cd errado)
+# mataria o terminal.
+case "$-" in
+    *e*) __sacred_save_e=on  ;;
+    *)   __sacred_save_e=off ;;
+esac
+trap '[[ "$__sacred_save_e" == off ]] && set +e' RETURN
+
 set -euo pipefail
 
 PROXY_PORT="${HEADROOM_PROXY_PORT:-8787}"

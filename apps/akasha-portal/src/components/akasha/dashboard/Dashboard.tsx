@@ -207,9 +207,30 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
 
   if (isLoading && (!statsData || !synthesis || !detSintese)) {
     return (
-      <div className="min-h-screen bg-[#06070F] flex flex-col justify-center items-center">
-        <Loader className="animate-spin text-[#7C5CFF]" size={40} />
-        <p className="text-sm text-[#A7AECF] mt-4 font-cinzel tracking-widest">SINTONIZANDO SEU DIA...</p>
+      <div className="min-h-screen bg-[#06070F] flex flex-col justify-center items-center relative overflow-hidden">
+        {/* Animated cosmic background */}
+        <div aria-hidden className="absolute inset-0">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_30%,rgba(124,92,255,0.15)_0%,transparent_50%),radial-gradient(ellipse_at_80%_80%,rgba(45,212,191,0.08)_0%,transparent_40%)] animate-pulse" />
+          <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-[#7C5CFF]/10 rounded-full blur-3xl animate-[ping_2s_ease-in-out_infinite]" />
+          <div className="absolute bottom-1/3 right-1/4 w-48 h-48 bg-[#2DD4BF]/10 rounded-full blur-3xl animate-[ping_3s_ease-in-out_infinite_1s]" />
+        </div>
+        {/* Pulsing Akasha symbol */}
+        <div className="relative">
+          <div className="absolute inset-0 bg-[#7C5CFF]/20 rounded-full blur-xl animate-pulse" />
+          <div className="w-20 h-20 rounded-full border-2 border-[#7C5CFF]/40 flex items-center justify-center bg-[#0B0E1C]/80 backdrop-blur-sm shadow-[0_0_40px_rgba(124,92,255,0.3)]">
+            <Loader className="animate-spin text-[#9D86FF]" size={32} />
+          </div>
+        </div>
+        <div className="mt-8 text-center space-y-2 relative z-10">
+          <p className="text-lg font-bold font-cinzel text-white tracking-wider">✦ AKASHA</p>
+          <p className="text-sm text-[#A7AECF] font-cinzel tracking-widest animate-pulse">SINTONIZANDO SUA ENERGIA...</p>
+        </div>
+        {/* Orbiting dots */}
+        <div className="absolute w-64 h-64">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#7C5CFF] rounded-full animate-[spin_4s_linear_infinite]" />
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#2DD4BF] rounded-full animate-[spin_3s_linear_infinite_reverse]" />
+          <div className="absolute top-1/2 right-0 -translate-y-1/2 w-1 h-1 bg-[#F0B429] rounded-full animate-[spin_5s_linear_infinite]" />
+        </div>
       </div>
     );
   }
@@ -314,22 +335,48 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                 )}
               </div>
 
-              {/* Cosmic Vibe Grid */}
+              {/* Cosmic Vibe Grid - Premium Cosmic Cards */}
               <div className="grid grid-cols-3 gap-3">
-                <div className="bg-[#0B0E1C]/40 border border-white/5 rounded-2xl p-3 text-center">
-                  <div className="flex justify-center mb-1 text-[#2DD4BF]"><Cloud size={16} /></div>
-                  <p className="text-[10px] text-[#A7AECF]/60 uppercase tracking-widest font-mono">Clima do Dia</p>
-                  <p className="text-xs font-semibold mt-0.5 text-white truncate">{dailyData?.climate ?? 'Estável'}</p>
+                {/* Clima Card */}
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-b from-[#2DD4BF]/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="relative bg-[#0B0E1C]/60 border border-[#2DD4BF]/20 rounded-2xl p-3 text-center backdrop-blur-sm shadow-[inset_0_1px_0_rgba(45,212,191,0.1)]">
+                    <div className="flex justify-center mb-1">
+                      <div className="w-8 h-8 rounded-xl bg-[#2DD4BF]/10 flex items-center justify-center">
+                        <Cloud size={16} className="text-[#2DD4BF]" />
+                      </div>
+                    </div>
+                    <p className="text-[9px] text-[#2DD4BF]/80 uppercase tracking-widest font-mono font-semibold">Clima</p>
+                    <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.climate ?? 'Estável'}</p>
+                  </div>
                 </div>
-                <div className="bg-[#0B0E1C]/40 border border-white/5 rounded-2xl p-3 text-center">
-                  <div className="flex justify-center mb-1 text-[#F0B429]"><Moon size={16} /></div>
-                  <p className="text-[10px] text-[#A7AECF]/60 uppercase tracking-widest font-mono">Fase Lunar</p>
-                  <p className="text-xs font-semibold mt-0.5 text-white truncate">{dailyData?.moonPhase ?? 'Calculando'}</p>
+
+                {/* Lua Card */}
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-b from-[#F0B429]/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="relative bg-[#0B0E1C]/60 border border-[#F0B429]/20 rounded-2xl p-3 text-center backdrop-blur-sm shadow-[inset_0_1px_0_rgba(240,180,41,0.1)]">
+                    <div className="flex justify-center mb-1">
+                      <div className="w-8 h-8 rounded-xl bg-[#F0B429]/10 flex items-center justify-center">
+                        <Moon size={16} className="text-[#F0B429]" />
+                      </div>
+                    </div>
+                    <p className="text-[9px] text-[#F0B429]/80 uppercase tracking-widest font-mono font-semibold">Fase Lunar</p>
+                    <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.moonPhase ?? 'Calculando'}</p>
+                  </div>
                 </div>
-                <div className="bg-[#0B0E1C]/40 border border-white/5 rounded-2xl p-3 text-center">
-                  <div className="flex justify-center mb-1 text-[#7C5CFF]"><Sun size={16} /></div>
-                  <p className="text-[10px] text-[#A7AECF]/60 uppercase tracking-widest font-mono">Tema Geral</p>
-                  <p className="text-xs font-semibold mt-0.5 text-white truncate">{dailyData?.overallTheme ?? 'Foco'}</p>
+
+                {/* Tema Card */}
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-b from-[#7C5CFF]/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="relative bg-[#0B0E1C]/60 border border-[#7C5CFF]/20 rounded-2xl p-3 text-center backdrop-blur-sm shadow-[inset_0_1px_0_rgba(124,92,255,0.1)]">
+                    <div className="flex justify-center mb-1">
+                      <div className="w-8 h-8 rounded-xl bg-[#7C5CFF]/10 flex items-center justify-center">
+                        <Sun size={16} className="text-[#7C5CFF]" />
+                      </div>
+                    </div>
+                    <p className="text-[9px] text-[#7C5CFF]/80 uppercase tracking-widest font-mono font-semibold">Tema</p>
+                    <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.overallTheme ?? 'Foco'}</p>
+                  </div>
                 </div>
               </div>
 

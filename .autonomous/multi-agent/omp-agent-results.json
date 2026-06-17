@@ -1,3 +1,9 @@
 {
-  "results": []
+  "results": [
+    {
+      "success": true,
+      "message": "Added tests for 2 files: akasha-guard.test.ts (9 tests) and sync.test.ts (already existed with 4 tests)",
+      "type": "missing_tests"
+    }
+  ]
 }

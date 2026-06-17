@@ -3,20 +3,19 @@
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "2 changed files lack tests",
+      "description": "1 changed files lack tests",
       "files": [
-        "packages/core-iching/src/practices-cromoterapia.ts",
-        "packages/core-iching/src/practices-data.ts"
+        "apps/akasha-portal/src/lib/application/auth/akasha-guard.test.ts"
       ]
     },
     {
       "type": "large_file",
       "priority": 4,
-      "description": "27 oversized files",
+      "description": "26 oversized files",
       "files": [
         {
           "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
-          "lines": 827
+          "lines": 847
         },
         {
           "file": "apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts",
@@ -30,5 +29,5 @@
     }
   ],
   "agent_count": 2,
-  "iteration": 51
+  "iteration": 0
 }

@@ -1,7 +1,0 @@
-{
-  "agent_id": "9cf645be",
-  "type": "missing_tests",
-  "success": false,
-  "message": "Agent 9cf645be failed: API Error: The socket connection was closed unexpectedly. For more information, pass `verbose: true` in the second argument to fetch()\n",
-  "exit_code": 1
-}

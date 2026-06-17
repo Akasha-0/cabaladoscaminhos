@@ -1,7 +1,0 @@
-{
-  "agent_id": "ccc3d126",
-  "type": "large_file",
-  "success": false,
-  "message": "Agent ccc3d126 failed: API Error: The socket connection was closed unexpectedly. For more information, pass `verbose: true` in the second argument to fetch()\n",
-  "exit_code": 1
-}

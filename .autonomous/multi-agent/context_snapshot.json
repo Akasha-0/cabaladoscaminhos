@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-17T00:06:11.846981+00:00",
+  "generated_at": "2026-06-17T00:18:36.555819+00:00",
   "version": "0.13.1",
   "features": {
     "pending_features": [
@@ -1047,25 +1047,32 @@
       "- [~] **PLN-052[2]** — large_file | 26 oversized files",
       "- [~] **PLN-052[1]** — missing_tests | 1 changed files lack tests",
       "- [~] **PLN-052[2]** — large_file | 26 oversized files",
+      "- [~] **PLN-052[1]** — missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-052[2]** — large_file | 26 oversized files",
+      "- [~] **PLN-052[1]** — missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-052[2]** — large_file | 26 oversized files",
+      "- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-000[2]** -- large_file | 26 oversized files",
+      "- [~] **PLN-000[1]** -- missing_tests | 1 changed files lack tests",
+      "- [~] **PLN-000[2]** -- large_file | 26 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2",
       "- [~] **PLN-AE-003** — Ralph-loop continuous | QA cycling (v0.12.1)"
     ],
-    "pending_count": 1047
+    "pending_count": 1055
   },
   "git": {
-    "untracked": 7,
-    "modified": 48,
-    "total": 55,
+    "untracked": 4,
+    "modified": 19,
+    "total": 23,
     "has_changes": true
   },
   "triad": {
     "typecheck": {
       "pass": false,
       "errors": [
-        "apps/akasha-portal/src/lib/application/auth/akasha-guard.test.ts(26,59): error TS2345: Argument of type '{ id: string; email: string; name: string; }' is not assignable to parameter of type '{ id: string; email: string; emailVerified: boolean; passwordHash: string | null; name: string; locale: string; role: UserRole; birthDate: Date | null; birthTime: string | null; ... 10 more ...; updatedAt: Date; }'.",
-        "apps/akasha-portal/src/lib/application/auth/akasha-guard.test.ts(68,59): error TS2345: Argument of type '{ id: string; email: string; name: string; }' is not assignable to parameter of type '{ id: string; email: string; emailVerified: boolean; passwordHash: string | null; name: string; locale: string; role: UserRole; birthDate: Date | null; birthTime: string | null; ... 10 more ...; updatedAt: Date; }'.",
-        "apps/akasha-portal/src/lib/grimoire/sync.ts(16,46): error TS2304: Cannot find name 'SyncOptions'."
+        "apps/akasha-portal/src/lib/grimoire/sync.test.ts(95,49): error TS2345: Argument of type '{ ok: true; json: () => Promise<{ embedding: number[]; }>; }' is not assignable to parameter of type 'Response'.",
+        "apps/akasha-portal/src/lib/grimoire/sync.test.ts(151,49): error TS2345: Argument of type '{ ok: true; json: () => Promise<{ embedding: number[]; }>; }' is not assignable to parameter of type 'Response'."
       ]
     },
     "lint": {
@@ -1074,7 +1081,7 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1672,
+      "passed": 1679,
       "failed": 219
     }
   },
@@ -1086,11 +1093,10 @@
     {
       "type": "typecheck_errors",
       "priority": 9,
-      "description": "3 TypeScript errors",
+      "description": "2 TypeScript errors",
       "errors": [
-        "apps/akasha-portal/src/lib/application/auth/akasha-guard.test.ts(26,59): error TS2345: Argument of type '{ id: string; email: string; name: string; }' is not assignable to parameter of type '{ id: string; email: string; emailVerified: boolean; passwordHash: string | null; name: string; locale: string; role: UserRole; birthDate: Date | null; birthTime: string | null; ... 10 more ...; updatedAt: Date; }'.",
-        "apps/akasha-portal/src/lib/application/auth/akasha-guard.test.ts(68,59): error TS2345: Argument of type '{ id: string; email: string; name: string; }' is not assignable to parameter of type '{ id: string; email: string; emailVerified: boolean; passwordHash: string | null; name: string; locale: string; role: UserRole; birthDate: Date | null; birthTime: string | null; ... 10 more ...; updatedAt: Date; }'.",
-        "apps/akasha-portal/src/lib/grimoire/sync.ts(16,46): error TS2304: Cannot find name 'SyncOptions'."
+        "apps/akasha-portal/src/lib/grimoire/sync.test.ts(95,49): error TS2345: Argument of type '{ ok: true; json: () => Promise<{ embedding: number[]; }>; }' is not assignable to parameter of type 'Response'.",
+        "apps/akasha-portal/src/lib/grimoire/sync.test.ts(151,49): error TS2345: Argument of type '{ ok: true; json: () => Promise<{ embedding: number[]; }>; }' is not assignable to parameter of type 'Response'."
       ]
     },
     {
@@ -1109,7 +1115,7 @@
       "files": [
         {
           "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
-          "lines": 827
+          "lines": 847
         },
         {
           "file": "apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts",
@@ -1126,7 +1132,7 @@
       "priority": 6,
       "description": "1 changed files lack tests",
       "files": [
-        "tests/lib/grimoire/search.test.ts"
+        "apps/akasha-portal/src/lib/application/auth/akasha-guard.test.ts"
       ]
     },
     {
@@ -1137,7 +1143,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "9537ec149f9b4b4ebb59258d3f86128ee2354af5",
+  "git_head": "cecacb03dc6e2a262cb8d46532bda79988d96247",
   "decision_factors": {
     "has_pending_features": true
   }

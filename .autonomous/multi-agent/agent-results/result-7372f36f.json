@@ -1,7 +1,0 @@
-{
-  "agent_id": "7372f36f",
-  "type": "missing_tests",
-  "success": false,
-  "message": "Agent 7372f36f failed: API Error: Unable to connect to API (ConnectionRefused)\n",
-  "exit_code": 1
-}

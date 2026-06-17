@@ -5,7 +5,7 @@
       "priority": 6,
       "description": "1 changed files lack tests",
       "files": [
-        "tests/lib/grimoire/search.test.ts"
+        "apps/akasha-portal/src/lib/application/auth/akasha-guard.test.ts"
       ]
     },
     {
@@ -15,7 +15,7 @@
       "files": [
         {
           "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
-          "lines": 827
+          "lines": 847
         },
         {
           "file": "apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts",
@@ -28,5 +28,5 @@
       ]
     }
   ],
-  "iteration": 52
+  "iteration": 0
 }

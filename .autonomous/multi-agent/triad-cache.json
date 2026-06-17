@@ -3,9 +3,8 @@
     "typecheck": {
       "pass": false,
       "errors": [
-        "apps/akasha-portal/src/lib/application/auth/akasha-guard.test.ts(26,59): error TS2345: Argument of type '{ id: string; email: string; name: string; }' is not assignable to parameter of type '{ id: string; email: string; emailVerified: boolean; passwordHash: string | null; name: string; locale: string; role: UserRole; birthDate: Date | null; birthTime: string | null; ... 10 more ...; updatedAt: Date; }'.",
-        "apps/akasha-portal/src/lib/application/auth/akasha-guard.test.ts(68,59): error TS2345: Argument of type '{ id: string; email: string; name: string; }' is not assignable to parameter of type '{ id: string; email: string; emailVerified: boolean; passwordHash: string | null; name: string; locale: string; role: UserRole; birthDate: Date | null; birthTime: string | null; ... 10 more ...; updatedAt: Date; }'.",
-        "apps/akasha-portal/src/lib/grimoire/sync.ts(16,46): error TS2304: Cannot find name 'SyncOptions'."
+        "apps/akasha-portal/src/lib/grimoire/sync.test.ts(95,49): error TS2345: Argument of type '{ ok: true; json: () => Promise<{ embedding: number[]; }>; }' is not assignable to parameter of type 'Response'.",
+        "apps/akasha-portal/src/lib/grimoire/sync.test.ts(151,49): error TS2345: Argument of type '{ ok: true; json: () => Promise<{ embedding: number[]; }>; }' is not assignable to parameter of type 'Response'."
       ]
     },
     "lint": {
@@ -14,10 +13,10 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1672,
+      "passed": 1679,
       "failed": 219
     }
   },
-  "git_head": "9537ec149f9b4b4ebb59258d3f86128ee2354af5",
-  "cached_at": 1781654601.1839948
+  "git_head": "cecacb03dc6e2a262cb8d46532bda79988d96247",
+  "cached_at": 1781655609.633799
 }

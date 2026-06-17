@@ -1,29 +1,30 @@
 {
-  "all_ok": false,
-  "summary": "0/2 agents succeeded in 180.2s",
+  "all_ok": true,
+  "summary": "2/2 agents succeeded in 155.7s",
   "results": [
     {
-      "agent_id": "5ce2f00e",
-      "type": "large_file",
-      "success": false,
-      "message": "Agent 5ce2f00e failed: API Error: Unable to connect to API (ConnectionRefused)\n",
-      "exit_code": 1
+      "agent_id": "577970f6",
+      "type": "missing_tests",
+      "success": true,
+      "message": "Agent 577970f6 completed missing_tests",
+      "exit_code": 0
     },
     {
-      "agent_id": "2a427cf7",
-      "type": "missing_tests",
-      "success": false,
-      "message": "Agent 2a427cf7 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
-      "exit_code": 1
+      "agent_id": "381bfff0",
+      "type": "large_file",
+      "success": true,
+      "message": "Agent 381bfff0 completed large_file",
+      "exit_code": 0
     }
   ],
   "improvements": [
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "1 changed files lack tests",
+      "description": "2 changed files lack tests",
       "files": [
-        "tests/lib/grimoire/search.test.ts"
+        "apps/akasha-portal/src/lib/application/auth/akasha-guard.test.ts",
+        "apps/akasha-portal/src/lib/grimoire/sync.ts"
       ]
     },
     {
