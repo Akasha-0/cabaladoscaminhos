@@ -1,3 +1,15 @@
+## v0.83.6 (2026-06-17) — Refresh Token Rotation
+### Auth Security
+- feat(auth): refresh token rotation via `User.currentRefreshTokenJti`.
+  - Prisma: `User.currentRefreshTokenJti` field added — stores the jti of the current active refresh token.
+  - login: store refresh token jti in DB on login, immediately invalidating any previous token.
+  - refresh: verify incoming jti matches stored value before issuing new tokens.
+    If jti mismatch → 401 + clear session (possible token theft / replay attack).
+    On success, rotate stored jti to the new token's jti — old refresh token immediately invalid.
+  - Rotation is single-active: only the most recent token is valid at any time.
+- build: 49/49 pages · EXIT 0 · TypeScript 0 errors (akasha-portal)
+- tests: 1361 passed · 0 failed · 17 skipped
+
 ## v0.83.5 (2026-06-17) — Login Return URL Fix
 ### Auth
 - fix(login/route.ts): read `return` query param from searchParams, not decodeURIComponent wrapper (searchParams already decodes)
@@ -232,7 +244,7 @@
 - fix(mandala): MUTAÇÃO DO CAMINHO fontSize 5.5→8, fill 0.70→0.90
 - fix(mandala): KOSHA Sanskrit names translated to Portuguese (Anna-maya→Corpo Físico, etc.)
 - fix(tests): MandalaAtmosphere test — moved vi.mock before imports (ESM hoisting)
-- fix(tests): MandalaAtmosphere test — R3F canvas DOM query via data-frameloop attribute
+- fix(tests): MandalaAtmosphere test — R3F canvas DOM query via data-frameloast attribute
 - fix(tests): Dashboard Sparkles+Zap mock added to lucide-react mock
 - Build: ✓ Compiled 8.1s + 49/49 static pages
 - Tests: 1355 passed | 2 failed | 17 skipped (97 files)
