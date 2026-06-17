@@ -31,13 +31,6 @@ const C = {
   rosa: '#C43E8E',
 } as const;
 
-function saudacao(): string {
-  const hora = new Date().getHours();
-  if (hora < 5) return 'Boa madrugada';
-  if (hora < 12) return 'Bom dia';
-  if (hora < 18) return 'Boa tarde';
-  return 'Boa noite';
-}
 
 type ApiResponse = { pilares?: PilaresDados };
 
@@ -133,10 +126,27 @@ export default async function MinhaCaixaPage({
               const lp = pilares?.cabala?.life_path;
               const titulo = lp ? significadoPorPilar('cabala', lp)?.titulo : undefined;
               if (!titulo) return null;
-              let framing: string;
-              if (titulo === 'O Conquistador') framing = 'Isso se manifesta quando você busca resultados concretos e superações.';
-              else if (titulo === 'O Sábio') framing = 'Isso se manifesta quando você busca真相真相真相真相真相真相真相';
-              else framing = `Isso se manifesta quando você age desde ${titulo.toLowerCase()}.`;
+
+              // Mapeamento de títulos canônicos → frase de enquadramento
+              // Os títulos reais são: Pioneiro, Diplomata, Criador, Construtor,
+              // Libertador, Guardião, Buscador, Realizador, Humanista,
+              // Iluminador · Mestre, Construtor de Mundos · Mestre, Mestre Cósmico · Mestre
+              const ENQUADRAMENTO: Record<string, string> = {
+                Pioneiro:           'Isso se manifesta quando você busca criar algo onde não existe trilha.',
+                Diplomata:          'Isso se manifesta quando você busca unir o que está dividido.',
+                Criador:            'Isso se manifesta quando você expressa algo verdadeiro no mundo.',
+                Construtor:         'Isso se manifesta quando você ergue estruturas que duram.',
+                Libertador:         'Isso se manifesta quando você liberta a si mesmo ou a outros de algo preso.',
+                'Guardião':         'Isso se manifesta quando você cuida com amor sem esperar nada em troca.',
+                Buscador:           'Isso se manifesta quando você busca conhecimento e compreensão profunda.',
+                Realizador:         'Isso se manifesta quando você manifesta no mundo o que visionou.',
+                Humanista:          'Isso se manifesta quando você age pelo bem de todos, sem distinção.',
+                'Iluminador · Mestre':    'Isso se manifesta quando você age como canal entre o que vê e o que o mundo precisa.',
+                'Construtor de Mundos · Mestre': 'Isso se manifesta quando você transforma uma visão grandiosa em realidade concreta.',
+                'Mestre Cósmico · Mestre':   'Isso se manifesta quando você serve sem esperar reconhecimento.',
+              };
+              const framing = ENQUADRAMENTO[titulo] ?? `Isso se manifesta quando você age como ${titulo.toLowerCase()}.`;
+
               return (
                 <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', margin: '4px 0 0', lineHeight: 1.4 }}>
                   {framing}
@@ -182,7 +192,7 @@ export default async function MinhaCaixaPage({
         <nav aria-label="8 dimensões de vida" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {sintese.dimensoes
               .map((dim, i) => (
-                <DimensaoCard key={dim.dimensoesId} sintese={dim} index={i} />
+                <DimensaoCard key={dim.dimensoesId} sintese={dim} index={i} locale={locale} />
               ))}
           </nav>
         ) : (

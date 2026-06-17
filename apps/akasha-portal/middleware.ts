@@ -85,6 +85,21 @@ function getCookiesFromResponseHeaders(headers: Headers): { name: string; value:
   });
 }
 
+// Edge-Runtime-compatible JWT access token expiry check.
+// Decodes base64url payload WITHOUT verification — exp claim only.
+// Returns Unix timestamp or null if token absent/unparseable.
+function decodeAccessTokenExp(accessToken: string | undefined): number | null {
+  if (!accessToken) return null;
+  try {
+    const parts = accessToken.split('.');
+    if (parts.length !== 3) return null;
+    // atob() is available in Edge Runtime (not Buffer)
+    const payload = JSON.parse(atob(parts[1]));
+    return typeof payload.exp === 'number' ? payload.exp : null;
+  } catch {
+    return null;
+  }
+}
 async function authRefresh(request: NextRequest): Promise<{ name: string; value: string }[] | null> {
   try {
     // Build the internal request to the refresh endpoint.
@@ -249,19 +264,41 @@ export async function middleware(request: NextRequest) {
     });
   }
 
-  // Auth token refresh: prevent sessions from expiring after 15min.
-  // Calls /api/akasha/auth/refresh internally; sets new cookies on the response.
-  // Fixes UX bug: users were kicked to /onboarding after token expiry.
+  // Auth: proactive token refresh.
+  // Decodes access token exp WITHOUT verification (Edge Runtime — no crypto needed).
+  // If expired → refresh, set cookies, then redirect to same URL so browser
+  // sends the fresh cookies with the NEXT request, preventing RSC from reading
+  // an expired token and redirecting to /onboarding.
   if (shouldRefreshAuth(pathname)) {
-    const newCookies = await authRefresh(request);
-    if (newCookies) {
-      for (const cookie of newCookies) {
-        response.cookies.set(cookie.name, cookie.value, {
-          httpOnly: true,
-          sameSite: 'lax',
-          secure: process.env.NODE_ENV === 'production',
-          path: '/',
-        });
+    const accessToken = request.cookies.get(AKASHA_ACCESS_COOKIE)?.value;
+    const exp = decodeAccessTokenExp(accessToken);
+    const now = Math.floor(Date.now() / 1000);
+
+    if (exp === null || exp <= now) {
+      // Token missing, malformed, or expired — attempt refresh
+      const newCookies = await authRefresh(request);
+      if (newCookies) {
+        // Set cookies on current response so browser stores them for next request
+        for (const cookie of newCookies) {
+          response.cookies.set(cookie.name, cookie.value, {
+            httpOnly: true,
+            sameSite: 'lax',
+            secure: process.env.NODE_ENV === 'production',
+            path: '/',
+          });
+        }
+        // If token was expired (not just missing), do a single 303 redirect
+        // so the browser re-requests with the new cookies.
+        if (exp !== null) {
+          const redirectUrl = request.nextUrl.clone();
+          return NextResponse.redirect(redirectUrl, 303);
+        }
+      } else if (exp !== null) {
+        // Refresh failed but we had an expired token — send to login (NOT onboarding)
+        const loginUrl = request.nextUrl.clone();
+        loginUrl.pathname = `/${locale}/login`;
+        loginUrl.search = `?return=${encodeURIComponent(request.nextUrl.pathname + request.nextUrl.search)}`;
+        return NextResponse.redirect(loginUrl, 303);
       }
     }
   }

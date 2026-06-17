@@ -200,6 +200,7 @@ export function deriveVitalidadeEnergia(
   tantra: TantricMap | null,
   odu: OduBirth | null,
   holo: AkashicHologram,
+  _synthesizedProfile: import('@akasha/core').SynthesizedProfile | undefined,
   date: Date = new Date()
 ): AreaNarrative {
   const cabalaStr = kab?.lifePath
@@ -218,9 +219,9 @@ export function deriveVitalidadeEnergia(
     ? `O planeta ${astro.dominantPlanet} domina seu mapa astral, indicando que sua energia vital é condicionada pela forma como você se expressa em ${astro.dominantPlanet.toLowerCase()}.`
     : '';
 
-  const shadowSymptoms = buildShadowSymptoms(astro, kab, tantra, odu, 'vitalidade');
+  const shadowSymptoms = buildShadowSymptoms(astro, kab, tantra, odu, _synthesizedProfile, 'vitalidade');
+  const giftStrengths = buildGiftStrengths(astro, kab, tantra, odu, _synthesizedProfile, 'vitalidade');
   const shadowPattern = buildShadowPattern(astro, kab, tantra, odu, 'vitalidade');
-  const giftStrengths = buildGiftStrengths(astro, kab, tantra, odu, 'vitalidade');
   const giftPattern = buildGiftPattern(astro, kab, tantra, odu, 'vitalidade');
   const { frequency, intensity } = assessAreaFrequency(astro, kab, tantra, odu, 'vitalidade');
   const dailyRitual = buildAreaRitual(astro, kab, tantra, odu, 'vitalidade', holo);
@@ -258,13 +259,13 @@ export function deriveVitalidadeEnergia(
 }
 
 // ─── Conexões & Amor ───────────────────────────────────────────────────────
-
 export function deriveConexoesAmor(
   astro: AstrologyMap | null,
   kab: KabalisticMap | null,
   tantra: TantricMap | null,
   odu: OduBirth | null,
   holo: AkashicHologram,
+  _synthesizedProfile: import('@akasha/core').SynthesizedProfile | undefined,
   date: Date
 ): AreaNarrative {
   const data = holo.conexoesAmor.keyData;
@@ -291,10 +292,9 @@ export function deriveConexoesAmor(
   const motivationStr = kab?.motivation
     ? `Seu Número de Motivação Cabalístico ${kab.motivation} mostra que o que você busca inconscientemente em relações é: ${getKabalisticMotivationRel(kab.motivation)}.`
     : '';
-
-  const shadowSymptoms = buildShadowSymptoms(astro, kab, tantra, odu, 'conexoes');
+  const shadowSymptoms = buildShadowSymptoms(astro, kab, tantra, odu, _synthesizedProfile, 'conexoes');
   const shadowPattern = buildShadowPattern(astro, kab, tantra, odu, 'conexoes');
-  const giftStrengths = buildGiftStrengths(astro, kab, tantra, odu, 'conexoes');
+  const giftStrengths = buildGiftStrengths(astro, kab, tantra, odu, _synthesizedProfile, 'conexoes');
   const giftPattern = buildGiftPattern(astro, kab, tantra, odu, 'conexoes');
   const { frequency, intensity } = assessAreaFrequency(astro, kab, tantra, odu, 'conexoes');
   const dailyRitual = buildAreaRitual(astro, kab, tantra, odu, 'conexoes', holo);
@@ -337,6 +337,7 @@ export function deriveCarreiraProsperidade(
   tantra: TantricMap | null,
   odu: OduBirth | null,
   holo: AkashicHologram,
+  _synthesizedProfile: import('@akasha/core').SynthesizedProfile | undefined,
   date: Date
 ): AreaNarrative {
   const data = holo.carreiraProsperidade.keyData;
@@ -362,10 +363,9 @@ export function deriveCarreiraProsperidade(
   const divineGiftStr = tantra?.divineGift
     ? `Seu Dom Divino Tântrico ${tantra.divineGift} indica que você tem um talento inato para ${getTantricDivineGift(tantra.divineGift)} — isso é o que você pode oferecer ao mundo com facilidade e alegria.`
     : '';
-
-  const shadowSymptoms = buildShadowSymptoms(astro, kab, tantra, odu, 'carreira');
+  const shadowSymptoms = buildShadowSymptoms(astro, kab, tantra, odu, _synthesizedProfile, 'carreira');
   const shadowPattern = buildShadowPattern(astro, kab, tantra, odu, 'carreira');
-  const giftStrengths = buildGiftStrengths(astro, kab, tantra, odu, 'carreira');
+  const giftStrengths = buildGiftStrengths(astro, kab, tantra, odu, _synthesizedProfile, 'carreira');
   const giftPattern = buildGiftPattern(astro, kab, tantra, odu, 'carreira');
   const { frequency, intensity } = assessAreaFrequency(astro, kab, tantra, odu, 'carreira');
   const dailyRitual = buildAreaRitual(astro, kab, tantra, odu, 'carreira', holo);
@@ -408,6 +408,7 @@ export function deriveOriCabecaQuizilas(
   tantra: TantricMap | null,
   odu: OduBirth | null,
   holo: AkashicHologram,
+  _synthesizedProfile: import('@akasha/core').SynthesizedProfile | undefined,
   date: Date
 ): AreaNarrative {
   const oduStr = odu?.oduName && odu?.oduNumber
@@ -422,9 +423,9 @@ export function deriveOriCabecaQuizilas(
     ? `Seu Destino Tântrico indica que você veio ao mundo para ${tantra.destiny}.`
     : '';
 
-  const shadowSymptoms = buildShadowSymptoms(astro, kab, tantra, odu, 'ori');
+  const shadowSymptoms = buildShadowSymptoms(astro, kab, tantra, odu, _synthesizedProfile, 'ori');
   const shadowPattern = buildShadowPattern(astro, kab, tantra, odu, 'ori');
-  const giftStrengths = buildGiftStrengths(astro, kab, tantra, odu, 'ori');
+  const giftStrengths = buildGiftStrengths(astro, kab, tantra, odu, _synthesizedProfile, 'ori');
   const giftPattern = buildGiftPattern(astro, kab, tantra, odu, 'ori');
   const { frequency, intensity } = assessAreaFrequency(astro, kab, tantra, odu, 'ori');
   const dailyRitual = buildAreaRitual(astro, kab, tantra, odu, 'ori', holo);
@@ -487,9 +488,9 @@ export function deriveMissaoDestino(
     ? `Seu destino é: ${tantra.destiny}.`
     : '';
 
-  const shadowSymptoms = buildShadowSymptoms(astro, kab, tantra, odu, 'missao');
+  const shadowSymptoms = buildShadowSymptoms(astro, kab, tantra, odu, _synthesizedProfile, 'missao');
   const shadowPattern = buildShadowPattern(astro, kab, tantra, odu, 'missao');
-  const giftStrengths = buildGiftStrengths(astro, kab, tantra, odu, 'missao');
+  const giftStrengths = buildGiftStrengths(astro, kab, tantra, odu, _synthesizedProfile, 'missao');
   const giftPattern = buildGiftPattern(astro, kab, tantra, odu, 'missao');
   const { frequency, intensity } = assessAreaFrequency(astro, kab, tantra, odu, 'missao');
   const dailyRitual = buildAreaRitual(astro, kab, tantra, odu, 'missao', holo);
@@ -534,9 +535,9 @@ export function deriveDesafiosSombras(
   _synthesizedProfile: import('@akasha/core').SynthesizedProfile | undefined,
   date: Date
 ): AreaNarrative {
-  const shadowSymptoms = buildShadowSymptoms(astro, kab, tantra, odu, 'desafios');
+  const shadowSymptoms = buildShadowSymptoms(astro, kab, tantra, odu, _synthesizedProfile, 'desafios');
   const shadowPattern = buildShadowPattern(astro, kab, tantra, odu, 'desafios');
-  const giftStrengths = buildGiftStrengths(astro, kab, tantra, odu, 'desafios');
+  const giftStrengths = buildGiftStrengths(astro, kab, tantra, odu, _synthesizedProfile, 'desafios');
   const giftPattern = buildGiftPattern(astro, kab, tantra, odu, 'desafios');
   const { frequency, intensity } = assessAreaFrequency(astro, kab, tantra, odu, 'desafios');
   const dailyRitual = buildAreaRitual(astro, kab, tantra, odu, 'desafios', holo);

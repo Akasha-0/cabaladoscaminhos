@@ -11,6 +11,8 @@ import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/
 import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
 import type { AreaNarrative } from './synthesis-types';
 
+import type { SynthesizedProfile } from '@akasha/core';
+
 // ─── Shadow ────────────────────────────────────────────────────────────────
 
 export function buildShadowSymptoms(
@@ -18,9 +20,21 @@ export function buildShadowSymptoms(
   kab: KabalisticMap | null,
   _tantra: TantricMap | null,
   odu: OduBirth | null,
+  _synthesizedProfile: SynthesizedProfile | undefined,
   _area: string
 ): string[] {
   const symptoms: string[] = [];
+
+  // Enrichment: top-2 sombra primitives from synthesizePrimitives
+  if (_synthesizedProfile?.primitivos) {
+    const sombras = _synthesizedProfile.primitivos
+      .filter(p => p.polaridade === 'sombra')
+      .sort((a, b) => b.magnitude - a.magnitude)
+      .slice(0, 2);
+    for (const s of sombras) {
+      symptoms.push(`Primitivo sombra: ${s.primitivo} (magnitude ${s.magnitude.toFixed(1)})`);
+    }
+  }
 
   if (kab?.karmicDebts?.length) {
     symptoms.push(`Dívida kármica ${kab.karmicDebts.join(', ')}`);
@@ -75,9 +89,21 @@ export function buildGiftStrengths(
   kab: KabalisticMap | null,
   tantra: TantricMap | null,
   odu: OduBirth | null,
+  _synthesizedProfile: SynthesizedProfile | undefined,
   _area: string
 ): string[] {
   const strengths: string[] = [];
+
+  // Enrichment: top-2 luz primitives from synthesizePrimitives
+  if (_synthesizedProfile?.primitivos) {
+    const luzes = _synthesizedProfile.primitivos
+      .filter(p => p.polaridade === 'luz')
+      .sort((a, b) => b.magnitude - a.magnitude)
+      .slice(0, 2);
+    for (const l of luzes) {
+      strengths.push(`Primitivo luz: ${l.primitivo} (magnitude ${l.magnitude.toFixed(1)})`);
+    }
+  }
 
   if (kab?.lifePathMaster) {
     strengths.push('Número mestre — você tem acesso a capacidades acima da média');

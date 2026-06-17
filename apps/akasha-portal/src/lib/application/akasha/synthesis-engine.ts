@@ -141,19 +141,19 @@ function buildFallbackArea(area: string): AreaNarrative {
 function toPilarIChing(holo: AkashicHologram | null): PilarIChing | null {
   if (!holo || holo.ichingHex == null) return null;
   return {
-    hex: holo.ichingHex,
-    trigrama: (['0','1','2','3','4','5','6','7'][Math.floor(holo.ichingHex / 8)] ?? '0') as PilarIChing['trigrama'],
-    linhaMutavel: holo.ichingHex % 8,
+    hexagrama_natal: holo.ichingHex,
+    hexagrama_dia: holo.ichingHex,
+    level: 'gift' as const,
   };
 }
 
 function toPilarCabala(kab: KabalisticMap | null): PilarCabala | null {
   if (!kab) return null;
   return {
-    life_path: kab.lifePath,
-    birthday: (kab.lifePath % 9) || 1,
-    expression: kab.expression ?? kab.lifePath,
-    ano_pessoal: kab.lifePath,
+    life_path: kab.lifePath ?? 1,
+    birthday: (kab.lifePath != null ? kab.lifePath % 9 : 0) || 1,
+    expression: kab.expression ?? kab.lifePath ?? 1,
+    ano_pessoal: kab.lifePath ?? 1,
   };
 }
 
@@ -179,22 +179,24 @@ function toPilarAstrologia(astro: AstrologyMap | null): PilarAstrologia | null {
 
 function toPilarTantrica(tantra: TantricMap | null): PilarTantrica | null {
   if (!tantra) return null;
+  const corpo = tantra.soul ?? 1;
+  const trigemeo: PilarTantrica['trigemeo'] =
+    corpo <= 4 ? 'fisico' : corpo <= 8 ? 'astral' : 'mental';
   return {
-    numero_alma: tantra.soul ?? 1,
-    corpos: tantra.bodies ? {
-      fisico: tantra.bodies.fisico ? { numero: tantra.bodies.fisico.number, elemento: 'terra' } : null,
-      emocional: tantra.bodies.emocional ? { numero: tantra.bodies.emocional.number, elemento: 'agua' } : null,
-      mental: tantra.bodies.mental ? { numero: tantra.bodies.mental.number, elemento: 'ar' } : null,
-      espiritual: tantra.bodies.espiritual ? { numero: tantra.bodies.espiritual.number, elemento: 'fogo' } : null,
-    } : null,
+    corpo_predominante: corpo,
+    trigemeo,
+    ciclo_anos: 7,
+    temperamento_atual: 'sanguineo' as const,
   };
 }
 
 function toPilarOdu(odu: OduBirth | null): PilarOdu | null {
   if (!odu) return null;
   return {
-    odu: odu.oduName ?? 'desconhecido',
-    omolari: odu.principalOmolari ?? 'desconhecido',
+    odu_principal: odu.oduName ?? 'desconhecido',
+    odu_secundario: null,
+    fonte: 'Ifá' as const,
+    aviso: 'requer consentimento + terreiro' as const,
   };
 }
 
@@ -214,19 +216,18 @@ export function buildAkashaSynthesis(
   hologram: AkashicHologram,
   date: Date = new Date()
 ): AkashaSynthesis {
-  // ─── synthesizePrimitives integration ─────────────────────────────────────
   let _synthesizedProfile: SynthesizedProfile | undefined;
   try {
+  // === synthesizePrimitives integration ====================================
     const perfil = synthesizePrimitives({
-      iching: toPilarIChing(hologram) ?? { hex: 1, trigrama: '0' as const, linhaMutavel: 0 },
+      iching: toPilarIChing(hologram) ?? { hexagrama_natal: 1, hexagrama_dia: 1, level: 'gift' as const },
       cabala: toPilarCabala(kabalisticMap) ?? { life_path: 1, birthday: 1, expression: 1, ano_pessoal: 1 },
       astrologia: toPilarAstrologia(astrologyMap) ?? { sol_signo: 'desconhecido', asc_signo: null, lua_signo: 'desconhecido', lua_fase: 'cheia', hora_desconhecida: true, trinity: { sombra: 0, dom: 0, graca: 0 }, trinity_dominante: 'dom' as const, lilith_signo: null, casa_8_signo: null },
-      tantrica: toPilarTantrica(tantricMap) ?? { numero_alma: 1, corpos: null },
-      odu: toPilarOdu(oduBirth) ?? { odu: 'desconhecido', omolari: 'desconhecido' },
+      tantrica: toPilarTantrica(tantricMap) ?? { corpo_predominante: 1, trigemeo: 'fisico' as const, ciclo_anos: 7, temperamento_atual: 'sanguineo' as const },
+      odu: toPilarOdu(oduBirth) ?? { odu_principal: 'desconhecido', odu_secundario: null, fonte: 'Ifá' as const, aviso: 'requer consentimento + terreiro' as const },
     });
     _synthesizedProfile = perfil;
-  } catch {
-    // synthesizePrimitives unavailable or failed — fall back to map-based synthesis
+  } catch (_err) {
   }
 
   try {

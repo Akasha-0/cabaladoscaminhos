@@ -58,11 +58,16 @@ function renderNarrative(text: string): React.ReactNode[] {
 
 // ─── Componente ────────────────────────────────────────────────────────────
 
-export function DimensaoCard({ sintese, index }: DimensaoCardProps) {
+export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProps) {
   const [aberto, setAberto] = useState(false);
 
   const dimensao = DIMENSAO_POR_ID[sintese.dimensoesId];
-
+  const HINT: Record<string, string> = {
+    pt: 'Toque para ver mais',
+    en: 'Tap to see more',
+    es: 'Toca para ver más',
+  };
+  const hintTexto = locale in HINT ? HINT[locale] : HINT.pt;
   return (
     <article
       onClick={() => setAberto((v) => !v)}
@@ -108,7 +113,7 @@ export function DimensaoCard({ sintese, index }: DimensaoCardProps) {
           </h3>
           {sintese.descricao && (
             <p style={{ fontSize: '0.78rem', color: 'rgba(232,224,255,0.5)', margin: '3px 0 0', lineHeight: 1.3 }}>
-              {sintese.descricao}
+              {sintese.descricao}{!aberto && <span style={{ color: 'rgba(124,92,255,0.5)' }}> · {hintTexto}</span>}
             </p>
           )}
         </div>

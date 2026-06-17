@@ -1,4 +1,24 @@
-## v0.81.5 (2026-06-17) — UX + QA consolidation — 50+ fixes
+## v0.82.0 (2026-06-17) — UX Round 14 — Meaning + WCAG + Accessibility
+- fix(akasha): saudacao() dead code removed; garbled archetype framing ("O Sábio") fixed; grammar fix ("desde"→"como")
+- fix(akasha): DimensaoCard accordion — "Toque para ver mais" hint; aria-label open/close; paragraph repetition eliminated via skipFirst
+- fix(dashboard): redundant "Prioridade" badge removed; "Regra Prática" arrow prefixed with "Quando" label
+- fix(dashboard): "Explorar →" styled as pill button with clear pressable affordance
+- fix(diario): stubBadge "via pilar" removed (decorative attribution was misleading)
+- fix(diario): screen counter ✗04→✓04 (unicode escape was rendering as literal "05")
+- fix(diario): intenção section structured with label + behavioral subtitle
+- fix(conexoes): scores now show "%" (romantic + partnership)
+- fix(conexoes): emoji 💾 replaced with Lucide Bookmark icon
+- fix(conexoes): Date.now() replaced with crypto.randomUUID() for saved connection IDs
+- fix(conexoes): ConexoesClient duplicate imports cleaned + span vs fragment JSX fix
+- fix(mandala): C1 empty state — aria-label + visible "CAMADA X — LABEL" legend per layer
+- fix(mandala): all SVG font sizes raised to WCAG AA (house 6→10px, orixá 5.5→8, MOVIMENTO 7→9, MUTAÇÃO 5.5→8, Layer 5 label 5.5→10)
+- fix(mandala): MandalaNarrative emoji type icons → Lucide icons (Zap/Waves/Building/Flame/Shield/Heart/Radio/FlaskConical/Building2)
+- fix(oraculo): character count indicator (input.length / 200) added above textarea
+- fix(dimensaocard): section labels fontSize 0.72→0.75rem (WCAG AA)
+- fix(middleware): Buffer.from() replaced with atob() for Edge Runtime compatibility
+- build: ✓ Compiled 8.3s + 49/49 static pages
+
+
 - fix(auth): AKASHA_ACCESS_TTL_SECONDS 15min→4h (fixes silent session expiry redirect to /onboarding)
 - fix(synthesis): derive-area-narratives.ts — restored from v0.81.3 (removes 6-param TDZ bug)
 - fix(synthesis): synthesis-types.ts, area-builders.ts, synthesis-engine.ts, area-builders.test.ts — restored from v0.81.3

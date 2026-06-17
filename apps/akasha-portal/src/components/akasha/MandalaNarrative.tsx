@@ -17,6 +17,7 @@ import Link from 'next/link';
 import {
   Zap, Heart, TrendingUp, Brain, Sparkles, AlertTriangle,
   ChevronDown, ArrowRight, Star, CheckCircle2, XCircle,
+  Waves, Building, Flame, Shield, Radio, FlaskConical, Building2,
 } from 'lucide-react';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -80,10 +81,10 @@ const TYPE_COLORS: Record<string, string> = {
   transformador: '#BF5AF2', guardiao: '#64D2FF', curador: '#FF375F',
   canal: '#FFD60A', alquimista: '#AC8E68', arquiteto: '#8E8E93',
 };
-const TYPE_ICONS: Record<string, string> = {
-  catalisador: '⚡', receptor: '🌊', construtor: '🏗️',
-  transformador: '🔥', guardiao: '🛡️', curador: '💖',
-  canal: '📡', alquimista: '⚗️', arquiteto: '🏛️',
+const TYPE_ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: string; style?: React.CSSProperties }>> = {
+  catalisador: Zap, receptor: Waves, construtor: Building,
+  transformador: Flame, guardiao: Shield, curador: Heart,
+  canal: Radio, alquimista: FlaskConical, arquiteto: Building2,
 };
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
@@ -207,8 +208,7 @@ export function MandalaNarrative({ synthesis, loading }: MandalaNarrativeProps) 
 
   const { oneProfile, areas, synthesisParagraph } = synthesis;
   const accentColor = TYPE_COLORS[oneProfile.typeName.toLowerCase().replace(' ', '')] ?? '#FF9500';
-  const typeIcon = TYPE_ICONS[oneProfile.typeName.toLowerCase().replace(' ', '')] ?? '✨';
-
+  const TypeIcon = TYPE_ICON_MAP[oneProfile.typeName.toLowerCase().replace(' ', '')] ?? Sparkles;
   return (
     <div className="space-y-5">
       {/* ── ONE PROFILE HERO ── */}
@@ -226,8 +226,10 @@ export function MandalaNarrative({ synthesis, loading }: MandalaNarrativeProps) 
         >
           {/* Type + icon */}
           <div className="flex items-start gap-4 mb-5">
-            <span className="text-6xl leading-none">{typeIcon}</span>
-            <div className="flex-1">
+            <span className="flex items-center justify-center w-16 h-16 rounded-2xl shrink-0" style={{ background: `${accentColor}20`, color: accentColor }}>
+              <TypeIcon size={36} />
+            </span>
+            <div className="flex-1 min-w-0">
               <p className="text-xs text-white/40 uppercase tracking-widest font-medium mb-1">Seu Tipo Akasha</p>
               <h2 className="text-2xl font-bold text-white leading-tight">{oneProfile.typeName}</h2>
               <p className="text-sm text-white/60 mt-1 italic">{oneProfile.corePattern}</p>

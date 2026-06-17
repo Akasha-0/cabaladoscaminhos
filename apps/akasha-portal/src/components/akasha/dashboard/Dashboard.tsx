@@ -518,17 +518,23 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                     {detSintese.autoridade.explicacao}
                   </p>
 
-                  <div className="bg-black/25 rounded-xl p-3.5 space-y-1">
+                  <div className="bg-black/25 rounded-xl p-3.5 space-y-2.5">
                     <p 
                       className="text-[11px] uppercase tracking-wider font-mono font-semibold"
                       style={{ color: ESTRATEGIA_COLOR[detSintese.autoridade.estrategia] }}
                     >
                       Regra Prática de Alinhamento
                     </p>
-                    <p className="text-[10px] text-white/40 uppercase tracking-wider font-mono mb-1">Quando</p>
-                    <p className="text-xs text-white leading-relaxed font-medium">
-                      {detSintese.autoridade.regra.condicao} → <span className="text-[#9D86FF]">{detSintese.autoridade.regra.accao}</span>
-                    </p>
+                    <div className="grid grid-cols-[auto_1fr] gap-x-2 gap-y-1.5 items-start">
+                      <span className="text-[10px] text-white/40 uppercase tracking-wider font-mono mt-px">Quando</span>
+                      <p className="text-xs text-white/85 leading-relaxed">
+                        {detSintese.autoridade.regra.condicao}
+                      </p>
+                      <span className="text-[10px] text-[#9D86FF] uppercase tracking-wider font-mono mt-px">Então</span>
+                      <p className="text-xs text-[#9D86FF] leading-relaxed font-medium">
+                        {detSintese.autoridade.regra.accao}
+                      </p>
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-3 text-xs pt-1 border-t border-white/5">
@@ -580,6 +586,9 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                       <h3 className="text-md font-bold font-cinzel text-white leading-none mt-1">{dimFoco?.titulo}</h3>
                     </div>
                   </div>
+                  <span className="shrink-0 px-2 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider bg-[#F0B429] text-[#06070F] shadow-[0_0_8px_rgba(240,180,41,0.4)]">
+                    Foco
+                  </span>
                 </div>
 
                 <div className="relative" style={{ maxHeight: dimFocoExpanded ? 'none' : '4.5em', overflow: 'hidden' }}>
@@ -741,6 +750,9 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                           <span className="text-[11px] font-bold text-white leading-tight">
                             {dim.titulo.split(' & ')[0]}
                           </span>
+                          {dim.descricao && (
+                            <span className="text-[9px] text-white/30 leading-tight px-1">{dim.descricao.split('.')[0]}.</span>
+                          )}
                           <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-[#7C5CFF]/10 border border-[#7C5CFF]/20 text-[10px] text-[#9D86FF] group-hover:bg-[#7C5CFF]/20 group-hover:border-[#7C5CFF]/40 transition-all">
                             Explorar <span>→</span>
                           </span>

@@ -90,21 +90,21 @@ function makeHolo(overrides: Partial<AkashicHologram> = {}): AkashicHologram {
 
 describe('buildShadowSymptoms', () => {
   it('retorna fallback quando todos os pilares são null', () => {
-    const result = buildShadowSymptoms(null, null, null, null, 'vitalidadeEnergia');
+    const result = buildShadowSymptoms(null, null, null, null, undefined, 'vitalidadeEnergia');
     expect(result).toHaveLength(1);
     expect(result[0]).toMatch(/sombra|não identificado|autocompaixão/i);
   });
 
   it('inclui dívidas kármicas quando kab.karmicDebts está presente', () => {
     const kab = makeKab({ karmicDebts: [4, 13] });
-    const result = buildShadowSymptoms(null, kab, null, null, 'vitalidadeEnergia');
+    const result = buildShadowSymptoms(null, kab, null, null, undefined, 'vitalidadeEnergia');
     expect(result.some((s) => s.includes('Dívida kármica'))).toBe(true);
     expect(result.some((s) => s.includes('4') && s.includes('13'))).toBe(true);
   });
 
   it('inclui desafio principal quando kab.challenges.first é definido', () => {
     const kab = makeKab({ challenges: { first: 5, second: 2, main: 7, last: 3 } });
-    const result = buildShadowSymptoms(null, kab, null, null, 'vitalidadeEnergia');
+    const result = buildShadowSymptoms(null, kab, null, null, undefined, 'vitalidadeEnergia');
     expect(result.some((s) => s.includes('Desafio principal') && s.includes('5'))).toBe(true);
   });
 
@@ -112,7 +112,7 @@ describe('buildShadowSymptoms', () => {
     const astro = makeAstro({
       planets: [{ planet: 'Saturn', sign: 'Capricórnio', degree: 10, house: 10 }],
     });
-    const result = buildShadowSymptoms(astro, null, null, null, 'vitalidadeEnergia');
+    const result = buildShadowSymptoms(astro, null, null, null, undefined, 'vitalidadeEnergia');
     expect(result.some((s) => s.includes('Saturno') && s.includes('Capricórnio'))).toBe(true);
   });
 
@@ -120,7 +120,7 @@ describe('buildShadowSymptoms', () => {
     const astro = makeAstro({
       planets: [{ planet: 'Saturno', sign: 'Aquário', degree: 5, house: 11 }],
     });
-    const result = buildShadowSymptoms(astro, null, null, null, 'vitalidadeEnergia');
+    const result = buildShadowSymptoms(astro, null, null, null, undefined, 'vitalidadeEnergia');
     expect(result.some((s) => s.includes('Saturno'))).toBe(true);
   });
 
@@ -128,13 +128,13 @@ describe('buildShadowSymptoms', () => {
     const astro = makeAstro({
       planets: [{ planet: 'Pluto', sign: 'Escorpião', degree: 22, house: 8 }],
     });
-    const result = buildShadowSymptoms(astro, null, null, null, 'vitalidadeEnergia');
+    const result = buildShadowSymptoms(astro, null, null, null, undefined, 'vitalidadeEnergia');
     expect(result.some((s) => s.includes('Plutão') && s.includes('Escorpião'))).toBe(true);
   });
 
   it('inclui proibições do Odu', () => {
     const odu = makeOdu({ prohibitions: ['comida com sal', 'cores escuras'] });
-    const result = buildShadowSymptoms(null, null, null, odu, 'oriCabecaQuizilas');
+    const result = buildShadowSymptoms(null, null, null, odu, undefined, 'oriCabecaQuizilas');
     expect(result.some((s) => s.includes('Proibições') && s.includes('comida com sal'))).toBe(true);
   });
 
@@ -147,7 +147,7 @@ describe('buildShadowSymptoms', () => {
     });
     const kab = makeKab({ karmicDebts: [13] });
     const odu = makeOdu({ prohibitions: ['algo'] });
-    const result = buildShadowSymptoms(astro, kab, null, odu, 'vitalidadeEnergia');
+    const result = buildShadowSymptoms(astro, kab, null, odu, undefined, 'vitalidadeEnergia');
     expect(result.length).toBeGreaterThanOrEqual(4);
   });
 });
@@ -196,45 +196,45 @@ describe('buildShadowPattern', () => {
 
 describe('buildGiftStrengths', () => {
   it('retorna fallback quando todos os pilares são null', () => {
-    const result = buildGiftStrengths(null, null, null, null, 'vitalidade');
+    const result = buildGiftStrengths(null, null, null, null, undefined, 'vitalidade');
     expect(result).toHaveLength(1);
     expect(result[0]).toMatch(/Dom|dom|presente|propósito/i);
   });
 
   it('marca como Número Mestre quando lifePathMaster é true', () => {
     const kab = makeKab({ lifePathMaster: true });
-    const result = buildGiftStrengths(null, kab, null, null, 'vitalidade');
+    const result = buildGiftStrengths(null, kab, null, null, undefined, 'vitalidade');
     expect(result.some((s) => s.toLowerCase().includes('mestre'))).toBe(true);
   });
 
   it('marca como Alma 1 quando tantra.soul === 1', () => {
     const tantra = makeTantra({ soul: 1 });
-    const result = buildGiftStrengths(null, null, tantra, null, 'vitalidade');
+    const result = buildGiftStrengths(null, null, tantra, null, undefined, 'vitalidade');
     expect(result.some((s) => s.toLowerCase().includes('alma'))).toBe(true);
   });
 
   it('não marca como Alma 1 quando tantra.soul !== 1', () => {
     const tantra = makeTantra({ soul: 5 });
-    const result = buildGiftStrengths(null, null, tantra, null, 'vitalidade');
+    const result = buildGiftStrengths(null, null, tantra, null, undefined, 'vitalidade');
     expect(result.some((s) => s.toLowerCase().includes('alma em número 1'))).toBe(false);
   });
 
   it('marca expressão impactante quando expression > 5', () => {
     const kab = makeKab({ expression: 7 });
-    const result = buildGiftStrengths(null, kab, null, null, 'vitalidade');
+    const result = buildGiftStrengths(null, kab, null, null, undefined, 'vitalidade');
     expect(result.some((s) => s.toLowerCase().includes('expressão'))).toBe(true);
     expect(result.some((s) => s.includes('7'))).toBe(true);
   });
 
   it('NÃO marca expressão impactante quando expression <= 5', () => {
     const kab = makeKab({ expression: 5 });
-    const result = buildGiftStrengths(null, kab, null, null, 'vitalidade');
+    const result = buildGiftStrengths(null, kab, null, null, undefined, 'vitalidade');
     expect(result.some((s) => s.toLowerCase().includes('expressão') && s.includes('5'))).toBe(false);
   });
 
   it('inclui nome do Odu quando definido', () => {
     const odu = makeOdu({ oduName: 'Irosun' });
-    const result = buildGiftStrengths(null, null, null, odu, 'vitalidade');
+    const result = buildGiftStrengths(null, null, null, odu, undefined, 'vitalidade');
     expect(result.some((s) => s.includes('Irosun'))).toBe(true);
   });
 
@@ -242,7 +242,7 @@ describe('buildGiftStrengths', () => {
     const astro = makeAstro({
       planets: [{ planet: 'Jupiter', sign: 'Sagitário', degree: 15, house: 9 }],
     });
-    const result = buildGiftStrengths(astro, null, null, null, 'carreira');
+    const result = buildGiftStrengths(astro, null, null, null, undefined, 'carreira');
     expect(result.some((s) => s.includes('Júpiter') && s.includes('Sagitário'))).toBe(true);
   });
 
@@ -253,7 +253,7 @@ describe('buildGiftStrengths', () => {
     const kab = makeKab({ lifePathMaster: true, expression: 9 });
     const tantra = makeTantra({ soul: 1 });
     const odu = makeOdu({ oduName: 'Ejila' });
-    const result = buildGiftStrengths(astro, kab, tantra, odu, 'vitalidade');
+    const result = buildGiftStrengths(astro, kab, tantra, odu, undefined, 'vitalidade');
     expect(result.length).toBeGreaterThanOrEqual(4);
   });
 });

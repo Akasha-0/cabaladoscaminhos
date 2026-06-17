@@ -217,7 +217,7 @@ export default function MandalaChart({ data }: Props) {
       `}</style>
 
       {/* Layer selector — ordered by layer (1..5) */}
-      <div className="flex gap-2 flex-wrap justify-center">
+      <div className="flex gap-2 flex-wrap justify-center" aria-label="Camadas da Mandala — selecione para revelar significados">
         {([1, 2, 3, 4, 5] as Layer[]).map((layer) => {
           const color = PILAR_COLORS[layer];
           const label = PILAR_LABEL_BY_LAYER[layer];
@@ -226,6 +226,8 @@ export default function MandalaChart({ data }: Props) {
               key={layer}
               className="layer-btn"
               onClick={() => setActiveLayer(activeLayer === layer ? null : layer)}
+              aria-label={`Camada ${layer} — ${label}`}
+              aria-pressed={activeLayer === layer}
               style={{
                 fontSize: '0.75rem',
                 padding: '4px 12px',
@@ -539,7 +541,7 @@ export default function MandalaChart({ data }: Props) {
                 x="200"
                 y="86"
                 textAnchor="middle"
-                fontSize="5.5"
+                fontSize="10"
                 fill="rgba(160,118,58,0.7)"
                 letterSpacing="1.5"
               >
@@ -697,6 +699,24 @@ export default function MandalaChart({ data }: Props) {
           )}
         </svg>
       </div>
+
+      {/* === Layer legend subtitle === */}
+      {activeLayer !== null && (
+        <div
+          style={{
+            fontFamily: 'var(--font-cinzel, serif)',
+            fontSize: '0.65rem',
+            letterSpacing: '0.15em',
+            color: PILAR_COLORS[activeLayer],
+            textAlign: 'center',
+            opacity: 0.75,
+            marginBottom: '0.25rem',
+          }}
+          aria-hidden="true"
+        >
+          CAMADA {activeLayer} — {PILAR_LABEL_BY_LAYER[activeLayer]}
+        </div>
+      )}
 
       {/* === Info Panels === */}
       {activeLayer === 4 && (

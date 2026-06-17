@@ -5,7 +5,7 @@
  * Wired to POST /api/akasha/conexoes and GET /api/akasha/conexoes
  */
 
-import { useState } from 'react';
+import { useState, useId } from 'react';
 import { Heart, ArrowLeft, Loader, Bookmark, Info, Edit3, X, Loader2 } from 'lucide-react';
 import { CityAutocomplete } from '@/components/ui/city-autocomplete';
 import type { CityResult } from '@/components/ui/city-autocomplete';
@@ -501,7 +501,7 @@ export default function ConexoesClient({ userProfile }: Props) {
             </div>
             <div className="rounded-2xl border border-[#fbbf24]/30 bg-[#fbbf24]/5 p-5 text-center">
               <p className="text-xs text-white/50 mb-1">Conexão Negócio</p>
-              <p className="text-4xl font-black text-[#fbbf24]">{result.partnership}</p>
+              <p className="text-4xl font-black text-[#fbbf24]">{result.partnership}%</p>
               <p className={`text-xs font-semibold mt-1 ${
                 result.partnership >= 71 ? 'text-[#34d399]' :
                 result.partnership >= 41 ? 'text-[#fbbf24]' :
@@ -548,8 +548,8 @@ export default function ConexoesClient({ userProfile }: Props) {
                 </span>
               </div>
               <p className="text-[10px] text-white/30 pl-0.5">
-                {result.authorityMatch === 'high' ? 'alinhamento forte — autoridades compatíveis' :
-                 result.authorityMatch === 'medium' ? 'autoridades complementares com diferenças' :
+                {result.authorityMatch === 'aligned' ? 'alinhamento forte — autoridades compatíveis' :
+                 result.authorityMatch === 'complementary' ? 'autoridades complementares com diferenças' :
                  'contrastes entre os tipos de decisão'}
               </p>
             </div>
@@ -564,21 +564,35 @@ export default function ConexoesClient({ userProfile }: Props) {
                   <Info size={12} />
                 </span>
               </p>
-              <p className="text-lg font-black text-[#2DD4BF]">{result.bodySync.score}</p>
+              <p className="text-lg font-black text-[#2DD4BF]">{result.bodySync.score}%</p>
               <p className="text-xs text-white/40 mt-1">{result.bodySync.description}</p>
             </div>
           </div>
 
-          {/* Narrative — split into sentences for readability */}
+          {/* Narrative — normalize NarrativeBlock[] or plain string */}
           {result.narrative && (
             <div className="rounded-2xl border border-[#7C5CFF]/20 bg-[#7C5CFF]/5 px-6 py-5">
-              <p className="text-xs font-bold text-[#7C5CFF]/80 uppercase tracking-wider mb-2">Sua Conexão</p>
-              <div className="space-y-2">
-                {result.narrative.split(/(?<=[.!?])\s+(?=[A-ZÓÇÃÂÊÔ])/).filter(Boolean).map((sentence, i) => (
-                  <p key={i} className="text-sm text-white/75 leading-relaxed border-l-2 border-[#7C5CFF]/40 pl-4">
-                    {sentence.trim()}
-                  </p>
-                ))}
+              <p className="text-xs font-bold text-[#7C5CFF]/80 uppercase tracking-wider mb-3">
+                Conexão com {rawData.name}
+              </p>
+              <div className="space-y-3">
+                {(Array.isArray(result.narrative) ? result.narrative : [{ topic: 'narrative', label: '', text: result.narrative }] as typeof result.narrative).map((block: typeof result.narrative[number] & { text: string }, blockIdx: number) => {
+                  const sentences = block.text.split(/(?<=[.!?])\s+(?=[A-ZÓÇÃÂÊÔ])/).filter(Boolean);
+                  return (
+                    <div key={blockIdx}>
+                      {block.label && (
+                        <p className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-1.5">
+                          {block.label}
+                        </p>
+                      )}
+                      {sentences.map((sentence: string, i: number) => (
+                        <p key={i} className="text-sm text-white/75 leading-relaxed border-l-2 border-[#7C5CFF]/40 pl-4 mb-1">
+                          {sentence.trim()}
+                        </p>
+                      ))}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -636,7 +650,7 @@ export default function ConexoesClient({ userProfile }: Props) {
                 });
                 if (res.ok) {
                   setSavedConnections((prev: SavedConnection[]) => [{
-                    id: Date.now().toString(),
+                    id: crypto.randomUUID(),
                     otherName: rawData.name,
                     otherBirthDate: rawData.birthDate,
                     dominantType: result.dominantType,
@@ -655,7 +669,7 @@ export default function ConexoesClient({ userProfile }: Props) {
             disabled={loading}
             className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#7C5CFF] to-[#2DD4BF] font-semibold text-sm text-white disabled:opacity-50"
           >
-            {loading ? 'Salvando…' : savedNotification ?? '💾 Salvar conexão'}
+            {loading ? 'Salvando…' : savedNotification ?? <span className="inline-flex items-center gap-1.5"><Bookmark size={14} /> Salvar conexão</span>}
           </button>
 
           {savedNotification === null && (

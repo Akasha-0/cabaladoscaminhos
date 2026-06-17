@@ -364,7 +364,7 @@ export default async function DiarioPage({
       {/* ── Tela 1: O Mandato (3 frases) ─────────────────────────────────── */}
       <div style={screenStyle}>
         <div style={innerStyle}>
-        <div style={screenNumStyle}>01\u00A0/\u000504 — Mandato</div>
+        <div style={screenNumStyle}>01\u00A0/\u00A005 — Mandato</div>
 
           {/* Cabeçalho: data + escala + intenção */}
           <div style={cardStyle(pilarInfo.cor)}>
@@ -477,7 +477,8 @@ export default async function DiarioPage({
 
       {/* Tela 2: A Pergunta do Dia */}
       <div style={screenStyle}>
-        <div style={screenNumStyle}>02\u00A0/\u000504 — Pergunta</div>
+        <div style={innerStyle}>
+          <div style={screenNumStyle}>02\u00A0/\u00A005 — Pergunta</div>
           <div style={cardStyle(C.violeta)}>
               A Pergunta do Dia
             <h2 style={{ ...headlineStyle, color: C.violeta, fontSize: '1.35rem' }}>{pergunta}</h2>
@@ -513,7 +514,8 @@ export default async function DiarioPage({
 
       {/* Tela 3: O Micro-Ritual */}
       <div id="tela-3" style={screenStyle}>
-        <div style={screenNumStyle}>03\u00A0/\u000504 — Ritual</div>
+        <div style={innerStyle}>
+          <div style={screenNumStyle}>03\u00A0/\u00A005 — Ritual</div>
           <div style={cardStyle(C.aurora)}>
               O Micro-Ritual
             <h2 style={{ ...headlineStyle, color: C.aurora }}>{ritual.titulo}</h2>
@@ -544,7 +546,7 @@ export default async function DiarioPage({
         return (
           <div style={screenStyle}>
             <div style={innerStyle}>
-              <div style={screenNumStyle}>04\u00A0/\u000504 — Significado</div>
+            <div style={screenNumStyle}>04\u00A0/\u00A005 — Significado</div>
               <p style={{ ...bodyStyle, color: C.txtSec, marginBottom: 8 }}>
                 Cinco leituras, uma pessoa. Leia cada Pilar para refletir.
               </p>
@@ -577,7 +579,7 @@ export default async function DiarioPage({
         return (
           <div style={screenStyle}>
             <div style={innerStyle}>
-              <div style={screenNumStyle}>05\u00A0/\u000504 — Para suas áreas</div>
+              <div style={screenNumStyle}>05\u00A0/\u00A005 — Para suas áreas</div>
               <p style={{ ...bodyStyle, color: C.txtSec, marginBottom: 8 }}>
                 O pilar {pilarInfo.nome} traduzido para cada área da sua vida.
               </p>
