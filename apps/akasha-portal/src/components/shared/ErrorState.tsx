@@ -1,6 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/shared/utils';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, AlertTriangle, Star, AlertOctagon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Heading } from '@/components/design-system/Typography';
 
@@ -19,9 +19,9 @@ const DEFAULT_MESSAGES = {
 };
 
 const ICONS = {
-  spiritual: '✦',
-  warning: '⚠',
-  critical: '⚠⚠⚠',
+  spiritual: <Star size={32} className="text-[var(--spiritual-gold)]" />,
+  warning: <AlertTriangle size={32} className="text-yellow-500" />,
+  critical: <AlertOctagon size={32} className="text-red-500" />,
 };
 
 const TITLES = {
@@ -88,7 +88,7 @@ export function ErrorState({
         >
           <RefreshCw size={16} />
           <span>Tentar Novamente</span>
-          <span className="text-[var(--spiritual-gold)]">✦</span>
+          <Star size={16} className="text-[var(--spiritual-gold)]" />
         </Button>
       )}
     </div>

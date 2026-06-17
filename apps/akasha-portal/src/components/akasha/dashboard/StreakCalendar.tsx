@@ -37,10 +37,10 @@ function SkeletonCalendar() {
     <div className="flex justify-between gap-2">
       {Array.from({ length: 7 }).map((_, i) => (
         <div key={i} className="flex flex-col items-center gap-1">
-          <div className="w-6 h-3 bg-zinc-800 rounded animate-pulse" />
+          <div className="w-6 h-3 bg-[#0B0E1C]/60 rounded animate-pulse" />
           <motion.div
             animate={pulse}
-            className="w-10 h-10 bg-zinc-800 rounded-full"
+            className="w-10 h-10 bg-[#0B0E1C]/60 rounded-full"
           />
         </div>
       ))}

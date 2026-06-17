@@ -11,23 +11,23 @@ interface HistoryItemProps {
 const LEVEL_CONFIG = {
   shadow: {
     icon: Moon,
-    bg: 'bg-purple-100 dark:bg-purple-900/50',
-    text: 'text-purple-700 dark:text-purple-300',
-    border: 'border-purple-200 dark:border-purple-700/50',
+    bg: 'bg-purple-900/50',
+    text: 'text-purple-300',
+    border: 'border-purple-700/50',
     label: 'Sombra',
   },
   gift: {
     icon: Sparkles,
-    bg: 'bg-amber-100 dark:bg-amber-900/50',
-    text: 'text-amber-700 dark:text-amber-300',
-    border: 'border-amber-200 dark:border-amber-700/50',
+    bg: 'bg-amber-900/50',
+    text: 'text-amber-300',
+    border: 'border-amber-700/50',
     label: 'Dom',
   },
   siddhi: {
     icon: Zap,
-    bg: 'bg-emerald-100 dark:bg-emerald-900/50',
-    text: 'text-emerald-700 dark:text-emerald-300',
-    border: 'border-emerald-200 dark:border-emerald-700/50',
+    bg: 'bg-emerald-900/50',
+    text: 'text-emerald-300',
+    border: 'border-emerald-700/50',
     label: 'Siddhi',
   },
 } as const;
@@ -65,7 +65,7 @@ export function HistoryItem({ item }: HistoryItemProps) {
         onClick={(e) => e.preventDefault()}
         className={`
           block p-4 rounded-lg border transition-all duration-200
-          bg-white/50 dark:bg-zinc-900/30 hover:bg-white dark:hover:bg-zinc-800/50
+          bg-[#1C1C1E]/80 hover:bg-[#1C1C1E]
           ${config.border} hover:${config.border.replace('/50', '')}
         `}
       >
@@ -74,7 +74,7 @@ export function HistoryItem({ item }: HistoryItemProps) {
           <config.icon size={24} className="flex-shrink-0 mt-0.5 text-2xl" aria-label={config.label} />
             
             <div className="min-w-0 flex-1">
-              <h3 className="font-medium text-slate-900 dark:text-zinc-100 truncate">
+              <h3 className="font-medium text-white truncate">
                 {item.ritualName}
               </h3>
               <span className={`
@@ -86,7 +86,7 @@ export function HistoryItem({ item }: HistoryItemProps) {
             </div>
           </div>
           
-          <span className="text-sm text-slate-500 dark:text-zinc-500 flex-shrink-0">
+          <span className="text-sm text-white/50 flex-shrink-0">
             {formatRelativeDate(item.date)}
           </span>
         </div>

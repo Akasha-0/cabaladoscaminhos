@@ -17,12 +17,12 @@ function ProgressChartSkeleton() {
   return (
     <div className="space-y-6 animate-pulse">
       <div className="space-y-2">
-        <div className="h-5 w-40 bg-akasha-bg-tertiary rounded" />
-        <div className="h-8 w-full bg-akasha-bg-tertiary rounded-full" />
+        <div className="h-5 w-40 bg-[#0B0E1C]/60 rounded" />
+        <div className="h-8 w-full bg-[#0B0E1C]/60 rounded-full" />
       </div>
       <div className="space-y-2">
-        <div className="h-5 w-40 bg-akasha-bg-tertiary rounded" />
-        <div className="h-8 w-full bg-akasha-bg-tertiary rounded-full" />
+        <div className="h-5 w-40 bg-[#0B0E1C]/60 rounded" />
+        <div className="h-8 w-full bg-[#0B0E1C]/60 rounded-full" />
       </div>
     </div>
   );

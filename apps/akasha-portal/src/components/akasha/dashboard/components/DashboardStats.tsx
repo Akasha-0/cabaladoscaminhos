@@ -19,7 +19,7 @@ export function DashboardStats({ userId }: DashboardStatsProps) {
         {[...Array(4)].map((_, i) => (
           <div
             key={i}
-            className="h-32 animate-pulse rounded-xl bg-slate-800/50"
+            className="h-32 animate-pulse rounded-xl bg-[#0B0E1C]/60"
           />
         ))}
       </div>

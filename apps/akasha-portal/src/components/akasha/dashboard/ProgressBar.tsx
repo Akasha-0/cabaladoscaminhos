@@ -26,7 +26,7 @@ export function ProgressBar({ value, max, label, showPercent = true }: ProgressB
           )}
         </div>
       )}
-      <div className="w-full h-2 bg-akasha-bg-tertiary rounded-full overflow-hidden">
+      <div className="w-full h-2 bg-[#0B0E1C]/60 rounded-full overflow-hidden">
         <div
           className="h-full bg-gradient-to-r from-akasha-primary to-akasha-primary/70 rounded-full transition-all duration-500 ease-out"
           style={{ width: `${percent}%` }}

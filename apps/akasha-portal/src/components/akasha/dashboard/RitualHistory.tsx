@@ -32,12 +32,12 @@ function SkeletonCard() {
   return (
     <div className="p-4 rounded-lg border border-slate-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/30 animate-pulse">
       <div className="flex items-start gap-3">
-        <div className="w-8 h-8 rounded bg-slate-200 dark:bg-zinc-800" />
+        <div className="w-8 h-8 rounded bg-[#0B0E1C]/60" />
         <div className="flex-1">
-          <div className="h-5 w-3/4 rounded bg-slate-200 dark:bg-zinc-800 mb-2" />
-          <div className="h-4 w-16 rounded bg-slate-200 dark:bg-zinc-800" />
+          <div className="h-5 w-3/4 rounded bg-[#0B0E1C]/60 mb-2" />
+          <div className="h-4 w-16 rounded bg-[#0B0E1C]/60" />
         </div>
-        <div className="h-4 w-20 rounded bg-slate-200 dark:bg-zinc-800" />
+        <div className="h-4 w-20 rounded bg-[#0B0E1C]/60" />
       </div>
     </div>
   );
@@ -48,7 +48,7 @@ export function RitualHistory({ userId, maxVisible = 10 }: RitualHistoryProps) {
 
   if (loading) {
     return (
-      <section className="bg-white/80 dark:bg-zinc-950/50 rounded-xl p-6 border border-slate-200 dark:border-zinc-800">
+      <section className="bg-[#1C1C1E] rounded-xl p-6 border border-slate-200 dark:border-zinc-800">
         <h2 className="text-lg font-semibold text-slate-900 dark:text-zinc-100 mb-4">
           Histórico de Rituais
         </h2>
@@ -66,7 +66,7 @@ export function RitualHistory({ userId, maxVisible = 10 }: RitualHistoryProps) {
   const hasMore = historyItems.length > maxVisible;
 
   return (
-    <section className="bg-white/80 dark:bg-zinc-950/50 rounded-xl p-6 border border-slate-200 dark:border-zinc-800">
+    <section className="bg-[#1C1C1E] rounded-xl p-6 border border-slate-200 dark:border-zinc-800">
       <h2 className="text-lg font-semibold text-slate-900 dark:text-zinc-100 mb-4">
         Histórico de Rituais
       </h2>
