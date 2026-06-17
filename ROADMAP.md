@@ -49,8 +49,8 @@
 O utilizador interactua diariamente com estas áreas. Conteúdo fino ou repetitivo Mata a confiança no sistema mais rápido que qualquer outra falha. A profundidade nestas áreas é o diferenciador real entre o Akasha e um agregador de tradições.
 
 **Entregáveis:**
-- [x] Auditar cada área: contar quantas combinações de pilares produzem narrativa única vs. fallback genérico — **Parcialmente addressado (iter16):** generateAreaNarrativeFull recebe _synthesizedProfile; primitives usados como âncora narrativa quando hasCount <= 2
-- [ ] Preencher `mapeamentos/iching/` (Prioridade 1) para que I Ching contribua a `missaoDestino` e `oriCabecaQuizilas`
+- [x] Auditar cada área: contar quantas combinações de pilares produzem narrativa única vs. fallback genérico — **Addressado (iter16+iter17):** generateAreaNarrativeFull recebe _synthesizedProfile; primitives usados como âncora narrativa quando hasCount <= 2; 5ª tradição I Ching integrada com buildTransformacaoIChingNarrative
+- [x] Preencher mapeamentos/iching/ para que I Ching contribua a missaoDestino e oriCabecaQuizilas — **addressado (iter17):** buildTransformacaoIChingNarrative deriva orientação por área do ichingHex do hologram + primitives do _synthesizedProfile
 - [ ] Garantir que cada área tem pelo menos 3 combinações de pilares produzindo narrativas distintas (teste automatizado)
 - [ ] Curar conteúdo para a área `desafiosSombras` — actualmente usa `buildShadowSymptoms()` com lógica ad-hoc; migrar para mapeamentos
  [ ] Teste de não-repetição: gerar 50 sínteses aleatórias e verificar que nenhuma narrativa é idêntica a outra

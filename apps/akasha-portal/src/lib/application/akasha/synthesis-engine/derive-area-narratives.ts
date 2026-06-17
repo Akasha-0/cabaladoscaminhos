@@ -231,7 +231,7 @@ export function deriveVitalidadeEnergia(
   );
   const dailyTransit = deriveDailyTransitOverlay(astro, kab, tantra, odu, 'vitalidadeEnergia', date);
   const sexualidade = deriveSexualArchetype(astro, kab, tantra, odu);
-  const expandedNarrative = generateAreaNarrativeFull('vitalidadeEnergia', kab, astro, tantra, odu, _synthesizedProfile);
+  const expandedNarrative = generateAreaNarrativeFull('vitalidadeEnergia', kab, astro, tantra, odu, holo, _synthesizedProfile);
 
   return {
     area: 'vitalidadeEnergia',
@@ -303,7 +303,7 @@ export function deriveConexoesAmor(
     'Você tem traído seus próprios limites emocionais para agradar o outro? O que sua intuição diz sobre esta relação agora?'
   );
   const dailyTransit = deriveDailyTransitOverlay(astro, kab, tantra, odu, 'conexoesAmor', date);
-  const expandedNarrative = generateAreaNarrativeFull('conexoesAmor', kab, astro, tantra, odu, _synthesizedProfile);
+  const expandedNarrative = generateAreaNarrativeFull('conexoesAmor', kab, astro, tantra, odu, holo, _synthesizedProfile);
 
   return {
     area: 'conexoesAmor',
@@ -374,7 +374,7 @@ export function deriveCarreiraProsperidade(
     'Você tem adiado uma decisão profissional por medo de não ser bom o suficiente? O que aconteceria se você agisse como se já fosse?'
   );
   const dailyTransit = deriveDailyTransitOverlay(astro, kab, tantra, odu, 'carreiraProsperidade', date);
-  const expandedNarrative = generateAreaNarrativeFull('carreiraProsperidade', kab, astro, tantra, odu, _synthesizedProfile);
+  const expandedNarrative = generateAreaNarrativeFull('carreiraProsperidade', kab, astro, tantra, odu, holo, _synthesizedProfile);
 
   return {
     area: 'carreiraProsperidade',
@@ -434,7 +434,7 @@ export function deriveOriCabecaQuizilas(
     'Você tem confiado mais em opiniões externas do que em sua própria percepção? Quando foi a última vez que você seguiu sua intuição e foi surpreendido positivamente?'
   );
   const dailyTransit = deriveDailyTransitOverlay(astro, kab, tantra, odu, 'oriCabecaQuizilas', date);
-  const expandedNarrative = generateAreaNarrativeFull('oriCabecaQuizilas', kab, astro, tantra, odu, _synthesizedProfile);
+  const expandedNarrative = generateAreaNarrativeFull('oriCabecaQuizilas', kab, astro, tantra, odu, holo, _synthesizedProfile);
 
   return {
     area: 'oriCabecaQuizilas',
@@ -499,7 +499,7 @@ export function deriveMissaoDestino(
     'Você está vivendo uma vida alinhada com quem você realmente é, ou tem vivido para validar expectativas externas?'
   );
   const dailyTransit = deriveDailyTransitOverlay(astro, kab, tantra, odu, 'missaoDestino', date);
-  const expandedNarrative = generateAreaNarrativeFull('missaoDestino', kab, astro, tantra, odu, _synthesizedProfile);
+  const expandedNarrative = generateAreaNarrativeFull('missaoDestino', kab, astro, tantra, odu, holo, _synthesizedProfile);
 
   return {
     area: 'missaoDestino',
@@ -564,7 +564,7 @@ export function deriveDesafiosSombras(
     : '';
 
   const dailyTransit = deriveDailyTransitOverlay(astro, kab, tantra, odu, 'desafiosSombras', date);
-  const expandedNarrative = generateAreaNarrativeFull('desafiosSombras', kab, astro, tantra, odu, _synthesizedProfile);
+  const expandedNarrative = generateAreaNarrativeFull('desafiosSombras', kab, astro, tantra, odu, holo, _synthesizedProfile);
 
   return {
     area: 'desafiosSombras',

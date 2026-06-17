@@ -10,6 +10,7 @@
  * A síntese é a composição inteligente desses dados em prosa significativa.
  */
 import type { KabalisticMap, AstrologyMap, TantricMap, OduBirth } from '@akasha/types';
+import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
 import type { SynthesizedProfile } from '@akasha/core';
 import { buildAncestralidadeOduNarrative } from './synthesis-engine/odu-narrative-engine';
 
@@ -185,12 +186,127 @@ export interface AreaNarrativeFull {
   tantraNarrative: string;
   /** Bloco narrativo Odu (1-2 frases) */
   oduNarrative: string;
-  /** Síntese integrada das 4 narrativas (3-5 frases) */
+  /** Bloco narrativo I Ching (1-2 frases) */
+  ichingNarrative: string;
+  /** Síntese integrada das 5 narrativas (3-5 frases) */
   integratedNarrative: string;
   /** Prática concreta (1 frase) */
   practicalExample: string;
   /** Label: CV 11 · Sol em Escorpião · Corpo 7 · Ejioko */
   sourceLabel: string;
+}
+
+
+/**
+ * Build I Ching narrative block for a life area.
+ * Uses holo.ichingHex (hexagram from hologram) to derive area-specific I Ching guidance.
+ * Falls back gracefully when no hexagram is present.
+ */
+function buildTransformacaoIChingNarrative(
+  holo: AkashicHologram | null,
+  area: string,
+  _synthesizedProfile?: SynthesizedProfile,
+): string {
+  if (!holo?.ichingHex) return '';
+
+  const hex = holo.ichingHex;
+
+  // Wilhelm/Baynes hexagram names
+  const HEX_NAMES: Record<number, string> = {
+    1: 'Criação (Qián)', 2: 'Receptivo (Kǎn)', 3: 'Dificuldade Inicial', 4: 'Juventude Insensata',
+    5: 'Espera', 6: 'Conflito', 7: 'O Líder', 8: 'A União', 9: 'O Rebanho Menor',
+    10: 'Andar com Cautela', 11: 'Paz', 12: 'Estagnação', 13: 'Comunidade de Pessoas',
+    14: 'Posse Grande', 15: 'Modéstia', 16: 'Entusiasmo', 17: 'Seguir', 18: 'Trabalho Corrompido',
+    19: 'Aproximação', 20: 'Contemplação', 21: 'Mordida Veloz', 22: 'Graça', 23: 'Desintegração',
+    24: 'Retorno', 25: 'Inocência', 26: 'O Grande Poder', 27: 'A Boca (Nutrição)',
+    28: 'O Grande Excesso', 29: 'O Abismal (Água)', 30: 'A Clara (Fogo)', 31: 'A Influência',
+    32: 'A Permanência', 33: 'A Retirada', 34: 'O Grande Poder', 35: 'O Progresso',
+    36: 'Lesão à Luz', 37: 'As Pessoas da Casa', 38: 'A Oposição', 39: 'Obstáculo',
+    40: 'Liberação', 41: 'Diminuição', 42: 'Aumento', 43: 'Resolução', 44: 'Encontrar-se',
+    45: 'Reunião', 46: 'Elevação', 47: 'Aflição (Exaustão)', 48: 'O Poço', 49: 'Revolução',
+    50: 'O Caldeirão', 51: 'O Trovão', 52: 'A Montanha (Tranquilidade)', 53: 'O Desenvolvimento',
+    54: 'A Moça Casadeira', 55: 'Abundância (Época)', 56: 'O Andarilho', 57: 'A Penetrante (Vento)',
+    58: 'A Serena (Lago)', 59: 'Dispersão', 60: 'A Limitação', 61: 'A Verdade Interior',
+    62: 'O Pequeno Excesso', 63: 'Depois da Conclusão', 64: 'Antes da Conclusão',
+  };
+
+  // I Ching area-specific guidance derived from hexagram trigram element
+  const HEX_AREA_GUIDANCE: Record<string, Record<string, string>> = {
+    vitalidadeEnergia: {
+      fuego: 'O hexagrama indica transformação por fogo — sua energia se renova por intensidade, não por repouso.',
+      agua: 'O hexagrama indica transformação por água — sua energia flui por adaptação, não por força.',
+      terra: 'O hexagrama indica transformação por terra — sua energia se estabiliza por contacto com o físico.',
+      aire: 'O hexagrama indica transformação por ar — sua energia se expande por comunicação, não por isolamento.',
+    },
+    conexoesAmor: {
+      fuego: 'No amor, o hexagrama aponta para intensidade — você ama com chama, não com vela.',
+      agua: 'No amor, o hexagrama aponta para profundidade — você ama pelo que sente, não pelo que vê.',
+      terra: 'No amor, o hexagrama aponta para lealdade — você ama construindo, não apenas sentindo.',
+      aire: 'No amor, o hexagrama aponta para liberdade — você precisa de espaço para amar sem sufocar.',
+    },
+    carreiraProsperidade: {
+      fuego: 'Na carreira, o hexagrama indica pioneirismo — você cria o caminho andando.',
+      agua: 'Na carreira, o hexagrama indica fluidez — você prospera por adaptação, não por rigidez.',
+      terra: 'Na carreira, o hexagrama indica construção — você cria valor pela presença, não pela pressa.',
+      aire: 'Na carreira, o hexagrama indica comunicação — você prospera por conexões, não por isolamento.',
+    },
+    oriCabecaQuizilas: {
+      fuego: 'Na mente, o hexagrama traz clareza de fogo — você sabe o que quer antes de entender por quê.',
+      agua: 'Na mente, o hexagrama traz profundidade de água — você percebe o que outros só intuem.',
+      terra: 'Na mente, o hexagrama traz solidez de terra — você pensa devagar e fundo, não rápido e raso.',
+      aire: 'Na mente, o hexagrama traz velocidade de ar — você conecta ideias antes de ter palavras.',
+    },
+    missaoDestino: {
+      fuego: 'Na missão, o hexagrama indica criação — você veio para iniciar algo que não existia antes.',
+      agua: 'Na missão, o hexagrama indica receptividade — você veio para guardar, não para forçar.',
+      terra: 'Na missão, o hexagrama indica fundamento — você veio para ancorar o que os outros começam.',
+      aire: 'Na missão, o hexagrama indica comunicação — você veio para traduzir o oculto em acessível.',
+    },
+    desafiosSombras: {
+      fuego: 'Nos desafios, o hexagrama alerta para impaciência — o fogo queima antes de iluminar.',
+      agua: 'Nos desafios, o hexagrama alerta para afogamento — a água inunda antes de nutrir.',
+      terra: 'Nos desafios, o hexagrama alerta para rigidez — a terra racha quando não cede.',
+      aire: 'Nos desafios, o hexagrama alerta para dispersão — o ar dispersa antes de concentrar.',
+    },
+  };
+
+  // Derive element from hexagram number (Wilhelm lower trigram)
+  // Lower trigrams: 1-8 → cielo/fuego, 9-16 → lake/agua, 17-24 → fire/fuego, 25-32 → wind/aire, 33-40 → mountain/terra, 41-48 → wind/aire, 49-56 → fire/fuego, 57-64 → lake/agua
+  const ELEM_BY_RANGE: Array<'fuego' | 'agua' | 'terra' | 'aire'> = [
+    'fuego','fuego','fuego','fuego','agua','agua','agua','agua',
+    'fuego','fuego','fuego','fuego','agua','agua','agua','agua',
+    'terra','terra','terra','terra','aire','aire','aire','aire',
+    'fuego','fuego','fuego','fuego','terra','terra','terra','terra',
+    'aire','aire','aire','aire','fuego','fuego','fuego','fuego',
+    'terra','terra','terra','terra','agua','agua','agua','agua',
+  ];
+  const elemKey = ELEM_BY_RANGE[(hex - 1) % 64] ?? 'agua';
+  const areaGuidance = HEX_AREA_GUIDANCE[area]?.[elemKey] ?? '';
+
+  // Use synthesized I Ching primitives if available
+  let primitiveNote = '';
+  const ichingPrimitives = _synthesizedProfile?.primitivos.filter(p =>
+    p.contributions.some(c =>
+      (c.fonte?.toLowerCase().includes('iching')) ||
+      (c.fonte?.toLowerCase().includes('hexagrama')) ||
+      (c.fonte?.toLowerCase().includes('i ching'))
+    )
+  ) ?? [];
+  if (ichingPrimitives.length > 0) {
+    const sorted = [...ichingPrimitives].sort((a, b) => b.magnitude - a.magnitude);
+    const topIChing = sorted[0];
+    if (topIChing) {
+      const label = topIChing.polaridade === 'sombra'
+        ? 'um desafio a transmutar'
+        : topIChing.polaridade === 'luz'
+        ? 'uma força a cultivar'
+        : 'uma energia a integrar';
+      primitiveNote = ` A energia do hexagrama ${hex} ressoa com ${topIChing.primitivo.toLowerCase()} — ${label}.`;
+    }
+  }
+
+  if (!areaGuidance && !primitiveNote) return '';
+  return `${areaGuidance}${primitiveNote}`.trim();
 }
 
 /** Gera narrativa completa para uma área de vida. */
@@ -200,12 +316,14 @@ export function generateAreaNarrativeFull(
   astro: AstrologyMap | null,
   tantra: TantricMap | null,
   odu: OduBirth | null,
+  holo: AkashicHologram | null,
   _synthesizedProfile?: SynthesizedProfile,
 ): AreaNarrativeFull {
   const kabBlock = buildAncestralidadeNarrative(kab, area);
   const astroBlock = buildMovimentoCelesteNarrative(astro, area);
   const tantraBlock = buildCorpoEnergiaNarrative(tantra, area);
   const oduBlock = buildAncestralidadeOduNarrative(odu, area);
+  const ichingBlock = buildTransformacaoIChingNarrative(holo, area, _synthesizedProfile);
 
   const kabSoul = kab?.soulUrgeNumber ?? kab?.lifePath;
   const tantraBody = tantra?.soul;
@@ -583,6 +701,7 @@ export function generateAreaNarrativeFull(
     astrologiaNarrative: astroBlock,
     tantraNarrative: tantraBlock,
     oduNarrative: oduBlock,
+    ichingNarrative: ichingBlock,
     integratedNarrative: integratedNarrative.trim(),
     practicalExample,
     sourceLabel,
@@ -594,12 +713,13 @@ export function generateAllAreaNarratives(
   kab: KabalisticMap | null,
   astro: AstrologyMap | null,
   tantra: TantricMap | null,
-  odu: OduBirth | null
+  odu: OduBirth | null,
+  holo: AkashicHologram | null,
 ): Record<string, AreaNarrativeFull> {
   const areas = Object.keys(LIFE_AREA_LABELS);
   const result: Record<string, AreaNarrativeFull> = {};
   for (const area of areas) {
-    result[area] = generateAreaNarrativeFull(area, kab, astro, tantra, odu);
+    result[area] = generateAreaNarrativeFull(area, kab, astro, tantra, odu, holo);
   }
   return result;
 }
