@@ -1,1 +1,0 @@
-{"success": false, "message": "life-areas-data.ts is pure static data (LIFE_AREAS const only, 809 lines) — no extractable helpers remain after prior session's life-areas-data-utils.ts extraction", "type": "large_file"}
