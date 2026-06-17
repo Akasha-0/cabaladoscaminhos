@@ -1,21 +1,46 @@
-## v0.83.4 (2026-06-17) — Auth Redirect Consistency Fix
+## v0.83.5 (2026-06-17) — Login Return URL Fix
+### Auth
+- fix(login/route.ts): read `return` query param from searchParams, not decodeURIComponent wrapper (searchParams already decodes)
+- fix(LoginClient.tsx): pass `return`+`locale` as query params on fetch URL; fix fallback double-decode
+
+### Build
+- build: 49/49 pages · EXIT 0 · TypeScript 0 errors (akasha-portal) · NEXT_BUILD_CONCURRENCY=1 required
+- tests: 1361 passed · 0 failed · 17 skipped
+
+## v0.83.4 (2026-06-17) — Auth + UX Round 23
+### Auth (pre-existing)
 - fix(conexoes): redirect /onboarding → /login?return=/conexoes; TS null safety restructure
 - fix(meu-dia): redirect /onboarding → /login?return=/meu-dia; payload.sub null safety
 - fix(compartilhar/receber): redirect /onboarding → /login?return=; add authStatus !== refreshed guard
 - fix(api/share/receive): redirect /onboarding → /login; API route auth failure now consistent
 - test(share-receive): updated to expect /login instead of /onboarding
+
+### UX Round 23 (2026-06-17)
+- fix(akasha): perfilGeral — <div> wrapper removed, <p> per paragraph (valid HTML)
+- fix(DimensaoCard): Síntese preview now truncates at 120 chars when collapsed
+- fix(dashboard): elemento micro-label only shown when ritual.elemento exists; 'duração' fallback
+- fix(diario): Tela 4 + Tela 5 — <div screenNumStyle> → semantic <h2>; blank line removed
+- fix(SignificadoPilar): Sexualidade block wrapped in <details>/<summary> accordion (SP-01)
+- fix(SignificadoPilar): Sombra behavioral instruction + Prática actionable framing (D-04)
+- fix(ConexoesClient): Síncronia Odu now rendered alongside other Síncronia cards (MÉDIA)
+- fix(diario): Tela 5 instructional <p> now has aria-label for screen readers
+- fix(AstrologyInfoPanel): planet rows + Ascendente/Meio do Céu with behavioral subtitles
+- fix(IchingInfoPanel): all 5 Row labels with behavioral subtitles
+- fix(OduInfoPanel): all 3 Row labels with behavioral subtitles
+- fix(MandalaChartInfoPanel): Row container div now has aria-label relationship
+- fix(oraculo): balance===0 shows visible warning; insufficient credits warning; h1 aria-label; cost label conditional
 - build: 49/49 pages · EXIT 0 · TypeScript 0 errors (akasha-portal)
 - tests: 1361 passed · 17 skipped
 
 ## v0.83.3 (2026-06-17) — Auth Race Condition Fix — Option C: X-Akasha-Auth header
 - fix(middleware): Option C — X-Akasha-Auth header como fonte única de verdade para auth.
--   Middleware seta X-Akasha-Auth: fresh|refreshed|invalid em todas as respostas.
--   RSC não faz mais verifyAkashaToken quando header é 'refreshed'.
--   Fecha o race condition onde RSC lia token expirado antes do middleware fazer redirect.
+  Middleware seta X-Akasha-Auth: fresh|refreshed|invalid em todas as respostas.
+  RSC não faz mais verifyAkashaToken quando header é 'refreshed'.
+  Fecha o race condition onde RSC lia token expirado antes do middleware fazer redirect.
 - fix(auth): 15 páginas RSC atualizadas para confiar no header X-Akasha-Auth em vez de
--   re-verificar tokens expirados (dashboard, diario, diario/foco, akasha, mandala,
--   minha-caixa, mural, oraculo, mapa/significado, significado-primeiro, conta,
--   meu-dia, conexoes, compartilhar/receber, login).
+  re-verificar tokens expirados (dashboard, diario, diario/foco, akasha, mandala,
+  minha-caixa, mural, oraculo, mapa/significado, significado-primeiro, conta,
+  meu-dia, conexoes, compartilhar/receber, login).
 - fix(layout): (akasha) group layout com X-Akasha-Auth header trust.
 - fix(dashboard): redirect /onboarding → /login para consistência.
 - fix(diario/foco): cookieStore era undefined após authStatus — corrigido.
@@ -64,7 +89,7 @@
 - fix(mandala): Ciclo row labels with behavioral framing ("1º Ciclo — primeiro ritmo de vida")
 - build: 49/49 static pages · EXIT 0
 
-- ## v0.83.0 (2026-06-17) — QA Round 20 — Auth pattern unification + 0 TS errors + 1358 tests
+## v0.83.0 (2026-06-17) — QA Round 20 — Auth pattern unification + 0 TS errors + 1358 tests
 - fix(auth): 9 pages now use `verifyAkashaToken` + `AKASHA_TOKEN_COOKIE` consistently
 - fix(auth): redirect destination unified to `/login` (was: mixed `/onboarding` and `/login`)
 - fix(synthesis): area-builders.ts — shadow translation function imports added (TS2304 resolved)
@@ -137,7 +162,7 @@
 - fix(akasha): archetype ENQUADRAMENTO lookup covering all 12 Life Path archetypes (1-9, 11, 22, 33)
 - fix(akasha): footer CTA "Volte amanhã para seu Mandato do Dia →" linking to /diario
 - fix(akasha): "Ver mapas individuais →" → "Ver seus 5 mapas (Cabala, Astrologia, Tântrica, Ôdu, I Ching) →"
-- fix(dimensaocard): garbled "師父" → "mestre" in autoridadeAkasha superacao prompt
+- fix(dimensaocard): garbled "鑢父" → "mestre" in autoridadeAkasha superacao prompt
 - fix(diario): ContinuarButton aria-label added warning about losing scroll position
 - fix(oraculo): character count hidden when input empty (was showing "0 / 200 · 1 crédito")
 - build: ✓ Compiled 8.1s + 49/49 static pages
@@ -162,7 +187,7 @@
 - fix(middleware): Buffer.from() replaced with atob() for Edge Runtime compatibility
 - build: ✓ Compiled 8.3s + 49/49 static pages
 
-
+## v0.81.5 (2026-06-17)
 - fix(auth): AKASHA_ACCESS_TTL_SECONDS 15min→4h (fixes silent session expiry redirect to /onboarding)
 - fix(synthesis): derive-area-narratives.ts — restored from v0.81.3 (removes 6-param TDZ bug)
 - fix(synthesis): synthesis-types.ts, area-builders.ts, synthesis-engine.ts, area-builders.test.ts — restored from v0.81.3
@@ -397,7 +422,7 @@ Todas as mudanças significativas são documentadas aqui — reverts e regressõ
 
 ## [0.5.1] — 2026-06-15
 
-### feat(loop): 12 changed files lack tests
+### feat(loop): 12 files with TODO
 - Added test coverage for 12 changed files
 
 ## [0.6.1] — 2026-06-15
