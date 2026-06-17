@@ -135,14 +135,21 @@ Um agente evolutivo que opera sobre dados finos (Prioridade 3) e síntese incomp
 ## Progress Update (2026-06-17 — Iteração 2)
 
 - [x] `ConexoesClient.tsx` criado ( Fase 4 do plano Conexões) — UI de 3 estágios funcional com mock data
-- [ ] `packages/akasha-core/src/conexoes.ts` (Fase 1 — engine de comparação) — pendente
-- [ ] `POST /api/akasha/conexoes` route (Fase 2) — pendente
-- [ ] Prisma `Connection` model (Fase 3) — pendente
+- [x] `packages/akasha-core/src/conexoes.ts` (Fase 1 — engine de comparação) engine exists
+- [x] `POST /api/akasha/conexoes` route (Fase 2) Iteracao 3
+- [x] Prisma `Connection` model (Fase 3) Iteracao 28
+- [x] `GET /api/akasha/conexoes` (list saved) Iteracao 28
+- [x] `DELETE /api/akasha/conexoes/[id]` Iteracao 28
+- [x] `GET /api/akasha/conexoes/[id]` (load full analysis) Iteracao 36
+- [x] `ConexoesClient.tsx` Ver analise completa button wired Iteracao 36
 
 - [x] `ConexoesClient.tsx` criado (Fase 4 do plano Conexões) ✅ Iteração 2
 - [x] `packages/akasha-core/src/conexoes.ts` (Fase 1 — engine de comparação) ✅ engine existia, foi discovery
 - [x] `POST /api/akasha/conexoes` route (Fase 2) ✅ Iteração 3
-- [ ] Prisma `Connection` model (Fase 3) — pendente
+- [x] Prisma `Connection` model (Fase 3) Iteracao 28
+- [x] GET `/api/akasha/conexoes` (list) Iteracao 28
+- [x] GET `/api/akasha/conexoes/[id]` (full analysis) Iteracao 36
+- [x] ConexoesClient Ver analise completa button Iteracao 36
 
 ## Progress Update (2026-06-17 — Iteração 23)
 

@@ -1818,3 +1818,51 @@ Auditoria identificou que o `/api/akasha/chart` computava 4 pilares (Cabala, Ast
 - **Edição do `chart/route.ts`**: a route tem 2 handlers (POST + PUT) ambos fazendo computação idêntica de 5 mapas. Refactor futuro: extrair lógica de computação para função partilhada.
 | Akasha-v3-iter30 | **Siddhi frequency algorithm + FrequencyPathExplorer UI** — `assessAreaFrequency()`: siddhi signal requires noShadow + lifePathMaster + soulMaster ∈ {1,22,33}; siddhi returned when 3+ of 6 areas reach it; `deriveDominantFrequency()`: majority-rule siddhi detection; `computeOverallScore()`: siddhi areas weighted 1.5× vs 1.0× for gift; 14 new unit tests added (53/53 synthesis-engine now); `FrequencyPathExplorer` component: 3-step visual path (shadow→gift→siddhi) with expandable practice guidance inserted into `AkashaLifeAreasDashboard` after Perfil Akasha section; `AreaNarrative` test helpers fixed with required `dailyRitual` field; TypeScript 0 errors | Build: 50 pages ✅ 49 routes ✅ | (este ciclo) | ok |
 | Akasha-v3-iter31 | **Chart route DRY refactor + mandala I Ching source fix** — `chart/route.ts`: extracted `computeBirthChartMaps()` helper (lines 16-86) called by both POST and PUT; eliminated ~55-line duplicate block; TypeScript 0 errors | `mandala/route.ts`: fixed I Ching source `user?.ichingMap` → `chart?.ichingMap`; natal I Ching (deterministic) now correctly read from BirthChart.ichingMap instead of interactive oracle opt-in field; TypeScript 0 errors | Build: 50 pages ✅ 49 routes ✅ | (este ciclo) | ok |
+
+## Iter35 — P2 Gap: ExpandedNarrativeUI missing ichingNarrative + AreaNarrativeUI missing iching pillar
+
+### Resumo
+
+Auditoria identificou que o motor `AreaNarrativeFull` (narrative-generator.ts:180) expõe `ichingNarrative: string` e `AreaNarrative.pillarContribution` inclui `iching: string`, mas os tipos cliente `ExpandedNarrativeUI` (useAkashaSynthesis.ts:89) e `AreaNarrativeUI.pillarContribution` (useAkashaSynthesis.ts:62-67) não os declaravam. O 5º pilar estava a ser calculado pelo motor mas descartado antes de chegar à UI.
+
+### Alterações
+
+**`useAkashaSynthesis.ts` — AreaNarrativeUI + ExpandedNarrativeUI**
+- `AreaNarrativeUI.pillarContribution`: adicionado `iching: string` aos 4 pilares existentes (cabala, tantra, odus, astrologia)
+- `ExpandedNarrativeUI`: adicionado `ichingNarrative: string` aos 4 blocos narrativos existentes (cabala, astrologia, tantra, odu)
+
+### Verificação
+- TypeScript: 0 novos erros (erros pré-existentes em push/route + akasha-core tests não relacionados)
+- Suite synthesis-engine: 53/53 pass (invariante)
+- Engine populates both fields: `narrative-generator.ts:718` (`ichingBlock`) + `synthesis-engine.ts:133` (`iching: ''` fallback)
+- Test "cada área tem pillarContribution com 5 pilares" já existente e passante
+
+### Lessons Learned
+- **Gap de typing vs. gap de dados**: O motor já produzia correctamente os dados; o gap era puramente de tipagem. TypeScript não apanhava em runtime porque o API response usa tipos engine (AreaNarrative) assignáveis a tipos cliente (AreaNarrativeUI) — structural typing permite os campos extra sem erro.
+- **Local interface em MandalaNarrative.tsx**: O componente MandalaNarrative tem uma interface `AreaNarrative` local (6 campos apenas) usada para o mandala card — é intencionalmente minimal e não requer os 5 pilares. Não confundir com `AreaNarrativeUI` do hook.
+
+## Iter36 — P8 final gap: GET /api/akasha/conexoes/[id] + View saved analysis
+
+### Resumo
+
+Auditoria identificou que P8 (Conexoes) estava quase completo mas sem capacidade de ver uma analise salva em detalhe. A rota GET `/api/akasha/conexoes` lista conexoes sem `resultData`; nao existia GET `/api/akasha/conexoes/[id]` para carregar uma conexao individual com a analise completa.
+
+### Alteracoes
+
+**`app/api/akasha/conexoes/[id]/route.ts` — GET handler**
+- Adicionado `GET` handler que devolve uma conexao individual com `resultData` completo (narrative, recommendations, dimensions, oduSync, bodySync)
+- Authorization check (userId match) antes de devolver dados
+- Formato de resposta consistente com POST response
+
+**`ConexoesClient.tsx` — "Ver analise completa" button**
+- Adicionado `loadSavedConnectionDetails(id)` que: GET `/api/akasha/conexoes/${id}`, restaura `rawData` para o parceiro, carrega `resultData` como `ConexaoResult`, transita para `stage='results'`
+- Botao adicionado em cada card de conexao salva com gradiente roxo-turquesa
+
+### Verificacao
+- TypeScript: 0 novos erros (pre-existing akasha-core test error nao relacionado)
+- ROADMAP P8: todas as fases marcadas `[x]`
+
+### Lessons Learned
+- **UX gap vs. missing feature**: A infraestrutura (schema, POST, GET list, DELETE) existia; faltava a experiencia de "re-ver uma analise salva". UX final e tão importante quanto a engine.
+- **`Stage` tipo ja previa `'details'`**: O tipo `Stage` em ConexoesClient ja tinha `'details'` como estado possivel, mas nunca era usado. A wiring completa реализует o que ja estava preparado.
+- **`akasha-core.calcular()` nao substitui `computeBirthChartMaps`**: `AkashaInputSchema` requer `local_nascimento` (cidade) + `intencao_inicial` (obrigatorio); chart route usa coordenadas numericas. Inputs incompativeis — o chart route continua a fazer 5 chamadas diretas aos engines.

@@ -262,3 +262,50 @@ The profile is:
 - `user.ichingMap` remains used only for the interactive oracle (where consent is required)
 
 **Source:** `apps/akasha-portal/src/app/api/akasha/mandala/route.ts` line 62
+
+---
+
+## I Ching 5º Pilar — ExpandedNarrativeUI gap closed
+
+**Date:** 2026-06-17  
+**Iteration:** iter35  
+**Type:** Type definition gap (P2)
+
+**Decision:** Adicionar `ichingNarrative: string` a `ExpandedNarrativeUI` e `iching: string` a `AreaNarrativeUI.pillarContribution` em `useAkashaSynthesis.ts`.
+
+**Context:**
+- Motor `AreaNarrativeFull` (narrative-generator.ts:180) expõe `ichingNarrative: string` e `AreaNarrative.pillarContribution` inclui `iching: string`
+- Tipos cliente `ExpandedNarrativeUI` e `AreaNarrativeUI` não os declaravam — 5º pilar era calculado mas descartado antes da UI
+- Engine `synthesis-engine.ts:133` usa fallback `iching: ''` em `buildFallbackArea`
+- Teste "cada área tem pillarContribution com 5 pilares" já existia e passava (dados OK; gap era só de tipagem)
+
+**Consequences:**
+- `AreaNarrativeUI.pillarContribution` agora tem 5 campos: cabala, tantra, odus, astrologia, iching
+- `ExpandedNarrativeUI` agora tem 5 campos narrativos: cabalaNarrative, astrologiaNarrative, tantraNarrative, oduNarrative, ichingNarrative
+- MandalaNarrative.tsx tem interface local `AreaNarrative` (6 campos, minimal) — não afecta, é independente
+- TypeScript não apanhava em runtime: API retorna engine types (AreaNarrative) assignáveis por structural typing aos client types (AreaNarrativeUI) — campos extra são silenciosamente aceite
+
+**Source:** `apps/akasha-portal/src/components/akasha/dashboard/hooks/useAkashaSynthesis.ts:62-67, 89-98`
+
+---
+
+## Conexoes [id] GET — P8 UX completeness
+
+**Date:** 2026-06-17  
+**Iteration:** iter36  
+**Type:** API completeness (P8 UX)
+
+**Decision:** Adicionar `GET /api/akasha/conexoes/[id]` que devolve conexao individual com `resultData` completo (full `ConexaoResult`), permitindo ao utilizador re-ver uma analise salva com narrative, recommendations, dimensions.
+
+**Context:**
+- `POST /api/akasha/conexoes` cria conexao e devolve `resultData` na resposta
+- `GET /api/akasha/conexoes` lista conexoes mas NAO inclui `resultData` (SELECT omitia o campo)
+- `ConexoesClient` guardava `resultData` da resposta POST em `setResult()` para display, mas ao re-ver uma conexao da lista nao tinha como carregar `resultData`
+- A solucao: GET `[id]` dedicado com `resultData` + botao "Ver analise completa" no card salvo
+
+**Consequences:**
+- Saved connections agora podem ser re-abertas com analise completa (narrative, recommendations, dimensions, oduSync, bodySync)
+- GET list mantem-se leve (nao inclui `resultData` por padrao — so no [id] endpoint)
+- DELETE e GET partilham o mesmo padrao de authorization check
+
+**Source:** `apps/akasha-portal/src/app/api/akasha/conexoes/[id]/route.ts`

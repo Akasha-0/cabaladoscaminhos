@@ -64,6 +64,7 @@ export interface AreaNarrativeUI {
     tantra: string;
     odus: string;
     astrologia: string;
+    iching: string;
   };
   practicalAdvice: string;
   dailyRitual: {
@@ -85,12 +86,12 @@ export interface AreaNarrativeUI {
    */
   chainOfReasoning?: string[];
 }
-
 export interface ExpandedNarrativeUI {
   cabalaNarrative: string;
   astrologiaNarrative: string;
   tantraNarrative: string;
   oduNarrative: string;
+  ichingNarrative: string;
   integratedNarrative: string;
   practicalExample: string;
   sourceLabel: string;

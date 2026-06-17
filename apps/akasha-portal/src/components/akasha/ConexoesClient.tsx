@@ -256,6 +256,44 @@ export default function ConexoesClient({ userProfile }: Props) {
     }
   }
 
+  async function loadSavedConnectionDetails(id: string) {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch(`/api/akasha/conexoes/${id}`);
+      if (!res.ok) throw new Error('Erro ao carregar análise salva.');
+      const data = await res.json();
+      const conn = data.connection;
+      if (!conn) throw new Error('Conexão não encontrada.');
+      setRawData({
+        name: conn.otherName ?? '',
+        birthDate: conn.otherBirthDate ?? '',
+        birthTime: conn.otherBirthTime ?? '',
+        birthCity: conn.otherBirthCity ?? '',
+      });
+      if (conn.resultData) {
+        setResult(conn.resultData as ConexaoResult);
+      } else {
+        setResult({
+          romantic: conn.romanticScore ?? 0,
+          partnership: conn.partnershipScore ?? 0,
+          dominantType: conn.dominantType ?? 'both',
+          authorityMatch: conn.authorityMatch ?? 'aligned',
+          dimensions: [],
+          oduSync: { score: 0, sharedOdu: false, complementaryOdu: false, description: '' },
+          bodySync: { score: 0, description: '' },
+          narrative: [],
+          recommendations: [],
+        });
+      }
+      setStage('results');
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Erro ao carregar análise salva.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
   const AUTHORITY_LABELS: Record<string, string> = {
     aligned: 'Alinhada',
     complementary: 'Complementar',
@@ -813,6 +851,13 @@ export default function ConexoesClient({ userProfile }: Props) {
                     <span>{AUTHORITY_LABELS[conn.authorityMatch]}</span>
                     <span>{new Date(conn.createdAt).toLocaleDateString('pt-BR')}</span>
                   </div>
+                  <button
+                    onClick={() => loadSavedConnectionDetails(conn.id)}
+                    className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#6350E0] to-[#2DD4BF] font-bold text-white text-sm flex items-center justify-center gap-2 mt-1"
+                  >
+                    <Heart size={14} />
+                    Ver análise completa
+                  </button>
                 </div>
               ))}
             </div>
