@@ -1,3 +1,22 @@
+## v0.82.1 (2026-06-17) — UX Round 15 — Conexões guidance + score % + archetype fixes
+- fix(conexoes): DimensionBar score now shows "%" (dimension.score → dimension.score%)
+- fix(conexoes): saved connections romanticScore and partnershipScore now show "%"
+- fix(conexoes): ConexaoResult.narrative type mismatch fixed — added NarrativeBlock[] interface + sentence-split rendering
+- fix(conexoes): narrative map missing return statement (JSX syntax error) — added return()
+- fix(conexoes): duplicate saved-connection score block removed
+- fix(conexoes): added score dimension explanations ("Afetividade, intimidade..." and "Propósito, visão...")
+- fix(conexoes): added dominantType legend explaining Amorosa/Negócio/Desafiadora/Mista
+- fix(conexoes): added post-results guidance explaining what to do with each score range
+- fix(dashboard): dimension cards now show dim.descricao first sentence below title
+- fix(dashboard): Foco card now has gold "Foco" badge; Regra Prática uses 2-col Quando/Então grid
+- fix(akasha): archetype ENQUADRAMENTO lookup covering all 12 Life Path archetypes (1-9, 11, 22, 33)
+- fix(akasha): footer CTA "Volte amanhã para seu Mandato do Dia →" linking to /diario
+- fix(akasha): "Ver mapas individuais →" → "Ver seus 5 mapas (Cabala, Astrologia, Tântrica, Ôdu, I Ching) →"
+- fix(dimensaocard): garbled "師父" → "mestre" in autoridadeAkasha superacao prompt
+- fix(diario): ContinuarButton aria-label added warning about losing scroll position
+- fix(oraculo): character count hidden when input empty (was showing "0 / 200 · 1 crédito")
+- build: ✓ Compiled 8.1s + 49/49 static pages
+
 ## v0.82.0 (2026-06-17) — UX Round 14 — Meaning + WCAG + Accessibility
 - fix(akasha): saudacao() dead code removed; garbled archetype framing ("O Sábio") fixed; grammar fix ("desde"→"como")
 - fix(akasha): DimensaoCard accordion — "Toque para ver mais" hint; aria-label open/close; paragraph repetition eliminated via skipFirst

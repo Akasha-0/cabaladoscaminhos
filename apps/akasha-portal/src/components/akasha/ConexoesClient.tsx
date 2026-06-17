@@ -636,6 +636,39 @@ export default function ConexoesClient({ userProfile }: Props) {
               ))}
             </div>
           )}
+          {/* Dominant type legend */}
+          <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+            <p className="text-[10px] text-white/30 mb-2 uppercase tracking-wider">Tipo dominante: significado</p>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px] text-white/40">
+              <span><span className="text-[#f87171]">Amorosa</span> —afetividade em primeiro plano</span>
+              <span><span className="text-[#fbbf24]">Negócio</span> —proósito compartilhado</span>
+              <span><span className="text-[#c084fc]">Desafiadora</span> —contraste como motor</span>
+              <span><span className="text-[#7C5CFF]">Mista</span> —equilíbrio entre ambos</span>
+            </div>
+          </div>
+
+          {/* Post-results guidance */}
+          <div className="rounded-xl border border-[#7C5CFF]/20 bg-[#7C5CFF]/5 p-4">
+            <p className="text-xs text-[#7C5CFF]/80 mb-2 font-semibold">O que fazer com estes resultados</p>
+            <ul className="space-y-1.5 text-[11px] text-white/50">
+              <li className="flex gap-2">
+                <span className="text-[#7C5CFF]/60 shrink-0">→</span>
+                Scores altos (71+): reconheça o terreno fértil — aproveite para decisões conjuntas importantes.
+              </li>
+              <li className="flex gap-2">
+                <span className="text-[#7C5CFF]/60 shrink-0">→</span>
+                Scores médios (41–70): o campo oscila — ações conjuntas pequenas constroem o terreno.
+              </li>
+              <li className="flex gap-2">
+                <span className="text-[#7C5CFF]/60 shrink-0">→</span>
+                Scores baixos (0–40): o contraste é informação — investigue o que cada um busca antes de agir juntos.
+              </li>
+              <li className="flex gap-2">
+                <span className="text-[#7C5CFF]/60 shrink-0">→</span>
+                Salve a análise para comparar ao longo do tempo — conexões mudam conforme vocês evoluem.
+              </li>
+            </ul>
+          </div>
 
           {/* Save connection button */}
           <button

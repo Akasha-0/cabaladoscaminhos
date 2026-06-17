@@ -10,6 +10,7 @@
  * A síntese é a composição inteligente desses dados em prosa significativa.
  */
 import type { KabalisticMap, AstrologyMap, TantricMap, OduBirth } from '@akasha/types';
+import type { SynthesizedProfile } from '@akasha/core';
 import { buildAncestralidadeOduNarrative } from './synthesis-engine/odu-narrative-engine';
 
 // ─── Life Area labels ─────────────────────────────────────────────────────────
@@ -198,7 +199,8 @@ export function generateAreaNarrativeFull(
   kab: KabalisticMap | null,
   astro: AstrologyMap | null,
   tantra: TantricMap | null,
-  odu: OduBirth | null
+  odu: OduBirth | null,
+  _synthesizedProfile?: SynthesizedProfile,
 ): AreaNarrativeFull {
   const kabBlock = buildAncestralidadeNarrative(kab, area);
   const astroBlock = buildMovimentoCelesteNarrative(astro, area);
@@ -520,14 +522,49 @@ export function generateAreaNarrativeFull(
     const hasOdu   = oduBlock.length > 50;
     const hasCount = [hasKab, hasAstro, hasTantra, hasOdu].filter(Boolean).length;
 
-    // For single-pillar cases, skip the cross-pillar paragraph (2 paragraphs)
-    if (hasCount === 1) {
+    // Primitive-driven anchor: when pillar data is sparse, use top synthesized
+    // primitives to give the narrative a specific anchor point instead of generic.
+    let primitiveAnchor = '';
+    if (hasCount <= 2 && _synthesizedProfile?.primitivos.length) {
+      const sombraTop = _synthesizedProfile.primitivos
+        .filter(p => p.polaridade === 'sombra')
+        .sort((a, b) => b.magnitude - a.magnitude)
+        .slice(0, 2);
+      const luzTop = _synthesizedProfile.primitivos
+        .filter(p => p.polaridade === 'luz')
+        .sort((a, b) => b.magnitude - a.magnitude)
+        .slice(0, 2);
+      if (sombraTop.length > 0 || luzTop.length > 0) {
+        const sombraLabel = sombraTop[0]
+          ? `o desafio central é ${sombraTop[0].primitivo} — ${sombraTop[0].contributions[0]?.descricao ?? ''}`
+          : '';
+        const luzLabel = luzTop[0]
+          ? `sua âncora de força é ${luzTop[0].primitivo} — ${luzTop[0].contributions[0]?.descricao ?? ''}`
+          : '';
+        const parts: string[] = [];
+        if (sombraLabel) parts.push(sombraLabel);
+        if (luzLabel) parts.push(luzLabel);
+        if (parts.length > 0) {
+          primitiveAnchor = `O que seus mapas mais convergem é: ${parts.join(' e ')}. `;
+        }
+      }
+    }
+
+    // Prepend primitive anchor when available (sparse pillar data case)
+    if (primitiveAnchor) {
+      if (hasCount === 1) {
+        integratedNarrative = [primitiveAnchor + areaSyntheses[0](kabCore, astroCore, tantraCore, oduCore), areaSyntheses[3](kabCore, astroCore, tantraCore, oduCore)].join(' ');
+      } else if (hasCount === 2) {
+        integratedNarrative = [primitiveAnchor + areaSyntheses[0](kabCore, astroCore, tantraCore, oduCore), areaSyntheses[2](kabCore, astroCore, tantraCore, oduCore), areaSyntheses[3](kabCore, astroCore, tantraCore, oduCore)].join(' ');
+      } else {
+        // hasCount >= 3 but also have primitive anchor: full synthesis
+        integratedNarrative = areaSyntheses.map(fn => fn(kabCore, astroCore, tantraCore, oduCore)).join(' ');
+      }
+    } else if (hasCount === 1) {
+    } else if (hasCount === 1) {
       integratedNarrative = [areaSyntheses[0](kabCore, astroCore, tantraCore, oduCore), areaSyntheses[3](kabCore, astroCore, tantraCore, oduCore)].join(' ');
     } else if (hasCount === 2) {
       integratedNarrative = [areaSyntheses[0](kabCore, astroCore, tantraCore, oduCore), areaSyntheses[2](kabCore, astroCore, tantraCore, oduCore), areaSyntheses[3](kabCore, astroCore, tantraCore, oduCore)].join(' ');
-    } else {
-      // 3-4 pillars: full 4-paragraph synthesis
-      integratedNarrative = areaSyntheses.map(fn => fn(kabCore, astroCore, tantraCore, oduCore)).join(' ');
     }
   } else {
     integratedNarrative = fallbackSynthesis(kabCore, astroCore, tantraCore, oduCore);
