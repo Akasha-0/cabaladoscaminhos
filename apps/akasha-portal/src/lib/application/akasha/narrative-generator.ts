@@ -520,29 +520,29 @@ export function generateAreaNarrativeFull(
         `prestar atenção no que você diz a si mesmo nos ` +
         `primeiros 5 minutos da manhã. Anote. Sem justificar, ` +
         `sem editar. Depois de uma semana, leia com distância: ` +
-        `aí você vê a programaçao que roda em você há anos. ` +
+        `aí você vê a programação que roda em você há anos. ` +
         `Mudar a programaçao é o trabalho. Essa é sua missão de verdade.`,
     ],
 
     missaoDestino: [
       (k, a, t, o, i?) =>
-        `Você não está aqui por acidente — Kabbalah, Astrologia e ` +
-        `Tantra convergem nessa certeza. O que elas discordam ` +
-        `é o como. A Cabala descreve ${k.toLowerCase()}. ` +
+        `Você não está aqui por acidente. Kabbalah diz que ${k.toLowerCase()}. ` +
         `A Astrologia mostra que ${a.toLowerCase()}. ` +
         `O Tantra ensina que ${t.toLowerCase()}` +
-        (o ? `, e o Odu confirma ${o.toLowerCase()}` : '') +
-        (i ? `, e o I Ching soma: ${i.toLowerCase()}` : '') +
-        `. O padrão que emerge quando você lê essas vozes ` +
-        `juntas é a sua contribuição intransferível para o mundo.`,
+        (o ? `. O Odu confirma: ${o.toLowerCase()}` : '') +
+        (i ? `. O I Ching soma: ${i.toLowerCase()}` : '') +
+        `. Cinco mapas, uma certeza: você veio com uma contribuição que só você pode fazer.`,
 
       (k, a, t, o, i?) =>
         `Missão não é emprego. Não é título. Missão é o efeito ` +
         `que sua presença produz no ambiente quando você não está ` +
-        `tentando provar nada. Kabbalah nomeia o destino; ` +
+        `tentando provar nada.` +
+        (i ? ` O I Ching chama isso de "seguir o momento presente" — ` +
+        `quando você age no hexagrama certo, a missão se manifesta sem força.` : ` Kabbalah nomeia o destino; ` +
         `Astrologia nomeia a energia que outros sentem em você ` +
         `antes de você abrir a boca; Tantra nomeia o corpo que ` +
-        `carrega essa energia com mais ou menos facilidade.`,
+        `carrega essa energia com mais ou menos facilidade.`) +
+        `.`,
 
       (k, a, t, o, i?) =>
         `Isso explica por que você já se sentiu vazio em ` +
@@ -555,12 +555,16 @@ export function generateAreaNarrativeFull(
 
       (k, a, t, o, i?) =>
         `Não precisa ter toda a resposta hoje. Sua missão ` +
-        `não é um ponto fixo — é uma direção. Cada vez que ` +
+        `não é um ponto fixo — é uma direcção. Cada vez que ` +
         `você age alinhado com o que sua Cabala descreve, ` +
         `com o que sua Astrologia sugere, com o que seu ` +
-        `Tantra pratica, você está cumprindo o caminho. ` +
+        `Tantra pratica` +
+        (o ? ` e com o que seu Odu indica` : '') +
+        (i ? ` e com o que seu I Ching revela` : '') +
+        `, você está cumprindo o caminho. ` +
         `Um passo. Depois outro. É assim que se chega.`,
     ],
+
 
     desafiosSombras: [
       (k, a, t, o, i?) =>
@@ -573,7 +577,7 @@ export function generateAreaNarrativeFull(
         `${t.toLowerCase()}` +
         (o ? `, e o Odu sublinha ${o.toLowerCase()}` : '') +
         (i ? `, e o I Ching complementa: ${i.toLowerCase()}` : '') +
-        `. Quatro formas de dizer a mesma coisa: ` +
+        `. Cinco formas de dizer a mesma coisa: ` +
         `você não está quebrado. Você está incompleto.`,
 
       (k, a, t, o, i?) =>
@@ -611,7 +615,7 @@ export function generateAreaNarrativeFull(
   function fallbackSynthesis(k: string, a: string, t: string, o: string, i?: string): string {
     const parts: string[] = [];
     parts.push(
-      `Ao reunir Cabala, Astrologia, Tantra e Odu nesta área, emerge um padrão: ` +
+      `Ao reunir Cabala, Astrologia, Tantra, Odu e I Ching nesta área, emerge um padrão: ` +
       `${k.toLowerCase()} . ${a.toLowerCase()}. ${t.toLowerCase()}` +
       (o ? ` ${o.toLowerCase()}` : '') +
       (i ? ` ${i.toLowerCase()}` : '') +

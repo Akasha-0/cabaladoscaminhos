@@ -200,7 +200,7 @@ export function SignificadoPilar({
         >
           {sombra}
         </p>
-        <p style={{ fontSize: '0.68rem', color: '#5C6691', marginTop: 4 }}>
+        <p style={{ fontSize: '0.78rem', color: '#6B7AA0', marginTop: 4 }}>
           Quando notar isso em si, pause. Não force — só reconheça.
         </p>
       </section>
@@ -208,6 +208,7 @@ export function SignificadoPilar({
       {/* F-235 — Sexualidade: Lilith + Casa 8 (apenas Pilar 2 Astrologia) */}
       {showSexualidade && sexualidade && (
         <details
+          aria-label="Sexualidade e transformação: Lilith e Casa 8"
           style={{
             background: `linear-gradient(135deg, ${cor}10 0%, rgba(251,87,129,0.06) 100%)`,
             border: `1px solid ${cor}44`,
@@ -297,17 +298,18 @@ export function SignificadoPilar({
           padding: '0.6rem 0.7rem',
         }}
       >
-        <span
+        <h4
           style={{
             fontSize: '0.65rem',
             color: cor,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
+            margin: 0,
           }}
         >
           ▸ Prática · 3-5 min
-        </span>
-        <p style={{ fontSize: '0.68rem', color: '#5C6691', marginTop: 6 }}>
+        </h4>
+        <p style={{ fontSize: '0.78rem', color: '#A7AECF', marginTop: 6 }}>
           Antes de começar, prepare um caderno.
         </p>
         <p
@@ -320,7 +322,7 @@ export function SignificadoPilar({
         >
           {pratica}
         </p>
-        <p style={{ fontSize: '0.68rem', color: cor, marginTop: 4, opacity: 0.7 }}>
+        <p style={{ fontSize: '0.68rem', color: cor, marginTop: 4 }}>
           Faça agora ou anote como pretende aplicar hoje.
         </p>
       </section>

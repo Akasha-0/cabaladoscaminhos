@@ -74,7 +74,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
       <p
         style={{
           fontFamily: 'var(--font-cinzel, serif)',
-          color: '#A7AECF',
+          color: '#BFC4D4',
           fontSize: '0.75rem',
           marginBottom: '1.25rem',
           letterSpacing: '0.05em',
@@ -86,6 +86,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
       {/* Incomplete data badge */}
       {data.incomplete && (
         <a
+          role="alert"
           href={`/${locale}/conta`}
           style={{
             display: 'inline-block',
@@ -100,7 +101,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
             letterSpacing: '0.03em',
           }}
         >
-          ⚠ Dados incompletos — complete seu perfil para uma leitura plena
+          <span aria-hidden="true">⚠</span> Dados incompletos — complete seu perfil para uma leitura plena
         </a>
       )}
 
@@ -125,7 +126,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
           backdropFilter: 'blur(6px)',
         }}
       >
-        <p
+        <h2
           style={{
             fontFamily: 'var(--font-cinzel, serif)',
             color: '#9D86FF',
@@ -136,7 +137,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
           }}
         >
           POR QUE ESSAS 5 CAMADAS?
-        </p>
+        </h2>
         <h2
           style={{
             fontFamily: 'var(--font-cinzel, serif)',
@@ -160,7 +161,12 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
           Cada camada ilumina uma dimensão do seu ser. Toque uma para revelar orientações práticas.
         </p>
 
-        <div
+        <style>{`
+          @media (max-width: 480px) {
+            .mandala-grid { grid-template-columns: 1fr !important; }
+          }
+        `}</style>
+        <div className="mandala-grid"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
@@ -258,7 +264,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
         style={{
           display: 'block',
           marginTop: '0.75rem',
-          color: '#5C6691',
+          color: '#8890AA',
           fontSize: '0.7rem',
           textDecoration: 'none',
           letterSpacing: '0.03em',
@@ -299,16 +305,18 @@ function PilarCard({ icone, cor, titulo, eixo, valor, explicacao, fonte }: Pilar
         <span aria-hidden style={{ fontSize: '1.15rem', color: cor, lineHeight: 1 }}>
           {icone}
         </span>
-        <strong
+        <h3
           style={{
             fontFamily: 'var(--font-cinzel, serif)',
             fontSize: '0.78rem',
             color: '#F4F5FF',
             letterSpacing: '0.04em',
+            fontWeight: 600,
+            margin: 0,
           }}
         >
           {titulo}
-        </strong>
+        </h3>
       </div>
       <span style={{ fontSize: '0.7rem', color: cor, letterSpacing: '0.05em' }}>{eixo}</span>
       <span
@@ -324,7 +332,7 @@ function PilarCard({ icone, cor, titulo, eixo, valor, explicacao, fonte }: Pilar
       <p style={{ fontSize: '0.78rem', color: '#A7AECF', lineHeight: 1.55, margin: 0 }}>
         {explicacao}
       </p>
-      <span style={{ fontSize: '0.65rem', color: '#5C6691', fontStyle: 'italic' }}>
+      <span style={{ fontSize: '0.7rem', color: '#9DAFC8', fontStyle: 'italic' }}>
         via {fonte}
       </span>
     </article>
@@ -396,7 +404,7 @@ function MandatoCard({ data }: { data: MandatoData }) {
           marginBottom: '0.5rem',
         }}
       >
-        ✦ MANDATO DE HOJE · {saudacao.toUpperCase()}
+        <span aria-hidden="true">✦</span> MANDATO DE HOJE · {saudacao.toUpperCase()}
       </p>
       <p style={{ color: '#F4F5FF', fontSize: '0.92rem', lineHeight: 1.65, margin: 0 }}>
         {directive}
@@ -408,6 +416,8 @@ function MandatoCard({ data }: { data: MandatoData }) {
       )}
       {citacoes.length > 0 && (
         <div
+          role="group"
+          aria-label="Fontes do mandato de hoje"
           style={{
             marginTop: '0.75rem',
             paddingTop: '0.6rem',
@@ -421,7 +431,7 @@ function MandatoCard({ data }: { data: MandatoData }) {
             style={{
               fontFamily: 'var(--font-cinzel, serif)',
               fontSize: '0.62rem',
-              color: '#5C6691',
+              color: '#7888B0',
               letterSpacing: '0.1em',
             }}
           >

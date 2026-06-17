@@ -103,8 +103,8 @@ export function IchingInfoPanel({ iching }: { iching: IchingInfo }) {
                 </>
               )}
               <Divider />
-              <Row label="Data de nascimento — quando seu hexagrama foi selado" value={iching.birthDate} />
-              {iching.birthTime && <Row label="Hora — o momento cósmico do seu consulta" value={iching.birthTime} />}
+              <Row label="Data de nascimento — quando seu hexagrama foi selado" value={iching.birthDate ? new Date(iching.birthDate + 'T00:00:00').toLocaleDateString('pt-BR') : null} />
+              {iching.birthTime && <Row label="Hora — o momento cósmico da sua consulta" value={iching.birthTime} />}
               {iching.provisional && (
                 <p style={{ fontSize: '0.6875rem', color: '#5C6691', marginTop: '0.25rem' }}>
                   * Cálculo provisório — hora de nascimento não informada.
@@ -151,9 +151,7 @@ export function IchingInfoPanel({ iching }: { iching: IchingInfo }) {
       ) : (
         <div>
           <p style={{ fontSize: '0.8125rem', color: '#A7AECF', lineHeight: 1.55 }}>
-            Forneça sua data e hora de nascimento no perfil para revelar o Hexagrama do seu Ori.
-          </p>
-          <p style={{ fontSize: '0.8125rem', color: '#A7AECF', lineHeight: 1.55, marginTop: '0.5rem' }}>
+            Forneça sua data e hora de nascimento no perfil para revelar o Hexagrama do seu Ori.{' '}
             <Link href="/oraculo" style={{ color: '#A0763A', textDecoration: 'underline' }}>
               Consulte o Oráculo
             </Link>{' '}

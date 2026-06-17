@@ -12,7 +12,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Sparkles, Moon, Sun, Cloud, Loader, 
+  Sparkles, Moon, Sun, Cloud, Loader, Calendar,
   RefreshCw, TrendingUp, Award, UserCheck, X, Info, 
   Clock, Wind, CheckCircle, Heart, Zap, ChevronUp, ChevronDown
 } from 'lucide-react';
@@ -23,7 +23,9 @@ import { ProgressChart } from './ProgressChart';
 import { RitualHistory } from './RitualHistory';
 import { useDashboardData } from './hooks/useDashboardData';
 import { useAkashaSynthesis } from './hooks/useAkashaSynthesis';
+import { useCyclePersistence } from './hooks/useCyclePersistence';
 import { AkashaLifeAreasDashboard } from './AkashaLifeAreasDashboard';
+import { MeuCiclo } from './MeuCiclo';
 import { sintetizarMapa } from '@/lib/grimoire/synthesis/synthesizer';
 import type { CaixaSintese, DimensaoSintese } from '@/lib/grimoire/synthesis/synthesizer';
 import type { PilaresDados } from '@/lib/grimoire/significados-curados';
@@ -92,11 +94,7 @@ function renderNarrative(text: string, fontSize = '0.9rem'): React.ReactNode[] {
   return paragraphs.map((para, i) => {
     const parts = para.split(/\*\*(.+?)\*\*/g);
     return (
-      <p
-        key={i}
-        className="leading-relaxed text-[#A7AECF] mb-3 last:mb-0"
-        style={{ fontSize }}
-      >
+      <p key={i} style={{ fontSize }}>
         {parts.map((part, j) =>
           j % 2 === 1
             ? <strong key={j} className="text-[#9D86FF] font-semibold">{part}</strong>
@@ -132,6 +130,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
 
   const { data: statsData, loading: statsLoading, refetch: refetchStats } = useDashboardData({ userId });
   const { data: dailyData, synthesis, loading: synthesisLoading, refetch: refetchSynthesis } = useAkashaSynthesis({ userId });
+  const { persistCycle } = useCyclePersistence({ userId });
 
   // Fetch /api/akasha/mandato-do-dia and run local synthesis
   const fetchMandato = async () => {
@@ -190,6 +189,12 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
       setCompletedToday(done);
     }
   }, [statsData, dailyData]);
+
+  // P6 (iter33): Persist cycle snapshot + area history after each successful daily fetch
+  useEffect(() => {
+    if (!dailyData) return;
+    void persistCycle(dailyData);
+  }, [dailyData, persistCycle]);
 
   const handleCompleteRitual = async () => {
     if (!dailyData?.ritual) return;
@@ -318,6 +323,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
               onClick={handleRetryAll}
               className="p-2 text-[#A7AECF] hover:text-[#7C5CFF] rounded-lg transition-colors bg-white/5 border border-white/5"
               title="Sincronizar"
+              aria-label="Sincronizar"
             >
               <RefreshCw size={16} className={`${isLoading ? 'animate-spin' : ''}`} />
             </button>
@@ -328,7 +334,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
 
       {/* Tab Segmented Control */}
       <div className="px-4 pt-6 max-w-2xl mx-auto relative z-10">
-        <div className="bg-[#0B0E1C]/80 border border-white/10 rounded-full p-1 flex items-center justify-between backdrop-blur-md">
+        <div role="tablist" className="bg-[#0B0E1C]/80 border border-white/10 rounded-full p-1 flex items-center justify-between backdrop-blur-md">
           {[
             { id: 'daily', label: 'Alinhamento', icon: Sparkles },
             { id: 'profile', label: 'Áreas da Vida', icon: Award },
@@ -339,6 +345,10 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
             return (
               <button
                 key={tab.id}
+                id={`tab-${tab.id}`}
+                role="tab"
+                aria-selected={active}
+                tabIndex={active ? 0 : -1}
                 onClick={() => setActiveTab(tab.id as TabType)}
                 className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-full text-xs font-semibold tracking-wide transition-all duration-300 relative ${
                   active ? 'text-white' : 'text-[#A7AECF] hover:text-white'
@@ -363,6 +373,8 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
         <AnimatePresence mode="wait">
           {activeTab === 'daily' && (
             <motion.div
+              id="tabpanel-daily"
+              aria-labelledby="tab-daily"
               key="daily"
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -403,7 +415,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       <Cloud size={16} className="text-[#2DD4BF]" />
                     </div>
                   </div>
-                  <p className="text-[11px] text-[#2DD4BF]/70 uppercase tracking-widest font-mono font-semibold">Clima</p>
+                  <p className="text-[11px] text-[#2DD4BF] uppercase tracking-widest font-mono font-semibold">Clima</p>
                   <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.climate ?? 'Estável'}</p>
                   {activeFilterChip === 'clima' && (
                     <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#2DD4BF] flex items-center justify-center">
@@ -426,7 +438,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       <Moon size={16} className="text-[#F0B429]" />
                     </div>
                   </div>
-                  <p className="text-[11px] text-[#F0B429]/80 uppercase tracking-widest font-mono font-semibold">Fase Lunar</p>
+                  <p className="text-[11px] text-[#F0B429] uppercase tracking-widest font-mono font-semibold">Fase Lunar</p>
                   <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.moonPhase ?? 'Calculando'}</p>
                   {activeFilterChip === 'lua' && (
                     <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#F0B429] flex items-center justify-center">
@@ -449,7 +461,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       <Sun size={16} className="text-[#7C5CFF]" />
                     </div>
                   </div>
-                  <p className="text-[11px] text-[#7C5CFF]/80 uppercase tracking-widest font-mono font-semibold">Tema</p>
+                  <p className="text-[11px] text-[#7C5CFF] uppercase tracking-widest font-mono font-semibold">Tema</p>
                   <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.overallTheme ?? 'Foco'}</p>
                   {activeFilterChip === 'tema' && (
                     <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#7C5CFF] flex items-center justify-center">
@@ -519,7 +531,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                     {detSintese.autoridade.decisaoHoje}
                   </h3>
 
-                  <p className="text-xs text-[#A7AECF] leading-relaxed">
+                  <p className="text-sm text-[#C4C9E2] leading-relaxed">
                     {detSintese.autoridade.explicacao}
                   </p>
 
@@ -548,8 +560,8 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       <p className="text-white/85 leading-relaxed">{detSintese.autoridade.timing.melhor}</p>
                     </div>
                     <div className="space-y-2">
-                      <p className="text-[11px] text-[#FB5781]/90 uppercase tracking-wider font-mono font-semibold">Evitar Decidir</p>
-                      <p className="text-white/85 mt-0.5 leading-relaxed">{detSintese.autoridade.timing.pior}</p>
+                      <p className="text-[11px] text-[#E04879] uppercase tracking-wider font-mono font-semibold">Evitar Decidir</p>
+                      <p className="text-sm text-[#C4C9E2] mt-0.5 leading-relaxed">{detSintese.autoridade.timing.pior}</p>
                     </div>
                   </div>
 
@@ -582,7 +594,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                   </span>
                 </div>
 
-                <div id="foco-prioritario-content" className="relative" style={{ maxHeight: dimFocoExpanded ? 'none' : '4.5em', overflow: 'hidden' }}>
+                <div id="foco-prioritario-content" aria-live="polite" className="relative" style={{ maxHeight: dimFocoExpanded ? 'none' : '4.5em', overflow: 'hidden' }}>
                   <div className="space-y-1">
                     {renderNarrative(dimFoco?.synthes ?? '')}
                   </div>
@@ -607,7 +619,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                   aria-controls="foco-prioritario-content"
                   className="text-xs text-[#7C5CFF]/90 hover:text-[#7C5CFF] transition-colors px-3 py-2 min-h-11 rounded-lg"
                 >
-                  {dimFocoExpanded ? <><ChevronUp size={12} className="inline" /> Mostrar menos</> : <><ChevronDown size={12} className="inline" /> Ler mais</>}
+                  {dimFocoExpanded ? <><ChevronUp size={12} className="inline" /> Mostrar menos</> : <><ChevronDown size={12} className="inline" /> Ler mais sobre {dimFoco?.titulo}</>}
                 </button>
                 {/* aria-controls target is the div above */}
 
@@ -621,13 +633,17 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                 {dimFoco?.alerta && (
                   <div className="bg-[#FB5781]/5 border border-[#FB5781]/15 rounded-xl p-3.5 space-y-1">
                     <p className="text-[11px] text-[#FB5781] uppercase tracking-wider font-mono font-semibold">O que Evitar</p>
-                    <p className="text-xs text-white/90 leading-relaxed">{dimFoco.alerta}</p>
+                    <p className="text-sm text-[#C4C9E2] leading-relaxed">{dimFoco.alerta}</p>
                   </div>
                 )}
               </div>
               <a href={`/${locale}/akasha`} className="block text-center text-[11px] text-[#7C5CFF]/60 hover:text-[#7C5CFF] transition-colors py-3 min-h-11 border-t border-white/5">
                 Ver análise completa do seu mandato →
               </a>
+              {/* §P4: Meu Ciclo — Ciclo Pessoal (camada 7) */}
+              {dailyData?.cycle && (
+                <MeuCiclo cycle={dailyData.cycle} />
+              )}
               {/* 4. Daily Ritual Card - Premium Cosmic Design */}
               {dailyData?.ritual && (
                 <div className="relative group">
@@ -656,7 +672,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                             </span>
                           ) : (
                             <span className="flex items-center gap-1">
-                              <span className="text-[10px] text-[#A7AECF]/50">duração</span>
+                              <span className="text-[10px] text-[#A7AECF]/50">cor</span>
                               <span className="text-xs text-white">{dailyData.ritual.cor || '15 min'}</span>
                             </span>
                           )}
@@ -693,7 +709,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       onClick={() => setRitualExpanded(!ritualExpanded)}
                       className="text-xs text-[#7C5CFF]/90 hover:text-[#7C5CFF] transition-colors px-3 py-2 min-h-11 rounded-lg"
                     >
-                      {ritualExpanded ? <><ChevronUp size={12} className="inline" /> Mostrar menos</> : <><ChevronDown size={12} className="inline" /> Ver instrução completa</>}
+                    {ritualExpanded ? <><ChevronUp size={12} className="inline" /> Mostrar menos</> : <><ChevronDown size={12} className="inline" /> Ver instrução completa</>}
                     </button>
 
                     {/* Completion Button - Enhanced Design */}
@@ -716,6 +732,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                         <button
                           onClick={handleCompleteRitual}
                           disabled={completing}
+                          aria-busy={completing}
                           className="w-full relative group/btn"
                         >
                           <div className="absolute inset-0 bg-gradient-to-r from-[#7C5CFF] to-[#9D86FF] rounded-xl blur-md opacity-50 group-hover/btn:opacity-70 transition-opacity" />
@@ -744,7 +761,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                 <div className="space-y-4">
                   <div className="flex items-center gap-2">
                     <div className="h-px flex-1 bg-white/10" />
-                    <span className="text-xs text-white/30 uppercase tracking-widest font-mono">Sua Bússola Existencial ({detSintese?.dimensoes?.length ?? 0} Dimensões)</span>
+                    <h3 className="text-xs text-white/30 uppercase tracking-widest font-mono">Sua Bússola Existencial ({detSintese?.dimensoes?.length ?? 0} Dimensões)</h3>
                     <div className="h-px flex-1 bg-white/10" />
                   </div>
 
@@ -753,6 +770,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       const isPriority = dim.dimensoesId === dimFoco?.dimensoesId;
                       return (
                         <button
+                          aria-pressed={selectedDimension?.dimensoesId === dim.dimensoesId}
                           key={dim.dimensoesId}
                           onClick={() => setSelectedDimension(dim)}
                           className={`flex flex-col items-center justify-center gap-1.5 p-4 rounded-2xl border bg-[#0B0E1C]/45 hover:bg-white/5 hover:border-[#7C5CFF]/30 active:scale-95 transition-all text-center min-h-[92px] group relative ${
@@ -789,22 +807,27 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
 
           {activeTab === 'profile' && (
             <motion.div
+              id="tabpanel-profile"
+              aria-labelledby="tab-profile"
               key="profile"
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.25 }}
             >
-              <AkashaLifeAreasDashboard 
-                synthesis={synthesis} 
-                loading={synthesisLoading} 
-                onRefetch={refetchSynthesis} 
+              <AkashaLifeAreasDashboard
+                synthesis={synthesis}
+                loading={synthesisLoading}
+                onRefetch={refetchSynthesis}
+                cycle={dailyData?.cycle ?? undefined}
               />
             </motion.div>
           )}
 
           {activeTab === 'progress' && (
             <motion.div
+              id="tabpanel-progress"
+              aria-labelledby="tab-progress"
               key="progress"
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -876,7 +899,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
               transition={{ type: 'spring', duration: 0.3 }}
               className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
             >
-              <div className="bg-[#0B0E1C] border border-[#7C5CFF]/30 rounded-3xl w-full max-w-lg overflow-y-auto max-h-[85vh] p-6 relative pointer-events-auto shadow-[0_0_50px_rgba(124,92,255,0.15)] space-y-4">
+              <div role="dialog" aria-modal="true" aria-labelledby="modal-title" className="bg-[#0B0E1C] border border-[#7C5CFF]/30 rounded-3xl w-full max-w-lg overflow-y-auto max-h-[85vh] p-6 relative pointer-events-auto shadow-[0_0_50px_rgba(124,92,255,0.15)] space-y-4">
                 
                 {/* Close Button */}
                 <button
@@ -900,8 +923,8 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                     <Sparkles size={20} className="text-[#9D86FF]" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold font-cinzel text-white leading-none">{selectedDimension.titulo}</h3>
-                    <p className="text-xs text-[#A7AECF]/60 mt-1">{selectedDimension.descricao}</p>
+                    <h3 id="modal-title" className="text-lg font-bold font-cinzel text-white leading-none">{selectedDimension.titulo}</h3>
+                    <p className="text-xs text-[#C4C9E2] mt-1">{selectedDimension.descricao}</p>
                   </div>
                 </div>
 

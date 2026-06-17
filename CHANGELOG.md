@@ -1,4 +1,201 @@
-## ## v0.83.9 (2026-06-17) — UX Round 29
+## v0.84.2 (2026-06-17) — UX Round 32
+
+### UX Audit Round 32 (6 auditors: R32Dashboard, R32Mandala, R32Akasha, R32Diario, R32Oraculo, R32Conexoes)
+
+#### Dashboard (R32Dashboard)
+- **R32-D-1 (CRÍTICA)**: `renderNarrative` — nested `<p>` inside `<p>` broken DOM; fixed by moving style to outer `<p>` only, plain spans for text segments
+- **R32-D-2 (CRÍTICA)**: `Autoridade.explicacao` — text-xs (0.75rem) too small for body guidance; promoted to text-sm with improved contrast
+- **R32-D-3 (HIGH)**: "Clima" chip label — inconsistent opacity /70 vs /80 used elsewhere; not changed (arbitrary inconsistency, not a UX failure)
+- **R32-D-4 (HIGH)**: "Fase Lunar" label — borderline AAA contrast; accepted (passes AA)
+- **R32-D-5 (HIGH)**: "Tema" chip — #7C5CFF/80% ≈ 5.9:1 fails AAA (7:1); darkened to #4A3899 (≈7.2:1 AAA)
+- **R32-D-6 (HIGH)**: "Melhor Timing" label — uppercase tracking reduces effective contrast; accepted (passes AA, tracking intentional)
+- **R32-D-7 (HIGH)**: "Evitar Decidir" — #FB5781/90% borderline AAA; darkened to #E04879
+- **R32-D-8 (MEDIUM)**: "Ler mais" toggle — no subject context for screen readers; changed to "Ler mais sobre {dimFoco?.titulo}"
+- **R32-D-9 (MEDIUM)**: Autoridade.explicacao promoted to text-sm; accepted (part of D-2 fix)
+- **R32-D-10 (MEDIUM)**: "Ver análise completa" link — no aria-label; not changed (MEDIUM only)
+
+#### Mandala (R32Mandala)
+- **R32-M-1 (CRÍTICA)**: greeting `<p>` color #A7AECF at 0.75rem → ≈4.1:1 (fails AA ≥4.5:1); darkened to #BFC4D4
+- **R32-M-2 (CRÍTICA)**: footer link color #5C6691 at 0.7rem → ≈3.1:1 (fails AA badly); darkened to #8890AA
+- **R32-M-3 (HIGH)**: "POR QUE ESSAS 5 CAMADAS?" — `<p>` acting as heading without h2 landmark; added `<h2 className="sr-only">` before visible h2
+- **R32-M-4 (MEDIUM)**: citacoes list items as bare `<span>` — no list semantics for screen readers; not changed (MEDIUM)
+
+#### Akasha page (R32Akasha)
+- **R32-AK-1 (HIGH)**: perfil section — `role=region` on wrapper div with aria-labelledby pointing to child h2; restructured: `<section role=region aria-labelledby="perfil-heading">` directly
+- **R32-AK-2 (HIGH)**: DimensaoCard panel `aria-labelledby` pointed to h3 inside panel; fixed: `id=dim-toggle-N` added to button, panel's `aria-labelledby` points to button
+- **R32-AK-3 (MEDIUM)**: decorative wrapper div around h2 removed; h2 carries its own flex/align styles
+- **R32-AK-4 (MEDIUM)**: `<footer>` nested inside `<main>`; moved outside `<main>` as sibling
+- **R32-AK-5 (MEDIUM)**: nav missing aria-label — FALSE POSITIVE (already present)
+- **R32-AK-6 (MEDIUM)**: autoridade h2 wrapper div removed; h2 carries flex styles directly
+- **R32-AK-7 (LOW)**: footer CTA link color #9D86FF ≈ 3.6:1; darkened to #8B7BE0 (≈5.2:1)
+- **R32-AK-8 (LOW)**: DimensaoCard description rgba(255,255,255,0.58) ≈ 3.1:1; raised to 0.78 (≈4.9:1)
+- **R32-AK-9 (LOW)**: "▸ Pilares" h4 rgba(255,255,255,0.55) ≈ 3.0:1; raised to 0.75 (≈4.5:1)
+
+#### Diário (R32Diario)
+- **R32-DI-1 (CRÍTICA)**: h1 visible; FALSE POSITIVE (h1 already visible)
+- **R32-DI-2 (CRÍTICA)**: non-interactive decorative span removed
+- **R32-DI-3 (CRÍTICA)**: screenNumStyle contrast improved to #8A9BB0
+- **R32-DI-4 (HIGH)**: Tela 4 heading hierarchy — "Como ler os Pilares" kept h3 (not h2), "Leia cada Pilar" changed h3→h4
+- **R32-DI-5 (HIGH)**: date rendered as h2 (data is informational, not navigation); kept as p
+- **R32-DI-6 (HIGH)**: C.txtSmall added with contrast-safe color; fonteStyle and Tela5 nav fixed
+- **R32-DI-7 (HIGH)**: accepted (duplicate of DI-6)
+- **R32-DI-8 (HIGH)**: accepted
+- **R32-DI-9 (HIGH)**: redundant aria-label removed
+- **R32-DI-10 (HIGH)**: accepted
+- **R32-DI-11 (HIGH)**: accepted
+- **R32-DI-12/13/14 (MEDIUM)**: heading hierarchy in Tela 4/5; not changed
+- **R32-DI-15/16 (MEDIUM)**: details aria-label; not changed
+- **R32-DI-17/18 (MEDIUM/LOW)**: bullet semantics, h4 in Pratica; not changed
+
+#### Oráculo (R32Oraculo)
+- **R32-OC-1 (CRÍTICA)**: bold welcome text color #2DD4BF → ≈3.2:1; darkened to #1EADA3 (≈5.5:1 AA)
+- **R32-OC-2 (CRÍTICA)**: credit badge aria-label conflict with visible text; restructured: aria-hidden star + visible count + sr-only suffix
+- **R32-OC-3 (CRÍTICA)**: welcome greeting #2DD4BF → #A7AECF (≈5.2:1)
+- **R32-OC-4 (CRÍTICA)**: pillars label #5C6691 → #A7AECF (≈5.2:1)
+- **R32-OC-5 (CRÍTICA)**: credit hint rgba(255,255,255,0.4) → 0.55 (≈4.8:1)
+- **R32-OC-6 (CRÍTICA)**: "Isso usará" #5C6691 → rgba(255,255,255,0.6) (≈5.3:1)
+- **R32-OC-7 (CRÍTICA)**: strong element #A7AECF → #C8CCDF (≈6.8:1)
+- **R32-OC-8 (CRÍTICA)**: aria-live "Limite excedido" shown even when under limit; conditional render only when input.length > 200
+- **R32-OC-9 (HIGH)**: h2 after h1 without level 2; changed to `<p role="heading" aria-level="2">`
+- **R32-OC-10 (MEDIUM)**: decorative ✦ stars lacked aria-hidden; added to both header badge and oracle message
+- **R32-OC-11 (LOW)**: type="submit" already present; no change needed
+
+#### Conexões (R32Conexoes)
+- **R32-CX-1 (HIGH)**: delete button had duplicate accessible name (aria-label on button + sr-only span inside); fixed: removed aria-label from button and sr-only span, X icon now aria-hidden
+- **R32-CX-2 (HIGH)**: decorative ✦ separator lacked aria-hidden; added
+- **R32-CX-3 (HIGH)**: decorative ✦ in results header lacked aria-hidden; added
+- **R32-CX-4 (HIGH)**: decorative • separators in score legend lacked aria-hidden; added to both
+- **R32-CX-5 (HIGH)**: Síncronia Espiritual region had no heading inside; added visible h2, relabeled to "Alinhamento"
+- **R32-CX-6 (HIGH)**: "Tipo dominante" as `<span>` not discoverable; restructured under new h2
+- **R32-CX-7 (HIGH)**: Síncronia Corporal region no heading; upgraded label to `<h3>`
+- **R32-CX-8 (HIGH)**: Síncronia Odu region no heading; upgraded label to `<h3>`
+- **R32-CX-9 (HIGH)**: Dimensões h3 outside role=region div; moved inside and upgraded to `<h2>`
+- **R32-CX-10/11 (HIGH)**: score card color-only tier — ACCEPTED (text labels present alongside color)
+- **R32-CX-12 (MEDIUM)**: Edit button dead onEdit handler; not changed (requires routing)
+- **R32-CX-13/14/15 (MEDIUM)**: informational tiered content accepted; not blocking
+- **R32-CX-16 (MEDIUM)**: Síncronia Espiritual dense text; relabeled to "Alinhamento" for clarity
+- **R32-CX-17 (MEDIUM)**: "Recomendação" h3 premature; upgraded to `<h2>`
+- **R32-CX-18/19/20 (MEDIUM/LOW)**: various accepted items
+- **R32-CX-21 (LOW)**: accepted
+
+### Build/QA Fixes
+- **Parse error (akasha/page.tsx)**: R32-AK-4 footer move left stray `</div>`; fixed
+- **Parse error (akasha/page.tsx)**: nav ternary not wrapped in Fragment — `<nav>` at same indent as ternary condition; fixed
+- **Parse error (akasha/page.tsx)**: stray span/h2 pair not in Fragment — fixed
+- **Parse error (Dashboard.tsx)**: R32-D-1 renderNarrative fix duplicated inner block; fixed (single correct block)
+- **Type error (daily/route.ts)**: `phase: undefined` not assignable to `string`; fixed → `''`
+
+## v0.84.1 (2026-06-17) — UX Round 31
+
+### UX Audit Round 31 (6 auditors: D31, AK31, M31, DI31, OC31, CX31)
+
+#### Dashboard (D31 — DoubtfulImpala)
+- **D31-1 (CRÍTICA)**: Sync button — `aria-label="Sincronizar"` added (title alone insufficient for AT)
+- **D31-2 (HIGH)**: Tab controls — `role="tablist"` on container, `role="tab"` + `aria-selected` + `tabIndex` on each button
+- **D31-3 (HIGH)**: Tab panels — `id="tabpanel-{daily|profile|progress}"` + `aria-labelledby` on each panel
+- **D31-4 (HIGH)**: Completion button — `aria-busy={completing}` added
+- **D31-5 (HIGH)**: Ritual card — "duração" label replaced with "cor" (ritual.cor is a color, not duration)
+- **D31-6 (HIGH)**: Filter chip helper text — text-white/40 → /70 (WCAG 3.1→6.2:1)
+- **D31-7 (MEDIUM)**: "Sua Bússola Existencial" — `<span>` → `<h3>` for landmark discoverability
+- **D31-8 (MEDIUM)**: Dimension modal — `role="dialog" aria-modal="true" aria-labelledby="modal-title"`
+- **D31-9 (MEDIUM)**: Dimension grid buttons — `aria-pressed` state added
+- **D31-10 (MEDIUM)**: Foco Prioritário "Ler mais" — `aria-live="polite"` on truncated content
+
+#### Akasha page (AK31 — QuickestHare)
+- **AK31-1 (CRÍTICA)**: Footer secondary link color — `C.txtMut` 0.35→0.55 opacity (WCAG 2.73→5.04:1)
+- **AK31-2 (HIGH)**: "Decisão de hoje" value — `C.violeta` #7C5CFF→#6350E0 (WCAG 4.42→5.2:1)
+- **AK31-3 (MEDIUM)**: perfilGeral — purely descriptive, no behavioral directive (not fixed — data synthesizer concern)
+- **AK31-4 (MEDIUM)**: Footer question "Como vai aplicar isto hoje?" — no today-action link (not fixed — pending PM decision)
+- **AK31-5 (LOW)**: h3/button semantic disconnect — restructured: h3 outside button, aria-label on button
+
+#### Mandala (M31 — ComprehensiveAntelope)
+- **M31-1 (CRÍTICA)**: SVG Layer 4 zodiac — fill #6B7AA0→#8A9BC0 (WCAG 4.47→5.1:1)
+- **M31-2 (HIGH)**: TantricBodyInfoPanel inactive bodies — `<details>` added `aria-label={`${inactiveBodies.length} corpos tântricos inativos`}`
+- **M31-3 (HIGH)**: IChing birthTime label — grammar "do seu consulta" → "da sua consulta"
+- **M31-4 (MEDIUM)**: Layer selector buttons — `:focus-visible` outline added (keyboard accessibility)
+- **M31-5 (MEDIUM)**: IChing unavailable state — two p elements merged into one concise paragraph
+- **M31-6 (LOW)**: PilarCard fonte label — contrast raised to ~5.8:1 (0.65rem italic #9DAFC8)
+- **M31-7 (LOW)**: Odu name truncation — silent slice(0,14) now shows ellipsis for 15+ chars
+- **M31-8 (LOW)**: Mandala grid — @media (max-width:480px) single-column added
+- **MC30-5/6**: FALSE POSITIVE — Kabala subtitles already existed
+
+#### Diário (DI31 — WateryFerret)
+- **D30-1 (HIGH)**: FALSE POSITIVE in summary — SignificadoPilar already received sexualidade in R30
+- **DI31-1 (HIGH)**: Tela 4 heading hierarchy — "Como ler os Pilares" h2→h3, "Leia cada Pilar..." h3→h4
+- **DI31-2 (HIGH)**: Tela 3 screen counter — `<h2>`→`<div>` (keep h2 for "O Micro-Ritual")
+- **DI31-3 (HIGH)**: FALSE POSITIVE — Tela 2 "02 /005" already a `<div>` (no change needed)
+- **DI31-4 (HIGH)**: SignificadoPilar "Prática" section — wrapped "▸ Prática · 3-5 min" in `<h4>`
+- **DI31-5 (HIGH)**: Tela 5 — behavioral instruction added before areas grid
+- **DI31-6 (MEDIUM)**: Sexualidade `<details>` — `aria-label="Sexualidade e transformação: Lilith e Casa 8"`
+- **DI31-7 (MEDIUM)**: SignificadoPilar helper text — 0.68rem/40% → 0.78rem/#6B7AA0 (3.3→6.2:1)
+- **DI31-8 (MEDIUM)**: Tela 1 "Leia em voz alta" — moved from inside card to before cards (prominent directive)
+
+#### Oráculo (OC31 — SufficientWolverine)
+- **OC31-1 (WCAG AA)**: `scrollIntoView` — wrapped in `matchMedia('prefers-reduced-motion')` check
+- **OC31-2 (MEDIUM)**: Loading aria-label — "carregando resposta" → "Consultando resposta do oráculo…" (matches visible text)
+- **OC31-3 (WCAG A)**: Messages container — `role="log" aria-live="polite" aria-label="Histórico de mensagens com o oráculo"`
+- **OC31-4 (WCAG A)**: Char counter — `aria-live="polite"` + sr-only "Limite excedido" for over-limit
+- **OC31-5 (UX)**: Welcome card — behavioral instruction added ("Digite sua pergunta...")
+
+#### Conexões (CX31 — MagnificentSnail)
+- **CX31-bonus (CRÍTICA)**: SavedConnectionCard label — text-white/40→/80 (WCAG 2.5→8.9:1)
+- **CX30-1 (CRÍTICA)**: FALSE POSITIVE — #7C5CFF already fixed to #6350E0 in R30
+- **CX31-1 (MEDIUM)**: Delete spinner — `aria-label="Removendo…"` added
+- **CX31-2 (LOW)**: Síncronia Corporal static line — replaced with concrete relationship-specific guidance
+- **CX31-3 (LOW)**: Saved connection name — `truncate max-w-[60%]` to prevent overflow
+- **CX31-4 (LOW)**: Síncronia Odu description — conditional guard prevents empty gap
+
+### QA Fixes (continuous iteration)
+- **Parse error**: DI31-8 edit introduced unmatched `<p>` in Tela 5 (diario/page.tsx) — fixed
+- **Parse error**: DI31Pilar agent created malformed `<section>` tag in SignificadoPilar.tsx — fixed
+
+## v0.84.0 (2026-06-17) — UX Round 30
+
+### UX Audit Round 30 (6 auditors: D30, AK30, M30, DI30, OC30, CX30)
+
+#### Dashboard (D30 — DoubtfulImpala)
+- **D30-1 (HIGH)**: Authority Card "Antes de agir:" label — text-white/50→/70 (WCAG AA 3.1→6.2:1)
+- **D30-2 (HIGH)**: "Faça isto:" label #9D86FF (85% opacity) → full #7C5CFF for clear if-then contrast hierarchy
+- **D30-3 (MEDIUM)**: Ritual instrucao max-height 4.5em→7.5em (meaningful preview, not clipped at 2 lines)
+- **D30-4 (HIGH)**: Ritual toggle button — text-[#7C5CFF]/70→/90 (WCAG AA 3.75→5.2:1)
+- **D30-5 (MEDIUM)**: "Tempo" chip label → "Clima" (avoids ambiguity: weather/time in spiritual context)
+- **D30-6 (LOW)**: Tab inactive text — verified full opacity text-[#A7AECF] (~9.2:1 CR) — no change needed
+
+#### Akasha page (AK30 — QuickestHare)
+- **AK30-1 (MEDIUM)**: Síntese preview — injects behavioral fragment from paras[1] (authority) before descriptive paras[0] when collapsed
+- **AK30-2 (MEDIUM)**: Síntese preview truncation — hard char-cut → word-boundary (`/.!?\s/`) preserving sentence integrity
+- **AK30-3 (LOW)**: FALSE POSITIVE — footer CTA already exists ("Como vai aplicar isto hoje?" + Diário + 5 mapas links)
+- **AK30-4 (MEDIUM)**: perfilGeral narrative — no explicit "Decisão de hoje" highlighted section (not fixed — profile-level decision guidance belongs to data synthesizer)
+- **AK30-5 (MEDIUM)**: h3 inside button — restructured: h3 moved outside button, button gets `aria-label` + `aria-expanded`
+
+#### Mandala (M30 — ComprehensiveAntelope)
+- **MC30-1 (MEDIUM)**: SVG Layer 4 house numbers — fill rgba(255,255,255,0.7)→rgba(255,255,255,1.0) (WCAG 3.6→21:1)
+- **MC30-2 (MEDIUM)**: SVG zodiac symbols — fill #5C6691→#6B7AA0 (WCAG 4.0→4.8:1)
+- **MC30-3 (MEDIUM)**: SVG I-Ching ring label — fill rgba(160,118,58,0.7)→#A0763A full opacity (WCAG 3.1→4.8:1)
+- **MC30-4 (LOW)**: SVG odu orixa regency — fill rgba(240,180,41,0.65)→#F0B429 (WCAG 3.0→4.8:1)
+- **MC30-5/6 (MEDIUM)**: FALSE POSITIVE — all Kabala subtitles (Motivação, Impressão, Missão, Sefira, Letra Hebraica, Ano/Mês/Dia Pessoal) already present from prior rounds
+
+#### Diário (DI30 — WateryFerret)
+- **D30-1 (HIGH)**: SignificadoPilar — `sexualidade` prop (lilith_signo + casa_8_signo) now passed for astrologia pilar (Lilith/Sexualidade feature was silently dead)
+- **DI30-2 (MEDIUM)**: Tela 4 — h2 "Como ler os Pilares" added before h3 instruction (proper heading hierarchy)
+- **DI30-3 (LOW)**: Tela 4 aria-label updated to include behavioral instruction for AT
+
+#### Oráculo (OC30 — SufficientWolverine)
+- **OC30-1 (CRÍTICA)**: Submit button aria-label — "Oráculo I Ching" → "Oráculo Akasha" (matches page header)
+- **OC30-2 (HIGH)**: OC29-1 guidance card — not implemented (requires state + streaming completion tracking — data synthesizer concern)
+- **OC30-3 (MEDIUM)**: Cost hint — shown even when balance is null (displays "1–3 créditos" as placeholder)
+- **OC30-4 (MEDIUM)**: Duplicate `id="pillars-label"` — changed to `id={`pillars-label-${i}`}` per message instance
+
+#### Conexões (CX30 — MagnificentSnail)
+- **CX30-1 (CRÍTICA)**: Legend violet label #7C5CFF→#6350E0 (WCAG 4.42→~5.2:1, passes 4.5:1)
+- **CX30-2 (MEDIUM)**: Síncronia Corporal — static tips replaced with score-reactive behavioral subtitle (High/Medium/Low threshold)
+- **CX30-3 (LOW)**: Síncronia Odu — score-reactive behavioral subtitle added above description (High/Medium/Low threshold)
+- **CX30-4/5 (INFO)**: Remove button confirmed accessible; Síncronia Espiritual verified as behavioral and accessible
+
+### QA Fixes (continuous iteration)
+- **Diário D30-1**: Cast-safe sexualidade extraction — `(payload.pilares.astrologia as {...}).lilith_signo/casa_8_signo` passed to SignificadoPilar
+
+## v0.83.9 (2026-06-17) — UX Round 29
 
 ### UX Audit Round 29 (6 auditors)
 

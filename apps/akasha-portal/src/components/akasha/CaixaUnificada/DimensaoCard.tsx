@@ -85,29 +85,7 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
       } as React.CSSProperties}
     >
       {/* Header — sempre visível */}
-      <button
-        id={`dim-btn-${index}`}
-        onClick={() => setAberto((v) => !v)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            setAberto((v) => !v);
-          }
-        }}
-        aria-expanded={aberto}
-        aria-controls={`dim-panel-${index}`}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 12,
-          width: '100%',
-          background: 'none',
-          border: 'none',
-          padding: 0,
-          cursor: 'pointer',
-          textAlign: 'left',
-        }}
-      >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, width: '100%' }}>
         <span
           style={{ fontSize: '1.4rem', color: sintese.chakraCor, lineHeight: 1, flexShrink: 0 }}
           aria-hidden
@@ -116,6 +94,7 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
         </span>
         <div style={{ flex: 1, minWidth: 0 }}>
           <h3
+            id={`dim-btn-${index}`}
             style={{
               fontFamily: 'var(--font-cinzel, serif)',
               fontSize: '1rem',
@@ -127,11 +106,36 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
             {sintese.titulo}
           </h3>
           {sintese.descricao && (
-            <p style={{ fontSize: '0.78rem', color: 'rgba(232,224,255,0.58)', margin: '3px 0 0', lineHeight: 1.3 }}>
+            <p style={{ fontSize: '0.78rem', color: 'rgba(232,224,255,0.78)', margin: '3px 0 0', lineHeight: 1.3 }}>
               {sintese.descricao}{!aberto && <span style={{ color: 'rgba(124,92,255,0.5)' }}> · {hintTexto}</span>}
             </p>
           )}
         </div>
+      </div>
+      <button
+        id={`dim-toggle-${index}`}
+        onClick={() => setAberto((v) => !v)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setAberto((v) => !v);
+          }
+        }}
+        aria-expanded={aberto}
+        aria-controls={`dim-panel-${index}`}
+        aria-label={aberto ? `Recolher ${sintese.titulo}` : `Expandir ${sintese.titulo}`}
+        tabIndex={0}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'none',
+          border: 'none',
+          padding: '4px',
+          cursor: 'pointer',
+          flexShrink: 0,
+        }}
+      >
         <span
           style={{
             color: 'rgba(232,224,255,0.4)',
@@ -152,7 +156,7 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
           />
         </span>
       </button>
-      <div id={`dim-panel-${index}`} role="region" aria-labelledby={`dim-btn-${index}`}>
+        <div id={`dim-panel-${index}`} role="region" aria-labelledby={`dim-btn-${index}`}>
 
       {/* Síntese narrativa — visível mesmo fechado */}
       {/* Renderiza apenas o primeiro parágrafo quando fechado */}
@@ -162,8 +166,26 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
           if (paras.length === 0) return null;
           // Collapsed: show paragraph 1 (truncated at 120 chars)
           // Expanded: show paragraphs 2+ (Akasha Authority + Prática provide behavioral framing)
-          const content = aberto ? paras.slice(1).join('\n\n') : paras[0];
-          const truncated = !aberto && content.length > 120 ? content.slice(0, 117) + '\u2026' : content;
+          // Collapsed: inject behavioral fragment from paras[1] before descriptive paras[0]
+          // Expanded: show paras[1]+ (authority + prática — behavioral content)
+          const actionFragment = (!aberto && paras.length > 1)
+            ? (() => {
+                const p1 = paras[1];
+                // Extract first sentence or first 60 chars of behavioral para
+                const m = p1.match(/^[^.!?]*[.!?]/);
+                const phrase = m ? m[0] : p1.slice(0, 60);
+                return phrase + ' ';
+              })()
+            : '';
+          const rawContent = aberto ? paras.slice(1).join('\n\n') : actionFragment + paras[0];
+          const truncated = !aberto && rawContent.length > 120
+            ? (() => {
+                const cutoff = rawContent.slice(0, 120);
+                const lastBreak = cutoff.search(/\s|([.!?]\s)/);
+                const breakAt = lastBreak > 40 ? lastBreak + 1 : 120;
+                return rawContent.slice(0, breakAt) + '\u2026';
+              })()
+            : rawContent;
           return <p style={{ margin: 0, lineHeight: 1.55 }}>{truncated}</p>;
         })()}
       </div>
@@ -182,7 +204,7 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
           {/* Prática */}
           {sintese.praktika && (
             <section>
-              <h4 style={{ fontSize: '0.75rem', color: 'rgba(232,224,255,0.55)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
+              <h4 style={{ fontSize: '0.75rem', color: 'rgba(232,224,255,0.75)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
                 ▸ Como aplicar
               </h4>
               <p style={{ fontSize: '0.85rem', color: 'rgba(232,224,255,0.75)', lineHeight: 1.5, margin: 0 }}>
@@ -203,7 +225,7 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
           )}
 
           {/* Akasha Authority */}
-          {sintese.autoridadeAkasha.aplicavel && (
+          {sintese.autoridadeAkasha?.aplicavel && (
             <section
               style={{
                 background: 'rgba(255,200,80,0.06)',
@@ -241,7 +263,7 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
           {/* Pilares desta dimensão */}
           {sintese.contribuicoes.length > 0 && (
             <section>
-              <h4 style={{ fontSize: '0.75rem', color: 'rgba(232,224,255,0.55)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 8px' }}>
+              <h4 style={{ fontSize: '0.75rem', color: 'rgba(232,224,255,0.75)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 8px' }}>
                 ▸ Pilares desta dimensão
               </h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>

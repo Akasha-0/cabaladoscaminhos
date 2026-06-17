@@ -211,6 +211,10 @@ export default function MandalaChart({ data }: Props) {
           color: #FFFFFF !important;
           transform: translateY(-1px);
         }
+        .layer-btn:focus-visible {
+          outline: 2px solid currentColor;
+          outline-offset: 2px;
+        }
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; }
         }
@@ -346,7 +350,7 @@ export default function MandalaChart({ data }: Props) {
                   textAnchor="middle"
                   dominantBaseline="middle"
                   fontSize="10"
-                  fill="#5C6691"
+                  fill="#8A9BC0"
                 >
                   {sym}
                 </text>
@@ -375,7 +379,7 @@ export default function MandalaChart({ data }: Props) {
                     textAnchor="middle"
                     dominantBaseline="central"
                     fontSize="10"
-                    fill="rgba(255,255,255,0.7)"
+                    fill="rgba(255,255,255,1.0)"
                     fontWeight="500"
                   >
                     {h + 1}
@@ -542,7 +546,7 @@ export default function MandalaChart({ data }: Props) {
                 y="86"
                 textAnchor="middle"
                 fontSize="10"
-                fill="rgba(160,118,58,0.7)"
+                fill="#A0763A"
                 letterSpacing="1.5"
               >
                 MUTAÇÃO DO CAMINHO
@@ -680,12 +684,12 @@ export default function MandalaChart({ data }: Props) {
               fill="#F0B429"
               fontWeight="600"
             >
-              {data.odus.oduName.length > 16
+              {data.odus.oduName.length > 14
                 ? data.odus.oduName.slice(0, 14) + '…'
                 : data.odus.oduName}
             </text>
             {data.odus.orixaRegency[0] && (
-              <text x="200" y="226" textAnchor="middle" fontSize="10" fill="rgba(240,180,41,0.65)">
+              <text x="200" y="226" textAnchor="middle" fontSize="10" fill="#F0B429">
                 {data.odus.orixaRegency[0]}
               </text>
             )}

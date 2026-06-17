@@ -51,6 +51,9 @@ model User {
   ritualLog          RitualCompletion[]
   pushSubscriptions  PushSubscription[]
   connections        Connection[]
+  cycleSnapshots    CycleSnapshot[]
+  areaHistory       AreaHistoryEntry[]
+  exerciseCompletions ExerciseCompletion[]
   // Refresh token rotation — stores the jti of the current active refresh token.
   // When a refresh request arrives, its jti MUST match this field.
   // On successful refresh the old token's jti is replaced by the new one's — old token immediately invalid.
@@ -248,4 +251,80 @@ model Connection {
   createdAt         DateTime @default(now())
   @@index([userId])
   @@map("connections")
+}
+
+// ─── Prioridade 6 (iter33): Agente Evolutivo — persistence layer ─────────────
+
+model CycleSnapshot {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date          DateTime @db.Date
+
+  personalDay   Json
+  personalMonth Json
+  personalYear  Json
+  universalYear Json
+  currentPinnacle Json
+  challenges    Json
+  karmicLessons Json
+  maturity      Json
+
+  modulation    Json
+
+  synthesis     String?
+  overallEnergy Int?
+  exercisesJson Json?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@map("cycle_snapshots")
+}
+
+model AreaHistoryEntry {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date             DateTime @db.Date
+
+  area             String
+  dominantFrequency String
+  intensity        Int
+
+  cycleBoost       String?
+  alignmentScore   Int?
+  dominantPillar   String?
+
+  createdAt        DateTime @default(now())
+
+  @@unique([userId, date, area])
+  @@index([userId])
+  @@index([userId, area])
+  @@map("area_history")
+}
+
+model ExerciseCompletion {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  exerciseId      String
+  area            String
+  title           String
+
+  snapshotDate    DateTime @db.Date
+  snapshotId      String?
+
+  completed       Boolean  @default(false)
+  completedAt     DateTime?
+
+  createdAt       DateTime @default(now())
+
+  @@index([userId])
+  @@index([userId, completed])
+  @@index([userId, area, completed])
+  @@map("exercise_completions")
 }

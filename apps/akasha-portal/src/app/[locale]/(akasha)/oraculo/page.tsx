@@ -31,7 +31,7 @@ function renderOracleText(text: string): React.ReactNode[] {
     // Process inline markdown: **bold** and *italic*
     const processed = para.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/).map((segment, j) => {
       if (segment.startsWith('**') && segment.endsWith('**')) {
-        return <strong key={j} style={{ color: '#2DD4BF', fontWeight: 600 }}>{segment.slice(2, -2)}</strong>;
+        return <strong key={j} style={{ color: '#1EADA3', fontWeight: 600 }}>{segment.slice(2, -2)}</strong>;
       }
       if (segment.startsWith('*') && segment.endsWith('*')) {
         return <em key={j} style={{ color: '#A7AECF' }}>{segment.slice(1, -1)}</em>;
@@ -62,7 +62,7 @@ export default function OraculoPage() {
 
   // Auto-scroll on new messages
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    bottomRef.current?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   }, [messages]);
 
   const estimatedCost = input.length > 200 ? 3 : 1;
@@ -231,18 +231,21 @@ export default function OraculoPage() {
             gap: '6px',
           }}
         >
-          <span style={{ color: '#7C5CFF' }}>✦</span>
-          <span aria-label={`${balance === null ? 'Carregando' : balance} créditos restantes`}>
-            <span style={{ fontWeight: 700, color: '#F4F5FF' }}>
-              {balance === null ? '…' : balance}
-            </span>{' '}
-            créditos
+          <span style={{ color: '#7C5CFF' }} aria-hidden="true">✦</span>
+          <span style={{ fontWeight: 700, color: '#F4F5FF' }}>
+            {balance === null ? '…' : balance}
           </span>
+          <span style={{ color: 'rgba(255,255,255,0.55)' }}> créditos</span>
+          <span className="sr-only"> créditos restantes</span>
         </div>
       </header>
 
       {/* Messages area */}
       <div
+        role="log"
+        aria-live="polite"
+        aria-label="Histórico de mensagens com o oráculo"
+        aria-relevant="additions"
         style={{
           flex: 1,
           overflowY: 'auto',
@@ -280,31 +283,30 @@ export default function OraculoPage() {
             >
               <Sparkles size={24} style={{ color: '#9D86FF' }} />
             </div>
-            <h2 style={{ fontSize: '1.1rem', fontWeight: 600, color: '#2DD4BF', margin: 0 }}>
+            <p role="heading" aria-level={2} style={{ fontSize: '1.1rem', fontWeight: 600, color: '#2DD4BF', margin: 0 }}>
               Bem-vindo ao Oráculo
-            </h2>
-            <div
-              style={{
-                padding: '20px 28px',
-                borderRadius: '16px',
-                background: 'rgba(11,14,28,0.8)',
-                backdropFilter: 'blur(16px)',
-                border: '1px solid rgba(45,212,191,0.2)',
-                boxShadow: '0 0 32px rgba(45,212,191,0.06)',
-              }}
-            >
+            </p>
+            <div style={{
+              padding: '20px 28px',
+              borderRadius: '16px',
+              background: 'rgba(11,14,28,0.8)',
+              backdropFilter: 'blur(16px)',
+              border: '1px solid rgba(45,212,191,0.2)',
+              boxShadow: '0 0 32px rgba(45,212,191,0.06)',
+            }}>
               <p
                 style={{
                   margin: 0,
-                  color: '#A7AECF',
+                  color: '#C8CCDF',
                   fontSize: '1rem',
                   lineHeight: 1.7,
                   fontStyle: 'italic',
                 }}
               >
-                <span style={{ color: '#2DD4BF' }}>
-                  O que você precisa compreender hoje?
-                </span>
+                O que você precisa compreender hoje?
+              </p>
+              <p style={{ margin: '10px 0 0', fontSize: '0.78rem', color: 'rgba(167,174,207,0.6)', lineHeight: 1.5 }}>
+                Digite sua pergunta no campo abaixo — o oráculo responde com uma síntese espiritual personalizada.
               </p>
             </div>
           </div>
@@ -327,7 +329,7 @@ export default function OraculoPage() {
                 transition: 'all 0.2s ease',
               }}
             >
-              <span aria-hidden>Nova consulta</span>
+              <span aria-hidden="true">Nova consulta</span>
               <span className="sr-only">Nova consulta — limpar conversa e recomeçar</span>
             </button>
           </div>
@@ -336,7 +338,7 @@ export default function OraculoPage() {
         {/* Message list */}
         {messages.map((msg, i) => (
           <div
-            key={i}
+            key={msg.content.slice(0, 40) + i}
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -374,6 +376,7 @@ export default function OraculoPage() {
             >
               {msg.role === 'oracle' && (
                 <span
+                  aria-hidden="true"
                   style={{
                     color: '#2DD4BF',
                     marginRight: '8px',
@@ -415,7 +418,7 @@ export default function OraculoPage() {
               msg.pillarsConsulted &&
               msg.pillarsConsulted.length > 0 && (
                 <div role="group" aria-labelledby={`pillars-label-${i}`} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <span id={`pillars-label-${i}`} style={{ fontSize: '0.75rem', color: '#5C6691', fontWeight: 500 }}>
+                  <span id={`pillars-label-${i}`} style={{ fontSize: '0.75rem', color: '#A7AECF', fontWeight: 500 }}>
                     Tradições que ressoaram
                   </span>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', paddingLeft: '4px' }}>
@@ -464,7 +467,7 @@ export default function OraculoPage() {
       >
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '4px', gap: '8px' }}>
           {balance !== null && balance > 0 && (
-            <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)' }}>
+            <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.55)' }}>
               1 crédito
             </span>
           )}
@@ -473,7 +476,8 @@ export default function OraculoPage() {
               1–3 créditos
             </span>
           )}
-          <span style={{ fontSize: '0.7rem', color: input.length > 200 ? '#FB5781' : 'rgba(255,255,255,0.3)' }}>
+          <span aria-live={input.length > 200 ? 'polite' : 'off'} aria-atomic="true" style={{ fontSize: '0.7rem', color: input.length > 200 ? '#FB5781' : 'rgba(255,255,255,0.3)' }}>
+            {input.length > 200 && <span className="sr-only">Limite excedido </span>}
             {input.length}/200
           </span>
         </div>
@@ -514,9 +518,9 @@ export default function OraculoPage() {
           }}
         >
           {balance !== null && balance > 0 && (
-            <span style={{ fontSize: '0.78rem', color: '#5C6691' }}>
+            <span style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.6)' }}>
               Isso usará{' '}
-              <strong style={{ color: '#A7AECF' }}>
+              <strong style={{ color: '#C8CCDF' }}>
                 {estimatedCost} {estimatedCost === 1 ? 'crédito' : 'créditos'}
               </strong>
             </span>
@@ -525,7 +529,7 @@ export default function OraculoPage() {
             type="submit"
             disabled={loading || !input.trim() || input.length > 200 || (balance !== null && balance === 0)}
             aria-disabled={loading || !input.trim() || input.length > 200 || (balance !== null && balance === 0)}
-            aria-label={loading ? 'Consultar — carregando resposta' : !input.trim() ? 'Consultar — digite sua pergunta' : input.length > 200 ? `Consultar — máximo 200 caracteres (${input.length} digitados)` : balance !== null && balance === 0 ? 'Consultar — sem créditos' : 'Enviar pergunta ao Oráculo Akasha'}
+            aria-label={loading ? 'Consultando resposta do oráculo…' : !input.trim() ? 'Consultar — digite sua pergunta' : input.length > 200 ? `Consultar — máximo 200 caracteres (${input.length} digitados)` : balance !== null && balance === 0 ? 'Consultar — sem créditos' : 'Enviar pergunta ao Oráculo Akasha'}
             style={{
               padding: '10px 32px',
               borderRadius: '9999px',

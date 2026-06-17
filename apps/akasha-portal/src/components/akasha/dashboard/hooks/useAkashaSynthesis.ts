@@ -141,6 +141,34 @@ export interface AkashaSynthesisUI {
   narrativaCentral: string | null;
 }
 
+export interface CycleSnapshotUI {
+  snapshot: {
+    birthDate: string;
+    currentDate: string;
+    age: number;
+    lifePath: number;
+    personalDay: { number: number; energy: string; keywords: string[]; action: string; avoid: string; favorable: string; chakra: string; color: string };
+    personalMonth: { number: number; energy: string; theme: string; focus: string; keywords: string[]; opportunities: string[]; warnings: string[] };
+    personalYear: { number: number; theme: string; majorLessons: string[]; keyAction: string; opportunities: string[]; warnings: string[]; startDate: string; endDate: string; duration: string };
+    universalYear: { year: number; number: number; theme: string; globalEnergy: string };
+    currentPinnacle: { number: number; period: string; theme: string; opportunities: string[]; challenges: string[]; keyQuestion: string };
+    karmicLessons: Array<{ missing: number; description: string; howToLearn: string; lifeArea: string }>;
+    maturity: { number: number; year: number; theme: string; description: string; gifts: string[]; challenges: string[] };
+    synthesis: string;
+    overallEnergy: number;
+  };
+  exercises: {
+    prioritizedExercises: Array<{ type: string; title: string; description: string; area: string; difficulty: string; duration: string; phase?: string }>;
+    personalDay: Array<{ type: string; title: string; description: string; area: string; difficulty: string; duration: string }>;
+    personalMonth: Array<{ type: string; title: string; description: string; area: string; difficulty: string; duration: string }>;
+    personalYear: Array<{ type: string; title: string; description: string; area: string; difficulty: string; duration: string }>;
+    pinnacle: Array<{ type: string; title: string; description: string; area: string; difficulty: string; duration: string }>;
+    karmicLessons: Array<{ type: string; title: string; description: string; area: string; difficulty: string; duration: string }>;
+    lunar: Array<{ type: string; title: string; description: string; area: string; difficulty: string; duration: string; phase: string }>;
+  };
+  modulation: Array<{ area: string; alignmentScore: number; suggestedBoost: string; rationale: string }>;
+}
+
 export interface DailyContentUI {
   date: string;
   climate: string;
@@ -150,6 +178,8 @@ export interface DailyContentUI {
   moonPhase: string;
   overallTheme: string;
   synthesis: AkashaSynthesisUI | null;
+  /** §P4: ciclo pessoal + exercícios evolutivos (camada 7) */
+  cycle?: CycleSnapshotUI;
 }
 
 interface UseAkashaSynthesisOptions {

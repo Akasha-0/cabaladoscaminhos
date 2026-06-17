@@ -69,15 +69,46 @@ Um agente evolutivo que opera sobre dados finos (Prioridade 3) e síntese incomp
 **Pré-requisitos para iniciar:**
 - [x] Prioridade 1 completa (mapeamentos/ com todas as 5 tradições: cabala/✅ iter20, odu/✅ iter21, astrologia/✅ iter22, tantra/✅ iter22, iching/✅ baseline)
 - [x] Prioridade 2 completa (oneProfile com todos os 5 pilares — todas as 5 tradições integradas em synthesizePrimitives + deriveAkashaType + UI Iter23-25)
-- [ ] Prioridade 3 completa (mínimo: 80% das combinações de áreas com narrativa não-genérica)
+- [x] Prioridade 3 completa (mínimo: 80% das combinações de áreas com narrativa não-genérica)
 - [x] `PersonalCycleEngine` refactored para usar `mapeamentos/personal-cycle.ts` (4 tabelas externas: PINNACLE_THEMES, CHALLENGE_DESCRIPTIONS, KARMIC_LESSON_DESCRIPTIONS, MATURITY_THEMES)
 
 **Entregáveis (quando desbloqueado):**
-- [ ] `agents/evolutionary-agent/` — módulo com estado de ciclo por utilizador
-- [ ] Integração com `useAkashaSynthesis` — historial de áreas influencia narrativa do dia
-- [ ] UI: secção "Meu Ciclo" com exercícios personalizados por área e semana lunar
+- [x] `agents/evolutionary-agent/` — módulo `evolutionary-agent/index.ts` com `deriveExercisesFromSnapshot`, `deriveCycleModulation`, `trackAreaRead`, `detectAreaPatterns` (iter30 ✅)
+- [x] Integração com `useAkashaSynthesis` — `cycle` no response da API (iter31 ✅) + `cycle.modulation` wired a `AreaCard` e `PriorityAreasQuickView` com badges boost/decrease e glow (iter32 ✅)
+- [x] UI: secção "Meu Ciclo" com exercícios personalizados por área e semana lunar (iter31 ✅)
 
 ---
+
+
+## Prioridade 5 — Ciclo Modulation UI (iter32): wiring do ciclo às áreas de vida
+
+**O que é:** Os dados de `deriveCycleModulation` e `cycle.modulation` já fluíam da API para o hook, mas os dados de alinhamento por área tinham zero superfície UI. As áreas de vida no dashboard não reflectiam o estado do ciclo pessoal.
+
+**Pré-requisitos:**
+- [x] Prioridade 4 completa (Agente Evolutivo — ciclo + exercícios)
+
+**Entregáveis:**
+- [x] `AkashaLifeAreasDashboard` recebe `cycle?: CycleSnapshotUI` — P5 ✅ (iter32)
+- [x] `AreaCard` mostra badges "↑ Foco" / "↓ Suporte" com glow/muted baseados em `suggestedBoost` — P5 ✅ (iter32)
+- [x] `PriorityAreasQuickView` mostra "Ciclo activo" label e ↑ nos cards em boost — P5 ✅ (iter32)
+- [x] `Dashboard.tsx` passa `cycle={dailyData.cycle}` para `AkashaLifeAreasDashboard` — P5 ✅ (iter32)
+
+## Prioridade 6 — Camada de Persistência para o Agente Evolutivo (iter33)
+
+**O que é:** Sem persistência, o Agente Evolutivo recalcula tudo em cada request. A camada de persistência permite guardar o estado do ciclo diário e histórico de áreas, possibilitando detecção de padrões ao longo do tempo e um verdadeiro "gêmeo digital simbólico".
+
+**Pré-requisitos:**
+- [x] Prioridade 4 completa (Agente Evolutivo — ciclo + exercícios)
+- [x] Prioridade 5 completa (wiring do ciclo às áreas de vida)
+
+**Entregáveis:**
+- [x] Prisma models: `CycleSnapshot`, `AreaHistoryEntry`, `ExerciseCompletion` + User relations — P6 ✅ (iter33)
+- [x] `POST /api/akasha/cycle/snapshot` — upsert snapshot + area history + exercises — P6 ✅ (iter33)
+- [x] `GET /api/akasha/cycle/snapshot?days=30&area=X` — histórico de ciclos — P6 ✅ (iter33)
+- [x] `PATCH /api/akasha/cycle/exercises/[id]` — marca exercício como completado — P6 ✅ (iter33)
+- [x] `GET /api/akasha/cycle/exercises/[id]` — devolve exercise completion — P6 ✅ (iter33)
+- [x] `useCyclePersistence` hook — `persistCycle` + `markExerciseComplete` — P6 ✅ (iter33)
+- [x] `Dashboard.tsx` wiring — `useEffect` chama `persistCycle` após cada `dailyData` — P6 ✅ (iter33)
 
 ## Notas de Arquitectura
 
@@ -133,3 +164,27 @@ Um agente evolutivo que opera sobre dados finos (Prioridade 3) e síntese incomp
   Fix: ParaFn tipo 5-param opcional; ichingCore extraído via coreOf(); hasIChing flag; 24 templates actualizados; fallbackSynthesis actualizado; 7 call sites passam ichingCore
   Todas as 5 tradições (Cabala/Astrologia/Tantra/Odu/I Ching) contribuem para o narrative integrado
   TypeScript: 0 erros | Suite: 1361/1361 | 93 files passed | 4 skipped
+
+
+## Progress Update (2026-06-17 — Iteração 28)
+
+- [x] `typeConfidence` badge em `MandalaNarrative` — interface ganha `typeConfidence?: alta | media | baixa | null`; badge verde/amarelo/vermelho após `corePattern` no hero section
+  - `MandalaNarrative.tsx`: interface + hero section, 2 edits
+- [x] `AREA_GENERIC` enriquecido com metadados Odu — `odu-narrative-engine.ts` substitui AREA_GENERIC record por `buildAreaGenericFallback(area, oduName, elementalForce, orixaRegency, lifeLesson)` com textos ricos por área usando lição de vida, elemento e orixá
+  - Fallbacks cobrem todas as 6 areas; cada um usa nome do Odu, forca elemental, orixa regente e licao de vida para gerar texto especifico e accionavel
+  - `odu-narrative-engine.ts`: funcao nova + call site actualizado
+- TypeScript: 0 erros | Suite: 93 files passed | 4 skipped | 1361 tests passed | 17 skipped
+
+
+## Progress Update (2026-06-17 — Iteração 30)
+
+- [x] `agents/evolutionary-agent/` criado — `apps/akasha-portal/src/lib/application/agents/evolutionary-agent/index.ts` (1102 linhas)
+  - `deriveExercisesFromSnapshot(snapshot, moonPhase)`: gera conjunto completo de exercícios por ciclo pessoal — dia pessoal (10 exercícios, um por área), mês pessoal, ano pessoal, pináculo (2 exercícios), lições cármicas, fase lunar (4 fases × 5 tipos)
+  - `deriveCycleModulation(snapshot)`: calcula alinhamento de cada área com ano pessoal actual — score 0-100, sugestão increase/decrease/maintain
+  - `trackAreaRead(entry, history)`: regista leituras de área com dedup por data e limite de 30 entradas
+  - `detectAreaPatterns(history)`: detecta sombras persistentes, dons emergentes e área dominante a partir de 3+ entradas
+  - `PERSONAL_DAY_EXERCISES`: 10 energias × 6 áreas = 60 exercícios concretos em português
+  - `LUNAR_EXERCISES`: 4 fases × 5 tipos de exercício
+  - Corrigido bug em `Dashboard.tsx:762`: JSX corrompido com `aria-pressed` sem elemento pai — `<button>` restaurado
+- [x] ROADMAP P4 entregável 1 marcado `[x]` — `agents/evolutionary-agent/` ✅
+- TypeScript: 0 erros ✅ | Suite: 88 files passed (4 skipped, 5 pre-existing failures unrelated) | CodeGraph synced ✅

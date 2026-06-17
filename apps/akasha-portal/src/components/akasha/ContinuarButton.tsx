@@ -12,7 +12,7 @@ const C = {
 export function ContinuarButton() {
   return (
     <button
-      aria-label="Continuar para o Ritual — sua reflexão na pergunta acima será perdida ao rolar"
+      aria-label="Continuar para o Micro-Ritual"
       onClick={() =>
         document.getElementById('tela-3')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }

@@ -44,6 +44,7 @@ export default function LoginClient({ locale }: Props) {
       if (res.type === 'opaqueredirect' || res.redirected) {
         // 307 → browser set cookies, navigate manually to ensure they're sent.
         const destination = res.url || (returnTo ?? `/${currentLocale}/conta`);
+        router.push(destination);
         return;
       }
 

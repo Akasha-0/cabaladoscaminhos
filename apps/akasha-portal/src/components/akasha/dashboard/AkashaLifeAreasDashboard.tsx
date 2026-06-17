@@ -33,6 +33,7 @@ import type {
   AkashaSynthesisUI,
   AkashaTypeProfileUI,
   AreaNarrativeUI,
+  CycleSnapshotUI,
   DailyDecisionUI,
   SexualidadeUI,
 } from './hooks/useAkashaSynthesis';
@@ -419,7 +420,13 @@ function SexualidadeSection({ sexualidade }: { sexualidade: SexualidadeUI }) {
 
 const FREQUENCY_SORT: Record<string, number> = { siddhi: 3, gift: 2, shadow: 1 };
 
-function PriorityAreasQuickView({ areas }: { areas: Record<string, AreaNarrativeUI> }) {
+function PriorityAreasQuickView({
+  areas,
+  modulationMap: modMap,
+}: {
+  areas: Record<string, AreaNarrativeUI>;
+  modulationMap?: Record<string, CycleModulationEntry>;
+}) {
   const sorted = Object.entries(areas)
     .filter(([, n]) => n != null)
     .sort(([, a], [, b]) => {
@@ -439,20 +446,29 @@ function PriorityAreasQuickView({ areas }: { areas: Record<string, AreaNarrative
         <span className="text-[10px] font-semibold text-[#FFD60A]/80 uppercase tracking-wider">
           Prioridades de Hoje
         </span>
+        {Object.values(modMap ?? {}).some(m => m.suggestedBoost === 'increase') && (
+          <span className="text-[8px] px-1 py-0.5 rounded bg-[#F0B429]/15 text-[#F0B429] border border-[#F0B429]/25 font-mono">
+            Ciclo ativo
+          </span>
+        )}
       </div>
       <div className="flex gap-2 overflow-x-auto pb-0.5 -mx-0.5 px-0.5">
         {sorted.map(([areaKey, narrative]) => {
           const cfg = AREA_CONFIG[areaKey] ?? AREA_CONFIG.desafiosSombras;
           const freqCfg = FREQUENCY_CONFIG[narrative.frequency];
+          const mod = modMap?.[areaKey];
+          const isBoosted = mod?.suggestedBoost === 'increase';
           return (
             <div
               key={areaKey}
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border shrink-0"
               style={{
-                backgroundColor: `${cfg.color}12`,
-                borderColor: `${cfg.color}30`,
+                backgroundColor: isBoosted ? '#F0B42918' : `${cfg.color}12`,
+                borderColor: isBoosted ? '#F0B42950' : `${cfg.color}30`,
               }}
+              title={mod?.rationale ?? narrative.frequency}
             >
+              {isBoosted && <span className="text-[8px] text-[#F0B429]">↑</span>}
               <span style={{ color: cfg.color }}>{cfg.label}</span>
               <div
                 className="w-1.5 h-1.5 rounded-full shrink-0"
@@ -469,18 +485,26 @@ function PriorityAreasQuickView({ areas }: { areas: Record<string, AreaNarrative
 }
 
 // ─── AreaCard ──────────────────────────────────────────────────────────────────
-function AreaCard({ areaKey, narrative }: {
+function AreaCard({ areaKey, narrative, modulation }: {
   areaKey: string;
   narrative: AreaNarrativeUI;
+  modulation?: CycleModulationEntry;
 }) {
   const [expanded, setExpanded] = useState(narrative.intensity >= 2);
   const cfg = AREA_CONFIG[areaKey] ?? AREA_CONFIG.desafiosSombras;
   const Icon = cfg.icon;
 
+  const isBoosted = modulation?.suggestedBoost === 'increase';
+  const isDimmed = modulation?.suggestedBoost === 'decrease';
+
   return (
     <motion.div
       layout
-      className="rounded-2xl border border-white/8 overflow-hidden"
+      className={"rounded-2xl border overflow-hidden transition-all duration-300 " + (
+        isDimmed ? "border-white/4 opacity-60" :
+        isBoosted ? "border-[#F0B429]/50 shadow-[0_0_12px_rgba(240,180,41,0.18)]" :
+        "border-white/8"
+      )}
       style={{ backgroundColor: cfg.bgColor }}
     >
       {/* Header — sempre visível */}
@@ -500,6 +524,16 @@ function AreaCard({ areaKey, narrative }: {
             <span className="text-sm font-semibold text-white">{cfg.label}</span>
             <FrequencyBadge frequency={narrative.frequency} />
             <IntensityDots intensity={narrative.intensity} />
+            {modulation?.suggestedBoost === 'increase' && (
+              <span className="ml-1 px-1.5 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-wider bg-[#F0B429]/20 text-[#F0B429] border border-[#F0B429]/30">
+                ↑ Foco
+              </span>
+            )}
+            {modulation?.suggestedBoost === 'decrease' && (
+              <span className="ml-1 px-1.5 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-wider bg-white/5 text-white/40 border border-white/10">
+                ↓ Suporte
+              </span>
+            )}
           </div>
           <p className="text-xs text-white/50 mt-0.5 truncate">{cfg.description}</p>
         </div>
@@ -659,12 +693,17 @@ interface AkashaLifeAreasDashboardProps {
   synthesis: AkashaSynthesisUI | null;
   loading?: boolean;
   onRefetch?: () => void;
+  /** §P5: Ciclo pessoal — per-area alignment modulation from evolutionary agent */
+  cycle?: CycleSnapshotUI | null;
 }
+
+type CycleModulationEntry = { alignmentScore: number; suggestedBoost: string; rationale: string };
 
 export function AkashaLifeAreasDashboard({
   synthesis,
   loading = false,
   onRefetch,
+  cycle,
 }: AkashaLifeAreasDashboardProps) {
   const areaKeys = [
     'vitalidadeEnergia',
@@ -674,6 +713,18 @@ export function AkashaLifeAreasDashboard({
     'missaoDestino',
     'desafiosSombras',
   ];
+
+  // §P5: Build modulation lookup from cycle data
+  const modulationMap: Record<string, CycleModulationEntry> = {};
+  if (cycle?.modulation) {
+    for (const m of cycle.modulation) {
+      modulationMap[m.area] = {
+        alignmentScore: m.alignmentScore,
+        suggestedBoost: m.suggestedBoost,
+        rationale: m.rationale,
+      };
+    }
+  }
 
   if (loading) {
     return (
@@ -756,14 +807,14 @@ export function AkashaLifeAreasDashboard({
         </div>
 
         {/* Prioridades de Hoje — top 3 áreas por frequency + intensity */}
-        <PriorityAreasQuickView areas={areas} />
+        <PriorityAreasQuickView areas={areas} modulationMap={modulationMap} />
 
         <div className="space-y-2">
           {areaKeys.map((key) => {
             const narrative = areas[key];
             if (!narrative) return null;
             return (
-              <AreaCard key={key} areaKey={key} narrative={narrative} />
+              <AreaCard key={key} areaKey={key} narrative={narrative} modulation={modulationMap[key]} />
             );
           })}
         </div>

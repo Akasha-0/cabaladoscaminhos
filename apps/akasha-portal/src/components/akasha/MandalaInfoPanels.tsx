@@ -44,7 +44,7 @@ export function TantricBodyInfoPanel({ tantra, inactiveBodies }: TantricBodyInfo
           <p style={{ fontSize: '0.75rem', color: '#A7AECF', marginBottom: '0.5rem' }}>
             Corpos a ativar (indicados em magenta na Mandala):
           </p>
-          <details>
+          <details aria-label={`${inactiveBodies.length} corpos tântricos inativos`}>
             <summary
               style={{
                 color: '#A7AECF',

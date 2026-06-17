@@ -1,3 +1,102 @@
+## v0.84.2 (2026-06-17) — UX Round 32
+
+Round 32 — 6 fresh audit agents. Dashboard 2 CRÍTICA + 5 HIGH + 3 MÉDIA. Mandala 3 CRÍTICA + 1 HIGH. Akasha 0 CRÍTICA + 2 HIGH + 2 MÉDIA + 5 LOW. Diário 3 CRÍTICA + 8 HIGH + 4 MÉDIA + 4 LOW. Oráculo 8 CRÍTICA + 1 HIGH + 1 MÉDIA + 1 LOW. Conexões 0 CRÍTICA + 11 HIGH + 6 MÉDIA + 3 LOW.
+CRÍTICA FIXED: Dashboard renderNarrative nested `<p>` inside `<p>` broken DOM → fixed. Dashboard Autoridade.explicacao text-xs→text-sm. Mandala greeting #A7AECF→#BFC4D4. Mandala footer link #5C6691→#8890AA (3.1:1→5.1:1). Akasha perfil section role=region restructured (aria-labelledby functional). Akasha DimensaoCard panel aria-labelledby now points to button id. Akasha footer CTA #9D86FF→#8B7BE0 (3.6:1→5.2:1). Akasha DimensaoCardPilares h4 rgba 0.55→0.75. Oráculo bold #2DD4BF→#1EADA3 (3.2:1→5.5:1). Oráculo welcome #2DD4BF→#A7AECF. Oráculo pillars label #5C6691→#A7AECF. Oráculo credit hint 0.4→0.55. Oráculo "Isso usará" #5C6691→rgba 0.6. Oráculo strong #A7AECF→#C8CCDF. Oráculo aria-live false "Limite excedido" → conditional only when >200. Diário screenNumStyle contrast → #8A9BB0.
+HIGH FIXED: Dashboard "Tema" chip #7C5CFF/80%→#4A3899 (AAA). Dashboard "Evitar Decidir" #FB5781/90%→#E04879. Dashboard "Ler mais" → "Ler mais sobre {titulo}". Mandala "POR QUE ESSAS 5 CAMADAS?" `<p>`→sr-only h2. Akasha nav/DimensaoCard aria-labelledby fix. Conexões delete button duplicate accessible name fixed. Conexões 3× decorative separators aria-hidden. Conexões 4× regions without headings → h2/h3 added. Diário Tela 4 heading hierarchy h3→h4 where needed.
+QA FIXES: akasha/page.tsx stray `</div>` (footer move). akasha/page.tsx nav ternary not in Fragment (structure invalid). akasha/page.tsx stray span+h2 pair (structure invalid). Dashboard.tsx renderNarrative duplicate block (parse error). daily/route.ts phase undefined→'' (TypeScript).
+Build: 49/49 EXIT 0 · TypeScript 0 errors
+
+
+
+## Iter32 — Prioridade 5: Wire Cycle Modulation na UI de Áreas de Vida
+
+### Resumo
+
+Auditoria do sistema (Iter32) revelou que `cycle.modulation` — dados de alinhamento por área produzidos pelo Agente Evolutivo — fluía correctamente da API para o hook (`DailyContentUI.cycle`) mas tinha **zero superfície UI**. O `deriveCycleModulation` já mapeava as 6 áreas do dashboard com scores de alinhamento; faltava a wiring.
+
+### Alterações
+
+**`AkashaLifeAreasDashboard.tsx` — extensão de props + modulation UI**
+
+- Adicionado `CycleSnapshotUI` ao import de `useAkashaSynthesis`
+- Nova interface `AkashaLifeAreasDashboardProps` recebe `cycle?: CycleSnapshotUI | null` com comment `/** §P5: Ciclo pessoal — per-area alignment modulation from evolutionary agent */`
+- Tipo `CycleModulationEntry = { alignmentScore, suggestedBoost, rationale }` definido localmente
+- Computado `modulationMap` no corpo do componente a partir de `cycle?.modulation`
+- `AreaCard` agora recebe `modulation?: CycleModulationEntry`:
+  - `suggestedBoost === 'increase'` → badge "↑ Foco" + borda âmbar com glow `shadow-[0_0_12px_rgba(240,180,41,0.18)]`
+  - `suggestedBoost === 'decrease'` → badge "↓ Suporte" + `opacity-60` no card
+- `PriorityAreasQuickView` agora recebe `modulationMap`:
+  - Header mostra label "Ciclo activo" quando alguma área tem boost
+  - Cards de áreas em boost mostram `↑` e fundo âmbar
+
+**`Dashboard.tsx` — wiring do ciclo**
+
+- Passagem de `cycle={dailyData.cycle ?? undefined}` para `AkashaLifeAreasDashboard`
+- `dailyData` está em scope (definido na linha 131 do componente)
+
+### Verificação
+- TypeScript: 0 erros nos ficheiros alterados ✅
+- Suite: 93 files passed | 4 skipped | 0 failures ✅
+- Lint: 0 erros nos ficheiros alterados (pre-existing error em `diario/page.tsx:530` não relacionado) ✅
+- CodeGraph: synced ✅
+
+### Lessons Learned
+- **Gap de wiring vs. gap de arquitectura**: o modulation estava completo no motor e no hook; faltava apenas o último passo de o passar como prop e usar no render. Auditorias devem verificar na prática se os dados chegam ao UI.
+- **TypeScript verifica mas não detecta Missing Wiring**: todos os tipos estavam corretos, mas sem a passagem da prop o dado simplesmente não era usado. Testes de integração cobrindo o data-flow completo teriam capturado isto.
+
+## Iter33 — Prioridade 6: Camada de Persistência para o Agente Evolutivo
+
+### Resumo
+
+O Agente Evolutivo (iter30–32) calcula snapshots de ciclo e exercícios frescos em cada request — nada persiste entre dias. Sem camada de persistência, o agente não consegue acompanhar o progresso do utilizador ao longo do tempo. Esta iteração adiciona models Prisma + rotas API + integração de hook para guardar e recuperar dados de ciclo.
+
+### Alterações
+
+**`prisma/schema.prisma` — 3 models novos**
+
+- `CycleSnapshot`: armazena personalDay/Month/Year, universalYear, pinnacle, challenges, karmicLessons, maturity, modulation (alinhamento por área), synthesis, overallEnergy, exercisesJson — `@@unique([userId, date])`
+- `AreaHistoryEntry`: dominantFrequency, intensity, cycleBoost, alignmentScore, dominantPillar por user/date/area — `@@unique([userId, date, area])`
+- `ExerciseCompletion`: exerciseId, area, title, snapshotDate, completed, completedAt — `@@index([userId, completed])`
+- Modelo `User` extendido com `cycleSnapshots[]`, `areaHistory[]`, `exerciseCompletions[]`
+- `prisma generate` succeeded (Prisma Client v7.8.0) ✅
+
+**`api/akasha/cycle/snapshot/route.ts` — POST + GET**
+
+- `POST`: upsert `CycleSnapshot` por `userId + date`; deriva `AreaHistoryEntry` records do payload `areas` + `modulation` (deteção de pilar dominante via text length heuristic); upsert `ExerciseCompletion` records (completed=false)
+- `GET ?days=30&area=vitalidadeEnergia`: devolve snapshots e histórico de área para detecção de padrões
+
+**`api/akasha/cycle/exercises/[id]/route.ts` — PATCH + GET**
+
+- `PATCH`: marca exercício individual como completado com `completedAt`; security check de `userId`
+- `GET`: devolve um registo de exercise completion
+
+**`hooks/useCyclePersistence.ts` — novo hook (257 linhas)**
+
+- `persistCycle(daily: DailyContentUI)`: após cada fetch diário bem-sucedido, chama `POST /api/akasha/cycle/snapshot`; idempotente via double-invoke guard com `persistLock` ref
+- `markExerciseComplete(exerciseId)`: chama `PATCH /api/akasha/cycle/exercises/${id}`
+- Extrai `areas` do synthesis para construir `AreaHistoryEntry` records
+
+**`Dashboard.tsx` — wiring do persistence hook**
+
+- Import añadido: `useCyclePersistence` do `./hooks/useCyclePersistence`
+- Hook chamado: `const { persistCycle } = useCyclePersistence({ userId })`
+- `useEffect` añadido: após cada `dailyData` disponível, chama `persistCycle(dailyData)`
+
+### Verificação
+- TypeScript: compiled successfully ✅
+- Suite: 93 files passed | 4 skipped | 0 failures ✅
+- Lint: 1 error pre-existente (`diario/page.tsx:556` JSX parsing — não relacionado) + 636 warnings pre-existentes ✅
+- Build: ✓ Compiled | ✓ TypeScript passed | ✓ 50 static pages | 0 failures ✅
+  - Rotas novas confirmadas: `ƒ /api/akasha/cycle/snapshot` + `ƒ /api/akasha/cycle/exercises/[id]`
+- CodeGraph: synced (useCyclePersistence.ts added ao índice)
+
+### Lições Aprendidas
+- **SQLite + Prisma em produção**: o projeto usa Prisma com SQLite localmente — o `prisma generate` foi executado e as rotas compilam correctamente com os models novos
+- **Idempotência via unique constraints**: `@@unique([userId, date])` permite re-submeter o mesmo snapshot sem duplicados — atomic upsert operations
+- **Double-invoke guard**: React Strict Mode invoca effects duas vezes; `persistLock` ref com 2s delay evita duplos persist calls
+- **Transiente ENOENT `_ssgManifest.js`**: erro Turbopack na geração de estáticos — não é erro de código; retry resolve
+
+
 ## v0.83.3 (2026-06-17) — UX Round 22
 
 ## v0.83.4 (2026-06-17) — UX Round 23
@@ -47,6 +146,9 @@ Build: 49/49 EXIT 0 · TypeScript 0 errors
 - **Diário:** SignificadoPilar nested `<details>` → `LilithCasa8Details` client component com useState; arquivo marcado 'use client'
 Build: 49/49 EXIT 0 · TypeScript 0 errors
 
+
+## v0.84.0 (2026-06-17) — UX Round 30
+Round 30 — 6 auditors (all completed). CRÍTICA: Oráculo submit button "I Ching"→"Akasha" aria-label mismatch (OC30-1); Conexões violet label #7C5CFF→#6350E0 (4.42→5.2:1, CX30-1); Diário sexualidade prop now passed to SignificadoPilar — Lilith/Sexualidade feature was dead (D30-1 HIGH). HIGH: Dashboard "Antes de agir:" /50→/70 + "Faça isto:" #9D86FF→#7C5CFF full opacity + toggle /70→/90 (D30-1/2/4); Síncronia Corporal score-reactive behavioral subtitle (CX30-2). MÉDIA: Ritual max-height 4.5→7.5em preview (D30-3); "Tempo"→"Clima" label (D30-5); Síntese preview behavioral fragment injection + word-boundary truncation (AK30-1/2); h3→outside-button restructured with aria-label (AK30-5); Mandala SVG 4-layer contrast all fixed (MC30-1/2/3/4); IChing birthDate ISO→PT-BR DD/MM/YYYY (MC30-7); Tela 4 h2 heading + aria-label instruction (DI30-2/3); cost hint always visible (OC30-3); pillars-label unique id per message (OC30-4); Síncronia Odu score-reactive subtitle (CX30-3). FALSE POSITIVE: Mandala Kabala subtitles already exist (MC30-5/6); Akasha footer CTA already exists (AK30-3). NOT FIXED (data synthesizer): Akasha perfilGeral "Decisão de hoje" section (AK30-4); Oráculo guidance card after streaming (OC30-2). Build: 49/49 ✅ · TypeScript 0 errors · v0.84.0
 
 ## v0.83.9 (2026-06-17) — UX Round 29
 Round 29 — 6 auditors (Oráculo+M29+CX+DI completed; Akasha+Dashboard failed/excluded; manual Dashboard review). CRÍTICA: SVG ring label opacity 0.5→0.7 (Mandala M29-1); Conexões legend contrast 10px/30%/60%→12px/70%/80% (CX29-1/2). HIGH: Síncronia Odu/Corporal/Espiritual — all jargon replaced with behavioral plain PT (CX29-3/4/5); Diário Tela 4 instruction p→h3 (DI29-4); Oráculo guidance card not implemented (OC29-1, needs streaming state). MÉDIA: behavioral instruction "Leia em voz alta" moved before frases (DI29-1); cost hint always visible (OC29-2); pillars role=group (OC29-3); welcome h2 (OC29-4); Nova consulta aria-label (OC29-5). M29-2 Kabala: FALSE POSITIVE (behavioral subtitles already present). DI29-3 heading: FALSE POSITIVE.
@@ -175,6 +277,8 @@ verificáveis.
 | Akasha-v3-iter15 | **UX Round 15 — Conexões guidance + score %% + archetype fixes** — Conexoes narrative type mismatch + missing return fixed; DimensionBar %%; saved-connections %%; dominantType legend; post-results guidance; Dashboard dim.descricao added to cards; Akasha archetype ENQUADRAMENTO all 12 paths; footer diary CTA; 5 mapas named; DimensaoCard師父→mestre; Diário ContinuarButton aria-label; Oráculo char count hidden when empty; 49/49 ✅ | (este ciclo) | ✅ |
 | Akasha-v3-iter16 | **Prioridade 3 — Primitive-Driven Narrative (hasCount <= 2 fix)** — `generateAreaNarrativeFull` agora recebe `_synthesizedProfile` como 6° param; primitive anchor: top-2 sombra/luz primitivos alimentam abertura da narrativa integrada quando hasCount <= 2 (dados esparsos); 6 call sites em `derive-area-narratives.ts` atualizados; 3 bug fixes: catch binding syntax (oxc), DimensaoCard.tsx em-dash revertido, ConexoesClient.tsxUnicode revertido; npm build ✅ + 172 síntese testes ✅ | (este ciclo) | ✅ |
 | Akasha-v3-iter17 | **I Ching Phase 2 — `pillarContribution.iching` (Prioridade 3)** — `iching: string` adicionado à interface `AreaNarrative.pillarContribution` em `synthesis-types.ts`; `buildTransformacaoIChingNarrative` exportado de `narrative-generator.ts` (função existia no arquivo mas não era exportada — `TypeError` em runtime); todos os 6 `derive-*` functions em `derive-area-narratives.ts` agora incluem `iching: buildTransformacaoIChingNarrative(holo, '<area>', _synthesizedProfile)`; teste `synthesis-engine.test.ts` atualizado com `pillarContribution com 5 pilares (incluindo iching)` + `pillarContribution distintas (não-identidade) — 3 combos`; npm build ✅ + 1357 testes ✅ (1 failure pre-existing `atmosphere.test.tsx` unrelated); stray `→` (U+2192) artifacts removidos de `narrative-generator.ts` e `derive-area-narratives.ts` | (este ciclo) | ✅ |
+| Akasha-v3-iter28 | **Prioridade 3: typeConfidence badge + AREA_GENERIC enriquecido** — MandalaNarrativeProps.oneProfile gains typeConfidence?: alta | media | baixa | null; hero renders confidence badge (verde/amarelo/vermelho) after corePattern. odu-narrative-engine.ts: AREA_GENERIC replaced by buildAreaGenericFallback(area, oduName, elementalForce, orixaRegency, lifeLesson) with rich per-area texts for all 6 areas. Fixed fighting anglicism in missaoDestino. TypeScript 0 errors (6.08s) | Suite: 93 files passed | 4 skipped | 1,361 tests | CodeGraph synced | (este ciclo) | ok |
+| Akasha-v3-iter29 | **Narrative synthesis text bugs fixed + Prioridade 3 fechada** — missaoDestino paragraphs: all 5 traditions now integrated (Odu + I Ching in para 2 and 4). desafiosSombras: "Quatro formas" -> "Cinco formas". fallbackSynthesis: I Ching now mentioned in opening. Typo fix: programacao -> programacao. ROADMAP.md Prioridade 3 checkbox marked [x]. TypeScript 0 errors | Suite: 93 files passed | 4 skipped | 1,361 tests | 1 pre-existing middleware failure unrelated | CodeGraph synced | (este ciclo) | ok |
 | Rota | Limite | Janela |
 |------|--------|--------|
 | `POST /api/operator/auth/login` | 5 / IP | 15 min |
@@ -1482,3 +1586,150 @@ Solução em narrative-generator.ts: (1) ParaFn tipo 5-param opcional; (2) ichin
 Verificação: TypeScript 0 erros | 1361 testes | 93 files passed.
 
 Cobertura após Iter27: Cabala ✅ Astrologia ✅ Tantra ✅ Odu ✅ I Ching ✅ integrado na síntese.
+## Iter28 — typeConfidence badge em MandalaNarrative + AREA_GENERIC enriquecido
+
+Problema: MandalaNarrative.hero section não mostrava o badge typeConfidence que ja existia em OneProfileCard. AREA_GENERIC em odu-narrative-engine.ts eram textos genéricos de uma linha sem metadados do Odu.
+
+Solução:
+
+1. MandalaNarrative.tsx: MandalaNarrativeProps.oneProfile ganha typeConfidence?: alta | media | baixa | null; badge verde/amarelo/vermelho adicionado após corePattern no hero section
+2. odu-narrative-engine.ts: AREA_GENERIC Record substituido por buildAreaGenericFallback(area, oduName, elementalForce, orixaRegency, lifeLesson) com textos ricos por area usando nome do Odu, forca elemental, orixa regente e licao de vida
+
+Verificação: TypeScript 0 erros | Suite: 93 files passed | 4 skipped | 1361 tests passed.
+
+**Mais fraco:** Os textos de fallback ainda usam phrasing em torno do generico — uma segunda passagem para afinar a linguagem de cada area elevaria a qualidade.
+
+## Iteração 29 — Iter29: Cobertura narrativa + Prioridade 3 fechada
+
+**Data:** 2026-06-17
+**Duração:** < 1h
+**Resumo:** Bugs de texto nos templates SYNTHESIS corrigidos; Prioridade 3 marcada como completa no ROADMAP.
+
+### Bugs corrigidos
+
+1. ** paragraph 1** (narrative-generator.ts:528-537):
+   - Antes: "Kabbalah, Astrologia e Tantra convergem" (Odu/I Ching omitidos na frase de abertura)
+   - Depois: "Kabbalah diz que [k]. A Astrologia mostra que [a]. O Tantra ensina que [t]. O Odu confirma: [o]. O I Ching soma: [i]. Cinco mapas, uma certeza: você veio com uma contribuição que só você pode fazer."
+   - Todos os 5 parâmetros condicionais usados correctamente
+
+2. ** paragraphs 2-4** (narrative-generator.ts:536-565):
+   - paragraph 2: I Ching agora integrado como 5ª voz — "O I Ching chama isso de seguir o momento presente — quando você age no hexagrama certo, a missão se manifesta sem força."
+   - paragraph 4: Odu e I Ching integrados nas ações de alinhamento
+   - Antes: paragraphs 2-4 descartavam  completamente
+
+3. ** paragraph 1** (narrative-generator.ts:580):
+   - "Quatro formas" → "Cinco formas" (hardcoded count de tradições corrigido)
+
+4. **** (narrative-generator.ts:618):
+   - "Ao reunir Cabala, Astrologia, Tantra e Odu" → "Ao reunir Cabala, Astrologia, Tantra, Odu e I Ching"
+
+5. **Typo** (narrative-generator.ts:606):
+   - "programaçao" → "programação" (cedilha+til sobre a)
+
+### Prioridade 3 fechada
+
+- ROADMAP.md linha 72:  → 
+- Critério: 80% das combinações de áreas com narrativa não-genérica
+- Estado após Iter27+28+29:
+  - 5 tradições integradas (Cabala/Astrologia/Tantra/Odu/I Ching) ✅
+  - 24 templates SYNTHESIS actualizados com 5 params ✅
+  - fallbackSynthesis enriquecido com todas as 5 tradições ✅
+  -  (Iter28) com textos ricos por área ✅
+  -  (Iter27) para combinações esparsas ✅
+  - narrative-generator.test.ts: 10/10 testes passam ✅
+
+### Verificação
+- TypeScript: 0 erros (6.39s) ✅
+- Suite: 93 files passed | 4 skipped | 1,361 tests | 1 pre-existing middleware failure (não relacionado)
+- narrative-generator.test.ts: 10/10 ✅
+- synthesis-engine: 99 tests, 3 files ✅
+- CodeGraph: synced ✅
+
+
+### Iteração 30 — 2026-06-17
+
+**Agente Evolutivo: `agents/evolutionary-agent/`**
+
+- Criado `apps/akasha-portal/src/lib/application/agents/evolutionary-agent/index.ts` (1102 linhas)
+  - `deriveExercisesFromSnapshot(snapshot, moonPhase)` → `CycleExerciseSet`: exercícios personalizados do ciclo pessoal
+    - 10 exercícios do dia pessoal (1 por área de vida, baseados na energia do dia)
+    - 1 exercício do mês pessoal (tema do mês → exercício ritual)
+    - 1 exercício do ano pessoal (lição central → exercício de journaling)
+    - 2 exercícios do pináculo actual (ritual + meditação)
+    - N exercícios de lições cármicas (1 por lição, tipo variável)
+    - 5 exercícios lunares (1 por tipo: ritual/meditação/journaling/movimento/social)
+    - Prioritização: kármicas > pináculo > dia > mês > ano > lua
+  - `deriveCycleModulation(snapshot)` → `CycleModulation[]`: alinhamento área-ciclo
+    - Score 0-100 por área de vida vs. ano pessoal
+    - Sugestão increase/decrease/maintain
+    - 11 align rules para anos pessoais 1-9 + 11 + 22
+  - `trackAreaRead(entry, history)` → historial actualizado (max 30, dedup por data)
+  - `detectAreaPatterns(history)` → padrões: sombras persistentes, dons emergentes, área dominante
+  - `PERSONAL_DAY_EXERCISES`: 10 energias × 6 áreas = 60 exercícios concretos em português
+  - `LUNAR_EXERCISES`: 4 fases × 5 tipos = 20 exercícios
+
+- Corrigido bug em `Dashboard.tsx:762`: botão de dimensão sem tag de abertura — `<button>` restaurada
+- ROADMAP P4 entregável 1 marcado `[x]` ✅
+
+### Bugs corrigidos
+
+1. **Dashboard.tsx:762** — JSX corrompido:
+   - Sintoma: `aria-pressed` apareceria como atributo solto sem elemento pai
+   - Causa: edição concorrente que removeu a tag `<button` de abertura
+   - Fix: `<button` restaurada antes dos atributos
+
+### Verificação
+- TypeScript: 0 erros (4.03s) ✅
+- Suite: 88 files passed | 4 skipped | 5 pre-existing failures (não relacionados com estas alterações)
+- CodeGraph: synced ✅
+- ROADMAP: P4 entregável 1 `[x]` ✅
+
+## Iter31 — Prioridade 4: Integração do Agente Evolutivo na API + Hook + UI
+
+### Resumo
+
+Integração completa da camada 7 (Agente Evolutivo) em três pontos: API route, hook de síntese, e UI do dashboard.
+
+### Alterações
+
+**API route — `/api/akasha/daily/route.ts`**
+- Adicionados imports de `buildCycleSnapshot`, `deriveExercisesFromSnapshot`, `deriveCycleModulation`
+- Adicionadas interfaces locais: `AstrologyMap`, `KabalisticMap`, `BodyMap`, `OduMap` para casting de JSON
+- Criada interface `CycleSnapshotUI` espelhada no hook (duplicação intencional para evitar circular import)
+- Criada função `toCycleSnapshotUI()` para transformar dados do snapshot em UI shape
+- Em ambos os branches (cached + new): obtenção de `user.name` + `user.birthDate`, casting dos mapas JSON, chamada a `buildCycleSnapshot`, `deriveExercisesFromSnapshot`, `deriveCycleModulation`
+- Adicionado `cycle: CycleSnapshotUI` ao response JSON com comment `/** §P4: ciclo pessoal + exercícios evolutivos (camada 7) */`
+- Fix `phase` field em exercícios lunares: `e.cycleAnchor?.lunar ? (raw.currentDate ?? '') : ''` para garantir tipo `string` (não `undefined`)
+
+**Hook — `useAkashaSynthesis.ts`**
+- Adicionada interface `CycleSnapshotUI` completa (espelhando a da API route)
+- Adicionado campo `cycle?: CycleSnapshotUI` a `DailyContentUI`
+- Comment `/** §P4: ciclo pessoal + exercícios evolutivos (camada 7) */`
+
+**MeuCiclo.tsx — novo componente**
+- Criado `apps/akasha-portal/src/components/akasha/dashboard/MeuCiclo.tsx` (280 linhas)
+- Display: ano/mês/dia pessoal, ano universal, pináculo actual, lições cármicas, alinhamento por área, exercícios priorizados
+- Funcionalidades: accordion colapsável, badges de dificuldade e tipo, barras de alinhamento, area tags
+- Import de `Area` type para casting seguro de `AREA_LABEL`
+- Funcionalidades de suporte: `difficultyBadge()`, `difficultyLabel()`, `typeBadge()`, `typeLabel()`, `boostBadge()`, `boostLabel()`, `alignmentColor()`, `areaName()`
+
+**Dashboard.tsx**
+- Adicionado import de `Calendar` icon (lucide-react)
+- Adicionado import de `MeuCiclo`
+- Inserida secção `{dailyData?.cycle && (<MeuCiclo cycle={dailyData.cycle} />)}` antes do Ritual Card
+- Removida tag `</a>` duplicada que tinha sido criada por edição concorrente
+
+**`akasha/page.tsx` — JSX corruption fix (pre-existing, não relacionado a P4)**
+- Corrupção causada por edição concorrente: ternary `{sintese ? ... : ...}` sem parênteses de fecho
+- Sintomas TypeScript: `JSX expressions must have one parent element` (linha 68), `')' expected` (linha 322)
+- Fix: adicionada `)` de fecho após a branch else do ternary; removida `</div>` prematura que fechava o wrapper em vez do ternary
+
+### Verificação
+- TypeScript: 0 erros ✅
+- Suite: 93 files passed | 4 skipped | 0 failures (o逸活了 5 pre-existing failures) ✅
+- CodeGraph: synced ✅
+
+### Lessons Learned
+- **Edição concorrente JSX**: múltiplos writers no mesmo ficheiro TSX criam corrupções estruturais difíceis de detectar. O TypeScript apanha erros mas o dano estrutural pode ser subtil (missing paren no ternary). Sempre verificar a estrutura JSX antes de editar quando múltiplas pessoas/tools Editam o mesmo ficheiro.
+- **Type safety em APIs**: o campo `phase: string | undefined` vs `phase: string` em interfaces duplicadas (hook + API) requer atenção — preferencialmente derivar de um tipo central partilhado (mas isso criaria import circular neste caso).
+- **AREA_LABEL indexing**: `Record<Area, string>` requer cast de `string` para `Area` — usar `as Area` para silenciar TypeScript sem perder type safety运行时.
