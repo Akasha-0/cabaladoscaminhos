@@ -105,9 +105,6 @@ export default async function MinhaCaixaPage({
 
         {/* Header */}
         <header style={{ marginBottom: 28 }}>
-          <span style={{ fontSize: '0.7rem', color: C.txtMut, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
-            {saudacao()} · Akasha
-          </span>
           <h1
             style={{
               fontFamily: 'var(--font-cinzel, serif)',
@@ -131,6 +128,22 @@ export default async function MinhaCaixaPage({
                 })()
               : 'Sua vida em 8 dimensões'}
           </p>
+          {sintese && (
+            (() => {
+              const lp = pilares?.cabala?.life_path;
+              const titulo = lp ? significadoPorPilar('cabala', lp)?.titulo : undefined;
+              if (!titulo) return null;
+              let framing: string;
+              if (titulo === 'O Conquistador') framing = 'Isso se manifesta quando você busca resultados concretos e superações.';
+              else if (titulo === 'O Sábio') framing = 'Isso se manifesta quando você busca真相真相真相真相真相真相真相';
+              else framing = `Isso se manifesta quando você age desde ${titulo.toLowerCase()}.`;
+              return (
+                <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', margin: '4px 0 0', lineHeight: 1.4 }}>
+                  {framing}
+                </p>
+              );
+            })()
+          )}
         </header>
 
         {/* Header do perfil */}

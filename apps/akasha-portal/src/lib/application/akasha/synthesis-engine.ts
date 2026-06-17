@@ -34,6 +34,8 @@
 import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/types';
 import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
 import { generateSynthesisParagraph as genSynthesisParagraph } from './narrative-generator';
+import type { SynthesizedProfile, PilarIChing, PilarCabala, PilarAstrologia, PilarTantrica, PilarOdu } from '@akasha/core';
+import { synthesizePrimitives } from '@akasha/core';
 
 // Re-export all public types for backwards compatibility
 export type {
@@ -134,6 +136,67 @@ function buildFallbackArea(area: string): AreaNarrative {
     transformationPrompt: 'O sistema está corrigindo esta área.',
   };
 }
+// ─── Pilar converters (map data → synthesizePrimitives types) ──────────────────
+
+function toPilarIChing(holo: AkashicHologram | null): PilarIChing | null {
+  if (!holo || holo.ichingHex == null) return null;
+  return {
+    hex: holo.ichingHex,
+    trigrama: (['0','1','2','3','4','5','6','7'][Math.floor(holo.ichingHex / 8)] ?? '0') as PilarIChing['trigrama'],
+    linhaMutavel: holo.ichingHex % 8,
+  };
+}
+
+function toPilarCabala(kab: KabalisticMap | null): PilarCabala | null {
+  if (!kab) return null;
+  return {
+    life_path: kab.lifePath,
+    birthday: (kab.lifePath % 9) || 1,
+    expression: kab.expression ?? kab.lifePath,
+    ano_pessoal: kab.lifePath,
+  };
+}
+
+function toPilarAstrologia(astro: AstrologyMap | null): PilarAstrologia | null {
+  if (!astro) return null;
+  const sol = astro.planets?.find(p => p.planet === 'Sol' || p.planet === 'Sun');
+  const lua = astro.planets?.find(p => p.planet === 'Lua' || p.planet === 'Moon');
+  const normalize = (s: string) =>
+    (s ?? 'desconhecido').toLowerCase().normalize('NFD').replace(/[áéíóú]/g, m => ({á:'a',é:'e',í:'i',ó:'o',ú:'u'}[m] ?? m));
+  const luaFase: PilarAstrologia['lua_fase'] = 'cheia';
+  return {
+    sol_signo: normalize(sol?.sign ?? 'desconhecido'),
+    asc_signo: astro.ascendant ? normalize(astro.ascendant) : null,
+    lua_signo: normalize(lua?.sign ?? 'desconhecido'),
+    lua_fase: luaFase,
+    hora_desconhecida: !astro.ascendant,
+    trinity: { sombra: 0, dom: 1, graca: 0 },
+    trinity_dominante: 'dom' as const,
+    lilith_signo: null,
+    casa_8_signo: null,
+  };
+}
+
+function toPilarTantrica(tantra: TantricMap | null): PilarTantrica | null {
+  if (!tantra) return null;
+  return {
+    numero_alma: tantra.soul ?? 1,
+    corpos: tantra.bodies ? {
+      fisico: tantra.bodies.fisico ? { numero: tantra.bodies.fisico.number, elemento: 'terra' } : null,
+      emocional: tantra.bodies.emocional ? { numero: tantra.bodies.emocional.number, elemento: 'agua' } : null,
+      mental: tantra.bodies.mental ? { numero: tantra.bodies.mental.number, elemento: 'ar' } : null,
+      espiritual: tantra.bodies.espiritual ? { numero: tantra.bodies.espiritual.number, elemento: 'fogo' } : null,
+    } : null,
+  };
+}
+
+function toPilarOdu(odu: OduBirth | null): PilarOdu | null {
+  if (!odu) return null;
+  return {
+    odu: odu.oduName ?? 'desconhecido',
+    omolari: odu.principalOmolari ?? 'desconhecido',
+  };
+}
 
 /**
  * buildAkashaSynthesis — motor de síntese narrativa dos 5 pilares.
@@ -151,13 +214,28 @@ export function buildAkashaSynthesis(
   hologram: AkashicHologram,
   date: Date = new Date()
 ): AkashaSynthesis {
+  // ─── synthesizePrimitives integration ─────────────────────────────────────
+  let _synthesizedProfile: SynthesizedProfile | undefined;
   try {
-    const areaVitalidade = deriveVitalidadeEnergia(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, date);
-    const areaConexoes = deriveConexoesAmor(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, date);
-    const areaCarreira = deriveCarreiraProsperidade(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, date);
-    const areaOri = deriveOriCabecaQuizilas(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, date);
-    const areaMissao = deriveMissaoDestino(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, date);
-    const areaDesafios = deriveDesafiosSombras(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, date);
+    const perfil = synthesizePrimitives({
+      iching: toPilarIChing(hologram) ?? { hex: 1, trigrama: '0' as const, linhaMutavel: 0 },
+      cabala: toPilarCabala(kabalisticMap) ?? { life_path: 1, birthday: 1, expression: 1, ano_pessoal: 1 },
+      astrologia: toPilarAstrologia(astrologyMap) ?? { sol_signo: 'desconhecido', asc_signo: null, lua_signo: 'desconhecido', lua_fase: 'cheia', hora_desconhecida: true, trinity: { sombra: 0, dom: 0, graca: 0 }, trinity_dominante: 'dom' as const, lilith_signo: null, casa_8_signo: null },
+      tantrica: toPilarTantrica(tantricMap) ?? { numero_alma: 1, corpos: null },
+      odu: toPilarOdu(oduBirth) ?? { odu: 'desconhecido', omolari: 'desconhecido' },
+    });
+    _synthesizedProfile = perfil;
+  } catch {
+    // synthesizePrimitives unavailable or failed — fall back to map-based synthesis
+  }
+
+  try {
+    const areaVitalidade = deriveVitalidadeEnergia(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, _synthesizedProfile, date);
+    const areaConexoes = deriveConexoesAmor(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, _synthesizedProfile, date);
+    const areaCarreira = deriveCarreiraProsperidade(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, _synthesizedProfile, date);
+    const areaOri = deriveOriCabecaQuizilas(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, _synthesizedProfile, date);
+    const areaMissao = deriveMissaoDestino(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, _synthesizedProfile, date);
+    const areaDesafios = deriveDesafiosSombras(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, _synthesizedProfile, date);
 
     const dailyDecision = deriveDailyDecision(
       areaVitalidade,
@@ -199,6 +277,7 @@ export function buildAkashaSynthesis(
       },
       dailyDecision,
       synthesisParagraph,
+      synthesizedProfile: _synthesizedProfile,
     };
   } catch (err) {
     // Log error so we can fix it, but return a graceful fallback so dashboard still shows content
@@ -243,6 +322,7 @@ export function buildAkashaSynthesis(
         avoid: 'Decisões importantes baseadas em informação incompleta.',
       },
       synthesisParagraph: 'O sistema Akasha está atualizando. Retorne em alguns minutos para sua síntese completa.',
+      synthesizedProfile: undefined,
     };
   }
 }

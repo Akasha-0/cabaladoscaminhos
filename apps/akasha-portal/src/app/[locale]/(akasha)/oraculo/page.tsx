@@ -1,5 +1,6 @@
 'use client';
 
+import { Sparkles } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 interface OracleMessage {
@@ -438,6 +439,11 @@ export default function OraculoPage() {
           flexShrink: 0,
         }}
       >
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '4px' }}>
+          <span style={{ fontSize: '0.7rem', color: input.length > 200 ? '#FB5781' : 'rgba(255,255,255,0.4)' }}>
+            {input.length} / 200 · {input.length > 200 ? '3 créditos' : '1 crédito'}
+          </span>
+        </div>
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}

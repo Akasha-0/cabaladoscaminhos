@@ -1,3 +1,53 @@
+## v0.81.5 (2026-06-17) — UX + QA consolidation — 50+ fixes
+- fix(auth): AKASHA_ACCESS_TTL_SECONDS 15min→4h (fixes silent session expiry redirect to /onboarding)
+- fix(synthesis): derive-area-narratives.ts — restored from v0.81.3 (removes 6-param TDZ bug)
+- fix(synthesis): synthesis-types.ts, area-builders.ts, synthesis-engine.ts, area-builders.test.ts — restored from v0.81.3
+- fix(oraculo): Sparkles import from lucide-react (was undefined at runtime)
+- fix(oraculo): key={i}→key={msg.id} on messages.map + OracleMessage.id field (streaming reconciliation)
+- fix(oraculo): all setMessages calls preserve id via spread operator
+- fix(oraculo): PILLAR_COLORS duplicates fixed — Tarot/E8A430, Numerologia/1FB8A5, Chakras/E0446A
+- fix(oraculo): character count indicator added above textarea (input.length / 200)
+- fix(oraculo): Welcome prompt with concrete examples, credit hint placeholder, ⚡ credit badge, zero-credit inline message
+- fix(dashboard): renderNarrative(dimFoco?.synthes ?? '') + ritual.cor fallback — no more undefined
+- fix(dashboard): 13× font-size 9px→11px on header labels (WCAG AA)
+- fix(dashboard): dimFoco card expand/collapse toggle "Ler mais"/"Mostrar menos"
+- fix(dashboard): Perfil de Hoje card expand/collapse toggle "Ler mais"/"Mostrar menos"
+- fix(dashboard): AkashaLifeAreasDashboard authority labels with behavioral subtitles ("Decida quando sentir clareza…")
+- fix(diario): "dados natais"→"data de nascimento" + navigation hint
+- fix(diario): sr-only h1 "Diário Energético" for screen readers
+- fix(diario): ContinuarButton aria-label "Avançar para o próximo passo — sua reflexão será perdida"
+- fix(diario): Fontes details aria-label added
+- fix(diario): "Toque em cada Pilar"→"Leia cada Pilar" — cards are not interactive
+- fix(diario): mandala sign text fontSize 0.62→0.7rem (WCAG AA)
+- fix(diario): simplified reflexive prompt "Respire. Deixe a resposta emergir antes de buscar palavras."
+- fix(akasha): decorative greeting removed — user already knows time of day
+- fix(akasha): archetype behavioral framing "Isso se manifesta quando..."
+- fix(akasha): synthesizer.ts authority timing uses deriveAkashaAuthority (melhor/pior)
+- fix(DimensaoCard): fixed invalid HTML (div inside p); melhor/pior with distinct styling
+- fix(DimensaoCard): expanded state shows Perspectives first, no synthes repeat
+- fix(DimensaoCard): section labels fontSize 0.72→0.75rem (WCAG AA)
+- fix(DimensaoCard): "Prática permanente"→"Como aplicar"; "Atenção"→"Armadilha a evitar"
+- fix(conexoes): Portuguese sentence regex improved to not split on abbreviations
+- fix(conexoes): error message now includes link to /mapa page
+- fix(conexoes): buildNarrative returns structured array with topic labels
+- fix(conexoes): Sincronia Corporal hover-only tooltip → aria-label (touch accessible)
+- fix(conexoes): setError type React.ReactNode | null + map link (<a href="/mapa">Ir para Mapa →</a>)
+- fix(conexoes): invalid HTML: <p>→<div> for error containers
+- fix(mandala): Planet glyphs touch popover on mobile tap
+- fix(mandala): KabalaInfoPanel default view shows only Caminho de Vida + 1 takeaway
+- fix(mandala): KabalaInfoPanel advanced details behind "Ver detalhes avançados"
+- fix(mandala): House number fontSize 6→10, fill 0.45→0.75 (WCAG AA)
+- fix(mandala): Orixá regency fontSize 5.5→8, fill 0.65→0.80
+- fix(mandala): Incomplete data badge fontSize 7→9
+- fix(mandala): MOVIMENTO CELESTE label fontSize 7→9
+- fix(mandala): MUTAÇÃO DO CAMINHO fontSize 5.5→8, fill 0.70→0.90
+- fix(mandala): KOSHA Sanskrit names translated to Portuguese (Anna-maya→Corpo Físico, etc.)
+- fix(tests): MandalaAtmosphere test — moved vi.mock before imports (ESM hoisting)
+- fix(tests): MandalaAtmosphere test — R3F canvas DOM query via data-frameloop attribute
+- fix(tests): Dashboard Sparkles+Zap mock added to lucide-react mock
+- Build: ✓ Compiled 8.1s + 49/49 static pages
+- Tests: 1355 passed | 2 failed | 17 skipped (97 files)
+
 ## v0.81.4 (2026-06-17) — QA Round 8 — Build fix + null safety
 - fix(jsx): ConexoesClient.tsx — broken JSX in ternary reverted to safe emoji string (Turbopack parse failure at line 667)
 - fix(astrology): AstrologyInfoPanel.tsx — import formatDegreeToZodiac; planet degrees display as zodiac-formatted (e.g. 23° Aries)

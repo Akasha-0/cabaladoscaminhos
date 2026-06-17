@@ -466,6 +466,7 @@ export function deriveMissaoDestino(
   tantra: TantricMap | null,
   odu: OduBirth | null,
   holo: AkashicHologram,
+  _synthesizedProfile: import('@akasha/core').SynthesizedProfile | undefined,
   date: Date
 ): AreaNarrative {
   const missionStr = kab?.mission
@@ -524,13 +525,13 @@ export function deriveMissaoDestino(
 }
 
 // ─── Desafios & Sombras ────────────────────────────────────────────────────
-
 export function deriveDesafiosSombras(
   astro: AstrologyMap | null,
   kab: KabalisticMap | null,
   tantra: TantricMap | null,
   odu: OduBirth | null,
   holo: AkashicHologram,
+  _synthesizedProfile: import('@akasha/core').SynthesizedProfile | undefined,
   date: Date
 ): AreaNarrative {
   const shadowSymptoms = buildShadowSymptoms(astro, kab, tantra, odu, 'desafios');

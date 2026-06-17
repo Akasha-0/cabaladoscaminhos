@@ -8,7 +8,7 @@ import crypto from 'node:crypto';
 export const AKASHA_TOKEN_COOKIE = 'akasha_session';
 export const AKASHA_REFRESH_COOKIE = 'akasha_refresh';
 
-const AKASHA_ACCESS_TTL_SECONDS = 15 * 60;
+const AKASHA_ACCESS_TTL_SECONDS = 4 * 60 * 60; // 4 hours — reduced from 15min to fix silent expiry UX bug
 const AKASHA_REFRESH_TTL_SECONDS = 30 * 24 * 60 * 60;
 
 // ============================================================================

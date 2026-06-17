@@ -152,6 +152,7 @@ export interface AkashaSynthesis {
   areas: Record<LifeArea, AreaNarrative>;
   dailyDecision: DailyDecision;
   synthesisParagraph: string;
+  synthesizedProfile?: import('@akasha/core').SynthesizedProfile;
   transformationSequence?: {
     currentPhase: string;
     nextPhase: string;

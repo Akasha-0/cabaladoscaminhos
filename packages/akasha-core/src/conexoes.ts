@@ -45,6 +45,12 @@ export interface BodySyncResult {
   description: string;
 }
 
+export interface NarrativeBlock {
+  topic: 'romantic' | 'odu' | 'authority';
+  label: string;
+  text: string;
+}
+
 export interface ConexaoResult {
   romantic: number; // 0-100
   partnership: number; // 0-100
@@ -53,7 +59,7 @@ export interface ConexaoResult {
   dimensions: ConnectionDimension[];
   oduSync: OduSyncResult;
   bodySync: BodySyncResult;
-  narrative: string;
+  narrative: NarrativeBlock[];
   recommendations: string[];
 }
 
@@ -428,20 +434,19 @@ function scoreDimensions(
 }
 
 // ─── Narrative generation ─────────────────────────────────────────────────────
-
-function buildNarrative(a: ConexaoMap, b: ConexaoMap, result: Partial<ConexaoResult>): string {
+function buildNarrative(a: ConexaoMap, b: ConexaoMap, result: Partial<ConexaoResult>): NarrativeBlock[] {
   const oduA = a.oduBirth.oduName ?? '—';
   const oduB = b.oduBirth.oduName ?? '—';
   const authMatch = result.authorityMatch ?? 'complementary';
 
-  const romanticLabel =
+  const romanticStrength =
     result.romantic && result.romantic > 75
       ? 'forte conexão romântica'
       : result.romantic && result.romantic > 55
       ? 'conexão afetiva presente'
       : 'relação que pede atenção e diálogo sobre as necessidades emocionais';
 
-  const partnershipLabel =
+  const partnershipStrength =
     result.partnership && result.partnership > 75
       ? 'parceria de alto impacto'
       : result.partnership && result.partnership > 55
@@ -449,18 +454,66 @@ function buildNarrative(a: ConexaoMap, b: ConexaoMap, result: Partial<ConexaoRes
       : 'parceria com áreas de desenvolvimento';
 
   if (result.dominantType === 'romantic' || result.dominantType === 'both') {
-    const oduDynamic = result.oduSync?.score && result.oduSync.score > 75
-      ? 'uma ressonância espiritual profunda'
-      : 'uma dinâmica interessante de complementação';
-    const authorityDesc = authMatch === 'aligned'
-      ? 'A autoridade de decisão é alinhada — tomam decisões de forma similar.'
-      : authMatch === 'complementary'
-      ? 'A autoridade de decisão é complementar — um traz o que o outro precisa em decisões.'
-      : 'A autoridade de decisão é um ponto de atenção — comuniquem-se claramente sobre expectativas.';
-    return `${a.name} e ${b.name} possuem uma ${romanticLabel}. Odu ${oduA} com Odu ${oduB} traz ${oduDynamic}. ${authorityDesc}`;
+    const oduDynamic =
+      result.oduSync?.score && result.oduSync.score > 75
+        ? 'uma ressonância espiritual profunda'
+        : 'uma dinâmica interessante de complementação';
+
+    const authorityLabel =
+      authMatch === 'aligned'
+        ? 'Alinhamento de Decisão'
+        : authMatch === 'complementary'
+        ? 'Complementaridade de Decisão'
+        : 'Atenção à Decisão';
+
+    const authorityText =
+      authMatch === 'aligned'
+        ? `${a.name} e ${b.name} possuem autoridade de decisão alinhada — tomam decisões de forma similar. Aproveitem o alinhamento natural para decisões importantes.`
+        : authMatch === 'complementary'
+        ? `${a.name} e ${b.name} possuem autoridade de decisão complementar — um traz o que o outro precisa em decisões. Usem essa互补idade a favor da relação.`
+        : `${a.name} e ${b.name} possuem estilos de decisão diferentes — comuniquem-se claramente sobre expectativas antes de decisões importantes.`;
+
+    return [
+      {
+        topic: 'romantic',
+        label: 'Conexão Amorosa',
+        text: `${a.name} e ${b.name} possuem uma ${romanticStrength}. Permitam que a intimidade evolua naturalmente, sem pressa.`,
+      },
+      {
+        topic: 'odu',
+        label: 'Sincronia Espiritual',
+        text: `Odu ${oduA} com Odu ${oduB} traz ${oduDynamic}. Usem rituais compartilhados para fortalecer o vínculo espiritual do casal.`,
+      },
+      {
+        topic: 'authority',
+        label: authorityLabel,
+        text: authorityText,
+      },
+    ];
   }
 
-  return `${a.name} e ${b.name} possuem um ${partnershipLabel}. A conexão espiritual (${result.oduSync?.description ?? ''}) é um alicerce forte. ${authMatch === 'aligned' ? 'Alinhamento na tomada de decisão.' : 'Precisam adaptar estilos de decisão.'}`;
+  const authorityText =
+    authMatch === 'aligned'
+      ? `${a.name} e ${b.name} possuem autoridade de decisão alinhada — tomam decisões de forma similar. Aproveitem o alinhamento natural.`
+      : `${a.name} e ${b.name} possuem estilos de decisão diferentes — comuniquem-se claramente sobre expectativas.`;
+
+  return [
+    {
+      topic: 'romantic',
+      label: 'Parceria e Conexão',
+      text: `${a.name} e ${b.name} possuem um ${partnershipStrength}. A conexão espiritual (${result.oduSync?.description ?? ''}) é um alicerce forte. Construam juntos sobre essa base.`,
+    },
+    {
+      topic: 'odu',
+      label: 'Ressonância Espiritual',
+      text: `A dinâmica espiritual entre ${oduA} e ${oduB} sustenta a relação. Respeitem os ritmos individuais de cada um no caminho espiritual.`,
+    },
+    {
+      topic: 'authority',
+      label: authMatch === 'aligned' ? 'Alinhamento de Decisão' : 'Adaptação de Decisão',
+      text: authorityText,
+    },
+  ];
 }
 // Partial type for functions that only need specific fields
 type PartialConexaoResult = Pick<

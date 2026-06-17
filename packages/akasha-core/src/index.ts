@@ -94,3 +94,13 @@ export type {
   ConnectionDimension,
   ConexaoResult,
 } from './conexoes';
+// mapeamentos/ — Primitive synthesis engine
+export { synthesizePrimitives } from './mapeamentos';
+export type {
+  SynthesizedProfile,
+  SynthesizedPrimitivo,
+  Tensao,
+  PrimitiveContribution,
+  Polaridade,
+  Primitivo,
+} from './mapeamentos';

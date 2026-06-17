@@ -23,15 +23,15 @@ vi.mock('@/components/akasha/animations', () => ({
   useCountUp: (end: number) => end,
 }));
 
-// ─── Mock lucide-react ────────────────────────────────────────────────────────
 vi.mock('lucide-react', () => ({
+  Sparkles: () => <span data-testid="sparkles-icon">Sparkles</span>,
   AlertCircle: () => <span data-testid="alert-icon">AlertCircle</span>,
   RefreshCw: () => <span data-testid="refresh-icon">RefreshCw</span>,
   Moon: () => <span data-testid="moon-icon">Moon</span>,
   Sun: () => <span data-testid="sun-icon">Sun</span>,
   Monitor: () => <span data-testid="monitor-icon">Monitor</span>,
+  Zap: () => <span data-testid="zap-icon">Zap</span>,
 }));
-
 // ─── Mock ThemeProvider ───────────────────────────────────────────────────────
 vi.mock('@/components/akasha/ThemeProvider', () => ({
   useTheme: () => ({

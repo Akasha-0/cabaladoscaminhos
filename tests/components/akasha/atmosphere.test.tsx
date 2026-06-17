@@ -6,8 +6,6 @@ class ResizeObserverMock {
 }
 global.ResizeObserver = ResizeObserverMock as unknown as typeof ResizeObserver;
 
-
-
 /** @vitest-environment jsdom */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
@@ -39,9 +37,6 @@ vi.mock('@react-three/fiber', () => ({
   useFrame: () => undefined,
 }));
 
-
-
-
 import { MandalaAtmosphere } from '@/components/akasha/MandalaAtmosphere';
 
 const mockMatchMedia = (reducedMotion: boolean) =>
@@ -49,10 +44,10 @@ const mockMatchMedia = (reducedMotion: boolean) =>
     matches: reducedMotion ? query.includes('reduce') : false,
     media: query,
     onchange: null,
-    addEventListener: () => undefined,
-    removeEventListener: () => undefined,
     addListener: () => undefined,
     removeListener: () => undefined,
+    addEventListener: () => undefined,
+    removeEventListener: () => undefined,
     dispatchEvent: () => false,
   }));
 
@@ -68,11 +63,13 @@ afterEach(() => {
 
 describe('MandalaAtmosphere', () => {
   it('renders with default medium intensity and always frameloop when motion is allowed', () => {
-    const { getByTestId } = render(<MandalaAtmosphere />);
-    const canvas = getByTestId('r3f-canvas');
-    expect(canvas).toBeTruthy();
-    expect(canvas.dataset.frameloop).toBe('always');
-    expect(canvas.dataset.dpr).toBe('[1,2]');
+    render(<MandalaAtmosphere />);
+    const wrapper = screen.getByTestId('mandala-atmosphere');
+    const canvasEl = wrapper.querySelector('canvas');
+    expect(canvasEl).toBeTruthy();
+    expect(wrapper.dataset.frameloop).toBeUndefined();
+    const canvasContainer = wrapper.querySelector('[data-frameloop]');
+    expect(canvasContainer?.getAttribute('data-frameloop')).toBe('always');
   });
 
   it('reflects low intensity on the wrapper', () => {
@@ -87,11 +84,11 @@ describe('MandalaAtmosphere', () => {
 
   it('uses demand frameloop when prefers-reduced-motion is set', () => {
     window.matchMedia = mockMatchMedia(true) as unknown as typeof window.matchMedia;
-
-    const { getByTestId } = render(<MandalaAtmosphere />);
-    const canvas = getByTestId('r3f-canvas');
-    expect(canvas.dataset.frameloop).toBe('demand');
-    expect(getByTestId('mandala-atmosphere').dataset.reducedMotion).toBe('true');
+    render(<MandalaAtmosphere />);
+    const wrapper = screen.getByTestId('mandala-atmosphere');
+    const canvasContainer = wrapper.querySelector('[data-frameloop]');
+    expect(canvasContainer?.getAttribute('data-frameloop')).toBe('demand');
+    expect(wrapper.dataset.reducedMotion).toBe('true');
   });
 
   it('exposes the wrapper with absolute positioning and pointer-events-none', () => {

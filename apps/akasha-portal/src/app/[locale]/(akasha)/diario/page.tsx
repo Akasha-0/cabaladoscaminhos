@@ -132,7 +132,7 @@ const cardStyle = (borderColor: string): React.CSSProperties => ({
 });
 
 const labelStyle = (color: string): React.CSSProperties => ({
-  fontSize: '0.62rem',
+  fontSize: '0.7rem',
   fontFamily: 'var(--font-cinzel, serif)',
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
@@ -341,8 +341,7 @@ export default async function DiarioPage({
             <span style={labelStyle(C.magenta)}>Mandato indisponível</span>
             <p style={bodyStyle}>
               Não conseguimos calcular o Mandato de hoje ({res.status}). Tente novamente em alguns
-              instantes. Se o problema persistir, conclua o onboarding ou atualize seus dados
-              natais.
+              instantes. Se o problema persistir, conclua o onboarding ou atualize sua data de nascimento. Acesse seu perfil para corrigir.
             </p>
           </div>
         </div>
@@ -361,10 +360,11 @@ export default async function DiarioPage({
 
   return (
     <div style={wrapStyle}>
+      <h1 className="sr-only">Diário Energético</h1>
       {/* ── Tela 1: O Mandato (3 frases) ─────────────────────────────────── */}
       <div style={screenStyle}>
         <div style={innerStyle}>
-        <div style={screenNumStyle}>01\u00A0/\u000505 — Mandato</div>
+        <div style={screenNumStyle}>01\u00A0/\u000504 — Mandato</div>
 
           {/* Cabeçalho: data + escala + intenção */}
           <div style={cardStyle(pilarInfo.cor)}>
@@ -373,7 +373,11 @@ export default async function DiarioPage({
             </span>
             <p style={{ ...headlineStyle, color: pilarInfo.cor }}>{formatDate(date)}</p>
             <div style={{ marginTop: 10, fontSize: '0.78rem', color: C.txtMut }}>
-              Intenção: <em style={{ color: C.txtSec }}>{mentor_hook.intencao}</em>
+              <strong style={{ color: C.txtSec }}>Intenção do dia</strong>
+              <br />
+              <span>Sua semente do dia — intenção derivada do seu mapa</span>
+              <br />
+              <em style={{ color: C.txtSec }}>{mentor_hook.intencao}</em>
             </div>
           </div>
 
@@ -426,9 +430,7 @@ export default async function DiarioPage({
             </div>
           ) : (
             <div style={cardStyle(pilarInfo.cor)}>
-              <span style={labelStyle(pilarInfo.cor)}>
-                A Voz do Akasha <span style={stubBadge}>via {pilarInfo.nome}</span>
-              </span>
+                A Voz do Akasha
               {frases.map((f, i) => (
                 <p
                   key={i}
@@ -458,12 +460,14 @@ export default async function DiarioPage({
 
               {/* Fontes citadas — proveniência obrigatória (Ethics §1) */}
               {mandato.cita_fontes.length > 0 && (
-                <div style={fonteStyle}>
-                  <span style={{ ...labelStyle(C.txtMut), marginBottom: 6 }}>Citações</span>
-                  {mandato.cita_fontes.map((c, i) => (
-                    <div key={i}>· {c}</div>
-                  ))}
-                </div>
+                <details className="mt-2" aria-label="Fontes e referências desta análise">
+                  <summary className="text-xs text-white/30 cursor-pointer hover:text-white/50">Fontes</summary>
+                  <div style={fonteStyle}>
+                    {mandato.cita_fontes.map((c, i) => (
+                      <div key={i}>· {c}</div>
+                    ))}
+                  </div>
+                </details>
               )}
             </div>
           )}
@@ -473,18 +477,14 @@ export default async function DiarioPage({
 
       {/* Tela 2: A Pergunta do Dia */}
       <div style={screenStyle}>
-        <div style={innerStyle}>
-        <div style={screenNumStyle}>02\u00A0/\u000505 — Pergunta</div>
+        <div style={screenNumStyle}>02\u00A0/\u000504 — Pergunta</div>
           <div style={cardStyle(C.violeta)}>
               A Pergunta do Dia
             <h2 style={{ ...headlineStyle, color: C.violeta, fontSize: '1.35rem' }}>{pergunta}</h2>
             <div style={dividerStyle} />
             <span style={labelStyle(C.txtMut)}>Por que esta pergunta?</span>
             <p style={bodyStyle}>
-              A pergunta de hoje é ancorada em{' '}
-              <strong style={{ color: pilarInfo.cor }}>{pilarInfo.nome}</strong>, o pilar principal
-              da escala {mandato.escala}. A intenção de uma boa pergunta é abrir espaço de escuta —
-              não de resposta apressada. Reserve 1 minuto para deixar a resposta emergir.
+              Respire. Deixe a resposta emergir antes de buscar palavras.
             </p>
             <textarea
               placeholder="Deixe sua reflexão emergir..."
@@ -513,8 +513,7 @@ export default async function DiarioPage({
 
       {/* Tela 3: O Micro-Ritual */}
       <div id="tela-3" style={screenStyle}>
-        <div style={innerStyle}>
-        <div style={screenNumStyle}>03\u00A0/\u000505 — Ritual</div>
+        <div style={screenNumStyle}>03\u00A0/\u000504 — Ritual</div>
           <div style={cardStyle(C.aurora)}>
               O Micro-Ritual
             <h2 style={{ ...headlineStyle, color: C.aurora }}>{ritual.titulo}</h2>
@@ -545,9 +544,9 @@ export default async function DiarioPage({
         return (
           <div style={screenStyle}>
             <div style={innerStyle}>
-              <div style={screenNumStyle}>04\u00A0/\u000505 — Significado</div>
+              <div style={screenNumStyle}>04\u00A0/\u000504 — Significado</div>
               <p style={{ ...bodyStyle, color: C.txtSec, marginBottom: 8 }}>
-                Cinco leituras, uma pessoa. Toque em cada Pilar para refletir.
+                Cinco leituras, uma pessoa. Leia cada Pilar para refletir.
               </p>
               {ordem.map((p) => (
                 <div key={p} style={{ marginBottom: 14 }}>
@@ -578,7 +577,7 @@ export default async function DiarioPage({
         return (
           <div style={screenStyle}>
             <div style={innerStyle}>
-              <div style={screenNumStyle}>05\u00A0/\u000505 — Para suas áreas</div>
+              <div style={screenNumStyle}>05\u00A0/\u000504 — Para suas áreas</div>
               <p style={{ ...bodyStyle, color: C.txtSec, marginBottom: 8 }}>
                 O pilar {pilarInfo.nome} traduzido para cada área da sua vida.
               </p>

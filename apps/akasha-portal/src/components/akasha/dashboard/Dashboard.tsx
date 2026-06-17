@@ -126,6 +126,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
   });
   const [loadingMandato, setLoadingMandato] = useState(!initialPilares);
   const [selectedDimension, setSelectedDimension] = useState<DimensaoSintese | null>(null);
+  const [dimFocoExpanded, setDimFocoExpanded] = useState(false);
 
   const { data: statsData, loading: statsLoading, refetch: refetchStats } = useDashboardData({ userId });
   const { data: dailyData, synthesis, loading: synthesisLoading, refetch: refetchSynthesis } = useAkashaSynthesis({ userId });
@@ -397,7 +398,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                       <Cloud size={16} className="text-[#2DD4BF]" />
                     </div>
                   </div>
-                  <p className="text-[9px] text-[#2DD4BF]/80 uppercase tracking-widest font-mono font-semibold">Clima</p>
+                  <p className="text-[11px] text-[#2DD4BF]/80 uppercase tracking-widest font-mono font-semibold">Clima</p>
                   <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.climate ?? 'Estável'}</p>
                   {activeFilterChip === 'clima' && (
                     <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#2DD4BF] flex items-center justify-center">
@@ -420,7 +421,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                       <Moon size={16} className="text-[#F0B429]" />
                     </div>
                   </div>
-                  <p className="text-[9px] text-[#F0B429]/80 uppercase tracking-widest font-mono font-semibold">Fase Lunar</p>
+                  <p className="text-[11px] text-[#F0B429]/80 uppercase tracking-widest font-mono font-semibold">Fase Lunar</p>
                   <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.moonPhase ?? 'Calculando'}</p>
                   {activeFilterChip === 'lua' && (
                     <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#F0B429] flex items-center justify-center">
@@ -443,7 +444,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                       <Sun size={16} className="text-[#7C5CFF]" />
                     </div>
                   </div>
-                  <p className="text-[9px] text-[#7C5CFF]/80 uppercase tracking-widest font-mono font-semibold">Tema</p>
+                  <p className="text-[11px] text-[#7C5CFF]/80 uppercase tracking-widest font-mono font-semibold">Tema</p>
                   <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.overallTheme ?? 'Foco'}</p>
                   {activeFilterChip === 'tema' && (
                     <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#7C5CFF] flex items-center justify-center">
@@ -519,11 +520,12 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
 
                   <div className="bg-black/25 rounded-xl p-3.5 space-y-1">
                     <p 
-                      className="text-[9px] uppercase tracking-wider font-mono font-semibold"
+                      className="text-[11px] uppercase tracking-wider font-mono font-semibold"
                       style={{ color: ESTRATEGIA_COLOR[detSintese.autoridade.estrategia] }}
                     >
                       Regra Prática de Alinhamento
                     </p>
+                    <p className="text-[10px] text-white/40 uppercase tracking-wider font-mono mb-1">Quando</p>
                     <p className="text-xs text-white leading-relaxed font-medium">
                       {detSintese.autoridade.regra.condicao} → <span className="text-[#9D86FF]">{detSintese.autoridade.regra.accao}</span>
                     </p>
@@ -531,7 +533,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
 
                   <div className="grid grid-cols-2 gap-3 text-xs pt-1 border-t border-white/5">
                     <div className="space-y-2">
-                      <p className="text-[9px] text-[#2DD4BF] uppercase tracking-wider font-mono font-semibold">Melhor Timing</p>
+                      <p className="text-[11px] text-[#2DD4BF] uppercase tracking-wider font-mono font-semibold">Melhor Timing</p>
                       <p className="text-white/85 leading-relaxed">{detSintese.autoridade.timing.melhor}</p>
                       {!completedToday && dailyData?.ritual && (
                         <button
@@ -541,7 +543,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                         >
                           {completing ? (
                             <span className="flex items-center justify-center gap-1.5">
-                              <Loader size={12} className="animate-spin" /> Sincronizando...
+                              <Loader size={12} className="animate-spin" /> Registrando...
                             </span>
                           ) : (
                             'Iniciar Ritual Agora'
@@ -550,7 +552,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                       )}
                     </div>
                     <div className="space-y-2">
-                      <p className="text-[9px] text-[#FB5781] uppercase tracking-wider font-mono font-semibold">Evitar Decidir</p>
+                      <p className="text-[11px] text-[#FB5781] uppercase tracking-wider font-mono font-semibold">Evitar Decidir</p>
                       <p className="text-white/85 mt-0.5 leading-relaxed">{detSintese.autoridade.timing.pior}</p>
                     </div>
                   </div>
@@ -578,39 +580,44 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                       <h3 className="text-md font-bold font-cinzel text-white leading-none mt-1">{dimFoco?.titulo}</h3>
                     </div>
                   </div>
-                  <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#F0B429]/15 border border-[#F0B429]/40 text-[#F0B429]">
-                    Prioridade
-                  </span>
                 </div>
 
-                <div className="relative" style={{ maxHeight: '4.5em', overflow: 'hidden' }}>
+                <div className="relative" style={{ maxHeight: dimFocoExpanded ? 'none' : '4.5em', overflow: 'hidden' }}>
                   <div className="space-y-1">
-                    {renderNarrative(dimFoco?.synthes)}
+                    {renderNarrative(dimFoco?.synthes ?? '')}
                   </div>
-                  <div
-                    aria-hidden
-                    style={{
-                      position: 'absolute',
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      height: '2em',
-                      background: 'linear-gradient(to bottom, transparent, #0B0E1C)',
-                      pointerEvents: 'none',
-                    }}
-                  />
+                  {!dimFocoExpanded && (
+                    <div
+                      aria-hidden
+                      style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        height: '2em',
+                        background: 'linear-gradient(to bottom, transparent, #0B0E1C)',
+                        pointerEvents: 'none',
+                      }}
+                    />
+                  )}
                 </div>
+                <button
+                  onClick={() => setDimFocoExpanded(!dimFocoExpanded)}
+                  className="text-xs text-[#7C5CFF]/70 hover:text-[#7C5CFF] transition-colors"
+                >
+                  {dimFocoExpanded ? 'Mostrar menos' : 'Ler mais'}
+                </button>
 
                 {dimFoco?.praktika && (
                   <div className="bg-[#2DD4BF]/5 border border-[#2DD4BF]/15 rounded-xl p-3.5 space-y-1">
-                    <p className="text-[9px] text-[#2DD4BF] uppercase tracking-wider font-mono font-semibold">Prática do Dia</p>
+                    <p className="text-[11px] text-[#2DD4BF] uppercase tracking-wider font-mono font-semibold">Prática do Dia</p>
                     <p className="text-xs text-white/90 leading-relaxed">{dimFoco.praktika}</p>
                   </div>
                 )}
 
                 {dimFoco?.alerta && (
                   <div className="bg-[#FB5781]/5 border border-[#FB5781]/15 rounded-xl p-3.5 space-y-1">
-                    <p className="text-[9px] text-[#FB5781] uppercase tracking-wider font-mono font-semibold">O que Evitar</p>
+                    <p className="text-[11px] text-[#FB5781] uppercase tracking-wider font-mono font-semibold">O que Evitar</p>
                     <p className="text-xs text-white/90 leading-relaxed">{dimFoco.alerta}</p>
                   </div>
                 )}
@@ -637,7 +644,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                         <div className="flex items-center gap-3 text-xs text-[#A7AECF]/70">
                           <span className="flex items-center gap-1">
                             <Clock size={12} className="text-[#2DD4BF]" />
-                            {dailyData.ritual.duracao || dailyData.ritual.duration || '15 min'}
+                            {dailyData.ritual.cor || '15 min'}
                           </span>
                           <span className="w-1 h-1 rounded-full bg-white/20" />
                           <span className="flex items-center gap-1">
@@ -685,7 +692,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                             {completing ? (
                               <>
                                 <Loader size={16} className="animate-spin" />
-                                Sincronizando...
+                                Salvando...
                               </>
                             ) : (
                               <>
@@ -734,8 +741,8 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                           <span className="text-[11px] font-bold text-white leading-tight">
                             {dim.titulo.split(' & ')[0]}
                           </span>
-                          <span className="text-[9px] text-[#A7AECF]/50 group-hover:text-white transition-colors">
-                            Explorar →
+                          <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-[#7C5CFF]/10 border border-[#7C5CFF]/20 text-[10px] text-[#9D86FF] group-hover:bg-[#7C5CFF]/20 group-hover:border-[#7C5CFF]/40 transition-all">
+                            Explorar <span>→</span>
                           </span>
                         </button>
                       );
@@ -873,13 +880,13 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                 <div className="grid grid-cols-1 gap-2.5 pt-2">
                   {selectedDimension.praktika && (
                     <div className="bg-[#2DD4BF]/5 border border-[#2DD4BF]/15 rounded-xl p-3.5 space-y-1">
-                      <p className="text-[9px] text-[#2DD4BF] uppercase tracking-wider font-mono font-semibold">Prática Sugerida</p>
+                      <p className="text-[11px] text-[#2DD4BF] uppercase tracking-wider font-mono font-semibold">Prática Sugerida</p>
                       <p className="text-xs text-white/95 leading-relaxed">{selectedDimension.praktika}</p>
                     </div>
                   )}
                   {selectedDimension.alerta && (
                     <div className="bg-[#FB5781]/5 border border-[#FB5781]/15 rounded-xl p-3.5 space-y-1">
-                      <p className="text-[9px] text-[#FB5781] uppercase tracking-wider font-mono font-semibold">Evitar Padrão</p>
+                      <p className="text-[11px] text-[#FB5781] uppercase tracking-wider font-mono font-semibold">Evitar Padrão</p>
                       <p className="text-xs text-white/95 leading-relaxed">{selectedDimension.alerta}</p>
                     </div>
                   )}
@@ -888,7 +895,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                 {/* Pilar contributions mapping */}
                 {selectedDimension.contribuicoes && selectedDimension.contribuicoes.length > 0 && (
                   <div className="bg-black/25 rounded-2xl p-4 border border-white/5 space-y-2">
-                    <p className="text-[9px] text-[#7C5CFF] uppercase tracking-wider font-mono font-semibold">Cruzamento de Influências</p>
+                    <p className="text-[11px] text-[#7C5CFF] uppercase tracking-wider font-mono font-semibold">Cruzamento de Influências</p>
                     <div className="space-y-2 max-h-[160px] overflow-y-auto pr-1">
                       {selectedDimension.contribuicoes.map((c, idx) => (
                         <div key={idx} className="text-xs text-[#A7AECF]/80 leading-relaxed border-b border-white/5 pb-2 last:border-0 last:pb-0">
@@ -897,7 +904,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                           </span>
                           {c.frase}
                           {c.fonte && (
-                            <span className="text-[9px] text-[#A7AECF]/40 italic block mt-0.5">
+                            <span className="text-[11px] text-[#A7AECF]/40 italic block mt-0.5">
                               Fonte: {c.fonte}
                             </span>
                           )}

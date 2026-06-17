@@ -178,8 +178,8 @@ export function DimensaoCard({ sintese, index }: DimensaoCardProps) {
           {/* Prática */}
           {sintese.praktika && (
             <section>
-              <h4 style={{ fontSize: '0.72rem', color: 'rgba(232,224,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
-                ▸ Prática permanente
+              <h4 style={{ fontSize: '0.75rem', color: 'rgba(232,224,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
+                ▸ Como aplicar
               </h4>
               <p style={{ fontSize: '0.85rem', color: 'rgba(232,224,255,0.75)', lineHeight: 1.5, margin: 0 }}>
                 {sintese.praktika}
@@ -189,8 +189,8 @@ export function DimensaoCard({ sintese, index }: DimensaoCardProps) {
 
           {sintese.alerta && (
             <section>
-              <h4 style={{ fontSize: '0.72rem', color: 'rgba(255,180,100,0.6)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
-                <AlertTriangle size={12} className="inline mr-1" style={{ color: 'rgba(255,180,100,0.6)' }} /> Atenção
+              <h4 style={{ fontSize: '0.75rem', color: 'rgba(255,180,100,0.6)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
+                <AlertTriangle size={12} className="inline mr-1" style={{ color: 'rgba(255,180,100,0.6)' }} /> Armadilha a evitar
               </h4>
               <p style={{ fontSize: '0.85rem', color: 'rgba(255,200,150,0.75)', lineHeight: 1.5, margin: 0 }}>
                 {sintese.alerta}
@@ -208,7 +208,7 @@ export function DimensaoCard({ sintese, index }: DimensaoCardProps) {
                 padding: '10px 14px',
               }}
             >
-              <h4 style={{ fontSize: '0.72rem', color: 'rgba(255,200,80,0.7)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
+              <h4 style={{ fontSize: '0.75rem', color: 'rgba(255,200,80,0.7)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
                 <Scale size={12} className="inline mr-1" style={{ color: 'rgba(255,200,80,0.7)' }} /> Akasha Authority
               </h4>
               <p style={{ fontSize: '0.83rem', color: 'rgba(255,220,150,0.85)', lineHeight: 1.5, margin: 0 }}>
@@ -237,7 +237,7 @@ export function DimensaoCard({ sintese, index }: DimensaoCardProps) {
           {/* Pilares desta dimensão */}
           {sintese.contribuicoes.length > 0 && (
             <section>
-              <h4 style={{ fontSize: '0.72rem', color: 'rgba(232,224,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 8px' }}>
+              <h4 style={{ fontSize: '0.75rem', color: 'rgba(232,224,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 8px' }}>
                 ▸ Pilares desta dimensão
               </h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -246,7 +246,7 @@ export function DimensaoCard({ sintese, index }: DimensaoCardProps) {
                   const cor = c.nivel === 'primario' ? '#F0C060' : 'rgba(200,180,255,0.6)';
                   return (
                     <div key={c.pilar} style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-                      <span style={{ fontSize: '0.7rem', fontWeight: 600, color: cor, minWidth: 72 }}>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 600, color: cor, minWidth: 72 }}>
                         {nomePilar}
                       </span>
                       <span style={{ fontSize: '0.83rem', color: 'rgba(232,224,255,0.7)', lineHeight: 1.4 }}>

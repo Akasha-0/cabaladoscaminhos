@@ -6,6 +6,13 @@ import { resolveSig, SignificadoEmbed } from '@/components/akasha/mandala-meanin
 import { Divider, InfoPanel, Insight, Row } from '@/components/akasha/MandalaChartInfoPanel';
 import { KOSHAS } from '@/lib/shared/koshas';
 import type { MandalaData } from './MandalaChart';
+const KOSHA_PT: Record<string, string> = {
+  'Anna-maya':    'Corpo Físico — estrutura e movimento',
+  'Prana-maya':   'Corpo Vital — respiração e energia',
+  'Mano-maya':    'Corpo Mental — pensamentos e emoções',
+  'Vijnana-maya': 'Corpo Intuitivo — sabedoria e discernimento',
+  'Ananda-maya':  'Corpo de Bem-aventurança — propósito e trascendência',
+};
 
 // ── Layer 3 — Corpo e Energia (Tantric Bodies + Koshas) ──────────────────────
 
@@ -84,7 +91,8 @@ export function TantricBodyInfoPanel({ tantra, inactiveBodies }: TantricBodyInfo
               />
               <div>
                 <p style={{ fontSize: '0.8125rem', color: '#FFFFFF', fontWeight: 600, margin: 0 }}>
-                  {k.name.pt} <span style={{ color: '#A7AECF', fontWeight: 400 }}>({k.name.sanskrit})</span>
+                  {KOSHA_PT[k.name.sanskrit] ?? k.name.pt}{' '}
+                  <span style={{ color: '#A7AECF', fontWeight: 400 }}>({k.name.sanskrit})</span>
                 </p>
                 <p style={{ fontSize: '0.75rem', color: '#A7AECF', margin: 0 }}>
                   {k.description.pt}

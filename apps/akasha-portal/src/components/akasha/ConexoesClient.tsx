@@ -6,7 +6,7 @@
  */
 
 import { useState } from 'react';
- import { Heart, ArrowLeft, Loader, Bookmark, Info, Edit3, X } from 'lucide-react';
+import { Heart, ArrowLeft, Loader, Bookmark, Info, Edit3, X, Loader2 } from 'lucide-react';
 import { CityAutocomplete } from '@/components/ui/city-autocomplete';
 import type { CityResult } from '@/components/ui/city-autocomplete';
 
@@ -145,7 +145,7 @@ export default function ConexoesClient({ userProfile }: Props) {
   const [rawData, setRawData] = useState<RawBirthData>({ name: '', birthDate: '', birthTime: '', birthCity: '' });
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ConexaoResult | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<React.ReactNode | null>(null);
   const [savedConnections, setSavedConnections] = useState<SavedConnection[]>([]);
   const [savedLoading, setSavedLoading] = useState(false);
   const [savedNotification, setSavedNotification] = useState<string | null>(null);
@@ -200,7 +200,9 @@ export default function ConexoesClient({ userProfile }: Props) {
         const data = await res.json().catch(() => ({}));
         const msg = (data as { error?: string }).error ?? '';
         if (msg.includes('Mapa natal não encontrado')) {
-          throw new Error('Calcule seu mapa primeiro na página Mapa.');
+          setError(<>Complete seu mapa primeiro. <a href="/mapa" className="underline text-[#9D86FF]">Ir para Mapa →</a></>);
+          setLoading(false);
+          return;
         }
         throw new Error(msg);
       }
@@ -381,7 +383,7 @@ export default function ConexoesClient({ userProfile }: Props) {
           </div>
 
           {error && (
-            <p className="text-sm text-[#f87171]">{error}</p>
+            <div className="text-sm text-[#f87171]">{error}</div>
           )}
 
           <button
@@ -429,7 +431,7 @@ export default function ConexoesClient({ userProfile }: Props) {
           </div>
 
           {error && (
-            <p className="text-sm text-[#f87171]">{error}</p>
+            <div className="text-sm text-[#f87171]">{error}</div>
           )}
 
           <button
@@ -486,7 +488,7 @@ export default function ConexoesClient({ userProfile }: Props) {
           <div className="grid grid-cols-2 gap-4">
             <div className="rounded-2xl border border-[#f87171]/30 bg-[#f87171]/5 p-5 text-center">
               <p className="text-xs text-white/50 mb-1">Conexão Amorosa</p>
-              <p className="text-4xl font-black text-[#f87171]">{result.romantic}</p>
+              <p className="text-4xl font-black text-[#f87171]">{result.romantic}%</p>
               <p className={`text-xs font-semibold mt-1 ${
                 result.romantic >= 71 ? 'text-[#34d399]' :
                 result.romantic >= 41 ? 'text-[#fbbf24]' :
@@ -533,27 +535,32 @@ export default function ConexoesClient({ userProfile }: Props) {
               <span className="text-white/50">Tipo dominante</span>
               <span className="font-bold text-white">{DOMINANT_LABELS[result.dominantType]}</span>
             </div>
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-white/50 flex items-center gap-1">
-                Sincronia Espiritual
-                <span title="Como a autoridade espiritual dos dois mapas se relacionam." className="cursor-help text-white/30 hover:text-white/50 transition-colors">
-                  <Info size={12} />
+            <div className="space-y-1">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-white/50 flex items-center gap-1">
+                  Sincronia Espiritual
+                  <span aria-label="Como a autoridade espiritual dos dois mapas se relacionam." className="cursor-help text-white/30 hover:text-white/50 transition-colors">
+                    <Info size={12} />
+                  </span>
                 </span>
-              </span>
-              <span className="font-bold" style={{ color: authColor }}>
-                {AUTHORITY_LABELS[result.authorityMatch]}
-              </span>
+                <span className="font-bold" style={{ color: authColor }}>
+                  {AUTHORITY_LABELS[result.authorityMatch]}
+                </span>
+              </div>
+              <p className="text-[10px] text-white/30 pl-0.5">
+                {result.authorityMatch === 'high' ? 'alinhamento forte — autoridades compatíveis' :
+                 result.authorityMatch === 'medium' ? 'autoridades complementares com diferenças' :
+                 'contrastes entre os tipos de decisão'}
+              </p>
             </div>
           </div>
 
           {/* Odu + Body sync */}
           <div className="grid grid-cols-2 gap-4">
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <p className="text-xs text-white/50 mb-1">Sincronia Odu</p>
-              <p className="text-lg font-black text-[#7C5CFF]">{result.oduSync.score}</p>
               <p className="text-xs text-white/50 mb-1 flex items-center gap-1">
                 Sincronia Corporal
-                <span title="Compatibilidade entre os corpos tântricos dos dois mapas." className="cursor-help text-white/30 hover:text-white/50 transition-colors">
+                <span aria-label="Compatibilidade entre os corpos tântricos dos dois mapas." className="cursor-help text-white/30 hover:text-white/50 transition-colors">
                   <Info size={12} />
                 </span>
               </p>
@@ -567,7 +574,7 @@ export default function ConexoesClient({ userProfile }: Props) {
             <div className="rounded-2xl border border-[#7C5CFF]/20 bg-[#7C5CFF]/5 px-6 py-5">
               <p className="text-xs font-bold text-[#7C5CFF]/80 uppercase tracking-wider mb-2">Sua Conexão</p>
               <div className="space-y-2">
-                {result.narrative.split(/(?<=[.!?])\s+/).filter(Boolean).map((sentence, i) => (
+                {result.narrative.split(/(?<=[.!?])\s+(?=[A-ZÓÇÃÂÊÔ])/).filter(Boolean).map((sentence, i) => (
                   <p key={i} className="text-sm text-white/75 leading-relaxed border-l-2 border-[#7C5CFF]/40 pl-4">
                     {sentence.trim()}
                   </p>

@@ -33,7 +33,7 @@ export interface SynthesizedPrimitivo {
 
 // ─── Tensão entre primitivos opostos ─────────────────────────────────────────
 
-interface Tensao {
+export interface Tensao {
   primitivoA: Primitivo;
   primitivoB: Primitivo;
   descricao: string;
