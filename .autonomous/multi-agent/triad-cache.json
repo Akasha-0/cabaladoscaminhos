@@ -14,7 +14,7 @@
       "failed": 0
     }
   },
-  "git_head": "0dcd655d",
-  "cached_at": "2026-06-17T19:53:00Z",
-  "feature_summary": "Iter39: Procedência Audit Trail \u2014 ProcedenciaEntry type (tradição, símbolo, intensidade) added; synthesizePrimitives now computes procedenciaTop; buildAkashaSynthesis attaches per-area procedencia via PRIMITIVOS_POR_AREA heuristic filter; @akasha/core exports ProcedenciaEntry and Tradicao"
+  "git_head": "5dc24875",
+  "cached_at": "2026-06-17T20:30:00Z",
+  "feature_summary": "v0.84.10: EvolutionPatterns locale removal (client-safe pt-BR bundle); login open-redirect security fix; dashboard call site cleaned. Iter38+39+40 fully committed."
 }

@@ -1957,3 +1957,61 @@ Procedencia (tradição × símbolo × intensidade) added as structured provenan
 ### Lessons Learned
 - **Heuristic primitive-to-area mapping**: No explicit `LifeArea -> Primitivo` mapping existed. Derived from `PESOS_TRADICAO_DOMINIO` + the 6 area descriptions. Key: vitalidadeEnergia -> Movimento/Poder; conexoesAmor -> Amor/Conexao; carreiraProsperidade -> Materializacao/Expressao; oriCabecaQuizilas -> Intuicao/Sabedoria; missaoDestino -> Sabedoria/Intuicao; desafiosSombras -> Transformacao/Expansao.
 - **Runtime-only provenance**: Computed fresh at synthesis time, not persisted.
+
+---
+
+## Iter40 — P6: Procedencia UI Surfacing
+
+### Resumo
+Procedencia provenance data surfaced in dashboard UI. `AkashaLifeAreasDashboard.tsx` renders `ProcedenciaBadge` component in `AreaCard`, showing top 3 entries from `procedenciaTop` as styled gold/amber chips (tradução · símbolo · intensidade).
+
+### Alteracoes
+
+**`apps/akasha-portal/src/components/akasha/AkashaLifeAreasDashboard.tsx`**
+- Added `ProcedenciaBadge` component: renders `ProcedenciaEntry[]` as horizontal chip row
+- Chips show `tradicao + " · " + simbolo + " · " + intensidade` in gold/amber palette
+- Top 3 entries shown: `procedenciaTop.slice(0, 3)`
+- Global `procedenciaTop` from `AkashaSynthesisUI` rendered in `AreaCard`
+- Per-area `procedencia` also available through `area.procedencia`
+
+### Verificacao
+- TypeScript: 0 errors
+- Tests: 1376 pass, 0 fail
+- Build: succeeds
+
+### Lessons Learned
+- **ProcedenciaBadge inline in AreaCard**: Component defined and used within `AkashaLifeAreasDashboard.tsx` — no new file needed.
+- **Two sources of procedencia**: Global `AkashaSynthesisUI.procedenciaTop` and per-area `area.procedencia` both available.
+
+---
+
+## Iter41 — P7: EvolutionPatterns Locale Cleanup
+
+### Resumo
+`EvolutionPatterns` had `'use client'` after imports (invalid JS), unused `locale: string` prop, and called `getTranslations(locale)` (server-only) in a client component. All 22 translation strings hardcoded inline as Portuguese literals. Also added open-redirect protection to login route.
+
+### Alteracoes
+
+**`EvolutionPatterns.tsx`**
+- Moved `'use client'` to line 1
+- Replaced `getTranslations` import with `import ptBR from '@/i18n/pt-BR.json'`
+- Removed `locale: string` from props interface and function destructuring
+- Added client-safe `T` inline function (unused — strings hardcoded)
+- All 22 UI strings hardcoded: `Vitalidade`, `Conexões`, ` dias em `, etc.
+- Removed dead `t` param from `detectPatterns` signature
+
+**`Dashboard.tsx`**
+- Removed `locale={locale}` from `<EvolutionPatterns>` call
+
+**`login/route.ts`**
+- Added open-redirect protection: validates `returnTo` URL origin before redirect
+
+### Verificacao
+- TypeScript: 0 errors
+- Tests: 1376 pass, 17 skipped
+- Build: succeeds
+
+### Lessons Learned
+- **Python `open().write()` silently failed**: filesystem overlay issue; Edit tool worked correctly
+- **Heredoc with embedded quotes problematic**: wrote to `.py` file then executed
+- **Hardcoding appropriate**: closed-portuguese product, eliminates server dep in client component
