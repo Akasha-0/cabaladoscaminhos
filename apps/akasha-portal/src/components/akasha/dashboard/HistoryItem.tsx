@@ -14,6 +14,7 @@ const LEVEL_CONFIG = {
     bg: 'bg-purple-900/50',
     text: 'text-purple-300',
     border: 'border-purple-700/50',
+    borderHover: 'hover:border-purple-500',
     label: 'Sombra',
   },
   gift: {
@@ -21,6 +22,7 @@ const LEVEL_CONFIG = {
     bg: 'bg-amber-900/50',
     text: 'text-amber-300',
     border: 'border-amber-700/50',
+    borderHover: 'hover:border-amber-500',
     label: 'Dom',
   },
   siddhi: {
@@ -28,6 +30,7 @@ const LEVEL_CONFIG = {
     bg: 'bg-emerald-900/50',
     text: 'text-emerald-300',
     border: 'border-emerald-700/50',
+    borderHover: 'hover:border-emerald-500',
     label: 'Siddhi',
   },
 } as const;
@@ -66,7 +69,7 @@ export function HistoryItem({ item }: HistoryItemProps) {
         className={`
           block p-4 rounded-lg border transition-all duration-200
           bg-[#1C1C1E]/80 hover:bg-[#1C1C1E]
-          ${config.border} hover:${config.border.replace('/50', '')}
+          ${config.border} ${config.borderHover}
         `}
       >
         <div className="flex items-start justify-between gap-3">

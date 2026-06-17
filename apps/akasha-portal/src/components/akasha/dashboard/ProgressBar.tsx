@@ -34,8 +34,8 @@ export function ProgressBar({ value, max, label, showPercent = true, showShimmer
       <div className="relative h-2.5 bg-[#0B0E1C]/80 rounded-full overflow-hidden border border-white/5">
         {/* Subtle glow behind the progress fill */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 h-3 blur-sm rounded-full bg-akasha-primary/20"
-          style={{ width: `${percent}%` }}
+          className="absolute top-1/2 -translate-y-1/2 h-3 blur-sm rounded-full"
+          style={{ width: `${percent}%`, backgroundColor: `${primaryColor}33` }}
         />
         <motion.div
           className="absolute inset-0 rounded-full"

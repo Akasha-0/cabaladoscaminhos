@@ -2,7 +2,7 @@
   "results": [
     {
       "success": true,
-      "message": "Skipped: packages/core-iching/src/practices.ts is already pure data (no helper functions to extract)",
+      "message": "No extraction needed — packages/core-iching/src/practices.ts is already pure data (no helper functions). Lookup helpers are in practices-queries.ts. File was clean, not modified.",
       "type": "large_file"
     }
   ]
