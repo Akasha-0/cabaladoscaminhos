@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { useDashboardData } from './hooks/useDashboardData';
 import { HistoryItem } from './HistoryItem';
-import { History, Sparkles } from 'lucide-react';
+import { History, Sparkles, ChevronRight } from 'lucide-react';
 
 interface RitualHistoryProps {
   userId: string;
@@ -113,9 +113,7 @@ export function RitualHistory({ userId, maxVisible = 10 }: RitualHistoryProps) {
                 className="text-xs text-[#7C5CFF] hover:text-[#9D86FF] transition-colors inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#7C5CFF]/10 hover:bg-[#7C5CFF]/20 border border-[#7C5CFF]/20"
               >
                 Ver mais
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-[#7C5CFF]">
-                  <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
+                <ChevronRight size={12} className="text-[#7C5CFF]" />
               </button>
             </div>
           )}
