@@ -117,12 +117,7 @@
 ---
 
 #### `/mapa` — Hub do Mapa do Ser
-- **Rota:** `[locale]/(akasha)/mapa/page.tsx`
-- **Pergunta:** (nenhuma — hub de navegação)
-- **Camada:** 5
-- **Estado:** **redirect**
-- **Resumo:** Rota de entrada que atualmente só redireciona para `/mapa/significado`. Sem valor próprio. **Proposta:** Eliminar e fazer `/mapa/significado` a rota canônica, ou renomear o hub para `/map` (semelhante a outras UX patterns). Manter se hub de navegação横向 for implementado.
-
+**Cortada (Iter43).** Rota de entrada que só redirecionava para `/mapa/significado`. Sem valor próprio — `/mapa/significado` é a rota canônica. Removida. Links hardcoded em `not-found.tsx` e `ConexoesClient.tsx` atualizados para `/mapa/significado`.
 ---
 
 #### `/mapa/significado` — Significado dos 5 Pilares
@@ -343,7 +338,7 @@ Estas superfícies foram mencionadas no task brief mas **não existem no código
 
 | Rota | Rationale |
 |------|-----------|
-| `/mapa` (entry point) | Só faz redirect. Eliminar — a rota target já existe. |
+| `/mapa` (entry point) | ~~Só faz redirect. Eliminar — a rota target já existe.~~ **Cortada Iter43.** |
 | `/mural` | Não responde a nenhuma das 5 perguntas. Feature deengajamento sem KPI comprovado. Cortar ou mover para `/sobre` como seção. |
 | `/glossario` | Serve como referência mas não responde perguntas. Cortar se os termos forem migrados para tooltips em `/mapa/significado`. |
 

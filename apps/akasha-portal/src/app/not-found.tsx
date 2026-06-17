@@ -122,7 +122,7 @@ export default function NotFound() {
                 Calendário
               </Link>
               <Link
-                href="/mapa"
+                href="/mapa/significado"
                 className="text-slate-400 hover:text-amber-400 transition-colors font-raleway text-sm"
               >
                 Mapa Natal

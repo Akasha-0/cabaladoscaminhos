@@ -1,6 +1,12 @@
 /**
  * API Route: POST /api/mentor/ask
  * Streams mentor response with rate limiting and credits
+ *
+ * SECURITY FIX (v0.85.2):
+ * Previously accepted userId from request body without verifying it matched the
+ * authenticated user (IDOR). Any authenticated user could impersonate another and
+ * deduct their credits. Now uses requireAkashaApi to enforce authentication and
+ * ignores userId from body — uses only the authenticated user's identity.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -16,10 +22,11 @@ import { checkCredits, deductCredit, noCreditsMessage } from '@/lib/application/
 import { streamMentorResponse } from '@/lib/application/mentor/llm-router';
 import { loadUserMaps } from '@akasha/mentor/maps';
 import type { MentorMessage } from '@akasha/mentor/types';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 
 const bodySchema = z.object({
   question: z.string().min(1).max(2000),
-  userId: z.string().min(1),
+  // userId intentionally removed from body schema — must use authenticated user ID
   sessionHistory: z.array(z.object({
     role: z.enum(['user', 'mentor']),
     content: z.string(),
@@ -27,6 +34,11 @@ const bodySchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  // 0. Authenticate — userId from auth context, NOT from body
+  const authResult = await requireAkashaApi(request);
+  if (authResult instanceof NextResponse) return authResult;
+  const userId = authResult.id;
+
   try {
     // 1. Validate body
     let parsed: z.infer<typeof bodySchema>;
@@ -35,14 +47,14 @@ export async function POST(request: NextRequest) {
       parsed = bodySchema.parse(raw);
     } catch {
       return NextResponse.json(
-        { error: 'question and userId are required' },
+        { error: 'question is required' },
         { status: 400 }
       );
     }
 
-    const { question, userId, sessionHistory = [] } = parsed;
+    const { question, sessionHistory = [] } = parsed;
 
-    // 2. Rate limit check
+    // 2. Rate limit check — uses authenticated userId
     const rateLimit = await checkRedisRateLimit(
       `${MENTOR_RATE_LIMIT_KEY_PREFIX}:${userId}`,
       MENTOR_RATE_LIMIT_CONFIG.maxRequests,
@@ -55,7 +67,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 3. Credits check
+    // 3. Credits check — uses authenticated userId
     const credits = await checkCredits(userId);
     if (!credits.hasCredits) {
       return NextResponse.json(
@@ -64,7 +76,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 4. Load user maps
+    // 4. Load user maps — uses authenticated userId
     let maps;
     try {
       maps = await loadUserMaps({ prisma, userId });
@@ -81,10 +93,8 @@ export async function POST(request: NextRequest) {
       id: `session-${i}`,
       role: m.role === 'user' ? 'user' : 'mentor',
       content: m.content,
-      createdAt: new Date(),
     }));
-
-    // 6. Stream response
+    // 6. Stream response — uses authenticated userId
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
       async start(controller) {
@@ -128,4 +138,5 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+}
 }

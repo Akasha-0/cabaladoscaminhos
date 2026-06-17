@@ -206,7 +206,7 @@ export default function ConexoesClient({ userProfile }: Props) {
         const data = await res.json().catch(() => ({}));
         const msg = (data as { error?: string }).error ?? '';
         if (msg.includes('Mapa natal não encontrado')) {
-          setError(<>Complete seu mapa primeiro. <a href="/mapa" className="underline text-[#9D86FF]">Ir para Mapa →</a></>);
+          setError(<>Complete seu mapa primeiro. <a href="/mapa/significado" className="underline text-[#9D86FF]">Ir para Mapa →</a></>);
           setLoading(false);
           return;
         }

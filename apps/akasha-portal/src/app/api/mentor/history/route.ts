@@ -1,23 +1,25 @@
 /**
  * API Route: GET /api/mentor/history
- * Returns recent mentor messages for a user
+ * Returns recent mentor messages for the authenticated user.
+ *
+ * SECURITY FIX (v0.85.2):
+ * Previously took userId from query params directly — allowed ANY user to read
+ * any other user's mentor history (IDOR vulnerability). Now uses requireAkashaApi
+ * to enforce authentication and returns only the authenticated user's history.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/infrastructure/prisma';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 
 export async function GET(request: NextRequest) {
-  const userId = request.nextUrl.searchParams.get('userId');
+  const authResult = await requireAkashaApi(request);
+  if (authResult instanceof NextResponse) return authResult;
 
-  if (!userId) {
-    return NextResponse.json(
-      { error: 'userId is required' },
-      { status: 400 }
-    );
-  }
+  const userId = authResult.id;
 
   try {
-    // Get recent mentor sessions and messages
+    // Get recent mentor sessions and messages for the authenticated user
     const sessions = await prisma.consultation.findMany({
       where: {
         userId,
