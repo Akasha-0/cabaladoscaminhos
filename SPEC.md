@@ -149,11 +149,12 @@ Constitution defines dimensions: Identidade, Talentos, Desafios, Missão, Evolu�
 **Gap:** Rituals are built from hologram data but the ritual database (`ritual-storage.ts` is a stub) is not yet populated.
 
 ### Layer 7 — Agente Evolutivo
-**Status: ❌ NOT YET IMPLEMENTED**
+**Status: ⚠️ PARTIAL**
 
-The constitution specifies: personal cycle tracking, I Ching cycles, reavalições, "gêmeo digital simbólico".
-The `personal-cycle-engine.ts` exists in `apps/akasha-portal/src/lib/application/agents/` but is not yet wired into the main synthesis flow.
-
+Implemented via `evolutionary-agent/index.ts` (iter30): personalDay/Month/Year cycle calculations, pinnacle/challenges/maturity derivation, exercise prioritization, cycle modulation per life area.
+Extended in iter33 with persistence layer: `CycleSnapshot`, `AreaHistoryEntry`, `ExerciseCompletion` Prisma models + API routes for storage.
+Extended in iter34 with pattern display: `EvolutionPatterns` component in "Sua Jornada" tab showing frequency trends, alignment sparklines, and detected patterns.
+**Remaining gap:** Re-assessment triggers (milestone-based re-evaluation), I Ching cycle integration, and formal "gêmeo digital simbólico" UI representation.
 ---
 
 ## 5. O Motor de Tradução — Primitive System (Section 5.1)

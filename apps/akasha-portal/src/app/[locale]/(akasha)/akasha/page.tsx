@@ -42,9 +42,12 @@ export default async function MinhaCaixaPage({
 }) {
   const { locale } = await params;
   const cookieStore = await cookies();
-  const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
   const authStatus = (await headers()).get('X-Akasha-Auth');
-  if (authStatus !== 'refreshed' && !verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
+  const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
+  // Option C: trust X-Akasha-Auth header set by middleware instead of re-verifying.
+  if (authStatus !== 'refreshed' && !verifyAkashaToken(token, 'access')) {
+    redirect(`/${locale}/login`);
+  }
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia`,

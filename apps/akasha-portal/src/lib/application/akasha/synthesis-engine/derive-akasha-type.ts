@@ -253,7 +253,10 @@ function deriveAuthorityFromMaps(
     if (dominantBody >= 4) return 'emotional';
     return 'sacral';
   }
-  const dominated = (astro as unknown as { dominantPlanet?: string }).dominantPlanet;
+  // astro can be null when pillars are not yet calculated (new user, missing birth data).
+  // Guard before accessing dominantPlanet to prevent TypeError.
+  if (!astro) return 'sacral';
+  const dominated: string | undefined = (astro as unknown as { dominantPlanet?: string }).dominantPlanet;
   if (dominated) {
     const lower = dominated.toLowerCase();
     if (['lua', 'moon', 'sol', 'sun', 'venus', 'vênus'].includes(lower)) return 'emotional';

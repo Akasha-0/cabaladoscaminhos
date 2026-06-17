@@ -120,6 +120,16 @@ export interface PersonalCycleSnapshot {
   karmicLessons: KarmicLesson[];
   maturity: MaturityNumber;
 
+  // I Ching — hexagrama do dia (Layer 5, §P7-ext)
+  ichingHex?: {
+    number: number;
+    name: string;
+    upperTrigram: number;   // 1-8 (TrigramId King Wen)
+    lowerTrigram: number;   // 1-8 (TrigramId King Wen)
+    judgment: string;
+    image: string;
+  };
+
   // Meta
   synthesis: string;
   overallEnergy: number;     // 0-100
@@ -131,6 +141,7 @@ export interface PersonalCycleSnapshot {
 
 import { reduce, sumDigits, ageInYears } from './personal-cycle-numerology';
 import { PERSONAL_DAY_DATA } from './personal-cycle-day-data';
+import { computeDailyHexagram } from '@/lib/domain/iching';
 
 // ============================================================
 // DIA PESSOAL

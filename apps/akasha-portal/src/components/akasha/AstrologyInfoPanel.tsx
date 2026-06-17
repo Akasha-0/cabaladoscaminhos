@@ -53,26 +53,51 @@ export function AstrologyInfoPanel({
       <Row label="Ascendente — como o mundo te percebe" value={astrology.ascendant} />
       <Row label="Meio do Céu — seu chamado público" value={astrology.midheaven} />
       {(() => {
-        const PLANET_SUBTITLES: Record<string, string> = {
-          Sol: '— sua vontade central que ilumina',
-          Lua: '— seu mundo emocional e memória',
-          Marte: '— sua energia de ação e coragem',
-          Mercúrio: '— sua mente e comunicação',
-          Vênus: '— seu amor e valores',
-          Júpiter: '— sua expansão e propósito',
-          Saturno: '— sua estrutura e responsabilidade',
-          Urano: '— sua individualidade e inovação',
-          Netuno: '— sua espiritualidade e intuição',
-          Plutão: '— sua transformação e poder',
+        const HOUSE_LABELS: Record<number, string> = {
+          1: 'Casa 1 — Identidade e aparência',
+          2: 'Casa 2 — Recursos e valores',
+          3: 'Casa 3 — Comunicação e aprendizado',
+          4: 'Casa 4 — Lar e raízes',
+          5: 'Casa 5 — Criação e prazer',
+          6: 'Casa 6 — Rotina e saúde',
+          7: 'Casa 7 — Parcerias e contratos',
+          8: 'Casa 8 — Transformação e partilha',
+          9: 'Casa 9 — Expansão e propósito',
+          10: 'Casa 10 — Missão pública e carreira',
+          11: 'Casa 11 — Coletivo e ideais',
+          12: 'Casa 12 — Inner world e trascendência',
+        };
+        const PLANET_MEANING: Record<string, string> = {
+          Sol: 'sua vontade central que ilumina',
+          Lua: 'seu mundo emocional e memória',
+          Marte: 'sua energia de ação e coragem',
+          Mercúrio: 'sua mente e comunicação',
+          Vênus: 'seu amor e valores',
+          Júpiter: 'sua expansão e propósito',
+          Saturno: 'sua estrutura e responsabilidade',
+          Urano: 'sua individualidade e inovação',
+          Netuno: 'sua espiritualidade e intuição',
+          Plutão: 'sua transformação e poder',
         };
         return astrology.planets.slice(0, 5).map((p) => {
-          const subtitle = PLANET_SUBTITLES[p.name] ?? '';
+          const meaning = PLANET_MEANING[p.name] ?? '';
+          const houseLabel = HOUSE_LABELS[p.house] ?? `Casa ${p.house}`;
           return (
-            <Row
-              key={p.name}
-              label={`${p.name} ${subtitle}`}
-              value={`${formatDegreeToZodiac(p.degree)} — casa ${p.house}`}
-            />
+            <div key={p.name} style={{ marginBottom: '0.25rem' }}>
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'baseline' }}>
+                <span style={{ fontSize: '0.75rem', color: '#9D86FF', minWidth: '120px', flexShrink: 0, fontWeight: 600 }}>
+                  {p.name}
+                </span>
+                <span style={{ fontSize: '0.8125rem', color: '#F4F5FF' }}>
+                  {formatDegreeToZodiac(p.degree)}
+                  {p.retrograde && <span style={{ color: '#FB5781', fontSize: '0.65rem', marginLeft: 4 }}>↺</span>}
+                </span>
+              </div>
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'baseline', paddingLeft: '120px' }}>
+                <span style={{ fontSize: '0.65rem', color: '#5C6691', minWidth: '140px' }}>{meaning}</span>
+                <span style={{ fontSize: '0.7rem', color: '#7C5CFF' }}>{houseLabel}</span>
+              </div>
+            </div>
           );
         });
       })()}

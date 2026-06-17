@@ -79,6 +79,10 @@ model BirthChart {
   kabalisticMap Json
   tantricMap    Json
   oduBirth      Json
+  // v0.0.5 T3 (Doc 14 §2): I-Ching natal (5º pilar).
+  // Computado automaticamente em /api/akasha/chart a partir dos dados
+  // de nascimento — determinístico, sem dados pessoais adicionais.
+  ichingMap     Json?
 
   incomplete Boolean  @default(false)
   createdAt   DateTime @default(now())

@@ -205,7 +205,9 @@ export async function GET(request: NextRequest) {
     });
     const astroMap = birthChart.astrologyMap as AstrologyMap;
     const kabMap = birthChart.kabalisticMap as KabalisticMap;
-    const birthDate = user?.birthDate ?? kabMap?.birthDate ? new Date(kabMap.birthDate!) : today;
+    const rawBirthDate0 = user?.birthDate ?? kabMap?.birthDate;
+    let birthDate = rawBirthDate0 ? new Date(rawBirthDate0) : today;
+    if (!birthDate || Number.isNaN(birthDate.getTime())) birthDate = today;
     const lifePath = astroMap?.lifePathNumber ?? kabMap?.lifePath ?? 1;
     const expression = astroMap?.expression ?? kabMap?.expression ?? lifePath;
     const fullName = user?.name ?? '';
@@ -268,7 +270,12 @@ export async function GET(request: NextRequest) {
   });
   const astroMap = birthChart.astrologyMap as AstrologyMap;
   const kabMap = birthChart.kabalisticMap as KabalisticMap;
-  const birthDate = user?.birthDate ?? kabMap?.birthDate ? new Date(kabMap.birthDate!) : today;
+  const rawBirthDate = user?.birthDate ?? kabMap?.birthDate;
+  let birthDate = rawBirthDate ? new Date(rawBirthDate) : today;
+  if (!birthDate || Number.isNaN(birthDate.getTime())) {
+    // Fallback to today if birthDate is missing or invalid (e.g. empty string)
+    birthDate = today;
+  }
   const lifePath = astroMap?.lifePathNumber ?? kabMap?.lifePath ?? 1;
   const expression = astroMap?.expression ?? kabMap?.expression ?? lifePath;
   const fullName = user?.name ?? '';

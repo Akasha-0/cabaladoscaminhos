@@ -108,7 +108,19 @@ Um agente evolutivo que opera sobre dados finos (Prioridade 3) e síntese incomp
 - [x] `PATCH /api/akasha/cycle/exercises/[id]` — marca exercício como completado — P6 ✅ (iter33)
 - [x] `GET /api/akasha/cycle/exercises/[id]` — devolve exercise completion — P6 ✅ (iter33)
 - [x] `useCyclePersistence` hook — `persistCycle` + `markExerciseComplete` — P6 ✅ (iter33)
-- [x] `Dashboard.tsx` wiring — `useEffect` chama `persistCycle` após cada `dailyData` — P6 ✅ (iter33)
+- [x] `Dashboard.tsx` wiring — `useEffect` chama `persistCycle` após cada `dailyData` — P6 ✅ (iter33)## Prioridade 7 — Exibição de Histórico de Ciclos + Padrões Evolutivos (iter34)
+
+**O que é:** A camada de persistência (P6) guarda snapshots de ciclo e área todos os dias, mas nada os recupera ou exibe. O Agente Evolutivo fica mudo sem superfície UI. P7 adiciona a função `getCycleHistory` ao hook e o componente `EvolutionPatterns` no separador "Sua Jornada" para mostrar tendências, padrões e evolução.
+
+**Pré-requisitos:**
+- [x] Prioridade 6 completa (camada de persistência)
+
+**Entregáveis:**
+- [x] `getCycleHistory(days?: number)` em `useCyclePersistence` — GET /api/akasha/cycle/snapshot — P7 ✅ (iter34)
+- [x] `EvolutionPatterns.tsx` — FrequencyBar (shadow/gift/siddhi %), AlignmentTrends (sparklines SVG), detectPatterns (heurísticas), exercise completion rate — P7 ✅ (iter34)
+- [x] `Dashboard.tsx` — `cycleHistory` state + `useEffect` on mount + render em "Sua Jornada" — P7 ✅ (iter34)
+
+
 
 ## Notas de Arquitectura
 

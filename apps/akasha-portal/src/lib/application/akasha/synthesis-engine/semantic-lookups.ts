@@ -250,7 +250,7 @@ export function getMidheavenCareer(sign: string): string {
     sagittarius: 'filosofia, viagem e ensino', capricorn: 'negócios, status e achievement',
     aquarius: 'inovação social e coletividades', pisces: 'espiritualidade, arte e cura',
   };
-  return map[sign?.toLowerCase()] ?? 'algo significativo para você';
+  return map[(typeof sign === 'string' ? sign : String(sign))?.toLowerCase()] ?? 'algo significativo para você';
 }
 
 export function getJupiterProsperity(sign: string): string {

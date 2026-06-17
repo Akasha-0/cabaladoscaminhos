@@ -101,7 +101,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
             letterSpacing: '0.03em',
           }}
         >
-          <span aria-hidden="true">⚠</span> Dados incompletos — complete seu perfil para uma leitura plena
+          <span aria-hidden="true">⚠</span> Dados incompletos — complete seu perfil para desbloquear a Mandala completa →
         </a>
       )}
 
@@ -237,7 +237,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
         </div>
 
         {/* Mandato do dia — citações visíveis */}
-        <MandatoCard data={data} />
+        <MandatoCard data={data} saudacao={saudacao} />
       </section>
 
       <Link
@@ -332,24 +332,19 @@ function PilarCard({ icone, cor, titulo, eixo, valor, explicacao, fonte }: Pilar
       <p style={{ fontSize: '0.78rem', color: '#A7AECF', lineHeight: 1.55, margin: 0 }}>
         {explicacao}
       </p>
-      <span style={{ fontSize: '0.7rem', color: '#9DAFC8', fontStyle: 'italic' }}>
-        via {fonte}
-      </span>
     </article>
   );
 }
 
 interface MandatoData {
+  saudacao: string;
   iching?: { hexagramNumber?: number; hexagramName?: string | null } | null;
   astrology?: { ascendant?: string | null } | null;
   kabala?: { lifePath?: number | null } | null;
   odus?: { oduName?: string } | null;
   tantra?: { soul?: number | null } | null;
 }
-
-function MandatoCard({ data }: { data: MandatoData }) {
-  const h = new Date().getHours();
-  const saudacao = h < 12 ? 'Bom despertar' : h < 18 ? 'Boa tarde' : 'Boa noite';
+function MandatoCard({ data, saudacao }: { data: MandatoData; saudacao: string }) {
   const hex = data.iching?.hexagramNumber;
   const hexName = data.iching?.hexagramName;
   const lp = data.kabala?.lifePath;

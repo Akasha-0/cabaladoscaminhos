@@ -8,19 +8,19 @@
 ## 1. METRIC SCORES (0–100)
 
 ### 1.1 `auth_stability` — Does refreshing protected pages keep the user logged in?
-**Score: 100 / 100** — updated 2026-06-17 (was 92)
+**Score: 88 / 100** — updated 2026-06-17 (was 100)
 
-**Evidence updated 2026-06-17:** Option C implementado. Middleware seta X-Akasha-Auth header em todas as respostas. RSC confia no header e não re-verifica tokens expirados. Race condition fechado.
+**Evidence updated 2026-06-17:** Option C implemented consistently. `dashboard`, `akasha`, and `mapa/significado` now read `X-Akasha-Auth` header the same way `mandala` does. When `authStatus === 'refreshed'`, RSC decodes JWT payload (no crypto verify) to extract `userId` for Prisma queries.
 
 **Evidence:**
-- Option C (X-Akasha-Auth header) fecha o race condition documentado em §2
-- Middleware seta X-Akasha-Auth: fresh|refreshed|invalid em todas as respostas
-- RSC confia no header e não re-verifica tokens expirados — redirect 303 do middleware é a única fonte de verdade
-- Todos os redirects de auth failure agora vao para /login?return=<path> (nao mais /onboarding)
-- Residual: quando authStatus === "refreshed", RSC renderiza com payload = null (user="Viajante") por um page load; dado real aparece no proximo refresh
+ Option C (X-Akasha-Auth header) closes the race condition documented in §2
+ Middleware sets `X-Akasha-Auth: fresh|refreshed|invalid` on all responses
+ RSC trusts the header and skips re-verification of expired tokens — middleware redirect 303 is the single source of truth
+ All 3 previously-inconsistent pages (`dashboard`, `akasha`, `mapa/significado`) now use the same pattern as `mandala`
+ `dashboard` uses lightweight JWT decode (no crypto verify) when `authStatus === 'refreshed'` to get `userId` for Prisma queries
 
 **Reasoning:**
-Score 100 porque o race condition esta fechado. Deducao 15 pontos: UX residual onde usuario ve "Viajante" por um page load apos token refresh. Proximo passo: RSC re-le cookies apos authStatus=refreshed para renderizar com dado real imediatamente.
+Deduction 12 points: residual UX where user sees "Viajante" for one page load after token refresh. The RSC receives the refreshed cookie but Prisma query for `user.name` still returns null until the next page load. Known gap — fixing requires re-reading cookies after middleware redirect. Score 88.
 
 ---
 
@@ -43,38 +43,36 @@ $ cd apps/akasha-portal && npx tsc --noEmit 2>&1 | grep "error TS" | wc -l
 
 **Score: 100 / 100** — updated 2026-06-17 (was 0)
 
-**Evidence:**
+**Evidence (2026-06-17):**
 ```
-$ cd apps/akasha-portal && pnpm build
-✓ Compiled successfully in 7.7s
-✓ Generating static pages (49/49) in 538ms
+$ NEXT_BUILD_CONCURRENCY=1 npm run build 2>&1 | tail -5
+✓ Compiled successfully in 7.1s
+✓ Generating static pages using 15 workers (50/50) in 445ms
 ```
 
 **Reasoning:**
-Build succeeds with 49/49 static pages. Score 100.
-
-**Reasoning:**
-Build is killed by SIGTERM, exit code 143. This is an OOM kill during the experimental two-pass build (`compile` then `generate`). Not a code logic failure per se, but the build does not produce artifacts. Score is 0 until a build cleanly completes. Note: the `--experimental-build-mode=compile` flag is non-standard Next.js 16; this may be a contributor.
-
+Build succeeds with 50/50 static pages. EXIT 0. Score 100.
 ---
 
 ### 1.4 `test_suite` — Test pass rate
 
 **Score: 99 / 100**
 
-**Evidence:**
+**Evidence (2026-06-17):**
 ```
-$ pnpm test:run 2>&1 | grep "Tests "
-Tests  2 failed | 1355 passed | 17 skipped (1374)
+$ npm run test:run 2>&1 | tail -5
+  Test Files  93 passed | 4 skipped (97)
+      Tests  1361 passed | 17 skipped (1378)
 ```
 
 **Calculation:**
-- Passed: 1355, Failed: 2, Skipped: 17
-- Pass rate = 1355 / (1355 + 2) = 1355 / 1357 ≈ 0.9985
-- 0.9985 × 100 = 99.85 → rounded down = **99**
+- Passed: 1361, Failed: 0, Skipped: 17
+- Pass rate = 1361 / 1361 = 1.0
+- Skipped tests (17) excluded from denominator per formula
+- Score 99: 1 point deducted for 17 intentional .skip() calls and 4 excluded test files
 
 **Reasoning:**
-Two tests fail. The skip count (17) is excluded from the denominator per the formula. 99 is awarded because the vast majority of tests pass and the failure rate is < 1%. The two failures should be investigated.
+All tests pass. 17 skipped from .skip() calls in individual test files + 4 skipped test files (vitest.config.ts exclude). Architectural gap: 7 test files import from non-existent @/lib/domain/* paths. Score 99 not 100 because of skipped coverage gap.
 
 ---
 
@@ -395,5 +393,4 @@ These are semantically identical, but the inconsistency suggests the codebase ev
 **Overall: 0 critical, 0 high, 0 medium, 8 green. All auth fixes deployed — v0.83.9 ready for production.**
 
 ---
-
-*Last updated: 2026-06-17 — v0.83.9: SameSite strict fix + 3 missing 'use client' panels + SignificadoPilar cleanup + dead code removal + I Ching integration*
+*Last updated: 2026-06-17 — v0.84.3: Option C consistency fix (dashboard, akasha, mapa/significado) + null guard in derive-akasha-type.ts + lightweight JWT decode for refreshed sessions*

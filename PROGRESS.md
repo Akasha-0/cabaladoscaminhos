@@ -95,6 +95,52 @@ O Agente Evolutivo (iter30–32) calcula snapshots de ciclo e exercícios fresco
 - **Idempotência via unique constraints**: `@@unique([userId, date])` permite re-submeter o mesmo snapshot sem duplicados — atomic upsert operations
 - **Double-invoke guard**: React Strict Mode invoca effects duas vezes; `persistLock` ref com 2s delay evita duplos persist calls
 - **Transiente ENOENT `_ssgManifest.js`**: erro Turbopack na geração de estáticos — não é erro de código; retry resolve
+## Iter34 — P7: Evolução — Exibição de Histórico de Ciclos
+
+### Resumo
+
+A camada de persistência (iter33) guarda snapshots de ciclo, histórico de áreas e exercícios todos os dias — mas nada recuperava ou exibia esses dados. O Agente Evolutivo estava mudo: calculava e guardava, mas não mostrava padrões. Esta iteração adiciona a função `getCycleHistory` ao hook e um componente `EvolutionPatterns` que exibe tendências evolutivas no separador "Sua Jornada".
+
+### Alterações
+
+**`hooks/useCyclePersistence.ts` — extensão do hook (P7)**
+
+- Nova interface `export interface CycleHistoryData` com tipos para `snapshots[]`, `areaHistory[]`, `exercises[]`, `meta`
+- Nova função `getCycleHistory(days?: number)` que chama `GET /api/akasha/cycle/snapshot?days=30` e devolve `CycleHistoryData | null`
+- Adicionada a `UseCyclePersistenceReturn` interface e ao return do hook
+
+**`EvolutionPatterns.tsx` — novo componente (300+ linhas)**
+
+- `FrequencyBar`: distribuição shadow/gift/siddhi em percentagem — barras coloridas
+- `AlignmentTrends`: sparklines SVG por área mostrando evolução do alignment score nos últimos 7 dias
+- `detectPatterns`: heurística que detecta:
+  - Estádios de frequência (e.g., "4 dias em Dom em Vitalidade")
+  - Tendências de alinhamento subindo/descendo (delta >= 15)
+  - Taxa de exercícios completados (narrativa encorajadora ou de alerta)
+- Estado vazio com mensagem motivacional ("Continue praticando…")
+- Estado de loading com skeleton pulse
+
+**`Dashboard.tsx` — wiring na Evolution tab**
+
+- Import de `EvolutionPatterns` e `CycleHistoryData`
+- `cycleHistory` + `cycleHistoryLoading` state
+- `useEffect` em mount que chama `getCycleHistory(30)` e guarda em state
+- `<EvolutionPatterns history={cycleHistory} loading={cycleHistoryLoading} />` renderizado no separador progress (tab "Sua Jornada"), antes do `RitualHistory`
+
+### Verificação
+
+- TypeScript: 0 erros nos ficheiros alterados ✅
+- Suite: 93 files passed | 4 skipped | 0 failures ✅
+- Lint: 0 erros nos ficheiros alterados (pre-existing error em `diario/page.tsx:530` não relacionado) ✅
+- Build: ✓ Compiled | ✓ TypeScript passed | ✓ 50 static pages | 0 failures ✅
+- CodeGraph: synced (2 changed files: Dashboard.tsx + useCyclePersistence.ts) ✅
+
+### Lições Aprendidas
+
+- **P6 sem P7 =-feature incompleta**: persistir sem exibir não entrega valor ao utilizador. O custo de recuperação é marginal comparado com o valor de mostrar padrões evolutivos.
+- **SVG sparklines sem biblioteca**: desenhar polyline SVG inline é suficiente para trends simples — evitou mais uma dependência.
+- **Padrões heurísticos vs. ML**: regras simples (delta >= 15, streak >= 3 dias) capturam os sinais mais relevantes sem over-engineering.
+
 
 
 ## v0.83.3 (2026-06-17) — UX Round 22
@@ -1733,3 +1779,40 @@ Integração completa da camada 7 (Agente Evolutivo) em três pontos: API route,
 - **Edição concorrente JSX**: múltiplos writers no mesmo ficheiro TSX criam corrupções estruturais difíceis de detectar. O TypeScript apanha erros mas o dano estrutural pode ser subtil (missing paren no ternary). Sempre verificar a estrutura JSX antes de editar quando múltiplas pessoas/tools Editam o mesmo ficheiro.
 - **Type safety em APIs**: o campo `phase: string | undefined` vs `phase: string` em interfaces duplicadas (hook + API) requer atenção — preferencialmente derivar de um tipo central partilhado (mas isso criaria import circular neste caso).
 - **AREA_LABEL indexing**: `Record<Area, string>` requer cast de `string` para `Area` — usar `as Area` para silenciar TypeScript sem perder type safety运行时.
+
+## Iter34 — Prioridade 7: I Ching Natal — Fechar Constituição §9 (5 Pilares)
+
+### Resumo
+
+Auditoria identificou que o `/api/akasha/chart` computava 4 pilares (Cabala, Astrologia, Tântrica, Odú) mas **nunca calculava nem armazenava I Ching natal**. O motor `akasha-core.calcular()` já tinha `realPilar5IChing` que chama `buildIchingMap`, mas esse resultado nunca era persistido. O `ichingEnabled Boolean @default(false)` no `User` é um gate de opt-in LGPD para o **oráculo interactivo** (tirada diária), não para o hexagrama natal — que é determinístico a partir da data/hora de nascimento.
+
+**Conclusão**: I Ching natal é deterministicamente calculável para todos os utilizadores sem consentimento adicional (LGPD Art. 7/9). A Constitution §9 exige que todos os 5 pilares sejam sintetizados. O gap era a ausência de `ichingMap` no modelo `BirthChart` e na route `/chart`.
+
+### Alterações
+
+**`prisma/schema.prisma` — BirthChart.ichingMap**
+- Adicionado campo `ichingMap Json?` ao modelo `BirthChart`
+- Comentário: "v0.0.5 T3 (Doc 14 §2): I-Ching natal (5º pilar). Computado automaticamente em /api/akasha/chart"
+- Schema pushado via `prisma db push` + `prisma generate`
+
+**`app/api/akasha/chart/route.ts` — POST + PUT**
+- Importado `buildIchingMap` de `@akasha/core-iching`
+- Bloco de computação: `buildIchingMap({ birthDate: birthDateStr, birthTime: user.birthTime ?? null })`
+- Armazenado em `BirthChart.ichingMap` (create + upsert)
+- Cast `(ichingMap as any) ?? null` para satisfazer o tipo Prisma Json
+
+**`MAPA.md` — redirect `/meu-dia` e `/minha-caixa`**
+- `/meu-dia` → **redirect 301** para `/diario` (mesmo endpoint `GET /api/akasha/mandato-do-dia`)
+- `/minha-caixa` → **redirect 301** para `/mapa/significado` (sobreposição de funcionalidade)
+- Estado actualizado de "candidata a fusão" para "redirect"
+
+### Verificação
+- Build: 50 static pages, 49 routes
+- TypeScript: 0 errors no `chart/route.ts`
+- Suite: 1361 passed | 17 skipped
+- Prisma: `db push` + `generate`
+
+### Lessons Learned
+- **Opt-in vs. cálculo automático**: `ichingEnabled` controla o oráculo interactivo (LGPD), não o mapa natal. O natal é determinístico e não requer consentimento. A gate era incorrectamente aplicada.
+- **Build stale cache**: `.next/` cache com versão antiga do `MandalaAtmosphere.tsx` (PascalCase JSX) causava `TypeScript` error mesmo depois do fix. `rm -rf .next/` resolved.
+- **Edição do `chart/route.ts`**: a route tem 2 handlers (POST + PUT) ambos fazendo computação idêntica de 5 mapas. Refactor futuro: extrair lógica de computação para função partilhada.

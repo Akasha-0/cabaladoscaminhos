@@ -88,12 +88,12 @@
 
 ---
 
-#### `/meu-dia` — Minha Tela Única Diária
+#### /meu-dia — Minha Tela Única Diária
 - **Rota:** `[locale]/(akasha)/meu-dia/page.tsx`
 - **Pergunta:** Q2 — *How does my energy work?*
 - **Camada:** 5
-- **Estado:** **candidata a fusão**
-- **Resumo:** One-screen mobile — síntese diária, autoridade, prática e janela de clareza. Funcionalmente idêntico a `/diario`. Ambos respondem Q2 com conteúdo do mesmo endpoint (`/api/akasha/mandato-do-dia`). **Proposta:** unificar em `/diario` com layout mobile-first; eliminar `/meu-dia`.
+- **Estado:** **redirect** → `/diario`
+- **Resumo:** Era uma tela mobile funcionalmente idêntica ao `/diario` (mesmo endpoint `GET /api/akasha/mandato-do-dia`). Unificada em `/diario`. Rota mantida como redirect 301 para compatibilidade de bookmarks e links existentes.
 
 ---
 
@@ -135,12 +135,12 @@
 
 ---
 
-#### `/minha-caixa` — Minha Caixa (9 Dimensões)
+#### /minha-caixa — Minha Caixa (9 Dimensões)
 - **Rota:** `[locale]/(akasha)/minha-caixa/page.tsx`
 - **Pergunta:** Q1 Q3 Q4
 - **Camada:** 5
-- **Estado:** **candidata a fusão**
-- **Resumo:** 9 dimensões de vida (unificadas da antiga navegação por 5 mapas separados). Mostra sexualidade deep dive como seção destacada. Mobile-first accordion. Funcionally overlaps com `/mapa/significado` — ambos mostram os 5 pilares por área de vida. **Proposta:** Avaliar se `minha-caixa` e `mapa/significado` podem ser unificados em uma única página com 2 visualizações (accordion vs. card grid), ou se mantienen separate com diferenciação clara de intent (Navegação do Significado vs. Prática nas 9 Dimensões).
+- **Estado:** **redirect** → `/mapa/significado`
+- **Resumo:** Sobrepunha-se a `/mapa/significado` (ambos mostram 5 pilares × áreas de vida). Sexualidade deep dive agora acessível em `/mapa/significado`. Rota mantida como redirect 301 para compatibilidade de links existentes.
 
 ---
 

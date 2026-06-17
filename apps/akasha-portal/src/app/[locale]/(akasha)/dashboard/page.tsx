@@ -23,22 +23,37 @@ function parseHora(time: string | null | undefined): string | undefined {
 
 export default async function LocalizedDashboardPage({ params }: DashboardPageProps) {
   const { locale } = await params;
-  const authStatus = (await headers()).get('X-Akasha-Auth');
   const cookieStore = await cookies();
+  const authStatus = (await headers()).get('X-Akasha-Auth');
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
-  let payload: ReturnType<typeof verifyAkashaToken> = null;
-  if (authStatus !== 'refreshed') {
+
+  // Option C: middleware is the single auth verification source.
+  // When authStatus === 'refreshed', middleware just ran /auth/refresh and the
+  // new access token is already in the cookie. We do a decode-only (no crypto verify)
+  // to extract userId for Prisma queries — trust the refreshed cookie.
+  let payload: { sub: string } | null = null;
+  if (authStatus === 'refreshed') {
+    // Lightweight decode: extract sub without crypto verification.
+    // Middleware already verified this token when setting X-Akasha-Auth: refreshed.
+    try {
+      const decoded = JSON.parse(Buffer.from(token?.split('.')[1] ?? '', 'base64').toString('utf8')) as { sub?: string };
+      payload = decoded?.sub ? { sub: decoded.sub } : null;
+    } catch {
+      payload = null;
+    }
+  } else {
     payload = verifyAkashaToken(token, 'access');
-    if (!payload) redirect(`/${locale}/login`);
   }
+
+  if (!payload) redirect(`/${locale}/login`);
 
   const [user, birthChart] = await Promise.all([
     prisma.user.findUnique({
-      where: { id: payload!.sub },
+      where: { id: payload.sub },
       select: { name: true, birthDate: true, birthTime: true, birthCity: true },
     }),
     prisma.birthChart.findUnique({
-      where: { userId: payload!.sub },
+      where: { userId: payload.sub },
     }),
   ]);
 
@@ -63,12 +78,11 @@ export default async function LocalizedDashboardPage({ params }: DashboardPagePr
   }
 
   return (
-    <Dashboard 
-      userId={payload!.sub}
-      userName={user?.name ?? 'Viajante'} 
+    <Dashboard
+      userId={payload.sub}
+      userName={user?.name ?? 'Viajante'}
       initialPilares={initialPilares}
       locale={locale}
     />
   );
 }
-

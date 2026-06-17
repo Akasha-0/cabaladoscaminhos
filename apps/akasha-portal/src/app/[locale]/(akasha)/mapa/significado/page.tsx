@@ -93,14 +93,17 @@ export default async function SignificadoPage({
 }) {
   const { locale } = await params;
   const cookieStore = await cookies();
-  const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
   const authStatus = (await headers()).get('X-Akasha-Auth');
+  const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
+  // Option C: trust X-Akasha-Auth header set by middleware instead of re-verifying.
+  if (authStatus !== 'refreshed' && !verifyAkashaToken(token, 'access')) {
+    redirect(`/${locale}/login`);
+  }
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia`,
     {
-      headers: { Cookie: `akasha_session=${token}` },
-      cache: 'no-store',
+      headers: { Cookie: `${AKASHA_TOKEN_COOKIE}=${token ?? ''}` },
     }
   );
 

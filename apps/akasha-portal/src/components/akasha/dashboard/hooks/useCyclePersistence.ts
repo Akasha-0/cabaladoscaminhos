@@ -9,6 +9,7 @@
  * - ExerciseCompletion records (for tracking which exercises were shown)
  *
  * P6 (iter33): Agente Evolutivo persistence layer.
+ * P7 (iter34): Adds getCycleHistory — retrieves stored snapshots for pattern display.
  */
 
 import { useCallback, useRef } from 'react';
@@ -18,11 +19,49 @@ interface UseCyclePersistenceOptions {
   userId: string;
 }
 
+export interface CycleHistoryData {
+  snapshots: Array<{
+    id: string;
+    date: string;
+    modulation: unknown[];
+    overallEnergy: number | null;
+    synthesis: string | null;
+    exercisesJson: unknown[] | null;
+  }>;
+  areaHistory: Array<{
+    id: string;
+    date: string;
+    area: string;
+    dominantFrequency: string;
+    intensity: number;
+    cycleBoost: string | null;
+    alignmentScore: number | null;
+    dominantPillar: string | null;
+  }>;
+  exercises: Array<{
+    id: string;
+    exerciseId: string;
+    area: string;
+    title: string;
+    completed: boolean;
+    completedAt: string | null;
+    snapshotDate: string;
+  }>;
+  meta: {
+    userId: string;
+    fromDate: string;
+    days: number;
+    area: string | null;
+  };
+}
+
 interface UseCyclePersistenceReturn {
   /** Persist cycle + area data after a successful daily fetch. Idempotent. */
   persistCycle: (daily: DailyContentUI) => Promise<{ success: boolean; error?: string }>;
   /** Mark an exercise as completed. */
   markExerciseComplete: (exerciseId: string) => Promise<boolean>;
+  /** Retrieve cycle history from DB for pattern display. */
+  getCycleHistory: (days?: number) => Promise<CycleHistoryData | null>;
 }
 
 export function useCyclePersistence({
@@ -136,5 +175,24 @@ export function useCyclePersistence({
     [userId]
   );
 
-  return { persistCycle, markExerciseComplete };
+  const getCycleHistory = useCallback(
+    async (days = 30): Promise<CycleHistoryData | null> => {
+      if (!userId) return null;
+      try {
+        const res = await fetch(
+          `/api/akasha/cycle/snapshot?days=${days}`,
+          { headers: { 'Content-Type': 'application/json' } }
+        );
+        if (!res.ok) return null;
+        const data: CycleHistoryData = await res.json();
+        return data;
+      } catch (err) {
+        console.error('[useCyclePersistence] getCycleHistory error:', err);
+        return null;
+      }
+    },
+    [userId]
+  );
+
+  return { persistCycle, markExerciseComplete, getCycleHistory };
 }

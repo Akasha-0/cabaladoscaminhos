@@ -17,8 +17,6 @@ import { Sparkles, MessageCircle, Heart, Zap, Target } from 'lucide-react';
 interface SuggestedQuestionsProps {
   /** Perfil básico do usuário para gerar perguntas relevantes */
   sunSign?: string;
-  risingSign?: string;
-  dominantPlanet?: string;
   lifeArea?: 'relacionamentos' | 'trabalho' | 'saude' | 'proposito' | 'financas' | 'espiritualidade';
   onSelectQuestion: (question: string) => void;
   /** Número de sugestões a mostrar (default 3) */
@@ -101,8 +99,6 @@ const AREA_ICONS = {
 
 export function SuggestedQuestions({
   sunSign,
-  risingSign,
-  dominantPlanet,
   lifeArea = 'proposito',
   onSelectQuestion,
   maxQuestions = 3,

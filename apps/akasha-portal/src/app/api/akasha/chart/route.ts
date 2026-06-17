@@ -40,13 +40,19 @@ export async function POST(request: NextRequest) {
 
   const birthDateStr = user.birthDate.toISOString().split('T')[0];
 
-  const [{ buildKabalisticMap }, { buildTantricMap }, { calculateBirthOdu }, { getBirthChart }] =
-    await Promise.all([
-      import('@akasha/core-cabala'),
-      import('@akasha/core-tantra'),
-      import('@akasha/core-odus'),
-      import('@akasha/core-astrology'),
-    ]);
+  const [
+    { buildKabalisticMap },
+    { buildTantricMap },
+    { calculateBirthOdu },
+    { getBirthChart },
+    { buildIchingMap },
+  ] = await Promise.all([
+    import('@akasha/core-cabala'),
+    import('@akasha/core-tantra'),
+    import('@akasha/core-odus'),
+    import('@akasha/core-astrology'),
+    import('@akasha/core-iching'),
+  ]);
 
   let astrologyMap: unknown;
   try {
@@ -84,6 +90,13 @@ export async function POST(request: NextRequest) {
     oduBirth = { error: 'Falha no cálculo do Odu', detail: String(err) };
   }
 
+  let ichingMap: unknown;
+  try {
+    ichingMap = buildIchingMap({ birthDate: birthDateStr, birthTime: user.birthTime ?? null });
+  } catch (err) {
+    ichingMap = { error: 'Falha no cálculo do I Ching', detail: String(err) };
+  }
+
   const incomplete = user.birthLatitude == null || user.birthLongitude == null;
 
   const chart = await prisma.birthChart.create({
@@ -93,6 +106,7 @@ export async function POST(request: NextRequest) {
       kabalisticMap: kabalisticMap ?? {},
       tantricMap: tantricMap ?? {},
       oduBirth: oduBirth ?? {},
+      ichingMap: (ichingMap as any) ?? null,
       incomplete,
     },
     select: { id: true },
@@ -130,13 +144,19 @@ export async function PUT(request: NextRequest) {
 
   const birthDateStr = user.birthDate.toISOString().split('T')[0];
 
-  const [{ buildKabalisticMap }, { buildTantricMap }, { calculateBirthOdu }, { getBirthChart }] =
-    await Promise.all([
-      import('@akasha/core-cabala'),
-      import('@akasha/core-tantra'),
-      import('@akasha/core-odus'),
-      import('@akasha/core-astrology'),
-    ]);
+  const [
+    { buildKabalisticMap },
+    { buildTantricMap },
+    { calculateBirthOdu },
+    { getBirthChart },
+    { buildIchingMap },
+  ] = await Promise.all([
+    import('@akasha/core-cabala'),
+    import('@akasha/core-tantra'),
+    import('@akasha/core-odus'),
+    import('@akasha/core-astrology'),
+    import('@akasha/core-iching'),
+  ]);
 
   let astrologyMap: unknown;
   try {
@@ -174,6 +194,13 @@ export async function PUT(request: NextRequest) {
     oduBirth = { error: 'Falha no cálculo do Odu', detail: String(err) };
   }
 
+  let ichingMap: unknown;
+  try {
+    ichingMap = buildIchingMap({ birthDate: birthDateStr, birthTime: user.birthTime ?? null });
+  } catch (err) {
+    ichingMap = { error: 'Falha no cálculo do I Ching', detail: String(err) };
+  }
+
   const incomplete = user.birthLatitude == null || user.birthLongitude == null;
 
   // Upsert: replace existing chart with fresh calculations
@@ -185,6 +212,7 @@ export async function PUT(request: NextRequest) {
       kabalisticMap: kabalisticMap ?? {},
       tantricMap: tantricMap ?? {},
       oduBirth: oduBirth ?? {},
+      ichingMap: (ichingMap as any) ?? null,
       incomplete,
     },
     update: {
@@ -192,6 +220,7 @@ export async function PUT(request: NextRequest) {
       kabalisticMap: kabalisticMap ?? {},
       tantricMap: tantricMap ?? {},
       oduBirth: oduBirth ?? {},
+      ichingMap: (ichingMap as any) ?? null,
       incomplete,
     },
   });
