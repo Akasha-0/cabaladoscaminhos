@@ -41,15 +41,17 @@ export function getLifeAreasByHouse(house: number): LifeArea[] {
 export function getLifeAreasByOdu(odu: string): LifeArea[] {
   const lower = odu.toLowerCase();
   return getAllLifeAreas().filter(area =>
-    area.odu.primaryOdus.some(o => o.toLowerCase().includes(lower)) ||
-    area.odu.favorableOdus.some(o => o.toLowerCase().includes(lower))
+    area.odu &&
+    (area.odu.primaryOdus.some(o => o.toLowerCase().includes(lower)) ||
+    area.odu.favorableOdus.some(o => o.toLowerCase().includes(lower)))
   );
 }
 
 export function getLifeAreasByOrixa(orixa: string): LifeArea[] {
   const lower = orixa.toLowerCase();
   return getAllLifeAreas().filter(area =>
-    area.orixa.primary.some(o => o.toLowerCase().includes(lower)) ||
-    area.orixa.secondary.some(o => o.toLowerCase().includes(lower))
+    area.orixa &&
+    (area.orixa.primary.some(o => o.toLowerCase().includes(lower)) ||
+    area.orixa.secondary.some(o => o.toLowerCase().includes(lower)))
   );
 }
