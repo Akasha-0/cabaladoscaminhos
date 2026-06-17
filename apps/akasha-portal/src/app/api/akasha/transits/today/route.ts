@@ -39,7 +39,7 @@ export async function GET() {
 
   // 2. Fallback: arquivo JSON
   try {
-    const fs = await import('fs');
+    const fs = await import(/* @turbopack disable */ 'fs');
     if (fs.existsSync(fallbackPath)) {
       const raw = fs.readFileSync(fallbackPath, 'utf8');
       const map = JSON.parse(raw) as Record<string, unknown>;

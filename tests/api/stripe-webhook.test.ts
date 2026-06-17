@@ -30,10 +30,10 @@ vi.mock('@/lib/prisma', () => ({
 import { stripe } from '@/lib/payments/stripe';
 // Cast stripe to Mocked<typeof stripe> to satisfy TypeScript for mock methods
  
-const stripeMock = stripe as any;
+const stripeMock = stripe as unknown as typeof stripe;
 import { prisma } from '@/lib/infrastructure/prisma';
  
-const prismaMock = prisma as any;
+const prismaMock = prisma as unknown as typeof prisma;
 import { NextRequest } from 'next/server';
 
 // Helper to get fresh route with env
