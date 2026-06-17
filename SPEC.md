@@ -427,9 +427,7 @@ Heuristic scoring:
 
 ## 13. Known Gaps (Priority Order)
 
-1. **[HIGH] I Ching integration:** `loadMapping('iching')` is called in `ensureMappingCache()` but `iching` param is not yet passed to `aggregatePrimitivesFromPilars()` — wired June 2026, final hookup pending.
-2. **[MEDIUM] Siddhi frequency:** No systematic path to siddhi-level synthesis.
-3. **[MEDIUM] Life areas dual system:** `life-areas-engine/` defines 12 areas that overlap but don't unify with the 6-area synthesis model.
+2. **[MEDIUM] Siddhi frequency:** ✅ Implemented (June 2026). `assessAreaFrequency()` detects siddhi signal (noShadow + lifePathMaster + soulMaster ∈ {1,22,33}); `deriveDominantFrequency()` returns siddhi when 3+ of 6 areas reach it. `computeOverallScore()` weights siddhi areas 1.5×. `FrequencyPathExplorer` component renders the shadow→gift→siddhi journey with practices.
 4. **[MEDIUM] Ritual database:** `ritual-storage.ts` is in-memory user-config storage (Map); ritual content is generated from hologram data. Content database of ritual scripts does not exist.
 5. **[MEDIUM] Layer 7 (Agente Evolutivo):** Not implemented. `personal-cycle-engine.ts` exists but is not wired in.
 6. **[LOW] Procedência audit trail:** No formal `(tradição, símbolo, intensidade)` attached to each output claim.

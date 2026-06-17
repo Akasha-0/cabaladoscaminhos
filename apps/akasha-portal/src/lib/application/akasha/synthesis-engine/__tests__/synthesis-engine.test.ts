@@ -761,13 +761,14 @@ describe('assessAreaFrequency — Siddhi path', () => {
 });
 
 describe('deriveDominantFrequency — Siddhi majority', () => {
-  // Minimal areaNarrative helpers
+  // Minimal areaNarrative helpers — dailyRitual is required by AreaNarrative type
+  const dailyRitual = { title: 't', instruction: 't', duration: 't', element: 't', color: 't' };
   const shadow = (): import('../synthesis-types').AreaNarrative =>
-    ({ frequency: 'shadow', intensity: 1, area: 'vitalidadeEnergia', title: 't', shadowPattern: '', shadowSymptoms: [], giftPattern: '', giftStrengths: [], pillarContribution: { cabala: '', tantra: '', odus: '', astrologia: '', iching: '' }, practicalAdvice: '', transformationPrompt: '' }) as import('../synthesis-types').AreaNarrative;
+    ({ frequency: 'shadow', intensity: 1, area: 'vitalidadeEnergia', title: 't', shadowPattern: '', shadowSymptoms: [], giftPattern: '', giftStrengths: [], pillarContribution: { cabala: '', tantra: '', odus: '', astrologia: '', iching: '' }, practicalAdvice: '', dailyRitual, transformationPrompt: '' }) as import('../synthesis-types').AreaNarrative;
   const gift = (): import('../synthesis-types').AreaNarrative =>
-    ({ frequency: 'gift', intensity: 2, area: 'vitalidadeEnergia', title: 't', shadowPattern: '', shadowSymptoms: [], giftPattern: '', giftStrengths: [], pillarContribution: { cabala: '', tantra: '', odus: '', astrologia: '', iching: '' }, practicalAdvice: '', transformationPrompt: '' }) as import('../synthesis-types').AreaNarrative;
+    ({ frequency: 'gift', intensity: 2, area: 'vitalidadeEnergia', title: 't', shadowPattern: '', shadowSymptoms: [], giftPattern: '', giftStrengths: [], pillarContribution: { cabala: '', tantra: '', odus: '', astrologia: '', iching: '' }, practicalAdvice: '', dailyRitual, transformationPrompt: '' }) as import('../synthesis-types').AreaNarrative;
   const siddhi = (): import('../synthesis-types').AreaNarrative =>
-    ({ frequency: 'siddhi', intensity: 3, area: 'vitalidadeEnergia', title: 't', shadowPattern: '', shadowSymptoms: [], giftPattern: '', giftStrengths: [], pillarContribution: { cabala: '', tantra: '', odus: '', astrologia: '', iching: '' }, practicalAdvice: '', transformationPrompt: '' }) as import('../synthesis-types').AreaNarrative;
+    ({ frequency: 'siddhi', intensity: 3, area: 'vitalidadeEnergia', title: 't', shadowPattern: '', shadowSymptoms: [], giftPattern: '', giftStrengths: [], pillarContribution: { cabala: '', tantra: '', odus: '', astrologia: '', iching: '' }, practicalAdvice: '', dailyRitual, transformationPrompt: '' }) as import('../synthesis-types').AreaNarrative;
 
   it('retorna siddhi quando 3+ áreas são siddhi', () => {
     const result = deriveDominantFrequency(siddhi(), siddhi(), siddhi(), gift(), shadow(), shadow());
