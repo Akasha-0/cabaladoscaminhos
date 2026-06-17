@@ -2,7 +2,7 @@
   "results": [
     {
       "success": false,
-      "message": "No helper to extract — apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts contains only static LIFE_AREAS constant (no functions). Previous agent (iter 00:00) already identified this.",
+      "message": "life-areas-data.ts is pure static data (LIFE_AREAS const only, 809 lines) — no extractable helpers remain after prior session's life-areas-data-utils.ts extraction",
       "type": "large_file"
     }
   ]
