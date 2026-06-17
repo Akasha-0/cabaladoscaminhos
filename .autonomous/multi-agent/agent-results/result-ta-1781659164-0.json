@@ -1,0 +1,1 @@
+{"success": false, "message": "life-areas-data.ts is pure static data (LIFE_AREAS constant, no functions). Prior extraction (e18d062f) already pulled out all helpers into life-areas-data-utils.ts. Skipping.", "type": "large_file"}

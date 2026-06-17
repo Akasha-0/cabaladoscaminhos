@@ -2,7 +2,7 @@
   "results": [
     {
       "success": false,
-      "message": "No helper to extract — life-areas-data.ts is pure static data (LIFE_AREAS constant only); all helpers already extracted to life-areas-data-utils.ts in prior session",
+      "message": "life-areas-data.ts is pure static data (LIFE_AREAS constant, no functions). Prior extraction (e18d062f) already pulled out all helpers into life-areas-data-utils.ts. Skipping.",
       "type": "large_file"
     }
   ]

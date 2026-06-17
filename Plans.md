@@ -1213,6 +1213,7 @@
 - [~] **PLN-009[1]** -- large_file | 26 oversized files
 - [~] **PLN-010[1]** -- large_file | 26 oversized files
 - [~] **PLN-011[1]** -- large_file | 26 oversized files
+- [~] **PLN-012[1]** -- large_file | 26 oversized files
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)
