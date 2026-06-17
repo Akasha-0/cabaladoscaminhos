@@ -23,7 +23,7 @@ import {
 describe('correlation-map exports', () => {
   describe('getIchingsByIfa', () => {
     it('returns hexagrams for a valid Ifa Odu', () => {
-      const hexagrams = getIchingsByIfa('Ogbe');
+      const hexagrams = getIchingsByIfa('Eji');
       expect(Array.isArray(hexagrams)).toBe(true);
     });
 
@@ -71,7 +71,7 @@ describe('correlation-map exports', () => {
 
   describe('getSefirotByIfa', () => {
     it('returns sefirot for a valid Odu', () => {
-      const sefirot = getSefirotByIfa('Ogbe');
+      const sefirot = getSefirotByIfa('Eji');
       expect(Array.isArray(sefirot)).toBe(true);
     });
 
@@ -93,7 +93,7 @@ describe('correlation-map exports', () => {
     });
 
     it('returns weak for unrelated traditions', () => {
-      const strength = getCorrelationStrength('astrology', 'chakra');
+      const strength = getCorrelationStrength('astrology', 'cabala');
       expect(strength).toBe('weak');
     });
 
@@ -138,7 +138,7 @@ describe('practices-guardrails exports', () => {
     id: 'test-practice',
     name: 'Test Prática',
     tradition: 'iching',
-    category: 'meditation',
+    category: 'oracao',
     associations: {},
     lifeAreas: ['saude'],
     howTo: 'Faça a prática com atenção e respiração consciente.',

@@ -4,12 +4,12 @@ import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { upsertPushSubscription, deletePushSubscription, getUserPushSubscriptions, type PushSubscription } from '@/lib/push/push-subscription-service';
 
 export interface PushSubscriptionPayload {
-  endpoint?: string;
-  keys?: { p256dh?: string; auth?: string };
+  endpoint: string;
+  keys: { p256dh: string; auth: string };
 }
 
 export interface SubscribeBody {
-  subscription?: PushSubscriptionPayload;
+  subscription: PushSubscriptionPayload;
 }
 
 export interface DeleteBody {
@@ -20,8 +20,16 @@ export interface SubscribeResponse {
   ok: true;
 }
 
-function isValidSubscription(sub: PushSubscriptionPayload | undefined): sub is PushSubscriptionPayload {
-  return sub !== undefined && typeof sub.endpoint === 'string' && sub.keys !== undefined;
+function isValidSubscription(sub: unknown): sub is PushSubscriptionPayload {
+  if (typeof sub !== 'object' || sub === null) return false;
+  const s = sub as PushSubscriptionPayload;
+  return (
+    typeof s.endpoint === 'string' &&
+    typeof s.keys === 'object' &&
+    s.keys !== null &&
+    typeof s.keys.p256dh === 'string' &&
+    typeof s.keys.auth === 'string'
+  );
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse<SubscribeResponse | { error: string }>> {
@@ -40,10 +48,10 @@ export async function POST(req: NextRequest): Promise<NextResponse<SubscribeResp
     return NextResponse.json({ error: 'subscription inválida ou incompleta' }, { status: 400 });
   }
 
-  const sub = body.subscription!;
+  const sub = body.subscription;
   await upsertPushSubscription(
     user.id,
-    { endpoint: sub.endpoint as string, keys: sub.keys } as unknown as PushSubscription,
+    { endpoint: sub.endpoint, keys: { p256dh: sub.keys.p256dh, auth: sub.keys.auth } },
     req.headers.get('user-agent') ?? undefined,
   );
   await prisma.user.update({

@@ -60,27 +60,23 @@ const F_ASTRO_LEAO: PilarAstrologia = {
   hora_desconhecida: false,
   trinity: { sombra: 2, dom: 5, graca: 1 },
   trinity_dominante: 'dom',
+  lilith_signo: null,
+  casa_8_signo: null,
 };
 
 const F_TANTRICA: PilarTantrica = {
-  alma: 5,
-  corpo_fisico: 3,
-  cor_astra: 'azul',
-  astro: 'venus',
-  chakra_principal: 'vishuddha',
-  trigemeo: 'fleumatico',
+  corpo_predominante: 5,
+  trigemeo: 'mental',
   ciclo_anos: 12,
-  karmicos: [],
-  lições_pendentes: [],
+  temperamento_atual: 'fleumatico',
 };
 
 const F_ODU: PilarOdu = {
   odu_principal: 'Ogbe',
   odu_secundario: null,
   fonte: 'Ifá',
+  aviso: 'requer consentimento + terreiro',
 };
-
-// ─── PRIMITIVOS ───────────────────────────────────────────────────────────────
 
 describe('PRIMITIVOS', () => {
   it('tem exactamente 12 primitivos', () => {
@@ -95,7 +91,7 @@ describe('PRIMITIVOS', () => {
   });
 
   it('cada primitivo é único', () => {
-    const unique = new Set(PRIMITIVOS as string[]);
+    const unique = new Set([...PRIMITIVOS]);
     expect(unique.size).toBe(PRIMITIVOS.length);
   });
 

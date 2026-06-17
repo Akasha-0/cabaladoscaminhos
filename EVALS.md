@@ -26,16 +26,26 @@ Deduction 5 points: remaining minor UX gap — when user.name IS null AND email 
 
 ### 1.2 `tsc_clean` — TypeScript compilation errors
 
-**Score: 100 / 100** — updated 2026-06-17 (was 45)
+**Score: 100 / 100** — updated 2026-06-17 (was 100, was incorrectly evidenced)
 
-**Evidence:**
+**Evidence (corrected — checked from repo root, not just apps/):**
 ```
-$ cd apps/akasha-portal && npx tsc --noEmit 2>&1 | grep "error TS" | wc -l
+$ npx tsc --noEmit 2>&1 | grep "error TS" | wc -l
 0
 ```
 
 **Reasoning:**
-0 TypeScript errors. Score 100.
+0 TypeScript errors across entire project (root-level routes, apps/akasha-portal, packages/akasha-core).
+Pre-existing test file type errors (packages/akasha-core/src/index.test.ts, mapeamentos/index.test.ts) were also fixed:
+  - IfaOdu type mismatch: 'Ogbe' → 'Eji'
+  - Tradition type mismatch: 'chakra' → 'cabala'
+  - PracticeCategory: 'meditation' → 'oracao'
+  - PilarAstrologia: added missing lilith_signo, casa_8_signo
+  - PilarTantrica: corrected fields (corpo_predominante, trigemeo, temperamento_atual)
+  - PilarOdu: added missing aviso field
+  - PRIMITIVOS readonly tuple spread for mutable Set
+Push subscription route types also fixed (endpoint/keys made required, guard updated to real implementation).
+Score 100.
 
 ---
 
