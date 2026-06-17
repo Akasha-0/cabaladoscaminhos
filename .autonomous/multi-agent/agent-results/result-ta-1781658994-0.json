@@ -1,0 +1,1 @@
+{"success": false, "message": "No helper to extract — life-areas-data.ts is pure static data (LIFE_AREAS constant only); all helpers already extracted to life-areas-data-utils.ts in prior session", "type": "large_file"}

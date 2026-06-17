@@ -1,1 +1,0 @@
-{"success": false, "message": "life-areas-data.ts contains only static LIFE_AREAS constant (809 lines). Prior extraction (e18d062f) already pulled all helper functions into life-areas-data-utils.ts. No helpers remain to extract.", "type": "large_file"}
