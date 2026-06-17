@@ -11,7 +11,9 @@
 
 ### 1.1 `auth_stability` — Does refreshing protected pages keep the user logged in?
 
-**Score: 65 / 100** — updated 2026-06-17 (was 0)
+**Score: 80 / 100** — updated 2026-06-17 (was 0)
+
+**Evidence updated 2026-06-17:** critical cookie-on-redirect bug fixed in `e0769225` — cookies are now set on the redirect response object, not on the orphaned `response` variable. Previous implementation (`8d11ab65`) set cookies on `response` but returned `NextResponse.redirect()` which creates a new response object that does NOT carry the cookies. Now: redirect response carries Set-Cookie headers to browser. Remaining gap: not all pages use `verifyAkashaToken` with redirect on null — some still use raw cookie + API 401.
 
 **Evidence:**
 - Bug confirmed present: every page refresh redirects to `/onboarding` when access token has expired
