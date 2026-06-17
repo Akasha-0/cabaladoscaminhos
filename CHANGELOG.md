@@ -1,3 +1,11 @@
+## v0.81.4 (2026-06-17) — QA Round 8 — Build fix + null safety
+- fix(jsx): ConexoesClient.tsx — broken JSX in ternary reverted to safe emoji string (Turbopack parse failure at line 667)
+- fix(astrology): AstrologyInfoPanel.tsx — import formatDegreeToZodiac; planet degrees display as zodiac-formatted (e.g. 23° Aries)
+- fix(dashboard): Dashboard.tsx — add optional chaining (dimFoco?.) to fix tsc null-safety; add ritual.duration fallback
+- fix(push): push-subscription-service.ts — add ?? undefined to p256dh/auth Prisma fields
+- Build: ✓ Compiled 7.9s + 49/49 static pages
+- Tests: 1357 passed | 0 failed | 17 skipped (93 files)
+
 ## v0.81.3 (2026-06-17) — Round 7 QA + synthesis test fixes
 - fix(ui): Comment akasha/page.tsx 9 dimensoes -> 8 dimensoes
 - fix(ui): ConexoesClient narrative split into paragraphs (was: wall of italic text)
