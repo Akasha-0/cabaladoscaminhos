@@ -71,13 +71,13 @@ Build succeeds with 50/50 static pages. EXIT 0. Score 100.
 **Evidence (2026-06-17):**
 ```
 $ npm run test:run 2>&1 | tail -5
-  Test Files  93 passed | 4 skipped (97)
-      Tests  1361 passed | 17 skipped (1378)
+  Test Files  94 passed | 4 skipped (98)
+      Tests  1385 passed | 17 skipped (1402)
 ```
 
 **Calculation:**
-- Passed: 1361, Failed: 0, Skipped: 17
-- Pass rate = 1361 / 1361 = 1.0
+- Passed: 1385, Failed: 0, Skipped: 17
+- Pass rate = 1385 / 1385 = 1.0
 - Skipped tests (17) excluded from denominator per formula
 - Score 99: 1 point deducted for 17 intentional .skip() calls and 4 excluded test files
 
@@ -215,6 +215,32 @@ Access token `strict` impede CSRF cross-site. Refresh token `lax` é necessário
 **Known gap:** `OnboardingClient.tsx` has ~8 hardcoded Portuguese strings in form labels, error messages, and ritual phrases. These are pre-existing (not introduced by v0.84.10) and tracked separately.
 
 ---
+### 1.10 `open_redirect_protection` — Login API blocks off-origin return param
+
+**Score: 100 / 100** — updated 2026-06-17
+
+**Evidence (2026-06-17):** `apps/akasha-portal/src/app/api/akasha/auth/login/route.ts` lines 64–74:
+```typescript
+// SECURITY: if returnTo points to an absolute URL off-origin, clamp to /conta.
+let returnTo = searchParams.get('return') ?? `/${locale}/conta`;
+try {
+  const parsed = new URL(returnTo, request.url);
+  if (parsed.origin !== new URL(request.url).origin) {
+    returnTo = `/${locale}/conta`;
+  }
+} catch {
+  returnTo = `/${locale}/conta`;
+}
+```
+
+**Test coverage (2026-06-17):** `tests/api/akasha/auth/login.test.ts`:
+- `bloqueia open redirect off-origin (return param não pode escapar do origin)` — verifies `https://evil.com/` return is clamped to `/conta`
+- 9 total tests covering: 400/401 validation, return param redirect, off-origin block, cookie setting, jti tracking
+
+**Reasoning:** Open-redirect in login is a critical security flaw. The `return` query param was honored without validation, allowing an attacker to craft a malicious login link that redirects to an external domain after authentication. The fix validates the parsed URL origin matches the request origin, clamping to `/conta` on any mismatch. Score 100.
+
+**Regression:** No regression — net-new security control with test coverage.
+
 
 ## 2. CRITICAL BUG: Auth Redirect Race Condition
 
