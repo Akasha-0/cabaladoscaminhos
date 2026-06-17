@@ -575,7 +575,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                     </div>
                     <div>
                       <p className="text-[10px] text-[#F0B429] font-bold uppercase tracking-wider font-mono">Foco Prioritário de Hoje</p>
-                      <h3 className="text-md font-bold font-cinzel text-white leading-none mt-1">{dimFoco.titulo}</h3>
+                      <h3 className="text-md font-bold font-cinzel text-white leading-none mt-1">{dimFoco?.titulo}</h3>
                     </div>
                   </div>
                   <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#F0B429]/15 border border-[#F0B429]/40 text-[#F0B429]">
@@ -585,7 +585,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
 
                 <div className="relative" style={{ maxHeight: '4.5em', overflow: 'hidden' }}>
                   <div className="space-y-1">
-                    {renderNarrative(dimFoco.synthes)}
+                    {renderNarrative(dimFoco?.synthes)}
                   </div>
                   <div
                     aria-hidden
@@ -601,14 +601,14 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                   />
                 </div>
 
-                {dimFoco.praktika && (
+                {dimFoco?.praktika && (
                   <div className="bg-[#2DD4BF]/5 border border-[#2DD4BF]/15 rounded-xl p-3.5 space-y-1">
                     <p className="text-[9px] text-[#2DD4BF] uppercase tracking-wider font-mono font-semibold">Prática do Dia</p>
                     <p className="text-xs text-white/90 leading-relaxed">{dimFoco.praktika}</p>
                   </div>
                 )}
 
-                {dimFoco.alerta && (
+                {dimFoco?.alerta && (
                   <div className="bg-[#FB5781]/5 border border-[#FB5781]/15 rounded-xl p-3.5 space-y-1">
                     <p className="text-[9px] text-[#FB5781] uppercase tracking-wider font-mono font-semibold">O que Evitar</p>
                     <p className="text-xs text-white/90 leading-relaxed">{dimFoco.alerta}</p>

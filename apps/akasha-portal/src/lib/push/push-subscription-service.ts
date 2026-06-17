@@ -17,15 +17,15 @@ export async function upsertPushSubscription(
   await prisma.pushSubscription.upsert({
     where: { endpoint },
     update: {
-      p256dh,
-      auth,
+      p256dh: p256dh ?? undefined,
+      auth: auth ?? undefined,
       userAgent: ua,
     },
     create: {
       userId,
       endpoint,
-      p256dh,
-      auth,
+      p256dh: p256dh ?? '',
+      auth: auth ?? '',
       userAgent: ua,
     },
   });
