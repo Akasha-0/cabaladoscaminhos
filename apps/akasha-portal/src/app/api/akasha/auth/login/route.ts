@@ -61,7 +61,17 @@ export async function POST(request: NextRequest) {
   // Extract locale from the request URL query params (set by middleware or login page).
   const { searchParams } = request.nextUrl;
   const locale = searchParams.get('locale') ?? 'pt-BR';
-  const returnTo = searchParams.get('return') ?? `/${locale}/conta`;
+  // SECURITY: if returnTo points to an absolute URL off-origin, clamp to /conta.
+  // Prevents open redirect if the return param is tampered with.
+  let returnTo = searchParams.get('return') ?? `/${locale}/conta`;
+  try {
+    const parsed = new URL(returnTo, request.url);
+    if (parsed.origin !== new URL(request.url).origin) {
+      returnTo = `/${locale}/conta`;
+    }
+  } catch {
+    returnTo = `/${locale}/conta`;
+  }
 
   // 307 redirect so browser processes Set-Cookie before navigating.
   const redirectUrl = new URL(returnTo, request.url);

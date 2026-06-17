@@ -893,7 +893,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
               </div>
 
               {/* P7 (iter34): Evolution patterns from stored cycle history */}
-              <EvolutionPatterns history={cycleHistory} loading={cycleHistoryLoading} locale={locale} />
+              <EvolutionPatterns history={cycleHistory} loading={cycleHistoryLoading} />
 
               <RitualHistory userId={userId} onAction={() => setActiveTab('daily')} />
             </motion.div>

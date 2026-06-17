@@ -10,10 +10,11 @@
     },
     "tests": {
       "pass": true,
-      "passed": 1361,
+      "passed": 1376,
       "failed": 0
     }
   },
-  "git_head": "c497a92529f184d89483d82d031c4f9c2e49fc8a",
-  "cached_at": 1750182553.0
+  "git_head": "0dcd655d",
+  "cached_at": "2026-06-17T19:53:00Z",
+  "feature_summary": "Iter39: Procedência Audit Trail \u2014 ProcedenciaEntry type (tradição, símbolo, intensidade) added; synthesizePrimitives now computes procedenciaTop; buildAkashaSynthesis attaches per-area procedencia via PRIMITIVOS_POR_AREA heuristic filter; @akasha/core exports ProcedenciaEntry and Tradicao"
 }

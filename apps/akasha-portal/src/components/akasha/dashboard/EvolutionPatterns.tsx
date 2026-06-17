@@ -3,12 +3,11 @@
 import { useMemo } from 'react';
 import { TrendingUp, TrendingDown, Minus, Sparkles, Target, Calendar } from 'lucide-react';
 import type { CycleHistoryData } from './hooks/useCyclePersistence';
-import { getTranslations } from '@/lib/i18n';
+import ptBR from '@/i18n/pt-BR.json';
 
 interface EvolutionPatternsProps {
   history: CycleHistoryData | null;
   loading?: boolean;
-  locale: string;
 }
 
 type FrequencyLevel = 'shadow' | 'gift' | 'siddhi';
@@ -82,7 +81,6 @@ function detectPatterns(
   history: CycleHistoryData,
   areaLabels: Record<string, string>,
   freqLabels: Record<string, string>,
-  t: (key: string) => string,
 ): DetectedPattern[] {
   const patterns: DetectedPattern[] = [];
   const areaHistory = history.areaHistory;
@@ -394,34 +392,39 @@ function FrequencyTrends({
 export function EvolutionPatterns({
   history,
   loading,
-  locale,
 }: EvolutionPatternsProps) {
-  const t = useMemo(() => getTranslations(locale), [locale]);
+  // Client-safe translation using pt-BR bundle (synchronous, no server deps)
+  const T = (key: string): string => {
+    const parts = key.split('.');
+    let result: unknown = ptBR;
+    for (const part of parts) {
+      if (result && typeof result === 'object' && part in result) {
+        result = (result as Record<string, unknown>)[part];
+      } else {
+        return key;
+      }
+    }
+    return typeof result === 'string' ? result : key;
+  };
 
-  const areaLabels = useMemo<Record<string, string>>(
-    () => ({
-      vitalidadeEnergia: 'Vitalidade',
-      conexoesAmor: 'Conexões',
-      carreiraProsperidade: 'Carreira',
-      oriCabecaQuizilas: 'Mente/Orixá',
-      missaoDestino: 'Missão',
-      desafiosSombras: 'Sombras',
-    }),
-    [t],
-  );
+  const areaLabels: Record<string, string> = {
+    vitalidadeEnergia: 'Vitalidade',
+    conexoesAmor: 'Conexões',
+    carreiraProsperidade: 'Carreira',
+    oriCabecaQuizilas: 'Mente/Orixá',
+    missaoDestino: 'Missão',
+    desafiosSombras: 'Sombras',
+  };
 
-  const freqLabels = useMemo<Record<string, string>>(
-    () => ({
-      shadow: 'Sombra',
-      gift: 'Dom',
-      siddhi: 'Sidhi',
-    }),
-    [t],
-  );
+  const freqLabels: Record<string, string> = {
+    shadow: 'Sombra',
+    gift: 'Dom',
+    siddhi: 'Sidhi',
+  };
 
   const patterns = useMemo(
-    () => (history ? detectPatterns(history, areaLabels, freqLabels, t) : []),
-    [history, areaLabels, freqLabels, t],
+    () => (history ? detectPatterns(history, areaLabels, freqLabels) : []),
+    [history, areaLabels, freqLabels],
   );
 
   if (loading) {
