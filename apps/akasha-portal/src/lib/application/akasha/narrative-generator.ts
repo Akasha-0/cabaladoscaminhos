@@ -536,10 +536,10 @@ export function generateAreaNarrativeFull(
         .slice(0, 2);
       if (sombraTop.length > 0 || luzTop.length > 0) {
         const sombraLabel = sombraTop[0]
-          ? `o desafio central é ${sombraTop[0].primitivo} — ${sombraTop[0].contributions[0]?.descricao ?? ''}`
+          ? `o desafio central é ${sombraTop[0].primitivo} — ${sombraTop[0].contributions[0]?.fonte ?? ''}`
           : '';
         const luzLabel = luzTop[0]
-          ? `sua âncora de força é ${luzTop[0].primitivo} — ${luzTop[0].contributions[0]?.descricao ?? ''}`
+          ? `sua âncora de força é ${luzTop[0].primitivo} — ${luzTop[0].contributions[0]?.fonte ?? ''}`
           : '';
         const parts: string[] = [];
         if (sombraLabel) parts.push(sombraLabel);
@@ -564,6 +564,9 @@ export function generateAreaNarrativeFull(
       integratedNarrative = [areaSyntheses[0](kabCore, astroCore, tantraCore, oduCore), areaSyntheses[3](kabCore, astroCore, tantraCore, oduCore)].join(' ');
     } else if (hasCount === 2) {
       integratedNarrative = [areaSyntheses[0](kabCore, astroCore, tantraCore, oduCore), areaSyntheses[2](kabCore, astroCore, tantraCore, oduCore), areaSyntheses[3](kabCore, astroCore, tantraCore, oduCore)].join(' ');
+    } else {
+      // hasCount >= 3: full synthesis (no primitive anchor needed)
+      integratedNarrative = areaSyntheses.map(fn => fn(kabCore, astroCore, tantraCore, oduCore)).join(' ');
     }
   } else {
     integratedNarrative = fallbackSynthesis(kabCore, astroCore, tantraCore, oduCore);
