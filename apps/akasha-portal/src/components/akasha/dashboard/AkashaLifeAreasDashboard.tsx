@@ -845,8 +845,26 @@ function AreaCard({ areaKey, narrative, modulation }: {
                   )}
                 </div>
               )}
+              {/* §5 Procedência per-area — fonte simbólica que alimenta esta área */}
+              {(narrative as any).procedencia && (narrative as any).procedencia.length > 0 && (
+                <div className="flex flex-wrap items-center gap-1 px-1">
+                  <span className="text-[9px] text-white/20 uppercase tracking-wider">De:</span>
+                  {((narrative as any).procedencia as Array<{tradicao:string; simbolo:string; intensidade:number}>).slice(0, 4).map((p: any, i: number) => {
+                    const colors: Record<string, string> = {
+                      cabala: '#7C5CFF', astrologia: '#2DD4BF', iching: '#A0763A', odu: '#FB5781', tantra: '#F0B429',
+                    };
+                    const color = colors[p.tradicao] ?? '#888';
+                    return (
+                      <span key={i} className="text-[10px] font-medium" style={{ color: `${color}cc` }}>
+                        {p.simbolo}
+                      </span>
+                    );
+                  })}
+                </div>
+              )}
 
               {/* F-224: Trânsito de Hoje — dados gerados pelo motor mas nunca renderizados */}
+
               {narrative.dailyTransit && (
                 <div
                   className="rounded-xl p-3 flex items-start gap-2.5"
@@ -1015,7 +1033,6 @@ export function AkashaLifeAreasDashboard({
           </details>
         )}
       </div>
-      {/* F-235: Frequency Path Explorer — Siddhi journey visualization */}
       {/* F-235: Frequency Path Explorer — Siddhi journey visualization */}
       <FrequencyPathExplorer
         dominantFrequency={akashaProfile.dominantFrequency}

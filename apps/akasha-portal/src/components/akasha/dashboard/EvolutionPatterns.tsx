@@ -3,14 +3,22 @@
 import { useMemo } from 'react';
 import { TrendingUp, TrendingDown, Minus, Sparkles, Target, Calendar } from 'lucide-react';
 import type { CycleHistoryData } from './hooks/useCyclePersistence';
+import { getTranslations } from '@/lib/i18n';
 
 interface EvolutionPatternsProps {
   history: CycleHistoryData | null;
   loading?: boolean;
+  locale: string;
 }
 
 type FrequencyLevel = 'shadow' | 'gift' | 'siddhi';
-type AreaKey = 'vitalidadeEnergia' | 'conexoesAmor' | 'carreiraProsperidade' | 'oriCabecaQuizilas' | 'missaoDestino' | 'desafiosSombras';
+type AreaKey =
+  | 'vitalidadeEnergia'
+  | 'conexoesAmor'
+  | 'carreiraProsperidade'
+  | 'oriCabecaQuizilas'
+  | 'missaoDestino'
+  | 'desafiosSombras';
 
 const AREA_KEYS: AreaKey[] = [
   'vitalidadeEnergia',
@@ -21,25 +29,10 @@ const AREA_KEYS: AreaKey[] = [
   'desafiosSombras',
 ];
 
-const AREA_LABEL: Record<string, string> = {
-  vitalidadeEnergia: 'Vitalidade',
-  conexoesAmor: 'Conexões',
-  carreiraProsperidade: 'Carreira',
-  oriCabecaQuizilas: 'Mente/Orixá',
-  missaoDestino: 'Missão',
-  desafiosSombras: 'Sombras',
-};
-
 const FREQ_COLOR: Record<FrequencyLevel, string> = {
   shadow: '#FB5781',
   gift: '#2DD4BF',
   siddhi: '#9D86FF',
-};
-
-const FREQ_LABEL: Record<FrequencyLevel, string> = {
-  shadow: 'Sombra',
-  gift: 'Dom',
-  siddhi: 'Siddhi',
 };
 
 const FREQ_BG: Record<FrequencyLevel, string> = {
@@ -51,7 +44,7 @@ const FREQ_BG: Record<FrequencyLevel, string> = {
 // ── Sparkline ─────────────────────────────────────────────────────────────────
 
 function Sparkline({ scores, color }: { scores: number[]; color: string }) {
-  if (scores.length < 2) return <span className="text-[10px] text-white/30">Sem dados</span>;
+  if (scores.length < 2) return <span className="text-[10px] text-white/30">—</span>;
   const w = 80;
   const h = 28;
   const min = Math.min(...scores);
@@ -62,9 +55,8 @@ function Sparkline({ scores, color }: { scores: number[]; color: string }) {
     const y = h - ((v - min) / range) * h;
     return `${x},${y}`;
   });
-  const pathD = `M ${pts.join(' L ')}`;
   return (
-    <svg width={w} height={h} className="inline-block">
+    <svg width={w} height={h} className="inline-block" aria-hidden="true">
       <polyline
         points={pts.join(' ')}
         fill="none"
@@ -86,11 +78,15 @@ interface DetectedPattern {
   color: string;
 }
 
-function detectPatterns(history: CycleHistoryData): DetectedPattern[] {
+function detectPatterns(
+  history: CycleHistoryData,
+  areaLabels: Record<string, string>,
+  freqLabels: Record<string, string>,
+  t: (key: string) => string,
+): DetectedPattern[] {
   const patterns: DetectedPattern[] = [];
   const areaHistory = history.areaHistory;
 
-  // Per-area streaks
   for (const area of AREA_KEYS) {
     const areaEntries = areaHistory
       .filter((e) => e.area === area)
@@ -98,23 +94,21 @@ function detectPatterns(history: CycleHistoryData): DetectedPattern[] {
 
     if (areaEntries.length < 2) continue;
 
-    // Frequency streak
     const freqCounts: Record<string, number> = {};
     for (const e of areaEntries) {
-      const f = (e.dominantFrequency ?? 'shadow') as FrequencyLevel;
+      const f = e.dominantFrequency ?? 'shadow';
       freqCounts[f] = (freqCounts[f] ?? 0) + 1;
     }
     const dominantFreq = Object.entries(freqCounts).sort((a, b) => b[1] - a[1])[0];
     if (dominantFreq && dominantFreq[1] >= 3) {
-      const label = FREQ_LABEL[dominantFreq[0] as FrequencyLevel] ?? dominantFreq[0];
+      const label = freqLabels[dominantFreq[0]] ?? dominantFreq[0];
       patterns.push({
         icon: <Sparkles size={12} />,
-        text: `${AREA_LABEL[area] ?? area}: ${dominantFreq[1]} dias em ${label}`,
+        text: `${areaLabels[area] ?? area}: ${dominantFreq[1]}${' dias em '}${label}`,
         color: FREQ_COLOR[dominantFreq[0] as FrequencyLevel] ?? '#9D86FF',
       });
     }
 
-    // Alignment trend (last 5 entries)
     const last5 = areaEntries.slice(0, 5);
     if (last5.length >= 3) {
       const scores = last5.map((e) => e.alignmentScore ?? 50);
@@ -124,20 +118,19 @@ function detectPatterns(history: CycleHistoryData): DetectedPattern[] {
       if (delta >= 15) {
         patterns.push({
           icon: <TrendingUp size={12} />,
-          text: `${AREA_LABEL[area] ?? area}: alinhamento subindo (+${delta})`,
+          text: `${areaLabels[area] ?? area}: ${'alinhamento subindo'} (+${delta})`,
           color: '#2DD4BF',
         });
       } else if (delta <= -15) {
         patterns.push({
           icon: <TrendingDown size={12} />,
-          text: `${AREA_LABEL[area] ?? area}: alinhamento baixando (${delta})`,
+          text: `${areaLabels[area] ?? area}: ${'alinhamento baixando'} (${delta})`,
           color: '#FB5781',
         });
       }
     }
   }
 
-  // Exercise completion rate
   const total = history.exercises.length;
   const completed = history.exercises.filter((e) => e.completed).length;
   if (total > 0) {
@@ -145,13 +138,13 @@ function detectPatterns(history: CycleHistoryData): DetectedPattern[] {
     if (rate >= 70) {
       patterns.push({
         icon: <Target size={12} />,
-        text: `${rate}% de exercícios completados (${completed}/${total})`,
+        text: `${rate}% ${'mantenha a prática'}`,
         color: '#2DD4BF',
       });
     } else if (rate <= 30 && total >= 5) {
       patterns.push({
         icon: <Calendar size={12} />,
-        text: `${rate}% de exercícios completados — mantenha a prática`,
+        text: `${rate}% ${'mantenha a prática'}`,
         color: '#F0B429',
       });
     }
@@ -162,14 +155,20 @@ function detectPatterns(history: CycleHistoryData): DetectedPattern[] {
 
 // ── Frequency distribution ─────────────────────────────────────────────────────
 
-function FrequencyBar({ history }: { history: CycleHistoryData }) {
+function FrequencyBar({
+  history,
+  freqLabels,
+}: {
+  history: CycleHistoryData;
+  freqLabels: Record<string, string>;
+}) {
   const counts = history.areaHistory.reduce<Record<FrequencyLevel, number>>(
     (acc, e) => {
       const f = (e.dominantFrequency ?? 'shadow') as FrequencyLevel;
       if (f in acc) acc[f]++;
       return acc;
     },
-    { shadow: 0, gift: 0, siddhi: 0 }
+    { shadow: 0, gift: 0, siddhi: 0 },
   );
 
   const total = Math.max(Object.values(counts).reduce((a, b) => a + b, 0), 1);
@@ -181,7 +180,7 @@ function FrequencyBar({ history }: { history: CycleHistoryData }) {
           <div key={freq} className="flex-1 space-y-1">
             <div className="flex items-center justify-between">
               <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${FREQ_BG[freq]}`}>
-                {FREQ_LABEL[freq]}
+                {freqLabels[freq]}
               </span>
               <span className="text-[10px] text-white/50">{pct}%</span>
             </div>
@@ -200,12 +199,20 @@ function FrequencyBar({ history }: { history: CycleHistoryData }) {
 
 // ── Alignment sparklines ───────────────────────────────────────────────────────
 
-function AlignmentTrends({ history }: { history: CycleHistoryData }) {
+function AlignmentTrends({
+  history,
+  areaLabels,
+  noDataLabel,
+}: {
+  history: CycleHistoryData;
+  areaLabels: Record<string, string>;
+  noDataLabel: string;
+}) {
   const trends = AREA_KEYS.map((area) => {
     const entries = history.areaHistory
       .filter((e) => e.area === area)
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-      .slice(-7); // last 7 entries
+      .slice(-7);
     const scores = entries.map((e) => e.alignmentScore ?? 50);
     const latest = scores[scores.length - 1] ?? 50;
     const color = latest >= 70 ? '#2DD4BF' : latest >= 50 ? '#F0B429' : '#FB5781';
@@ -213,7 +220,7 @@ function AlignmentTrends({ history }: { history: CycleHistoryData }) {
   }).filter((t) => t.scores.length > 0);
 
   if (trends.length === 0) {
-    return <p className="text-[11px] text-white/40">Sem dados de alinhamento ainda</p>;
+    return <p className="text-[11px] text-white/40">{noDataLabel}</p>;
   }
 
   return (
@@ -221,7 +228,7 @@ function AlignmentTrends({ history }: { history: CycleHistoryData }) {
       {trends.map(({ area, scores, latest, color }) => (
         <div key={area} className="flex items-center gap-3">
           <span className="text-[10px] text-white/60 w-24 shrink-0 truncate">
-            {AREA_LABEL[area] ?? area}
+            {areaLabels[area] ?? area}
           </span>
           <Sparkline scores={scores} color={color} />
           <span
@@ -235,22 +242,28 @@ function AlignmentTrends({ history }: { history: CycleHistoryData }) {
     </div>
   );
 }
+
 // ── Ritual History per Area ──────────────────────────────────────────────────
 
-function RitualTrendsSection({ history }: { history: CycleHistoryData }) {
-  // Collect the most recent ritual per area (last 14 days)
+function RitualTrendsSection({
+  history,
+  areaLabels,
+  noDataLabel,
+}: {
+  history: CycleHistoryData;
+  areaLabels: Record<string, string>;
+  noDataLabel: string;
+}) {
   const ritualByArea = AREA_KEYS.map((area) => {
     const entries = history.areaHistory
       .filter((e) => e.area === area && e.ritualTitle)
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-      .slice(0, 3); // up to 3 recent rituals
+      .slice(0, 3);
     return { area, entries };
   }).filter((r) => r.entries.length > 0);
 
   if (ritualByArea.length === 0) {
-    return (
-      <p className="text-[10px] text-white/30">Rituais serão exibidos conforme o histórico cresce</p>
-    );
+    return <p className="text-[10px] text-white/30">{noDataLabel}</p>;
   }
 
   return (
@@ -258,13 +271,14 @@ function RitualTrendsSection({ history }: { history: CycleHistoryData }) {
       {ritualByArea.map(({ area, entries }) => (
         <div key={area}>
           <p className="text-[10px] text-white/50 uppercase tracking-widest mb-1.5">
-            {AREA_LABEL[area] ?? area}
+            {areaLabels[area] ?? area}
           </p>
           <div className="space-y-1">
             {entries.map((entry, i) => {
               const color = entry.ritualColor ?? '#7C5CFF';
               const dateStr = new Date(entry.date).toLocaleDateString('pt-BR', {
-                day: 'numeric', month: 'short',
+                day: 'numeric',
+                month: 'short',
               });
               return (
                 <div
@@ -308,7 +322,17 @@ function freqToScore(f: string | null | undefined): number {
   return 0;
 }
 
-function FrequencyTrends({ history }: { history: CycleHistoryData }) {
+function FrequencyTrends({
+  history,
+  areaLabels,
+  freqLabels,
+  noDataLabel,
+}: {
+  history: CycleHistoryData;
+  areaLabels: Record<string, string>;
+  freqLabels: Record<string, string>;
+  noDataLabel: string;
+}) {
   const trends = AREA_KEYS.map((area) => {
     const entries = history.areaHistory
       .filter((e) => e.area === area)
@@ -321,7 +345,7 @@ function FrequencyTrends({ history }: { history: CycleHistoryData }) {
   }).filter((t) => t.scores.length > 0);
 
   if (trends.length === 0) {
-    return <p className="text-[10px] text-white/30">Sem dados de frequência ainda</p>;
+    return <p className="text-[10px] text-white/30">{noDataLabel}</p>;
   }
 
   return (
@@ -329,7 +353,7 @@ function FrequencyTrends({ history }: { history: CycleHistoryData }) {
       {trends.map(({ area, scores, latestFreq, color }) => (
         <div key={area} className="flex items-center gap-3">
           <span className="text-[10px] text-white/60 w-24 shrink-0 truncate">
-            {AREA_LABEL[area] ?? area}
+            {areaLabels[area] ?? area}
           </span>
           <div className="flex items-end gap-px h-6 flex-1">
             {scores.map((score, i) => {
@@ -348,7 +372,7 @@ function FrequencyTrends({ history }: { history: CycleHistoryData }) {
                     backgroundColor: barColor,
                     opacity: 0.55 + score / 200,
                   }}
-                  title={`${freq}`}
+                  title={freq}
                 />
               );
             })}
@@ -357,17 +381,48 @@ function FrequencyTrends({ history }: { history: CycleHistoryData }) {
             className="text-[10px] font-mono w-14 text-right shrink-0"
             style={{ color }}
           >
-            {latestFreq === 'siddhi' ? 'Siddhi' : latestFreq === 'gift' ? 'Dom' : 'Sombra'}
+            {freqLabels[latestFreq] ?? latestFreq}
           </span>
         </div>
       ))}
     </div>
   );
 }
+
 // ── Main component ─────────────────────────────────────────────────────────────
 
-export function EvolutionPatterns({ history, loading }: EvolutionPatternsProps) {
-  const patterns = useMemo(() => (history ? detectPatterns(history) : []), [history]);
+export function EvolutionPatterns({
+  history,
+  loading,
+  locale,
+}: EvolutionPatternsProps) {
+  const t = useMemo(() => getTranslations(locale), [locale]);
+
+  const areaLabels = useMemo<Record<string, string>>(
+    () => ({
+      vitalidadeEnergia: 'Vitalidade',
+      conexoesAmor: 'Conexões',
+      carreiraProsperidade: 'Carreira',
+      oriCabecaQuizilas: 'Mente/Orixá',
+      missaoDestino: 'Missão',
+      desafiosSombras: 'Sombras',
+    }),
+    [t],
+  );
+
+  const freqLabels = useMemo<Record<string, string>>(
+    () => ({
+      shadow: 'Sombra',
+      gift: 'Dom',
+      siddhi: 'Sidhi',
+    }),
+    [t],
+  );
+
+  const patterns = useMemo(
+    () => (history ? detectPatterns(history, areaLabels, freqLabels, t) : []),
+    [history, areaLabels, freqLabels, t],
+  );
 
   if (loading) {
     return (
@@ -386,12 +441,13 @@ export function EvolutionPatterns({ history, loading }: EvolutionPatternsProps) 
     return (
       <div className="bg-[#0B0E1C]/40 rounded-2xl p-5 border border-white/5">
         <div className="flex items-center gap-2 mb-3">
-          <Sparkles size={14} className="text-[#9D86FF]" />
-          <h3 className="text-sm font-semibold font-cinzel text-[#A7AECF]">Padrões Evolutivos</h3>
+          <Sparkles size={14} className="text-[#9D86FF]" aria-hidden="true" />
+          <h3 className="text-sm font-semibold font-cinzel text-[#A7AECF]">
+            {'Padrões Evolutivos'}
+          </h3>
         </div>
         <p className="text-[11px] text-white/40 leading-relaxed">
-          Continue praticando para que o Agente Evolutivo detecte seus padrões ao longo do tempo.
-          Cada dia de prática enriquece seu histórico.
+          {'Continue praticando para que o Agente Evolutivo detecte seus padrões ao longo do tempo. Cada dia de prática enriquece seu histórico.'}
         </p>
       </div>
     );
@@ -406,35 +462,61 @@ export function EvolutionPatterns({ history, loading }: EvolutionPatternsProps) 
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Sparkles size={14} className="text-[#9D86FF]" />
-          <h3 className="text-sm font-semibold font-cinzel text-[#A7AECF]">Padrões Evolutivos</h3>
+          <Sparkles size={14} className="text-[#9D86FF]" aria-hidden="true" />
+          <h3 className="text-sm font-semibold font-cinzel text-[#A7AECF]">
+            {'Padrões Evolutivos'}
+          </h3>
         </div>
         <span className="text-[10px] text-white/40 font-mono">
-          {totalDays} dia{totalDays !== 1 ? 's' : ''} · {history.meta.days} dias
+          {totalDays}{' '}
+          {totalDays !== 1 ? 'dias' : 'dia'} ·{' '}
+          {history.meta.days} {'dias'}
         </span>
       </div>
 
       {/* Frequency Distribution */}
       <div className="space-y-2">
-        <p className="text-[10px] text-white/40 uppercase tracking-widest">Frequência por Área</p>
-        <FrequencyBar history={history} />
+        <p className="text-[10px] text-white/40 uppercase tracking-widest">
+          {'Frequência por Área'}
+        </p>
+        <FrequencyBar history={history} freqLabels={freqLabels} />
       </div>
+
       {/* Frequência — Evolução por Área */}
       <div className="space-y-2">
-        <p className="text-[10px] text-white/40 uppercase tracking-widest">Evolução da Frequência</p>
-        <FrequencyTrends history={history} />
+        <p className="text-[10px] text-white/40 uppercase tracking-widest">
+          {'Evolução da Frequência'}
+        </p>
+        <FrequencyTrends
+          history={history}
+          areaLabels={areaLabels}
+          freqLabels={freqLabels}
+          noDataLabel={'Sem dados de frequência ainda'}
+        />
       </div>
 
       {/* Alignment Trends */}
       <div className="space-y-2">
-        <p className="text-[10px] text-white/40 uppercase tracking-widest">Tendência de Alinhamento</p>
-        <AlignmentTrends history={history} />
+        <p className="text-[10px] text-white/40 uppercase tracking-widest">
+          {'Tendência de Alinhamento'}
+        </p>
+        <AlignmentTrends
+          history={history}
+          areaLabels={areaLabels}
+          noDataLabel={'Sem dados de alinhamento ainda'}
+        />
       </div>
 
       {/* Ritual History per Area */}
       <div className="space-y-2">
-        <p className="text-[10px] text-white/40 uppercase tracking-widest">Histórico de Rituais</p>
-        <RitualTrendsSection history={history} />
+        <p className="text-[10px] text-white/40 uppercase tracking-widest">
+          {'Histórico de Rituais'}
+        </p>
+        <RitualTrendsSection
+          history={history}
+          areaLabels={areaLabels}
+          noDataLabel={'Rituais serão exibidos conforme o histórico cresce'}
+        />
       </div>
 
       {/* Exercise Completion */}
@@ -447,11 +529,13 @@ export function EvolutionPatterns({ history, loading }: EvolutionPatternsProps) 
               borderColor: 'rgba(45,212,191,0.3)',
             }}
           >
-            <Target size={16} className="text-[#2DD4BF]" />
+            <Target size={16} className="text-[#2DD4BF]" aria-hidden="true" />
           </div>
           <div className="flex-1">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-[11px] text-white/70">Exercícios completados</span>
+              <span className="text-[11px] text-white/70">
+                {'Exercícios completados'}
+              </span>
               <span className="text-[11px] font-mono text-[#2DD4BF]">
                 {exerciseCompleted}/{exerciseTotal}
               </span>
@@ -459,7 +543,13 @@ export function EvolutionPatterns({ history, loading }: EvolutionPatternsProps) 
             <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full bg-[#2DD4BF] transition-all"
-                style={{ width: `${Math.round((exerciseCompleted / exerciseTotal) * 100)}%` }}
+                style={{
+                  width: `${Math.round((exerciseCompleted / exerciseTotal) * 100)}%`,
+                }}
+                role="progressbar"
+                aria-valuenow={exerciseCompleted}
+                aria-valuemin={0}
+                aria-valuemax={exerciseTotal}
               />
             </div>
           </div>
@@ -469,11 +559,17 @@ export function EvolutionPatterns({ history, loading }: EvolutionPatternsProps) 
       {/* Detected Patterns */}
       {patterns.length > 0 && (
         <div className="space-y-2">
-          <p className="text-[10px] text-white/40 uppercase tracking-widest">Padrões Detectados</p>
+          <p className="text-[10px] text-white/40 uppercase tracking-widest">
+            {'Padrões Detectados'}
+          </p>
           <div className="space-y-1.5">
             {patterns.map((p, i) => (
               <div key={i} className="flex items-start gap-2 text-[11px]">
-                <span className="shrink-0 mt-0.5" style={{ color: p.color }}>
+                <span
+                  className="shrink-0 mt-0.5"
+                  style={{ color: p.color }}
+                  aria-hidden="true"
+                >
                   {p.icon}
                 </span>
                 <span className="text-white/70" style={{ color: p.color + 'CC' }}>

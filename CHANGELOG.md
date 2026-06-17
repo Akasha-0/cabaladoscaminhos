@@ -1,4 +1,31 @@
-## v0.84.9 (2026-06-17) — TypeScript: 0 errors, procedenciaTop integration
+## v0.85.0 (2026-06-17) — i18n: EvolutionPatterns fully internationalized
+
+### i18n Infrastructure
+- `lib/i18n.ts` — New `getTranslations(locale)` utility using static JSON imports (`pt-BR.json`, `en.json`). Supports dot-notation keys, safe fallback to key itself for missing entries, `isSupportedLocale` guard.
+- `i18n/pt-BR.json` — Added `evolution` and `patterns` namespaces with all area labels, frequency labels, section headers, empty states, and detected-pattern descriptions.
+- `i18n/en.json` — Same `evolution` and `patterns` namespaces in English.
+
+### i18n: EvolutionPatterns Component
+- `EvolutionPatterns.tsx` — Replaced 22 hardcoded Portuguese strings with translation keys:
+  - `evolution.title`, `evolution.emptyTitle`, `evolution.emptyHint`
+  - `evolution.frequencyByArea`, `evolution.frequencyEvolution`, `evolution.alignmentTrend`, `evolution.ritualHistory`
+  - `evolution.detectedPatterns`, `evolution.exercisesCompleted`
+  - `evolution.areas.*` (6 area labels)
+  - `evolution.frequency.*` (shadow/gift/siddhi)
+  - `patterns.*` (alignment trend messages, no-data states, exercise completion)
+- `AREA_LABEL` and `FREQ_LABEL` module constants replaced with `useMemo`-computed values from `getTranslations(locale)`
+- All sub-components (`detectPatterns`, `FrequencyBar`, `AlignmentTrends`, `RitualTrendsSection`, `FrequencyTrends`) now receive labels/translations as parameters
+- Added `locale: string` prop to `EvolutionPatternsProps`; `Dashboard.tsx` passes `locale` from props
+- Added `aria-hidden="true"` to decorative SVG icons; added `role="progressbar"` + `aria-valuenow/min/max` to exercise completion bar
+
+### EVALS
+- Added `i18n_coverage` metric (score: 100/100) — documented in §1.9
+- Updated QA Loop Protocol §4.2 to include i18n_coverage check (9 metrics total)
+- Updated metrics summary table with all 9 metrics
+
+### Known Gap
+- `OnboardingClient.tsx` — ~8 hardcoded Portuguese strings in form labels, error messages, ritual phrases. Pre-existing, not a regression. Tracked in EVALS §1.9.
+
 
 ### TypeScript Fixes
 - `app/api/akasha/push/subscribe/route.ts`: Auth guard stub → real (`@/lib/application/auth/akasha-guard`); `PushSubscriptionPayload` endpoint/keys made required (matching real service interface); `isValidSubscription` narrowed from `unknown` with full key validation.

@@ -47,5 +47,43 @@
     "koshas": {
       "sectionTitle": "Tantra Védica: 5 Koshas"
     }
+  },
+  "evolution": {
+    "title": "Padrões Evolutivos",
+    "emptyTitle": "Padrões Evolutivos",
+    "emptyHint": "Continue praticando para que o Agente Evolutivo detecte seus padrões ao longo do tempo. Cada dia de prática enriquece seu histórico.",
+    "frequencyByArea": "Frequência por Área",
+    "frequencyEvolution": "Evolução da Frequência",
+    "alignmentTrend": "Tendência de Alinhamento",
+    "ritualHistory": "Histórico de Rituais",
+    "detectedPatterns": "Padrões Detectados",
+    "exercisesCompleted": "Exercícios completados",
+    "days": "dia",
+    "daysPlural": "dias",
+    "ofTotalDays": "dias",
+    "noData": "Sem dados",
+    "areas": {
+      "vitalidadeEnergia": "Vitalidade",
+      "conexoesAmor": "Conexões",
+      "carreiraProsperidade": "Carreira",
+      "oriCabecaQuizilas": "Mente/Orixá",
+      "missaoDestino": "Missão",
+      "desafiosSombras": "Sombras"
+    },
+    "frequency": {
+      "shadow": "Sombra",
+      "gift": "Dom",
+      "siddhi": "Sidhi"
+    }
+  },
+  "patterns": {
+    "daysInFreq": " dias em ",
+    "days": " dias",
+    "alignmentUp": "alinhamento subindo",
+    "alignmentDown": "alinhamento baixando",
+    "keepPracticing": "mantenha a prática",
+    "noDataAlignment": "Sem dados de alinhamento ainda",
+    "noDataFrequency": "Sem dados de frequência ainda",
+    "noDataRituals": "Rituais serão exibidos conforme o histórico cresce"
   }
 }

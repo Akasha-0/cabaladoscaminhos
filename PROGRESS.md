@@ -1896,3 +1896,64 @@ A iter37 adiciona `FrequencyTrends`: um grafico de barras coloridas por area mos
 - **Dado persistido mas nao visualizado**: O campo `dominantFrequency` era salvo mas nunca renderizado como tendencia historica. A diferenca entre `FrequencyBar` (distribuicao agregada) e `FrequencyTrends` (evolucao temporal) justifica a separacao visual.
 - **`AlignmentTrends` vs `FrequencyTrends`**: AlignmentTrends mostra score de modulacao do ciclo (0-100, subjetivo ao ciclo atual). FrequencyTrends mostra a frequencia fundamental (shadow/gift/siddhi, determinada pelos mapas natais). Sao metricas ortogonais.
 - **Edit tool multi-hunk confusion**: Edicoes sobrepostas no mesmo arquivo podem criar snapshots duplicados. Estrategia: usar Python para edicoes multi-ponto em vez de multiplos `edit` calls sequenciais.
+
+## Iter38 — P7: Ritual Persistence (AreaHistoryEntry 5 ritual fields)
+
+### Resumo
+`AreaHistoryEntry` stores daily ritual per area, and `RitualTrendsSection` in `EvolutionPatterns` visualizes per-area ritual history (last 10 days). Each area (`vitalidadeEnergia`, `conexoesAmor`, `carreiraProsperidade`, `oriCabecaQuizilas`, `missaoDestino`, `desafiosSombras`) now tracks its own `dailyRitual` object (title, instruction, color, element) persisted to `RitualHistoryEntry`.
+
+### Alteracoes
+
+**`prisma/schema.prisma` — AreaHistoryEntry**
+- Added 6 optional `dailyRitual_XXX` JSON fields (one per LifeArea), each containing `{ titulo, instrucao, cor, elemento }`
+
+**`EvolutionPatterns.tsx` — RitualTrendsSection component**
+- New `RitualTrendsSection` renders last 10 days of ritual history per area
+- Each card shows ritual title, color badge, element icon, and day label
+- Section hidden when no ritual history exists
+
+### Verificacao
+- `prisma generate`: successful
+- TypeScript: 0 errors
+- Tests: 1376 pass, 0 fail
+
+### Lessons Learned
+- **Ritual per area vs. global ritual**: The dashboard already showed a global daily ritual. Per-area rituals allow more granular, area-specific guidance.
+- **JSON field per area vs. normalized table**: Chose JSON per area for simplicity.
+
+---
+
+## Iter39 — P5: Procedencia Audit Trail
+
+### Resumo
+Procedencia (tradição × símbolo × intensidade) added as structured provenance to every interpretive narrative claim. Every `PrimitiveContribution.fonte` is now extractable as a `ProcedenciaEntry` with clean symbol, tradition, and intensity. Both top-level `AkashaSynthesis.procedenciaTop` and per-area `AreaNarrative.procedencia` are wired through the synthesis engine.
+
+### Alteracoes
+
+**`packages/akasha-core/src/mapeamentos/types.ts`**
+- Added `ProcedenciaEntry` interface: `tradicao`, `simbolo`, `intensidade`, `primitivo`, `polaridade`, `fonteResumo`
+
+**`packages/akasha-core/src/mapeamentos/index.ts`**
+- Added `deriveTradicao(fonte)` and `extractSimbolo(fonte)` helper functions
+- `synthesizePrimitives` now calls `extractProcedenciaTop(profile, 10)` and attaches to `SynthesizedProfile.procedenciaTop`
+- Re-exports: added `ProcedenciaEntry` and `Tradicao`
+
+**`packages/akasha-core/src/index.ts`**
+- Re-exports `ProcedenciaEntry` and `Tradicao` from mapeamentos
+
+**`apps/akasha-portal/src/lib/application/akasha/synthesis-engine/synthesis-types.ts`**
+- `AreaNarrative.procedencia?: ProcedenciaEntry[]`
+- `AkashaSynthesis.procedenciaTop?: ProcedenciaEntry[]`
+
+**`apps/akasha-portal/src/lib/application/akasha/synthesis-engine.ts`**
+- `PRIMITIVOS_POR_AREA` heuristic map for per-area provenance filtering
+- `attachProcedencia()` helper: filters `procedenciaTop` by area-relevant primitives
+- All 6 `AreaNarrative` objects now carry `procedencia`
+
+### Verificacao
+- TypeScript: 0 errors
+- Tests: 1376 pass, 0 fail
+
+### Lessons Learned
+- **Heuristic primitive-to-area mapping**: No explicit `LifeArea -> Primitivo` mapping existed. Derived from `PESOS_TRADICAO_DOMINIO` + the 6 area descriptions. Key: vitalidadeEnergia -> Movimento/Poder; conexoesAmor -> Amor/Conexao; carreiraProsperidade -> Materializacao/Expressao; oriCabecaQuizilas -> Intuicao/Sabedoria; missaoDestino -> Sabedoria/Intuicao; desafiosSombras -> Transformacao/Expansao.
+- **Runtime-only provenance**: Computed fresh at synthesis time, not persisted.
