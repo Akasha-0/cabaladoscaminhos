@@ -531,7 +531,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       Regra Prática de Alinhamento
                     </p>
                     <div className="grid grid-cols-[auto_1fr] gap-x-2 gap-y-1.5 items-start">
-                      <span className="text-[10px] text-white/40 uppercase tracking-wider font-mono mt-px">Antes de agir:</span>
+                      <span className="text-[10px] text-white/50 uppercase tracking-wider font-mono mt-px">Antes de agir:</span>
                       <p className="text-xs text-white/85 leading-relaxed">
                         {detSintese.autoridade.regra.condicao}
                       </p>

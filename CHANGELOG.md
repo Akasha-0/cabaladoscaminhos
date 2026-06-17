@@ -1,4 +1,36 @@
-## v0.83.6 (2026-06-17) — Refresh Token Rotation
+## ## v0.83.8 (2026-06-17) — UX Round 28 (continuação suffix)
+
+### Dashboard
+- **D28-001 (CRÍTICA)**: Ler mais `text-[#7C5CFF]/70` → `/90`
+- **D28-002 (CRÍTICA)**: Footer bar `text-[#A7AECF]/60` → `/90`
+- **D28-003 (ALTA)**: Ritual instrucao — gradient fade + toggle "Ver instrução completa"/"Mostrar menos"
+- **D28-004 (MÉDIA)**: Close button X `text-[#A7AECF]/60` → `/90`
+- **D28-005 (MÉDIA)**: Foco Prioritário label `h3` → `p`
+
+### Akasha (QuickestHare audit R28)
+- **R28-1 (HIGH)**: Pilares h4 rgba 0.4→0.55 (CR 3.24→5.10:1)
+- **R28-2/3 (MEDIUM/LOW)**: Síntese preview — sr-only span removido de aria-labelledby e do DOM
+
+### Conexões (MagnificentSnail audit R28)
+- Síncronia Espiritual labels: `/50` → `/60`
+- Narrative block labels: `/40` → `/60`; guidance list: `/50` → `/60`
+- Dimensões + Post-results guidance: adicionada role=region
+- Remove button: aria-label + aria-hidden no X
+
+### Oráculo (SufficientWolverine audit R28)
+- **OC-28-1/2/3 (HIGH)**: textarea aria-label; dots aria-hidden; loading aria-live
+- **OC-28-4 (MEDIUM)**: prefers-reduced-motion para animação oraclePulse
+
+### Diário / SignificadoPilar
+- Sexualidade nested `<details>` → sub-componente `LilithCasa8Details` client (useState)
+- SignificadoPilar.tsx: 'use client' (necessário para useState)
+
+### Build
+- build: 49/49 pages · EXIT 0 · TypeScript 0 errors (akasha-portal)
+
+---
+
+v0.83.6 (2026-06-17) — Refresh Token Rotation
 ### Auth Security
 - feat(auth): refresh token rotation via `User.currentRefreshTokenJti`.
   - Prisma: `User.currentRefreshTokenJti` field added — stores the jti of the current active refresh token.

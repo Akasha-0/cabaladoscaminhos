@@ -374,25 +374,27 @@ export function generateAreaNarrativeFull(
   const astroCore   = coreOf(astroBlock, true);
   const tantraCore = coreOf(tantraBlock, true);
   const oduCore    = coreOf(oduBlock);
+  const ichingCore = coreOf(ichingBlock);
 
   // ── Area-specific synthesis templates ─────────────────────────────────────
   // Each template: [opening, body, why-it-matters, closing-persona]
   // They read the actual pillar content and weave it into a coherent voice.
 
-  type ParaFn = (k: string, a: string, t: string, o: string) => string;
+  type ParaFn = (k: string, a: string, t: string, o: string, i?: string) => string;
 
   const SYNTHESIS: Record<string, ParaFn[]> = {
     vitalidadeEnergia: [
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `A energia que move você não vem de um lugar só. ` +
         `A Cabala diz que ${k.toLowerCase()}. ` +
         `A Astrologia acrescenta que ${a.toLowerCase()}. ` +
         `O Tantra revela que ${t.toLowerCase()}` +
         (o ? `, e o Odu confirma: ${o.toLowerCase()}` : '') +
-        `. Juntos, esses três — ou quatro — mapas apontam para uma só verdade: ` +
+        (i ? `, e o I Ching aponta: ${i.toLowerCase()}` : '') +
+        `. Juntos, esses cinco mapas apontam para uma só verdade: ` +
         `seu corpo é o instrumento mais honesta que você tem.`,
 
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Você não tem um problema de energia — tem um problema de tradução. ` +
         `Sente coisas que não sabe nomear, reage a estímulos que não reconhece, ` +
         `e muitas vezes atribui ao "cansaço" o que é, na verdade, sinal não escutado. ` +
@@ -400,13 +402,13 @@ export function generateAreaNarrativeFull(
         `a Astrologia colore isso com o elemento que rege seu corpo; ` +
         `o Tantra nomeia o corpo que está no comando.`,
 
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Isso explica por que você frequentemente colapsa antes de entender por quê. ` +
         `Não é fraqueza — é informação acumulada que seu corpo jogou fora porque ` +
         `ninguém ensinou você a ler o recado. O Odu, quando presente, costuma ser ` +
         `o mais direto: a energia não está baixa, está bloqueada.`,
 
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Hoje, antes de tomar qualquer decisão grande, coloque a mão no corpo: ` +
         `no peito, na barriga, na nuca. Sinta onde está a tensão. ` +
         `Não tente resolver — só nomeie. Essa simples prática de rastreamento ` +
@@ -415,16 +417,17 @@ export function generateAreaNarrativeFull(
     ],
 
     conexoesAmor: [
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `No amor, você não busca uma pessoa — busca um espelho que ` +
         `confirme o que sospecha sobre si mesmo. A Cabala diz que ${k.toLowerCase()}. ` +
         `A Astrologia descreve ${a.toLowerCase()}. ` +
         `O Tantra revela que ${t.toLowerCase()}` +
         (o ? `, enquanto o Odu traz ${o.toLowerCase()}` : '') +
-        `. Três vozes diferentes, um diagnóstico unânime: ` +
+        (i ? `, e o I Ching soma: ${i.toLowerCase()}` : '') +
+        `. Cinco vozes diferentes, um diagnóstico unânime: ` +
         `você ama como funciona, não como imagina que deveria.`,
 
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `A armadilha mais comum não é amar pouco — é amar com a ` +
         `expectativa de que o outro completa o que você não consegue ` +
         `articula para si mesmo. Kabbalah nomeia a missão; ` +
@@ -432,14 +435,14 @@ export function generateAreaNarrativeFull(
         `que comanda a relação. Quando esses três apontam na mesma ` +
         `direção, o parceiro sente — antes de você dizer qualquer coisa.`,
 
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Isso explica por que você às vezes se afasta sem entender o que ` +
         `acabou de acontecer. Não foi raiva — foi o corpo reconhecendo ` +
         `que a outra pessoa está num campo que não é seu. O Tantra ` +
         `distingue o que é desejo seu do que é eco do outro; ` +
         `essa fronteira, quando mal traçada, é onde os vínculos se perdem.`,
 
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Sua prática hoje: antes de qualquer conversa importante com ` +
         `quem você ama, pergunte a si mesmo — "o que eu quero que ` +
         `aconteça?" e "o que eu estou evitando dizer?" A resposta ` +
@@ -448,16 +451,17 @@ export function generateAreaNarrativeFull(
     ],
 
     carreiraProsperidade: [
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Sua relação com trabalho e dinheiro é uma leitura direta de ` +
         `como você se posiciona no mundo. A Cabala descreve ${k.toLowerCase()}. ` +
         `A Astrologia mostra que ${a.toLowerCase()}. ` +
         `O Tantra indica que ${t.toLowerCase()}` +
         (o ? `, e o Odu sublinha ${o.toLowerCase()}` : '') +
+        (i ? `, e o I Ching confirma: ${i.toLowerCase()}` : '') +
         `. Não é coincidência que todos cheguem à mesma conclusão — ` +
         `é porque todos leem o mesmo mapa, só que em idiomas diferentes.`,
 
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Prosperidade, para você, não é só número na conta. ` +
         `É a sensação de que o que você faz importa, de que o mundo ` +
         `reconhece sua contribuição. Kabbalah nomeia a missão; ` +
@@ -466,7 +470,7 @@ export function generateAreaNarrativeFull(
         `Quando um desses três está em desequilíbrio, os outros dois ` +
         `compensam — e você sente isso como exaustão sem motivo.`,
 
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Isso explica por que você já aceitou trabalhos que pagavam ` +
         `bem mas drenavam você por dentro — e por que recusou ` +
         `oportunidades que pareciam certas mas assustavam demais. ` +
@@ -474,7 +478,7 @@ export function generateAreaNarrativeFull(
         `sombra; a Astrologia de retrogradação; o Tantra de corpo ` +
         `desconectado. É a mesma coisa com nomes diferentes.`,
 
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Se você pudesse fazer qualquer trabalho sem pensar em dinheiro, ` +
         `o que seria? Responda essa pergunta em voz alta, sem filtro. ` +
         `Essa resposta é o ponto onde sua missão pessoal encontra ` +
@@ -483,17 +487,18 @@ export function generateAreaNarrativeFull(
     ],
 
     oriCabecaQuizilas: [
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Sua mente não é uma só — é um campo de batalha onde ` +
         `várias versões de você competem pela palavra final. ` +
         `A Cabala descreve ${k.toLowerCase()}. ` +
         `A Astrologia informa que ${a.toLowerCase()}. ` +
         `O Tantra revela que ${t.toLowerCase()}` +
         (o ? `, enquanto o Odu diz ${o.toLowerCase()}` : '') +
+        (i ? `, e o I Ching concorda: ${i.toLowerCase()}` : '') +
         `. Todos apontam para o mesmo fato: sua mente é rápida, ` +
         `poderosa, e às vezes desonesta consigo mesma.`,
 
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Você pensa mais do que age — ou age antes de pensar? ` +
         `Depende de qual corpo está no comando. Kabbalah nomeia ` +
         `a armadilha central do seu caminho; Astrologia nomeia o ` +
@@ -501,7 +506,7 @@ export function generateAreaNarrativeFull(
         `que intercepta a informação antes de ela chegar à consciência. ` +
         `Essa dinâmica se repete em cada decisão que você adia.`,
 
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Isso explica por que você às vezes tem certeza de algo ` +
         `e depois descobre que estava projetando — e por que outras ` +
         `vezes você sabe o certo e mesmo assim faz o errado. ` +
@@ -510,7 +515,7 @@ export function generateAreaNarrativeFull(
         `de corpo que comanda; a Astrologia chama de aspecto ` +
         `desconfortável; a Cabala chama de sombra.`,
 
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Sua prática central não é meditate mais — é ` +
         `prestar atenção no que você diz a si mesmo nos ` +
         `primeiros 5 minutos da manhã. Anote. Sem justificar, ` +
@@ -520,17 +525,18 @@ export function generateAreaNarrativeFull(
     ],
 
     missaoDestino: [
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Você não está aqui por acidente — Kabbalah, Astrologia e ` +
         `Tantra convergem nessa certeza. O que elas discordam ` +
         `é o como. A Cabala descreve ${k.toLowerCase()}. ` +
         `A Astrologia mostra que ${a.toLowerCase()}. ` +
         `O Tantra ensina que ${t.toLowerCase()}` +
         (o ? `, e o Odu confirma ${o.toLowerCase()}` : '') +
-        `. O padrão que emerge quando você lê essas quatro vozes ` +
+        (i ? `, e o I Ching soma: ${i.toLowerCase()}` : '') +
+        `. O padrão que emerge quando você lê essas vozes ` +
         `juntas é a sua contribuição intransferível para o mundo.`,
 
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Missão não é emprego. Não é título. Missão é o efeito ` +
         `que sua presença produz no ambiente quando você não está ` +
         `tentando provar nada. Kabbalah nomeia o destino; ` +
@@ -538,7 +544,7 @@ export function generateAreaNarrativeFull(
         `antes de você abrir a boca; Tantra nomeia o corpo que ` +
         `carrega essa energia com mais ou menos facilidade.`,
 
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Isso explica por que você já se sentiu vazio em ` +
         `sucessos que outros envidiam — e realizado em ` +
         `momentos que não apareceram em nenhum curriculum. ` +
@@ -547,7 +553,7 @@ export function generateAreaNarrativeFull(
         `derrotas parecem menores do que realmente são, e as ` +
         `pequenas vitórias parecem maiores do que são.`,
 
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Não precisa ter toda a resposta hoje. Sua missão ` +
         `não é um ponto fixo — é uma direção. Cada vez que ` +
         `você age alinhado com o que sua Cabala descreve, ` +
@@ -557,7 +563,7 @@ export function generateAreaNarrativeFull(
     ],
 
     desafiosSombras: [
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `A sombra não é seu inimigo — é sua sombra. ` +
         `Kabbalah, Astrologia e Tantra convergem na mesma ` +
         `verdade: o que você mais resiste em si mesmo é ` +
@@ -566,10 +572,11 @@ export function generateAreaNarrativeFull(
         `que ${a.toLowerCase()}. O Tantra revela que ` +
         `${t.toLowerCase()}` +
         (o ? `, e o Odu sublinha ${o.toLowerCase()}` : '') +
-        `. Três formas de dizer a mesma coisa: ` +
+        (i ? `, e o I Ching complementa: ${i.toLowerCase()}` : '') +
+        `. Quatro formas de dizer a mesma coisa: ` +
         `você não está quebrado. Você está incompleto.`,
 
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Sombra não significa dark. Significa: o que você ` +
         `não olha de frente aparece nos lugares errados. ` +
         `Kabbalah nomeia a armadilha central; Astrologia ` +
@@ -579,7 +586,7 @@ export function generateAreaNarrativeFull(
         `se alinham, você reconhece a sombra na reação ` +
         `desproporcional — no trabalho, no amor, no corpo.`,
 
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Isso explica por que você repete padrões que jurou ` +
         `não repetir. Não é falta de força de vontade — é ` +
         `o corpo guardando uma Programming que a mente ` +
@@ -588,7 +595,7 @@ export function generateAreaNarrativeFull(
         `nesse nível. A Cabala nomeia a dinâmica. ` +
         `A Astrologia mostra o timing cósmico do ciclo.`,
 
-      (k, a, t, o) =>
+      (k, a, t, o, i?) =>
         `Não lute contra a sombra — dialogue com ela. ` +
         `Quando perceber que está sendo disparado, ` +
         `pare e pergunte: "o que isso está me lembrando?" ` +
@@ -601,17 +608,19 @@ export function generateAreaNarrativeFull(
   };
 
   // Fallback synthesis for unknown areas — generic but still 4 paragraphs
-  function fallbackSynthesis(k: string, a: string, t: string, o: string): string {
+  function fallbackSynthesis(k: string, a: string, t: string, o: string, i?: string): string {
     const parts: string[] = [];
     parts.push(
-      `Ao reunir Cabala, Astrologia e Tantra nesta área, emerge um padrão: ` +
+      `Ao reunir Cabala, Astrologia, Tantra e Odu nesta área, emerge um padrão: ` +
       `${k.toLowerCase()} . ${a.toLowerCase()}. ${t.toLowerCase()}` +
       (o ? ` ${o.toLowerCase()}` : '') +
-      `. Três olhares diferentes, uma direção.`
+      (i ? ` ${i.toLowerCase()}` : '') +
+      `. Olhares diferentes, uma direção.`
     );
     parts.push(
       `O que Kabbalah nomeia como missão, a Astrologia colore com ` +
-      `energia e o Tantra traduz em prática corporal. Quando os três ` +
+      `energia, o Tantra traduz em prática corporal e o I Ching ` +
+      `confirma pelo hexagrama. Quando essas vozes ` +
       `concordam, você sabe — mesmo antes de ter a resposta racional.`
     );
     parts.push(
@@ -638,6 +647,7 @@ export function generateAreaNarrativeFull(
     const hasAstro = astroBlock.length > 50;
     const hasTantra = tantraBlock.length > 50;
     const hasOdu   = oduBlock.length > 50;
+    const hasIChing = ichingBlock.length > 30;
     const hasCount = [hasKab, hasAstro, hasTantra, hasOdu].filter(Boolean).length;
 
     // Primitive-driven anchor: when pillar data is sparse, use top synthesized
@@ -671,23 +681,23 @@ export function generateAreaNarrativeFull(
     // Prepend primitive anchor when available (sparse pillar data case)
     if (primitiveAnchor) {
       if (hasCount === 1) {
-        integratedNarrative = [primitiveAnchor + areaSyntheses[0](kabCore, astroCore, tantraCore, oduCore), areaSyntheses[3](kabCore, astroCore, tantraCore, oduCore)].join(' ');
+        integratedNarrative = [primitiveAnchor + areaSyntheses[0](kabCore, astroCore, tantraCore, oduCore, ichingCore), areaSyntheses[3](kabCore, astroCore, tantraCore, oduCore, ichingCore)].join(' ');
       } else if (hasCount === 2) {
-        integratedNarrative = [primitiveAnchor + areaSyntheses[0](kabCore, astroCore, tantraCore, oduCore), areaSyntheses[2](kabCore, astroCore, tantraCore, oduCore), areaSyntheses[3](kabCore, astroCore, tantraCore, oduCore)].join(' ');
+        integratedNarrative = [primitiveAnchor + areaSyntheses[0](kabCore, astroCore, tantraCore, oduCore, ichingCore), areaSyntheses[2](kabCore, astroCore, tantraCore, oduCore, ichingCore), areaSyntheses[3](kabCore, astroCore, tantraCore, oduCore, ichingCore)].join(' ');
       } else {
         // hasCount >= 3 but also have primitive anchor: full synthesis
-        integratedNarrative = areaSyntheses.map(fn => fn(kabCore, astroCore, tantraCore, oduCore)).join(' ');
+        integratedNarrative = areaSyntheses.map(fn => fn(kabCore, astroCore, tantraCore, oduCore, ichingCore)).join(' ');
       }
     } else if (hasCount === 1) {
-      integratedNarrative = [areaSyntheses[0](kabCore, astroCore, tantraCore, oduCore), areaSyntheses[3](kabCore, astroCore, tantraCore, oduCore)].join(' ');
+      integratedNarrative = [areaSyntheses[0](kabCore, astroCore, tantraCore, oduCore, ichingCore), areaSyntheses[3](kabCore, astroCore, tantraCore, oduCore, ichingCore)].join(' ');
     } else if (hasCount === 2) {
-      integratedNarrative = [areaSyntheses[0](kabCore, astroCore, tantraCore, oduCore), areaSyntheses[2](kabCore, astroCore, tantraCore, oduCore), areaSyntheses[3](kabCore, astroCore, tantraCore, oduCore)].join(' ');
+      integratedNarrative = [areaSyntheses[0](kabCore, astroCore, tantraCore, oduCore, ichingCore), areaSyntheses[2](kabCore, astroCore, tantraCore, oduCore, ichingCore), areaSyntheses[3](kabCore, astroCore, tantraCore, oduCore, ichingCore)].join(' ');
     } else {
       // hasCount >= 3: full synthesis (no primitive anchor needed)
-      integratedNarrative = areaSyntheses.map(fn => fn(kabCore, astroCore, tantraCore, oduCore)).join(' ');
+      integratedNarrative = areaSyntheses.map(fn => fn(kabCore, astroCore, tantraCore, oduCore, ichingCore)).join(' ');
     }
   } else {
-    integratedNarrative = fallbackSynthesis(kabCore, astroCore, tantraCore, oduCore);
+    integratedNarrative = fallbackSynthesis(kabCore, astroCore, tantraCore, oduCore, ichingCore);
   }
 
   // Practical example

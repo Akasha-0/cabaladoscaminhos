@@ -1,8 +1,6 @@
-# Akasha Portal — QA Metrics & Evals Framework
-
 **Project:** cabala-dos-caminhos / Akasha Portal
-**Date:** 2026-06-17
-**Framework Version:** 1.0
+**Date:** 2026-06-17 (updated)
+**Framework Version:** 1.1
 **Scores are evidence-based. Lower bound preferred when uncertain.**
 
 ---
@@ -397,4 +395,4 @@ These are semantically identical, but the inconsistency suggests the codebase ev
 
 ---
 
-*Last updated: 2026-06-17 — Initial eval framework*
+*Last updated: 2026-06-17 — v0.83.9: Build parse error fix (SignificadoPilar) + I Ching narrative integration + cookie hardening + auth flash elimination*

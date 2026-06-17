@@ -31,12 +31,20 @@ REMAINING: DASH-005 cosmetic chips without actionable guidance (MÉDIA — chip 
 Build: 49/49 EXIT 0 · TypeScript 0 errors
 
 
-## v0.83.8 (2026-06-17) — UX Round 27
+## v0.83.8 (2026-06-17) — UX Rounds 27+28
 Round 27 — 6 fresh audit agents. Dashboard 0 CRÍTICA + 5 ALTA + 3 MÉDIA. Akasha 3 CRÍTICA + 1 ALTA + 1 MÉDIA. Mandala 0 CRÍTICA + 3 ALTA + 1 MÉDIA. Diário 0 CRÍTICA + 0 ALTA + 1 MÉDIA. Conexões 0 CRÍTICA + 3 ALTA + 3 MÉDIA. Oráculo 1 CRÍTICA + 1 ALTA + 1 MÉDIA.
 CRÍTICA FIXED: akasha grid labels (C.txtSec=rgba 0.6) — auditor error (already passes). akasha strategy badge #C43E8E — data-level, not UI-level fix. DimensaoCard h4 labels rgba 0.4→0.55 (3.24:1→4.51:1). oráculo submit button aria-disabled+aria-label. Síntese preview aria-labelledby+sighted label.
 ALTA FIXED: dashboard Ler mais toggle aria-expanded+aria-controls. dashboard text contrasts all fixed. Conexões Síncronia Corporal/Odu/Espiritual descriptions + legend all text-white/60. Mandala 4 section headers behavioral subtitles added. oráculo credit balance aria-label.
 MÉDIA FIXED: Diário Sexualidade redundant section wrapper removed. Conexões italic subtitles + empty state text-white/60.
 AUDITOR NOTE: D27-001 (dashboard h3 nesting) was auditor error — R26 already fixed the inner h3→p. D27-AK-003 (strategy badge) is data-level (synthesizer provides #C43E8E), not fixable in UI.
+Build: 49/49 EXIT 0 · TypeScript 0 errors
+
+**Round 28 (continuação suffix):**
+- **Dashboard:** D28-001/002 — Ler mais + footer `/70`→`/90`; D28-003 — Ritual instrucao gradient fade + toggle; D28-004 — close button `/90`; D28-005 — Foco Prioritário h3→p
+- **Akasha (QuickestHare):** R28-1 Pilares h4 rgba 0.4→0.55; R28-2 Síntese preview sr-only removido de aria-labelledby; R28-3 Síntese preview sr-only span inválido removido
+- **Conexões (MagnificentSnail):** Síncronia Espiritual labels `/50`→`/60`; narrative block labels `/40`→`/60`; guidance list `/50`→`/60`; Dimensões+guidance role=region; remove button aria-label+aria-hidden
+- **Oráculo (SufficientWolverine):** OC-28-1/2/3 textarea aria-label + dots aria-hidden + loading aria-live; OC-28-4 prefers-reduced-motion
+- **Diário:** SignificadoPilar nested `<details>` → `LilithCasa8Details` client component com useState; arquivo marcado 'use client'
 Build: 49/49 EXIT 0 · TypeScript 0 errors
 
 
