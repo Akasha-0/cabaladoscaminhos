@@ -2,20 +2,18 @@
   "triad": {
     "typecheck": {
       "pass": false,
-      "errors": [
-        "apps/akasha-portal/src/lib/grimoire/sync.ts(3,20): error TS2307: Cannot find module 'gray-matter' or its corresponding type declarations."
-      ]
+      "errors": []
     },
     "lint": {
-      "pass": true,
+      "pass": false,
       "warnings": 0
     },
     "tests": {
       "pass": false,
-      "passed": 1742,
-      "failed": 224
+      "passed": 0,
+      "failed": 1
     }
   },
-  "git_head": "305c995efca1e33009fbeeee12f427dc5fd6bee7",
-  "cached_at": 1781660682.707837
+  "git_head": "5ae5557e0dcd8048d0967d46a7fb4f5daba5be5e",
+  "cached_at": 1781660899.3731208
 }
