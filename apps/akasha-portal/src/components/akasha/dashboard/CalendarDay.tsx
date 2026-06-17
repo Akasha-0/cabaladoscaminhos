@@ -20,7 +20,7 @@ export function CalendarDay({ date, completed, isToday, ritualType }: CalendarDa
 
   const dayContent = (
     <div className="flex flex-col items-center gap-1">
-      <span className="text-xs text-zinc-400">{weekday}</span>
+      <span className="text-xs text-white/40">{weekday}</span>
       <div
         className={`
           relative flex items-center justify-center w-10 h-10 rounded-full
@@ -44,7 +44,7 @@ export function CalendarDay({ date, completed, isToday, ritualType }: CalendarDa
         {dayContent}
         <div className="
           absolute bottom-full left-1/2 -translate-x-1/2 mb-2
-          px-2 py-1 bg-[#0B0E1C] text-xs text-zinc-300 rounded
+          px-2 py-1 bg-[#0B0E1C] text-xs text-white/70 rounded
           opacity-0 group-hover:opacity-100 transition-opacity
           pointer-events-none whitespace-nowrap z-10
           border border-white/10
@@ -61,7 +61,7 @@ export function CalendarDay({ date, completed, isToday, ritualType }: CalendarDa
       {dayContent}
       <div className="
         absolute bottom-full left-1/2 -translate-x-1/2 mb-2
-        px-2 py-1 bg-[#0B0E1C] text-xs text-zinc-300 rounded
+        px-2 py-1 bg-[#0B0E1C] text-xs text-white/70 rounded
         opacity-0 group-hover:opacity-100 transition-opacity
         pointer-events-none whitespace-nowrap z-10
         border border-white/10

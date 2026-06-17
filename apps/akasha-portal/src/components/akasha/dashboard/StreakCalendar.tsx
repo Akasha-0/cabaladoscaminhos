@@ -60,9 +60,9 @@ export function StreakCalendar({ streak, loading }: StreakCalendarProps) {
   const streakMap = new Map(streak.map((s) => [s.date, s]));
 
   return (
-    <FadeInUp className="bg-zinc-900/50 rounded-xl p-4 border border-zinc-800">
+    <FadeInUp className="bg-[#0B0E1C]/60 rounded-xl p-4 border border-zinc-800">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-medium text-zinc-300">Esta Semana</h3>
+        <h3 className="text-sm font-medium text-white/70">Esta Semana</h3>
         {todayIndex !== -1 && (
           <span className="text-xs px-2 py-0.5 bg-amber-500/20 text-amber-400 rounded-full">
             Hoje
