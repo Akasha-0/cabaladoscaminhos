@@ -4,6 +4,37 @@ Todas as mudanças significativas são documentadas aqui — reverts e regressõ
 
 ---
 
+## v0.73.0 (2026-06-17) — Ralph-loop UI/UX + Akasha-loop iterations
+
+### feat(w2): UI/UX Consistency Improvements
+- **Dashboard Lucide Icons**: Replaced emoji icons (✨🔥🏆📊) with semantic Lucide icons (Sparkles/Flame/Trophy/BarChart3) with color coding in DashboardStats
+- **Dark Theme Consistency**: Updated StatsCard to use `bg-[#0B0E1C]/60` matching dashboard aesthetic, with subtle borders
+- **Ritual Card Icon**: Replaced 🧘 emoji with Lucide Heart icon in daily ritual card
+- **Tab Active State**: Improved tab contrast from `/20` to `/30` background opacity for better visibility
+
+### feat(w2): Ralph-loop Infrastructure
+- Ralph loop v0.13.1 with QA gate (typecheck + tests + lint)
+- Sacred protocol check script for CodeGraph + Headroom validation
+- Coordination directory for multi-worktree swarm setup
+
+### feat(w2): Akasha-loop Evolution
+- Multiple iterations addressing: large_file cleanup, tech_debt, missing_tests
+- CodeGraph integration for architecture-first exploration
+- Headroom compression for large tool outputs
+
+### build(w2): Infrastructure
+- pnpm workspace with 3 packages (akasha-core, akasha-cli, akasha-portal)
+- Prisma migrations for push subscriptions and user timezone
+- Standalone Next.js output configuration
+- ESLint configuration with project rules
+
+### docs(w2): Documentation
+- ADR-001 through ADR-004 for architecture decisions
+- Superpowers multi-agent system documentation
+- Vision and design documents for akasha-redesign-v2
+
+---
+
 ---
 
 ## v0.1.8 (2026-06-14) — Ciclo 13
