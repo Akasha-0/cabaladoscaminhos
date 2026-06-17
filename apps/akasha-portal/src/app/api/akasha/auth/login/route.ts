@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { z } from 'zod';
 import { prisma } from '@/lib/infrastructure/prisma';
 import {
   signAkashaAccessToken,
@@ -47,6 +48,15 @@ export async function POST(request: NextRequest) {
   const accessToken = signAkashaAccessToken({ id: user.id, email: user.email });
   const refreshToken = signAkashaRefreshToken({ id: user.id, email: user.email });
 
+  // Extract jti from the freshly signed refresh token to store in DB for rotation tracking.
+  const refreshPayload = jwt.decode(refreshToken) as { jti?: string } | null;
+  const refreshJti = refreshPayload?.jti ?? null;
+
+  // Store the new jti — this invalidates any previously active refresh token for this user.
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { currentRefreshTokenJti: refreshJti },
+  });
   // Honor the `return` query param so the user lands on the page they tried to access.
   // Extract locale from the request URL query params (set by middleware or login page).
   const { searchParams } = request.nextUrl;

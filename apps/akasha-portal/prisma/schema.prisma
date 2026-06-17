@@ -51,6 +51,11 @@ model User {
   ritualLog          RitualCompletion[]
   pushSubscriptions  PushSubscription[]
   connections        Connection[]
+  // Refresh token rotation — stores the jti of the current active refresh token.
+  // When a refresh request arrives, its jti MUST match this field.
+  // On successful refresh the old token's jti is replaced by the new one's — old token immediately invalid.
+  // If jti doesn't match, the token has been rotated already → 401 (possible theft).
+  currentRefreshTokenJti String? @unique @map("current_refresh_token_jti")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
