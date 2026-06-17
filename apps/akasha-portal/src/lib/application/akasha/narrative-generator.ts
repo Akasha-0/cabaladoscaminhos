@@ -561,7 +561,6 @@ export function generateAreaNarrativeFull(
         integratedNarrative = areaSyntheses.map(fn => fn(kabCore, astroCore, tantraCore, oduCore)).join(' ');
       }
     } else if (hasCount === 1) {
-    } else if (hasCount === 1) {
       integratedNarrative = [areaSyntheses[0](kabCore, astroCore, tantraCore, oduCore), areaSyntheses[3](kabCore, astroCore, tantraCore, oduCore)].join(' ');
     } else if (hasCount === 2) {
       integratedNarrative = [areaSyntheses[0](kabCore, astroCore, tantraCore, oduCore), areaSyntheses[2](kabCore, astroCore, tantraCore, oduCore), areaSyntheses[3](kabCore, astroCore, tantraCore, oduCore)].join(' ');
