@@ -141,7 +141,7 @@ export function FocoDoDiaPanel({ foco }: { foco: FocoDoDia }) {
               textTransform: 'uppercase',
             }}
           >
-            Ecos das outras Dimensões
+            O que os outros Pilares dizem sobre isso
           </span>
           <div style={{ marginTop: 6, display: 'flex', flexDirection: 'column', gap: 4 }}>
             {foco.ecos_dos_pilares.map((eco, i) => (
@@ -172,9 +172,8 @@ export function FocoDoDiaPanel({ foco }: { foco: FocoDoDia }) {
               textTransform: 'uppercase',
             }}
           >
-            Como as Dimensões se FALAM sobre {AREA_LABEL[foco.area]}
+            Conexões entre Pilares
           </span>
-          <div style={{ marginTop: 6, display: 'flex', flexDirection: 'column', gap: 4 }}>
             {foco.conexoes.map((c) => (
               <p
                 key={`${c.origem}-${c.destino}`}
@@ -191,7 +190,6 @@ export function FocoDoDiaPanel({ foco }: { foco: FocoDoDia }) {
                 : {c.frase}
               </p>
             ))}
-          </div>
         </section>
       )}
 
@@ -217,6 +215,16 @@ export function FocoDoDiaPanel({ foco }: { foco: FocoDoDia }) {
           }}
         >
           {foco.sombra}
+        </p>
+        <p
+          style={{
+            fontSize: '0.68rem',
+            color: '#2DD4BF',
+            letterSpacing: '0.06em',
+            marginTop: 6,
+          }}
+        >
+          ▸ Prática relacionada abaixo
         </p>
       </section>
 

@@ -1,3 +1,13 @@
+// jsdom does not provide ResizeObserver — polyfill it globally.
+class ResizeObserverMock {
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+}
+global.ResizeObserver = ResizeObserverMock as unknown as typeof ResizeObserver;
+
+
+
 /** @vitest-environment jsdom */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
@@ -5,6 +15,10 @@ import { cleanup, render, screen } from '@testing-library/react';
 // Mock @react-three/fiber — jsdom has no WebGL so we stub the Canvas.
 // The Torus / Particles children never render in this test path.
 vi.mock('@react-three/fiber', () => ({
+  __esModule: true,
+  default: ({ children }: { children?: React.ReactNode }) => (
+    <div data-testid="r3f-canvas">{children}</div>
+  ),
   Canvas: ({
     children,
     frameloop,
@@ -24,6 +38,9 @@ vi.mock('@react-three/fiber', () => ({
   ),
   useFrame: () => undefined,
 }));
+
+
+
 
 import { MandalaAtmosphere } from '@/components/akasha/MandalaAtmosphere';
 

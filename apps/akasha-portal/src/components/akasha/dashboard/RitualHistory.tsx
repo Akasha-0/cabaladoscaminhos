@@ -8,6 +8,7 @@ import { History, Sparkles, ChevronRight } from 'lucide-react';
 interface RitualHistoryProps {
   userId: string;
   maxVisible?: number;
+  onAction?: () => void;
 }
 
 const containerVariants = {
@@ -45,7 +46,7 @@ function SkeletonCard() {
   );
 }
 
-export function RitualHistory({ userId, maxVisible = 10 }: RitualHistoryProps) {
+export function RitualHistory({ userId, maxVisible = 10, onAction }: RitualHistoryProps) {
   const { data, loading } = useDashboardData({ userId });
 
   if (loading) {
@@ -87,10 +88,15 @@ export function RitualHistory({ userId, maxVisible = 10 }: RitualHistoryProps) {
       </div>
 
       {visibleItems.length === 0 ? (
-        <div className="text-center py-10">
-          <Sparkles size={32} className="text-white/20 mx-auto mb-3" />
-          <p className="text-sm text-white/40 mb-1">Nenhum ritual ainda.</p>
-          <p className="text-xs text-white/25">Comece seu primeiro ritual!</p>
+        <div className="text-center py-8">
+          <Sparkles size={28} className="text-white/20 mx-auto mb-3" />
+          <button
+            onClick={onAction}
+            className="text-sm text-[#9D86FF] hover:text-[#b8a3ff] transition-colors inline-flex items-center gap-1.5 font-medium"
+          >
+            Ver prática recomendada
+            <span aria-hidden>→</span>
+          </button>
         </div>
       ) : (
         <>

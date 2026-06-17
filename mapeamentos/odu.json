@@ -1,0 +1,103 @@
+{
+  "_meta": {
+    "version": "0.2.0",
+    "seeded": "2026-06-17",
+    "description": "Mapeamento completo dos 16 Odu Ifá Merindilogun para primitivos universais Akasha"
+  },
+  "Odu 1 (Ogundí)": {
+    "primitivo": "Movimento",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Ifá Merindilogun - Ogundí é ferro, ação, corte, mudança rápida"
+  },
+  "Odu 2 (Ejiokô)": {
+    "primitivo": "Ordem",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Ifá - Ejiokô é接待, dois pedaços de osso, dualidade e equilíbrio"
+  },
+  "Odu 3 (Ogbe)": {
+    "primitivo": "Expansao",
+    "intensidade": 9,
+    "polaridade": "luz",
+    "fonte": "Ifá - Ogbe é quatro, começo, criação, expansão inicial"
+  },
+  "Odu 4 (Owonrin)": {
+    "primitivo": "Transformacao",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Ifá - Owonrin é mudança, mar, dissolução, transformação"
+  },
+  "Odu 5 (Obara)": {
+    "primitivo": "Servico",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Ifá - Obara é estabilidade, construção, trabalho consistente"
+  },
+  "Odu 6 (Okanran)": {
+    "primitivo": "Sabedoria",
+    "intensidade": 6,
+    "polaridade": "ambas",
+    "fonte": "Ifá - Okanran é conhecimento profundo, mistério, sabedoria oculta"
+  },
+  "Odu 7 (Irosun)": {
+    "primitivo": "Conexao",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Ifá - Irosun é encontro, sexualidade, reprodução, conexão"
+  },
+  "Odu 8 (Oddí)": {
+    "primitivo": "Ordem",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Ifá - Oddí é julgamento, decisão, tribunal, equilíbrio"
+  },
+  "Odu 9 (Owanima)": {
+    "primitivo": "Amor",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Ifá - Owanima é amor, afeto, família, comunidade"
+  },
+  "Odu 10 (Obi)": {
+    "primitivo": "Materializacao",
+    "intensidade": 6,
+    "polaridade": "ambas",
+    "fonte": "Ifá - Obi é noz de kola, compartilhamento, nutrição, prosperidade"
+  },
+  "Odu 11 (Ozun)": {
+    "primitivo": "Poder",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Ifá - Ozun é força, rigidez, comando, autoridade"
+  },
+  "Odu 12 (Laje)": {
+    "primitivo": "Sabedoria",
+    "intensidade": 7,
+    "polaridade": "luz",
+    "fonte": "Ifá - Laje é caminho, peregrinação, busca espiritual"
+  },
+  "Odu 13 (Merinla)": {
+    "primitivo": "Transformacao",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Ifá - Merinla é mudança, evolução, metamorfose"
+  },
+  "Odu 14 (Quanm)": {
+    "primitivo": "Poder",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Ifá - Quanm é encontro com o destino, convergência"
+  },
+  "Odu 15 (Alubaba)": {
+    "primitivo": "Expressao",
+    "intensidade": 6,
+    "polaridade": "ambas",
+    "fonte": "Ifá - Alubaba é sabedoria prática, astúcia, solução de problemas"
+  },
+  "Odu 16 (Temi)": {
+    "primitivo": "Conexao",
+    "intensidade": 8,
+    "polaridade": "luz",
+    "fonte": "Ifá - Temi é comando, liderança, conexão com a fonte"
+  }
+}

@@ -1,4 +1,4 @@
-'use client';
+import { useState } from 'react';
 
 import { PILAR_COLORS } from '@/components/akasha/mandala-geometry';
 import { TANTRIC_BODY_WISDOM } from '@/components/akasha/mandala-meanings';
@@ -15,6 +15,7 @@ interface TantricBodyInfoPanelProps {
 }
 
 export function TantricBodyInfoPanel({ tantra, inactiveBodies }: TantricBodyInfoPanelProps) {
+  const [showAdvanced, setShowAdvanced] = useState(false);
   return (
     <InfoPanel
       color="#2DD4BF"
@@ -57,38 +58,73 @@ export function TantricBodyInfoPanel({ tantra, inactiveBodies }: TantricBodyInfo
       {/* Mandala Fase 4 (spec mandala-fase3-zodiac-tantra): 5 Koshas védicas
           como enriquecimento textual. SVG Layer 3 permanece com 11 bodies
           de Yogi Bhajan. As 5 koshas são conceito tântrico védico paralelo. */}
-      <Divider />
-      <p style={{ fontSize: '0.75rem', color: '#2DD4BF', fontWeight: 600, marginBottom: '0.5rem' }}>
-        5 Koshas (Tantra Védica)
-      </p>
-      {KOSHAS.map((k) => (
-        <div
-          key={k.id}
-          data-testid={`kosha-${k.id}`}
-          style={{ marginBottom: '0.5rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}
-        >
-          <span
-            aria-hidden
+      {showAdvanced ? (
+        <>
+          <Divider />
+          <p style={{ fontSize: '0.75rem', color: '#2DD4BF', fontWeight: 600, marginBottom: '0.5rem' }}>
+            5 Koshas (Tantra Védica)
+          </p>
+          {KOSHAS.map((k) => (
+            <div
+              key={k.id}
+              data-testid={`kosha-${k.id}`}
+              style={{ marginBottom: '0.5rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}
+            >
+              <span
+                aria-hidden
+                style={{
+                  display: 'inline-block',
+                  width: 8,
+                  height: 8,
+                  borderRadius: '50%',
+                  background: k.color,
+                  marginTop: 6,
+                  flexShrink: 0,
+                }}
+              />
+              <div>
+                <p style={{ fontSize: '0.8125rem', color: '#FFFFFF', fontWeight: 600, margin: 0 }}>
+                  {k.name.pt} <span style={{ color: '#A7AECF', fontWeight: 400 }}>({k.name.sanskrit})</span>
+                </p>
+                <p style={{ fontSize: '0.75rem', color: '#A7AECF', margin: 0 }}>
+                  {k.description.pt}
+                </p>
+              </div>
+            </div>
+          ))}
+          <button
+            onClick={() => setShowAdvanced(false)}
             style={{
-              display: 'inline-block',
-              width: 8,
-              height: 8,
-              borderRadius: '50%',
-              background: k.color,
-              marginTop: 6,
-              flexShrink: 0,
+              marginTop: '0.5rem',
+              fontSize: '0.7rem',
+              color: '#A7AECF',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+              textDecoration: 'underline',
             }}
-          />
-          <div>
-            <p style={{ fontSize: '0.8125rem', color: '#FFFFFF', fontWeight: 600, margin: 0 }}>
-              {k.name.pt} <span style={{ color: '#A7AECF', fontWeight: 400 }}>({k.name.sanskrit})</span>
-            </p>
-            <p style={{ fontSize: '0.75rem', color: '#A7AECF', margin: 0 }}>
-              {k.description.pt}
-            </p>
-          </div>
-        </div>
-      ))}
+          >
+            Ocultar detalhes avançados
+          </button>
+        </>
+      ) : (
+        <button
+          onClick={() => setShowAdvanced(true)}
+          style={{
+            marginTop: '0.5rem',
+            fontSize: '0.7rem',
+            color: '#2DD4BF',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 0,
+            textDecoration: 'underline',
+          }}
+        >
+          Mostrar detalhes avançados →
+        </button>
+      )}
     </InfoPanel>
   );
 }
@@ -101,6 +137,7 @@ interface KabalaInfoPanelProps {
 }
 
 export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
+  const [showAdvanced, setShowAdvanced] = useState(false);
   return (
     <InfoPanel
       color={PILAR_COLORS[2]}
@@ -142,116 +179,153 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
           <Insight color={PILAR_COLORS[2]}>{lpMeaning}</Insight>
         </>
       )}
-      {kabala.challenges && (
-        <>
-          <Divider />
-          <p
+      {(kabala.challenges || kabala.pinnacles || kabala.lifeCycles) && (
+        showAdvanced ? (
+          <>
+            {kabala.challenges && (
+              <>
+                <Divider />
+                <p
+                  style={{
+                    fontSize: '0.75rem',
+                    color: PILAR_COLORS[2],
+                    fontWeight: 600,
+                    marginBottom: '0.35rem',
+                  }}
+                >
+                  Desafios
+                </p>
+                <Row label="Primeiro Desafio" value={kabala.challenges.first} />
+                <Row label="Segundo Desafio" value={kabala.challenges.second} />
+                <Row label="Desafio Principal" value={kabala.challenges.main} />
+                <Row label="Último Desafio" value={kabala.challenges.last} />
+              </>
+            )}
+            {kabala.pinnacles && (
+              <>
+                <Divider />
+                <p
+                  style={{
+                    fontSize: '0.75rem',
+                    color: PILAR_COLORS[2],
+                    fontWeight: 600,
+                    marginBottom: '0.35rem',
+                  }}
+                >
+                  Pináculos
+                </p>
+                {kabala.pinnacles.first && (
+                  <>
+                    <Row
+                      label="1º Pináculo"
+                      value={`${kabala.pinnacles.first.number} (até ${kabala.pinnacles.first.ageEnd})`}
+                    />
+                    {kabala.pinnacles.first.meaning && (
+                      <Insight color={PILAR_COLORS[2]}>{kabala.pinnacles.first.meaning}</Insight>
+                    )}
+                  </>
+                )}
+                {kabala.pinnacles.second && (
+                  <>
+                    <Row
+                      label="2º Pináculo"
+                      value={`${kabala.pinnacles.second.number} (${kabala.pinnacles.second.ageStart}–${kabala.pinnacles.second.ageEnd})`}
+                    />
+                    {kabala.pinnacles.second.meaning && (
+                      <Insight color={PILAR_COLORS[2]}>{kabala.pinnacles.second.meaning}</Insight>
+                    )}
+                  </>
+                )}
+                {kabala.pinnacles.third && (
+                  <>
+                    <Row
+                      label="3º Pináculo"
+                      value={`${kabala.pinnacles.third.number} (${kabala.pinnacles.third.ageStart}–${kabala.pinnacles.third.ageEnd})`}
+                    />
+                    {kabala.pinnacles.third.meaning && (
+                      <Insight color={PILAR_COLORS[2]}>{kabala.pinnacles.third.meaning}</Insight>
+                    )}
+                  </>
+                )}
+                {kabala.pinnacles.fourth && (
+                  <>
+                    <Row
+                      label="4º Pináculo"
+                      value={`${kabala.pinnacles.fourth.number} (depois de ${kabala.pinnacles.fourth.ageStart})`}
+                    />
+                    {kabala.pinnacles.fourth.meaning && (
+                      <Insight color={PILAR_COLORS[2]}>{kabala.pinnacles.fourth.meaning}</Insight>
+                    )}
+                  </>
+                )}
+              </>
+            )}
+            {kabala.lifeCycles && (
+              <>
+                <Divider />
+                <p
+                  style={{
+                    fontSize: '0.75rem',
+                    color: PILAR_COLORS[2],
+                    fontWeight: 600,
+                    marginBottom: '0.35rem',
+                  }}
+                >
+                  Ciclos de Vida
+                </p>
+                {kabala.lifeCycles.first && (
+                  <Row
+                    label="1º Ciclo"
+                    value={`${kabala.lifeCycles.first.number} (${kabala.lifeCycles.first.ageStart}–${kabala.lifeCycles.first.ageEnd})`}
+                  />
+                )}
+                {kabala.lifeCycles.second && (
+                  <Row
+                    label="2º Ciclo"
+                    value={`${kabala.lifeCycles.second.number} (${kabala.lifeCycles.second.ageStart}–${kabala.lifeCycles.second.ageEnd})`}
+                  />
+                )}
+                {kabala.lifeCycles.third && (
+                  <Row
+                    label="3º Ciclo"
+                    value={`${kabala.lifeCycles.third.number} (a partir de ${kabala.lifeCycles.third.ageStart})`}
+                  />
+                )}
+              </>
+            )}
+            <button
+              onClick={() => setShowAdvanced(false)}
+              style={{
+                marginTop: '0.5rem',
+                fontSize: '0.7rem',
+                color: '#A7AECF',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0,
+                textDecoration: 'underline',
+              }}
+            >
+              Ocultar detalhes avançados
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={() => setShowAdvanced(true)}
             style={{
-              fontSize: '0.75rem',
+              marginTop: '0.5rem',
+              fontSize: '0.7rem',
               color: PILAR_COLORS[2],
-              fontWeight: 600,
-              marginBottom: '0.35rem',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+              textDecoration: 'underline',
             }}
           >
-            Desafios
-          </p>
-          <Row label="Primeiro Desafio" value={kabala.challenges.first} />
-          <Row label="Segundo Desafio" value={kabala.challenges.second} />
-          <Row label="Desafio Principal" value={kabala.challenges.main} />
-          <Row label="Último Desafio" value={kabala.challenges.last} />
-        </>
-      )}
-      {kabala.pinnacles && (
-        <>
-          <Divider />
-          <p
-            style={{
-              fontSize: '0.75rem',
-              color: PILAR_COLORS[2],
-              fontWeight: 600,
-              marginBottom: '0.35rem',
-            }}
-          >
-            Pináculos
-          </p>
-          {kabala.pinnacles.first && (
-            <>
-              <Row
-                label="1º Pináculo"
-                value={`${kabala.pinnacles.first.number} (até ${kabala.pinnacles.first.ageEnd})`}
-              />
-              {kabala.pinnacles.first.meaning && (
-                <Insight color={PILAR_COLORS[2]}>{kabala.pinnacles.first.meaning}</Insight>
-              )}
-            </>
-          )}
-          {kabala.pinnacles.second && (
-            <>
-              <Row
-                label="2º Pináculo"
-                value={`${kabala.pinnacles.second.number} (${kabala.pinnacles.second.ageStart}–${kabala.pinnacles.second.ageEnd})`}
-              />
-              {kabala.pinnacles.second.meaning && (
-                <Insight color={PILAR_COLORS[2]}>{kabala.pinnacles.second.meaning}</Insight>
-              )}
-            </>
-          )}
-          {kabala.pinnacles.third && (
-            <>
-              <Row
-                label="3º Pináculo"
-                value={`${kabala.pinnacles.third.number} (${kabala.pinnacles.third.ageStart}–${kabala.pinnacles.third.ageEnd})`}
-              />
-              {kabala.pinnacles.third.meaning && (
-                <Insight color={PILAR_COLORS[2]}>{kabala.pinnacles.third.meaning}</Insight>
-              )}
-            </>
-          )}
-          {kabala.pinnacles.fourth && (
-            <>
-              <Row
-                label="4º Pináculo"
-                value={`${kabala.pinnacles.fourth.number} (depois de ${kabala.pinnacles.fourth.ageStart})`}
-              />
-              {kabala.pinnacles.fourth.meaning && (
-                <Insight color={PILAR_COLORS[2]}>{kabala.pinnacles.fourth.meaning}</Insight>
-              )}
-            </>
-          )}
-        </>
-      )}
-      {kabala.lifeCycles && (
-        <>
-          <Divider />
-          <p
-            style={{
-              fontSize: '0.75rem',
-              color: PILAR_COLORS[2],
-              fontWeight: 600,
-              marginBottom: '0.35rem',
-            }}
-          >
-            Ciclos de Vida
-          </p>
-          {kabala.lifeCycles.first && (
-            <Row
-              label="1º Ciclo"
-              value={`${kabala.lifeCycles.first.number} (${kabala.lifeCycles.first.ageStart}–${kabala.lifeCycles.first.ageEnd})`}
-            />
-          )}
-          {kabala.lifeCycles.second && (
-            <Row
-              label="2º Ciclo"
-              value={`${kabala.lifeCycles.second.number} (${kabala.lifeCycles.second.ageStart}–${kabala.lifeCycles.second.ageEnd})`}
-            />
-          )}
-          {kabala.lifeCycles.third && (
-            <Row
-              label="3º Ciclo"
-              value={`${kabala.lifeCycles.third.number} (a partir de ${kabala.lifeCycles.third.ageStart})`}
-            />
-          )}
-        </>
+            Mostrar detalhes avançados →
+          </button>
+        )
       )}
       <SignificadoEmbed
         significado={resolveSig('cabala', kabala.lifePath)}

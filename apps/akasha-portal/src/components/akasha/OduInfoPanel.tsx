@@ -1,5 +1,5 @@
 'use client';
-
+import Link from 'next/link';
 import { Divider, InfoPanel, Insight, Row } from '@/components/akasha/MandalaChartInfoPanel';
 import { resolveSig, SignificadoEmbed } from '@/components/akasha/mandala-meanings';
 
@@ -83,7 +83,11 @@ export function OduInfoPanel({ odu }: Props) {
       {(!odu.preceitos || odu.preceitos.length === 0) && (
         <Insight color="#F0B429">
           As quizilás e preceitos específicos do seu Odu serão exibidos quando o Grimório for
-          sincronizado. Consulte o Oráculo para orientação ancestral personalizada.
+          sincronizado.{' '}
+          <Link href="/oraculo" style={{ color: '#F0B429', textDecoration: 'underline' }}>
+            Consulte o Oráculo
+          </Link>{' '}
+          para orientação ancestral personalizada.
         </Insight>
       )}
       <SignificadoEmbed significado={resolveSig('odu', odu.oduName)} color="#F0B429" />

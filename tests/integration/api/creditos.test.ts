@@ -3,16 +3,19 @@ import { NextRequest, NextResponse } from 'next/server';
 
 process.env.AKASHA_ADMIN_SECRET = 'secret';
 
+// Declare all mock functions FIRST (before vi.mock calls which are hoisted)
 const mockRequireAkashaApi = vi.fn();
-vi.mock('@/lib/auth/akasha-guard', () => ({
-  requireAkashaApi: (req: NextRequest) => mockRequireAkashaApi(req),
-}));
-
 const mockCreditAggregate = vi.fn();
 const mockCreditCreate = vi.fn();
 const mockUserFindUnique = vi.fn();
 
-vi.mock('@/lib/prisma', () => ({
+// akasha-guard mock
+vi.mock('@/lib/application/auth/akasha-guard', () => ({
+  requireAkashaApi: (req: NextRequest) => mockRequireAkashaApi(req),
+}));
+
+// Prisma client mock — path must match the route's actual import
+vi.mock('@/lib/infrastructure/prisma', () => ({
   prisma: {
     creditEntry: {
       aggregate: (...args: unknown[]) => mockCreditAggregate(...args),

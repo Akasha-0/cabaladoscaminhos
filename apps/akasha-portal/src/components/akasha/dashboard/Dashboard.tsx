@@ -110,6 +110,8 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
   const [activeTab, setActiveTab] = useState<TabType>('daily');
   const [completing, setCompleting] = useState(false);
   const [completedToday, setCompletedToday] = useState(false);
+  const [streakToast, setStreakToast] = useState<string | null>(null); // e.g. "🔥 3 dias"
+  const [activeFilterChip, setActiveFilterChip] = useState<string | null>(null); // filters compass
   
   // Deterministic synthesis state (calculated from mandato-do-dia)
   const [detSintese, setDetSintese] = useState<CaixaSintese | null>(() => {
@@ -147,6 +149,27 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
     }
   };
 
+  // Filter chips — highlight relevant sections when a chip is active
+  useEffect(() => {
+    if (!activeFilterChip || !detSintese) return;
+    // Scroll to the relevant section based on chip type
+    const sectionMap: Record<string, string> = {
+      clima: 'daily-vibe',
+      lua: 'daily-vibe',
+      tema: 'daily-authority',
+    };
+    const id = sectionMap[activeFilterChip];
+    if (id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Briefly flash the section
+        el.classList.add('chip-highlight');
+        setTimeout(() => el.classList.remove('chip-highlight'), 1200);
+      }
+    }
+  }, [activeFilterChip, detSintese]);
+
   useEffect(() => {
     if (!initialPilares) {
       fetchMandato();
@@ -179,6 +202,10 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
       });
       if (res.ok) {
         setCompletedToday(true);
+        // Show streak toast after completing
+        const currentStreak = statsData?.stats?.currentStreak ?? 0;
+        setStreakToast(`🔥 ${currentStreak + 1} dia${currentStreak + 1 !== 1 ? 's' : ''}`);
+        setTimeout(() => setStreakToast(null), 4000);
         refetchStats(); // Refresh streak/stats
       }
     } catch (err) {
@@ -196,7 +223,34 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
 
   const isLoading = statsLoading || synthesisLoading || loadingMandato;
 
-  if (isLoading && (!statsData || !synthesis || !detSintese)) {
+  if (!statsData || !synthesis || !detSintese) {
+    // Distinguish loading vs error
+    const hasLoadingState = statsLoading || synthesisLoading || loadingMandato;
+    if (!hasLoadingState) {
+      // Error / empty state — simple language, no technical explanation
+      return (
+        <div className="min-h-screen bg-[#06070F] flex flex-col justify-center items-center relative overflow-hidden">
+          <div aria-hidden className="absolute inset-0">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_30%,rgba(124,92,255,0.12)_0%,transparent_50%),radial-gradient(ellipse_at_80%_80%,rgba(45,212,191,0.06)_0%,transparent_40%)]" />
+          </div>
+          <div className="relative flex flex-col items-center gap-6 p-8">
+            <div className="w-16 h-16 rounded-full border border-white/10 bg-[#0B0E1C]/80 flex items-center justify-center">
+              <Sparkles size={28} className="text-white/30" />
+            </div>
+            <div className="text-center space-y-3 max-w-xs">
+              <p className="text-base font-semibold text-white">Não foi possível carregar seu alinhamento de hoje.</p>
+              <button
+                onClick={handleRetryAll}
+                className="px-5 py-2.5 rounded-full bg-[#7C5CFF]/20 border border-[#7C5CFF]/40 text-[#9D86FF] text-sm font-semibold hover:bg-[#7C5CFF]/30 transition-all"
+              >
+                Recarregar
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    // Loading spinner
     return (
       <div className="min-h-screen bg-[#06070F] flex flex-col justify-center items-center relative overflow-hidden">
         {/* Animated cosmic background */}
@@ -253,7 +307,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
       <header className="sticky top-0 z-40 bg-[#06070F]/80 backdrop-blur-md border-b border-[#7C5CFF]/15 px-4 py-3 md:px-6">
         <div className="flex items-center justify-between max-w-4xl mx-auto">
           <div className="flex flex-col">
-            <span className="text-[10px] text-[#A7AECF]/60 uppercase tracking-widest font-mono">Painel de Alinhamento</span>
+            <span className="text-[10px] text-[#A7AECF]/60 uppercase tracking-widest font-mono">Painel</span>
             <h1 className="text-lg font-bold font-cinzel text-white tracking-wider">AKASHA OS</h1>
           </div>
           <div className="flex items-center gap-3">
@@ -273,7 +327,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
       <div className="px-4 pt-6 max-w-2xl mx-auto relative z-10">
         <div className="bg-[#0B0E1C]/80 border border-white/10 rounded-full p-1 flex items-center justify-between backdrop-blur-md">
           {[
-            { id: 'daily', label: 'Meu Dia', icon: Sparkles },
+            { id: 'daily', label: 'Alinhamento', icon: Sparkles },
             { id: 'profile', label: 'Áreas da Vida', icon: Award },
             { id: 'progress', label: 'Evolução', icon: TrendingUp },
           ].map((tab) => {
@@ -326,49 +380,77 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                 )}
               </div>
 
-              {/* Cosmic Vibe Grid - Premium Cosmic Cards */}
-              <div className="grid grid-cols-3 gap-3">
-                {/* Clima Card */}
-                <div className="relative group">
-                  <div className="absolute inset-0 bg-gradient-to-b from-[#2DD4BF]/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="relative bg-[#0B0E1C]/60 border border-[#2DD4BF]/20 rounded-2xl p-3 text-center backdrop-blur-sm shadow-[inset_0_1px_0_rgba(45,212,191,0.1)]">
-                    <div className="flex justify-center mb-1">
-                      <div className="w-8 h-8 rounded-xl bg-[#2DD4BF]/10 flex items-center justify-center">
-                        <Cloud size={16} className="text-[#2DD4BF]" />
-                      </div>
-                    </div>
-                    <p className="text-[9px] text-[#2DD4BF]/80 uppercase tracking-widest font-mono font-semibold">Clima</p>
-                    <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.climate ?? 'Estável'}</p>
-                  </div>
-                </div>
+              {/* Cosmic Vibe Grid — selectable chips that filter/highlight sections */}
+              <div id="daily-vibe" className="grid grid-cols-3 gap-2.5">
 
-                {/* Lua Card */}
-                <div className="relative group">
-                  <div className="absolute inset-0 bg-gradient-to-b from-[#F0B429]/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="relative bg-[#0B0E1C]/60 border border-[#F0B429]/20 rounded-2xl p-3 text-center backdrop-blur-sm shadow-[inset_0_1px_0_rgba(240,180,41,0.1)]">
-                    <div className="flex justify-center mb-1">
-                      <div className="w-8 h-8 rounded-xl bg-[#F0B429]/10 flex items-center justify-center">
-                        <Moon size={16} className="text-[#F0B429]" />
-                      </div>
+                {/* Clima Chip */}
+                <button
+                  onClick={() => setActiveFilterChip(activeFilterChip === 'clima' ? null : 'clima')}
+                  className={`relative group rounded-2xl p-3 text-center transition-all duration-200 ${
+                    activeFilterChip === 'clima'
+                      ? 'bg-[#2DD4BF]/15 border border-[#2DD4BF]/50 shadow-[0_0_15px_rgba(45,212,191,0.15)]'
+                      : 'bg-[#0B0E1C]/60 border border-[#2DD4BF]/20 hover:border-[#2DD4BF]/40 hover:bg-[#2DD4BF]/5'
+                  }`}
+                >
+                  <div className="flex justify-center mb-1">
+                    <div className="w-8 h-8 rounded-xl bg-[#2DD4BF]/10 flex items-center justify-center">
+                      <Cloud size={16} className="text-[#2DD4BF]" />
                     </div>
-                    <p className="text-[9px] text-[#F0B429]/80 uppercase tracking-widest font-mono font-semibold">Fase Lunar</p>
-                    <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.moonPhase ?? 'Calculando'}</p>
                   </div>
-                </div>
+                  <p className="text-[9px] text-[#2DD4BF]/80 uppercase tracking-widest font-mono font-semibold">Clima</p>
+                  <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.climate ?? 'Estável'}</p>
+                  {activeFilterChip === 'clima' && (
+                    <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#2DD4BF] flex items-center justify-center">
+                      <CheckCircle size={10} className="text-[#06070F]" />
+                    </div>
+                  )}
+                </button>
 
-                {/* Tema Card */}
-                <div className="relative group">
-                  <div className="absolute inset-0 bg-gradient-to-b from-[#7C5CFF]/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="relative bg-[#0B0E1C]/60 border border-[#7C5CFF]/20 rounded-2xl p-3 text-center backdrop-blur-sm shadow-[inset_0_1px_0_rgba(124,92,255,0.1)]">
-                    <div className="flex justify-center mb-1">
-                      <div className="w-8 h-8 rounded-xl bg-[#7C5CFF]/10 flex items-center justify-center">
-                        <Sun size={16} className="text-[#7C5CFF]" />
-                      </div>
+                {/* Lua Chip */}
+                <button
+                  onClick={() => setActiveFilterChip(activeFilterChip === 'lua' ? null : 'lua')}
+                  className={`relative group rounded-2xl p-3 text-center transition-all duration-200 ${
+                    activeFilterChip === 'lua'
+                      ? 'bg-[#F0B429]/15 border border-[#F0B429]/50 shadow-[0_0_15px_rgba(240,180,41,0.15)]'
+                      : 'bg-[#0B0E1C]/60 border border-[#F0B429]/20 hover:border-[#F0B429]/40 hover:bg-[#F0B429]/5'
+                  }`}
+                >
+                  <div className="flex justify-center mb-1">
+                    <div className="w-8 h-8 rounded-xl bg-[#F0B429]/10 flex items-center justify-center">
+                      <Moon size={16} className="text-[#F0B429]" />
                     </div>
-                    <p className="text-[9px] text-[#7C5CFF]/80 uppercase tracking-widest font-mono font-semibold">Tema</p>
-                    <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.overallTheme ?? 'Foco'}</p>
                   </div>
-                </div>
+                  <p className="text-[9px] text-[#F0B429]/80 uppercase tracking-widest font-mono font-semibold">Fase Lunar</p>
+                  <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.moonPhase ?? 'Calculando'}</p>
+                  {activeFilterChip === 'lua' && (
+                    <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#F0B429] flex items-center justify-center">
+                      <CheckCircle size={10} className="text-[#06070F]" />
+                    </div>
+                  )}
+                </button>
+
+                {/* Tema Chip */}
+                <button
+                  onClick={() => setActiveFilterChip(activeFilterChip === 'tema' ? null : 'tema')}
+                  className={`relative group rounded-2xl p-3 text-center transition-all duration-200 ${
+                    activeFilterChip === 'tema'
+                      ? 'bg-[#7C5CFF]/15 border border-[#7C5CFF]/50 shadow-[0_0_15px_rgba(124,92,255,0.15)]'
+                      : 'bg-[#0B0E1C]/60 border border-[#7C5CFF]/20 hover:border-[#7C5CFF]/40 hover:bg-[#7C5CFF]/5'
+                  }`}
+                >
+                  <div className="flex justify-center mb-1">
+                    <div className="w-8 h-8 rounded-xl bg-[#7C5CFF]/10 flex items-center justify-center">
+                      <Sun size={16} className="text-[#7C5CFF]" />
+                    </div>
+                  </div>
+                  <p className="text-[9px] text-[#7C5CFF]/80 uppercase tracking-widest font-mono font-semibold">Tema</p>
+                  <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.overallTheme ?? 'Foco'}</p>
+                  {activeFilterChip === 'tema' && (
+                    <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#7C5CFF] flex items-center justify-center">
+                      <CheckCircle size={10} className="text-white" />
+                    </div>
+                  )}
+                </button>
               </div>
 
               {/* 1. Deterministic General Synthesis Card (valiosas informações de /meu-dia) */}
@@ -386,8 +468,9 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
 
               {/* 2. Akasha Authority Card (from /meu-dia) */}
               {detSintese?.autoridade && (
-                <div 
-                  className="rounded-2xl border p-5 space-y-4"
+                <div
+                  id="daily-authority"
+                  className="rounded-2xl border p-5 space-y-4 transition-all duration-500"
                   style={{ 
                     backgroundColor: ESTRATEGIA_BG[detSintese.autoridade.estrategia] || 'rgba(255,255,255,0.02)',
                     borderColor: ESTRATEGIA_BORDER[detSintese.autoridade.estrategia] || 'rgba(255,255,255,0.1)'
@@ -430,11 +513,26 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                   </div>
 
                   <div className="grid grid-cols-2 gap-3 text-xs pt-1 border-t border-white/5">
-                    <div>
+                    <div className="space-y-2">
                       <p className="text-[9px] text-[#2DD4BF] uppercase tracking-wider font-mono font-semibold">Melhor Timing</p>
-                      <p className="text-white/85 mt-0.5 leading-relaxed">{detSintese.autoridade.timing.melhor}</p>
+                      <p className="text-white/85 leading-relaxed">{detSintese.autoridade.timing.melhor}</p>
+                      {!completedToday && dailyData?.ritual && (
+                        <button
+                          onClick={handleCompleteRitual}
+                          disabled={completing}
+                          className="mt-1 w-full py-2 px-3 rounded-lg bg-[#2DD4BF]/15 border border-[#2DD4BF]/30 text-[#2DD4BF] text-xs font-semibold hover:bg-[#2DD4BF]/25 transition-all disabled:opacity-50"
+                        >
+                          {completing ? (
+                            <span className="flex items-center justify-center gap-1.5">
+                              <Loader size={12} className="animate-spin" /> Sincronizando...
+                            </span>
+                          ) : (
+                            'Iniciar Ritual Agora'
+                          )}
+                        </button>
+                      )}
                     </div>
-                    <div>
+                    <div className="space-y-2">
                       <p className="text-[9px] text-[#FB5781] uppercase tracking-wider font-mono font-semibold">Evitar Decidir</p>
                       <p className="text-white/85 mt-0.5 leading-relaxed">{detSintese.autoridade.timing.pior}</p>
                     </div>
@@ -451,17 +549,22 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                 </div>
               )}
 
-              {/* 3. Daily Specific Area of Focus Card (from /meu-dia) */}
+              {/* 3. Daily Specific Area of Focus Card — Foco Prioritário highlighted */}
               {dimFoco && (
-                <div className="rounded-2xl border border-white/10 bg-[#0B0E1C]/60 p-5 space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-[#7C5CFF]/10 border border-[#7C5CFF]/30 flex items-center justify-center text-[#9D86FF] text-xl font-bold">
-                      <Sparkles size={20} className="text-[#9D86FF]" />
+                <div className="rounded-2xl border-2 border-[#F0B429]/60 bg-[#0B0E1C]/60 p-5 space-y-4 shadow-[0_0_20px_rgba(240,180,41,0.08)]">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-[#7C5CFF]/10 border border-[#7C5CFF]/30 flex items-center justify-center text-[#9D86FF] text-xl font-bold">
+                        <Sparkles size={20} className="text-[#9D86FF]" />
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-[#F0B429] font-bold uppercase tracking-wider font-mono">Foco Prioritário de Hoje</p>
+                        <h3 className="text-md font-bold font-cinzel text-white leading-none mt-1">{dimFoco.titulo}</h3>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-[10px] text-[#F0B429] font-bold uppercase tracking-wider font-mono">Foco Prioritário de Hoje</p>
-                      <h3 className="text-md font-bold font-cinzel text-white leading-none mt-1">{dimFoco.titulo}</h3>
-                    </div>
+                    <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#F0B429]/15 border border-[#F0B429]/40 text-[#F0B429]">
+                      Prioridade
+                    </span>
                   </div>
 
                   <div className="space-y-1">
@@ -580,23 +683,35 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                   </div>
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                    {detSintese.dimensoes.map((dim) => (
-                      <button
-                        key={dim.dimensoesId}
-                        onClick={() => setSelectedDimension(dim)}
-                        className="flex flex-col items-center justify-center gap-1.5 p-4 rounded-2xl border border-white/5 bg-[#0B0E1C]/45 hover:bg-white/5 hover:border-[#7C5CFF]/30 active:scale-95 transition-all text-center min-h-[92px] group"
-                      >
-                        <span className="text-lg text-[#9D86FF] group-hover:scale-110 transition-transform duration-300">
-                          <Sparkles size={18} className="text-[#9D86FF]" />
-                        </span>
-                        <span className="text-[11px] font-bold text-white leading-tight">
-                          {dim.titulo.split(' & ')[0]}
-                        </span>
-                        <span className="text-[9px] text-[#A7AECF]/50 group-hover:text-white transition-colors">
-                          Explorar →
-                        </span>
-                      </button>
-                    ))}
+                    {detSintese.dimensoes.map((dim) => {
+                      const isPriority = dim.dimensoesId === dimFoco?.dimensoesId;
+                      return (
+                        <button
+                          key={dim.dimensoesId}
+                          onClick={() => setSelectedDimension(dim)}
+                          className={`flex flex-col items-center justify-center gap-1.5 p-4 rounded-2xl border bg-[#0B0E1C]/45 hover:bg-white/5 hover:border-[#7C5CFF]/30 active:scale-95 transition-all text-center min-h-[92px] group relative ${
+                            isPriority
+                              ? 'border-[#F0B429]/60 shadow-[0_0_12px_rgba(240,180,41,0.12)]'
+                              : 'border-white/5'
+                          }`}
+                        >
+                          {isPriority && (
+                            <span className="absolute -top-1.5 -right-1.5 px-1.5 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-wider bg-[#F0B429] text-[#06070F] shadow-[0_0_8px_rgba(240,180,41,0.4)]">
+                              Foco
+                            </span>
+                          )}
+                          <span className="text-lg text-[#9D86FF] group-hover:scale-110 transition-transform duration-300">
+                            <Sparkles size={18} className="text-[#9D86FF]" />
+                          </span>
+                          <span className="text-[11px] font-bold text-white leading-tight">
+                            {dim.titulo.split(' & ')[0]}
+                          </span>
+                          <span className="text-[9px] text-[#A7AECF]/50 group-hover:text-white transition-colors">
+                            Explorar →
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -647,12 +762,29 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                 <ProgressChart userId={userId} />
               </div>
 
-              {/* Ritual History */}
-              <RitualHistory userId={userId} />
+              <RitualHistory userId={userId} onAction={() => setActiveTab('daily')} />
             </motion.div>
           )}
         </AnimatePresence>
       </main>
+      {/* Streak Toast — "Prática registrada!" + streak count */}
+      <AnimatePresence>
+        {streakToast && (
+          <motion.div
+            key="streak-toast"
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50"
+          >
+            <div className="flex flex-col items-center gap-1 px-6 py-4 rounded-2xl bg-[#0B0E1C]/95 border border-[#2DD4BF]/30 shadow-[0_0_30px_rgba(45,212,191,0.2)] backdrop-blur-md">
+              <p className="text-sm font-bold text-[#2DD4BF]">{streakToast}</p>
+              <p className="text-xs text-white/70">Prática registrada!</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── Dimension Detail Explore Modal ── */}
       <AnimatePresence>

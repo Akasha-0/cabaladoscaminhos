@@ -1,117 +1,88 @@
-/**
- * /api/akasha/push/subscribe — Akasha (T7 / Doc 25 §11)
- *
- * Endpoints:
- *   POST   — opt-in: salva a PushSubscription do browser e liga o flag `User.pushEnabled`.
- *   DELETE — opt-out: desliga `User.pushEnabled` e remove todas as subscriptions do user.
- *
- * Gate: `requireAkashaApi` (sessão JWT do B2C Akasha, Doc 04).
- * Privacidade: emite `push.subscribed` / `push.unsubscribed` no log
- * estruturado (Doc 22 AD-22.4) com `endpoint` truncado a 80 chars — sem PII.
- */
-
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { prisma } from '@/lib/infrastructure/prisma';
-import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
-import {
-  upsertPushSubscription,
-  deletePushSubscription,
-  getUserPushSubscriptions,
-} from '@/lib/application/push/push-subscription-service';
-import { logSecurityEvent } from '@/lib/shared/logging';
+import { prisma } from '@/lib/prisma';
+import { requireAkashaApi } from '@/lib/auth/akasha-guard';
+import { upsertPushSubscription, deletePushSubscription, getUserPushSubscriptions } from '@/lib/push/push-subscription-service';
 
-export const dynamic = 'force-dynamic';
-
-const SubscriptionSchema = z.object({
-  endpoint: z.string().url().min(10),
-  keys: z.object({
-    p256dh: z.string().min(1),
-    auth: z.string().min(1),
-  }),
-});
-
-const BodySchema = z.object({
-  subscription: SubscriptionSchema,
-  userAgent: z.string().optional(),
-});
-
-/** POST /api/akasha/push/subscribe — opt-in */
-export async function POST(request: NextRequest) {
-  const auth = await requireAkashaApi(request);
-  if (auth instanceof NextResponse) return auth;
-
-  const raw = await request.json().catch(() => null);
-  const parsed = BodySchema.safeParse(raw);
-  if (!parsed.success) {
-    return NextResponse.json(
-      { error: 'subscription inválida', details: parsed.error.flatten() },
-      { status: 400 }
-    );
-  }
-
-  const { subscription, userAgent } = parsed.data;
-  const ua = userAgent ?? request.headers.get('user-agent') ?? undefined;
-
-  try {
-    await upsertPushSubscription(auth.id, subscription, ua);
-    await prisma.user.update({
-      where: { id: auth.id },
-      data: { pushEnabled: true },
-    });
-
-    logSecurityEvent('push.subscribed', {
-      userId: auth.id,
-      endpoint: subscription.endpoint.slice(0, 80),
-    });
-
-    return NextResponse.json({ ok: true });
-  } catch (err) {
-    return NextResponse.json(
-      { error: 'Falha ao salvar subscription', details: (err as Error).message },
-      { status: 500 }
-    );
-  }
+export interface PushSubscriptionPayload {
+  endpoint?: string;
+  keys?: { p256dh?: string; auth?: string };
 }
 
-/** DELETE /api/akasha/push/subscribe — opt-out */
-export async function DELETE(request: NextRequest) {
-  const auth = await requireAkashaApi(request);
-  if (auth instanceof NextResponse) return auth;
+export interface SubscribeBody {
+  subscription?: PushSubscriptionPayload;
+}
 
-  // Body opcional { endpoint?: string }. Se ausente, remove TODAS as subscriptions do user.
-  const raw = await request.json().catch(() => ({}));
-  const body = (raw ?? {}) as { endpoint?: string };
+export interface DeleteBody {
+  endpoint?: string;
+}
 
+export interface SubscribeResponse {
+  ok: true;
+}
+
+function isValidSubscription(sub: PushSubscriptionPayload | undefined): sub is PushSubscriptionPayload {
+  return sub !== undefined && typeof sub.endpoint === 'string' && sub.keys !== undefined;
+}
+
+export async function POST(req: NextRequest): Promise<NextResponse<SubscribeResponse | { error: string }>> {
+  const authResult = await requireAkashaApi(req);
+  if (authResult instanceof NextResponse) return authResult;
+  const user = authResult as { id: string };
+
+  let body: SubscribeBody;
   try {
-    if (body.endpoint) {
-      // Garante que a subscription pertence ao user (anti-IDOR).
-      const subs = await getUserPushSubscriptions(auth.id);
-      const owns = subs.some((s) => s.endpoint === body.endpoint);
-      if (!owns) {
-        return NextResponse.json({ error: 'Subscription não encontrada' }, { status: 404 });
-      }
-      await deletePushSubscription(body.endpoint);
-    } else {
-      // Remove todas as subscriptions do user.
-      await prisma.pushSubscription.deleteMany({ where: { userId: auth.id } });
-    }
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+  }
 
+  if (!isValidSubscription(body.subscription)) {
+    return NextResponse.json({ error: 'subscription inválida ou incompleta' }, { status: 400 });
+  }
+
+  await upsertPushSubscription(
+    user.id,
+    body.subscription as { endpoint: string; keys?: { p256dh?: string; auth?: string } },
+    req.headers.get('user-agent') ?? undefined,
+  );
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { pushEnabled: true },
+  });
+
+  return NextResponse.json({ ok: true });
+}
+
+export async function DELETE(req: NextRequest): Promise<NextResponse<{ ok: true } | { error: string }>> {
+  const authResult = await requireAkashaApi(req);
+  if (authResult instanceof NextResponse) return authResult;
+  const user = authResult as { id: string };
+
+  let body: DeleteBody;
+  try {
+    body = await req.json();
+  } catch {
+    body = {};
+  }
+
+  if (body.endpoint) {
+    const userSubs = await getUserPushSubscriptions(user.id);
+    const found = userSubs.some((s) => s.endpoint === body.endpoint);
+    if (!found) {
+      return NextResponse.json({ error: 'Subscription not found' }, { status: 404 });
+    }
+    await deletePushSubscription(body.endpoint);
     await prisma.user.update({
-      where: { id: auth.id },
+      where: { id: user.id },
       data: { pushEnabled: false },
     });
-
-    logSecurityEvent('push.unsubscribed', {
-      userId: auth.id,
-      scope: body.endpoint ? 'single' : 'all',
+  } else {
+    await prisma.pushSubscription.deleteMany({ where: { userId: user.id } });
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { pushEnabled: false },
     });
-
-    return NextResponse.json({ ok: true });
-  } catch (err) {
-    return NextResponse.json(
-      { error: 'Falha ao remover subscription', details: (err as Error).message },
-      { status: 500 }
-    );
   }
+
+  return NextResponse.json({ ok: true });
 }

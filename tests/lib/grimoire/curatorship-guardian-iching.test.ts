@@ -62,10 +62,10 @@ function parseFrontmatter(markdown: string): Frontmatter {
   return metadata;
 }
 
-// A partir de apps/akasha-portal/, o grimoire está em ../../grimoire
-const GRIMOIRE_DIR = path.resolve(process.cwd(), '../../grimoire/iching');
-// IDEIA.md vive na raiz do repo (apps/akasha-portal/ → ../../IDEIA.md)
-const IDEIA_MD = path.resolve(process.cwd(), '../../IDEIA.md');
+// Grimoire iching lives at monorepo-root/grimoire/iching
+const GRIMOIRE_DIR = path.resolve(process.cwd(), 'grimoire/iching');
+// IDEIA.md lives at monorepo-root/IDEIA.md
+const IDEIA_MD = path.resolve(process.cwd(), 'IDEIA.md');
 const EXPECTED_COUNT = 16;
 
 function listIchingFiles(): string[] {

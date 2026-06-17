@@ -169,7 +169,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
           <PilarCard
             icone="◯"
             cor="#7C5CFF"
-            titulo="Camada 4 · Cenário Cósmico"
+            titulo="Camada 4 — Movimento Celeste"
             eixo="O Céu — Alinhamento Estelar"
             valor={
               data.astrology?.ascendant
@@ -182,7 +182,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
           <PilarCard
             icone="△"
             cor="#7C5CFF"
-            titulo="Camada 2 · Contrato de Alma"
+            titulo="Camada 2 — Número de Vida"
             eixo="O Verbo — Geometria Sagrada"
             valor={data.kabala?.lifePath ? `Caminho de Vida ${data.kabala.lifePath}` : 'Em cálculo'}
             explicacao="A vibração numérica do seu nome e caminho. Revela a frequência geométrica que sua alma escolheu para navegar esta encarnação."
@@ -191,7 +191,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
           <PilarCard
             icone="⬡"
             cor="#2DD4BF"
-            titulo="Camada 3 · Vitalidade"
+            titulo="Camada 3 — Corpo e Energia"
             eixo="A Anatomia — Canais de Energia"
             valor={
               data.tantra?.soul != null
@@ -204,7 +204,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
           <PilarCard
             icone="✦"
             cor="#F0B429"
-            titulo="Camada 1 · Alinhamento de Ori"
+            titulo="Camada 1 — Ancestralidade"
             eixo="A Terra — Força Elemental"
             valor={
               data.odus?.oduName
@@ -217,7 +217,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
           <PilarCard
             icone="☯"
             cor="#E0E7FF"
-            titulo="Camada 5 · Chave de Origem"
+            titulo="Camada 5 — Mutação do Caminho"
             eixo="A Mutação — Ciclo Evolutivo"
             valor={
               data.iching?.hexagramNumber
@@ -347,11 +347,34 @@ function MandatoCard({ data }: { data: MandatoData }) {
   const asc = data.astrology?.ascendant;
   const odu = data.odus?.oduName;
 
+  // Build imperative directive based on dominant signal
+  let directive: string;
+  let reason: string | null = null;
+  if (hex && hexName) {
+    directive = `Sintetize hoje — o hexagrama ${hex} (${hexName}) pede que você una mente e emoção.`;
+    reason = `A mutação do dia é regida por ${hexName}, que ilumina o caminho entre análise e intuição.`;
+  } else if (lp != null && asc != null) {
+    directive = `Integre hoje — seu Life Path ${lp} e Ascendente em ${asc} pedem que você alinhe propósito e sensibilidade.`;
+    reason = `${asc} traz a energia do Ascendente; ${lp} é a vibração do seu caminho de vida — juntos pedem integração.`;
+  } else if (lp != null) {
+    directive = `Sintetize hoje — seu Life Path ${lp} pede que você una pensamento e ação.`;
+    reason = `O número ${lp} é a frequência central da sua alma nesta encarnação — honre-a com ação deliberada.`;
+  } else if (asc != null) {
+    directive = `Sintetize hoje — seu Ascendente em ${asc} chama você a integrar mente e emoção.`;
+    reason = `${asc} é a máscara que você veste diante do mundo — hoje ela pede que você a habite com consciência.`;
+  } else if (odu != null) {
+    directive = `Honre hoje — ${odu} pede que você honre a ancestralidade antes de avançar.`;
+    reason = `${odu} é a força elemental que ancora sua manifestação — reconhecer isso protege sua energia.`;
+  } else {
+    directive = 'Aguarde — sua Mandala está sendo tecida.';
+    reason = null;
+  }
+
   const citacoes: string[] = [];
-  if (hex) citacoes.push(`via Pilar 5 (I Ching) — hexagrama ${hex}${hexName ? ' ' + hexName : ''}`);
-  if (asc) citacoes.push(`via Pilar 2 (Astrologia) — Ascendente ${asc}`);
-  if (lp != null) citacoes.push(`via Pilar 1 (Cabala) — Life Path ${lp}`);
-  if (odu) citacoes.push(`via Pilar 4 (Odus) — ${odu}`);
+  if (hex) citacoes.push(`via Camada 5 (I Ching) — hexagrama ${hex}${hexName ? ' ' + hexName : ''}`);
+  if (asc) citacoes.push(`via Camada 4 (Astrologia) — Ascendente ${asc}`);
+  if (lp != null) citacoes.push(`via Camada 2 (Cabala) — Life Path ${lp}`);
+  if (odu) citacoes.push(`via Camada 1 (Odus) — ${odu}`);
 
   return (
     <div
@@ -375,14 +398,13 @@ function MandatoCard({ data }: { data: MandatoData }) {
         ✦ MANDATO DE HOJE · {saudacao.toUpperCase()}
       </p>
       <p style={{ color: '#F4F5FF', fontSize: '0.92rem', lineHeight: 1.65, margin: 0 }}>
-        Os cinco Pilares do seu mapa convergem agora.{' '}
-        {hex
-          ? `O hexagrama ${hex}${hexName ? ' (' + hexName + ')' : ''} ilumina o movimento do dia`
-          : 'A mutação do dia será calculada em breve'}
-        {lp != null ? `, em diálogo com seu Life Path ${lp}` : ''}
-        {asc ? ` e seu Ascendente em ${asc}` : ''}
-        {odu ? ` — sob a regência de ${odu}` : ''}.
+        {directive}
       </p>
+      {reason && (
+        <p style={{ color: '#A7AECF', fontSize: '0.82rem', lineHeight: 1.6, marginTop: '0.5rem' }}>
+          {reason}
+        </p>
+      )}
       {citacoes.length > 0 && (
         <div
           style={{
@@ -402,7 +424,7 @@ function MandatoCard({ data }: { data: MandatoData }) {
               letterSpacing: '0.1em',
             }}
           >
-            POR QUE ISSO:
+            PORQUE:
           </span>
           {citacoes.map((c) => (
             <span key={c} style={{ fontSize: '0.7rem', color: '#A7AECF', fontStyle: 'italic' }}>

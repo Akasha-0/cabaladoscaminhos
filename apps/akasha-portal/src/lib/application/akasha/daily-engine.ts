@@ -37,7 +37,8 @@ export function buildDailyContent(
   kabalisticMap: unknown,
   tantricMap: unknown,
   oduBirth: unknown,
-  date: Date = new Date()
+  date: Date = new Date(),
+  ichingHex?: number | null,
 ): DailyContent {
   const birthChart = astrologyMap as BirthChart;
   const dateStr = date.toISOString().split('T')[0];
@@ -69,12 +70,12 @@ export function buildDailyContent(
     const kab   = kabalisticMap as KabalisticMap | null;
     const tantra = tantricMap as TantricMap | null;
     const odu   = oduBirth as OduBirth | null;
-
     const hologram = aggregateHologram({
       astrologyMap: astro ?? null,
       kabalisticMap: kab ?? null,
       tantricMap: tantra ?? null,
       oduBirth: odu ?? null,
+      ichingHex: ichingHex ?? null,
     });
 
     synthesis = buildAkashaSynthesis(astro, kab, tantra, odu, hologram, date);

@@ -52,6 +52,10 @@ export default function OraculoPage() {
     e.preventDefault();
     const question = input.trim();
     if (!question || loading) return;
+    if (balance !== null && balance === 0) return;
+
+    // Optimistic balance deduction
+    if (balance !== null) setBalance((b) => (b !== null ? b - estimatedCost : null));
 
     setInput('');
     setLoading(true);
@@ -287,6 +291,28 @@ export default function OraculoPage() {
           </div>
         )}
 
+        {/* Nova consulta */}
+        {messages.length > 0 && (
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <button
+              onClick={() => { setMessages([]); setInput(''); }}
+              style={{
+                padding: '6px 18px',
+                borderRadius: '9999px',
+                background: 'transparent',
+                border: '1px solid rgba(124,92,255,0.3)',
+                color: '#7C5CFF',
+                fontSize: '0.8rem',
+                cursor: 'pointer',
+                letterSpacing: '0.05em',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              + Nova consulta
+            </button>
+          </div>
+        )}
+
         {/* Message list */}
         {messages.map((msg, i) => (
           <div
@@ -339,47 +365,61 @@ export default function OraculoPage() {
                 </span>
               )}
               {msg.role === 'oracle' && msg.content === '' && loading ? (
-                <span style={{ color: '#5C6691', fontStyle: 'italic' }}>
-                  O Akasha contempla…
+                <span style={{ color: '#5C6691', fontStyle: 'italic', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  O Akasha contempla
+                  <span style={{ display: 'inline-flex', gap: '3px' }}>
+                    {[0, 1, 2].map((i) => (
+                      <span
+                        key={i}
+                        style={{
+                          width: '5px',
+                          height: '5px',
+                          borderRadius: '50%',
+                          background: '#5C6691',
+                          animation: 'oraclePulse 1.2s ease-in-out infinite',
+                          animationDelay: `${i * 0.2}s`,
+                        }}
+                      />
+                    ))}
+                  </span>
+                  <style>{`@keyframes oraclePulse { 0%, 60%, 100% { opacity: 0.3; transform: scale(0.8); } 30% { opacity: 1; transform: scale(1); } }`}</style>
                 </span>
               ) : (
                 <span style={{ verticalAlign: 'middle' }}>{msg.content}</span>
               )}
             </div>
 
-            {/* Pillar chips — shown after oracle messages with pillarsConsulted */}
+            {/* Tradições consultadas label + chips */}
             {msg.role === 'oracle' &&
               msg.pillarsConsulted &&
               msg.pillarsConsulted.length > 0 && (
-                <div
-                  style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: '6px',
-                    paddingLeft: '4px',
-                  }}
-                >
-                  {msg.pillarsConsulted.map((pillar) => {
-                    const color = getPillarColor(pillar);
-                    return (
-                      <span
-                        key={pillar}
-                        style={{
-                          padding: '2px 10px',
-                          borderRadius: '9999px',
-                          fontSize: '0.72rem',
-                          fontWeight: 600,
-                          letterSpacing: '0.05em',
-                          color,
-                          background: `${color}18`,
-                          border: `1px solid ${color}40`,
-                        }}
-                      >
-                        {pillar}
-                      </span>
-                    );
-                  })}
-                </div>
+                <>
+                  <span style={{ fontSize: '0.7rem', color: '#5C6691', letterSpacing: '0.06em', textTransform: 'uppercase', paddingLeft: '4px' }}>
+                    Tradições consultadas
+                  </span>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', paddingLeft: '4px' }}>
+                    {msg.pillarsConsulted.map((pillar) => {
+                      const color = getPillarColor(pillar);
+                      return (
+                        <span
+                          key={pillar}
+                          style={{
+                            padding: '2px 10px',
+                            borderRadius: '9999px',
+                            fontSize: '0.72rem',
+                            fontWeight: 600,
+                            letterSpacing: '0.05em',
+                            color,
+                            background: `${color}18`,
+                            border: `1px solid ${color}40`,
+                          }}
+                        >
+                          {pillar}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </>
               )}
           </div>
         ))}
@@ -444,22 +484,22 @@ export default function OraculoPage() {
           </span>
           <button
             type="submit"
-            disabled={loading || !input.trim()}
+            disabled={loading || !input.trim() || (balance !== null && balance === 0)}
             style={{
               padding: '10px 32px',
               borderRadius: '9999px',
               background:
-                loading || !input.trim()
+                loading || !input.trim() || (balance !== null && balance === 0)
                   ? 'rgba(124,92,255,0.2)'
                   : '#7C5CFF',
-              color: loading || !input.trim() ? '#5C6691' : '#F4F5FF',
+              color: loading || !input.trim() || (balance !== null && balance === 0) ? '#5C6691' : '#F4F5FF',
               border: 'none',
-              cursor: loading || !input.trim() ? 'not-allowed' : 'pointer',
+              cursor: loading || !input.trim() || (balance !== null && balance === 0) ? 'not-allowed' : 'pointer',
               fontSize: '0.9rem',
               fontWeight: 700,
               letterSpacing: '0.06em',
               transition: 'all 0.2s ease',
-              boxShadow: loading || !input.trim() ? 'none' : '0 0 20px rgba(124,92,255,0.4)',
+              boxShadow: loading || !input.trim() || (balance !== null && balance === 0) ? 'none' : '0 0 20px rgba(124,92,255,0.4)',
             }}
           >
             {loading ? 'Consultando…' : 'Consultar'}

@@ -1,0 +1,103 @@
+{
+  "_meta": {
+    "version": "0.1.0",
+    "seeded": "2026-06-17",
+    "description": "Mapeamento de hexagramas do I Ching para primitivos universais Akasha"
+  },
+  "Hexagrama 1 (Qián/Criação)": {
+    "primitivo": "Expansao",
+    "intensidade": 9,
+    "polaridade": "luz",
+    "fonte": "I Ching Wilhelm/Baynes - Qián é o céu, força criativa yang"
+  },
+  "Hexagrama 2 (Kūn/Receção)": {
+    "primitivo": "Amor",
+    "intensidade": 9,
+    "polaridade": "luz",
+    "fonte": "I Ching - Kūn é terra, receptividade e nutrição"
+  },
+  "Hexagrama 3 (Zhūn/Dificuldade Inicial)": {
+    "primitivo": "Transformacao",
+    "intensidade": 6,
+    "polaridade": "ambas",
+    "fonte": "I Ching - Zhūn é germinação, começo difícil"
+  },
+  "Hexagrama 4 (Méng/Inocência)": {
+    "primitivo": "Sabedoria",
+    "intensidade": 5,
+    "polaridade": "sombra",
+    "fonte": "I Ching - Méng é ignorância, necessidade de aprendizado"
+  },
+  "Hexagrama 5 (Xū/Espera)": {
+    "primitivo": "Sabedoria",
+    "intensidade": 6,
+    "polaridade": "ambas",
+    "fonte": "I Ching - Xū é necessidade, espera paciente"
+  },
+  "Hexagrama 6 (Sòng/Conflito)": {
+    "primitivo": "Movimento",
+    "intensidade": 6,
+    "polaridade": "sombra",
+    "fonte": "I Ching - Sòng é conflito, tensão que precisa de resolução"
+  },
+  "Hexagrama 7 (Shī/Multidão)": {
+    "primitivo": "Ordem",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "I Ching - Shī é exército, disciplina e ordem"
+  },
+  "Hexagrama 8 (Bǐ/União)": {
+    "primitivo": "Amor",
+    "intensidade": 7,
+    "polaridade": "luz",
+    "fonte": "I Ching - Bǐ é união, aliança e cooperação"
+  },
+  "Hexagrama 9 (Xiǎojié)": {
+    "primitivo": "Expressao",
+    "intensidade": 6,
+    "polaridade": "luz",
+    "fonte": "I Ching - Xiǎojié é pequena acumulação, restrição"
+  },
+  "Hexagrama 10 (Lǚ/Conduta)": {
+    "primitivo": "Movimento",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "I Ching - Lǚ é caminhar com cuidado, dignidade"
+  },
+  "Hexagrama 11 (Tài/Paz)": {
+    "primitivo": "Expansao",
+    "intensidade": 8,
+    "polaridade": "luz",
+    "fonte": "I Ching - Tài é paz, harmonia yang-yin"
+  },
+  "Hexagrama 12 (Pǐ/Estagnação)": {
+    "primitivo": "Ordem",
+    "intensidade": 5,
+    "polaridade": "sombra",
+    "fonte": "I Ching - Pǐ é estagnação, bloqueio"
+  },
+  "Hexagrama 13 (Tóng Rén)": {
+    "primitivo": "Conexao",
+    "intensidade": 8,
+    "polaridade": "luz",
+    "fonte": "I Ching - Tóng Rén é comunidade, pessoas diferentes unidas"
+  },
+  "Hexagrama 14 (Dà Yòu)": {
+    "primitivo": "Materializacao",
+    "intensidade": 8,
+    "polaridade": "luz",
+    "fonte": "I Ching - Dà Yòu é grande possessão, abundância"
+  },
+  "Hexagrama 15 (Qián/Humildade)": {
+    "primitivo": "Servico",
+    "intensidade": 7,
+    "polaridade": "luz",
+    "fonte": "I Ching - Qián é humildade, modéstia que permite crescimento"
+  },
+  "Hexagrama 16 (Yù/Entusiasmo)": {
+    "primitivo": "Movimento",
+    "intensidade": 7,
+    "polaridade": "luz",
+    "fonte": "I Ching - Yù é entusiasmo, ritmo natural das coisas"
+  }
+}

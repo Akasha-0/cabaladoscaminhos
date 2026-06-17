@@ -49,10 +49,10 @@ const PILARES_COMPLETOS: PilaresDados = {
 };
 
 describe('sintetizarMapa (F-246)', () => {
-  it('retorna CaixaSintese com 9 dimensões', () => {
+  it('retorna CaixaSintese com 8 dimensões (DIMENSOES tem 8 entradas)', () => {
     const result = sintetizarMapa(PILARES_COMPLETOS);
     expect(result.dimensoes).toBeDefined();
-    expect(result.dimensoes).toHaveLength(9);
+    expect(result.dimensoes).toHaveLength(8);
   });
 
   it('cada dimensão tem os campos obrigatórios', () => {

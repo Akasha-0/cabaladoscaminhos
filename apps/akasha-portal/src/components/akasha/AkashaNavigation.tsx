@@ -13,8 +13,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Menu, X, LayoutDashboard, Compass, BookOpen, MessageSquare, 
-  Calendar, Info, Settings, MapPin, Clock, ChevronsLeft, ChevronsRight 
+  Menu, X, LayoutDashboard, Compass, BookOpen, MessageSquare,
+  Calendar, Info, Settings, MapPin, Clock, ChevronsLeft, ChevronsRight, Heart,
 } from 'lucide-react';
 import { useCockpitStore } from '@/stores/cockpit-store';
 
@@ -47,6 +47,7 @@ export function AkashaNavigation({ locale, user }: AkashaNavigationProps) {
     { href: `/${locale}/dashboard`, label: 'Painel', icon: LayoutDashboard },
     { href: `/${locale}/mandala`, label: 'Mandala', icon: Compass },
     { href: `/${locale}/diario`, label: 'Diário', icon: BookOpen },
+    { href: `/${locale}/conexoes`, label: 'Conexões', icon: Heart },
     { href: `/${locale}/oraculo`, label: 'Oráculo', icon: MessageSquare },
     { href: `/${locale}/mural`, label: 'Mural', icon: Calendar },
     { href: `/${locale}/sobre`, label: 'Sobre', icon: Info },

@@ -84,3 +84,13 @@ export { interpretarVida, interpretarVidaArea } from './interpretation-engine/qu
 export { generateHybrid } from './recommendation-generator';
 
 export { buildRitual, calculateCodeOfDay } from './ritual-calculator';
+// conexoes.ts
+export { compareAkashaMaps } from './conexoes';
+export type {
+  ConexaoMap,
+  AkashaAuthorityInput,
+  DominantConnectionType,
+  AuthorityMatch,
+  ConnectionDimension,
+  ConexaoResult,
+} from './conexoes';

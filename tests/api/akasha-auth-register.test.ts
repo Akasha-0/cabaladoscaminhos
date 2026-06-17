@@ -1,19 +1,24 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';
 
+// Declare all mock functions FIRST (before vi.mock calls which are hoisted)
 const mockBcryptHash = vi.fn();
+const mockFindUnique = vi.fn();
+const mockCreate = vi.fn();
 
+// bcryptjs mock
 vi.mock('bcryptjs', () => {
   const hash = (...args: unknown[]) => mockBcryptHash(...args);
   return { default: { hash }, hash };
 });
 
-const mockFindUnique = vi.fn();
-const mockCreate = vi.fn();
-
-vi.mock('@/lib/prisma', () => ({
+// Prisma client mock — path must match the route's actual import
+vi.mock('@/lib/infrastructure/prisma', () => ({
   prisma: {
-    user: { findUnique: (args: unknown) => mockFindUnique(args), create: (args: unknown) => mockCreate(args) },
+    user: {
+      findUnique: (args: unknown) => mockFindUnique(args),
+      create: (args: unknown) => mockCreate(args),
+    },
   },
 }));
 

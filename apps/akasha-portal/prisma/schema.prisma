@@ -50,6 +50,7 @@ model User {
   consultations      Consultation[]
   ritualLog          RitualCompletion[]
   pushSubscriptions  PushSubscription[]
+  connections        Connection[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -219,4 +220,27 @@ model GrimoireEntry {
   @@index([categoria])
   @@index([biblioteca])
   @@map("grimoire")
+}
+model Connection {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  otherName         String
+  otherBirthDate    DateTime
+  otherBirthTime    String?
+  otherBirthCity    String?
+  otherBirthLatitude  Float?
+  otherBirthLongitude Float?
+  otherBirthTimezone  String?
+
+  romanticScore     Int
+  partnershipScore  Int
+  dominantType      String
+  authorityMatch    String
+  resultData        Json
+
+  createdAt         DateTime @default(now())
+  @@index([userId])
+  @@map("connections")
 }

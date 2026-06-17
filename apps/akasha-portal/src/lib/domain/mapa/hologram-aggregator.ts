@@ -10,11 +10,13 @@ import type {
 export interface HologramDimension {
   title: string;
   chakra: string;
-  color: string; // Tailwind glow border color or HSL
   keyData: Record<string, any>;
+  color: string; // Tailwind glow border color or HSL
 }
 
 export interface AkashicHologram {
+  /** Hexagrama I Ching natal (1-64) — preenchido pelo caller com dados do PilarIChing. */
+  ichingHex?: number | null;
   vitalidadeEnergia: HologramDimension;
   conexoesAmor: HologramDimension;
   carreiraProsperidade: HologramDimension;
@@ -30,23 +32,27 @@ export function aggregateHologram(maps: {
   oduBirth?: OduBirth | null;
   forestMedicineMap?: ForestMedicineMap | null;
   energyHealingMap?: EnergyHealingMap | null;
+  ichingHex?: number | null;
 }): AkashicHologram {
-  const astro = maps.astrologyMap || {} as any;
-  const kabalah = maps.kabalisticMap || {} as any;
-  const tantric = maps.tantricMap || {} as any;
-  const odu = maps.oduBirth || {} as any;
-  const forest = maps.forestMedicineMap || {} as any;
-  const healing = maps.energyHealingMap || {} as any;
+  const astro = maps.astrologyMap || {} as Record<string, unknown>;
+  const kabalah = maps.kabalisticMap || {} as Record<string, unknown>;
+  const tantric = maps.tantricMap || {} as Record<string, unknown>;
+  const odu = maps.oduBirth || {} as Record<string, unknown>;
+  const forest = maps.forestMedicineMap || {} as Record<string, unknown>;
+  const healing = maps.energyHealingMap || {} as Record<string, unknown>;
 
   // Helper to find planet position
-  const findPlanet = (name: string) => 
-    astro.planets?.find((p: any) => p.planet?.toLowerCase() === name.toLowerCase()) || null;
+  const findPlanet = (name: string) =>
+    ((astro.planets as Array<Record<string, unknown>> | undefined) || [])
+      .find((p) => (p.planet as string)?.toLowerCase() === name.toLowerCase()) || null;
 
   // Helper to find house position
-  const findHouse = (num: number) => 
-    astro.houses?.find((h: any) => h.house === num) || null;
+  const findHouse = (num: number) =>
+    ((astro.houses as Array<Record<string, unknown>> | undefined) || [])
+      .find((h) => h.house === num) || null;
 
   return {
+    ichingHex: maps.ichingHex ?? null,
     vitalidadeEnergia: {
       title: 'Vitalidade & Energia',
       chakra: '1º Muladhara (Básico)',
@@ -54,9 +60,11 @@ export function aggregateHologram(maps: {
       keyData: {
         elementalChart: astro.elementalChart || null,
         dominantPlanet: astro.dominantPlanet || null,
-        pranicBody: tantric.bodies?.pranic || null,
-        physicalBody: tantric.bodies?.fisico || null,
-        reikiSymbols: healing.reikiSymbols?.filter((s: any) => s.chakraTarget?.includes('Básico')) || [],
+        pranicBody: (tantric.bodies as Record<string, unknown> | undefined)?.pranic || null,
+        physicalBody: (tantric.bodies as Record<string, unknown> | undefined)?.fisico || null,
+        reikiSymbols: ((healing.reikiSymbols as Array<Record<string, unknown>> | undefined) || [])
+          .filter((s: Record<string, unknown>) =>
+            (s.chakraTarget as string | undefined)?.includes('Básico')) || [],
         groundingProtocol: healing.groundingProtocol || null,
         forestMedicine: forest || null,
       }
@@ -71,7 +79,10 @@ export function aggregateHologram(maps: {
         lilith: findPlanet('Lilith'),
         house5: findHouse(5),
         house7: findHouse(7),
-        reikiSymbols: healing.reikiSymbols?.filter((s: any) => s.chakraTarget?.includes('Cardíaco') || s.chakraTarget?.includes('Plexo')) || [],
+        reikiSymbols: ((healing.reikiSymbols as Array<Record<string, unknown>> | undefined) || [])
+          .filter((s: Record<string, unknown>) =>
+            (s.chakraTarget as string | undefined)?.includes('Cardíaco') ||
+            (s.chakraTarget as string | undefined)?.includes('Plexo')) || [],
       }
     },
     carreiraProsperidade: {
@@ -102,7 +113,10 @@ export function aggregateHologram(maps: {
         elementalForce: odu.elementalForce || null,
         prohibitions: odu.prohibitions || [],
         lifeLesson: odu.lifeLesson || null,
-        reikiSymbols: healing.reikiSymbols?.filter((s: any) => s.chakraTarget?.includes('Terceiro Olho') || s.chakraTarget?.includes('Coronário')) || [],
+        reikiSymbols: ((healing.reikiSymbols as Array<Record<string, unknown>> | undefined) || [])
+          .filter((s: Record<string, unknown>) =>
+            (s.chakraTarget as string | undefined)?.includes('Terceiro Olho') ||
+            (s.chakraTarget as string | undefined)?.includes('Coronário')) || [],
       }
     },
     missaoDestino: {

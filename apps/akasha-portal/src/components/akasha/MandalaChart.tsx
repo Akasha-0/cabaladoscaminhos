@@ -126,9 +126,15 @@ interface Props {
 
 export default function MandalaChart({ data }: Props) {
   const [activeLayer, setActiveLayer] = useState<null | Layer>(null);
+  const [hoveredLayer, setHoveredLayer] = useState<null | Layer>(null);
   const atmosphereIntensity = useCockpitStore((s) => s.atmosphereIntensity);
 
-  const opacity = (layer: Layer) => (activeLayer === null ? 1 : activeLayer === layer ? 1 : 0.3);
+  const opacity = (layer: Layer) => {
+    if (activeLayer === null) return 1;
+    if (activeLayer === layer) return 1;
+    if (hoveredLayer !== null && hoveredLayer !== layer) return 0.3;
+    return 1;
+  };
 
   // Pause ring rotation when Layer 4 is selected
   const ringPaused = activeLayer === 4;
@@ -200,6 +206,11 @@ export default function MandalaChart({ data }: Props) {
         .synergy-alert { animation: dash-flow 1.5s linear infinite; }
         .star-twinkle { animation: twinkle 4s ease-in-out infinite; }
         .particle-blink { animation: particle-blink 2.5s ease-in-out infinite; }
+        .layer-btn:hover {
+          border-color: rgba(38,48,79,1) !important;
+          color: #FFFFFF !important;
+          transform: translateY(-1px);
+        }
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; }
         }
@@ -213,6 +224,7 @@ export default function MandalaChart({ data }: Props) {
           return (
             <button
               key={layer}
+              className="layer-btn"
               onClick={() => setActiveLayer(activeLayer === layer ? null : layer)}
               style={{
                 fontSize: '0.75rem',
@@ -296,6 +308,8 @@ export default function MandalaChart({ data }: Props) {
           <g
             opacity={opacity(4)}
             onClick={() => setActiveLayer(activeLayer === 4 ? null : 4)}
+            onMouseEnter={() => setHoveredLayer(4)}
+            onMouseLeave={() => setHoveredLayer(null)}
             style={{ cursor: 'pointer' }}
             className={ringPaused ? 'ring-astrological-paused' : 'ring-astrological'}
           >
@@ -421,6 +435,8 @@ export default function MandalaChart({ data }: Props) {
           <g
             opacity={opacity(3)}
             onClick={() => setActiveLayer(activeLayer === 3 ? null : 3)}
+            onMouseEnter={() => setHoveredLayer(3)}
+            onMouseLeave={() => setHoveredLayer(null)}
             style={{ cursor: 'pointer' }}
           >
             <title>{tooltipByLayer[3]}</title>
@@ -477,6 +493,8 @@ export default function MandalaChart({ data }: Props) {
           <g
             opacity={opacity(5)}
             onClick={() => setActiveLayer(activeLayer === 5 ? null : 5)}
+            onMouseEnter={() => setHoveredLayer(5)}
+            onMouseLeave={() => setHoveredLayer(null)}
             style={{ cursor: 'pointer' }}
           >
             <title>{tooltipByLayer[5]}</title>
@@ -552,6 +570,8 @@ export default function MandalaChart({ data }: Props) {
           <g
             opacity={opacity(2)}
             onClick={() => setActiveLayer(activeLayer === 2 ? null : 2)}
+            onMouseEnter={() => setHoveredLayer(2)}
+            onMouseLeave={() => setHoveredLayer(null)}
             style={{ cursor: 'pointer' }}
           >
             <title>{tooltipByLayer[2]}</title>
@@ -612,6 +632,8 @@ export default function MandalaChart({ data }: Props) {
           <g
             opacity={opacity(1)}
             onClick={() => setActiveLayer(activeLayer === 1 ? null : 1)}
+            onMouseEnter={() => setHoveredLayer(1)}
+            onMouseLeave={() => setHoveredLayer(null)}
             style={{ cursor: 'pointer' }}
           >
             <title>{tooltipByLayer[1]}</title>

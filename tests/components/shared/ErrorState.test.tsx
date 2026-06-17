@@ -15,8 +15,10 @@ describe('ErrorState', () => {
   });
 
   it('renders with default spiritual variant', () => {
-    render(<ErrorState />);
-    expect(screen.getByText('✦')).toBeDefined();
+    const { container } = render(<ErrorState />);
+    // Default spiritual variant renders a lucide Star SVG, not the ✦ character
+    const starSvg = container.querySelector('svg[class*="spiritual-gold"]');
+    expect(starSvg).toBeDefined();
   });
 
   it('renders custom title when provided', () => {

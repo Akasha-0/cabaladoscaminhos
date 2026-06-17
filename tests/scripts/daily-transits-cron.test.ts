@@ -1,3 +1,9 @@
+// NOTE: scripts/daily-transits-cron.ts was deleted.
+// The daily cron functionality moved to apps/akasha-portal/src/app/api/cron/daily-push/route.ts
+// (the Vercel API route version). This test file was kept to preserve the AD-T5-E contract
+// tests — the upsert shape check is still valuable. The redis-check test was updated to
+// point to the actual production cron route (the API route) which also has no redis dependency.
+
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // ----------------------------------------------------------------------------
@@ -56,14 +62,15 @@ describe('scripts/daily-transits-cron.ts (contrato — AD-T5-E)', () => {
   it('não importa nem usa redis (cache morto removido)', () => {
     // AD-T5-E: o redis.setEx foi removido por ser morto (chave escrita mas nunca lida).
     // Verificamos que o módulo de produção não importa `redis` e não chama `setEx`.
+    // O scripts/daily-transits-cron.ts foi substituído pela API route em
+    // apps/akasha-portal/src/app/api/cron/daily-push/route.ts — verificamos essa.
     const fs = eval("require('fs')") as typeof import('fs');
     const path = eval("require('path')") as typeof import('path');
     const src = fs.readFileSync(
-      path.resolve(process.cwd(), 'scripts/daily-transits-cron.ts'),
+      path.resolve(process.cwd(), 'apps/akasha-portal/src/app/api/cron/daily-push/route.ts'),
       'utf8',
     );
     expect(src).not.toMatch(/from\s+['"]redis['"]/);
     expect(src).not.toMatch(/setEx/);
   });
 });
-

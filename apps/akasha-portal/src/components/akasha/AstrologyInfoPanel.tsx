@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Divider, InfoPanel, Insight, Row } from '@/components/akasha/MandalaChartInfoPanel';
 import { SignificadoEmbed, resolveSig } from '@/components/akasha/mandala-meanings';
 import { ELEMENT_COLORS, ELEMENT_LABELS } from '@/components/akasha/mandala-elements';
@@ -44,6 +45,7 @@ export function AstrologyInfoPanel({
   astrology: AstrologyData;
   elemGuidance: ElementGuidance | null;
 }) {
+  const [showAdvanced, setShowAdvanced] = useState(false);
   return (
     <InfoPanel color="#7C5CFF" title="Movimento Celeste — O Céu" subtitle="Anel Cósmico · Camada 4">
       <Row label="Ascendente" value={astrology.ascendant} />
@@ -52,64 +54,99 @@ export function AstrologyInfoPanel({
       {astrology.planets.slice(0, 5).map((p) => (
         <Row key={p.name} label={p.name} value={`${p.sign} — casa ${p.house}`} />
       ))}
-      <Divider />
-      <p
-        style={{
-          fontSize: '0.75rem',
-          color: '#7C5CFF',
-          fontWeight: 600,
-          marginBottom: '0.35rem',
-        }}
-      >
-        Aspectos Principais
-      </p>
-      {astrology.aspects.slice(0, 5).length === 0 ? (
-        <Insight color="#7C5CFF">Sem aspectos principais calculados.</Insight>
-      ) : (
-        astrology.aspects.slice(0, 5).map((a, i) => {
-          const symbol = ASPECT_SYMBOLS[a.aspect.toLowerCase()] ?? a.aspect;
-          return (
-            <div key={i} style={{ marginBottom: '0.35rem' }}>
-              <p
-                style={{
-                  fontSize: '0.8125rem',
-                  color: '#F4F5FF',
-                  lineHeight: 1.5,
-                  margin: 0,
-                }}
-              >
-                {a.planet1} {symbol} {a.planet2} —{' '}
-                <span style={{ color: '#A7AECF' }}>{a.interpretation}</span>
-              </p>
-            </div>
-          );
-        })
-      )}
-      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-        {(Object.entries(astrology.elementalBalance) as [string, number][]).map(
-          ([el, val]) => (
-            <span
-              key={el}
-              style={{
-                padding: '3px 10px',
-                borderRadius: '100px',
-                fontSize: '0.6875rem',
-                background: `${ELEMENT_COLORS[el]}18`,
-                border: `1px solid ${ELEMENT_COLORS[el]}44`,
-                color: ELEMENT_COLORS[el],
-              }}
-            >
-              {ELEMENT_LABELS[el]} {val}%
-            </span>
-          )
-        )}
-      </div>
-      {elemGuidance && (
+      {showAdvanced ? (
         <>
           <Divider />
-          <Insight color="#7C5CFF">{elemGuidance.balance}</Insight>
-          <Insight color="#2DD4BF">{elemGuidance.ritual}</Insight>
+          <p
+            style={{
+              fontSize: '0.75rem',
+              color: '#7C5CFF',
+              fontWeight: 600,
+              marginBottom: '0.35rem',
+            }}
+          >
+            Aspectos Principais
+          </p>
+          {astrology.aspects.slice(0, 5).length === 0 ? (
+            <Insight color="#7C5CFF">Sem aspectos principais calculados.</Insight>
+          ) : (
+            astrology.aspects.slice(0, 5).map((a, i) => {
+              const symbol = ASPECT_SYMBOLS[a.aspect.toLowerCase()] ?? a.aspect;
+              return (
+                <div key={i} style={{ marginBottom: '0.35rem' }}>
+                  <p
+                    style={{
+                      fontSize: '0.8125rem',
+                      color: '#F4F5FF',
+                      lineHeight: 1.5,
+                      margin: 0,
+                    }}
+                  >
+                    {a.planet1} {symbol} {a.planet2} —{' '}
+                    <span style={{ color: '#A7AECF' }}>{a.interpretation}</span>
+                  </p>
+                </div>
+              );
+            })
+          )}
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            {(Object.entries(astrology.elementalBalance) as [string, number][]).map(
+              ([el, val]) => (
+                <span
+                  key={el}
+                  style={{
+                    padding: '3px 10px',
+                    borderRadius: '100px',
+                    fontSize: '0.6875rem',
+                    background: `${ELEMENT_COLORS[el]}18`,
+                    border: `1px solid ${ELEMENT_COLORS[el]}44`,
+                    color: ELEMENT_COLORS[el],
+                  }}
+                >
+                  {ELEMENT_LABELS[el]} {val}%
+                </span>
+              )
+            )}
+          </div>
+          {elemGuidance && (
+            <>
+              <Divider />
+              <Insight color="#7C5CFF">{elemGuidance.balance}</Insight>
+              <Insight color="#2DD4BF">{elemGuidance.ritual}</Insight>
+            </>
+          )}
+          <button
+            onClick={() => setShowAdvanced(false)}
+            style={{
+              marginTop: '0.5rem',
+              fontSize: '0.7rem',
+              color: '#A7AECF',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+              textDecoration: 'underline',
+            }}
+          >
+            Ocultar detalhes avançados
+          </button>
         </>
+      ) : (
+        <button
+          onClick={() => setShowAdvanced(true)}
+          style={{
+            marginTop: '0.5rem',
+            fontSize: '0.7rem',
+            color: '#7C5CFF',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 0,
+            textDecoration: 'underline',
+          }}
+        >
+          Mostrar aspectos e equilíbrio elemental →
+        </button>
       )}
       <SignificadoEmbed
         significado={resolveSig('astrologia', astrology.ascendant ?? astrology.dominantPlanet)}

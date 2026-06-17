@@ -7,20 +7,20 @@ import crypto from 'crypto';
 // ----------------------------------------------------------------------------
 
 const mockRequireAkashaApi = vi.fn();
-vi.mock('@/lib/auth/akasha-guard', () => ({
+vi.mock('@/lib/application/auth/akasha-guard', () => ({
   requireAkashaApi: (req: NextRequest) => mockRequireAkashaApi(req),
 }));
 
 const mockUserFindUnique = vi.fn();
-vi.mock('@/lib/prisma', () => ({
+vi.mock('@/lib/infrastructure/prisma', () => ({
   prisma: {
     user: { findUnique: (...args: unknown[]) => mockUserFindUnique(...args) },
   },
 }));
 
 const mockSyncGrimoire = vi.fn();
-vi.mock('@/lib/grimoire/sync', () => ({
-  syncGrimoire: () => mockSyncGrimoire(),
+vi.mock('@/lib/infrastructure/grimoire-sync', () => ({
+  syncGrimoire: mockSyncGrimoire,
 }));
 
 beforeEach(() => {

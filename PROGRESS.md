@@ -1004,3 +1004,67 @@ Commits: 0db9b621 (orixá), be7c0287 (T7.4), 5b50fb84 (dashboard auth),
 - Agent scope is explicit per assignment; agent deleting cockpit pages was cancelled mid-operation
 - All changes reverted; file integrity restored
 **Result:** 1871 testes · TypeScript 0 erros · Build 116 páginas OK.
+
+---
+
+## Nota da Sessão Atual (2026-06-17) — Iteração 5
+
+**Contexto:** Continuação do loop após Iter. 4 (mapeamentos foundation).
+
+### O que foi feito
+
+1. **Testes `mapeamentos/index.test.ts`** — 36 testes cobrindo PRIMITIVOS, PESOS_TRADICAO_DOMINIO, getIChingContribution (64 hexagramas), synthesizePrimitives (idempotencia, ordenacao, dominantes, convergencia 0-1, magnitude capped 10, dominio valido, tensao), Cabala, I Ching.
+
+2. **Bugs reais corrigidos:**
+   - magnitude nao estava capped a 10 (soma sem Math.min) — corrigido em index.ts
+   - Limiar de tensao usava > 10 (impossivel) — corrigido para > 3
+   - Dominio keys: relacoes/espiritualidade (nao relacionamentos/espirirtualidade)
+   - Hex 7 nao produz Ordem — hex 26 usado no teste de tensao
+
+3. **Bug build: compareAkashaMaps** nao exportado de index.ts — corrigido
+
+### Estado
+
+- Build: 48/48 paginas · Compile: 8.2s
+- Testes mapeamentos: 36/36 passing
+- Testes akasha-core: 380/380 (zero regressao)
+
+### Pending
+
+- Cobertura mapeamentos para cabala/astrologia/tantra/odu
+- Integracao synthesizePrimitives → area-builders.ts
+- Prioridade 2: deriveAkashaType() de 3 para 9+ tipos
+
+---
+
+## Nota da Sessão Atual (2026-06-17) — Iteração 6
+
+**Contexto:** Prioridade 2 ROADMAP — expandir `deriveAkashaType()` de Odu para 5 pilares.
+
+### O que foi feito
+
+1. **`AkashicHologram.ichingHex`** — adicionado à interface e a `aggregateHologram` (param + retorno).
+
+2. **`buildDailyContent`** — `ichingHex?: number | null` como parâmetro opcional pos-5, propagado ao `aggregateHologram`.
+
+3. **`derive-akasha-type.ts` rewrite completo** — votação 5 pilares:
+   - Odu (peso 3) via `voteByOdu`
+   - I Ching (peso 2) via `voteByIChing` — 64 hexagramas → 9 tipos
+   - Cabala LP (peso 2) via `voteByKabala` — LP 1-9, 11, 22, 33
+   - Astrologia (peso 1) via `voteByAstro` — 12 signos solares
+   - Tantra → autoridade + diretiva (não vota tipo)
+   - Empate → mais pilares convergindo vence
+
+4. **9 ROADMAP-tests** adicionados cobrindo astro-only, I Ching, Cabala, Odu dominance, fallback arquiteto.
+
+### Estado
+
+- Build: 48/48 páginas ✅
+- synthesis-engine: 15/15 (7 novos + 8 existentes) ✅
+- akasha-core: 416/416 ✅
+- mapeamentos: todas as suítes ✅
+
+### Pending
+
+- Prioridade 1: construir área de Tradução (§5 SPEC)
+- Integrar `ichingHex` no schema Prisma `BirthChart` para ativar pilar I Ching no cron

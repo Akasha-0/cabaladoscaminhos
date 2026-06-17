@@ -57,8 +57,8 @@ function parseFrontmatter(markdown: string): Frontmatter {
   return metadata;
 }
 
-// A partir de apps/akasha-portal/, o grimoire está em ../../grimoire
-const GRIMOIRE_DIR = path.resolve(process.cwd(), '../../grimoire/iching');
+// grimoire/iching/ is at the monorepo root alongside tests/
+const GRIMOIRE_DIR = path.resolve(process.cwd(), 'grimoire/iching');
 const EXPECTED_COUNT = 16;
 
 function listIchingFiles(): string[] {

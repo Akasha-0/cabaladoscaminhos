@@ -1,0 +1,287 @@
+{
+  "_meta": {
+    "version": "0.1.0",
+    "seeded": "2026-06-17",
+    "description": "Sintomas de sombra por planeta|sign e odu|proibicao — usados em buildShadowSymptoms()"
+  },
+
+  "Saturno|Áries": {
+    "primitivo": "Impaciencia",
+    "intensidade": 7,
+    "polaridade": "sombra",
+    "frase": "Saturno em Áries: a lição de limites encontra resistência na urgência de agir — paciência é o antídoto."
+  },
+  "Saturno|Touro": {
+    "primitivo": "Rigidez",
+    "intensidade": 8,
+    "polaridade": "sombra",
+    "frase": "Saturno em Touro: resistência a mudanças manifesta-se como apego excessivo ao familiar e ao seguro."
+  },
+  "Saturno|Gêmeos": {
+    "primitivo": "Indecisao",
+    "intensidade": 6,
+    "polaridade": "sombra",
+    "frase": "Saturno em Gêmeos: a mente analítica paralisa quando o medo de errar supera a curiosidade."
+  },
+  "Saturno|Cancer": {
+    "primitivo": "CulpaFamiliar",
+    "intensidade": 8,
+    "polaridade": "sombra",
+    "frase": "Saturno em Câncer: feridas emocionais familiares cristalizam-se em defesas que isolam em vez de proteger."
+  },
+  "Saturno|Leao": {
+    "primitivo": "OrgulhoFerido",
+    "intensidade": 7,
+    "polaridade": "sombra",
+    "frase": "Saturno em Leão: o ego se contrai sob o peso da vergonha — a sombra exige reconhecimento público que não vem."
+  },
+  "Saturno|Virgem": {
+    "primitivo": "AutoCritica",
+    "intensidade": 9,
+    "polaridade": "sombra",
+    "frase": "Saturno em Virgem: a autocrítica crônica mina a capacidade de aceitar imperfeição como parte da jornada."
+  },
+  "Saturno|Libra": {
+    "primitivo": "ConflitoRelacional",
+    "intensidade": 8,
+    "polaridade": "sombra",
+    "frase": "Saturno em Libra: parcerias arrastam culpas não resolvidas — o medo de abandono gera tensão onde deveria haver equilíbrio."
+  },
+  "Saturno|Escorpiao": {
+    "primitivo": "Obsessao",
+    "intensidade": 10,
+    "polaridade": "sombra",
+    "frase": "Saturno em Escorpião: a intensidade escura torna-se compulsão — o controle substitui a transformação genuína."
+  },
+  "Saturno|Sagitario": {
+    "primitivo": "Cinismo",
+    "intensidade": 6,
+    "polaridade": "sombra",
+    "frase": "Saturno em Sagitário: o otimismo torna-se tabu e o cinismo surge como armadura contra decepções."
+  },
+  "Saturno|Capricornio": {
+    "primitivo": "Amargura",
+    "intensidade": 7,
+    "polaridade": "sombra",
+    "frase": "Saturno em Capricórnio: o sucesso achieved traz vazio quando o medo de falhar já moldou toda a jornada."
+  },
+  "Saturno|Aquario": {
+    "primitivo": "Isolamento",
+    "intensidade": 7,
+    "polaridade": "sombra",
+    "frase": "Saturno em Aquário: a rebelião contra a norma convive com solidão — o grupo protege e ao mesmo tempo distancia."
+  },
+  "Saturno|Peixes": {
+    "primitivo": "VulnerabilidadeDefensiva",
+    "intensidade": 9,
+    "polaridade": "sombra",
+    "frase": "Saturno em Peixes: a finitude do ego confronta a dissolução — medo de perder-se no outro ou no transcendente."
+  },
+
+  "Plutao|Aries": {
+    "primitivo": "AgressividadeOculta",
+    "intensidade": 8,
+    "polaridade": "sombra",
+    "frase": "Plutão em Áries: a vontade pessoal forja poder destrutivo quando a transformação é resistida."
+  },
+  "Plutao|Touro": {
+    "primitivo": "ApegoMortal",
+    "intensidade": 9,
+    "polaridade": "sombra",
+    "frase": "Plutão em Touro: bens e valores tornam-se símbolos de sobrevivência — a perda revela medo de aniquilação."
+  },
+  "Plutao|Gemeos": {
+    "primitivo": "ManipulacaoMental",
+    "intensidade": 8,
+    "polaridade": "sombra",
+    "frase": "Plutão em Gêmeos: a mente é weaponizada para controlar narrativas — verdades são retidas como ferramentas de poder."
+  },
+  "Plutao|Cancer": {
+    "primitivo": "ChantageEmocional",
+    "intensidade": 9,
+    "polaridade": "sombra",
+    "frase": "Plutão em Câncer: a família é palco de controle emocional — feridas ancestrais repetem-se como destino inevitável."
+  },
+  "Plutao|Leao": {
+    "primitivo": "TiraniaCreativa",
+    "intensidade": 8,
+    "polaridade": "sombra",
+    "frase": "Plutão em Leão: a expressão criativa mascara dominação — o brilho pessoal exige a escuridão dos outros."
+  },
+  "Plutao|Virgem": {
+    "primitivo": "PerfeccionismoObsessivo",
+    "intensidade": 7,
+    "polaridade": "sombra",
+    "frase": "Plutão em Virgem: a busca por purity degenera em compulsão — o corpo e a saúde tornam-se prisões."
+  },
+  "Plutao|Libra": {
+    "primitivo": "AmbivalenciaPoderosa",
+    "intensidade": 8,
+    "polaridade": "sombra",
+    "frase": "Plutão em Libra: o relacionamento idealizado esconde controle disfarçado — a justiça serve à vingança."
+  },
+  "Plutao|Escorpiao": {
+    "primitivo": "Autodstrucao",
+    "intensidade": 10,
+    "polaridade": "sombra",
+    "frase": "Plutão em Escorpião: a transformação extrema beira a aniquilação — regeneração ou ruína habitam o mesmo espaço."
+  },
+  "Plutao|Sagitario": {
+    "primitivo": "Fanatismo",
+    "intensidade": 8,
+    "polaridade": "sombra",
+    "frase": "Plutão em Sagitário: a verdade torna-se dogma — a expansão espiritual justifica a destruição de crenças alheias."
+  },
+  "Plutao|Capricornio": {
+    "primitivo": "CorrupcaoEstrutural",
+    "intensidade": 9,
+    "polaridade": "sombra",
+    "frase": "Plutão em Capricórnio: estruturas de poder corroem-se de dentro — a ambição pode consumir integridade."
+  },
+  "Plutao|Aquario": {
+    "primitivo": "RadicalismoColetivo",
+    "intensidade": 8,
+    "polaridade": "sombra",
+    "frase": "Plutão em Aquário: o grupo oferece pertencimento mas exige conformidade — revolução devora seus próprios filhos."
+  },
+  "Plutao|Peixes": {
+    "primitivo": "DissolucaoEgo",
+    "intensidade": 9,
+    "polaridade": "sombra",
+    "frase": "Plutão em Peixes: o ego dissolve-se no todo — mas a fuga do individual pode torná-lo presa fácil de colectivos predatórios."
+  },
+
+  "Marte|Áries": {
+    "primitivo": "Impulsividade",
+    "intensidade": 7,
+    "polaridade": "sombra",
+    "frase": "Marte em Áries: a ação precede o pensamento — o corpo age antes que a prudência possa intervir."
+  },
+  "Marte|Touro": {
+    "primitivo": "Teimosia",
+    "intensidade": 6,
+    "polaridade": "sombra",
+    "frase": "Marte em Touro: a energia sexual e o desejo de posse bloqueiam-se mutuamente — frustração acumulada."
+  },
+  "Marte|Gêmeos": {
+    "primitivo": "Nervosismo",
+    "intensidade": 5,
+    "polaridade": "sombra",
+    "frase": "Marte em Gêmeos: a energia dispersa-se em múltiplas frentes — nenhuma conclusão, apenas agitação mental."
+  },
+  "Marte|Câncer": {
+    "primitivo": "AgressaoPassiva",
+    "intensidade": 7,
+    "polaridade": "sombra",
+    "frase": "Marte em Câncer: a raiva manifesta-se como manipulação emocional — a ferida é usada como arma."
+  },
+  "Marte|Leão": {
+    "primitivo": "Teatralidade",
+    "intensidade": 6,
+    "polaridade": "sombra",
+    "frase": "Marte em Leão: a energia criativa precisa de plateia — a frustração surge quando o reconhecimento falta."
+  },
+  "Marte|Virgem": {
+    "primitivo": "IrritacaoCronica",
+    "intensidade": 6,
+    "polaridade": "sombra",
+    "frase": "Marte em Virgem: a mente crítica irrita-se com a própria imperfeição — a raiva volta-se para dentro."
+  },
+  "Marte|Libra": {
+    "primitivo": "ConflitoInterno",
+    "intensidade": 8,
+    "polaridade": "sombra",
+    "frase": "Marte em Libra: a ação é bloqueada pela hesitação — a raiva acumula-se porque a confrontação parece impossível."
+  },
+  "Marte|Escorpiao": {
+    "primitivo": "Vinganca",
+    "intensidade": 9,
+    "polaridade": "sombra",
+    "frase": "Marte em Escorpião: a energia é profunda e direcionada — a ferida não perdoa e o rancor consome."
+  },
+  "Marte|Sagitário": {
+    "primitivo": "Imprudencia",
+    "intensidade": 6,
+    "polaridade": "sombra",
+    "frase": "Marte em Sagitário: a energia expansionista tropeça em promessas grandes demais — decepção e cinismo."
+  },
+  "Marte|Capricornio": {
+    "primitivo": "Amargao",
+    "intensidade": 7,
+    "polaridade": "sombra",
+    "frase": "Marte em Capricórnio: a ambição é alimentada por ressentimento — o sucesso é buscado para provar que mereceu."
+  },
+  "Marte|Aquario": {
+    "primitivo": "RebeliaoDestrutiva",
+    "intensidade": 7,
+    "polaridade": "sombra",
+    "frase": "Marte em Aquário: a rebelião against o sistema torna-se identidade — a destruição do outro como prova de independencia."
+  },
+  "Marte|Peixes": {
+    "primitivo": "Sabotagem",
+    "intensidade": 8,
+    "polaridade": "sombra",
+    "frase": "Marte em Peixes: a energia dispersa-se em vitimismo ou sabotagem ativa — a confusão serve como refúgio da confrontação."
+  },
+
+  "Ogbe|ProibicaoAguo": {
+    "primitivo": "Conflito",
+    "intensidade": 6,
+    "polaridade": "sombra",
+    "frase": "Ogbe: o aguo pede que você não fuja do confronto com o destino — evitar o conflito amplia a tensão kármica."
+  },
+  "Oyeku|ProibicaoIrefum": {
+    "primitivo": "TristezaOculta",
+    "intensidade": 7,
+    "polaridade": "sombra",
+    "frase": "Oyeku: a proibição de irefum guarda melancolia não processada — a tristeza tornada silenciosa corrói por dentro."
+  },
+  "Iwori|ProibicaoOkan": {
+    "primitivo": "Inconstancia",
+    "intensidade": 6,
+    "polaridade": "sombra",
+    "frase": "Iwori: o okan indica oscilação entre dois caminhos — a impossibilidade de decidir fixa o padrão de estagnação."
+  },
+  "Irosun|ProibicaoOfun": {
+    "primitivo": "SegredoDestrutivo",
+    "intensidade": 8,
+    "polaridade": "sombra",
+    "frase": "Irosun: o ofun proíbe o silêncio sobre verdades dolorosas — segredos guardados fermentam em resentment."
+  },
+  "Owonrin|ProibicaoEjola": {
+    "primitivo": "Isolamento",
+    "intensidade": 7,
+    "polaridade": "sombra",
+    "frase": "Owonrin: ejola pede que o isolamento seja quebrado — o afastamento do outro é também afastamento de si."
+  },
+  "Ogbe|ProibicaoObe": {
+    "primitivo": "Culpa",
+    "intensidade": 7,
+    "polaridade": "sombra",
+    "frase": "Ogbe: a proibição de obe carrega peso de ação passada — a culpa não resolvida distorce as escolhas presentes."
+  },
+  "Oyeku|ProibicaoOgun": {
+    "primitivo": "Medo",
+    "intensidade": 8,
+    "polaridade": "sombra",
+    "frase": "Oyeku: ogun bloqueia o caminho — o medo de agir paralisa e a passividade torna-se refúgio da sombra."
+  },
+  "Iwori|ProibicaoObe": {
+    "primitivo": "DuplaPersonalidade",
+    "intensidade": 7,
+    "polaridade": "sombra",
+    "frase": "Iwori: a proibição de obe expõe a cisão interior — uma parte avança enquanto a outra recua."
+  },
+  "Irosun|ProibicaoOgu": {
+    "primitivo": "Fragilidade",
+    "intensidade": 6,
+    "polaridade": "sombra",
+    "frase": "Irosun: ogu impede a autodeterminação — a fragilidade tornada dependência consome a força vital."
+  },
+  "Owonrin|ProibicaoOgu": {
+    "primitivo": "VulnerabilidadeExposta",
+    "intensidade": 7,
+    "polaridade": "sombra",
+    "frase": "Owonrin: ogu expõe o ponto fraco — a vulnerabilidade sem proteção torna a pessoa presa de manipulação alheia."
+  }
+}

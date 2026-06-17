@@ -1,8 +1,12 @@
 /**
  * synthesis-engine/derive-akasha-type.ts
  *
- * F-227: Deriva o tipo Akasha único (1 de 9) a partir do Odu familiar +
- * refinamento do corpo tântrico + autoridade. Split de synthesis-engine.ts.
+ * F-227: Deriva o tipo Akasha único (1 de 9) por votação ponderada
+ * dos 5 pilares — Odu (×3), I Ching (×2), Kabala LP (×2), Astro (×1) —
+ * com refinamento tântrico posterior.
+ *
+ * ROADMAP Iter. 6 — Prioridade 2: expandir deriveAkashaType() de
+ * Odu+Tantra → voto nos 5 pilares.
  */
 
 import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/types';
@@ -10,7 +14,22 @@ import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
 import type { AkashaAuthority, AkashaTypeProfile, FrequencyLevel } from './synthesis-types';
 import AKASHA_TYPES from './akasha-types-catalog';
 
-const ODU_TO_TYPE: Record<string, string> = {
+/** Um dos 9 tipos Akasha. */
+export type AkashaType =
+  | 'catalisador'
+  | 'receptor'
+  | 'construtor'
+  | 'transformador'
+  | 'guardiao'
+  | 'curador'
+  | 'canal'
+  | 'alquimista'
+  | 'arquiteto';
+
+// ─── Mapping tables ─────────────────────────────────────────────────────────
+
+/** Odu primary → AkashaType. Weight ×3 na votação. */
+const ODU_TO_TYPE: Record<string, AkashaType> = {
   oje: 'catalisador', ogbe: 'catalisador', oros: 'catalisador',
   ox: 'receptor', oxu: 'receptor', alavaye: 'receptor',
   oyeku: 'construtor', otura: 'construtor',
@@ -20,6 +39,92 @@ const ODU_TO_TYPE: Record<string, string> = {
   oji: 'canal', ate: 'canal',
   ica: 'alquimista', idia: 'alquimista',
 };
+
+/**
+ * Nuclear trigram (Wilhelm/Baynes) → AkashaType.
+ * Computed from hexagram number via lower trigram (inner nature):
+ *   lowerTrigram = ((hex - 1) % 8) + 1
+ * Weight ×2 na votação.
+ *
+ * Trigram map (Wilhelm 1976):
+ *   1=Heaven(☰)→catalisador, 2=Earth(☷)→receptor,
+ *   3=Thunder(☳)→construtor, 4=Water(☵)→transformador,
+ *   5=Mountain(☶)→guardiao, 6=Fire(☲)→canal,
+ *   7=Lake(☱)→receptor, 8=Wind(☴)→canal.
+ */
+const TRIGRAM_TO_TYPE: Record<number, AkashaType> = {
+  1: 'catalisador', // ☰ Heaven
+  2: 'receptor',    // ☷ Earth
+  3: 'construtor',  // ☳ Thunder
+  4: 'transformador', // ☵ Water
+  5: 'guardiao',    // ☶ Mountain
+  6: 'canal',       // ☲ Fire
+  7: 'receptor',    // ☱ Lake
+  8: 'canal',       // ☴ Wind
+};
+
+function ichingNuclearTrigram(hex: number): number {
+  return ((hex - 1) % 8) + 1;
+}
+
+/**
+ * Kabala Life Path → AkashaType. Weight ×2 na votação.
+ * Groups by digit with explicit master-number overrides.
+ *
+ * LP 1→catalisador, 2→receptor, 3→canal, 4→guardiao,
+ * 5→transformador, 6→curador, 7→canal, 8→catalisador, 9→receptor.
+ * Master numbers: 11→canal, 22→construtor, 33→alquimista.
+ */
+const KABALA_LP_TO_TYPE: Record<number, AkashaType> = {
+  1: 'catalisador', 10: 'catalisador', 19: 'catalisador', 28: 'catalisador', 37: 'catalisador',
+  8: 'catalisador', 17: 'catalisador', 26: 'catalisador', 34: 'catalisador', 43: 'catalisador',
+  2: 'receptor', 11: 'receptor', 20: 'receptor', 29: 'receptor', 38: 'receptor',
+  9: 'receptor', 18: 'receptor', 27: 'receptor', 36: 'receptor', 45: 'receptor',
+  3: 'canal', 12: 'canal', 21: 'canal', 30: 'canal', 39: 'canal', 48: 'canal',
+  57: 'canal',
+  4: 'guardiao', 13: 'guardiao', 22: 'guardiao', 31: 'guardiao', 40: 'guardiao',
+  49: 'guardiao', 58: 'guardiao', 67: 'guardiao',
+  5: 'transformador', 14: 'transformador', 23: 'transformador', 32: 'transformador',
+  41: 'transformador', 50: 'transformador', 59: 'transformador',
+  6: 'curador', 15: 'curador', 24: 'curador', 33: 'curador', 42: 'curador',
+  51: 'curador', 60: 'curador',
+  // LP 7, 16, 25 → canal (LP 34, 43 already set above)
+  7: 'canal', 16: 'canal', 25: 'canal',
+  61: 'canal', 70: 'canal',
+  // Master numbers override
+  22: 'construtor', // LP 22 → construtor (not guardiao)
+  33: 'alquimista', // LP 33 → alquimista
+  // Extended range for LP > 9 (sum-of-digits reduced)
+  44: 'canal', 46: 'guardiao', 47: 'transformador', 53: 'guardiao',
+  54: 'construtor', 55: 'transformador', 56: 'guardiao', 62: 'guardiao',
+  63: 'canal', 64: 'receptor', 65: 'canal', 66: 'guardiao',
+  68: 'guardiao', 69: 'curador', 71: 'canal', 72: 'receptor',
+  73: 'curador', 74: 'transformador', 75: 'canal', 76: 'guardiao',
+  77: 'alquimista', 78: 'receptor', 79: 'canal', 80: 'guardiao',
+  81: 'catalisador', 82: 'receptor', 83: 'canal', 84: 'guardiao',
+  85: 'canal', 86: 'transformador', 87: 'curador', 88: 'guardiao',
+  89: 'catalisador', 90: 'receptor', 91: 'canal', 92: 'guardiao',
+  93: 'curador', 94: 'transformador', 95: 'catalisador', 96: 'receptor',
+  97: 'canal', 98: 'guardiao', 99: 'curador',
+};
+
+/**
+ * Planeta dominante Astro → AkashaType. Weight ×1 na votação.
+ */
+const ASTRO_DOMINANT_PLANET_TO_TYPE: Record<string, AkashaType> = {
+  sol: 'catalisador', sun: 'catalisador',
+  lua: 'receptor', moon: 'receptor',
+  mercurio: 'canal', mercury: 'canal',
+  venus: 'receptor',
+  marte: 'construtor', mars: 'construtor',
+  jupiter: 'transformador', júpiter: 'transformador',
+  saturno: 'guardiao', saturn: 'guardiao',
+  urano: 'canal', uranus: 'canal',
+  netuno: 'canal', neptune: 'canal',
+  plutão: 'transformador', plutao: 'transformador', pluto: 'transformador',
+};
+
+// ─── Authority & directive tables ────────────────────────────────────────────
 
 const AUTHORITY_PRACTICE: Record<AkashaAuthority, string> = {
   emotional: 'Diário: pause antes de decisões importantes e pergunte — como meu peito se sente com isso?',
@@ -73,23 +178,58 @@ const ONE_LINER_BY_TYPE: Record<string, string> = {
   arquiteto: 'Você é O Arquiteto. Outros improvisam estruturas; você projeta sistemas. Você vê interconexão entre campos que parecem separados — carreira toca o corpo, o corpo toca o espírito, o espírito toca o dinheiro. Sua mente é geométrica: cada decisão reflete um padrão. Outros veem 2 + 2; você vê o sistema que contém toda matemática.',
 };
 
-function resolveTypeFromOdu(oduName: string): string {
-  if (!oduName) return 'arquiteto';
-  return ODU_TO_TYPE[oduName] ?? 'arquiteto';
+// ─── Resolvers (one per pillar) ────────────────────────────────────────────
+
+/** Odu primary → type (weight 3). */
+function resolveTypeFromOdu(odu: OduBirth | null): AkashaType {
+  const name = odu?.oduName?.toLowerCase().trim() ?? '';
+  if (!name) return 'arquiteto';
+  return ODU_TO_TYPE[name] ?? 'arquiteto';
 }
 
+/**
+ * I Ching hexagram (1-64) → type (weight 2) via nuclear trigram.
+ * Uses the lower trigram (inner nature) per Wilhelm/Baynes semantics.
+ * Returns null when no hexagram data is available.
+ */
+function resolveTypeFromIChing(ichingHex: number | null | undefined): AkashaType | null {
+  if (!ichingHex || ichingHex < 1 || ichingHex > 64) return null;
+  const trig = ichingNuclearTrigram(ichingHex);
+  return TRIGRAM_TO_TYPE[trig] ?? 'arquiteto';
+}
+
+/** Kabala Life Path → type (weight 2). Returns null when LP unavailable. */
+function resolveTypeFromKabalaLP(kab: KabalisticMap | null): AkashaType | null {
+  const lp = kab?.lifePath;
+  if (!lp) return null;
+  return KABALA_LP_TO_TYPE[lp] ?? 'arquiteto';
+}
+
+/**
+ * Astro dominant planet → type (weight 1).
+ * Uses `unknown` as intermediate cast to satisfy ts-no-any.
+ */
+function resolveTypeFromAstro(astro: AstrologyMap | null): AkashaType | null {
+  if (!astro) return null;
+  const dominated = (astro as unknown as { dominantPlanet?: string }).dominantPlanet;
+  if (!dominated) return null;
+  const key = dominated.toLowerCase().trim();
+  return ASTRO_DOMINANT_PLANET_TO_TYPE[key] ?? null;
+}
+
+/** Tantra dominant body number → authority + directive refinement. */
 function pickDominantBody(tantra: TantricMap | null): number | undefined {
   if (!tantra?.bodies) return undefined;
-  const bodies = tantra.bodies;
-  const bodyNumbers: Array<{ key: string; number: number }> = [
+  const bodies = tantra.bodies as Record<string, { number?: number }>;
+  const entries: Array<{ key: string; number: number }> = [
     { key: 'fisico', number: bodies.fisico?.number ?? 0 },
     { key: 'pranic', number: bodies.pranic?.number ?? 0 },
     { key: 'emocional', number: bodies.emocional?.number ?? 0 },
     { key: 'mental', number: bodies.mental?.number ?? 0 },
     { key: 'espiritual', number: bodies.espiritual?.number ?? 0 },
   ];
-  bodyNumbers.sort((a, b) => b.number - a.number);
-  return bodyNumbers[0]?.number;
+  entries.sort((a, b) => b.number - a.number);
+  return entries[0]?.number;
 }
 
 function deriveAuthorityFromMaps(
@@ -102,9 +242,11 @@ function deriveAuthorityFromMaps(
     if (dominantBody >= 4) return 'emotional';
     return 'sacral';
   }
-  const moon = astro?.planets?.find(p => p.planet === 'Moon' || p.planet === 'Lua');
-  if (moon && ['cancer', 'escorpio', 'peixes', 'câncer', 'escorpião', 'peixes'].includes(moon.sign?.toLowerCase() ?? '')) {
-    return 'emotional';
+  const dominated = (astro as unknown as { dominantPlanet?: string }).dominantPlanet;
+  if (dominated) {
+    const lower = dominated.toLowerCase();
+    if (['lua', 'moon', 'sol', 'sun', 'venus', 'vênus'].includes(lower)) return 'emotional';
+    if (['mercury', 'mercurio'].includes(lower)) return 'mental';
   }
   return 'sacral';
 }
@@ -129,24 +271,99 @@ function pickDailyDirectiveFrequency(dominantBody?: number): FrequencyLevel {
   return dominantBody !== undefined && dominantBody >= 7 ? 'siddhi' : 'gift';
 }
 
+// ─── Core voting engine ─────────────────────────────────────────────────────
+
 /**
- * Deriva o ONE Akasha Profile (1 de 9 tipos) a partir do Odu familiar +
- * refinamento tântrico + autoridade.
+ * Build a weighted vote map for type determination.
+ * Returns the type with the highest cumulative vote.
+ */
+function buildVoteMap(
+  oduType: AkashaType,
+  ichingType: AkashaType | null,
+  kabType: AkashaType | null,
+  astroType: AkashaType | null,
+): AkashaType {
+  const votes: Record<AkashaType, number> = {
+    catalisador: 0, receptor: 0, construtor: 0, transformador: 0,
+    guardiao: 0, curador: 0, canal: 0, alquimista: 0, arquiteto: 0,
+  };
+
+  // Odu: weight ×3 (destino)
+  votes[oduType] += 3;
+
+  // IChing: weight ×2 (síntese)
+  if (ichingType) votes[ichingType] += 2;
+
+  // Kabala LP: weight ×2 (identidade)
+  if (kabType) votes[kabType] += 2;
+
+  // Astro: weight ×1 (temperamento)
+  if (astroType) votes[astroType] += 1;
+
+  let maxType: AkashaType = 'arquiteto';
+  let maxVotes = -1;
+  for (const [t, count] of Object.entries(votes)) {
+    if (count > maxVotes) {
+      maxVotes = count;
+      maxType = t as AkashaType;
+    }
+  }
+
+  return maxType;
+}
+
+/**
+ * Post-voting refinement using Tantra dominant body.
+ * Adjusts the voted type when strong Tantric signal suggests a different direction.
+ */
+function refineWithTantra(
+  votedType: AkashaType,
+  dominantBody: number | undefined,
+): AkashaType {
+  if (dominantBody === undefined) return votedType;
+
+  // Body ≤ 3: person needs more structure → nudge toward Construtor/Guardiao
+  if (dominantBody <= 3 && votedType === 'canal') return 'construtor';
+
+  // Body ≥ 7: person has high spiritual development → nudge toward Curador/Alquimista
+  if (dominantBody >= 7 && votedType === 'construtor') return 'curador';
+
+  return votedType;
+}
+
+// ─── Public API ─────────────────────────────────────────────────────────────
+
+/**
+ * Deriva o ONE Akasha Profile (1 de 9 tipos) por votação ponderada dos 5 pilares.
+ *
+ * Voting weights:
+ *   Odu      ×3  — destino
+ *   I Ching  ×2  — síntese oracular (via nuclear trigram Wilhelm/Baynes)
+ *   Kabala   ×2  — identidade (via Life Path)
+ *   Astro    ×1  — temperamento (via planeta dominante)
+ *   Tantra  —   — refinamento pós-voto (não entra na contagem)
  */
 export function deriveAkashaType(
-  _astro: AstrologyMap | null,
-  _kab: KabalisticMap | null,
+  astro: AstrologyMap | null,
+  kab: KabalisticMap | null,
   tantra: TantricMap | null,
   odu: OduBirth | null,
-  _holo: AkashicHologram
+  holo: AkashicHologram,
 ): AkashaTypeProfile {
-  const oduName = odu?.oduName?.toLowerCase() ?? '';
-  const typeKey = resolveTypeFromOdu(oduName);
-  const baseType = AKASHA_TYPES[typeKey];
+  // Resolve each pillar's type contribution
+  const oduType = resolveTypeFromOdu(odu);
+  const ichingType = resolveTypeFromIChing(holo.ichingHex ?? null);
+  const kabType = resolveTypeFromKabalaLP(kab);
+  const astroType = resolveTypeFromAstro(astro);
 
+  // Build weighted vote and refine with Tantra
+  const voted = buildVoteMap(oduType, ichingType, kabType, astroType);
   const dominantBody = pickDominantBody(tantra);
+  const finalType = refineWithTantra(voted, dominantBody);
+
+  const baseType = AKASHA_TYPES[finalType];
   const corePattern = refineCorePattern(baseType.corePattern, dominantBody);
-  const authority = deriveAuthorityFromMaps(tantra, _astro);
+  const authority = deriveAuthorityFromMaps(tantra, astro);
 
   const directiveLabel = pickDailyDirectiveLabel(dominantBody);
   const directiveFreq = pickDailyDirectiveFrequency(dominantBody);
@@ -154,7 +371,7 @@ export function deriveAkashaType(
     DIRECTIVE_BY_AREA_AND_FREQ[directiveLabel]?.[directiveFreq] ??
     DIRECTIVE_BY_AREA_AND_FREQ['propósito']['gift'];
 
-  const oneLiner = ONE_LINER_BY_TYPE[typeKey] ?? ONE_LINER_BY_TYPE['arquiteto'];
+  const oneLiner = ONE_LINER_BY_TYPE[finalType] ?? ONE_LINER_BY_TYPE['arquiteto'];
 
   return {
     type: baseType.type,

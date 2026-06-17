@@ -19,11 +19,23 @@ export default function LoginClient({ locale }: Props) {
     setLoading(true);
 
     try {
+      // Use manual redirect to ensure cookies are processed before navigation.
+      // Without this, the browser may fire router.push() before the Set-Cookie
+      // header is committed to the browser jar, causing all pages to redirect
+      // to /onboarding after login.
       const res = await fetch('/api/akasha/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.trim().toLowerCase(), password }),
+        redirect: 'manual',
       });
+
+      if (res.type === 'opaqueredirect' || res.redirected) {
+        // 307 → browser set cookies, navigate manually to ensure they're sent.
+        const destination = res.url || `/${locale}/conta`;
+        window.location.href = destination;
+        return;
+      }
 
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as { error?: string };
@@ -31,11 +43,6 @@ export default function LoginClient({ locale }: Props) {
         setLoading(false);
         return;
       }
-
-      // Cookie akasha_session setado pelo server. Router refresh garante que
-      // layouts server-side (header, /conta) leem o cookie novo.
-      router.push(`/${locale}/conta`);
-      router.refresh();
     } catch {
       setError('Erro de rede. Verifique sua conexão.');
       setLoading(false);
@@ -58,53 +65,52 @@ export default function LoginClient({ locale }: Props) {
     <form
       onSubmit={handleSubmit}
       style={{
-        background: 'rgba(11, 14, 28, 0.7)',
-        border: '1px solid rgba(38, 48, 79, 0.8)',
-        borderRadius: '16px',
-        padding: '1.75rem',
-        backdropFilter: 'blur(8px)',
         display: 'flex',
         flexDirection: 'column',
-        gap: '1rem',
+        gap: '1.2rem',
+        width: '100%',
       }}
     >
       <label style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-        <span style={{ fontSize: '0.8125rem', color: '#A7AECF', fontWeight: 500 }}>Email</span>
+        <span style={{ fontSize: '0.875rem', color: '#8B92B5', fontWeight: 500 }}>
+          Email
+        </span>
         <input
           type="email"
-          required
-          autoComplete="email"
-          autoFocus
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="seu@email.com"
           style={inputStyle}
+          placeholder="seu@email.com"
+          required
+          autoComplete="email"
         />
       </label>
 
       <label style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-        <span style={{ fontSize: '0.8125rem', color: '#A7AECF', fontWeight: 500 }}>Senha</span>
+        <span style={{ fontSize: '0.875rem', color: '#8B92B5', fontWeight: 500 }}>
+          Senha
+        </span>
         <input
           type="password"
-          required
-          autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="••••••••"
           style={inputStyle}
+          placeholder="••••••••"
+          required
+          autoComplete="current-password"
         />
       </label>
 
       {error && (
         <div
-          role="alert"
           style={{
-            background: 'rgba(239, 68, 68, 0.12)',
-            border: '1px solid rgba(239, 68, 68, 0.3)',
+            background: 'rgba(239, 68, 68, 0.15)',
+            border: '1px solid rgba(239, 68, 68, 0.4)',
             borderRadius: '8px',
-            padding: '10px 12px',
+            padding: '0.75rem 1rem',
             color: '#FCA5A5',
-            fontSize: '0.8125rem',
+            fontSize: '0.875rem',
+            textAlign: 'center',
           }}
         >
           {error}
@@ -115,35 +121,41 @@ export default function LoginClient({ locale }: Props) {
         type="submit"
         disabled={loading}
         style={{
-          background: loading ? '#5A4FCC' : '#7C5CFF',
-          color: '#fff',
+          background: loading
+            ? 'rgba(124, 92, 255, 0.4)'
+            : 'linear-gradient(135deg, #7C5CFF 0%, #A78BFA 100%)',
           border: 'none',
           borderRadius: '10px',
-          padding: '12px 20px',
-          fontSize: '0.9375rem',
+          padding: '0.875rem',
+          color: '#fff',
+          fontSize: '1rem',
           fontWeight: 600,
-          cursor: loading ? 'wait' : 'pointer',
-          boxShadow: loading ? 'none' : '0 0 24px rgba(124,92,255,0.3)',
+          cursor: loading ? 'not-allowed' : 'pointer',
+          transition: 'all 0.2s ease',
+          fontFamily: 'inherit',
           marginTop: '0.25rem',
         }}
       >
-        {loading ? 'Entrando…' : 'Entrar'}
+        {loading ? 'Entrando...' : 'Entrar'}
       </button>
 
       <div
         style={{
           textAlign: 'center',
-          fontSize: '0.8125rem',
-          color: '#A7AECF',
-          marginTop: '0.5rem',
+          fontSize: '0.875rem',
+          color: '#5C6691',
         }}
       >
-        Ainda não tem conta?{' '}
+        Não tem conta?{' '}
         <Link
           href={`/${locale}/onboarding`}
-          style={{ color: '#9D86FF', textDecoration: 'none', fontWeight: 500 }}
+          style={{
+            color: '#A78BFA',
+            textDecoration: 'none',
+            fontWeight: 500,
+          }}
         >
-          Criar agora
+          Cadastre-se
         </Link>
       </div>
     </form>

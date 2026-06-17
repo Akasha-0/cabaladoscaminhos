@@ -286,10 +286,8 @@ export function sintetizarMapa(pilares: PilaresDados): CaixaSintese {
     // v2: narrativa profunda em vez de concatenação de frases curtas
     const synthes = gerarNarrativaDimensao(dimensao.id, pilares);
 
-    const aplicavel =
-      dimensao.id === 'trabalho' ||
-      dimensao.id === 'amor' ||
-      dimensao.id === 'proposito';
+    // Akasha Authority aplicável a todas as 8 dimensões
+    const aplicavel = true;
 
     dimensoes.push({
       dimensoesId: dimensao.id,

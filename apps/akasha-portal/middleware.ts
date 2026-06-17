@@ -78,7 +78,7 @@ const AKASHA_ACCESS_COOKIE = 'akasha_session';
 const AKASHA_REFRESH_COOKIE = 'akasha_refresh';
 
 function getCookiesFromResponseHeaders(headers: Headers): { name: string; value: string }[] {
-  const setCookieHeaders = headers.getAll('set-cookie');
+  const setCookieHeaders = headers.getSetCookie();
   return setCookieHeaders.map((header) => {
     const parts = header.split(';')[0].split('=');
     return { name: parts[0], value: parts.slice(1).join('=') };
@@ -103,7 +103,6 @@ async function authRefresh(request: NextRequest): Promise<{ name: string; value:
         cookie: `${AKASHA_REFRESH_COOKIE}=${refreshToken}`,
         'Content-Type': 'application/json',
       },
-      // @ts-expect-error Next.js 16 allows WebAPI-style Request/Response in Edge
     });
 
     if (!refreshResponse.ok) return null;

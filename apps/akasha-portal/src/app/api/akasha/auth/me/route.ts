@@ -17,9 +17,11 @@ export async function GET(request: NextRequest) {
       locale: true,
       pushEnabled: true,
       ichingEnabled: true,
+      birthDate: true,
+      birthTime: true,
+      birthCity: true,
     },
   });
-
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -32,6 +34,9 @@ export async function GET(request: NextRequest) {
     locale: user.locale,
     pushEnabled: user.pushEnabled,
     ichingEnabled: user.ichingEnabled,
+    birthDate: user.birthDate ? user.birthDate.toISOString().split('T')[0] : null,
+    birthTime: user.birthTime,
+    birthCity: user.birthCity,
   });
 }
 

@@ -1,65 +1,49 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from './akasha-jwt';
 import { prisma } from '@/lib/infrastructure/prisma';
-import { AKASHA_TOKEN_COOKIE, verifyAkashaToken } from './akasha-jwt';
 
-// ============================================================================
-// Helpers
-// ============================================================================
-
-async function loadAkashaUser(id: string) {
-  try {
-    return await prisma.user.findUnique({ where: { id } });
-  } catch (err) {
-    console.error('[akasha-guard] DB lookup failed', err);
-    return null;
-  }
-}
-async function resolveAkashaUser(request: NextRequest) {
-  const token = request.cookies.get(AKASHA_TOKEN_COOKIE)?.value ?? null;
-
-  if (!token) return null;
-
-  const payload = verifyAkashaToken(token, 'access');
-  if (!payload) return null;
-
-  return loadAkashaUser(payload.sub);
+export interface AkashaUser {
+  id: string;
+  email: string;
+  name: string;
 }
 
-// ============================================================================
-// Guards
-// ============================================================================
+function getCookie(request: NextRequest, name: string): string | undefined {
+  const cookie = request.cookies.get(name);
+  return cookie?.value;
+}
 
-/**
- * Route Handler (API): garante que há um AkashaUser autenticado.
- *
- * Retorna o usuário se autenticado, ou NextResponse 401 caso contrário.
- *
- *   const userOrResponse = await requireAkashaApi(request);
- *   if (userOrResponse instanceof NextResponse) return userOrResponse;
- *   const user = userOrResponse;
- */
 export async function requireAkashaApi(
-  request: NextRequest
-): Promise<{ id: string; email: string; name: string } | NextResponse> {
-  const user = await resolveAkashaUser(request);
-  if (!user) {
+  req: NextRequest
+): Promise<AkashaUser | NextResponse<{ error: string }>> {
+  const token = getCookie(req, AKASHA_TOKEN_COOKIE);
+  if (!token) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  return { id: user.id, email: user.email, name: user.name };
+
+  const payload = await verifyAkashaToken(token, 'access');
+  if (!payload) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: payload.sub },
+      select: { id: true, email: true, name: true },
+    });
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    return user as AkashaUser;
+  } catch {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
 }
 
-/**
- * Server Component / Server Action: garante que há um AkashaUser autenticado.
- *
- * Lança se não autenticado (para uso em page.tsx via redirect).
- * Para rotas de API prefira `requireAkashaApi`.
- */
-export async function requireAkashaUser(
-  request: NextRequest
-): Promise<{ id: string; email: string; name: string }> {
-  const user = await resolveAkashaUser(request);
-  if (!user) {
+export async function requireAkashaUser(req: NextRequest): Promise<AkashaUser> {
+  const result = await requireAkashaApi(req);
+  if (result instanceof NextResponse) {
     throw new Error('Unauthorized');
   }
-  return { id: user.id, email: user.email, name: user.name };
+  return result;
 }

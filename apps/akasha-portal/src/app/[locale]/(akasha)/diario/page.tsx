@@ -19,6 +19,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { SignificadoPilar } from '@/components/akasha/SignificadoPilar';
 import { TraducaoAreaPanel } from '@/components/akasha/TraducaoAreaPanel';
+import { ContinuarButton } from '@/components/akasha/ContinuarButton';
 import {
   significadosEspecificos,
   type Pilar,
@@ -209,7 +210,7 @@ const fonteStyle: React.CSSProperties = {
 const stubBadge: React.CSSProperties = {
   display: 'inline-block',
   marginLeft: 8,
-  fontSize: '0.55rem',
+  fontSize: '0.65rem',
   letterSpacing: '0.1em',
   padding: '2px 6px',
   borderRadius: 4,
@@ -363,7 +364,7 @@ export default async function DiarioPage({
       {/* ── Tela 1: O Mandato (3 frases) ─────────────────────────────────── */}
       <div style={screenStyle}>
         <div style={innerStyle}>
-        <div style={screenNumStyle}>01 / 04 — Mandato</div>
+        <div style={screenNumStyle}>01\u00A0/\u000505 — Mandato</div>
 
           {/* Cabeçalho: data + escala + intenção */}
           <div style={cardStyle(pilarInfo.cor)}>
@@ -476,7 +477,7 @@ export default async function DiarioPage({
       {/* Tela 2: A Pergunta do Dia */}
       <div style={screenStyle}>
         <div style={innerStyle}>
-          <div style={screenNumStyle}>02 / 04 — Pergunta</div>
+        <div style={screenNumStyle}>02\u00A0/\u000505 — Pergunta</div>
           <div style={cardStyle(C.violeta)}>
             <span style={labelStyle(C.violeta)}>
               A Pergunta do Dia <span style={stubBadge}>template (F-204: LLM)</span>
@@ -490,6 +491,27 @@ export default async function DiarioPage({
               da escala {mandato.escala}. A intenção de uma boa pergunta é abrir espaço de escuta —
               não de resposta apressada. Reserve 1 minuto para deixar a resposta emergir.
             </p>
+            <textarea
+              placeholder="Deixe sua reflexão emergir..."
+              style={{
+                width: '100%',
+                minHeight: 100,
+                marginTop: 12,
+                padding: '12px 14px',
+                borderRadius: 10,
+                background: 'rgba(124,92,255,0.06)',
+                border: '1px solid rgba(124,92,255,0.3)',
+                color: C.txtPri,
+                fontSize: '0.88rem',
+                fontFamily: 'var(--font-lora, serif)',
+                lineHeight: 1.6,
+                resize: 'vertical',
+                outline: 'none',
+                boxSizing: 'border-box',
+              }}
+              rows={4}
+            />
+            <ContinuarButton />
           </div>
           <div style={{ textAlign: 'center', marginTop: 24, color: C.txtMut, fontSize: '0.7rem' }}>
             role para baixo ↓
@@ -498,9 +520,9 @@ export default async function DiarioPage({
       </div>
 
       {/* Tela 3: O Micro-Ritual */}
-      <div style={screenStyle}>
+      <div id="tela-3" style={screenStyle}>
         <div style={innerStyle}>
-          <div style={screenNumStyle}>03 / 04 — Ritual</div>
+        <div style={screenNumStyle}>03\u00A0/\u000505 — Ritual</div>
           <div style={cardStyle(C.aurora)}>
             <span style={labelStyle(C.aurora)}>
               O Micro-Ritual <span style={stubBadge}>template (F-204: LLM)</span>
@@ -533,7 +555,7 @@ export default async function DiarioPage({
         return (
           <div style={screenStyle}>
             <div style={innerStyle}>
-              <div style={screenNumStyle}>04 / 05 — Significado</div>
+              <div style={screenNumStyle}>04\u00A0/\u000505 — Significado</div>
               <p style={{ ...bodyStyle, color: C.txtSec, marginBottom: 8 }}>
                 Cinco leituras, uma pessoa. Toque em cada Pilar para refletir.
               </p>
@@ -566,7 +588,7 @@ export default async function DiarioPage({
         return (
           <div style={screenStyle}>
             <div style={innerStyle}>
-              <div style={screenNumStyle}>05 / 05 — Para suas áreas</div>
+              <div style={screenNumStyle}>05\u00A0/\u000505 — Para suas áreas</div>
               <p style={{ ...bodyStyle, color: C.txtSec, marginBottom: 8 }}>
                 O Significado do Pilar principal traduzido para 8 áreas da sua vida.
                 Você vive em áreas — paz, saúde, relações, dinheiro, trabalho, propósito, criatividade, espiritualidade — e cada área pede uma leitura própria.

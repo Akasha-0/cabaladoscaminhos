@@ -99,11 +99,12 @@ export async function GET(request: NextRequest) {
       }
 
       // Calcular síntese do dia
+      // TODO(F-247): adicionar ichingHex ao BirthChart schema para ativar I Ching na síntese
       const content = buildDailyContent(
-        chart.astrologyMap as any,
-        chart.kabalisticMap as any,
-        chart.tantricMap as any,
-        chart.oduBirth as any,
+        chart.astrologyMap,
+        chart.kabalisticMap,
+        chart.tantricMap,
+        chart.oduBirth,
         today
       );
 

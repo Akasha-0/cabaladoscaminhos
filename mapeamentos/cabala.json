@@ -1,0 +1,199 @@
+{
+  "_meta": {
+    "version": "0.2.0",
+    "seeded": "2026-06-17",
+    "description": "Mapeamento de símbolos cabalísticos (Caminhos de Vida, Almas, Personas, etc.) para primitivos universais Akasha"
+  },
+  "Caminho de Vida 1": {
+    "primitivo": "Poder",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Tradição cabalística - número 1 representa iniziativa e liderança"
+  },
+  "Caminho de Vida 2": {
+    "primitivo": "Amor",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Tradição cabalística - número 2 representa dualidade, cooperação e receptividade"
+  },
+  "Caminho de Vida 3": {
+    "primitivo": "Expressao",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Tradição cabalística - número 3 representa expressão criativa e comunicação"
+  },
+  "Caminho de Vida 4": {
+    "primitivo": "Ordem",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Tradição cabalística - número 4 representa estrutura, trabalho e disciplina"
+  },
+  "Caminho de Vida 5": {
+    "primitivo": "Transformacao",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Tradição cabalística - número 5 representa mudança, liberdade e adaptação"
+  },
+  "Caminho de Vida 6": {
+    "primitivo": "Servico",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Tradição cabalística - número 6 representa responsabilidade, família e harmonia"
+  },
+  "Caminho de Vida 7": {
+    "primitivo": "Sabedoria",
+    "intensidade": 9,
+    "polaridade": "luz",
+    "fonte": "Tradição cabalística - número 7 representa busca espiritual e conhecimento intuitivo"
+  },
+  "Caminho de Vida 8": {
+    "primitivo": "Materializacao",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Tradição cabalística - número 8 representa poder, abundância e realização material"
+  },
+  "Caminho de Vida 9": {
+    "primitivo": "Conexao",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Tradição cabalística - número 9 representa compaixão, conclusão e sabedoria universal"
+  },
+  "Alma 1": {
+    "primitivo": "Poder",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Cabalística - Alma 1 representa vontade, iniciação e força interior"
+  },
+  "Alma 2": {
+    "primitivo": "Amor",
+    "intensidade": 9,
+    "polaridade": "luz",
+    "fonte": "Numerologia Cabalística - Alma 2 representa dualidade, receptividade e parceria"
+  },
+  "Alma 3": {
+    "primitivo": "Expressao",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Cabalística - Alma 3 representa expressão criativa e comunicação"
+  },
+  "Alma 4": {
+    "primitivo": "Ordem",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Cabalística - Alma 4 representa estrutura, estabilidade e trabalho"
+  },
+  "Alma 5": {
+    "primitivo": "Transformacao",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Cabalística - Alma 5 representa liberdade, mudança e adaptação"
+  },
+  "Alma 6": {
+    "primitivo": "Servico",
+    "intensidade": 7,
+    "polaridade": "luz",
+    "fonte": "Numerologia Cabalística - Alma 6 representa harmonia, responsabilidade e amor familiar"
+  },
+  "Alma 7": {
+    "primitivo": "Sabedoria",
+    "intensidade": 9,
+    "polaridade": "luz",
+    "fonte": "Numerologia Cabalística - Alma 7 representa busca espiritual e introspecção"
+  },
+  "Alma 8": {
+    "primitivo": "Materializacao",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Cabalística - Alma 8 representa poder, abundância e realização material"
+  },
+  "Alma 9": {
+    "primitivo": "Conexao",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Cabalística - Alma 9 representa compaixão, sabedoria universal e serviço humanitário"
+  },
+  "Destino 1": {
+    "primitivo": "Poder",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Cabalística - Destino 1 representa missão de vida e iniciação"
+  },
+  "Destino 2": {
+    "primitivo": "Amor",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Cabalística - Destino 2 representa propósito relacional e cooperação"
+  },
+  "Destino 3": {
+    "primitivo": "Expressao",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Cabalística - Destino 3 representa propósito criativo e comunicação"
+  },
+  "Destino 4": {
+    "primitivo": "Ordem",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Cabalística - Destino 4 representa propósito de estrutura e fundação"
+  },
+  "Destino 5": {
+    "primitivo": "Transformacao",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Cabalística - Destino 5 representa propósito de mudança e experiência"
+  },
+  "Destino 6": {
+    "primitivo": "Servico",
+    "intensidade": 7,
+    "polaridade": "luz",
+    "fonte": "Numerologia Cabalística - Destino 6 representa propósito de serviço e harmonia"
+  },
+  "Destino 7": {
+    "primitivo": "Sabedoria",
+    "intensidade": 9,
+    "polaridade": "luz",
+    "fonte": "Numerologia Cabalística - Destino 7 representa propósito espiritual e conhecimento"
+  },
+  "Destino 8": {
+    "primitivo": "Materializacao",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Cabalística - Destino 8 representa propósito de poder e realização"
+  },
+  "Destino 9": {
+    "primitivo": "Conexao",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Cabalística - Destino 9 representa propósito de compaixão e conclusão"
+  },
+  "Karma 1": {
+    "primitivo": "Poder",
+    "intensidade": 8,
+    "polaridade": "sombra",
+    "fonte": "Numerologia Cabalística - Karma 1 representa lição de liderança e soberania do eu"
+  },
+  "Karma 2": {
+    "primitivo": "Amor",
+    "intensidade": 8,
+    "polaridade": "sombra",
+    "fonte": "Numerologia Cabalística - Karma 2 representa lição de relacionamentos e dualidade"
+  },
+  "Karma 3": {
+    "primitivo": "Expressao",
+    "intensidade": 7,
+    "polaridade": "sombra",
+    "fonte": "Numerologia Cabalística - Karma 3 representa lição de expressão e comunicação criativa"
+  },
+  "Karma 4": {
+    "primitivo": "Ordem",
+    "intensidade": 7,
+    "polaridade": "sombra",
+    "fonte": "Numerologia Cabalística - Karma 4 representa lição de disciplina e trabalho árduo"
+  },
+  "Karma 5": {
+    "primitivo": "Transformacao",
+    "intensidade": 8,
+    "polaridade": "sombra",
+    "fonte": "Numerologia Cabalística - Karma 5 representa lição de liberdade e adaptação à mudança"
+  }
+}

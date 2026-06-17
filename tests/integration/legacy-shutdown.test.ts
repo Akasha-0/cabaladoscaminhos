@@ -14,7 +14,7 @@ import { describe, it, expect } from 'vitest';
  * NOTE: This is a STRUCTURAL check, not a runtime 404 check. Runtime 404
  * requires a running dev server, which is deferred to v0.0.4-T1 (monorepo).
  */
-const SRC_ROOT = join(process.cwd(), 'src');
+const SRC_ROOT = join(process.cwd(), 'apps/akasha-portal/src');
 const APP_DIR = join(SRC_ROOT, 'app');
 
 function dirExistsSafe(p: string): boolean {

@@ -106,9 +106,9 @@ export function DimensaoCard({ sintese, index }: DimensaoCardProps) {
           >
             {sintese.titulo}
           </h3>
-          {dimensao?.descricao && (
+          {sintese.descricao && (
             <p style={{ fontSize: '0.78rem', color: 'rgba(232,224,255,0.5)', margin: '3px 0 0', lineHeight: 1.3 }}>
-              {dimensao.descricao}
+              {sintese.descricao}
             </p>
           )}
         </div>
@@ -179,7 +179,7 @@ export function DimensaoCard({ sintese, index }: DimensaoCardProps) {
           {sintese.praktika && (
             <section>
               <h4 style={{ fontSize: '0.72rem', color: 'rgba(232,224,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
-                ▸ Prática de hoje
+                ▸ Prática permanente
               </h4>
               <p style={{ fontSize: '0.85rem', color: 'rgba(232,224,255,0.75)', lineHeight: 1.5, margin: 0 }}>
                 {sintese.praktika}
@@ -212,15 +212,50 @@ export function DimensaoCard({ sintese, index }: DimensaoCardProps) {
                 <Scale size={12} className="inline mr-1" style={{ color: 'rgba(255,200,80,0.7)' }} /> Akasha Authority
               </h4>
               <p style={{ fontSize: '0.83rem', color: 'rgba(255,220,150,0.85)', lineHeight: 1.5, margin: 0 }}>
-                Antes de decidir nesta área: pergunte — isso vem da sua paz interior ou da sua ansiedade?{' '}
-                Se ansiedade, <strong style={{ color: '#FFD080' }}>espere</strong>. Se paz,{' '}
-                <strong style={{ color: '#FFD080' }}>aja</strong>.
+                {(() => {
+                  const id = sintese.dimensoesId;
+                  const map: Record<string, string> = {
+                    saude: 'Na Saúde & Vitalidade: sua energia hoje vem de donde? Cuide do corpo com presença — não como tarefa.',
+                    trabalho: 'No Trabalho & Prosperidade: esta decisão reflete sua vocação ou apenas sua necessidade de aprovação? Aja desde o propósito.',
+                    amor: 'No Amor & Relacionamentos: este vínculo nutre sua alma ou alimenta sua carência? Escolha profundidade.',
+                    criacao: 'Na Criação & Expressão: sua arte vem de uma fome interior ou do medo de não ser visto? Crie desde o silêncio.',
+                    proposito: 'No Propósito & Destino: esta escolha aproxima você de quem veio ser? Confie no caminho — não na validação.',
+                    familia: 'Na Família & Ancestralidade: esta dinâmica repete um padrão antigo ou já é sua escolha adulta? Liberdade inclui dizer não.',
+                    espiritualidade: 'Na Espiritualidade & Transcendência: esta prática ancora você no presente ou foge dele? O divino habita na simplicidade.',
+                    superacao: 'Na Superação & Desafios: o que te desafia hoje é um師父 ou um espelho? Ambos pedem a mesma coisa: presença.',
+                  };
+                  return map[id] ?? 'Antes de decidir nesta área: pergunte — isso vem da sua paz interior ou da sua ansiedade? Se ansiedade, espere. Se paz, aja.';
+                })()}
                 {sintese.autoridadeAkasha.timing && (
                   <span style={{ display: 'block', marginTop: 4, opacity: 0.75 }}>
                     <Clock size={12} className="inline mr-1" /> {sintese.autoridadeAkasha.timing}
                   </span>
                 )}
               </p>
+            </section>
+          )}
+          {/* Pilares desta dimensão */}
+          {sintese.contribuicoes.length > 0 && (
+            <section>
+              <h4 style={{ fontSize: '0.72rem', color: 'rgba(232,224,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 8px' }}>
+                ▸ Pilares desta dimensão
+              </h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {sintese.contribuicoes.map((c) => {
+                  const nomePilar = { cabala: 'Cabala', astrologia: 'Astrologia', tantrica: 'Tântrica', odu: 'Ôdu', iching: 'I Ching' }[c.pilar] ?? c.pilar;
+                  const cor = c.nivel === 'primario' ? '#F0C060' : 'rgba(200,180,255,0.6)';
+                  return (
+                    <div key={c.pilar} style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                      <span style={{ fontSize: '0.7rem', fontWeight: 600, color: cor, minWidth: 72 }}>
+                        {nomePilar}
+                      </span>
+                      <span style={{ fontSize: '0.83rem', color: 'rgba(232,224,255,0.7)', lineHeight: 1.4 }}>
+                        {c.frase}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </section>
           )}
         </div>

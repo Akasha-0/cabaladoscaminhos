@@ -1,0 +1,151 @@
+{
+  "_meta": {
+    "version": "0.2.0",
+    "seeded": "2026-06-17",
+    "description": "Mapeamento de símbolos tântricos (Corpos, Chakras, Nadis, Gunas) para primitivos universais Akasha"
+  },
+  "Corpo 1 (Físico)": {
+    "primitivo": "Transformacao",
+    "intensidade": 6,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Tântrica - corpo 1 é o físico, presença incarnada"
+  },
+  "Corpo 2 (Emocional)": {
+    "primitivo": "Amor",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Tântrica - corpo 2 é o corpo emocional, sentir"
+  },
+  "Corpo 3 (Mental)": {
+    "primitivo": "Sabedoria",
+    "intensidade": 5,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Tântrica - corpo 3 é a mente concreta"
+  },
+  "Corpo 4 (Mente Negativa)": {
+    "primitivo": "Sabedoria",
+    "intensidade": 6,
+    "polaridade": "sombra",
+    "fonte": "Numerologia Tântrica - corpo 4 é a mente negativa, autocrítica"
+  },
+  "Corpo 5 (Mente Positiva)": {
+    "primitivo": "Expressao",
+    "intensidade": 8,
+    "polaridade": "luz",
+    "fonte": "Numerologia Tântrica - corpo 5 é a mente positiva, expandida"
+  },
+  "Corpo 6 (Vértex)": {
+    "primitivo": "Conexao",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Tântrica - corpo 6 é o vértex, centro espiritual"
+  },
+  "Corpo 7 (Alma)": {
+    "primitivo": "Sabedoria",
+    "intensidade": 9,
+    "polaridade": "luz",
+    "fonte": "Numerologia Tântrica - corpo 7 é a alma, consciência pura"
+  },
+  "Corpo 8 (Prana)": {
+    "primitivo": "Transformacao",
+    "intensidade": 10,
+    "polaridade": "luz",
+    "fonte": "Numerologia Tântrica - corpo 8 é prana, força vital e transformação"
+  },
+  "Corpo 9 (Siddi)": {
+    "primitivo": "Expansao",
+    "intensidade": 9,
+    "polaridade": "luz",
+    "fonte": "Numerologia Tântrica - corpo 9 são os siddis, poderes da alma"
+  },
+  "Alma 1": {
+    "primitivo": "Expressao",
+    "intensidade": 6,
+    "polaridade": "luz",
+    "fonte": "Numerologia Tântrica - alma 1 é expressão do Ser, individualização"
+  },
+  "Alma 2": {
+    "primitivo": "Amor",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Tântrica - alma 2 é receptividade, União, dualidade"
+  },
+  "Alma 3": {
+    "primitivo": "Expressao",
+    "intensidade": 7,
+    "polaridade": "luz",
+    "fonte": "Numerologia Tântrica - alma 3 é criatividade, comunicação"
+  },
+  "Alma 4": {
+    "primitivo": "Estabilidade",
+    "intensidade": 6,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Tântrica - alma 4 é estruturação, ordem, serviço"
+  },
+  "Alma 5": {
+    "primitivo": "Liberdade",
+    "intensidade": 8,
+    "polaridade": "luz",
+    "fonte": "Numerologia Tântrica - alma 5 é liberdade, expansão, mente livre"
+  },
+  "Karma 1": {
+    "primitivo": "Transformacao",
+    "intensidade": 7,
+    "polaridade": "sombra",
+    "fonte": "Numerologia Tântrica - karma 1 é transformação de padrões de ação"
+  },
+  "Karma 2": {
+    "primitivo": "Amor",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Tântrica - karma 2 é reconciliação emocional, entrega"
+  },
+  "Karma 3": {
+    "primitivo": "Expressao",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Tântrica - karma 3 é expressão criativa do propósito"
+  },
+  "Karma 4": {
+    "primitivo": "Estabilidade",
+    "intensidade": 6,
+    "polaridade": "sombra",
+    "fonte": "Numerologia Tântrica - karma 4 é restructureção de fundamentos"
+  },
+  "Karma 5": {
+    "primitivo": "Liberdade",
+    "intensidade": 8,
+    "polaridade": "luz",
+    "fonte": "Numerologia Tântrica - karma 5 é libertação de padrões limitados"
+  },
+  "Kundalini 1 (Muladhara)": {
+    "primitivo": "Transformacao",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Tântrica - muladhara é o chakra raiz, identidade física"
+  },
+  "Kundalini 2 (Svadhisthana)": {
+    "primitivo": "Amor",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Tântrica - svadhisthana é o chakra sacral, prazer e emoção"
+  },
+  "Kundalini 3 (Manipura)": {
+    "primitivo": "Poder",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Numerologia Tântrica - manipura é o chakra do plexo solar, poder pessoal"
+  },
+  "Kundalini 4 (Anahata)": {
+    "primitivo": "Amor",
+    "intensidade": 9,
+    "polaridade": "luz",
+    "fonte": "Numerologia Tântrica - anahata é o chakra cardíaco, amor incondicional"
+  },
+  "Kundalini 5 (Vishuddha)": {
+    "primitivo": "Expressao",
+    "intensidade": 8,
+    "polaridade": "luz",
+    "fonte": "Numerologia Tântrica - vishuddha é o chakra da garganta, comunicação"
+  }
+}

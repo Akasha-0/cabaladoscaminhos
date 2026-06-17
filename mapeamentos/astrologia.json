@@ -1,0 +1,130 @@
+{
+  "_meta": {
+    "version": "0.2.0",
+    "seeded": "2026-06-17",
+    "description": "Mapeamento de símbolos astrológicos (signos, planetas, casas, aspectos) para primitivos universais Akasha"
+  },
+
+  "Sol em Áries": {
+    "primitivo": "Poder",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Astrologia clássica - Áries é signo de iniciação e força vital"
+  },
+  "Sol em Touro": {
+    "primitivo": "Materializacao",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Astrologia - Touro é signo de estabilidade e valor"
+  },
+  "Sol em Gêmeos": {
+    "primitivo": "Expressao",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Astrologia - Gêmeos é signo de comunicação e curiosidade"
+  },
+  "Sol em Câncer": {
+    "primitivo": "Conexao",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Astrologia - Câncer é signo de vínculo e nutrição"
+  },
+  "Sol em Leão": {
+    "primitivo": "Poder",
+    "intensidade": 9,
+    "polaridade": "ambas",
+    "fonte": "Astrologia - Leão é signo de criatividade e destaque"
+  },
+  "Sol em Virgem": {
+    "primitivo": "Sabedoria",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Astrologia - Virgem é signo de análise e serviço"
+  },
+  "Sol em Libra": {
+    "primitivo": "Amor",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Astrologia - Libra é signo de equilíbrio e relacionamentos"
+  },
+  "Sol em Escorpião": {
+    "primitivo": "Transformacao",
+    "intensidade": 9,
+    "polaridade": "ambas",
+    "fonte": "Astrologia - Escorpião é signo de transformação profunda"
+  },
+  "Sol em Sagitário": {
+    "primitivo": "Expansao",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Astrologia - Sagitário é signo de expansão e propósito"
+  },
+  "Sol em Capricórnio": {
+    "primitivo": "Ordem",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Astrologia - Capricórnio é signo de disciplina e ambição"
+  },
+  "Sol em Aquário": {
+    "primitivo": "Expressao",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Astrologia - Aquário é signo de originalidade e inovação"
+  },
+  "Sol em Peixes": {
+    "primitivo": "Conexao",
+    "intensidade": 9,
+    "polaridade": "luz",
+    "fonte": "Astrologia - Peixes é signo de transcendência e compaixão"
+  },
+
+  "Lua em Câncer": {
+    "primitivo": "Conexao",
+    "intensidade": 8,
+    "polaridade": "luz",
+    "fonte": "Astrologia - Lua em Câncer indica profunda conexão emocional e familiar"
+  },
+  "Lua em Touro": {
+    "primitivo": "Materializacao",
+    "intensidade": 7,
+    "polaridade": "luz",
+    "fonte": "Astrologia - Lua em Touro indica necessidade de segurança material e sensorial"
+  },
+  "Lua em Escorpião": {
+    "primitivo": "Transformacao",
+    "intensidade": 9,
+    "polaridade": "ambas",
+    "fonte": "Astrologia - Lua em Escorpião indica emoções intensas e busca por verdade oculta"
+  },
+  "Lua em Peixes": {
+    "primitivo": "Conexao",
+    "intensidade": 9,
+    "polaridade": "luz",
+    "fonte": "Astrologia - Lua em Peixes indica sensibilidade espiritual e empatia profunda"
+  },
+
+  "Ascendente em Áries": {
+    "primitivo": "Poder",
+    "intensidade": 7,
+    "polaridade": "ambas",
+    "fonte": "Astrologia - Ascendente em Áries projeta energia de iniciativa e coragem"
+  },
+  "Ascendente em Câncer": {
+    "primitivo": "Conexao",
+    "intensidade": 8,
+    "polaridade": "luz",
+    "fonte": "Astrologia - Ascendente em Câncer projeta presença protetora e acolhedora"
+  },
+  "Ascendente em Libra": {
+    "primitivo": "Amor",
+    "intensidade": 8,
+    "polaridade": "ambas",
+    "fonte": "Astrologia - Ascendente em Libra projeta charme, diplomaticidade e busca por harmonia"
+  },
+  "Ascendente em Escorpião": {
+    "primitivo": "Transformacao",
+    "intensidade": 9,
+    "polaridade": "ambas",
+    "fonte": "Astrologia - Ascendente em Escorpião projeta intensidade e mistério magnético"
+  }
+}
