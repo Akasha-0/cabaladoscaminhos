@@ -21,6 +21,8 @@ export interface DimensaoCardProps {
   sintese: DimensaoSintese;
   /** Index para animação de entrada escalonada */
   index: number;
+  /** Locale para strings internacionalizadas (pt | en | es) */
+  locale?: string;
 }
 
 // ─── Markdown-like renderer ────────────────────────────────────────────────

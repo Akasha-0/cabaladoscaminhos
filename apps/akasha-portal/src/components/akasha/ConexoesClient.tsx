@@ -5,8 +5,8 @@
  * Wired to POST /api/akasha/conexoes and GET /api/akasha/conexoes
  */
 
-import { useState, useId } from 'react';
-import { Heart, ArrowLeft, Loader, Bookmark, Info, Edit3, X, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { Heart, ArrowLeft, Loader, Bookmark, Info, Edit3, X } from 'lucide-react';
 import { CityAutocomplete } from '@/components/ui/city-autocomplete';
 import type { CityResult } from '@/components/ui/city-autocomplete';
 
@@ -31,6 +31,12 @@ interface RawBirthData {
   birthCity: string;
 }
 
+interface NarrativeBlock {
+  topic: string;
+  label: string;
+  text: string;
+}
+
 interface ConexaoResult {
   romantic: number;
   partnership: number;
@@ -39,7 +45,7 @@ interface ConexaoResult {
   dimensions: ConnectionDimension[];
   oduSync: OduSync;
   bodySync: BodySync;
-  narrative: string;
+  narrative: NarrativeBlock[];
   recommendations: string[];
 }
 
@@ -223,7 +229,7 @@ export default function ConexoesClient({ userProfile }: Props) {
           dimensions: [],
           oduSync: { score: 0, sharedOdu: false, complementaryOdu: false, description: '' },
           bodySync: { score: 0, description: '' },
-          narrative: '',
+          narrative: [],
           recommendations: [],
         });
       }
@@ -576,7 +582,7 @@ export default function ConexoesClient({ userProfile }: Props) {
                 Conexão com {rawData.name}
               </p>
               <div className="space-y-3">
-                {(Array.isArray(result.narrative) ? result.narrative : [{ topic: 'narrative', label: '', text: result.narrative }] as typeof result.narrative).map((block: typeof result.narrative[number] & { text: string }, blockIdx: number) => {
+                {result.narrative.map((block, blockIdx) => {
                   const sentences = block.text.split(/(?<=[.!?])\s+(?=[A-ZÓÇÃÂÊÔ])/).filter(Boolean);
                   return (
                     <div key={blockIdx}>
