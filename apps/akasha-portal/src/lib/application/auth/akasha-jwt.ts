@@ -56,7 +56,7 @@ function cookieOptions(opts: {
 function clearCookieOptions(): Record<string, unknown> {
   return {
     httpOnly: true,
-    sameSite: 'lax' as const,
+    sameSite: 'strict' as const,
     path: '/',
     secure: process.env.NODE_ENV === 'production',
     maxAge: 0,
@@ -140,10 +140,13 @@ export function setAkashaSessionCookie(response: CookieResponse, token: string):
 }
 
 export function setAkashaRefreshCookie(response: CookieResponse, token: string): void {
+  // sameSite: 'lax' is intentional — refresh token must be sent with POST
+  // redirect from Edge middleware to /auth/refresh on same origin.
+  // Strict would block the redirect POST, breaking token refresh.
   response.cookies.set(
     AKASHA_REFRESH_COOKIE,
     token,
-    cookieOptions({ maxAge: AKASHA_REFRESH_TTL_SECONDS })
+    cookieOptions({ maxAge: AKASHA_REFRESH_TTL_SECONDS, sameSite: 'lax' })
   );
 }
 
