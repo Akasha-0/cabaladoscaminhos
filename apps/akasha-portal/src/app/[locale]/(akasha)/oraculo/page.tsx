@@ -24,6 +24,25 @@ function getPillarColor(pillar: string): string {
   return PILLAR_COLORS[pillar] ?? '#A7AECF';
 }
 
+/** Renders common markdown (bold, italic, paragraphs) as React nodes — no library needed */
+function renderOracleText(text: string): React.ReactNode[] {
+  if (!text) return [];
+  return text.split(/
+{2,}/).map((para, i) => {
+    // Process inline markdown: **bold** and *italic*
+    const processed = para.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/).map((segment, j) => {
+      if (segment.startsWith('**') && segment.endsWith('**')) {
+        return <strong key={j} style={{ color: '#2DD4BF', fontWeight: 600 }}>{segment.slice(2, -2)}</strong>;
+      }
+      if (segment.startsWith('*') && segment.endsWith('*')) {
+        return <em key={j} style={{ color: '#A7AECF' }}>{segment.slice(1, -1)}</em>;
+      }
+      return segment;
+    });
+    return <p key={i} style={{ margin: '0 0 0.75em 0', lineHeight: 1.7 }}>{processed}</p>;
+  });
+}
+
 export default function OraculoPage() {
   const [messages, setMessages] = useState<OracleMessage[]>([]);
   const [input, setInput] = useState('');
@@ -383,7 +402,7 @@ export default function OraculoPage() {
                   <style>{`@keyframes oraclePulse { 0%, 60%, 100% { opacity: 0.3; transform: scale(0.8); } 30% { opacity: 1; transform: scale(1); } }`}</style>
                 </span>
               ) : (
-                <span style={{ verticalAlign: 'middle' }}>{msg.content}</span>
+                <div style={{ verticalAlign: 'middle' }}>{renderOracleText(msg.content)}</div>
               )}
             </div>
 
@@ -464,7 +483,7 @@ export default function OraculoPage() {
             }
           }}
           disabled={loading}
-          placeholder="Descreva sua situação ou faça uma pergunta…"
+          placeholder="Descreva sua situação ou pergunta (Shift+Enter = quebra de linha)…"
           rows={3}
           style={{
             width: '100%',

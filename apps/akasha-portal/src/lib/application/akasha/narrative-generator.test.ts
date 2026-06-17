@@ -11,6 +11,7 @@
 
 import { describe, it, expect } from 'vitest';
 import type { KabalisticMap, AstrologyMap, TantricMap, OduBirth } from '@akasha/types';
+import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
 import {
   LIFE_AREA_LABELS,
   generateAreaNarrativeFull,
@@ -74,6 +75,7 @@ describe('generateAreaNarrativeFull', () => {
       makeAstrologyMap(),
       makeTantricMap(),
       makeOduBirth(),
+      null,
     );
 
     expect(result.cabalaNarrative).toBeTruthy();
@@ -89,6 +91,7 @@ describe('generateAreaNarrativeFull', () => {
   it('handles null inputs across all 4 pillars (empty/edge case)', () => {
     const result = generateAreaNarrativeFull(
       'desafiosSombras',
+      null,
       null,
       null,
       null,
@@ -113,8 +116,8 @@ describe('generateAreaNarrativeFull', () => {
       makeAstrologyMap(),
       makeTantricMap(),
       makeOduBirth(),
+      null,
     );
-
     // Master number 11 should produce narrative — at minimum non-empty
     expect(result.cabalaNarrative).toBeTruthy();
     expect(result.cabalaNarrative.length).toBeGreaterThan(10);
@@ -130,8 +133,8 @@ describe('generateAllAreaNarratives', () => {
       makeAstrologyMap(),
       makeTantricMap(),
       makeOduBirth(),
+      null,
     );
-
     const labelKeys = Object.keys(LIFE_AREA_LABELS);
     expect(Object.keys(result).sort()).toEqual(labelKeys.sort());
     expect(labelKeys.length).toBeGreaterThan(0);
@@ -144,8 +147,7 @@ describe('generateAllAreaNarratives', () => {
   });
 
   it('handles all null inputs and still returns all 6 areas (edge case)', () => {
-    const result = generateAllAreaNarratives(null, null, null, null);
-
+    const result = generateAllAreaNarratives(null, null, null, null, null);
     const labelKeys = Object.keys(LIFE_AREA_LABELS);
     expect(Object.keys(result).sort()).toEqual(labelKeys.sort());
     for (const area of labelKeys) {

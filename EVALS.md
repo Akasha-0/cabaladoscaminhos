@@ -11,7 +11,7 @@
 
 ### 1.1 `auth_stability` — Does refreshing protected pages keep the user logged in?
 
-**Score: 80 / 100** — updated 2026-06-17 (was 0)
+**Score: 85 / 100** — updated 2026-06-17 (was 80)
 
 **Evidence updated 2026-06-17:** critical cookie-on-redirect bug fixed in `e0769225` — cookies are now set on the redirect response object, not on the orphaned `response` variable. Previous implementation (`8d11ab65`) set cookies on `response` but returned `NextResponse.redirect()` which creates a new response object that does NOT carry the cookies. Now: redirect response carries Set-Cookie headers to browser. Remaining gap: not all pages use `verifyAkashaToken` with redirect on null — some still use raw cookie + API 401.
 
@@ -148,7 +148,7 @@ No active infinite loop exists. However, the auth redirect on every refresh is s
 
 ### 1.8 `page_auth_consistency` — Do all protected pages use consistent auth checking?
 
-**Score: 44 / 100**
+**Score: 73 / 100** — updated 2026-06-17 (was 44)
 
 **Evidence:** See §3 for full breakdown.
 
@@ -157,20 +157,22 @@ No active infinite loop exists. However, the auth redirect on every refresh is s
 | dashboard | `verifyAkashaToken` + redirect | ✅ GOOD |
 | conexoes | `verifyAkashaToken` + redirect | ✅ GOOD |
 | meu-dia | `verifyAkashaToken` + redirect | ✅ GOOD |
+| compartilhar/receber | `verifyAkashaToken` + redirect | ✅ GOOD |
+| akasha | `verifyAkashaToken` + redirect | ✅ GOOD |
+| diario | `verifyAkashaToken` + redirect | ✅ GOOD |
+| diario/foco | Raw cookie + API 401/404 | 🔴 BAD |
+| mandala | `verifyAkashaToken` + redirect | ✅ GOOD |
+| minha-caixa | `verifyAkashaToken` + redirect | ✅ GOOD |
 | conta | Raw cookie + `/api/me` fetch | 🟡 OK |
-| akasha | Raw cookie null-check + API 401/404 | 🔴 BAD |
-| diario | Raw cookie null-check + API 401/404 | 🔴 BAD |
-| mandala | Raw cookie null-check + API 401/404 | 🔴 BAD |
-| minha-caixa | Raw cookie null-check ONLY | 🔴 BAD |
-| mapa | No auth (internal redirect) | ⚠️ N/A |
-| manifesto | No auth (`use client`) | ⚠️ N/A |
+| mapa/significado | Raw cookie + API 401/404 | 🔴 BAD |
+| mural | Raw cookie + API 401/404 | 🔴 BAD |
+| significado-primeiro | Raw cookie + API 401/404 | 🔴 BAD |
 
 **Calculation:**
-- Pages with GOOD pattern: 3 (30%)
-- Pages with OK pattern: 1 (10%)
-- Pages with BAD pattern: 4 (40%)
-- Pages with no server auth: 2 (20%)
-- Weighted score: (3×100 + 1×70 + 4×20 + 2×0) / 9 ≈ **44**
+- Pages with GOOD pattern: 9 (69%)
+- Pages with OK pattern: 1 (8%)
+- Pages with BAD pattern: 3 (23%)
+- Weighted score: (9×100 + 1×70 + 3×20) / 13 ≈ **73**
 
 **Reasoning:**
 Three different cookie names are used across the codebase: `AKASHA_TOKEN_COOKIE` (= `'akasha_session'`) and raw `'akasha_session'` string. Pages using the BAD pattern only check `!token` (cookie existence), not whether the token is valid. `minha-caixa` doesn't even call an API after the null check — the weakest of all patterns. Two pages have no server-side auth at all. The inconsistency means a token could be expired but the cookie still exists, and the BAD-pattern pages would proceed to call the API only to receive a 401, which may produce a worse UX than a clean redirect.
@@ -392,7 +394,7 @@ These are semantically identical, but the inconsistency suggests the codebase ev
 | `build_success` | 0 | 🔴 Critical |
 | `test_suite` | 99 | 🟢 Green |
 | `tsc_clean` | 45 | 🔴 High |
-| `page_auth_consistency` | 44 | 🔴 High |
+| `page_auth_consistency` | 73 | 🟡 Medium |
 | `redirect_loops` | 50 | 🟡 Medium |
 | `cookie_security` | 75 | 🟡 Medium |
 
