@@ -825,3 +825,23 @@ export { getLifeAreasByPlanet, getLifeAreasByHouse, getLifeAreasByOdu, getLifeAr
 // RE-EXPORTS from order helper
 // ============================================================
 export { LIFE_AREA_ORDER, getLifeAreaOrderIndex, sortLifeAreasByOrder } from './life-areas-order';
+
+// ============================================================
+// RE-EXPORTS from transformations helper
+// ============================================================
+export {
+  getAllKeywords,
+  getKeywordsUnion,
+  getQuestions,
+  getPractices,
+  getAffirmations,
+  getCrystals,
+  getAllPractices,
+  getAllAffirmations,
+  getAllCrystals,
+  getLifeAreasSummary,
+  isComplete,
+  getMissingFields,
+  getIncompleteAreas,
+  searchContent,
+} from './transformations';
