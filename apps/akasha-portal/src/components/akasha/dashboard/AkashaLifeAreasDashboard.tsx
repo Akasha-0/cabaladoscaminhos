@@ -333,7 +333,7 @@ function SexualidadeSection({ sexualidade }: { sexualidade: SexualidadeUI }) {
         className="flex items-center gap-2 w-full"
       >
         <span className="text-xs font-semibold text-[#FF2D55]/90 uppercase tracking-wider">Sexualidade</span>
-        <span className="text-xs text-white/30 ml-auto">{showDetails ? '▲' : '▼'}</span>
+        <ChevronDown size={14} className="text-white/30" style={{ transform: showDetails ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
       </button>
       {showDetails && (
         <div className="mt-2 space-y-2">
