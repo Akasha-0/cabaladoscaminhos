@@ -31,18 +31,24 @@ export default async function LocalizedDashboardPage({ params }: DashboardPagePr
   // When authStatus === 'refreshed', middleware just ran /auth/refresh and the
   // new access token is already in the cookie. We do a decode-only (no crypto verify)
   // to extract userId for Prisma queries — trust the refreshed cookie.
-  let payload: { sub: string } | null = null;
+  let payload: { sub: string; email?: string } | null = null;
   if (authStatus === 'refreshed') {
-    // Lightweight decode: extract sub without crypto verification.
+    // Lightweight decode: extract sub + email without crypto verification.
     // Middleware already verified this token when setting X-Akasha-Auth: refreshed.
+    // Using email prefix for greeting fallback when user.name is null in DB.
     try {
-      const decoded = JSON.parse(Buffer.from(token?.split('.')[1] ?? '', 'base64').toString('utf8')) as { sub?: string };
-      payload = decoded?.sub ? { sub: decoded.sub } : null;
+      const decoded = JSON.parse(Buffer.from(token?.split('.')[1] ?? '', 'base64').toString('utf8')) as { sub?: string; email?: string };
+      payload = decoded?.sub ? { sub: decoded.sub, email: decoded.email } : null;
     } catch {
       payload = null;
     }
   } else {
-    payload = verifyAkashaToken(token, 'access');
+    const verified = verifyAkashaToken(token, 'access');
+    if (verified) {
+      payload = { sub: verified.sub, email: verified.email };
+    } else {
+      payload = null;
+    }
   }
 
   if (!payload) redirect(`/${locale}/login`);
@@ -80,7 +86,7 @@ export default async function LocalizedDashboardPage({ params }: DashboardPagePr
   return (
     <Dashboard
       userId={payload.sub}
-      userName={user?.name ?? 'Viajante'}
+      userName={user?.name ?? (payload?.email ? payload.email.split('@')[0] : 'Viajante')}
       initialPilares={initialPilares}
       locale={locale}
     />
