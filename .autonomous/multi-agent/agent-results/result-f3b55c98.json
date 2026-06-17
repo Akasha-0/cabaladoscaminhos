@@ -1,7 +1,0 @@
-{
-  "agent_id": "f3b55c98",
-  "type": "large_file",
-  "success": false,
-  "message": "Agent f3b55c98 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
-  "exit_code": 1
-}

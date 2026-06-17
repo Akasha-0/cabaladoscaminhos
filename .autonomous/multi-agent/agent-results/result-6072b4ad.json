@@ -1,7 +1,0 @@
-{
-  "agent_id": "6072b4ad",
-  "type": "large_file",
-  "success": false,
-  "message": "Agent 6072b4ad failed: API Error: Unable to connect to API (ConnectionRefused)\n",
-  "exit_code": 1
-}

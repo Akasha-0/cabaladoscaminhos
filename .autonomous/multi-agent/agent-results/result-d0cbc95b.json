@@ -1,7 +1,0 @@
-{
-  "agent_id": "d0cbc95b",
-  "type": "large_file",
-  "success": false,
-  "message": "Agent d0cbc95b failed: API Error: Unable to connect to API (ConnectionRefused)\n",
-  "exit_code": 1
-}

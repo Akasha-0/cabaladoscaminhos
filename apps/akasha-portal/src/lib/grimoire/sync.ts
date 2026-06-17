@@ -13,7 +13,7 @@ export interface SyncResult {
 /**
  * Sincroniza o Grimório (Markdown → embeddings → pgvector)
  */
-export async function syncGrimoire(options?: SyncOptions): Promise<SyncResult> {
+export async function syncGrimoire(_options?: object): Promise<SyncResult> {
   const baseDir = path.resolve(process.cwd(), 'grimoire');
   const warnings: string[] = [];
 

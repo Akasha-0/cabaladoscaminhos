@@ -1,7 +1,0 @@
-{
-  "agent_id": "6c92e540",
-  "type": "large_file",
-  "success": false,
-  "message": "Agent 6c92e540 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
-  "exit_code": 1
-}

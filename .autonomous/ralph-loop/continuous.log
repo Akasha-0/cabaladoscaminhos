@@ -568,3 +568,37 @@ subprocess.TimeoutExpired: Command '['pnpm', '--filter', 'akasha-portal', 'typec
 [2026-06-16T23:50:38Z] [2026-06-16T23:50:38Z]   → QA results: typecheck=❌ tests=❌ lint=✅
 [2026-06-16T23:50:38Z] [2026-06-16T23:50:38Z]   → QA failed — will retry next iteration
 [2026-06-16T23:50:38Z]   done | phase=QA | ver=0.12.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:51:55Z] [2026-06-16T23:51:55Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:51:55Z] [2026-06-16T23:51:55Z]   → QA failed — will retry next iteration
+[2026-06-16T23:51:55Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:53:20Z] [2026-06-16T23:53:20Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:53:20Z] [2026-06-16T23:53:20Z]   → QA failed — will retry next iteration
+[2026-06-16T23:53:20Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:54:31Z] [2026-06-16T23:54:31Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:54:31Z] [2026-06-16T23:54:31Z]   → QA failed — will retry next iteration
+[2026-06-16T23:54:31Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:54:31Z] ❤️  Ralph iter=170 phase=QA errors=182
+[2026-06-16T23:55:27Z] [2026-06-16T23:55:27Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:55:27Z] [2026-06-16T23:55:27Z]   → QA failed — will retry next iteration
+[2026-06-16T23:55:27Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:56:26Z] [2026-06-16T23:56:26Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:56:26Z] [2026-06-16T23:56:26Z]   → QA failed — will retry next iteration
+[2026-06-16T23:56:26Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:57:05Z] [2026-06-16T23:57:05Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:57:05Z] [2026-06-16T23:57:05Z]   → QA failed — will retry next iteration
+[2026-06-16T23:57:05Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:57:44Z] [2026-06-16T23:57:44Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:57:44Z] [2026-06-16T23:57:44Z]   → QA failed — will retry next iteration
+[2026-06-16T23:57:44Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:58:23Z] [2026-06-16T23:58:23Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:58:23Z] [2026-06-16T23:58:23Z]   → QA failed — will retry next iteration
+[2026-06-16T23:58:23Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:59:00Z] [2026-06-16T23:59:00Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:59:00Z] [2026-06-16T23:59:00Z]   → QA failed — will retry next iteration
+[2026-06-16T23:59:00Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-16T23:59:46Z] [2026-06-16T23:59:45Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-16T23:59:46Z] [2026-06-16T23:59:45Z]   → QA failed — will retry next iteration
+[2026-06-16T23:59:46Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens
+[2026-06-17T00:01:08Z] [2026-06-17T00:01:08Z]   → QA results: typecheck=❌ tests=❌ lint=✅
+[2026-06-17T00:01:08Z] [2026-06-17T00:01:08Z]   → QA failed — will retry next iteration
+[2026-06-17T00:01:08Z]   done | phase=QA | ver=0.13.1 | findings=1 | cg_queries=1 | headroom_saved=0 tokens

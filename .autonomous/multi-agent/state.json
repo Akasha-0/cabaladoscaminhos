@@ -1,11 +1,11 @@
 {
-  "phase": "RELEASE",
-  "iteration": 51,
+  "phase": "QA",
+  "iteration": 52,
   "current_features": [
     "missing_tests",
     "large_file"
   ],
-  "retry_count": 27,
+  "retry_count": 2,
   "running": true,
   "daemon_pid": 953492,
   "phase_iteration": 0

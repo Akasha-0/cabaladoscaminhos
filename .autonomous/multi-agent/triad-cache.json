@@ -3,6 +3,8 @@
     "typecheck": {
       "pass": false,
       "errors": [
+        "apps/akasha-portal/src/lib/application/auth/akasha-guard.test.ts(26,59): error TS2345: Argument of type '{ id: string; email: string; name: string; }' is not assignable to parameter of type '{ id: string; email: string; emailVerified: boolean; passwordHash: string | null; name: string; locale: string; role: UserRole; birthDate: Date | null; birthTime: string | null; ... 10 more ...; updatedAt: Date; }'.",
+        "apps/akasha-portal/src/lib/application/auth/akasha-guard.test.ts(68,59): error TS2345: Argument of type '{ id: string; email: string; name: string; }' is not assignable to parameter of type '{ id: string; email: string; emailVerified: boolean; passwordHash: string | null; name: string; locale: string; role: UserRole; birthDate: Date | null; birthTime: string | null; ... 10 more ...; updatedAt: Date; }'.",
         "apps/akasha-portal/src/lib/grimoire/sync.ts(16,46): error TS2304: Cannot find name 'SyncOptions'."
       ]
     },
@@ -12,10 +14,10 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1663,
-      "failed": 222
+      "passed": 1672,
+      "failed": 219
     }
   },
-  "git_head": "3057973ae9b35cce86db52be3b53de4faf82f6a4",
-  "cached_at": 1781653904.8181586
+  "git_head": "9537ec149f9b4b4ebb59258d3f86128ee2354af5",
+  "cached_at": 1781654601.1839948
 }

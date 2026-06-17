@@ -1,5 +1,5 @@
 {
-  "iteration": 65,
+  "iteration": 66,
   "learnings": [
     {
       "ts": "2026-06-15T23:25:37.276925+00:00",
@@ -837,16 +837,82 @@
       "outcome": "success",
       "summary": "Agent ee994ee3 completed missing_tests",
       "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:54:39.889611+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent ccc3d126 failed: API Error: The socket connection was closed unexpectedly. For more information, pass `verbose: true` in the second argument to fetch()\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:54:39.889659+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "missing_tests",
+      "outcome": "failure",
+      "summary": "Agent 9cf645be failed: API Error: The socket connection was closed unexpectedly. For more information, pass `verbose: true` in the second argument to fetch()\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:56:10.181117+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 2 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:59:16.107419+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 79b0b9ba failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:59:16.107471+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "missing_tests",
+      "outcome": "failure",
+      "summary": "Agent 7372f36f failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-17T00:03:04.325376+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 2 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-17T00:06:11.340244+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 5ce2f00e failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-17T00:06:11.340282+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "missing_tests",
+      "outcome": "failure",
+      "summary": "Agent 2a427cf7 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
     }
   ],
   "task_history": [],
   "context_window": [
-    {
-      "ts": "2026-06-16T19:04:40.625313+00:00",
-      "improvement": "large_file",
-      "version": "0.34.0",
-      "agents": 0
-    },
     {
       "ts": "2026-06-16T19:09:02.399706+00:00",
       "improvement": "large_file",
@@ -960,6 +1026,13 @@
       "improvement": "missing_tests, large_file",
       "version": "0.54.0",
       "agents": 1
+    },
+    {
+      "ts": "2026-06-16T23:51:47.558604+00:00",
+      "improvement": "missing_tests, large_file",
+      "version": "0.13.1",
+      "agents": 2,
+      "triad_green": false
     }
   ],
   "decisions": [
@@ -1626,8 +1699,8 @@
     }
   ],
   "error_patterns": {
-    "b55c038d": 4,
-    "f2d048e4": 30,
+    "b55c038d": 7,
+    "f2d048e4": 33,
     "d92babc3": 1
   },
   "success_patterns": {
@@ -1637,36 +1710,6 @@
     "f2d048e4": 6
   },
   "recent_decisions": [
-    {
-      "ts": "2026-06-16T23:10:28.909427+00:00",
-      "type": "large_file",
-      "description": "26 oversized files"
-    },
-    {
-      "ts": "2026-06-16T23:14:52.731864+00:00",
-      "type": "large_file",
-      "description": "26 oversized files"
-    },
-    {
-      "ts": "2026-06-16T23:20:02.599593+00:00",
-      "type": "large_file",
-      "description": "26 oversized files"
-    },
-    {
-      "ts": "2026-06-16T23:24:17.205546+00:00",
-      "type": "large_file",
-      "description": "26 oversized files"
-    },
-    {
-      "ts": "2026-06-16T23:28:47.615039+00:00",
-      "type": "large_file",
-      "description": "26 oversized files"
-    },
-    {
-      "ts": "2026-06-16T23:33:21.818992+00:00",
-      "type": "large_file",
-      "description": "26 oversized files"
-    },
     {
       "ts": "2026-06-16T23:37:44.123026+00:00",
       "type": "large_file",
@@ -1684,6 +1727,36 @@
     },
     {
       "ts": "2026-06-16T23:48:34.421368+00:00",
+      "type": "large_file",
+      "description": "26 oversized files"
+    },
+    {
+      "ts": "2026-06-16T23:53:16.463343+00:00",
+      "type": "missing_tests",
+      "description": "15 changed files lack tests"
+    },
+    {
+      "ts": "2026-06-16T23:53:16.463463+00:00",
+      "type": "large_file",
+      "description": "26 oversized files"
+    },
+    {
+      "ts": "2026-06-16T23:56:11.814459+00:00",
+      "type": "missing_tests",
+      "description": "15 changed files lack tests"
+    },
+    {
+      "ts": "2026-06-16T23:56:11.814492+00:00",
+      "type": "large_file",
+      "description": "26 oversized files"
+    },
+    {
+      "ts": "2026-06-17T00:03:06.595151+00:00",
+      "type": "missing_tests",
+      "description": "1 changed files lack tests"
+    },
+    {
+      "ts": "2026-06-17T00:03:06.598589+00:00",
       "type": "large_file",
       "description": "26 oversized files"
     }

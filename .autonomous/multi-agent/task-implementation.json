@@ -5,7 +5,7 @@
       "priority": 6,
       "description": "1 changed files lack tests",
       "files": [
-        "tests/lib/grimoire/sync.test.ts"
+        "tests/lib/grimoire/search.test.ts"
       ]
     },
     {
@@ -28,5 +28,5 @@
       ]
     }
   ],
-  "iteration": 51
+  "iteration": 52
 }

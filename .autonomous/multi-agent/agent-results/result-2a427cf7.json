@@ -1,0 +1,7 @@
+{
+  "agent_id": "2a427cf7",
+  "type": "missing_tests",
+  "success": false,
+  "message": "Agent 2a427cf7 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+  "exit_code": 1
+}

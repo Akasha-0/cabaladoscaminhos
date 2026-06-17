@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T23:51:46.828781+00:00",
-  "version": "0.55.0",
+  "generated_at": "2026-06-17T00:06:11.846981+00:00",
+  "version": "0.13.1",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -1041,22 +1041,30 @@
       "- [~] **PLN-051[1]** — large_file | 26 oversized files",
       "- [~] **PLN-051[1]** — missing_tests | 1 changed files lack tests",
       "- [~] **PLN-051[2]** — large_file | 26 oversized files",
+      "- [~] **PLN-052[1]** — missing_tests | 15 changed files lack tests",
+      "- [~] **PLN-052[2]** — large_file | 26 oversized files",
+      "- [~] **PLN-052[1]** — missing_tests | 15 changed files lack tests",
+      "- [~] **PLN-052[2]** — large_file | 26 oversized files",
+      "- [~] **PLN-052[1]** — missing_tests | 1 changed files lack tests",
+      "- [~] **PLN-052[2]** — large_file | 26 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2",
       "- [~] **PLN-AE-003** — Ralph-loop continuous | QA cycling (v0.12.1)"
     ],
-    "pending_count": 1041
+    "pending_count": 1047
   },
   "git": {
-    "untracked": 70,
-    "modified": 32,
-    "total": 102,
+    "untracked": 7,
+    "modified": 48,
+    "total": 55,
     "has_changes": true
   },
   "triad": {
     "typecheck": {
       "pass": false,
       "errors": [
+        "apps/akasha-portal/src/lib/application/auth/akasha-guard.test.ts(26,59): error TS2345: Argument of type '{ id: string; email: string; name: string; }' is not assignable to parameter of type '{ id: string; email: string; emailVerified: boolean; passwordHash: string | null; name: string; locale: string; role: UserRole; birthDate: Date | null; birthTime: string | null; ... 10 more ...; updatedAt: Date; }'.",
+        "apps/akasha-portal/src/lib/application/auth/akasha-guard.test.ts(68,59): error TS2345: Argument of type '{ id: string; email: string; name: string; }' is not assignable to parameter of type '{ id: string; email: string; emailVerified: boolean; passwordHash: string | null; name: string; locale: string; role: UserRole; birthDate: Date | null; birthTime: string | null; ... 10 more ...; updatedAt: Date; }'.",
         "apps/akasha-portal/src/lib/grimoire/sync.ts(16,46): error TS2304: Cannot find name 'SyncOptions'."
       ]
     },
@@ -1066,8 +1074,8 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1663,
-      "failed": 222
+      "passed": 1672,
+      "failed": 219
     }
   },
   "codegraph": {
@@ -1078,8 +1086,10 @@
     {
       "type": "typecheck_errors",
       "priority": 9,
-      "description": "1 TypeScript errors",
+      "description": "3 TypeScript errors",
       "errors": [
+        "apps/akasha-portal/src/lib/application/auth/akasha-guard.test.ts(26,59): error TS2345: Argument of type '{ id: string; email: string; name: string; }' is not assignable to parameter of type '{ id: string; email: string; emailVerified: boolean; passwordHash: string | null; name: string; locale: string; role: UserRole; birthDate: Date | null; birthTime: string | null; ... 10 more ...; updatedAt: Date; }'.",
+        "apps/akasha-portal/src/lib/application/auth/akasha-guard.test.ts(68,59): error TS2345: Argument of type '{ id: string; email: string; name: string; }' is not assignable to parameter of type '{ id: string; email: string; emailVerified: boolean; passwordHash: string | null; name: string; locale: string; role: UserRole; birthDate: Date | null; birthTime: string | null; ... 10 more ...; updatedAt: Date; }'.",
         "apps/akasha-portal/src/lib/grimoire/sync.ts(16,46): error TS2304: Cannot find name 'SyncOptions'."
       ]
     },
@@ -1116,7 +1126,7 @@
       "priority": 6,
       "description": "1 changed files lack tests",
       "files": [
-        "tests/lib/grimoire/sync.test.ts"
+        "tests/lib/grimoire/search.test.ts"
       ]
     },
     {
@@ -1127,7 +1137,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "3057973ae9b35cce86db52be3b53de4faf82f6a4",
+  "git_head": "9537ec149f9b4b4ebb59258d3f86128ee2354af5",
   "decision_factors": {
     "has_pending_features": true
   }
