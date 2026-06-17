@@ -27,9 +27,9 @@ export function CalendarDay({ date, completed, isToday, ritualType }: CalendarDa
           font-medium text-sm transition-all duration-200
           ${completed
             ? 'bg-emerald-500/20 text-emerald-400 border-2 border-emerald-500'
-            : 'bg-zinc-800/50 text-zinc-500 border-2 border-zinc-700'
+            : 'bg-[#0B0E1C]/60 text-white/50 border-2 border-white/10'
           }
-          ${isToday ? 'ring-2 ring-amber-400 ring-offset-2 ring-offset-zinc-900' : ''}
+          ${isToday ? 'ring-2 ring-amber-400 ring-offset-2 ring-offset-[#06070F]' : ''}
         `}
         title={ritualType ? `${formatDate(date)} - ${ritualType}` : formatDate(date)}
       >
@@ -44,13 +44,13 @@ export function CalendarDay({ date, completed, isToday, ritualType }: CalendarDa
         {dayContent}
         <div className="
           absolute bottom-full left-1/2 -translate-x-1/2 mb-2
-          px-2 py-1 bg-zinc-800 text-xs text-zinc-300 rounded
+          px-2 py-1 bg-[#0B0E1C] text-xs text-zinc-300 rounded
           opacity-0 group-hover:opacity-100 transition-opacity
           pointer-events-none whitespace-nowrap z-10
-          border border-zinc-700
+          border border-white/10
         ">
           {formatDate(date)}
-          <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-zinc-800" />
+          <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#0B0E1C]" />
         </div>
       </PulseDiv>
     );
@@ -61,13 +61,13 @@ export function CalendarDay({ date, completed, isToday, ritualType }: CalendarDa
       {dayContent}
       <div className="
         absolute bottom-full left-1/2 -translate-x-1/2 mb-2
-        px-2 py-1 bg-zinc-800 text-xs text-zinc-300 rounded
+        px-2 py-1 bg-[#0B0E1C] text-xs text-zinc-300 rounded
         opacity-0 group-hover:opacity-100 transition-opacity
         pointer-events-none whitespace-nowrap z-10
-        border border-zinc-700
+        border border-white/10
       ">
         {formatDate(date)}
-        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-zinc-800" />
+        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#0B0E1C]" />
       </div>
     </div>
   );

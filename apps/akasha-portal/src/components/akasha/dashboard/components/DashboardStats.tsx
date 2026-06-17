@@ -29,7 +29,7 @@ export function DashboardStats({ userId }: DashboardStatsProps) {
   // Empty state
   if (!data?.stats) {
     return (
-      <div className="flex min-h-[200px] items-center justify-center rounded-xl bg-slate-800/30">
+      <div className="flex min-h-[200px] items-center justify-center rounded-xl bg-[#0B0E1C]/60 border border-white/5">
         <div className="text-center">
           <p className="text-lg font-medium text-slate-400">
             Nenhum dado disponível
