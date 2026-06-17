@@ -319,6 +319,8 @@ export default function ConexoesClient({ userProfile }: Props) {
             birthDate={userProfile.birthDate ?? ''}
             birthTime={userProfile.birthTime}
             birthCity={userProfile.birthCity ?? ''}
+            editable
+            onEdit={() => {/* TODO: navigate to profile edit */}}
           />
 
           <div className="rounded-2xl border border-white/10 bg-white/5 p-5 space-y-4">
@@ -476,8 +478,9 @@ export default function ConexoesClient({ userProfile }: Props) {
               onClick={() => setStage('selection')}
               className="mt-2 text-xs text-[#7C5CFF]/60 hover:text-[#7C5CFF] underline transition-colors"
             >
-              Editar dados
+              editar dados
             </button>
+          </div>
 
           {/* Scores */}
           <div className="grid grid-cols-2 gap-4">
@@ -645,8 +648,9 @@ export default function ConexoesClient({ userProfile }: Props) {
             disabled={loading}
             className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#7C5CFF] to-[#2DD4BF] font-semibold text-sm text-white disabled:opacity-50"
           >
-            {loading ? 'Salvando…' : savedNotification ?? <>{<Bookmark size={16} />} Salvar conexão</>}
+            {loading ? 'Salvando…' : savedNotification ?? '💾 Salvar conexão'}
           </button>
+
           {savedNotification === null && (
             <button
               onClick={loadSavedConnections}

@@ -93,7 +93,7 @@ Raw symbols exist in the `@akasha/types` output types (`AstrologyMap`, `Kabalist
 **Critical gap:** I Ching integration is opt-in (flag in User model) and not yet fully synthesized into the profile.
 
 ### Layer 2 — Vetores Universais (Primitives)
-**Status: ⚠️ PARTIAL — mapeamentos/ exists (5 JSON files); I Ching wired June 2026 but connection to aggregatePrimitivesFromPilars() pending**
+**Status: ✅ IMPLEMENTED — synthesizePrimitives() called in buildAkashaSynthesis (June 2026); all 5 traditions wired including I Ching**
 
 Constitution §5.1 defines 12 primitives:
 > Transformação · Expansão · Ordem · Expressão · Amor · Poder · Sabedoria · Movimento · Serviço · Materialização · Intuição · Conexão
@@ -126,22 +126,18 @@ Constitution defines dimensions: Identidade, Talentos, Desafios, Missão, Evolu�
 - `desafiosSombras` — sombras, karma, superação, transformação
 
 ### Layer 4 — Síntese Akáshica
-**Status: ✅ IMPLEMENTED (partial)**
-
+**Status: ✅ IMPLEMENTED**
 - `AkashaTypeProfile` (F-227): 9 catalogued types (all 9 defined in `akasha-types-catalog.ts`; all have full fields: corePattern, strategy, strategyDetail, dimensionOrigin, growthEdge, shadowTrap)
 - `AkashicHologram` — 6-dimension structure in `hologram-aggregator.ts`
 - `crossAnalyze()` in `cross-engine.ts` — produces `TensionPoint[]` and `SyncPoint[]` across traditions
-- `deriveAkashaType()` — aggregates dominant primitive from Cabala + Astrologia + Tantra + Odu via `PRIMITIVE_TO_TYPE`; I Ching wired but not yet called
-
-**Gap:** I Ching `aggregatePrimitivesFromPilars()` wiring pending (June 2026). 4 of 5 traditions fully wired.
+- `deriveAkashaType()` — aggregates dominant primitive from Cabala + Astrologia + Tantra + Odu via `PRIMITIVE_TO_TYPE`
+- `synthesizePrimitives()` called in `buildAkashaSynthesis()` with 5-pilar input (I Ching, Cabala, Astrologia, Tantra, Odu); all 5 traditions fully wired (June 2026)
 
 ### Layer 5 — Projeção por Áreas da Vida
 **Status: ✅ IMPLEMENTED**
-
-- `deriveAreaNarratives()` for each of the 6 life areas
-- `buildAkashaSynthesis()` orchestrates the projection
+- `deriveAreaNarratives()` for each of the 6 life areas — each accepts optional `_synthesizedProfile?: SynthesizedProfile` as 6th parameter for cross-pillar synthesis
+- `buildAkashaSynthesis()` calls `synthesizePrimitives()` and passes `SynthesizedProfile | undefined` to all 6 area functions
 - `AreaNarrative` output includes: shadow pattern, gift pattern, practical advice, daily ritual, transformation prompt
-
 ### Layer 6 — Motor de Recomendações
 **Status: ⚠️ PARTIAL**
 

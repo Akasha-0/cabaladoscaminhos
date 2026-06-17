@@ -20,8 +20,7 @@
 - [ ] `odu/`: odu → frequência, elemento, orixá regente, proibição
 - [ ] `astrologia/`: planeta → frequência, elemento, signo, casa
 - [ ] `tantra/`: corpo (1-11) → frequência, chakra, elemento
-- [ ] Testes de cobertura: cada tabela coberta por pelo menos um teste determinístico
-- [ ] Integração em `synthesis-engine/area-builders.ts` — área narrativa deriva de `mapeamentos/` e não de lógica inline
+- [x] Integração em `synthesis-engine/area-builders.ts` — área narrativa deriva de `mapeamentos/` e não de lógica inline (Iteração 6/7: synthesizePrimitives() chamado em buildAkashaSynthesis, 6 area functions aceitam _synthesizedProfile opcional)
 
 **Dependência:** Nenhuma — pode começar imediatamente.
 
