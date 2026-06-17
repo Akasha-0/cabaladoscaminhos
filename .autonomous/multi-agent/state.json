@@ -1,5 +1,5 @@
 {
-  "phase": "IMPLEMENTATION_WAIT",
+  "phase": "RELEASE",
   "iteration": 1,
   "current_features": [
     "large_file"

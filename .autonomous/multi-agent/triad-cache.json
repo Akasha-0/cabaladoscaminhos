@@ -3,8 +3,12 @@
     "typecheck": {
       "pass": false,
       "errors": [
-        "apps/akasha-portal/src/lib/grimoire/sync.test.ts(95,49): error TS2345: Argument of type '{ ok: true; json: () => Promise<{ embedding: number[]; }>; }' is not assignable to parameter of type 'Response'.",
-        "apps/akasha-portal/src/lib/grimoire/sync.test.ts(151,49): error TS2345: Argument of type '{ ok: true; json: () => Promise<{ embedding: number[]; }>; }' is not assignable to parameter of type 'Response'."
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(33,7): error TS2353: Object literal may only specify known properties, and 'avoid' does not exist in type 'AstrologicalMapping'.",
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(91,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(157,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(223,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(421,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(619,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'."
       ]
     },
     "lint": {
@@ -17,6 +21,6 @@
       "failed": 219
     }
   },
-  "git_head": "8235325be92b81323dc53319dd4740f598905c9c",
-  "cached_at": 1781655687.2497933
+  "git_head": "215328582a0a42193276f7b1b6125f81bd1602d4",
+  "cached_at": 1781656349.3476522
 }

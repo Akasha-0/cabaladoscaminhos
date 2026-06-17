@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-17T00:20:11.918125+00:00",
+  "generated_at": "2026-06-17T00:31:28.601899+00:00",
   "version": "0.56.0",
   "features": {
     "pending_features": [
@@ -1055,24 +1055,29 @@
       "- [~] **PLN-000[2]** -- large_file | 26 oversized files",
       "- [~] **PLN-000[1]** -- missing_tests | 1 changed files lack tests",
       "- [~] **PLN-000[2]** -- large_file | 26 oversized files",
+      "- [~] **PLN-001[1]** -- large_file | 26 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2",
       "- [~] **PLN-AE-003** — Ralph-loop continuous | QA cycling (v0.12.1)"
     ],
-    "pending_count": 1055
+    "pending_count": 1056
   },
   "git": {
-    "untracked": 0,
-    "modified": 6,
-    "total": 6,
+    "untracked": 1,
+    "modified": 2,
+    "total": 3,
     "has_changes": true
   },
   "triad": {
     "typecheck": {
       "pass": false,
       "errors": [
-        "apps/akasha-portal/src/lib/grimoire/sync.test.ts(95,49): error TS2345: Argument of type '{ ok: true; json: () => Promise<{ embedding: number[]; }>; }' is not assignable to parameter of type 'Response'.",
-        "apps/akasha-portal/src/lib/grimoire/sync.test.ts(151,49): error TS2345: Argument of type '{ ok: true; json: () => Promise<{ embedding: number[]; }>; }' is not assignable to parameter of type 'Response'."
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(33,7): error TS2353: Object literal may only specify known properties, and 'avoid' does not exist in type 'AstrologicalMapping'.",
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(91,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(157,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(223,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(421,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(619,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'."
       ]
     },
     "lint": {
@@ -1093,10 +1098,14 @@
     {
       "type": "typecheck_errors",
       "priority": 9,
-      "description": "2 TypeScript errors",
+      "description": "6 TypeScript errors",
       "errors": [
-        "apps/akasha-portal/src/lib/grimoire/sync.test.ts(95,49): error TS2345: Argument of type '{ ok: true; json: () => Promise<{ embedding: number[]; }>; }' is not assignable to parameter of type 'Response'.",
-        "apps/akasha-portal/src/lib/grimoire/sync.test.ts(151,49): error TS2345: Argument of type '{ ok: true; json: () => Promise<{ embedding: number[]; }>; }' is not assignable to parameter of type 'Response'."
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(33,7): error TS2353: Object literal may only specify known properties, and 'avoid' does not exist in type 'AstrologicalMapping'.",
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(91,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(157,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(223,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(421,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'.",
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts(619,7): error TS2322: Type '\"balanced\"' is not assignable to type '\"high\" | \"medium\" | \"low\"'."
       ]
     },
     {
@@ -1114,17 +1123,25 @@
       "description": "26 oversized files",
       "files": [
         {
-          "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
-          "lines": 847
-        },
-        {
           "file": "apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts",
           "lines": 785
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts",
+          "lines": 775
         },
         {
           "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
           "lines": 773
         }
+      ]
+    },
+    {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "1 changed files lack tests",
+      "files": [
+        "apps/akasha-portal/src/lib/grimoire/sync.test.ts"
       ]
     },
     {
@@ -1135,7 +1152,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "8235325be92b81323dc53319dd4740f598905c9c",
+  "git_head": "215328582a0a42193276f7b1b6125f81bd1602d4",
   "decision_factors": {
     "has_pending_features": true
   }
