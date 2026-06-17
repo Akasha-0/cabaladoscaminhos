@@ -10,7 +10,7 @@
 
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, X, Circle, ArrowRight } from 'lucide-react';
 import type { RitualResponse, Quizila } from '@akasha/core';
 import type { Wing } from '@akasha/core-iching';
 
@@ -170,10 +170,10 @@ export function RitualCard({ ritual }: Props) {
                   className="flex items-start gap-2 p-2 rounded-lg bg-[#0B0E1C]/60 border border-[#26304F]/30"
                 >
                   <span
-                    className="mt-0.5 text-xs"
+                    className="mt-0.5 flex items-center justify-center"
                     style={{ color: TIPO_QUIZILA_COLORS[quizila.tipo] || '#A7AECF' }}
                   >
-                    {quizila.tipo === 'proibicao' ? '✕' : quizila.tipo === 'restricao' ? '○' : '→'}
+                    {quizila.tipo === 'proibicao' ? <X size={12} /> : quizila.tipo === 'restricao' ? <Circle size={12} /> : <ArrowRight size={12} />}
                   </span>
                   <span className="text-xs text-[#A7AECF] leading-relaxed">
                     {quizila.texto}

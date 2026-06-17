@@ -13,6 +13,7 @@
 import { useState } from 'react';
 import type { DimensaoSintese } from '@/lib/grimoire/synthesis/synthesizer';
 import { DIMENSAO_BG, DIMENSAO_BORDER, DIMENSAO_POR_ID } from '@/lib/grimoire/synthesis/dimensoes';
+import { ChevronDown, AlertTriangle, Scale, Clock } from 'lucide-react';
 
 
 
@@ -116,12 +117,19 @@ export function DimensaoCard({ sintese, index }: DimensaoCardProps) {
             color: 'rgba(232,224,255,0.4)',
             fontSize: '1rem',
             transition: 'transform 0.2s ease',
-            transform: aberto ? 'rotate(180deg)' : 'rotate(0deg)',
             flexShrink: 0,
           }}
           aria-hidden
         >
-          ▼
+          <ChevronDown
+            size={16}
+            style={{
+              color: 'rgba(232,224,255,0.4)',
+              transform: aberto ? 'rotate(180deg)' : 'rotate(0deg)',
+              transition: 'transform 0.2s ease',
+              flexShrink: 0,
+            }}
+          />
         </span>
       </header>
 
@@ -179,11 +187,10 @@ export function DimensaoCard({ sintese, index }: DimensaoCardProps) {
             </section>
           )}
 
-          {/* Alerta */}
           {sintese.alerta && (
             <section>
               <h4 style={{ fontSize: '0.72rem', color: 'rgba(255,180,100,0.6)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
-                ⚠ Atenção
+                <AlertTriangle size={12} className="inline mr-1" style={{ color: 'rgba(255,180,100,0.6)' }} /> Atenção
               </h4>
               <p style={{ fontSize: '0.85rem', color: 'rgba(255,200,150,0.75)', lineHeight: 1.5, margin: 0 }}>
                 {sintese.alerta}
@@ -202,7 +209,7 @@ export function DimensaoCard({ sintese, index }: DimensaoCardProps) {
               }}
             >
               <h4 style={{ fontSize: '0.72rem', color: 'rgba(255,200,80,0.7)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
-                ⚖ Akasha Authority
+                <Scale size={12} className="inline mr-1" style={{ color: 'rgba(255,200,80,0.7)' }} /> Akasha Authority
               </h4>
               <p style={{ fontSize: '0.83rem', color: 'rgba(255,220,150,0.85)', lineHeight: 1.5, margin: 0 }}>
                 Antes de decidir nesta área: pergunte — isso vem da sua paz interior ou da sua ansiedade?{' '}
@@ -210,7 +217,7 @@ export function DimensaoCard({ sintese, index }: DimensaoCardProps) {
                 <strong style={{ color: '#FFD080' }}>aja</strong>.
                 {sintese.autoridadeAkasha.timing && (
                   <span style={{ display: 'block', marginTop: 4, opacity: 0.75 }}>
-                    ⏰ {sintese.autoridadeAkasha.timing}
+                    <Clock size={12} className="inline mr-1" /> {sintese.autoridadeAkasha.timing}
                   </span>
                 )}
               </p>
