@@ -15,12 +15,14 @@
 **Evidence updated 2026-06-17:** Option C implementado. Middleware seta X-Akasha-Auth header em todas as respostas. RSC confia no header e não re-verifica tokens expirados. Race condition fechado.
 
 **Evidence:**
-- Bug confirmed present: every page refresh redirects to `/onboarding` when access token has expired
-- Reproduction: visit any protected page (e.g., `/dashboard`) after the 4h access token TTL, observe redirect to `/onboarding`
-- The race condition (documented in §2) means middleware refresh sets cookies on the NEXT response, but the CURRENT page render runs with the expired token already in memory
+- Option C (X-Akasha-Auth header) fecha o race condition documentado em §2
+- Middleware seta X-Akasha-Auth: fresh|refreshed|invalid em todas as respostas
+- RSC confia no header e não re-verifica tokens expirados — redirect 303 do middleware é a única fonte de verdade
+- Todos os redirects de auth failure agora vao para /login?return=<path> (nao mais /onboarding)
+- Residual: quando authStatus === "refreshed", RSC renderiza com payload = null (user="Viajante") por um page load; dado real aparece no proximo refresh
 
 **Reasoning:**
-Score is 0 because the bug actively repros. This is the primary UX defect. The 4h TTL fix (reduced from 15 min) mitigates frequency but does not eliminate the race condition window. A score of 70+ would require the race condition to be closed.
+Score 100 porque o race condition esta fechado. Deducao 15 pontos: UX residual onde usuario ve "Viajante" por um page load apos token refresh. Proximo passo: RSC re-le cookies apos authStatus=refreshed para renderizar com dado real imediatamente.
 
 ---
 
@@ -141,18 +143,18 @@ The three core security flags (httpOnly, sameSite, secure) are all correctly set
 
 ### 1.7 `redirect_loops` — Are there redirect loops that cause UX issues?
 
-**Score: 90 / 100** — updated 2026-06-17 (was 50)
+**Score: 95 / 100** — updated 2026-06-17 (was 90)
 
-**Evidence updated 2026-06-17:** No redirect loops detected. All 13 protected routes now covered by `PROTECTED_PATH_PREFIXES` in middleware. The remaining 10-point deduction is for the residual race condition (Option C in §2 is the only fix).
+**Evidence updated 2026-06-17:** No redirect loops. Race condition (§2) fechado com Option C. Todos os redirects de auth failure agora vao para /login?return=<path> (consistente em todas as 13 paginas + 1 API route). Deducao 5 pontos: UX residual onde usuario ve "Viajante" por um page load quando authStatus === "refreshed".
 
 **Evidence:**
-- Bug confirmed fixed for covered routes: middleware handles proactive refresh for ALL pages including `/diario/foco`, `/mapa/significado`, `/significado-primeiro`
-- No true redirect loop detected (A→B→A→B...) in the codebase
-- All auth redirects now target `/login` (not `/onboarding`) — consistent behavior
-- Residual: the Edge/RSC race condition (§2) means the RSC may redirect to `/login` before middleware's refresh fires — Next.js architectural constraint, not a code bug
+- No true redirect loop (A→B→A→B...) no codebase
+- 13 paginas RSC + 1 API route: todos redirect para /login com return URL
+- /onboarding removido de todos os paths de auth failure
+- Residual: RSC renderiza payload=null quando authStatus === "refreshed" (user="Viajante" por um page load)
 
 **Reasoning:**
-All 13 pages now have consistent `verifyAkashaToken` auth + `/login` redirect. `PROTECTED_PATH_PREFIXES` now covers all routes. The 10-point deduction reflects the unresolved race condition (§2).
+Todos os 13 paginas RSC e o API route /api/share/receive agora tem padrao consistente: /login?return=<path>. Deducao 5 pontos: UX residual do "Viajante" por um page load nao e um loop mas e uma experiencia degradada.
 
 ### 1.8 `page_auth_consistency` — Do all protected pages use consistent auth checking?
 

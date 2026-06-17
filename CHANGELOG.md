@@ -1,3 +1,12 @@
+## v0.83.4 (2026-06-17) — Auth Redirect Consistency Fix
+- fix(conexoes): redirect /onboarding → /login?return=/conexoes; TS null safety restructure
+- fix(meu-dia): redirect /onboarding → /login?return=/meu-dia; payload.sub null safety
+- fix(compartilhar/receber): redirect /onboarding → /login?return=; add authStatus !== refreshed guard
+- fix(api/share/receive): redirect /onboarding → /login; API route auth failure now consistent
+- test(share-receive): updated to expect /login instead of /onboarding
+- build: 49/49 pages · EXIT 0 · TypeScript 0 errors (akasha-portal)
+- tests: 1361 passed · 17 skipped
+
 ## v0.83.3 (2026-06-17) — Auth Race Condition Fix — Option C: X-Akasha-Auth header
 - fix(middleware): Option C — X-Akasha-Auth header como fonte única de verdade para auth.
 -   Middleware seta X-Akasha-Auth: fresh|refreshed|invalid em todas as respostas.
