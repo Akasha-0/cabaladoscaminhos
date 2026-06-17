@@ -47,13 +47,14 @@ export async function POST(request: NextRequest) {
   const accessToken = signAkashaAccessToken({ id: user.id, email: user.email });
   const refreshToken = signAkashaRefreshToken({ id: user.id, email: user.email });
 
-  // Return 307 redirect so the browser processes Set-Cookie BEFORE navigating.
-  // This fixes the race condition where router.push() fires before the cookie
-  // is committed to the browser jar — causing all pages to redirect to /onboarding.
-  // Get locale from Next-Url header (set by middleware for locale-prefixed routes).
-  const nextUrl = request.headers.get('next-url');
-  const locale = (nextUrl?.split('/')[1]) || 'pt-BR';
-  const redirectUrl = new URL(`/${locale}/conta`, request.url);
+  // Honor the `return` query param so the user lands on the page they tried to access.
+  // Extract locale from the request URL query params (set by middleware or login page).
+  const { searchParams } = request.nextUrl;
+  const locale = searchParams.get('locale') ?? 'pt-BR';
+  const returnTo = searchParams.get('return') ?? `/${locale}/conta`;
+
+  // 307 redirect so browser processes Set-Cookie before navigating.
+  const redirectUrl = new URL(returnTo, request.url);
   const response = NextResponse.redirect(redirectUrl, 307);
   setAkashaSessionCookie(response, accessToken);
   setAkashaRefreshCookie(response, refreshToken);

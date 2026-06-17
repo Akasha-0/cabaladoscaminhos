@@ -19,21 +19,31 @@ export default function LoginClient({ locale }: Props) {
     setLoading(true);
 
     try {
+      // Read return URL from current page query params so we can send it to the API.
+      const pageUrl = new URL(window.location.href);
+      const returnTo = pageUrl.searchParams.get('return');
+      const currentLocale = pageUrl.searchParams.get('locale') ?? locale;
+
+      // Build the request URL including the return param so the API redirects correctly.
+      const loginUrl = new URL('/api/akasha/auth/login', window.location.origin);
+      loginUrl.searchParams.set('locale', currentLocale);
+      if (returnTo) loginUrl.searchParams.set('return', returnTo);
+
       // Use manual redirect to ensure cookies are processed before navigation.
       // Without this, the browser may fire router.push() before the Set-Cookie
       // header is committed to the browser jar, causing all pages to redirect
       // to /onboarding after login.
-      const res = await fetch('/api/akasha/auth/login', {
+      const res = await fetch(loginUrl.toString(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.trim().toLowerCase(), password }),
         redirect: 'manual',
+        credentials: 'include',
       });
 
       if (res.type === 'opaqueredirect' || res.redirected) {
         // 307 → browser set cookies, navigate manually to ensure they're sent.
-        const destination = res.url || `/${locale}/conta`;
-        window.location.href = destination;
+        const destination = res.url || (returnTo ?? `/${currentLocale}/conta`);
         return;
       }
 
