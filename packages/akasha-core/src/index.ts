@@ -103,4 +103,6 @@ export type {
   PrimitiveContribution,
   Polaridade,
   Primitivo,
+  Tradicao,
+  ProcedenciaEntry,
 } from './mapeamentos';

@@ -259,6 +259,24 @@ export function buildAkashaSynthesis(
     const dominantFrequency = deriveDominantFrequency(areaVitalidade, areaConexoes, areaCarreira, areaOri, areaMissao, areaDesafios);
     const overallScore = computeOverallScore(areaVitalidade, areaConexoes, areaCarreira, areaOri, areaMissao, areaDesafios);
 
+    // §5 Procedência por área — filtra procedenciaTop por primitivos da área
+    const procedenciaTop = _synthesizedProfile?.procedenciaTop ?? [];
+
+    /** Primitivos mais relevantes para cada área de vida (heurística do motor). */
+    const PRIMITIVOS_POR_AREA: Record<string, string[]> = {
+      vitalidadeEnergia:    ['Movimento', 'Poder', 'Transformacao', 'Intuicao'],
+      conexoesAmor:         ['Amor', 'Conexao', 'Expressao'],
+      carreiraProsperidade:  ['Materializacao', 'Expressao', 'Sabedoria'],
+      oriCabecaQuizilas:     ['Intuicao', 'Sabedoria', 'Servico'],
+      missaoDestino:         ['Sabedoria', 'Intuicao', 'Servico', 'Transformacao'],
+      desafiosSombras:       ['Transformacao', 'Expansao', 'Poder'],
+    };
+
+    const attachProcedencia = (area: AreaNarrative): AreaNarrative => ({
+      ...area,
+      procedencia: procedenciaTop.filter(p => PRIMITIVOS_POR_AREA[area.area]?.includes(p.primitivo)),
+    });
+
     return {
       akashaProfile: {
         dominantFrequency,
@@ -269,17 +287,17 @@ export function buildAkashaSynthesis(
       oneProfile,
       lifePath: kabalisticMap?.lifePath ?? 1,
       areas: {
-        vitalidadeEnergia: areaVitalidade,
-        conexoesAmor: areaConexoes,
-        carreiraProsperidade: areaCarreira,
-        oriCabecaQuizilas: areaOri,
-        missaoDestino: areaMissao,
-        desafiosSombras: areaDesafios,
+        vitalidadeEnergia:    attachProcedencia(areaVitalidade),
+        conexoesAmor:         attachProcedencia(areaConexoes),
+        carreiraProsperidade: attachProcedencia(areaCarreira),
+        oriCabecaQuizilas:    attachProcedencia(areaOri),
+        missaoDestino:        attachProcedencia(areaMissao),
+        desafiosSombras:       attachProcedencia(areaDesafios),
       },
       dailyDecision,
       synthesisParagraph,
       synthesizedProfile: _synthesizedProfile,
-      procedenciaTop: _synthesizedProfile?.procedenciaTop,
+      procedenciaTop,
     };
   } catch (err) {
     // Log error so we can fix it, but return a graceful fallback so dashboard still shows content
