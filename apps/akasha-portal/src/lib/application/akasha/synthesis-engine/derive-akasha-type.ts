@@ -10,6 +10,7 @@
  */
 
 import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/types';
+import type { SynthesizedProfile } from '@akasha/core';
 import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
 import type { AkashaAuthority, AkashaTypeProfile, FrequencyLevel } from './synthesis-types';
 import AKASHA_TYPES from './akasha-types-catalog';
@@ -381,6 +382,7 @@ export function deriveAkashaType(
   tantra: TantricMap | null,
   odu: OduBirth | null,
   holo: AkashicHologram,
+  synthesizedProfile?: SynthesizedProfile,
 ): AkashaTypeProfile {
   // Resolve each pillar's type contribution
   const oduType = resolveTypeFromOdu(odu);
@@ -404,6 +406,27 @@ export function deriveAkashaType(
   const corePattern = refineCorePattern(baseType.corePattern, dominantBody);
   const authority = deriveAuthorityFromMaps(tantra, astro);
 
+  // ── Type Confidence from convergence ─────────────────────────────────────
+  let typeConfidence: AkashaTypeProfile['typeConfidence'] = null;
+  if (synthesizedProfile) {
+    const dominantPrimitives = synthesizedProfile.primitivos
+      .filter(p => p.dominante)
+      .slice(0, 3);
+    if (dominantPrimitives.length > 0) {
+      const avgConvergence = dominantPrimitives.reduce((sum, p) => sum + p.convergencia, 0) / dominantPrimitives.length;
+      if (avgConvergence >= 0.6) typeConfidence = 'alta';
+      else if (avgConvergence >= 0.3) typeConfidence = 'media';
+      else typeConfidence = 'baixa';
+    }
+  }
+
+  // ── Enrich corePattern with tension ─────────────────────────────────────────
+  let enrichedCorePattern = corePattern;
+  if (synthesizedProfile?.tensaoPrincipal && synthesizedProfile.tensaoPrincipal.primitivoA !== synthesizedProfile.tensaoPrincipal.primitivoB) {
+    const t = synthesizedProfile.tensaoPrincipal;
+    enrichedCorePattern = corePattern + ' A tensão central do seu campo é entre ' + t.primitivoA + ' e ' + t.primitivoB + ': ' + t.descricao + '.';
+  }
+
   const directiveLabel = pickDailyDirectiveLabel(dominantBody);
   const directiveFreq = pickDailyDirectiveFrequency(dominantBody);
   const dailyDirective =
@@ -416,7 +439,7 @@ export function deriveAkashaType(
     type: baseType.type,
     typeName: baseType.typeName,
     typeIcon: baseType.typeIcon,
-    corePattern,
+    corePattern: enrichedCorePattern,
     strategy: baseType.strategy,
     strategyDetail: baseType.strategyDetail,
     authority,
@@ -426,5 +449,6 @@ export function deriveAkashaType(
     dimensionOrigin: baseType.dimensionOrigin ?? null,
     growthEdge: baseType.growthEdge,
     shadowTrap: baseType.shadowTrap,
+    typeConfidence,
   };
 }

@@ -514,14 +514,13 @@ export default async function DiarioPage({
           </div>
         </div>
       </div>
-      
 
       {/* Tela 3: O Micro-Ritual */}
       <div id="tela-3" style={screenStyle} role="region" aria-label="Tela 3 de 5 — Micro-Ritual">
         <div style={innerStyle}>
-          <div style={screenNumStyle}>03\u00A0/\u00A005 — Ritual</div>
+          <h2 style={screenNumStyle}>03\u00A0/\u00A005 — Ritual</h2>
           <div style={cardStyle(C.aurora)}>
-              <h2 style={{ ...headlineStyle, color: C.aurora }}>O Micro-Ritual</h2>
+              <h3 style={{ ...headlineStyle, color: C.aurora }}>O Micro-Ritual</h3>
             <p style={bodyStyle}>{ritual.instrucao}</p>
             <div style={{ marginTop: 14 }}>
               <span style={badgeStyle(pilarInfo.cor)}>via {pilarInfo.nome}</span>
@@ -549,8 +548,8 @@ export default async function DiarioPage({
         return (
           <div style={screenStyle} role="region" aria-label="Tela 4 de 5 — Significado dos Pilares">
             <div style={innerStyle}>
-            <div style={screenNumStyle}>04\u00A0/\u00A005 — Significado</div>
-              <p style={{...bodyStyle, color:C.txtSec, marginBottom:8}}>Leia cada Pilar na ordem. Para cada um: note a <em>Sombra</em> primeiro (o que tende a recusar), depois a <em>Prática</em> (o antídoto). Ao final, veja como se conectam.</p>
+            <h2 style={screenNumStyle}>04\u00A0/\u00A005 — Significado dos Pilares</h2>
+              <p style={{...bodyStyle, color:C.txtSec, marginBottom:8}} >Leia cada Pilar na ordem. Para cada um: note a <em>Sombra</em> primeiro (o que tende a recusar), depois a <em>Prática</em> (o antídoto). Ao final, veja como se conectam.</p>
               {ordem.map((p) => (
                 <div key={p} style={{ marginBottom: 14 }}>
                   <SignificadoPilar
@@ -580,11 +579,14 @@ export default async function DiarioPage({
         return (
           <div style={screenStyle} role="region" aria-label="Tela 5 de 5 — Áreas da Vida">
             <div style={innerStyle}>
-              <div style={screenNumStyle}>05\u00A0/\u00A005 — Para suas áreas</div>
+              <h2 style={screenNumStyle}>05\u00A0/\u00A005 — Áreas da Vida</h2>
               <p style={{ ...bodyStyle, color: C.txtSec, marginBottom: 4 }}>
                 O pilar {pilarInfo.nome} traduzido para cada área da sua vida.
               </p>
-              <p style={{ fontSize: '0.68rem', color: C.txtMut, marginBottom: 8 }}>
+              <p
+                style={{ fontSize: '0.68rem', color: C.txtMut, marginBottom: 8 }}
+                aria-label="Navegação: leia da esquerda para direita, do profissional ao íntimo"
+              >
                 Leia da esquerda para direita — do profissional ao íntimo.
               </p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 10 }}>
@@ -598,9 +600,6 @@ export default async function DiarioPage({
           </div>
         );
       })()}
-
-
-
     </div>
   );
 }

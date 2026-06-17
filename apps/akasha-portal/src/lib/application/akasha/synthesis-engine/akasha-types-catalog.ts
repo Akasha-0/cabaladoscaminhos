@@ -11,7 +11,7 @@ import type { AkashaTypeProfile } from './synthesis-types';
  * Base type metadata — sem campos derivados (authority, authorityPractice,
  * dailyDirective, oneLiner) que são calculados em runtime.
  */
-const AKASHA_TYPES: Record<string, Omit<AkashaTypeProfile, 'authority' | 'authorityPractice' | 'dailyDirective' | 'oneLiner'>> = {
+const AKASHA_TYPES: Record<string, Omit<AkashaTypeProfile, 'authority' | 'authorityPractice' | 'dailyDirective' | 'oneLiner' | 'typeConfidence'>> = {
   catalisador: {
     type: 'catalisador',
     typeName: 'O Catalisador',

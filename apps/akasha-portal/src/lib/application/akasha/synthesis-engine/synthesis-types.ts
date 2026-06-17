@@ -53,6 +53,8 @@ export interface AkashaTypeProfile {
   dimensionOrigin?: string | null;
   growthEdge: string;
   shadowTrap: string;
+  /** Confidence level of the type determination, derived from synthesis convergence */
+  typeConfidence: 'alta' | 'media' | 'baixa' | null;
 }
 
 // ─── F-225: Sexualidade Profunda ────────────────────────────────────────────

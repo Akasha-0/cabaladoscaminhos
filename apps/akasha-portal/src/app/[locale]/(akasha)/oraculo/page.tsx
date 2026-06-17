@@ -460,8 +460,7 @@ export default function OraculoPage() {
         {input.length > 0 && (
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '4px' }}>
             <span style={{ fontSize: '0.7rem', color: input.length > 200 ? '#FB5781' : 'rgba(255,255,255,0.4)' }}>
-              {input.length > 200 ? 'Máx. 200 caracteres' : `${input.length} / 200`}
-              {input.length > 200 ? '' : ' · 1 crédito'}
+              {balance !== null && balance > 0 && input.length <= 200 ? ' · 1 crédito' : ''}
             </span>
           </div>
         )}
@@ -507,12 +506,14 @@ export default function OraculoPage() {
             justifyContent: 'space-between',
           }}
         >
-          <span style={{ fontSize: '0.78rem', color: '#5C6691' }}>
-            Isso usará{' '}
-            <strong style={{ color: '#A7AECF' }}>
-              {estimatedCost} {estimatedCost === 1 ? 'crédito' : 'créditos'}
-            </strong>
-          </span>
+          {balance !== null && balance > 0 && (
+            <span style={{ fontSize: '0.78rem', color: '#5C6691' }}>
+              Isso usará{' '}
+              <strong style={{ color: '#A7AECF' }}>
+                {estimatedCost} {estimatedCost === 1 ? 'crédito' : 'créditos'}
+              </strong>
+            </span>
+          )}
           <button
             type="submit"
             disabled={loading || !input.trim() || input.length > 200 || (balance !== null && balance === 0)}
@@ -536,6 +537,18 @@ export default function OraculoPage() {
             {loading ? 'Consultando…' : 'Consultar'}
           </button>
         </div>
+        {balance !== null && balance === 0 && (
+          <p style={{ color: '#FB5781', fontSize: '0.8rem', textAlign: 'center', marginTop: 8 }}>
+            Você não tem créditos.{' '}
+            <a href="/painel" style={{ color: '#FB5781', textDecoration: 'underline' }}>Ir para meu painel</a>{' '}
+            para solicitar mais.
+          </p>
+        )}
+        {balance !== null && balance > 0 && balance < estimatedCost && (
+          <p style={{ color: '#F0B429', fontSize: '0.8rem', textAlign: 'center', marginTop: 8 }}>
+            Créditos insuficientes para esta pergunta ({balance} de {estimatedCost} necessários).
+          </p>
+        )}
       </form>
     </main>
   );

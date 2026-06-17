@@ -13,6 +13,8 @@ import type {
 import { PESOS_TRADICAO_DOMINIO, PRIMITIVOS } from './types';
 import { NUMEROS_CABALA, getNumeroCabala } from './cabala/numeros';
 import { ODUS_NUMEROLOGIA } from './odu/numeros';
+import { PLANETAS_NUMEROLOGIA } from './astrologia/numeros';
+import { CORPOS_NUMEROLOGIA } from './tantra/numeros';
 import type {
   PilarIChing,
   PilarCabala,
@@ -263,7 +265,7 @@ function traduzAstrologia(astrologia: PilarAstrologia): PrimitiveContribution[] 
       primitivo: prim1,
       intensidade: base,
       polaridade: astrologia.trinity_dominante === 'sombra' ? 'sombra' : 'luz',
-      fonte: `Astrologia — Sol em ${astrologia.sol_signo} (elemento ${getElemento(astrologia.sol_signo)}) → ${prim1}`,
+      fonte: 'Astrologia — Sol em ' + astrologia.sol_signo + ' [' + (PLANETAS_NUMEROLOGIA['Sol']?.arquetipo ?? astrologia.sol_signo) + ', ' + getElemento(astrologia.sol_signo).toLowerCase() + '] → ' + prim1,
     });
     results.push({
       primitivo: prim2,
@@ -281,7 +283,7 @@ function traduzAstrologia(astrologia: PilarAstrologia): PrimitiveContribution[] 
       primitivo: luaPrims[0],
       intensidade,
       polaridade: 'luz',
-      fonte: `Astrologia — Lua em ${astrologia.lua_signo} → ${luaPrims[0]} (peso lunar)`,
+      fonte: 'Astrologia — Lua em ' + astrologia.lua_signo + ' [' + (PLANETAS_NUMEROLOGIA['Lua']?.arquetipo ?? astrologia.lua_signo) + ', ' + getElemento(astrologia.lua_signo).toLowerCase() + '] → ' + luaPrims[0] + ' (peso lunar)',
     });
   }
 
@@ -294,7 +296,7 @@ function traduzAstrologia(astrologia: PilarAstrologia): PrimitiveContribution[] 
         primitivo: ascPrims[0],
         intensidade,
         polaridade: 'ambas',
-        fonte: `Astrologia — Ascendente em ${astrologia.asc_signo} → ${ascPrims[0]} (peso ascendente)`,
+        fonte: `Astrologia — Ascendente em ${astrologia.asc_signo} [máscara, ${getElemento(astrologia.asc_signo).toLowerCase()}] → ${ascPrims[0]} (peso ascendente)`,
       });
     }
   }
@@ -326,10 +328,7 @@ function getElemento(sign: string): string {
  *   colérico +2, melancólico +1, fleumático ±0, sanguíneo -1
  */
 function traduzTantra(tantra: PilarTantrica): PrimitiveContribution[] {
-  const base: [Primitivo, Primitivo] =
-    tantra.corpo_predominante === 1 ? ['Materializacao', 'Movimento']
-    : tantra.corpo_predominante === 2 ? ['Conexao', 'Transformacao']
-    : ['Sabedoria', 'Intuicao'];
+  const corpoData = CORPOS_NUMEROLOGIA[tantra.corpo_predominante];
 
   const temperamentoBonus: Record<string, number> = {
     colerico: 2,
@@ -339,18 +338,40 @@ function traduzTantra(tantra: PilarTantrica): PrimitiveContribution[] {
   };
   const bonus = temperamentoBonus[tantra.temperamento_atual] ?? 0;
 
+  // Fallback para inline se corpo não encontrado (deve ser impossível em uso normal)
+  if (!corpoData) {
+    const fallback: [Primitivo, Primitivo] =
+      tantra.corpo_predominante === 1 ? ['Materializacao', 'Movimento']
+      : tantra.corpo_predominante === 2 ? ['Conexao', 'Transformacao']
+      : ['Sabedoria', 'Intuicao'];
+    return [
+      {
+        primitivo: fallback[0],
+        intensidade: Math.min(10, Math.max(4, 6 + bonus)),
+        polaridade: 'luz',
+        fonte: `Tantra — Corpo ${tantra.corpo_predominante} (${tantra.trigemeo}) → ${fallback[0]}; temperamento ${tantra.temperamento_atual} [dados não encontrados]`,
+      },
+      {
+        primitivo: fallback[1],
+        intensidade: Math.min(10, Math.max(3, 5 + bonus)),
+        polaridade: 'ambas',
+        fonte: `Tantra — Corpo ${tantra.corpo_predominante} → ${fallback[1]} [dados não encontrados]`,
+      },
+    ];
+  }
+
   return [
     {
-      primitivo: base[0],
+      primitivo: corpoData.primitivo,
       intensidade: Math.min(10, Math.max(4, 6 + bonus)),
-      polaridade: 'luz',
-      fonte: `Tantra — Corpo ${tantra.corpo_predominante} (${tantra.trigemeo}) → ${base[0]}; temperamento ${tantra.temperamento_atual}`,
+      polaridade: corpoData.polaridade,
+      fonte: `Tantra — Corpo ${tantra.corpo_predominante} [${corpoData.nome}, ${corpoData.chakra}, ${corpoData.elemento}, ${corpoData.proposta}] → ${corpoData.primitivo}; temperamento ${tantra.temperamento_atual}`,
     },
     {
-      primitivo: base[1],
+      primitivo: corpoData.primitivo2,
       intensidade: Math.min(10, Math.max(3, 5 + bonus)),
-      polaridade: 'ambas',
-      fonte: `Tantra — Corpo ${tantra.corpo_predominante} → ${base[1]}`,
+      polaridade: corpoData.polaridade,
+      fonte: `Tantra — Corpo ${tantra.corpo_predominante} [${corpoData.nome}] → ${corpoData.primitivo2}`,
     },
   ];
 }

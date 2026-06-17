@@ -252,7 +252,7 @@ export function buildAkashaSynthesis(
       date
     );
 
-    const oneProfile = deriveAkashaType(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram);
+    const oneProfile = deriveAkashaType(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, _synthesizedProfile);
 
     const synthesisParagraph = genSynthesisParagraph(kabalisticMap, astrologyMap, tantricMap, oduBirth, oneProfile.typeName);
 
@@ -304,6 +304,7 @@ export function buildAkashaSynthesis(
         dimensionOrigin: 'Estrutura Numérica',
         growthEdge: 'Agir mais, pensar menos.',
         shadowTrap: 'Paralisia por análise excessiva.',
+        typeConfidence: null as null,
       },
       lifePath: 1,
       areas: {

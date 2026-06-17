@@ -119,6 +119,7 @@ export interface AkashaTypeProfileUI {
   dimensionOrigin: string | null;
   growthEdge: string;
   shadowTrap: string;
+  typeConfidence: 'alta' | 'media' | 'baixa' | null;
 }
 
 export interface AkashaSynthesisUI {
@@ -135,6 +136,9 @@ export interface AkashaSynthesisUI {
   areas: Record<string, AreaNarrativeUI>;
   dailyDecision: DailyDecisionUI;
   synthesisParagraph: string;
+  /** F-232: Narrativa Central Akáshica — síntese dos 3 primitivos dominantes com polaridades
+   *  Derivada de SynthesizedProfile.narrativaCentral (synthesizePrimitives de 5 tradições) */
+  narrativaCentral: string | null;
 }
 
 export interface DailyContentUI {

@@ -18,8 +18,8 @@
 **Entregáveis restantes (futuro):**
 - [x] `cabala/`: número → frequência, elemento, séfira, caminho — DONE (iter20): `mapeamentos/cabala/numeros.ts` criado com 12 entradas (1-9 + 11, 22, 33); `traduzCabala` enriquecido com séfira/elemento/caminho/fonte; Ano Pessoal agora coberto
 - [x] `odu/`: odu → frequência, elemento, orixá regente, proibição ✅ Iter21 — `mapeamentos/odu/numeros.ts` criado (16 Odu, fonte enriquecida em `traduzOdu`)
-- [ ] `astrologia/`: planeta → frequência, elemento, signo, casa
-- [ ] `tantra/`: corpo (1-11) → frequência, chakra, elemento
+- [x] `astrologia/`: planeta → frequência, elemento, signo, casa — DONE (iter22): `mapeamentos/astrologia/numeros.ts` criado com 10 planetas (Sol/Lua/Mercúrio/Vênus/Marte/Júpiter/Saturno/Urano/Netuno/Plutão); `traduzAstrologia` enriquecida com arquétipoplaneta + elemento na fonte
+- [x] `tantra/`: corpo (1-11) → frequência, chakra, elemento — DONE (iter22): `mapeamentos/tantra/numeros.ts` criado com 11 corpos tântricos; `traduzTantra` refactorada para usar `CORPOS_NUMEROLOGIA` com chakra/elemento/proposta na fonte
 - [x] Integração em `synthesis-engine/area-builders.ts` — área narrativa deriva de `mapeamentos/` e não de lógica inline (Iteração 6/7: synthesizePrimitives() chamado em buildAkashaSynthesis, 6 area functions aceitam _synthesizedProfile opcional)
 
 **Dependência:** Nenhuma — pode começar imediatamente.
@@ -67,7 +67,7 @@ O utilizador interactua diariamente com estas áreas. Conteúdo fino ou repetiti
 Um agente evolutivo que opera sobre dados finos (Prioridade 3) e síntese incompleta (Prioridade 2) gera recomendações desenquadradas. Construir sobre foundations incertas multiplica o retrabalho.
 
 **Pré-requisitos para iniciar:**
-- [ ] Prioridade 1 completa (mapeamentos/ com todas as 5 tradições)
+- [x] Prioridade 1 completa (mapeamentos/ com todas as 5 tradições: cabala/✅ iter20, odu/✅ iter21, astrologia/✅ iter22, tantra/✅ iter22, iching/✅ baseline)
 - [ ] Prioridade 2 completa (oneProfile com todos os 5 pilares)
 - [ ] Prioridade 3 completa (mínimo: 80% das combinações de áreas com narrativa não-genérica)
 - [x] `PersonalCycleEngine` refactored para usar `mapeamentos/personal-cycle.ts` (4 tabelas externas: PINNACLE_THEMES, CHALLENGE_DESCRIPTIONS, KARMIC_LESSON_DESCRIPTIONS, MATURITY_THEMES)
@@ -100,3 +100,19 @@ Um agente evolutivo que opera sobre dados finos (Prioridade 3) e síntese incomp
 - [x] `packages/akasha-core/src/conexoes.ts` (Fase 1 — engine de comparação) ✅ engine existia, foi discovery
 - [x] `POST /api/akasha/conexoes` route (Fase 2) ✅ Iteração 3
 - [ ] Prisma `Connection` model (Fase 3) — pendente
+
+## Progress Update (2026-06-17 — Iteração 23)
+
+- [x] Prioridade 2 — `deriveAkashaType` agora recebe `SynthesizedProfile` como parâmetro opcional
+  - `typeConfidence: 'alta' | 'media' | 'baixa' | null` adicionado a `AkashaTypeProfile`
+  - Confiança derivada da convergência média dos primitivos dominantes (top-3)
+  - `corePattern` enriquecido com `tensaoPrincipal` quando existe tensão entre primitivos
+  - 4 ficheiros alterados: synthesis-types.ts, derive-akasha-type.ts, synthesis-engine.ts, akasha-types-catalog.ts
+  - TypeScript: 0 erros ✅ | synthesis-engine tests: 38/38 ✅ | Build: 49/49 ✅
+
+## Progress Update (2026-06-17 — Iteração 24)
+
+- [x] `typeConfidence` visível na UI — `AkashaTypeProfileUI` gains `typeConfidence` field; `OneProfileCard` renders confidence badge (alta/media/baixa) com cores distintas e texto explicativo
+  - AkashaTypeProfileUI.ts: 1 campo adicionado
+  - OneProfileCard: badge com 3 variantes de cor + estado oculto para null
+  - TypeScript: 0 erros ✅ | synthesis-engine tests: 38/38 ✅ | Build: 49/49 ✅

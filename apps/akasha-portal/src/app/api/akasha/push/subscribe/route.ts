@@ -40,9 +40,10 @@ export async function POST(req: NextRequest): Promise<NextResponse<SubscribeResp
     return NextResponse.json({ error: 'subscription inválida ou incompleta' }, { status: 400 });
   }
 
+  const sub = body.subscription!;
   await upsertPushSubscription(
     user.id,
-    body.subscription as { endpoint: string; keys?: { p256dh?: string; auth?: string } },
+    { endpoint: sub.endpoint as string, keys: sub.keys },
     req.headers.get('user-agent') ?? undefined,
   );
   await prisma.user.update({

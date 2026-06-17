@@ -36,7 +36,7 @@ export function IchingInfoPanel({ iching }: { iching: IchingInfo }) {
       {iching.available ? (
         <>
           <Row
-            label="Hexagrama"
+            label="Hexagrama — sua forma de agir no mundo"
             value={
               iching.hexagramChineseName
                 ? `${iching.hexagramNumber} — ${iching.hexagramName} (${iching.hexagramChineseName})`
@@ -44,7 +44,7 @@ export function IchingInfoPanel({ iching }: { iching: IchingInfo }) {
             }
           />
           <Row
-            label="Trigrama superior"
+            label="Trigrama superior — a energia que recebe"
             value={
               iching.upperTrigram != null && iching.upperTrigramName
                 ? `${iching.upperTrigram} — ${iching.upperTrigramName}`
@@ -52,7 +52,7 @@ export function IchingInfoPanel({ iching }: { iching: IchingInfo }) {
             }
           />
           <Row
-            label="Trigrama inferior"
+            label="Trigrama inferior — a energia que sustenta"
             value={
               iching.lowerTrigram != null && iching.lowerTrigramName
                 ? `${iching.lowerTrigram} — ${iching.lowerTrigramName}`
@@ -99,8 +99,8 @@ export function IchingInfoPanel({ iching }: { iching: IchingInfo }) {
                 </>
               )}
               <Divider />
-              <Row label="Data de nascimento" value={iching.birthDate} />
-              {iching.birthTime && <Row label="Hora" value={iching.birthTime} />}
+              <Row label="Data de nascimento — quando seu hexagrama foi selado" value={iching.birthDate} />
+              {iching.birthTime && <Row label="Hora — o momento cósmico do seu consulta" value={iching.birthTime} />}
               {iching.provisional && (
                 <p style={{ fontSize: '0.6875rem', color: '#5C6691', marginTop: '0.25rem' }}>
                   * Cálculo provisório — hora de nascimento não informada.

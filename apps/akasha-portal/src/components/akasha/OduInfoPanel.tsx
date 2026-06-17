@@ -30,11 +30,11 @@ export function OduInfoPanel({ odu }: Props) {
       subtitle="Núcleo — Ancestralidade · Camada 1"
     >
       <Row
-        label="Odu de Nascimento"
+        label="Odu de Nascimento — sua essência ancestral"
         value={`${odu.oduName}${odu.oduNumber ? ` (${odu.oduNumber})` : ''}`}
       />
-      <Row label="Orixá(s) regente(s)" value={odu.orixaRegency.join(', ')} />
-      <Row label="Força Elemental" value={odu.elementalForce} />
+      <Row label="Orixá(s) regente(s) — suas forças espirituais" value={odu.orixaRegency.join(', ')} />
+      <Row label="Força Elemental — seu elemento estruturante" value={odu.elementalForce} />
       {odu.provisional && (
         <p style={{ fontSize: '0.6875rem', color: '#5C6691', marginTop: '0.25rem' }}>
           * Cálculo provisório — confirmar com linhagem de referência.
@@ -43,43 +43,55 @@ export function OduInfoPanel({ odu }: Props) {
       {odu.preceitos && odu.preceitos.length > 0 && (
         <>
           <Divider />
-          <p
-            style={{
-              fontSize: '0.75rem',
-              color: '#F0B429',
-              fontWeight: 600,
-              marginBottom: '0.35rem',
-            }}
-          >
-            Preceitos do Odu
-          </p>
-          {odu.preceitos.map((p, i) => (
-            <p key={i} style={{ fontSize: '0.8125rem', color: '#A7AECF' }}>
-              ✦ {p}
-            </p>
-          ))}
+          <details>
+            <summary
+              style={{
+                fontSize: '0.75rem',
+                color: '#F0B429',
+                fontWeight: 600,
+                cursor: 'pointer',
+                userSelect: 'none',
+                listStyle: 'none',
+                marginBottom: '0.35rem',
+              }}
+            >
+              Preceitos do Odu — mandamentos sagrados da sua linhagem
+            </summary>
+            {odu.preceitos.map((p, i) => (
+              <p key={i} style={{ fontSize: '0.8125rem', color: '#A7AECF' }}>
+                ✦ {p}
+              </p>
+            ))}
+          </details>
         </>
       )}
+]
       {odu.quizilas && odu.quizilas.length > 0 && (
         <>
           <Divider />
-          <p
-            style={{
-              fontSize: '0.75rem',
-              color: '#FB5781',
-              fontWeight: 600,
-              marginBottom: '0.35rem',
-            }}
-          >
-            Quizilás (evitar)
-          </p>
-          {odu.quizilas.map((q, i) => (
-            <p key={i} style={{ fontSize: '0.8125rem', color: '#A7AECF' }}>
-              ⚠ {q}
-            </p>
-          ))}
+          <details>
+            <summary
+              style={{
+                fontSize: '0.75rem',
+                color: '#FB5781',
+                fontWeight: 600,
+                cursor: 'pointer',
+                userSelect: 'none',
+                listStyle: 'none',
+                marginBottom: '0.35rem',
+              }}
+            >
+              Quizilás — práticas que enfraquecem sua conexão
+            </summary>
+            {odu.quizilas.map((q, i) => (
+              <p key={i} style={{ fontSize: '0.8125rem', color: '#A7AECF' }}>
+                ⚠ {q}
+              </p>
+            ))}
+          </details>
         </>
       )}
+]
       {(!odu.preceitos || odu.preceitos.length === 0) && (
         <Insight color="#F0B429">
           As quizilás e preceitos específicos do seu Odu serão exibidos quando o Grimório for

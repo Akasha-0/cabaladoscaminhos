@@ -367,7 +367,7 @@ export default function ConexoesClient({ userProfile }: Props) {
                     onChange={(e) => setRawData({ ...rawData, birthTime: e.target.value })}
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#7C5CFF]"
                   />
-                  <p className="text-[10px] text-white/30 mt-1">Necesária para Ascendente e Casas — sem ela, Síncronia perde precisão</p>
+                  <p className="text-xs text-white/60 mt-1" aria-label="Recomendamos informar a hora de nascimento para maior precisão no cálculo do Ascendente e das Casas Astrológicas">Necesária para Ascendente e Casas — sem ela, Síncronia perde precisão</p>
                 </div>
               </div>
               <div>
@@ -539,7 +539,7 @@ export default function ConexoesClient({ userProfile }: Props) {
           </div>
 
           {/* Summary */}
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-5 space-y-3">
+          <div role="region" aria-label="Síncronia Espiritual" className="rounded-2xl border border-white/10 bg-white/5 p-5 space-y-3">
             <div className="flex items-center justify-between text-sm">
               <span className="text-white/50">Tipo dominante</span>
               <span className="font-bold text-white">{DOMINANT_LABELS[result.dominantType]}</span>
@@ -551,7 +551,7 @@ export default function ConexoesClient({ userProfile }: Props) {
                   {AUTHORITY_LABELS[result.authorityMatch]}
                 </span>
               </div>
-              <p className="text-[10px] text-white/40 pl-0.5">
+              <p className="text-[10px] text-white/60 pl-0.5">
                 {result.authorityMatch === 'aligned' ? 'Autoridades compatíveis — decisões alinhadas' :
                  result.authorityMatch === 'complementary' ? 'Autoridades complementares — diferenças sombreadas' :
                  'Contrastes entre tipos de decisão'}
@@ -561,11 +561,21 @@ export default function ConexoesClient({ userProfile }: Props) {
 
           {/* Odu + Body sync */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <p className="text-xs text-white/50 mb-1">Sincronia Corporal</p>
+            <div role="region" aria-label="Síncronia Corporal" className="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <p className="text-xs text-white/50 mb-1">Síncronia Corporal</p>
               <p className="text-lg font-black text-[#2DD4BF]">{result.bodySync.score}%</p>
               <p className="text-xs text-white/40 mt-1">{result.bodySync.description}</p>
-              <p className="text-[10px] text-white/25 mt-1">Compatibilidade entre os corpos tântricos dos dois mapas.</p>
+              <p className="text-xs text-white/60 mt-1">Compatibilidade entre os corpos tântricos dos dois mapas.</p>
+            </div>
+            <div role="region" aria-label="Síncronia Odu" className="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <p className="text-xs text-white/50 mb-1">Síncronia Odu</p>
+              <p className="text-lg font-black text-[#a78bfa]">{result.oduSync.score}%</p>
+              <p className="text-xs text-white/40 mt-1">{result.oduSync.description}</p>
+              <p className="text-xs text-white/60 mt-1">
+                {result.oduSync.sharedOdu ? 'Odu compartilhado — destino comum.' :
+                 result.oduSync.complementaryOdu ? 'Odu complementar — sombras que se equilibram.' :
+                 'Odu distinto — caminhos independentes.'}
+              </p>
             </div>
           </div>
 

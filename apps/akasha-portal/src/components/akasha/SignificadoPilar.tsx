@@ -199,7 +199,7 @@ export function SignificadoPilar({
           {sombra}
         </p>
         <p style={{ fontSize: '0.68rem', color: '#5C6691', marginTop: 4 }}>
-          Observe sem agir — só notar quando isso aparecer.
+          Quando notar isso em si, pause. Não force — só reconheça.
         </p>
       </section>
 
@@ -214,79 +214,114 @@ export function SignificadoPilar({
             padding: '0.7rem 0.85rem',
           }}
         >
-          <span
+          <details
             style={{
-              fontSize: '0.65rem',
-              color: '#FB5781',
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-              fontWeight: 600,
+              background: `linear-gradient(135deg, ${cor}10 0%, rgba(251,87,129,0.06) 100%)`,
+              border: `1px solid ${cor}44`,
+              borderRadius: '10px',
+              padding: '0.7rem 0.85rem',
+              marginTop: 6,
             }}
           >
-            ⟁ Sexualidade · Lilith + Casa 8
-          </span>
-          <div style={{ marginTop: 6, display: 'flex', flexDirection: 'column', gap: 4 }}>
-            {sexualidade.lilith_signo && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                <strong style={{ color: '#FB5781', fontSize: '0.78rem' }}>
-                  Lilith em {sexualidade.lilith_signo}:
-                </strong>
-                <span style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                  <span style={{ fontSize: '0.78rem', color: '#F4F5FF', lineHeight: 1.45, margin: 0 }}>
-                    • <strong>Black Moon Lilith</strong> — o polo indômito da sua sexualidade: aquilo que você reconhece como seu, mas raramente verbaliza.
-                  </span>
-                  <span style={{ fontSize: '0.78rem', color: '#F4F5FF', lineHeight: 1.45, margin: 0 }}>
-                    • <strong>O que se manifesta</strong> — fetiches, padrões de desejo que você mantém fora da conversa.
-                  </span>
-                  <span style={{ fontSize: '0.78rem', color: '#F4F5FF', lineHeight: 1.45, margin: 0 }}>
-                    • <strong>Padrão de intensidade</strong> — intensidade que você tende a reprimir mas que movimenta sua vida íntima.
-                  </span>
-                </span>
-              </div>
-            )}
-            {sexualidade.casa_8_signo && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                <strong style={{ color: '#FB5781', fontSize: '0.78rem' }}>
-                  Casa 8 em {sexualidade.casa_8_signo}:
-                </strong>
-                <span style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                  <span style={{ fontSize: '0.78rem', color: '#F4F5FF', lineHeight: 1.45, margin: 0 }}>
-                    • <strong>Entrega e transformação</strong> — como você se permite ir ao limite na intimidade.
-                  </span>
-                  <span style={{ fontSize: '0.78rem', color: '#F4F5FF', lineHeight: 1.45, margin: 0 }}>
-                    • <strong>Tabus e heranças</strong> — o campo do proibido: sexualidade tabu, dinâmicas de poder, perdas, renascimento.
-                  </span>
-                  <span style={{ fontSize: '0.78rem', color: '#F4F5FF', lineHeight: 1.45, margin: 0 }}>
-                    • <strong>Intimidade profunda</strong> — o signo na cúspide indica o tom da sua zona de máxima vulnerabilidade.
-                  </span>
-                </span>
-              </div>
-            )}
-            {sexualidade.lilith_signo &&
-              sexualidade.casa_8_signo &&
-              sexualidade.lilith_signo === sexualidade.casa_8_signo && (
-                <div
-                  style={{
-                    fontSize: '0.75rem',
-                    color: '#A7AECF',
-                    fontStyle: 'italic',
-                    margin: '4px 0 0',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 3,
-                  }}
-                >
-                  Lilith e Casa 8 no <strong>MESMO signo</strong>: intensidade dobrada. Quando
-                  ambos coincidem, a sexualidade opera num registro singular — sem meio-termo,
-                  total. Isso significa:
-                  <span style={{ display: 'flex', flexDirection: 'column', gap: 3, marginTop: 4 }}>
-                    <span>• Sua assinatura sexual é reconhecível: um padrão fixo, não situacional.</span>
-                    <span>• O que é reprimido aqui tende a se expressar por outros canais (projeção, obsessão, transformação).</span>
-                    <span>• Não é necessário "aceitar" — é necessário notar o padrão e escolher conscientemente.</span>
+            <summary
+              style={{
+                color: '#FB5781',
+                fontSize: '0.65rem',
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                fontWeight: 600,
+                cursor: 'pointer',
+                userSelect: 'none',
+                listStyle: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+              }}
+            >
+              <span
+                style={{
+                  color: '#FB5781',
+                  fontSize: '0.65rem',
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  fontWeight: 600,
+                }}
+              >
+                ⟁ Sexualidade · Lilith + Casa 8
+              </span>
+            </summary>
+            <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 4 }}>
+              {sexualidade.lilith_signo && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  <strong style={{ color: '#FB5781', fontSize: '0.78rem' }}>
+                    Lilith em {sexualidade.lilith_signo}:
+                  </strong>
+                  <span style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                    <span style={{ fontSize: '0.78rem', color: '#F4F5FF', lineHeight: 1.45, margin: 0 }}>
+                      • <strong>Black Moon Lilith</strong> — o polo indômito da sua sexualidade: aquilo que você reconhece como seu, mas raramente verbaliza.
+                    </span>
+                    <span style={{ fontSize: '0.78rem', color: '#F4F5FF', lineHeight: 1.45, margin: 0 }}>
+                      • <strong>O que se manifesta</strong> — fetiches, padrões de desejo que você mantém fora da conversa.
+                    </span>
+                    <span style={{ fontSize: '0.78rem', color: '#F4F5FF', lineHeight: 1.45, margin: 0 }}>
+                      • <strong>Padrão de intensidade</strong> — intensidade que você tende a reprimir mas que movimenta sua vida íntima.
+                    </span>
                   </span>
                 </div>
               )}
-          </div>
+              {sexualidade.casa_8_signo && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  <strong style={{ color: '#FB5781', fontSize: '0.78rem' }}>
+                    Casa 8 em {sexualidade.casa_8_signo}:
+                  </strong>
+                  <span style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                    <span style={{ fontSize: '0.78rem', color: '#F4F5FF', lineHeight: 1.45, margin: 0 }}>
+                      • <strong>Entrega e transformação</strong> — como você se permite ir ao limite na intimidade.
+                    </span>
+                    <span style={{ fontSize: '0.78rem', color: '#F4F5FF', lineHeight: 1.45, margin: 0 }}>
+                      • <strong>Tabus e heranças</strong> — o campo do proibido: sexualidade tabu, dinâmicas de poder, perdas, renascimento.
+                    </span>
+                    <span style={{ fontSize: '0.78rem', color: '#F4F5FF', lineHeight: 1.45, margin: 0 }}>
+                      • <strong>Intimidade profunda</strong> — o signo na cúspide indica o tom da sua zona de máxima vulnerabilidade.
+                    </span>
+                  </span>
+                </div>
+              )}
+              {sexualidade.lilith_signo &&
+                sexualidade.casa_8_signo &&
+                sexualidade.lilith_signo === sexualidade.casa_8_signo && (
+                  <details
+                    style={{
+                      fontSize: '0.75rem',
+                      color: '#A7AECF',
+                      fontStyle: 'italic',
+                      margin: '4px 0 0',
+                      border: `1px solid ${cor}22`,
+                      borderRadius: '6px',
+                      padding: '0.5rem 0.6rem',
+                    }}
+                  >
+                    <summary
+                      style={{
+                        color: '#FB5781',
+                        fontSize: '0.72rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        userSelect: 'none',
+                        listStyle: 'none',
+                      }}
+                    >
+                      Lilith e Casa 8 no mesmo signo — mostrar mais
+                    </summary>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 3, marginTop: 6 }}>
+                      <span>• Sua assinatura sexual é reconhecível: um padrão fixo, não situacional.</span>
+                      <span>• O que é reprimido aqui tende a se expressar por outros canais (projeção, obsessão, transformação).</span>
+                      <span>• Não é necessário "aceitar" — é necessário notar o padrão e escolher conscientemente.</span>
+                    </div>
+                  </details>
+                )}
+            </div>
+          </details>
         </section>
       )}
 
@@ -308,6 +343,9 @@ export function SignificadoPilar({
         >
           ▸ Prática · 3-5 min
         </span>
+        <p style={{ fontSize: '0.68rem', color: '#5C6691', marginTop: 6 }}>
+          Antes de começar, prepare um caderno.
+        </p>
         <p
           style={{
             fontSize: '0.85rem',

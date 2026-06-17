@@ -43,19 +43,33 @@ export function TantricBodyInfoPanel({ tantra, inactiveBodies }: TantricBodyInfo
           <p style={{ fontSize: '0.75rem', color: '#A7AECF', marginBottom: '0.5rem' }}>
             Corpos a ativar (indicados em magenta na Mandala):
           </p>
-          {inactiveBodies.map((n) => {
-            const w = TANTRIC_BODY_WISDOM[n.i + 1];
-            return (
-              <div key={n.i} style={{ marginBottom: '0.5rem' }}>
-                <p style={{ fontSize: '0.8125rem', color: '#FB5781', fontWeight: 600 }}>
-                  Corpo {n.i + 1} — {w?.desc}
-                </p>
-                <p style={{ fontSize: '0.75rem', color: '#A7AECF' }}>
-                  Desafio: {w?.challenge} · Ativar: {w?.activate}
-                </p>
-              </div>
-            );
-          })}
+          <details>
+            <summary
+              style={{
+                color: '#A7AECF',
+                fontSize: '0.8rem',
+                cursor: 'pointer',
+                userSelect: 'none',
+                listStyle: 'none',
+                marginBottom: '0.35rem',
+              }}
+            >
+              {inactiveBodies.length} Corpos inativos — clique para ver detalhes →
+            </summary>
+            {inactiveBodies.map((n) => {
+              const w = TANTRIC_BODY_WISDOM[n.i + 1];
+              return (
+                <div key={n.i} style={{ marginBottom: '0.5rem' }}>
+                  <p style={{ fontSize: '0.8125rem', color: '#FB5781', fontWeight: 600 }}>
+                    Corpo {n.i + 1} — {w?.desc}
+                  </p>
+                  <p style={{ fontSize: '0.75rem', color: '#A7AECF' }}>
+                    Desafio: {w?.challenge} · Ativar: {w?.activate}
+                  </p>
+                </div>
+              );
+            })}
+          </details>
         </>
       )}
       <SignificadoEmbed
@@ -69,7 +83,10 @@ export function TantricBodyInfoPanel({ tantra, inactiveBodies }: TantricBodyInfo
         <>
           <Divider />
           <p style={{ fontSize: '0.75rem', color: '#2DD4BF', fontWeight: 600, marginBottom: '0.5rem' }}>
-            5 Koshas (Tantra Védica)
+            5 Koshas (Tantra Védica){' '}
+            <span style={{ color: '#A7AECF', fontWeight: 400 }}>
+              — os 5 revestimentos do ser
+            </span>
           </p>
           {KOSHAS.map((k) => (
             <div

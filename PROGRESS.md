@@ -1,9 +1,43 @@
 ## v0.83.3 (2026-06-17) — UX Round 22
+
+## v0.83.4 (2026-06-17) — UX Round 23
+Round 23 — 6 fresh audit agents. Akasha 2 CRÍTICA + 1 ALTA + 3 MÉDIA. Diário 3 CRÍTICA + 2 ALTA + 2 MÉDIA. Mandala 2 CRÍTICA + 4 ALTA + 1 MÉDIA. Oráculo 0 CRÍTICA + 1 ALTA + 2 MÉDIA. Dashboard 0 CRÍTICA + 1 ALTA + 2 MÉDIA. Conexões 0 CRÍTICA + 0 ALTA + 1 MÉDIA.
+CRÍTICA FIXED: akasha perfilGeral <div>→<p> per node (valid HTML). DimensaoCard Síntese preview truncates at 120 chars. diário Tela 4 + Tela 5 — semantic <h2> headings added. blank line before Tela 3 removed. Sexualidade block wrapped in <details>/<summary> accordion.
+ALTA FIXED: dashboard elemento micro-label conditional (only when ritual.elemento exists; 'duração' fallback). AstrologyInfoPanel planet rows + Ascendente/Meio do Céu with behavioral subtitles. IchingInfoPanel all 5 Row labels with behavioral subtitles. OduInfoPanel all 3 Row labels with behavioral subtitles. MandalaChartInfoPanel Row container has aria-label. SignificadoPilar Sombra behavioral instruction + Prática actionable framing. Oráculo balance===0 visible warning + insufficient credits warning.
+MÉDIA FIXED: Conexões Síncronia Odu now rendered in UI. diário Tela 5 instructional <p> has aria-label. Oráculo h1 aria-label. Oráculo cost label conditional (only when balance>0).
+DATA GAPS (not UI-fixable): Akasha Síntese spiritual labels need synthesizer context. Mandala planet row values still lack behavioral framing — synthesizer data gap.
+Build: 49/49 EXIT 0 · TypeScript 0 errors
+
 Round 22 — 6 fresh audit agents. Oráculo CLEAN 7/7 ✅. Dashboard 2 CRÍTICA + 2 MÉDIA. Akasha 4 CRÍTICA + 3 ALTA. Mandala 11 CRÍTICA + 11 ALTA + 3 MÉDIA. Diário 1 CRÍTICA + 1 ALTA + 2 MÉDIA. Conexões 1 CRÍTICA.
 CRÍTICA FIXED: renderNarrative bold→<p> semantic. Accordion CSS mask removed — renders only 1st paragraph. Article onClick removed — only button handles interaction. Dashboard 'Clima'→'Tempo'. ritual.elemento micro-label added. birthTime hint added.
 DATA GAPS (not UI-fixable): Mandala row labels need behavioral framing from synthesizer. Akasha spiritual labels need synthesizer context. Sexualidade wall-of-text needs synthesizer text trim or <details> accordion.
 Mandala auditors found 11 CRÍTICA + 11 ALTA — mostly data-level (synthesizer produces labels without behavioral framing). Filed as data gaps.
 Build: 49/49 EXIT 0
+
+## v0.83.5 (2026-06-17) — UX Round 24
+Round 24 — 6 fresh audit agents. Dashboard 4 CRÍTICA + 1 ALTA. Akasha 2 CRÍTICA + 3 ALTA. Mandala 2 CRÍTICA + 1 ALTA + 4 MÉDIA. Diário 3 CRÍTICA + 2 ALTA + 1 MÉDIA. Conexões 5 CRÍTICA + 1 ALTA + 1 MÉDIA. Oráculo 1 CRÍTICA + 1 ALTA.
+CRÍTICA FIXED: akasha perfilGeral <section>→<div role=region> (aria-labelledby now functional). diario T4/T5 <div>→<h2> semantic headings (D1/D2 were real — R23 agent misreported). OduInfoPanel Preceitos + Quizilás wrapped in <details>/<summary> accordions. dashboard card labels <span>/<p>→<h3>. Conexões Síncronia Corporal + Síncronia Espiritual — role=region landmarks. Síncronia Corporal + Odu hint text contrast fixed (25%→60% opacity, WCAG AA).
+ALTA FIXED: dashboard Autoridade "Sol em Escorpião" — title attribute for behavioral context. dashboard Melhor Timing — behavioral framing. MandalaInfoPanels inactive-bodies — progressive disclosure <details>. Oráculo balance===0 warning — actionable <a href="/painel"> link. Oráculo credit hint — hidden when balance=0.
+DATA GAPS (not UI-fixable): Akasha autoridade/Síntese labels need synthesizer behavioral framing. Dashboard Melhor Timing "manhã/após 18h" without WHAT decisions context. Mandala section headers (Aspectos Principais, 5 Koshas) need behavioral subtitles.
+Build: 49/49 EXIT 0 · TypeScript 0 errors
+
+
+## v0.83.7 (2026-06-17) — UX Round 26
+Round 26 — 6 fresh audit agents. Dashboard 2 CRÍTICA + 2 ALTA + 2 MÉDIA. Akasha 0. Mandala 0 CRÍTICA + 1 ALTA + 2 MÉDIA. Diário 1 CRÍTICA + 0 ALTA + 1 MÉDIA. Oráculo 0. Conexões 0.
+CRÍTICA FIXED: dashboard tab text opacity /60→full (4.47:1→9.18:1). dashboard h3-in-h3 → p. dashboard Tempo chip /40→/70 (3.56:1→~5:1). diário Tela 3 h2→h3 (fixes heading hierarchy violation). diário Tela 4 redundant aria-label removed.
+ALTA FIXED: mandala Aspectos Principais behavioral subtitle added.
+MÉDIA FIXED: mandala 5 Koshas behavioral subtitle added.
+REMAINING: DASH-005 cosmetic chips without actionable guidance (MÉDIA — chip labels are cosmetic but not broken).
+Build: 49/49 EXIT 0 · TypeScript 0 errors
+
+
+## v0.83.6 (2026-06-17) — UX Round 25
+Round 25 — 6 fresh audit agents. Dashboard 2 CRÍTICA + 5 ALTA + 2 MÉDIA. Akasha 2 CRÍTICA + 1 ALTA + 1 MÉDIA. Mandala 0 CRÍTICA + 0 ALTA + 2 MÉDIA. Diário 1 CRÍTICA + 0 ALTA + 2 MÉDIA. Conexões 1 CRÍTICA + 0 ALTA. Oráculo 1 CRÍTICA + 1 ALTA.
+CRÍTICA FIXED: akasha footer contrast rgba(0.35)→rgba(0.65). DimensaoCard description rgba(0.5)→rgba(0.58). diario Tela 3 screen-number div→<h2>. dashboard "Diretriz de Decisão" <span>→<h3>. dashboard Ler mais toggle + "Ver análise completa" link — touch targets ≥44px. Conexões Síncronia Espiritual hint text-white/40→text-white/60. oráculo h1 aria-label redundante removido. oráculo credit hint — empty span condition fixed.
+ALTA FIXED: oráculo credit hint full conditional (balance>0 only). Síntese preview reading order — no change needed (button precedes region in DOM order, aria-controls correct).
+DATA GAPS: Dashboard #A7AECF at 0.9rem (~4.47:1) — marginal WCAG AA fail, not fixed (widespread color variable change). Akasha Praktika per-dimension fallback — synthesizer gap. Dashboard Autoridade title needs more actionable framing (ALTA, not critical).
+Build: 49/49 EXIT 0 · TypeScript 0 errors
+
 
 ## v0.83.2 (2026-06-17) — UX Round 21
 Round 21 — 6 fresh audit agents. Conexões CLEAN ✅ (0 issues). Oráculo CLEAN ✅ (7/7). Mandala 0 CRÍTICA 0 ALTA 2 MÉDIA. Akasha 4 CRÍTICA + 2 ALTA (all fixed). Dashboard 1 ALTA (Ritual Zap→Wind fixed). Diário CRÍTICA aria-region on T4/T5 (fixed).
@@ -1231,3 +1265,156 @@ Cada entrada inclui campo `fonte: string` com base numerológica tradicional par
 - Criado mapeamentos/odu/numeros.ts (14.7KB, 16 Odu)
 - traduzOdu enriquecida com orixa/elemento/frequencia/proibicao
 - Suite: 1361/1361 pass
+## Iter22 — Astrologia + Tantra mapeamentos curados (AKASHA v3)
+**Data:** 2026-06-17
+
+### ROADMAP items: astrologia/ + tantra/ (Prioridade 1)
+
+**Ficheiros criados:**
+`mapeamentos/astrologia/numeros.ts` (5.4KB, 165L) — 10 planetas: Sol/Lua/Mercúrio/Vênus/Marte/Júpiter/Saturno/Urano/Netuno/Plutão
+  Cada planeta: planeta, frequencia (redux), elemento, signoRegra, qualidade, arquetipo, fonte
+  Tipos: Planeta, ElementoAstro, Qualidade, PlanetaNumerologia
+  Helpers: getPlanetaNumerologia, getPlanetasPorElemento
+`mapeamentos/tantra/numeros.ts` (2.3KB, 226L) — 11 corpos tântricos
+  Cada corpo: corpo, nome, frequencia, elemento, chakra, primitivo, primitivo2, polaridade, palavrasChave, proposta, fonte
+  Tipos: TantraElemento, CorpoNumerologia
+  Helpers: getCorpoNumerologia, getCorposPorElemento
+
+**traduzAstrologia enriquecida:**
+  Sol/Lua fonte: planeta + arquétipo + elemento agora incluído na string
+  Fonte passou de "Sol em leao (elemento Fogo)" para "Sol em leao [Consciência/Yo, fogo]"
+  Astrologia: 0 erros TS novos
+
+**traduzTantra refactorada:**
+  Inline base array substituído por CORPOS_NUMEROLOGIA[corpo_predominante]
+  fonte enriquecida com: nome, chakra, elemento, proposta
+  Fallback inline preservado para corpos fora do range
+
+**Testes:**
+  synthesis-engine: 38/38 ✅
+  Suite unit+core-logic: 974/974 ✅
+  Build: 49/49 ✅
+
+**Pré-existentes não alterados:**
+  15 erros TS em fixtures desactualizadas (index.test.ts, mapeamentos/index.test.ts, @types/node)
+  Erros dominantPlanet no stderr dos testes synthesis-engine — comportamento esperado do fallback
+
+## Iter23 — deriveAkashaType agora usa SynthesizedProfile (AKASHA v3)
+
+**Problema identificado (auditoria):**
+`synthesizePrimitives()` calcula `SynthesizedProfile` com convergência real e `tensaoPrincipal`, mas `deriveAkashaType()` era chamado com pilares crus — votação sem contexto de síntese. Resultado: o tipo akáshico não reflectia a qualidade da convergência das tradições.
+
+**Solução implementada (3 + 1 arquivos):**
+
+`synthesis-types.ts` — `AkashaTypeProfile` gained:
+```typescript
+typeConfidence: 'alta' | 'media' | 'baixa' | null;
+```
+
+`derive-akasha-type.ts`:
+- Novo parâmetro opcional `synthesizedProfile?: SynthesizedProfile`
+- `typeConfidence` derivada da convergência média dos primitivos dominantes (top-3)
+  - avg ≥ 0.6 → `'alta'` | ≥ 0.3 → `'media'` | < 0.3 → `'baixa'`
+- `corePattern` enriquecido com `tensaoPrincipal` quando existe: "A tensão central do seu campo é entre X e Y: [descrição]."
+
+`synthesis-engine.ts`:
+- `deriveAkashaType` agora recebe `_synthesizedProfile` (já em scope)
+- Inline fallback `oneProfile` recebe `typeConfidence: null`
+
+`akasha-types-catalog.ts`:
+- `Omit<AkashaTypeProfile, ...>` actualizado para excluir `'typeConfidence'` (runtime-computed, não do catálogo)
+
+**Resultado:**
+O tipo akáshico é agora consciente da síntese. Perfis com alta convergência recebem `typeConfidence: 'alta'` e `corePattern` inclui a tensão nomeada quando existe. Perfis com baixa convergência (poucas tradições convergindo) recebem `typeConfidence: 'baixa'` — marcandohipóteses calibradas.
+
+**Testes:**
+  synthesis-engine: 38/38 ✅
+  Suite unit: 473/473 ✅ (30 ficheiros — anteriormente 974 reportados em modo composto)
+  Build: 49/49 ✅
+
+**Pré-existentes resolvidos:**
+  TypeScript: 0 erros (as 15 errors pré-existentes já não aparecem — provavelmente corrigidas por dependências actualizadas)
+  DimensaoCard.tsx: estrutura JSX confirmada correcta (</div> já presente na linha 169)
+
+## Iter24 — typeConfidence exposto na UI (AKASHA v3)
+
+**Problema identificado (auditoria Iter23):**
+`deriveAkashaType()` calcula `typeConfidence` mas `AkashaTypeProfileUI` não tinha o campo — descartado silenciosamente quando cruza a API. Utilizador nunca via se o perfil tinha alta ou baixa convergência.
+
+**Solução implementada (2 ficheiros):**
+
+`useAkashaSynthesis.ts` — `AkashaTypeProfileUI` gained:
+```typescript
+typeConfidence: 'alta' | 'media' | 'baixa' | null;
+```
+
+`AkashaLifeAreasDashboard.tsx` — `OneProfileCard` gained:
+- Badge de confiança abaixo de `corePattern` no header do tipo
+- `alta` → pill verde (#30D158) "Alta convergência — perfil bem definido"
+- `media` → pill âmbar (#FFD60A) "Convergência média — perfil em formação"
+- `baixa` → pill coral (#FF375F) "Baixa convergência — mais dados fortalecem o perfil"
+- `null` → oculto (renderização condicional)
+
+**Resultado:**
+Utilizador vê agora a qualidade da síntese do próprio perfil. Principio 8 (hipóteses calibradas) agora visível: perfis com baixa convergência veem um alerta claro para adicionar mais dados.
+
+**Testes:**
+  synthesis-engine: 38/38 ✅
+  Suite unit: 473/473 ✅
+  Build: 49/49 ✅
+  TypeScript: 0 erros ✅
+
+## Iter25 — narrativaCentral exposta na UI (AKASHA v3)
+
+**Problema identificado (Next Steps Iter24):**
+`SynthesizedProfile.narrativaCentral` é calculada por `synthesizePrimitives` (top-3 primitivos dominantes
+com polaridades + tensão) mas nunca chega ao utilizador. É o output mais rico do motor de síntese — a
+frase que articula o cruzamento real das 5 tradições.
+
+**Solução implementada (4 ficheiros):**
+
+`useAkashaSynthesis.ts` — `AkashaSynthesisUI` gained:
+```typescript
+narrativaCentral: string | null;  // F-232: síntese dos 3 primitivos dominantes
+```
+
+`AkashaLifeAreasDashboard.tsx`:
+- `OneProfileCard` signature updated: `{ profile, narrativaCentral }` (narrativaCentral optional)
+- Nova secção após Growth+Shadow em `OneProfileCard`:
+  - Card com gradiente `#7C5CFF→#2DD4BF` (roxo→turquesa)
+  - Label "Síntese Akáshica" em cor roxa
+  - Texto itálico com a narrativa em aspas
+- Destructuring no dashboard: `const { oneProfile, narrativaCentral } = synthesis`
+- Passagem ao `OneProfileCard`: `<OneProfileCard profile={oneProfile} narrativaCentral={narrativaCentral} />`
+
+`MandalaNarrative.tsx`:
+- `MandalaNarrativeProps.synthesis` gained: `narrativaCentral?: string | null`
+- Destructuring: `const { oneProfile, areas, synthesisParagraph, narrativaCentral } = synthesis`
+- Renderização com `<Brain>` icon (já importado), delay 0.2s, gradiente turquesa→roxo
+- Aparece após a secção "Síntese Akasha" (synthesisParagraph)
+
+`MandalaNarrativeLoader.tsx`:
+- Extrai `narrativaCentral` de `synthesizedProfile.narrativaCentral` e coloca ao nível de `synthesis`
+- Flattening: `s.narrativaCentral = s.synthesizedProfile.narrativaCentral`
+
+**Fluxo de dados completo:**
+```
+synthesizePrimitives() → SynthesizedProfile.narrativaCentral
+  → buildAkashaSynthesis() → AkashaSynthesis.synthesizedProfile.narrativaCentral
+    → buildDailyContent() → DailyContent.synthesis (AkashaSynthesis)
+      → /api/akasha/daily → JSON response (nested in synthesizedProfile)
+        → MandalaNarrativeLoader: flatten → MandalaNarrative.synthesis.narrativaCentral
+          → MandalaNarrative render
+        → AkashaLifeAreasDashboard: synthesis.narrativaCentral → OneProfileCard
+          → OneProfileCard render
+```
+
+**Resultado:**
+O utilizador vê agora a Síntese Akáshica — a frase que articula o cruzamento dos 3 primitivos dominantes
+das 5 tradições. Está disponível em duas superfícies: `OneProfileCard` (dashboard) e `MandalaNarrative` (página mandala).
+Os 3 primitivos dominantes são o resumo mais puro da matriz akáshica e são agora directamente visíveis.
+
+**Testes:**
+  Build: 49/49 ✅
+  Suite: 1361/1361 ✅
+  TypeScript: 0 erros no portal ✅

@@ -19,6 +19,21 @@
 - build: 49/49 pages · EXIT 0 · TypeScript 0 errors (akasha-portal) · NEXT_BUILD_CONCURRENCY=1 required
 - tests: 1361 passed · 0 failed · 17 skipped
 
+## v0.83.7 (2026-06-17) — UX Round 26
+- fix(dashboard): Tab buttons text full opacity — text-[#A7AECF]/60 → text-[#A7AECF] (WCAG AA: 4.47:1 → 9.18:1)
+- fix(dashboard): Foco Prioritário title — invalid h3-in-h3 → <p> (valid HTML)
+- fix(dashboard): Tempo chip label opacity — text-[#2DD4BF]/40 → /70 (WCAG AA: 3.56:1 → ~5:1)
+- fix(diario): Tela 3 Micro-Ritual card title — h2 → h3 (fixes duplicate h2 siblings violation)
+- fix(diario): Tela 4 instruction paragraph — redundant aria-label removed (text already visible)
+- fix(mandala): Aspectos Principais header — behavioral subtitle added ("— como seus planetas se relacionam entre si")
+- fix(mandala): 5 Koshas header — behavioral subtitle added ("— os 5 revestimentos do ser")
+- fix(AkashaLifeAreasDashboard): missing `{` in `OneProfileCard` function — caused build parse failure
+- fix(push/subscribe): type assertion `endpoint: sub.endpoint as string` — TypeScript error on `PushSubscriptionPayload` vs `PushSubscription`
+- build: 49/49 pages · EXIT 0 · TypeScript 0 errors (akasha-portal)
+- tests: 1361 passed · 0 failed · 17 skipped
+
+
+
 ## v0.83.4 (2026-06-17) — Auth + UX Round 23
 ### Auth (pre-existing)
 - fix(conexoes): redirect /onboarding → /login?return=/conexoes; TS null safety restructure

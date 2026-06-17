@@ -49,6 +49,7 @@ interface MandalaNarrativeProps {
     } | null;
     areas: Record<string, AreaNarrative>;
     synthesisParagraph: string;
+    narrativaCentral?: string | null;
   } | null;
   loading?: boolean;
   locale: string;
@@ -206,7 +207,7 @@ export function MandalaNarrative({ synthesis, loading }: MandalaNarrativeProps) 
     );
   }
 
-  const { oneProfile, areas, synthesisParagraph } = synthesis;
+  const { oneProfile, areas, synthesisParagraph, narrativaCentral } = synthesis;
   const accentColor = TYPE_COLORS[oneProfile.typeName.toLowerCase().replace(' ', '')] ?? '#FF9500';
   const TypeIcon = TYPE_ICON_MAP[oneProfile.typeName.toLowerCase().replace(' ', '')] ?? Sparkles;
   return (
@@ -301,6 +302,21 @@ export function MandalaNarrative({ synthesis, loading }: MandalaNarrativeProps) 
             <span className="text-xs text-[#7C5CFF] uppercase tracking-wider font-semibold">Síntese Akasha</span>
           </div>
           <p className="text-sm text-white/80 leading-relaxed">{synthesisParagraph}</p>
+        </motion.div>
+      )}
+      {/* F-232: Narrativa Central Akáshica — síntese dos 3 primitivos dominantes */}
+      {narrativaCentral && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="rounded-2xl border border-[#2DD4BF]/20 bg-gradient-to-br from-[#2DD4BF]/8 to-transparent p-5"
+        >
+          <div className="flex items-center gap-2 mb-3">
+            <Brain size={14} className="text-[#2DD4BF]" />
+            <span className="text-xs text-[#2DD4BF] uppercase tracking-wider font-semibold">Síntese Akáshica</span>
+          </div>
+          <p className="text-sm text-white/80 leading-relaxed italic">&ldquo;{narrativaCentral}&rdquo;</p>
         </motion.div>
       )}
 

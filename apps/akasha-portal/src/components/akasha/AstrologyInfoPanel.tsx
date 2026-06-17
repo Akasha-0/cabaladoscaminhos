@@ -49,11 +49,32 @@ export function AstrologyInfoPanel({
   const [showAdvanced, setShowAdvanced] = useState(false);
   return (
     <InfoPanel color="#7C5CFF" title="Movimento Celeste — O Céu" subtitle="Anel Cósmico · Camada 4">
-      <Row label="Ascendente" value={astrology.ascendant} />
-      <Row label="Meio do Céu" value={astrology.midheaven} />
-      {astrology.planets.slice(0, 5).map((p) => (
-        <Row key={p.name} label={p.name} value={`${formatDegreeToZodiac(p.degree)} — casa ${p.house}`} />
-      ))}
+      <Row label="Ascendente — como o mundo te percebe" value={astrology.ascendant} />
+      <Row label="Meio do Céu — seu chamado público" value={astrology.midheaven} />
+      {(() => {
+        const PLANET_SUBTITLES: Record<string, string> = {
+          Sol: '— sua vontade central que ilumina',
+          Lua: '— seu mundo emocional e memória',
+          Marte: '— sua energia de ação e coragem',
+          Mercúrio: '— sua mente e comunicação',
+          Vênus: '— seu amor e valores',
+          Júpiter: '— sua expansão e propósito',
+          Saturno: '— sua estrutura e responsabilidade',
+          Urano: '— sua individualidade e inovação',
+          Netuno: '— sua espiritualidade e intuição',
+          Plutão: '— sua transformação e poder',
+        };
+        return astrology.planets.slice(0, 5).map((p) => {
+          const subtitle = PLANET_SUBTITLES[p.name] ?? '';
+          return (
+            <Row
+              key={p.name}
+              label={`${p.name} ${subtitle}`}
+              value={`${formatDegreeToZodiac(p.degree)} — casa ${p.house}`}
+            />
+          );
+        });
+      })()}
       {showAdvanced ? (
         <>
           <Divider />
@@ -65,7 +86,10 @@ export function AstrologyInfoPanel({
               marginBottom: '0.35rem',
             }}
           >
-            Aspectos Principais
+            Aspectos Principais{' '}
+            <span style={{ color: '#A7AECF', fontWeight: 400 }}>
+              — como seus planetas se relacionam entre si
+            </span>
           </p>
           {astrology.aspects.slice(0, 5).length === 0 ? (
             <Insight color="#7C5CFF">Sem aspectos principais calculados.</Insight>

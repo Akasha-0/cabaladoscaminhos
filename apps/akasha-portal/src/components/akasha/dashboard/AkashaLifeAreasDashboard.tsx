@@ -219,7 +219,7 @@ const AUTHORITY_LABELS: Record<string, string> = {
   mental: 'Autoridade Mental',
 };
 
-export function OneProfileCard({ profile }: { profile: AkashaTypeProfileUI }) {
+export function OneProfileCard({ profile, narrativaCentral }: { profile: AkashaTypeProfileUI; narrativaCentral?: string | null }) {
   const iconMap: Record<string, string> = {
     catalisador: '#FF6B35',
     receptor: '#0A84FF',
@@ -247,6 +247,25 @@ export function OneProfileCard({ profile }: { profile: AkashaTypeProfileUI }) {
               <p className="text-xs text-white/40 uppercase tracking-widest font-medium">Seu Tipo Akasha</p>
               <h2 className="text-xl font-bold text-white leading-tight">{profile.typeName}</h2>
               <p className="text-sm text-white/60 mt-0.5 italic">&ldquo;{profile.corePattern}&rdquo;</p>
+              {/* Confidence badge */}
+              {profile.typeConfidence && (
+                <div
+                  className={`inline-flex items-center gap-1.5 mt-2 px-2.5 py-1 rounded-full text-xs font-semibold border ${
+                    profile.typeConfidence === 'alta'
+                      ? 'bg-[#30D158]/15 border-[#30D158]/30 text-[#30D158]'
+                      : profile.typeConfidence === 'media'
+                      ? 'bg-[#FFD60A]/15 border-[#FFD60A]/30 text-[#FFD60A]'
+                      : 'bg-[#FF375F]/15 border-[#FF375F]/30 text-[#FF375F]'
+                  }`}
+                >
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-current" />
+                  {profile.typeConfidence === 'alta'
+                    ? 'Alta convergência — perfil bem definido'
+                    : profile.typeConfidence === 'media'
+                    ? 'Convergência média — perfil em formação'
+                    : 'Baixa convergência — mais dados fortalecem o perfil'}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -297,6 +316,13 @@ export function OneProfileCard({ profile }: { profile: AkashaTypeProfileUI }) {
           </p>
         </div>
       </div>
+      {/* F-232: Narrativa Central Akáshica — síntese dos 3 primitivos dominantes */}
+      {narrativaCentral && (
+        <div className="mx-5 mb-4 bg-gradient-to-r from-[#7C5CFF]/10 to-[#2DD4BF]/10 border border-[#7C5CFF]/20 rounded-xl px-4 py-3">
+          <p className="text-xs text-[#7C5CFF]/80 uppercase tracking-wider font-semibold mb-1">Síntese Akáshica</p>
+          <p className="text-sm text-white/80 leading-relaxed italic">&ldquo;{narrativaCentral}&rdquo;</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -670,23 +696,19 @@ export function AkashaLifeAreasDashboard({
   if (!synthesis) {
     return (
       <div className="rounded-2xl border border-white/10 bg-[#1C1C1E] p-8 text-center">
-        <AlertTriangle size={32} className="text-white/30 mx-auto mb-3" />
-        <p className="text-sm text-white/50">Perfil de síntese não disponível.</p>
-        <p className="text-xs text-white/30 mt-1">Complete seu mapa astral para desbloquear.</p>
+        <p className="text-white/50 text-sm">Carregando síntese…</p>
       </div>
     );
   }
 
-  // F-227: ONE Profile Card — primeira coisa que o usuário vê
-  const { oneProfile } = synthesis;
-
+  const { oneProfile, narrativaCentral } = synthesis;
   const { akashaProfile, areas, dailyDecision, synthesisParagraph } = synthesis;
 
   return (
     <div className="space-y-5">
 
       {/* F-227: ONE Akasha Profile Card — tipo unificado visível primeiro */}
-      {oneProfile && <OneProfileCard profile={oneProfile} />}
+      {oneProfile && <OneProfileCard profile={oneProfile} narrativaCentral={narrativaCentral} />}
       {/* Perfil unificado — síntese geral */}
       <div className="rounded-2xl border border-[#FF9500]/30 bg-gradient-to-br from-[#FF9500]/8 to-transparent p-5">
         <div className="flex items-center justify-between mb-3">

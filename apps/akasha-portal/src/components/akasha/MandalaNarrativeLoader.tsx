@@ -20,7 +20,12 @@ export function MandalaNarrativeLoader({ locale }: MandalaNarrativeLoaderProps) 
       .then(r => r.ok ? r.json() : null)
       .then(json => {
         if (json?.synthesis) {
-          setSynthesis(json.synthesis);
+          // F-232: flatten synthesizedProfile.narrativaCentral for MandalaNarrative
+          const s = json.synthesis;
+          if (s?.synthesizedProfile?.narrativaCentral != null) {
+            s.narrativaCentral = s.synthesizedProfile.narrativaCentral;
+          }
+          setSynthesis(s);
         }
       })
       .catch(() => null)

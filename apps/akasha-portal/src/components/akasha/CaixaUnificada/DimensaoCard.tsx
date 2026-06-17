@@ -127,7 +127,7 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
             {sintese.titulo}
           </h3>
           {sintese.descricao && (
-            <p style={{ fontSize: '0.78rem', color: 'rgba(232,224,255,0.5)', margin: '3px 0 0', lineHeight: 1.3 }}>
+            <p style={{ fontSize: '0.78rem', color: 'rgba(232,224,255,0.58)', margin: '3px 0 0', lineHeight: 1.3 }}>
               {sintese.descricao}{!aberto && <span style={{ color: 'rgba(124,92,255,0.5)' }}> · {hintTexto}</span>}
             </p>
           )}

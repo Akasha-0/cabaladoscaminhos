@@ -270,7 +270,8 @@ export default async function MinhaCaixaPage({
         </div>
         {/* Perfil geral narrativo */}
         {sintese && sintese.perfilGeral && (
-          <section
+          <div
+            role="region"
             aria-labelledby="perfil-heading"
             style={{
               background: 'rgba(255,255,255,0.04)',
@@ -285,7 +286,7 @@ export default async function MinhaCaixaPage({
                 {node}
               </p>
             ))}
-          </section>
+          </div>
         )}
 
         {/* 8 Dimensões — accordion mobile-first */}
@@ -326,7 +327,7 @@ export default async function MinhaCaixaPage({
 
         {/* Footer CTA */}
         <footer style={{ marginTop: 32, textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <p style={{ fontSize: '0.72rem', color: 'rgba(232,224,255,0.35)', margin: '0 0 4px', letterSpacing: '0.04em' }}>
+          <p style={{ fontSize: '0.72rem', color: 'rgba(232,224,255,0.65)', margin: '0 0 4px', letterSpacing: '0.04em' }}>
             Como vai aplicar isto hoje?
           </p>
           <Link

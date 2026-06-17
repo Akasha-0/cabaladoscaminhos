@@ -340,7 +340,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as TabType)}
                 className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-full text-xs font-semibold tracking-wide transition-all duration-300 relative ${
-                  active ? 'text-white' : 'text-[#A7AECF]/60 hover:text-[#A7AECF]'
+                  active ? 'text-white' : 'text-[#A7AECF] hover:text-white'
                 }`}
               >
                 {active && (
@@ -402,7 +402,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       <Cloud size={16} className="text-[#2DD4BF]" />
                     </div>
                   </div>
-                  <p className="text-[11px] text-[#2DD4BF]/40 uppercase tracking-widest font-mono font-semibold">Tempo</p>
+                  <p className="text-[11px] text-[#2DD4BF]/70 uppercase tracking-widest font-mono font-semibold">Tempo</p>
                   <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.climate ?? 'Estável'}</p>
                   {activeFilterChip === 'clima' && (
                     <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#2DD4BF] flex items-center justify-center">
@@ -463,7 +463,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                 <div className="rounded-2xl border border-white/10 bg-[#0B0E1C]/60 p-5 space-y-3">
                   <div className="flex items-center gap-1.5 border-b border-white/5 pb-2">
                     <Sparkles size={14} className="text-[#9D86FF]" />
-                    <span className="text-xs font-bold text-white uppercase tracking-wider font-mono">Perfil de Hoje</span>
+                    <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono">Perfil de Hoje</h3>
                   </div>
                   <div
                     className="relative"
@@ -501,7 +501,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Info size={16} className="text-white/80" />
-                      <span className="text-xs font-bold text-white uppercase tracking-wider font-mono">Diretriz de Decisão (Autoridade)</span>
+                      <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono">Diretriz de Decisão (Autoridade)</h3>
                     </div>
                     <span 
                       className="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider"
@@ -543,7 +543,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
 
                   <div className="grid grid-cols-2 gap-3 text-xs pt-1 border-t border-white/5">
                     <div className="space-y-2">
-                      <p className="text-[11px] text-[#2DD4BF] uppercase tracking-wider font-mono font-semibold">Melhor Timing</p>
+                      <p className="text-[11px] text-[#2DD4BF] uppercase tracking-wider font-mono font-semibold">Melhor Timing — janelas de decisão</p>
                       <p className="text-white/85 leading-relaxed">{detSintese.autoridade.timing.melhor}</p>
                     </div>
                     <div className="space-y-2">
@@ -554,7 +554,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
 
                   <div className="pt-2 border-t border-white/5 text-[11px] text-[#A7AECF]/60 flex items-center justify-between">
                     <span>
-                      Autoridade: <strong className="text-white capitalize">{detSintese.autoridade.autoridade}</strong>
+                      Autoridade: <strong className="text-white capitalize" title="Sua energia de comando hoje — como você exerce autoridade">{detSintese.autoridade.autoridade}</strong>
                     </span>
                     <span>
                       Área Foco: <strong className="text-white capitalize">{AREA_ICONE[detSintese.autoridade.areaFoco] || '◈'} {AREA_LABEL[detSintese.autoridade.areaFoco] || detSintese.autoridade.areaFoco}</strong>
@@ -571,8 +571,8 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       <Sparkles size={20} className="text-[#9D86FF]" />
                     </div>
                     <div>
-                      <p className="text-[10px] text-[#F0B429] font-bold uppercase tracking-wider font-mono">Foco Prioritário de Hoje</p>
-                      <h3 className="text-base font-bold font-cinzel text-white leading-none mt-1">{dimFoco?.titulo}</h3>
+                      <h3 className="text-[10px] text-[#F0B429] font-bold uppercase tracking-wider font-mono">Foco Prioritário de Hoje</h3>
+                      <p className="text-base font-bold font-cinzel text-white leading-none mt-1">{dimFoco?.titulo}</p>
                       <p className="text-[10px] text-[#A7AECF]/50 mt-0.5">A energia de hoje favorece fortemente esta dimensão — aproveite o momento</p>
                     </div>
                   </div>
@@ -602,7 +602,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                 </div>
                 <button
                   onClick={() => setDimFocoExpanded(!dimFocoExpanded)}
-                  className="text-xs text-[#7C5CFF]/70 hover:text-[#7C5CFF] transition-colors"
+                  className="text-xs text-[#7C5CFF]/70 hover:text-[#7C5CFF] transition-colors px-3 py-2 min-h-11 rounded-lg"
                 >
                   {dimFocoExpanded ? <><ChevronUp size={12} className="inline" /> Mostrar menos</> : <><ChevronDown size={12} className="inline" /> Ler mais</>}
                 </button>
@@ -621,7 +621,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                   </div>
                 )}
               </div>
-              <a href={`/${locale}/akasha`} className="block text-center text-[11px] text-[#7C5CFF]/60 hover:text-[#7C5CFF] transition-colors py-2 border-t border-white/5">
+              <a href={`/${locale}/akasha`} className="block text-center text-[11px] text-[#7C5CFF]/60 hover:text-[#7C5CFF] transition-colors py-3 min-h-11 border-t border-white/5">
                 Ver análise completa do seu mandato →
               </a>
               {/* 4. Daily Ritual Card - Premium Cosmic Design */}
@@ -640,7 +640,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7C5CFF]/20 to-[#2DD4BF]/10 border border-[#7C5CFF]/20 flex items-center justify-center">
                             <Sparkles size={18} className="text-[#9D86FF]" />
                           </div>
-                          <p className="text-[10px] text-[#9D86FF] font-semibold uppercase tracking-widest font-mono">Ritual do Dia</p>
+                          <h3 className="text-[10px] text-[#9D86FF] font-semibold uppercase tracking-widest font-mono">Ritual do Dia</h3>
                         </div>
                         <h3 className="text-xl font-bold font-cinzel text-white leading-tight">{dailyData.ritual.titulo}</h3>
                         <div className="flex items-center gap-3 text-xs text-[#A7AECF]/70">
