@@ -1,0 +1,1 @@
+{"success": true, "message": "life-areas-data.ts contains only static LIFE_AREAS data (no functions); helper already extracted as life-areas-data-utils.ts in prior session", "type": "large_file"}
