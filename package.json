@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "NODE_OPTIONS='--max-old-space-size=4096' next build --experimental-build-mode=compile && next build --experimental-build-mode=generate",
+    "build": "pnpm --filter akasha-portal build",
     "start": "next start",
     "lint": "eslint packages/ apps/akasha-portal/src/ tests/ --max-warnings 999",
     "typecheck": "tsc --noEmit",

@@ -31,7 +31,7 @@ import { stripe } from '@/lib/payments/stripe';
 // Cast stripe to Mocked<typeof stripe> to satisfy TypeScript for mock methods
  
 const stripeMock = stripe as any;
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/infrastructure/prisma';
  
 const prismaMock = prisma as any;
 import { NextRequest } from 'next/server';

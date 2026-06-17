@@ -67,6 +67,65 @@ const SECURITY_HEADERS = {
 
 /** CSP strict para rotas API (não servem conteúdo navegável). */
 const API_CSP = "default-src 'none'; frame-ancestors 'none'";
+// ============================================
+// Auth Token Refresh via Internal Fetch (Edge Runtime)
+// ============================================
+// Uses the existing /api/akasha/auth/refresh endpoint internally.
+// This avoids Edge-runtime crypto limitations (node:crypto not available).
+// The refresh endpoint handles JWT signing using Node.js crypto (server runtime).
+
+const AKASHA_ACCESS_COOKIE = 'akasha_session';
+const AKASHA_REFRESH_COOKIE = 'akasha_refresh';
+
+function getCookiesFromResponseHeaders(headers: Headers): { name: string; value: string }[] {
+  const setCookieHeaders = headers.getAll('set-cookie');
+  return setCookieHeaders.map((header) => {
+    const parts = header.split(';')[0].split('=');
+    return { name: parts[0], value: parts.slice(1).join('=') };
+  });
+}
+
+async function authRefresh(request: NextRequest): Promise<{ name: string; value: string }[] | null> {
+  try {
+    // Build the internal request to the refresh endpoint.
+    // We pass the refresh cookie directly to the endpoint.
+    const refreshToken = request.cookies.get(AKASHA_REFRESH_COOKIE)?.value;
+    if (!refreshToken) return null;
+
+    // Create a base URL from the request — works in both dev and production.
+    const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+    const host = request.headers.get('host') ?? 'localhost:3000';
+    const refreshUrl = `${protocol}://${host}/api/akasha/auth/refresh`;
+
+    const refreshResponse = await fetch(refreshUrl, {
+      method: 'POST',
+      headers: {
+        cookie: `${AKASHA_REFRESH_COOKIE}=${refreshToken}`,
+        'Content-Type': 'application/json',
+      },
+      // @ts-expect-error Next.js 16 allows WebAPI-style Request/Response in Edge
+    });
+
+    if (!refreshResponse.ok) return null;
+
+    const newCookies = getCookiesFromResponseHeaders(refreshResponse.headers);
+    if (newCookies.length === 0) return null;
+    return newCookies;
+  } catch {
+    return null;
+  }
+}
+
+const PROTECTED_PATH_PREFIXES = [
+  '/dashboard', '/conta', '/diario', '/mandala', '/oraculo',
+  '/conexoes', '/mapa', '/manifesto', '/meu-dia',
+];
+
+function shouldRefreshAuth(pathname: string): boolean {
+  return PROTECTED_PATH_PREFIXES.some(
+    (prefix) => pathname.startsWith(prefix) || pathname.includes('/akasha')
+  );
+}
 
 // ============================================
 // Middleware - Auth is handled client-side
@@ -184,8 +243,23 @@ export async function middleware(request: NextRequest) {
     });
   }
 
-  // All client-side routes are allowed - auth is verified by SupabaseProvider
-  // The dashboard page itself checks authentication and shows redirect if not logged in
+  // Auth token refresh: prevent sessions from expiring after 15min.
+  // Calls /api/akasha/auth/refresh internally; sets new cookies on the response.
+  // Fixes UX bug: users were kicked to /onboarding after token expiry.
+  if (shouldRefreshAuth(pathname)) {
+    const newCookies = await authRefresh(request);
+    if (newCookies) {
+      for (const cookie of newCookies) {
+        response.cookies.set(cookie.name, cookie.value, {
+          httpOnly: true,
+          sameSite: 'lax',
+          secure: process.env.NODE_ENV === 'production',
+          path: '/',
+        });
+      }
+    }
+  }
+
   return response;
 }
 
