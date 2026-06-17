@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { Sparkles } from 'lucide-react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/shared/utils';
 
@@ -53,16 +54,13 @@ export function MysticButton({
       {...props}
     >
       {loading && (
-        <span className="mystic-spinner" aria-hidden="true">
-          ✦
-        </span>
+        <Sparkles size={14} className="mystic-spinner" aria-hidden="true" />
       )}
       {children}
       <style>{`
         .mystic-spinner {
           display: inline-block;
           animation: mysticRotate 1.2s linear infinite;
-          font-size: 0.875em;
           line-height: 1;
         }
         
