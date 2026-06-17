@@ -2,7 +2,7 @@
   "results": [
     {
       "success": true,
-      "message": "life-areas-data.ts contains only static LIFE_AREAS data (no functions); helper already extracted as life-areas-data-utils.ts in prior session",
+      "message": "No helper to extract — apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts contains only static data (LIFE_AREAS constant), no functions. A helper was already extracted previously (life-areas-data-utils.ts, commit e18d062f).",
       "type": "large_file"
     }
   ]
