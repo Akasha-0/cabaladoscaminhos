@@ -10,6 +10,7 @@
 
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { AlertTriangle } from 'lucide-react';
 import type { RitualResponse, Quizila } from '@akasha/core';
 import type { Wing } from '@akasha/core-iching';
 
@@ -148,9 +149,8 @@ export function RitualCard({ ritual }: Props) {
                 {ritual.pratica.howTo}
               </p>
               {ritual.pratica.warnings && ritual.pratica.warnings.length > 0 && (
-                <div className="mt-2 pt-2 border-t border-[#26304F]/50">
                   <p className="text-xs text-[#FB5781]">
-                    ⚠ {ritual.pratica.warnings[0]}
+                    <AlertTriangle size={12} className="inline mr-1 flex-shrink-0 text-[#FB5781]" /> {ritual.pratica.warnings[0]}
                   </p>
                 </div>
               )}

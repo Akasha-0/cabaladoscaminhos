@@ -1,14 +1,6 @@
 {
   "improvements": [
     {
-      "type": "missing_tests",
-      "priority": 6,
-      "description": "1 changed files lack tests",
-      "files": [
-        "packages/akasha-core/src/index.ts"
-      ]
-    },
-    {
       "type": "large_file",
       "priority": 4,
       "description": "28 oversized files",
@@ -28,5 +20,5 @@
       ]
     }
   ],
-  "iteration": 20
+  "iteration": 21
 }

@@ -2,13 +2,8 @@
   "results": [
     {
       "success": false,
-      "message": "Skip: practices.ts is pure static data (914 lines PRACTICES array) + re-exports only; no extractable helper functions. practices-queries was already extracted in prior commit 095f8b05.",
+      "message": "Skipped — practices.ts already refactored: lookup helpers extracted to practices-lookup.ts in a prior session; remaining content is pure static PRACTICES data array (no functions to extract)",
       "type": "large_file"
-    },
-    {
-      "success": true,
-      "message": "Added tests for packages/akasha-core/src/index.ts",
-      "type": "missing_tests"
     }
   ]
 }

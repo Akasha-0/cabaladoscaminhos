@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-17T02:05:19.856676+00:00",
-  "version": "0.76.0",
+  "generated_at": "2026-06-17T02:07:50.574712+00:00",
+  "version": "0.77.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-UI/UX-001** — ralph_loop_ui_improvements | 0.13.2",
@@ -1078,16 +1078,17 @@
       "- [~] **PLN-019[1]** -- large_file | 28 oversized files",
       "- [~] **PLN-020[1]** -- missing_tests | 1 changed files lack tests",
       "- [~] **PLN-020[2]** -- large_file | 28 oversized files",
+      "- [~] **PLN-021[1]** -- large_file | 28 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2",
       "- [~] **PLN-AE-003** — Ralph-loop continuous | QA cycling (v0.12.1)"
     ],
-    "pending_count": 1078
+    "pending_count": 1079
   },
   "git": {
-    "untracked": 4,
-    "modified": 11,
-    "total": 15,
+    "untracked": 2,
+    "modified": 15,
+    "total": 17,
     "has_changes": true
   },
   "triad": {
@@ -1145,15 +1146,6 @@
       ]
     },
     {
-      "type": "missing_tests",
-      "priority": 6,
-      "description": "2 changed files lack tests",
-      "files": [
-        "packages/akasha-core/src/index.ts",
-        "packages/core-iching/src/practices-queries.ts"
-      ]
-    },
-    {
       "type": "missing_tradition",
       "priority": 8,
       "description": "ODUS missing from traducao-areas",
@@ -1161,7 +1153,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "f78c98ce6aaa333e74d51a522d1355167054dd6a",
+  "git_head": "5b4b1653c12951a65a5470f3221717539352b0d1",
   "decision_factors": {
     "has_pending_features": true
   }

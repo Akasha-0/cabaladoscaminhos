@@ -1,0 +1,1 @@
+{"success": false, "message": "Skipped — practices.ts already refactored: lookup helpers extracted to practices-lookup.ts in a prior session; remaining content is pure static PRACTICES data array (no functions to extract)", "type": "large_file"}

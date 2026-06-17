@@ -1,5 +1,6 @@
 'use client';
 
+import { Moon, Sparkles, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { RitualHistoryItem } from '@akasha/core';
 
@@ -9,21 +10,21 @@ interface HistoryItemProps {
 
 const LEVEL_CONFIG = {
   shadow: {
-    icon: '🌑',
+    icon: Moon,
     bg: 'bg-purple-100 dark:bg-purple-900/50',
     text: 'text-purple-700 dark:text-purple-300',
     border: 'border-purple-200 dark:border-purple-700/50',
     label: 'Sombra',
   },
   gift: {
-    icon: '✨',
+    icon: Sparkles,
     bg: 'bg-amber-100 dark:bg-amber-900/50',
     text: 'text-amber-700 dark:text-amber-300',
     border: 'border-amber-200 dark:border-amber-700/50',
     label: 'Dom',
   },
   siddhi: {
-    icon: '⚡',
+    icon: Zap,
     bg: 'bg-emerald-100 dark:bg-emerald-900/50',
     text: 'text-emerald-700 dark:text-emerald-300',
     border: 'border-emerald-200 dark:border-emerald-700/50',
@@ -70,9 +71,7 @@ export function HistoryItem({ item }: HistoryItemProps) {
       >
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-start gap-3 flex-1 min-w-0">
-            <span className="text-2xl flex-shrink-0 mt-0.5" role="img" aria-label={config.label}>
-              {config.icon}
-            </span>
+          <config.icon size={24} className="flex-shrink-0 mt-0.5 text-2xl" aria-label={config.label} />
             
             <div className="min-w-0 flex-1">
               <h3 className="font-medium text-slate-900 dark:text-zinc-100 truncate">

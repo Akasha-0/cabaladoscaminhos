@@ -223,7 +223,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
           </div>
         </div>
         <div className="mt-8 text-center space-y-2 relative z-10">
-          <p className="text-lg font-bold font-cinzel text-white tracking-wider">✦ AKASHA</p>
+          <p className="text-lg font-bold font-cinzel text-white tracking-wider"><Sparkles size={18} className="inline mr-1 text-[#9D86FF]" /> AKASHA</p>
           <p className="text-sm text-[#A7AECF] font-cinzel tracking-widest animate-pulse">SINTONIZANDO SUA ENERGIA...</p>
         </div>
         {/* Orbiting dots */}
@@ -331,7 +331,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                 </h2>
                 {detSintese?.caminhoDeVida && (
                   <p className="text-xs text-[#A7AECF]/60 font-medium tracking-wide">
-                    ✦ {detSintese.caminhoDeVida}
+                    <Sparkles size={12} className="inline mr-1 text-[#9D86FF]" />{detSintese.caminhoDeVida}
                   </p>
                 )}
               </div>
@@ -466,7 +466,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                 <div className="rounded-2xl border border-white/10 bg-[#0B0E1C]/60 p-5 space-y-4">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-[#7C5CFF]/10 border border-[#7C5CFF]/30 flex items-center justify-center text-[#9D86FF] text-xl font-bold">
-                      {DIMENSAO_ICONE[dimFoco.dimensoesId] || '◈'}
+                      <Sparkles size={20} className="text-[#9D86FF]" />
                     </div>
                     <div>
                       <p className="text-[10px] text-[#F0B429] font-bold uppercase tracking-wider font-mono">Foco Prioritário de Hoje</p>
@@ -550,7 +550,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                             >
                               <CheckCircle size={20} className="text-[#2DD4BF]" />
                             </motion.div>
-                            <span>Ritual Concluído! ✦</span>
+                            <span>Ritual Concluído! <Sparkles size={14} className="inline ml-1 text-[#2DD4BF]" /></span>
                           </div>
                         </div>
                       ) : (
@@ -597,7 +597,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                         className="flex flex-col items-center justify-center gap-1.5 p-4 rounded-2xl border border-white/5 bg-[#0B0E1C]/45 hover:bg-white/5 hover:border-[#7C5CFF]/30 active:scale-95 transition-all text-center min-h-[92px] group"
                       >
                         <span className="text-lg text-[#9D86FF] group-hover:scale-110 transition-transform duration-300">
-                          {DIMENSAO_ICONE[dim.dimensoesId] || '◈'}
+                          <Sparkles size={18} className="text-[#9D86FF]" />
                         </span>
                         <span className="text-[11px] font-bold text-white leading-tight">
                           {dim.titulo.split(' & ')[0]}
@@ -706,7 +706,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                       border: `1px solid ${selectedDimension.chakraCor}30` 
                     }}
                   >
-                    {DIMENSAO_ICONE[selectedDimension.dimensoesId] || '◈'}
+                    <Sparkles size={20} className="text-[#9D86FF]" />
                   </div>
                   <div>
                     <h3 className="text-lg font-bold font-cinzel text-white leading-none">{selectedDimension.titulo}</h3>
