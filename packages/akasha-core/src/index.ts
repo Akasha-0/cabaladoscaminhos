@@ -95,7 +95,7 @@ export type {
   ConexaoResult,
 } from './conexoes';
 // mapeamentos/ — Primitive synthesis engine
-export { synthesizePrimitives } from './mapeamentos';
+export { synthesizePrimitives, getTradicaoWeights, setTradicaoWeights } from './mapeamentos';
 export type {
   SynthesizedProfile,
   SynthesizedPrimitivo,

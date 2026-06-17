@@ -694,7 +694,7 @@ export function extractProcedenciaTop(
 
 // ─── Re-export para conveniência ─────────────────────────────────────────────
 
-export { PRIMITIVOS, PESOS_TRADICAO_DOMINIO } from './types';
+export { PRIMITIVOS, PESOS_TRADICAO_DOMINIO, getTradicaoWeights, setTradicaoWeights } from './types';
 
 export type {
   Primitivo,

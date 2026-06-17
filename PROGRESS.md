@@ -2015,3 +2015,36 @@ Procedencia provenance data surfaced in dashboard UI. `AkashaLifeAreasDashboard.
 - **Python `open().write()` silently failed**: filesystem overlay issue; Edit tool worked correctly
 - **Heredoc with embedded quotes problematic**: wrote to `.py` file then executed
 - **Hardcoding appropriate**: closed-portuguese product, eliminates server dep in client component
+## Iter42 (2026-06-17): Tunable Tradicao Weights + SPEC.md §13 Reconciliation
+
+### Resumo
+Reconciled stale SPEC.md §13 Known Gaps with actual codebase state (Layer 7 fully wired, Iter38/39 done). Implemented tunable weights API for PESOS_TRADICAO_DOMINIO so synthesis weights can be overridden at runtime without source changes.
+
+### Alteracoes
+
+SPEC.md §13 — reconciled gap status:
+Layer 7 (Agente Evolutivo): "Not implemented" → fully wired (iter30–34)
+Procedencia audit trail: "No formal trail" → implemented Iter39
+Ritual database: "no DB" → persistence Iter38, curated scripts future gap
+Tunable domain weights: marked "in progress" with Iter42 scope
+
+packages/akasha-core/src/mapeamentos/types.ts — tunable weights API:
+getTradicaoWeights() — returns _weightsOverride if set, else PESOS_TRADICAO_DOMINIO
+setTradicaoWeights(weights) — validates full shape + 0–2 range, installs process-scoped override
+isValidWeights() — guard: validates Record<Tradicao, Record<Dominio, number>> structure
+
+packages/akasha-core/src/mapeamentos/index.ts:
+getTradicaoWeights added to import
+getTradicaoWeights()[trad] replaces direct PESOS_TRADICAO_DOMINIO[trad] at line 531
+
+packages/akasha-core/src/index.ts:
+getTradicaoWeights, setTradicaoWeights added to re-exports from ./mapeamentos
+
+### Verificacao
+TypeScript: 0 errors
+Tests: 1385 passed / 17 skipped (up from 1376 — 9 tests now passing)
+Build: succeeds
+
+### Lessons Learned
+Tunable weights scope: module-level override is process-scoped (single Lambda/process). For multi-instance prod: set via AKASHA_TRADICAO_WEIGHTS env var on startup, or implement DB-backed override with cache-busting.
+Validation-first pattern: isValidWeights() before mutating module state prevents bad overrides from silently corrupting the synthesis matrix.
