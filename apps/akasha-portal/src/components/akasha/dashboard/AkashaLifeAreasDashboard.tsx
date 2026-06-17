@@ -990,7 +990,32 @@ export function AkashaLifeAreasDashboard({
             Sequência ativa: <span className="text-white/60 capitalize">{akashaProfile.activeSequence}</span>
           </span>
         </div>
+        {/* §5 Procedência: top-N proveniência — raiz de cada afirmação */}
+        {(synthesis as any).procedenciaTop && (synthesis as any).procedenciaTop.length > 0 && (
+          <details className="mt-3 rounded-lg border border-white/10 bg-white/4 p-2">
+            <summary className="text-[10px] text-white/30 cursor-pointer select-none uppercase tracking-wider hover:text-white/50">
+              Fundamento Akáshico
+            </summary>
+            <div className="flex flex-wrap gap-1 mt-2">
+              {((synthesis as any).procedenciaTop as Array<{tradicao:string; simbolo:string; intensidade:number}>).slice(0, 6).map((p: any, i: number) => {
+                const colors: Record<string, string> = {
+                  cabala: '#7C5CFF', astrologia: '#2DD4BF', iching: '#A0763A', odu: '#FB5781', tantra: '#F0B429',
+                };
+                const color = colors[p.tradicao] ?? '#888';
+                return (
+                  <div key={i} className="inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-[10px]" style={{ borderColor: `${color}44`, color: `${color}bb` }}>
+                    <span>{p.simbolo}</span>
+                    <span style={{ color: `${color}88` }}>
+                      {'●'.repeat(Math.min(3, Math.ceil((p.intensidade ?? 5) / 3)))}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </details>
+        )}
       </div>
+      {/* F-235: Frequency Path Explorer — Siddhi journey visualization */}
       {/* F-235: Frequency Path Explorer — Siddhi journey visualization */}
       <FrequencyPathExplorer
         dominantFrequency={akashaProfile.dominantFrequency}

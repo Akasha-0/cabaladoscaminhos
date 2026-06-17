@@ -1,3 +1,18 @@
+## v0.84.9 (2026-06-17) — TypeScript: 0 errors, procedenciaTop integration
+
+### TypeScript Fixes
+- `app/api/akasha/push/subscribe/route.ts`: Auth guard stub → real (`@/lib/application/auth/akasha-guard`); `PushSubscriptionPayload` endpoint/keys made required (matching real service interface); `isValidSubscription` narrowed from `unknown` with full key validation.
+- `apps/akasha-portal/src/app/api/akasha/push/subscribe/route.ts`: Same push type fixes as root-level route.
+- `packages/akasha-core/src/index.test.ts`: 4 type fixes — `Ogbe` → `Eji` (IfaOdu), `chakra` → `cabala` (Tradition), `meditation` → `oracao` (PracticeCategory), matching real types.
+- `packages/akasha-core/src/mapeamentos/index.test.ts`: 4 type fixes — `PilarAstrologia` missing `lilith_signo`/`casa_8_signo`; `PilarTantrica` corrected to `corpo_predominante`/`trigemeo`/`temperamento_atual`; `PilarOdu` missing `aviso`; `PRIMITIVOS` readonly tuple spread for mutable `Set`.
+
+### Feature Completion
+- `buildAkashaSynthesis`: Filter `procedenciaTop` by area primitives via `PRIMITIVOS_POR_AREA` map, integrating the §5 procedência feature from `mapeamentos/index.ts`.
+- `packages/akasha-core/src/index.ts`: Export `Tradicao` and `ProcedenciaEntry` types.
+
+### EVALS Update
+- `tsc_clean`: Corrected evidence to repo-root check (`npx tsc --noEmit` → 0 errors). Previous score of 100 was incorrectly evidenced (checked only `apps/akasha-portal/` subdirectory).
+
 ## v0.84.8 (2026-06-17) — Auth UX Fixes
 
 ### Bug Fixes (3 interrelated auth/UX issues causing page refresh → onboarding loop)
