@@ -224,3 +224,24 @@ The profile is:
 ---
 
 *Next review: When any synthesis-engine type signature changes, or when a sixth tradition is proposed for inclusion.*
+
+---
+
+**Date:** 2026-06-17  
+**Decision:** Siddhi frequency detection algorithm — `assessAreaFrequency` + `deriveDominantFrequency`
+
+**Context:** SPEC.md identified "No systematic path to siddhi-level synthesis" as the top uncharted gap. Siddhi is the highest frequency level in the Akasha system (above shadow and gift), representing full pattern dissolution and conscious energy mastery.
+
+**Option considered:**  
+- *Option A — soul-number-only:* Siddhi detected purely from soul being 1/22/33. Rejected: too simplistic, no shadow-resolution requirement.  
+- *Option B — full planetary.aspect removal:* Siddhi requires ALL hard aspects removed. Rejected: too strict; no living person would qualify.  
+- *Option C — noShadow + master number + master soul (CHOSEN):* `assessAreaFrequency` checks: (1) `noShadow` — no karmicDebts, no challenges, no Saturn/Pluto hard aspects; (2) `lifePathMaster` — life path number is 1, 11, 22, or 33; (3) `soulMaster` — tantra soul ∈ {1, 22, 33}. All three required for siddhi signal. `deriveDominantFrequency` returns siddhi when 3+ of 6 areas are at siddhi frequency (majority rule). Fallback: gift/shadow comparison.
+
+**Consequences:**  
+- Siddhi is now achievable by the algorithm (previously it was a UI label with no computational path)  
+- `AkashaLifeAreasDashboard` gains `FrequencyPathExplorer` component showing the 3-step journey (shadow→gift→siddhi) with per-level practices  
+- `AkashaSignificadoCard` now receives `defaultNivel='siddhi'` when dominant frequency is siddhi, rendering Realização-level interpretations  
+- `computeOverallScore` weights siddhi areas 1.5× vs 1.0× for gift vs 0 for shadow
+
+**Source:** `apps/akasha-portal/src/lib/application/akasha/synthesis-engine/frequency-analysis.ts`  
+**Spec:** `SPEC.md §13 Known Gaps — item 2 (Siddhi frequency)`

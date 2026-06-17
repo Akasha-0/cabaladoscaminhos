@@ -1,3 +1,17 @@
+## v0.84.5 (2026-06-17) — QA Round 33
+
+### Build Fixes (from parallel agent regressions)
+- manifesto/page.tsx: Remove stray '*' diff markers that broke Turbopack build
+- chart/route.ts: Fix TypeScript — import type { Prisma } → import { Prisma } (namespace requires value import); remove duplicate 'update:' key in birthChart.upsert
+- mandala/route.ts: Correct ichingMap source — was reading from user instead of chart
+- ConexoesClient.tsx: Fix Portuguese typo — 'Necesária' → 'Necessária'
+
+### Tests
+- synthesis-engine.test.ts: Fix 2 incorrect test expectations. 53/53 synthesis tests pass.
+
+### Features
+- FrequencyPathExplorer (F-235): 3-stage visual journey (Sombra → Dom → Realização) with expand/collapse detail and daily practice prompt
+
 ## v0.84.2 (2026-06-17) — UX Round 32
 
 ### UX Audit Round 32 (6 auditors: R32Dashboard, R32Mandala, R32Akasha, R32Diario, R32Oraculo, R32Conexoes)

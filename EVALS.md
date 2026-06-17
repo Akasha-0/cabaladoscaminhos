@@ -390,7 +390,8 @@ These are semantically identical, but the inconsistency suggests the codebase ev
 | `redirect_loops` | 95 | 🟢 Green |
 | `cookie_security` | 90 | 🟢 Green |
 
-**Overall: 0 critical, 0 high, 0 medium, 8 green. All auth fixes deployed — v0.84.3 ready for production.**
+**Overall: 0 critical, 0 high, 0 medium, 8 green. All auth fixes deployed — v0.84.5 ready for production.**
 
 ---
-*Last updated: 2026-06-17 — v0.84.3: Option C consistency fix (dashboard, akasha, mapa/significado) + null guard in derive-akasha-type.ts + lightweight JWT decode for refreshed sessions*
+*v0.84.5 (2026-06-17): QA round — build regressions fixed (manifesto stray markers, chart/route Prisma namespace + duplicate upsert key, mandala/route ichingMap source, ConexoesClient typo), FrequencyPathExplorer F-235, synthesis-engine test expectations corrected*
+*v0.84.3 (2026-06-17): Option C consistency fix (dashboard, akasha, mapa/significado) + null guard in derive-akasha-type.ts + lightweight JWT decode for refreshed sessions*
