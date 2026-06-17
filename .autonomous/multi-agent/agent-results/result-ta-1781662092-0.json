@@ -1,0 +1,1 @@
+{"success": true, "message": "packages/core-iching/src/practices.ts is pure data (PRACTICES constant only) — no helper functions to extract; helpers already extracted to practices-queries.ts, practices-data.ts, practices-cristais.ts, practices-cromoterapia.ts", "type": "large_file"}
