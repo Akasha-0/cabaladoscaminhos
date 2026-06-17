@@ -79,7 +79,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
           letterSpacing: '0.05em',
         }}
       >
-        {saudacao} · sua Mandala Akáshica aguarda
+        {saudacao} · explore sua Mandala
       </p>
 
       {/* Incomplete data badge */}
@@ -156,7 +156,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
             marginBottom: '1.25rem',
           }}
         >
-          O Akasha unifica a sabedoria das tradições ancestrais sob uma única linguagem toroidal. Cada Camada ilumina uma dimensão do seu ser — revelando de onde você veio e como deve direcionar sua energia vital.
+          Cada camada ilumina uma dimensão do seu ser. Toque uma para revelar orientações práticas.
         </p>
 
         <div
@@ -195,8 +195,8 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
             eixo="A Anatomia — Canais de Energia"
             valor={
               data.tantra?.soul != null
-                ? `Corpo Principal: ${data.tantra.soul} · Karma: ${data.tantra?.karma ?? '—'}`
-                : 'Mapeando 11 corpos'
+                ? `Corpo ${data.tantra.soul}${data.tantra?.karma ? ' · Karma: ' + data.tantra.karma : ''}`
+                : 'Mapeando energia'
             }
             explicacao="Seus 11 corpos sutis mapeados. Sinaliza onde a energia flui — e onde você precisa ativar."
             fonte="Yogi Bhajan / 11 Corpos Sutis"

@@ -3,6 +3,7 @@ import { Divider, InfoPanel, Insight, Row } from '@/components/akasha/MandalaCha
 import { SignificadoEmbed, resolveSig } from '@/components/akasha/mandala-meanings';
 import { ELEMENT_COLORS, ELEMENT_LABELS } from '@/components/akasha/mandala-elements';
 import { ASPECT_SYMBOLS } from '@/components/akasha/mandala-geometry';
+import { formatDegreeToZodiac } from '@/lib/shared/zodiac';
 
 export interface AstrologyAspect {
   planet1: string;
@@ -50,9 +51,8 @@ export function AstrologyInfoPanel({
     <InfoPanel color="#7C5CFF" title="Movimento Celeste — O Céu" subtitle="Anel Cósmico · Camada 4">
       <Row label="Ascendente" value={astrology.ascendant} />
       <Row label="Meio do Céu" value={astrology.midheaven} />
-      <Row label="Planeta dominante" value={astrology.dominantPlanet} />
       {astrology.planets.slice(0, 5).map((p) => (
-        <Row key={p.name} label={p.name} value={`${p.sign} — casa ${p.house}`} />
+        <Row key={p.name} label={p.name} value={`${formatDegreeToZodiac(p.degree)} — casa ${p.house}`} />
       ))}
       {showAdvanced ? (
         <>

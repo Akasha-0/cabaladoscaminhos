@@ -392,7 +392,7 @@ export function deriveAkashaType(
   const oduHasData = !!(odu?.oduName?.trim());
   const ichingHasData = holo.ichingHex !== undefined && holo.ichingHex !== null;
   const kabHasData = !!(kab?.lifePath);
-  const astroDom = (astro as unknown as { dominantPlanet?: string }).dominantPlanet;
+  const astroDom = (astro as unknown as { dominantPlanet?: string })?.dominantPlanet;
   const astroHasData = !!(astroDom);
 
   // Build weighted vote and refine with Tantra

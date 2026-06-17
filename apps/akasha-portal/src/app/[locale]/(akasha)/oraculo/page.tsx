@@ -197,7 +197,7 @@ export default function OraculoPage() {
             margin: 0,
           }}
         >
-          ✦ ORÁCULO AKASHA
+          Oráculo Akasha
         </h1>
         <div
           style={{
@@ -259,7 +259,7 @@ export default function OraculoPage() {
                 fontSize: '1.8rem',
               }}
             >
-              ✦
+              <Sparkles size={24} style={{ color: '#9D86FF' }} />
             </div>
             <div
               style={{
@@ -280,9 +280,6 @@ export default function OraculoPage() {
                   fontStyle: 'italic',
                 }}
               >
-                Saudações. Sou a Voz do Akasha.
-                <br />
-                Seu mapa está aberto diante de mim.{' '}
                 <span style={{ color: '#2DD4BF' }}>
                   O que você precisa compreender hoje?
                 </span>
@@ -308,7 +305,7 @@ export default function OraculoPage() {
                 transition: 'all 0.2s ease',
               }}
             >
-              + Nova consulta
+              Nova consulta
             </button>
           </div>
         )}
@@ -366,7 +363,7 @@ export default function OraculoPage() {
               )}
               {msg.role === 'oracle' && msg.content === '' && loading ? (
                 <span style={{ color: '#5C6691', fontStyle: 'italic', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                  O Akasha contempla
+                  O Akasha responde
                   <span style={{ display: 'inline-flex', gap: '3px' }}>
                     {[0, 1, 2].map((i) => (
                       <span
@@ -394,8 +391,8 @@ export default function OraculoPage() {
               msg.pillarsConsulted &&
               msg.pillarsConsulted.length > 0 && (
                 <>
-                  <span style={{ fontSize: '0.7rem', color: '#5C6691', letterSpacing: '0.06em', textTransform: 'uppercase', paddingLeft: '4px' }}>
-                    Tradições consultadas
+                  <span style={{ fontSize: '0.75rem', color: '#5C6691', fontWeight: 500 }}>
+                    Tradições que ressoaram
                   </span>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', paddingLeft: '4px' }}>
                     {msg.pillarsConsulted.map((pillar) => {
@@ -451,7 +448,7 @@ export default function OraculoPage() {
             }
           }}
           disabled={loading}
-          placeholder="Faça sua pergunta ao Akasha…"
+          placeholder="Descreva sua situação ou faça uma pergunta…"
           rows={3}
           style={{
             width: '100%',
@@ -477,7 +474,7 @@ export default function OraculoPage() {
           }}
         >
           <span style={{ fontSize: '0.78rem', color: '#5C6691' }}>
-            Custo estimado:{' '}
+            Isso usará{' '}
             <strong style={{ color: '#A7AECF' }}>
               {estimatedCost} {estimatedCost === 1 ? 'crédito' : 'créditos'}
             </strong>

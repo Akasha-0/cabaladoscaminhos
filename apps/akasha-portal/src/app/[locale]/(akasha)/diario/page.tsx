@@ -89,8 +89,8 @@ const PILLAR_LABELS: Record<string, { nome: string; cor: string }> = {
 };
 
 const ESCALA_LABELS: Record<MandatoEsqueleto['escala'], string> = {
-  D: 'Diário',
-  S: 'Semanal',
+  D: 'Mandato do Dia',
+  S: 'Escala Semanal',
   Z: 'Sazonal',
   V: 'Vida',
 };
@@ -468,9 +468,6 @@ export default async function DiarioPage({
             </div>
           )}
 
-          <div style={{ textAlign: 'center', marginTop: 24, color: C.txtMut, fontSize: '0.7rem' }}>
-            role para baixo ↓
-          </div>
         </div>
       </div>
 
@@ -510,9 +507,6 @@ export default async function DiarioPage({
               rows={4}
             />
             <ContinuarButton />
-          </div>
-          <div style={{ textAlign: 'center', marginTop: 24, color: C.txtMut, fontSize: '0.7rem' }}>
-            role para baixo ↓
           </div>
         </div>
       </div>

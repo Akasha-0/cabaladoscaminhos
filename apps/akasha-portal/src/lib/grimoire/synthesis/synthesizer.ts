@@ -148,7 +148,7 @@ export function deriveAkashaAuthority(pilares: Partial<PilaresDados>): AkashaAut
   const timing = {
     melhor: luaDeAgua
       ? 'quando sentir paz emocional — não urgência emocional'
-      : 'quando sentir clartéade e ausência de ansiedade',
+      : 'quando sentir clareza e ausência de ansiedade',
     pior: luaDeAgua
       ? 'quando sentir medo ou ansiedade no estômago'
       : 'quando estiver cansado, com fome, ou emocionalmente reactivo',

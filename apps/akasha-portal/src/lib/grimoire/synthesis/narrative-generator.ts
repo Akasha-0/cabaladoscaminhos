@@ -448,37 +448,36 @@ export function gerarPerfilGeral(pilares: PilaresDados): string {
 
   if (sCabala) {
     parts.push(
-      `Você é ${sCabala.titulo} (Caminho ${lp}) — ${sCabala.essencia}`
+      `Caminho ${lp}: ${sCabala.essencia}. Missão: ${sCabala.missao ?? 'autenticidade e foco'}.`
     );
-    if (sCabala.missao) parts.push(`Missão de vida: ${sCabala.missao}`);
     if (sCabala.sombra) parts.push(`Sombra: ${sCabala.sombra}`);
   }
 
   if (sAstro) {
-    parts.push(`${solSigno} é quem você é no mundo — ${sAstro.essencia} ${sAstro.missao}`);
+    parts.push(`Sol em ${solSigno} — ${sAstro.essencia}. Isso se manifesta quando você age com ${sAstro.missao ?? 'coragem autêntica'}.`);
   }
 
   if (luaSigno) {
-    parts.push(`Lua em ${luaSigno}: sua necessidade emocional pede ${sAstro?.sombra ? 'rotina e presença' : 'segurança e consistência'}.`);
+    parts.push(`Lua em ${luaSigno}: necessidade emocional de ${sAstro?.sombra ? 'rotina e presença' : 'segurança e consistência'} — Cultive hábitos regulares para nutrir este aspecto.`);
   }
 
   if (sTantra) {
-    parts.push(`Corpo energético #${corpo} — ${sTantra.titulo}: ${sTantra.essencia}`);
+    parts.push(`Corpo energético #${corpo} (${sTantra.titulo}): ${sTantra.essencia}. Para viver bem este corpo: ${sTantra.missao ?? 'autenticidade e presença'}.`);
     if (sTantra.pratica) parts.push(`Prática: ${sTantra.pratica}`);
   }
 
   if (sOdu) {
-    parts.push(`Odu ${oduPrinc} — frequência ancestral: ${sOdu.essencia} ${sOdu.missao}`);
+    parts.push(`Odu ${oduPrinc}: ${sOdu.essencia}. Missão: ${sOdu.missao ?? 'autorreflexão e ação consciente'}. Este odu convida você a ${sOdu.missao ? 'agir com sua missão' : 'cultivar presença e escolha consciente'} no dia a dia.`);
   }
 
   if (sIChing) {
-    parts.push(`Hexagrama natal ${hexNatal} — ${sIChing.titulo}: ${sIChing.essencia}`);
-    if (sIChing.pratica) parts.push(`Prática I Ching: ${sIChing.pratica}`);
+    parts.push(`Hexagrama natal ${hexNatal} (${sIChing.titulo}): ${sIChing.essencia}. Como aplicar esta sabedoria: ${sIChing.pratica ?? 'observe antes de agir e honor o momento presente'}.`);
+    if (sIChing.pratica) parts.push(`Prática: ${sIChing.pratica}`);
   }
 
   if (parts.length === 0) {
     return 'Akasha ainda não tem dados suficientes para traçar seu perfil. Insira sua data de nascimento para começar.';
   }
 
-  return parts.join(' ');
+  return parts.join('\n\n');
 }

@@ -637,7 +637,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                         <div className="flex items-center gap-3 text-xs text-[#A7AECF]/70">
                           <span className="flex items-center gap-1">
                             <Clock size={12} className="text-[#2DD4BF]" />
-                            {dailyData.ritual.cor || '15 min'}
+                            {dailyData.ritual.duracao || dailyData.ritual.duration || '15 min'}
                           </span>
                           <span className="w-1 h-1 rounded-full bg-white/20" />
                           <span className="flex items-center gap-1">
@@ -701,12 +701,12 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                 </div>
               )}
 
-              {/* 5. "Sua Bússola" - Explore all 9 Dimensions (Consolidation of other pages) */}
+              {/* 5. "Sua Bússola" - Explore all 8 Dimensions (Consolidation of other pages) */}
               {detSintese?.dimensoes && (
                 <div className="space-y-4">
                   <div className="flex items-center gap-2">
                     <div className="h-px flex-1 bg-white/10" />
-                    <span className="text-xs text-white/30 uppercase tracking-widest font-mono">Sua Bússola Existencial (9 Dimensões)</span>
+                    <span className="text-xs text-white/30 uppercase tracking-widest font-mono">Sua Bússola Existencial ({detSintese?.dimensoes?.length ?? 0} Dimensões)</span>
                     <div className="h-px flex-1 bg-white/10" />
                   </div>
 

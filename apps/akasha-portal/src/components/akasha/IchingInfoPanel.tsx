@@ -147,9 +147,7 @@ export function IchingInfoPanel({ iching }: { iching: IchingInfo }) {
       ) : (
         <div>
           <p style={{ fontSize: '0.8125rem', color: '#A7AECF', lineHeight: 1.55 }}>
-            O hexagrama do seu Ori será calculado quando você completar o perfil. Forneça data e hora
-            de nascimento para que o algoritmo determinístico (akasha.v0.0.4.trigramas-mod8) revele o
-            trigrama superior e inferior do seu nascimento.
+            Forneça sua data e hora de nascimento no perfil para revelar o Hexagrama do seu Ori.
           </p>
           <p style={{ fontSize: '0.8125rem', color: '#A7AECF', lineHeight: 1.55, marginTop: '0.5rem' }}>
             <Link href="/oraculo" style={{ color: '#A0763A', textDecoration: 'underline' }}>

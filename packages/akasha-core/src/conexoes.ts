@@ -263,7 +263,7 @@ function scoreOdu(a: OduBirth, b: OduBirth): OduSyncResult {
       score: 95,
       sharedOdu: true,
       complementaryOdu: false,
-      description: `Ambos têm ${oduA} — ressonância espiritual profunda. Vocês compartilham a mesma essência sagrada.`,
+      description: `Ambos têm ${oduA} — ressonância espiritual profunda. Vocês compartilham a mesma essência sagrada — propósito e trajetória unificados.`,
     };
   }
 
@@ -337,7 +337,7 @@ function scoreTantra(a: TantricMap, b: TantricMap): BodySyncResult {
   if (isTension) {
     return {
       score: 55,
-      description: `Corpo ${corpoA} × Corpo ${corpoB} — tensão criativa. Atração por diferença. Arbeit erfordert Bewusstheit.`,
+      description: `Corpo ${corpoA} × Corpo ${corpoB} — tensão criativa. Atração por diferença. Requer atenção consciente.`,
     };
   }
 
@@ -398,7 +398,7 @@ function scoreDimensions(
         getLuaSigno(a.astrologyMap) && getLuaSigno(b.astrologyMap)
           ? `Lua em ${getLuaSigno(a.astrologyMap)} encontra Lua em ${getLuaSigno(b.astrologyMap)}. ${luaScore > 75 ? 'Ressonância emocional forte.' : luaScore > 55 ? 'Conexão emocional presente mas com nuances.' : 'Necesitam traduzir necessidades emocionais um para o outro.'}`
           : 'Lua não disponível para comparação.',
-      tip: luaScore > 75 ? 'Confiem na conexão emocional que sentem.' : luaScore > 55 ? 'Dêem espaço paraas emoções se expressarem antes de agir.' : 'Façam check-ins emocionais regulares.',
+      tip: luaScore > 75 ? 'Confiem na conexão emocional que sentem.' : luaScore > 55 ? 'Dê espaço às emoções para se expressarem antes de agir.' : 'Façam check-ins emocionais regulares.',
     },
     {
       dimension: 'Sexual',
@@ -449,7 +449,15 @@ function buildNarrative(a: ConexaoMap, b: ConexaoMap, result: Partial<ConexaoRes
       : 'parceria com áreas de desenvolvimento';
 
   if (result.dominantType === 'romantic' || result.dominantType === 'both') {
-    return `${a.name} e ${b.name} possuem uma ${romanticLabel}. Odu ${oduA} com Odu ${oduB} traz ${result.oduSync?.score && result.oduSync.score > 75 ? 'uma ressonância espiritual profunda' : 'uma dinâmica interessante de complementação'}. A autoridade de decisão é ${authMatch === 'aligned' ? 'alinhada — tomam decisões de forma similar' : authMatch === 'complementary' ? 'complementar — um traz o que o outro precisa em decisões' : 'um ponto de atenção — comuniquem-se claramente sobre expectativas'}.`;
+    const oduDynamic = result.oduSync?.score && result.oduSync.score > 75
+      ? 'uma ressonância espiritual profunda'
+      : 'uma dinâmica interessante de complementação';
+    const authorityDesc = authMatch === 'aligned'
+      ? 'A autoridade de decisão é alinhada — tomam decisões de forma similar.'
+      : authMatch === 'complementary'
+      ? 'A autoridade de decisão é complementar — um traz o que o outro precisa em decisões.'
+      : 'A autoridade de decisão é um ponto de atenção — comuniquem-se claramente sobre expectativas.';
+    return `${a.name} e ${b.name} possuem uma ${romanticLabel}. Odu ${oduA} com Odu ${oduB} traz ${oduDynamic}. ${authorityDesc}`;
   }
 
   return `${a.name} e ${b.name} possuem um ${partnershipLabel}. A conexão espiritual (${result.oduSync?.description ?? ''}) é um alicerce forte. ${authMatch === 'aligned' ? 'Alinhamento na tomada de decisão.' : 'Precisam adaptar estilos de decisão.'}`;

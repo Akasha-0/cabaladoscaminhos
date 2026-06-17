@@ -121,7 +121,7 @@ export default async function MinhaCaixaPage({
           <p style={{ color: C.txtSec, fontSize: '0.9rem', lineHeight: 1.5, margin: 0 }}>
             {sintese
               ? `${sintese.caminhoDeVida} · Síntese dos 5 pilares`
-              : 'Sua vida em 9 dimensões'}
+              : 'Sua vida em 8 dimensões'}
           </p>
         </header>
 
@@ -150,40 +150,14 @@ export default async function MinhaCaixaPage({
         )}
 
 
-        {/* 9 Dimensões — accordion mobile-first */}
-        {sintese ? (
-          <nav aria-label="9 dimensões de vida" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {/* 8 Dimensões — accordion mobile-first */}
+        {sintese && sintese.dimensoes && (
+          <nav aria-label="8 dimensões de vida" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {sintese.dimensoes
               .map((dim, i) => (
                 <DimensaoCard key={dim.dimensoesId} sintese={dim} index={i} />
               ))}
           </nav>
-        ) : (
-          <div
-            style={{
-              textAlign: 'center',
-              padding: '48px 20px',
-              color: C.txtSec,
-              fontSize: '0.9rem',
-            }}
-          >
-            <p style={{ marginBottom: 16 }}>Não foi possível carregar seus dados.</p>
-            <Link
-              href={`/${locale}/diario`}
-              style={{
-                display: 'inline-block',
-                padding: '10px 20px',
-                background: C.violeta,
-                color: '#0B0E1C',
-                borderRadius: 8,
-                textDecoration: 'none',
-                fontWeight: 600,
-                fontSize: '0.88rem',
-              }}
-            >
-              Ir para o Mandato do Dia →
-            </Link>
-          </div>
         )}
 
         {/* Footer link */}

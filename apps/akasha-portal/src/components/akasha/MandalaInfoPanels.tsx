@@ -34,7 +34,7 @@ export function TantricBodyInfoPanel({ tantra, inactiveBodies }: TantricBodyInfo
       ) : (
         <>
           <p style={{ fontSize: '0.75rem', color: '#A7AECF', marginBottom: '0.5rem' }}>
-            Corpos em tensão (indicados em magenta na Mandala):
+            Corpos a ativar (indicados em magenta na Mandala):
           </p>
           {inactiveBodies.map((n) => {
             const w = TANTRIC_BODY_WISDOM[n.i + 1];
