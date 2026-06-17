@@ -94,8 +94,16 @@ describe('syncGrimoire', () => {
 
       vi.mocked(global.fetch).mockResolvedValue({
         ok: true,
+        status: 200,
+        statusText: 'OK',
+        headers: new Headers({ 'content-type': 'application/json' }),
+        redirected: false,
+        type: 'basic',
+        url: 'http://localhost:11434/api/embeddings',
+        body: null,
+        bodyUsed: false,
         json: () => Promise.resolve({ embedding: [0.1, 0.2, 0.3] }),
-      });
+      } as unknown as Response);
 
       const result = await syncGrimoire();
 
@@ -150,8 +158,16 @@ describe('syncGrimoire', () => {
 
       vi.mocked(global.fetch).mockResolvedValue({
         ok: true,
+        status: 200,
+        statusText: 'OK',
+        headers: new Headers({ 'content-type': 'application/json' }),
+        redirected: false,
+        type: 'basic',
+        url: 'http://localhost:11434/api/embeddings',
+        body: null,
+        bodyUsed: false,
         json: () => Promise.resolve({ embedding: [0.1] }),
-      });
+      } as unknown as Response);
 
       const result = await syncGrimoire();
 

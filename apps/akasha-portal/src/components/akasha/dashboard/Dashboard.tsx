@@ -13,7 +13,8 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Sparkles, Calendar, Moon, Sun, Cloud, AlertCircle, Check, Loader, 
-  RefreshCw, TrendingUp, Award, Flame, UserCheck, X, Info, ChevronRight, HelpCircle 
+  RefreshCw, TrendingUp, Award, Flame, UserCheck, X, Info, ChevronRight, HelpCircle,
+  Clock, Wind, CheckCircle
 } from 'lucide-react';
 import { ThemeToggle } from '../ThemeToggle';
 import { DashboardStats } from './components/DashboardStats';
@@ -493,47 +494,88 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                 </div>
               )}
 
-              {/* 4. Daily Ritual Card with complete action */}
+              {/* 4. Daily Ritual Card - Premium Cosmic Design */}
               {dailyData?.ritual && (
-                <div className="bg-[#0B0E1C]/60 border border-white/10 rounded-2xl p-5 space-y-4">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="text-[10px] text-[#2DD4BF] font-semibold uppercase tracking-wider font-mono">Prática Recomendada</p>
-                      <h3 className="text-lg font-bold font-cinzel text-white mt-1">{dailyData.ritual.titulo}</h3>
-                      <p className="text-xs text-[#A7AECF]/60 mt-0.5">Duração: {dailyData.ritual.cor || '15 min'} · Elemento: {dailyData.ritual.elemento || 'Éter'}</p>
-                    </div>
-                    <span className="text-2xl">🧘</span>
-                  </div>
-                  
-                  <p className="text-sm text-[#A7AECF] leading-relaxed">
-                    {dailyData.ritual.instrucao}
-                  </p>
+                <div className="relative group">
+                  {/* Glow effect behind card */}
+                  <div className="absolute -inset-1 bg-gradient-to-r from-[#7C5CFF]/20 via-[#2DD4BF]/10 to-[#7C5CFF]/20 rounded-3xl blur-lg opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
 
-                  <div className="pt-2">
-                    {completedToday ? (
-                      <div className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#2DD4BF]/10 border border-[#2DD4BF]/30 text-[#2DD4BF] font-semibold text-sm">
-                        <Check size={16} />
-                        Ritual Concluído! (+1 no seu Streak)
+                  <div className="relative bg-[#0B0E1C]/90 border border-[#7C5CFF]/20 rounded-2xl p-6 backdrop-blur-md">
+                    {/* Header with gradient accent */}
+                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#7C5CFF]/50 to-transparent" />
+
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7C5CFF]/20 to-[#2DD4BF]/10 border border-[#7C5CFF]/20 flex items-center justify-center">
+                            <Sparkles size={18} className="text-[#9D86FF]" />
+                          </div>
+                          <p className="text-[10px] text-[#9D86FF] font-semibold uppercase tracking-widest font-mono">Ritual do Dia</p>
+                        </div>
+                        <h3 className="text-xl font-bold font-cinzel text-white leading-tight">{dailyData.ritual.titulo}</h3>
+                        <div className="flex items-center gap-3 text-xs text-[#A7AECF]/70">
+                          <span className="flex items-center gap-1">
+                            <Clock size={12} className="text-[#2DD4BF]" />
+                            {dailyData.ritual.cor || '15 min'}
+                          </span>
+                          <span className="w-1 h-1 rounded-full bg-white/20" />
+                          <span className="flex items-center gap-1">
+                            <Wind size={12} className="text-[#F0B429]" />
+                            {dailyData.ritual.elemento || 'Éter'}
+                          </span>
+                        </div>
                       </div>
-                    ) : (
-                      <button
-                        onClick={handleCompleteRitual}
-                        disabled={completing}
-                        className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#7C5CFF] hover:bg-[#9D86FF] active:scale-[0.98] transition-all text-white font-semibold text-sm disabled:opacity-50 disabled:pointer-events-none shadow-[0_0_20px_rgba(124,92,255,0.25)]"
-                      >
-                        {completing ? (
-                          <>
-                            <Loader size={16} className="animate-spin" />
-                            Salvando alinhamento...
-                          </>
-                        ) : (
-                          <>
-                            <UserCheck size={16} />
-                            Marcar como Praticado
-                          </>
-                        )}
-                      </button>
-                    )}
+                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7C5CFF]/20 to-[#2DD4BF]/10 border border-[#7C5CFF]/20 flex items-center justify-center shadow-[0_0_20px_rgba(124,92,255,0.15)]">
+                        <span className="text-2xl">🧘</span>
+                      </div>
+                    </div>
+
+                    {/* Instruction with styled container */}
+                    <div className="bg-[#0B0E1C]/80 rounded-xl p-4 mb-4 border border-white/5">
+                      <p className="text-sm text-[#A7AECF] leading-relaxed">
+                        {dailyData.ritual.instrucao}
+                      </p>
+                    </div>
+
+                    {/* Completion Button - Enhanced Design */}
+                    <div className="pt-2">
+                      {completedToday ? (
+                        <div className="relative">
+                          <div className="absolute inset-0 bg-[#2DD4BF]/10 rounded-xl blur-md" />
+                          <div className="relative w-full flex items-center justify-center gap-3 py-3.5 px-4 rounded-xl bg-[#2DD4BF]/15 border border-[#2DD4BF]/30 text-[#2DD4BF] font-bold text-sm shadow-[0_0_20px_rgba(45,212,191,0.15)]">
+                            <motion.div
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                            >
+                              <CheckCircle size={20} className="text-[#2DD4BF]" />
+                            </motion.div>
+                            <span>Ritual Concluído! ✦</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={handleCompleteRitual}
+                          disabled={completing}
+                          className="w-full relative group/btn"
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-r from-[#7C5CFF] to-[#9D86FF] rounded-xl blur-md opacity-50 group-hover/btn:opacity-70 transition-opacity" />
+                          <div className="relative flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-gradient-to-r from-[#7C5CFF] to-[#9D86FF] text-white font-bold text-sm shadow-[0_0_25px_rgba(124,92,255,0.35)] hover:shadow-[0_0_35px_rgba(124,92,255,0.5)] active:scale-[0.98] transition-all disabled:opacity-50 disabled:pointer-events-none">
+                            {completing ? (
+                              <>
+                                <Loader size={16} className="animate-spin" />
+                                Sincronizando...
+                              </>
+                            ) : (
+                              <>
+                                <UserCheck size={16} />
+                                Confirmar Prática
+                              </>
+                            )}
+                          </div>
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}

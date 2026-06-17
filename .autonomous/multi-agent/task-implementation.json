@@ -1,14 +1,6 @@
 {
   "improvements": [
     {
-      "type": "missing_tests",
-      "priority": 6,
-      "description": "1 changed files lack tests",
-      "files": [
-        "apps/akasha-portal/src/lib/application/auth/akasha-guard.test.ts"
-      ]
-    },
-    {
       "type": "large_file",
       "priority": 4,
       "description": "26 oversized files",
@@ -28,5 +20,5 @@
       ]
     }
   ],
-  "iteration": 0
+  "iteration": 1
 }

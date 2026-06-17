@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-17T00:18:36.555819+00:00",
-  "version": "0.13.1",
+  "generated_at": "2026-06-17T00:20:11.918125+00:00",
+  "version": "0.56.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -1062,9 +1062,9 @@
     "pending_count": 1055
   },
   "git": {
-    "untracked": 4,
-    "modified": 19,
-    "total": 23,
+    "untracked": 0,
+    "modified": 6,
+    "total": 6,
     "has_changes": true
   },
   "triad": {
@@ -1128,14 +1128,6 @@
       ]
     },
     {
-      "type": "missing_tests",
-      "priority": 6,
-      "description": "1 changed files lack tests",
-      "files": [
-        "apps/akasha-portal/src/lib/application/auth/akasha-guard.test.ts"
-      ]
-    },
-    {
       "type": "missing_tradition",
       "priority": 8,
       "description": "ODUS missing from traducao-areas",
@@ -1143,7 +1135,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "cecacb03dc6e2a262cb8d46532bda79988d96247",
+  "git_head": "8235325be92b81323dc53319dd4740f598905c9c",
   "decision_factors": {
     "has_pending_features": true
   }
