@@ -1,8 +1,7 @@
 {
   "phase": "RELEASE",
-  "iteration": 2,
+  "iteration": 3,
   "current_features": [
-    "missing_tests",
     "large_file"
   ],
   "retry_count": 0,
