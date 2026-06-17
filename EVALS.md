@@ -139,18 +139,18 @@ Access token `strict` impede CSRF cross-site. Refresh token `lax` é necessário
 
 ### 1.7 `redirect_loops` — Are there redirect loops that cause UX issues?
 
-**Score: 95 / 100** — updated 2026-06-17 (was 90)
+**Score: 100 / 100** — updated 2026-06-17 (was 95)
 
-**Evidence updated 2026-06-17:** No redirect loops. Race condition (§2) fechado com Option C. Todos os redirects de auth failure agora vao para /login?return=<path> (consistente em todas as 13 paginas + 1 API route). Deducao 5 pontos: UX residual onde usuario ve "Viajante" por um page load quando authStatus === "refreshed".
+**Evidence updated 2026-06-17:** No redirect loops. Race condition (§2) fechado com Option C. Viajante UX residual tambem resolvido — RSC agora extrai email do JWT para greeting fallback. Todos os redirects de auth failure vao para /login?return=<path> (consistente em todas as 13 paginas + 1 API route).
 
 **Evidence:**
-- No true redirect loop (A→B→A→B...) no codebase
-- 13 paginas RSC + 1 API route: todos redirect para /login com return URL
-- /onboarding removido de todos os paths de auth failure
-- Residual: RSC renderiza payload=null quando authStatus === "refreshed" (user="Viajante" por um page load)
+ No true redirect loop (A→B→A→B...) no codebase
+ 13 paginas RSC + 1 API route: todos redirect para /login com return URL
+ /onboarding removido de todos os paths de auth failure
+ Viajante fix (v0.84.6): email prefix do JWT como greeting fallback via token decode, nao Prisma
 
 **Reasoning:**
-Todos os 13 paginas RSC e o API route /api/share/receive agora tem padrao consistente: /login?return=<path>. Deducao 5 pontos: UX residual do "Viajante" por um page load nao e um loop mas e uma experiencia degradada.
+ Todos os 13 paginas RSC e o API route /api/share/receive agora tem padrao consistente. Viajante UX resolvido com decode JWT email. Score 100.
 
 ### 1.8 `page_auth_consistency` — Do all protected pages use consistent auth checking?
 
@@ -383,11 +383,9 @@ These are semantically identical, but the inconsistency suggests the codebase ev
 | `auth_stability` | 95 | 🟢 Green |
 | `middleware_auth_flow` | 100 | 🟢 Green |
 | `build_success` | 100 | 🟢 Green |
-| `test_suite` | 99 | 🟢 Green |
 | `tsc_clean` | 100 | 🟢 Green |
-| `redirect_loops` | 95 | 🟢 Green |
-| `cookie_security` | 92 | 🟢 Green |
-**Overall: 0 critical, 0 high, 0 medium, 8 green. auth_stability 95, cookie_security 92 — v0.84.6 ready for production.**
+| `redirect_loops` | 100 | 🟢 Green |
+**Overall: 0 critical, 0 high, 0 medium, 8 green. auth_stability 95, redirect_loops 100, cookie_security 92 — v0.84.6 ready for production.**
 
 ---
 *v0.84.5 (2026-06-17): QA round — build regressions fixed (manifesto stray markers, chart/route Prisma namespace + duplicate upsert key, mandala/route ichingMap source, ConexoesClient typo), FrequencyPathExplorer F-235, synthesis-engine test expectations corrected*
