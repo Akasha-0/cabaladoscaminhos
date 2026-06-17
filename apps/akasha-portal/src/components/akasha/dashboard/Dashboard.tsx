@@ -14,7 +14,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Sparkles, Calendar, Moon, Sun, Cloud, AlertCircle, Check, Loader, 
   RefreshCw, TrendingUp, Award, Flame, UserCheck, X, Info, ChevronRight, HelpCircle,
-  Clock, Wind, CheckCircle
+  Clock, Wind, CheckCircle, Heart
 } from 'lucide-react';
 import { ThemeToggle } from '../ThemeToggle';
 import { DashboardStats } from './components/DashboardStats';
@@ -300,7 +300,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                 {active && (
                   <motion.div
                     layoutId="activeTabIndicator"
-                    className="absolute inset-0 bg-[#7C5CFF]/20 border border-[#7C5CFF]/45 rounded-full z-0"
+                    className="absolute inset-0 bg-[#7C5CFF]/30 border border-[#7C5CFF]/60 rounded-full z-0"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -526,7 +526,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                         </div>
                       </div>
                       <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7C5CFF]/20 to-[#2DD4BF]/10 border border-[#7C5CFF]/20 flex items-center justify-center shadow-[0_0_20px_rgba(124,92,255,0.15)]">
-                        <span className="text-2xl">🧘</span>
+                        <Heart size={28} className="text-[#9D86FF]" />
                       </div>
                     </div>
 

@@ -1,0 +1,1 @@
+{"success": false, "message": "No extraction possible from apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts — file is pure static data (single LIFE_AREAS constant, no functions)", "type": "large_file"}
