@@ -278,7 +278,24 @@ export async function middleware(request: NextRequest) {
       // Token missing, malformed, or expired — attempt refresh
       const newCookies = await authRefresh(request);
       if (newCookies) {
-        // Set cookies on current response so browser stores them for next request
+        // If token was expired (not just missing), redirect after refresh so
+        // the browser re-requests with the new cookies. This prevents the RSC
+        // from reading the old expired token on the CURRENT request.
+        if (exp !== null) {
+          const redirectUrl = request.nextUrl.clone();
+          const redirectResponse = NextResponse.redirect(redirectUrl, 303);
+          for (const cookie of newCookies) {
+            redirectResponse.cookies.set(cookie.name, cookie.value, {
+              httpOnly: true,
+              sameSite: 'lax',
+              secure: process.env.NODE_ENV === 'production',
+              path: '/',
+            });
+          }
+          return redirectResponse;
+        }
+        // Token was missing (not expired): set cookies and let request continue
+        // to the page — no redirect needed, RSC will have fresh token
         for (const cookie of newCookies) {
           response.cookies.set(cookie.name, cookie.value, {
             httpOnly: true,
@@ -286,12 +303,6 @@ export async function middleware(request: NextRequest) {
             secure: process.env.NODE_ENV === 'production',
             path: '/',
           });
-        }
-        // If token was expired (not just missing), do a single 303 redirect
-        // so the browser re-requests with the new cookies.
-        if (exp !== null) {
-          const redirectUrl = request.nextUrl.clone();
-          return NextResponse.redirect(redirectUrl, 303);
         }
       } else if (exp !== null) {
         // Refresh failed but we had an expired token — send to login (NOT onboarding)
