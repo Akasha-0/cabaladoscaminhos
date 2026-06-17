@@ -245,3 +245,20 @@ The profile is:
 
 **Source:** `apps/akasha-portal/src/lib/application/akasha/synthesis-engine/frequency-analysis.ts`  
 **Spec:** `SPEC.md §13 Known Gaps — item 2 (Siddhi frequency)`
+
+---
+
+**Date:** 2026-06-17  
+**Decision:** Mandala route — natal I Ching comes from `BirthChart.ichingMap`, not `user.ichingMap`
+
+**Context:** The `/api/akasha/mandala` route was reading I Ching from `user.ichingMap` (the interactive oracle opt-in field, requiring `ichingEnabled = true`). Natal I Ching is deterministic from birth data and was already computed and stored in `BirthChart.ichingMap` since iter34. The mandala is a natal display — it should always show the natal hexagrama.
+
+**Option considered:**
+- *Keep user.ichingMap:* Would require the user to separately opt into I Ching for the oracle, then ALSO have it appear on mandala. Wrong — natal I Ching is not subject to oracle opt-in (it's a deterministic calculation, not personal data requiring LGPD consent).
+- *Use BirthChart.ichingMap (CHOSEN):* Natal I Ching is already computed and stored at chart creation time. The mandala reads it directly from `chart.ichingMap`. No consent gate needed — same as reading Cabala/Astrologia/Odu from their chart fields.
+
+**Consequences:**
+- Mandala now always shows natal I Ching when available, regardless of oracle opt-in status
+- `user.ichingMap` remains used only for the interactive oracle (where consent is required)
+
+**Source:** `apps/akasha-portal/src/app/api/akasha/mandala/route.ts` line 62
