@@ -18,6 +18,7 @@
 
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import Link from 'next/link';
 import { FocoDoDiaPanel } from '@/components/akasha/FocoDoDiaPanel';
 import { gerarFocoDoDia } from '@/lib/grimoire/foco-area';
@@ -78,14 +79,14 @@ export default async function FocoPage({
   const { locale } = await params;
   const { area: areaParam } = await searchParams;
   const cookieStore = await cookies();
-  const token = cookieStore.get('akasha_session')?.value;
-  if (!token) redirect(`/${locale}/onboarding`);
+  const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
+  if (!verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia`,
     { headers: { Cookie: `akasha_session=${token}` }, cache: 'no-store' }
   );
-  if (res.status === 401 || res.status === 404) redirect(`/${locale}/onboarding`);
+  if (res.status === 401 || res.status === 404) redirect(`/${locale}/login`);
   if (!res.ok) {
     return <FocoFallback />;
   }

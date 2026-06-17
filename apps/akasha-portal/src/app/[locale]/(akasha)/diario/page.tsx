@@ -483,8 +483,7 @@ export default async function DiarioPage({
         <div style={innerStyle}>
           <div style={screenNumStyle}>02\u00A0/\u00A005 — Pergunta</div>
           <div style={cardStyle(C.violeta)}>
-              A Pergunta do Dia
-            <h2 style={{ ...headlineStyle, color: C.violeta, fontSize: '1.35rem' }}>{pergunta}</h2>
+              <h2 style={{ ...headlineStyle, color: C.violeta, fontSize: '1.35rem' }}>A Pergunta do Dia</h2>
             <div style={dividerStyle} />
             <span style={labelStyle(C.txtMut)}>Por que esta pergunta?</span>
             <p style={bodyStyle}>
@@ -521,8 +520,7 @@ export default async function DiarioPage({
         <div style={innerStyle}>
           <div style={screenNumStyle}>03\u00A0/\u00A005 — Ritual</div>
           <div style={cardStyle(C.aurora)}>
-              O Micro-Ritual
-            <h2 style={{ ...headlineStyle, color: C.aurora }}>{ritual.titulo}</h2>
+              <h2 style={{ ...headlineStyle, color: C.aurora }}>O Micro-Ritual</h2>
             <p style={bodyStyle}>{ritual.instrucao}</p>
             <div style={{ marginTop: 14 }}>
               <span style={badgeStyle(pilarInfo.cor)}>via {pilarInfo.nome}</span>
@@ -548,7 +546,7 @@ export default async function DiarioPage({
           iching: '#A0763A',
         };
         return (
-          <div style={screenStyle}>
+          <div style={screenStyle} role="region" aria-label="Tela 4 de 5 — Significado dos Pilares">
             <div style={innerStyle}>
             <div style={screenNumStyle}>04\u00A0/\u00A005 — Significado</div>
               <p style={{...bodyStyle, color:C.txtSec, marginBottom:8}}>Leia cada Pilar na ordem. Para cada um: note a <em>Sombra</em> primeiro (o que tende a recusar), depois a <em>Prática</em> (o antídoto). Ao final, veja como se conectam.</p>
@@ -579,7 +577,7 @@ export default async function DiarioPage({
           iching: '#A0763A',
         };
         return (
-          <div style={screenStyle}>
+          <div style={screenStyle} role="region" aria-label="Tela 5 de 5 — Áreas da Vida">
             <div style={innerStyle}>
               <div style={screenNumStyle}>05\u00A0/\u00A005 — Para suas áreas</div>
               <p style={{ ...bodyStyle, color: C.txtSec, marginBottom: 4 }}>

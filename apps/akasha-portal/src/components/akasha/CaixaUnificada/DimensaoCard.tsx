@@ -38,9 +38,9 @@ export function renderNarrative(text: string, skipFirst = false): React.ReactNod
     const isBold = parts.length > 1;
     if (!isBold) {
       return (
-        <span key={i} style={{ display: 'block', marginBottom: 4 }}>
+        <p key={i} style={{ margin: '0 0 6px 0', lineHeight: 1.55 }}>
           {para}
-        </span>
+        </p>
       );
     }
     return (
@@ -74,15 +74,8 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
   return (
     <article
       onClick={() => setAberto((v) => !v)}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          setAberto((v) => !v);
-        }
-      }}
-      role="button"
-      tabIndex={0}
-      aria-expanded={aberto}
+
+      aria-expanded={undefined}
       style={{
         background: DIMENSAO_BG[sintese.dimensoesId] ?? 'rgba(255,255,255,0.04)',
         border: `1px solid ${DIMENSAO_BORDER[sintese.dimensoesId] ?? 'rgba(255,255,255,0.1)'}`,
@@ -95,7 +88,29 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
       } as React.CSSProperties}
     >
       {/* Header — sempre visível */}
-      <header style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      <button
+        id={`dim-btn-${index}`}
+        onClick={() => setAberto((v) => !v)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setAberto((v) => !v);
+          }
+        }}
+        aria-expanded={aberto}
+        aria-controls={`dim-panel-${index}`}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+          width: '100%',
+          background: 'none',
+          border: 'none',
+          padding: 0,
+          cursor: 'pointer',
+          textAlign: 'left',
+        }}
+      >
         <span
           style={{ fontSize: '1.4rem', color: sintese.chakraCor, lineHeight: 1, flexShrink: 0 }}
           aria-hidden
@@ -139,7 +154,8 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
             }}
           />
         </span>
-      </header>
+      </button>
+      <div id={`dim-panel-${index}`} role="region" aria-labelledby={`dim-btn-${index}`}>
 
       {/* Síntese narrativa — visível mesmo fechado */}
       {/* Renderiza apenas o primeiro parágrafo quando fechado */}
@@ -155,9 +171,15 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
           WebkitMaskImage: aberto ? 'none' : 'linear-gradient(to bottom, black 50%, transparent 100%)',
         }}
       >
-        {renderNarrative(sintese.synthes, true)}
+        {(() => {
+          const paras = sintese.synthes ? sintese.synthes.split('\n\n').filter(Boolean) : [];
+          if (paras.length === 0) return null;
+          const text = aberto ? paras.slice(1).join('\n\n') : paras[0];
+          return <p style={{ margin: 0, lineHeight: 1.55 }}>{text}</p>;
+        })()}
       </div>
 
+      </div>
       {/* Conteúdo expandido */}
       {aberto && (
         <div

@@ -1,3 +1,25 @@
+## v0.83.1 (2026-06-17) — UX Round 20 — Semantic headings + aria + behavioral framing + accordion dedup
+- fix(akasha/perfilGeral): outer wrapper changed from <p> to <div> — invalid HTML (block inside inline)
+- fix(DimensaoCard/accordion): collapsed preview now uses skipFirst=true — first paragraph hidden, expanded section shows only additive content (no duplication)
+- fix(diario): "A Voz do Akasha" now wrapped in <h2> — semantic heading for screen readers
+- fix(diario): "A Pergunta do Dia" plain text replaced with <h2> semantic heading
+- fix(diario): "O Micro-Ritual" plain text replaced with <h2> semantic heading
+- fix(diario): all 5 screen divs now have role="region" + aria-label ("Tela 1 de 5 — Mandato" etc.)
+- fix(diario): scroll hint now has aria-label — screen reader accessible
+- fix(diario): aria-label added to scroll hint text (was decorative ↓ only)
+- fix(dashboard): Cosmic Vibe Chips subtitle — fixed mixed PT/EN → full PT: "Toque para filtrar · cada chip destaca sua dimensão abaixo"
+- fix(dashboard): "Ler mais" toggle now has ChevronUp/ChevronDown icons for visual affordance
+- fix(dashboard): Ritual card element correctly shown with Wind icon (Zap was wrong, Wind already imported)
+- fix(conexoes): DOMINANT_LABELS.partnership simplified from "Negócio/Parceria" to "Parceria" (avoids wide badge)
+- fix(conexoes): Síncronia Espiritual — removed verbose 3-line authority footnote (was wall-of-text)
+- fix(mandala): "Último Desafio — o que Integrating" typo fixed → "Último Desafio — lição final a harmonizar"
+- fix(mandala): "Ritmo de Vida — padrões que se repetem" passive → active: "ciclos que pedem consciência"
+- fix(mandala): TantricBodyInfoPanel row labels now with behavioral framing ("Caminho Tântrico — sua prática de integração", "Alma — essência que reencarna", etc.)
+- fix(mandala): KabalaInfoPanel row labels with behavioral framing ("Caminho de Vida — o mapa da sua jornada", etc.)
+- fix(mandala): Pináculo row labels with behavioral framing ("1º Pináculo — primeira fase de crescimento")
+- fix(mandala): Ciclo row labels with behavioral framing ("1º Ciclo — primeiro ritmo de vida")
+- build: 49/49 static pages · EXIT 0
+
 - ## v0.83.0 (2026-06-17) — QA Round 20 — Auth pattern unification + 0 TS errors + 1358 tests
 - fix(auth): 9 pages now use `verifyAkashaToken` + `AKASHA_TOKEN_COOKIE` consistently
 - fix(auth): redirect destination unified to `/login` (was: mixed `/onboarding` and `/login`)

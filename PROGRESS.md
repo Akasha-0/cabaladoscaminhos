@@ -1,3 +1,11 @@
+## v0.83.1 (2026-06-17) — UX Round 20
+Round 20 — 6 fresh audit agents. Oráculo 7/7 APPROVED. Dashboard 2 ALTA. Akasha 2 CRÍTICA. Mandala 1 CRÍTICA+3 ALTA. Diário 4 CRÍTICA+4 ALTA. Conexões 2 CRÍTICA+1 ALTA.
+CRÍTICA FIXED: perfilGeral <p>→<div> (invalid HTML nesting). Accordion skipFirst=true in preview (no more duplication). Diário: all screen headings now semantic <h2>. All screens have role=region + aria-label. Scroll hint has aria-label.
+ALTA FIXED: Cosmic Vibe PT/EN subtitle fixed. "Ler mais" has chevron icons. DOMINANT_LABELS "Negócio/Parceria"→"Parceria". Síncronia Espiritual verbose footnote removed. Mandala: all section headers and row labels with behavioral framing. Ritual Wind icon (not Zap).
+Oráculo: 7/7 ✅ (all criteria pass Round 20).
+Mandala: All SVG fontSize ≥10px ✅ (WCAG compliant).
+Build: 49/49 EXIT 0
+
 ## v0.82.4 (2026-06-17) — UX Round 19
 Round 19 — 6 fresh audit agents (QuarrelsomeTuna/Dashboard, RetiredTyrannosaurus/Akasha, OccasionalFirefly/Mandala, MolecularTakin/Diário, StrongShrimp/Oráculo, ElectronicSparrow/Conexões).
 CRÍTICA: Akasha perfilGeral raw <p> → renderNarrative() (was dropping paragraphs). Accordion duplicate removed (expanded showed same content as collapsed preview). Dashboard ritual card mislabeled (Duração + element name).
@@ -1124,3 +1132,20 @@ Commits: 0db9b621 (orixá), be7c0287 (T7.4), 5b50fb84 (dashboard auth),
 - 1 test: atmosphere.test.tsx (WebGL/Three.js)
 - 1 test: legacy-shutdown.test.ts (API route path)
 - Build SSG: ssgManifest.js ENOENT (Turbopack + Next.js 16)
+
+---
+
+## Akasha-v3-iter18 — 2026-06-17
+
+### Feito
+- **Teste de não-repetição** (`synthesis-engine.test.ts`): 3 novos testes de determinismo:
+  1. `gera 50 síntese distintas` — gera 50 hologramas aleatórios via LCG seed=20260617, extrai fingerprint narrativa de cada síntese, verifica `Set.size === 50` (nenhuma duplicada)
+  2. `mesmos inputs → mesmo output` — verifica determinismo completo (same inputs → same fingerprint)
+  3. `null inputs geram saída graceful` — verifica que null inputs não crasham
+- **Conjunto de testes synthesis-engine**: 38/38 ✅ (subindo de 35 para 38)
+- **Suite completa**: 1361 testes ✅, 17 pulados, 0 falhas novas
+- **ROADMAP.md**: item da não-repetição marcado ✅
+
+### Autocrítica (ponto fraco)
+- Teste cobre 50 combinações aleatórias mas o pool de valores ainda é finito (12 signos, 16 odus, etc.) — para combinações reais de birth data o espaço é muito maior; este teste garante que a arquitetura não gera saídas idênticas para entradas diferentes no nível que cobrimos
+- Não testa explicitamente que a variação de I Ching hexagrama (1-64) gera narrativas diferentes — mas a existência de `ichingHex` no holograma garante essa variação

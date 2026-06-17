@@ -14,7 +14,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Sparkles, Moon, Sun, Cloud, Loader, 
   RefreshCw, TrendingUp, Award, UserCheck, X, Info, 
-  Clock, Wind, CheckCircle, Heart, Zap
+  Clock, Wind, CheckCircle, Heart, Zap, ChevronUp, ChevronDown
 } from 'lucide-react';
 import { ThemeToggle } from '../ThemeToggle';
 import { DashboardStats } from './components/DashboardStats';
@@ -604,7 +604,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                   onClick={() => setDimFocoExpanded(!dimFocoExpanded)}
                   className="text-xs text-[#7C5CFF]/70 hover:text-[#7C5CFF] transition-colors"
                 >
-                  {dimFocoExpanded ? 'Mostrar menos' : 'Ler mais'}
+                  {dimFocoExpanded ? <><ChevronUp size={12} className="inline" /> Mostrar menos</> : <><ChevronDown size={12} className="inline" /> Ler mais</>}
                 </button>
 
                 {dimFoco?.praktika && (

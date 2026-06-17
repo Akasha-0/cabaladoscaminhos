@@ -15,6 +15,7 @@
 
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import Link from 'next/link';
 import { AkashaSignificadoCard } from '@/components/akasha/AkashaSignificadoCard';
 import { SignificadoPilar } from '@/components/akasha/SignificadoPilar';
@@ -92,8 +93,8 @@ export default async function SignificadoPage({
 }) {
   const { locale } = await params;
   const cookieStore = await cookies();
-  const token = cookieStore.get('akasha_session')?.value;
-  if (!token) redirect(`/${locale}/onboarding`);
+  const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
+  if (!verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia`,
@@ -103,7 +104,7 @@ export default async function SignificadoPage({
     }
   );
 
-  if (res.status === 401 || res.status === 404) redirect(`/${locale}/onboarding`);
+  if (res.status === 401 || res.status === 404) redirect(`/${locale}/login`);
 
   let pilares: PilaresDados | null = null;
   if (res.ok) {

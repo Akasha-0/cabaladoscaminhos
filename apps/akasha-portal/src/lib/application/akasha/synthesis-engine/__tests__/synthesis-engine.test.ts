@@ -464,3 +464,212 @@ describe('buildAkashaSynthesis — error handling', () => {
   });
 });
 
+// ─── Non-repetition test (ROADMAP: "50 síntese aleatórias sem narrativa idêntica") ─
+
+describe('buildAkashaSynthesis — determinism & non-repetition', () => {
+  /**
+   * Extracts all meaningful narrative strings from a synthesis for fingerprinting.
+   * Excludes metadata (area names, frequency labels, intensities) and focuses
+   * on the prose that the translation engine generates.
+   */
+  function extractNarrativeFingerprint(s: ReturnType<typeof buildAkashaSynthesis>): string[] {
+    const fragments: string[] = [];
+    const areas = Object.values(s.areas);
+    for (const area of areas) {
+      fragments.push(area.shadowPattern, area.giftPattern, area.practicalAdvice, area.transformationPrompt);
+      fragments.push(...area.shadowSymptoms);
+      fragments.push(...area.giftStrengths);
+      if (area.dailyRitual) fragments.push(area.dailyRitual.title, area.dailyRitual.instruction);
+      if (area.expandedNarrative) {
+        fragments.push(
+          area.expandedNarrative.cabalaNarrative,
+          area.expandedNarrative.astrologiaNarrative,
+          area.expandedNarrative.tantraNarrative,
+          area.expandedNarrative.oduNarrative,
+          area.expandedNarrative.ichingNarrative,
+          area.expandedNarrative.integratedNarrative,
+          area.expandedNarrative.practicalExample,
+        );
+      }
+      if (area.chainOfReasoning) fragments.push(...area.chainOfReasoning);
+    }
+    // oneProfile is optional in the interface but always present at runtime
+    if (s.oneProfile) {
+      fragments.push(s.oneProfile.corePattern, s.oneProfile.oneLiner, s.oneProfile.strategyDetail);
+    }
+    fragments.push(s.synthesisParagraph ?? '');
+    fragments.push(s.dailyDecision.strategyExplanation, s.dailyDecision.recommendation, s.dailyDecision.avoid);
+    return fragments.filter(Boolean);
+  }
+
+  /**
+   * Minimal seeded LCG so test is deterministic and reproducible.
+   */
+  function makeRng(seed: number) {
+    let s = seed;
+    return () => {
+      s = (s * 1664525 + 1013904223) & 0xffffffff;
+      return (s >>> 0) / 0xffffffff;
+    };
+  }
+
+  // Pool of realistic values for each dimension
+  const SIGNS = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
+  const PLANETS = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn','Pluto'];
+  const HOUSES = [1,2,3,4,5,6,7,8,9,10,11,12];
+  const ODUS = ['Ogbe','Oyeku','Iwori','Odi','Ogbe','Owonrin','Obarra','Okanran','Ohu','Ogunda','Osa','Ika','Ikadipo','Olikenu','Shin','Fun'];
+  const PROHIBITIONS_POOL = [
+    ['comida com sal'], ['agua'], ['pimenta'], ['dendê'], ['alimentos'],
+    ['carne'], ['frutos do mar'], ['lechuga'], ['fogo'], ['fera'],
+    ['alimentos e agua'], ['pimenta e sal'], ['comida quente'],
+  ];
+  const BODY_NUMS = [1,2,3,4,5,6,7,8,9,10,11];
+  const SOUL_BODIES = ['Alma','Mente','Espírito'];
+
+  function pickRandom<T>(arr: T[], rng: () => number): T {
+    return arr[Math.floor(rng() * arr.length)];
+  }
+
+  function makeRandomAstro(rng: () => number): AstrologyMap {
+    const planetList = PLANETS.map(p => ({
+      planet: p,
+      sign: pickRandom(SIGNS, rng),
+      degree: Math.floor(rng() * 30) + 1,
+      house: pickRandom(HOUSES, rng),
+    }));
+    return {
+      planets: planetList,
+      houses: HOUSES.map(h => ({ house: h, sign: pickRandom(SIGNS, rng), degree: Math.floor(rng() * 30) + 1 })),
+      ascendant: pickRandom(SIGNS, rng),
+      midheaven: pickRandom(SIGNS, rng),
+      lunarPhase: pickRandom(['nova','crescente','cheia','minguante'], rng),
+      elementalChart: { fire: parseFloat(rng().toFixed(2)), earth: parseFloat(rng().toFixed(2)), air: parseFloat(rng().toFixed(2)), water: parseFloat(rng().toFixed(2)) },
+      modality: { cardinal: parseFloat(rng().toFixed(2)), fixed: parseFloat(rng().toFixed(2)), mutable: parseFloat(rng().toFixed(2)) },
+      quality: { individual: 1, relational: 1, transform: 1, social: 0, traditional: 0 },
+      dominantPlanet: pickRandom(PLANETS, rng),
+      signRuler: pickRandom(['Marte','Vênus','Mercúrio','Júpiter','Saturno','Plutão','Sol','Lua'], rng),
+      houseRuler: pickRandom(['Sol','Lua','Marte','Vênus','Mercúrio','Júpiter','Saturno'], rng),
+    } as unknown as AstrologyMap;
+  }
+
+  function makeRandomKab(rng: () => number): KabalisticMap {
+    const debts: number[] = [];
+    if (rng() > 0.5) debts.push(Math.floor(rng() * 9) + 1);
+    const lessons: number[] = [];
+    for (let i = 0; i < 3; i++) lessons.push(Math.floor(rng() * 9) + 1);
+    return {
+      lifePath: Math.floor(rng() * 33) + 1,
+      lifePathMaster: rng() > 0.8,
+      expression: Math.floor(rng() * 11) + 1,
+      motivation: Math.floor(rng() * 11) + 1,
+      birthday: Math.floor(rng() * 31) + 1,
+      personalYear: Math.floor(rng() * 9) + 1,
+      karmicDebts: debts,
+      karmicLessons: lessons,
+      challenges: {
+        first: Math.floor(rng() * 9) + 1,
+        second: Math.floor(rng() * 9) + 1,
+        main: Math.floor(rng() * 9) + 1,
+        last: Math.floor(rng() * 9) + 1,
+      },
+    } as unknown as KabalisticMap;
+  }
+
+  function makeRandomTantra(rng: () => number): TantricMap {
+    return {
+      soul: Math.floor(rng() * 11) + 1,
+      karma: Math.floor(rng() * 11) + 1,
+      divineGift: Math.floor(rng() * 11) + 1,
+      tantricPath: Math.floor(rng() * 11) + 1,
+      soulBody: Math.floor(rng() * 11) + 1,
+      soulDescription: pickRandom(SOUL_BODIES, rng),
+      bodies: {
+        fisico: { number: pickRandom(BODY_NUMS, rng), description: 'Físico' },
+        astral: { number: pickRandom(BODY_NUMS, rng), description: 'Astral' },
+        mental: { number: pickRandom(BODY_NUMS, rng), description: 'Mental' },
+      },
+      temperamento_atual: pickRandom(['sanguineo','colerico','melancólico','fleumático'], rng),
+    } as unknown as TantricMap;
+  }
+
+  function makeRandomOdu(rng: () => number): OduBirth {
+    return {
+      oduName: pickRandom(ODUS, rng),
+      oduNumber: Math.floor(rng() * 16) + 1,
+      elementalForce: pickRandom(['Fogo','Água','Terra','Ar','埃'], rng),
+      prohibitions: pickRandom(PROHIBITIONS_POOL, rng),
+      orixaRegency: [pickRandom(['Ogum','Iemanjá','Oxum','Xangô','Ibeji','Nanã','Obaluaiê','Omulu','Oxumar','Oxalufã','Oduduwa','Orunmilá'], rng)],
+      lifeLesson: pickRandom(['Clareza','Força','Amor','Destino','Cura','Liberdade','Sabedoria'], rng),
+      provisional: rng() > 0.5,
+    } as unknown as OduBirth;
+  }
+
+  function makeRandomHolo(rng: () => number): AkashicHologram {
+    return {
+      ichingHex: Math.floor(rng() * 64) + 1,
+      vitalidadeEnergia: { title: 'Vitalidade', chakra: 'muladhara', color: '#FF3B30', keyData: {} },
+      conexoesAmor: { title: 'Conexões', chakra: 'anahata', color: '#34C759', keyData: {} },
+      carreiraProsperidade: { title: 'Carreira', chakra: 'manipura', color: '#FFCC00', keyData: {} },
+      oriCabecaQuizilas: { title: 'Ori', chakra: 'ajna', color: '#5856D6', keyData: {} },
+      missaoDestino: { title: 'Missão', chakra: 'sahasrara', color: '#AF52DE', keyData: {} },
+      desafiosSombras: { title: 'Desafios', chakra: 'svadhisthana', color: '#FF9500', keyData: {} },
+    } as unknown as AkashicHologram;
+  }
+
+  it('gera 50 síntese distintas (nenhuma narrativa idêntica)', () => {
+    const N = 50;
+    const rng = makeRng(20260617);
+    const synths: Array<ReturnType<typeof buildAkashaSynthesis>> = [];
+
+    for (let i = 0; i < N; i++) {
+      const astro = makeRandomAstro(rng);
+      const kab = makeRandomKab(rng);
+      const tantra = makeRandomTantra(rng);
+      const odu = makeRandomOdu(rng);
+      const holo = makeRandomHolo(rng);
+      synths.push(buildAkashaSynthesis(astro, kab, tantra, odu, holo, TODAY));
+    }
+
+    // Fingerprint = concatenated narrative fragments per synthesis
+    const fingerprints = synths.map(s => extractNarrativeFingerprint(s).join('\x00'));
+
+    // Check: no two fingerprints may be identical
+    const seen = new Set<string>();
+    const duplicates: number[] = [];
+    fingerprints.forEach((fp, idx) => {
+      if (seen.has(fp)) duplicates.push(idx);
+      else seen.add(fp);
+    });
+
+    expect(duplicates, `Índices duplicados: ${duplicates.join(', ')}`).toHaveLength(0);
+    expect(seen.size).toBe(N); // all must be unique
+  });
+
+  it('mesmos inputs → mesmo output (determinismo)', () => {
+    expect(s1.oneProfile?.type).toBe(s2.oneProfile?.type);
+    const kab   = makeRandomKab(makeRng(12345));
+    const tantra = makeRandomTantra(makeRng(12345));
+    const odu   = makeRandomOdu(makeRng(12345));
+    const holo  = makeRandomHolo(makeRng(12345));
+
+    const s1 = buildAkashaSynthesis(astro, kab, tantra, odu, holo, TODAY);
+    const s2 = buildAkashaSynthesis(astro, kab, tantra, odu, holo, TODAY);
+
+    expect(s1.akashaProfile.dominantFrequency).toBe(s2.akashaProfile.dominantFrequency);
+    expect(s1.akashaProfile.transformationStage).toBe(s2.akashaProfile.transformationStage);
+    expect(s1.oneProfile.type).toBe(s2.oneProfile.type);
+    expect(synth.oneProfile?.type).toBeTruthy();
+
+    const fp1 = extractNarrativeFingerprint(s1).join('\x00');
+    const fp2 = extractNarrativeFingerprint(s2).join('\x00');
+    expect(fp1).toBe(fp2);
+  });
+
+  it('null inputs geram saída graceful (não crasham)', () => {
+    const holo = makeRandomHolo(makeRng(99999));
+    const synth = buildAkashaSynthesis(null, null, null, null, holo, TODAY);
+    expect(synth).toBeDefined();
+    expect(synth.oneProfile.type).toBeTruthy();
+    expect(synth.synthesisParagraph).toBeTruthy();
+  });
+});

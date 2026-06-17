@@ -131,8 +131,9 @@ async function authRefresh(request: NextRequest): Promise<{ name: string; value:
 }
 
 const PROTECTED_PATH_PREFIXES = [
-  '/dashboard', '/conta', '/diario', '/mandala', '/oraculo',
-  '/conexoes', '/mapa', '/manifesto', '/meu-dia',
+  '/dashboard', '/conta', '/diario', '/diario/foco', '/mandala', '/oraculo',
+  '/conexoes', '/mapa', '/mapa/significado', '/manifesto', '/meu-dia',
+  '/significado-primeiro',
 ];
 
 function shouldRefreshAuth(pathname: string): boolean {
