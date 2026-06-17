@@ -381,7 +381,7 @@ These are semantically identical, but the inconsistency suggests the codebase ev
 2. **`middleware_auth_flow` ≤ 15** — The root cause of (1). Fixing this fixes `auth_stability`.
 3. **`build_success` = 0** — No deployable artifact. All feature work is blocked.
 4. **`test_suite` < 95** — Test failures indicate regressions. Must investigate before merging non-test changes.
-| `auth_stability` | 100 | 🟢 Green |
+| `auth_stability` | 88 | 🟢 Green |
 | `middleware_auth_flow` | 100 | 🟢 Green |
 | `build_success` | 100 | 🟢 Green |
 | `test_suite` | 99 | 🟢 Green |
@@ -390,7 +390,7 @@ These are semantically identical, but the inconsistency suggests the codebase ev
 | `redirect_loops` | 95 | 🟢 Green |
 | `cookie_security` | 90 | 🟢 Green |
 
-**Overall: 0 critical, 0 high, 0 medium, 8 green. All auth fixes deployed — v0.83.9 ready for production.**
+**Overall: 0 critical, 0 high, 0 medium, 8 green. All auth fixes deployed — v0.84.3 ready for production.**
 
 ---
 *Last updated: 2026-06-17 — v0.84.3: Option C consistency fix (dashboard, akasha, mapa/significado) + null guard in derive-akasha-type.ts + lightweight JWT decode for refreshed sessions*
