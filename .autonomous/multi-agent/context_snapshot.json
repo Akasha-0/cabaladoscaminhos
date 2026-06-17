@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-17T01:58:11.252041+00:00",
-  "version": "0.75.0",
+  "generated_at": "2026-06-17T02:05:19.856676+00:00",
+  "version": "0.76.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-UI/UX-001** — ralph_loop_ui_improvements | 0.13.2",
@@ -1076,16 +1076,18 @@
       "- [~] **PLN-017[1]** -- large_file | 26 oversized files",
       "- [~] **PLN-018[1]** -- large_file | 26 oversized files",
       "- [~] **PLN-019[1]** -- large_file | 28 oversized files",
+      "- [~] **PLN-020[1]** -- missing_tests | 1 changed files lack tests",
+      "- [~] **PLN-020[2]** -- large_file | 28 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2",
       "- [~] **PLN-AE-003** — Ralph-loop continuous | QA cycling (v0.12.1)"
     ],
-    "pending_count": 1076
+    "pending_count": 1078
   },
   "git": {
-    "untracked": 2,
-    "modified": 12,
-    "total": 14,
+    "untracked": 4,
+    "modified": 11,
+    "total": 15,
     "has_changes": true
   },
   "triad": {
@@ -1147,8 +1149,8 @@
       "priority": 6,
       "description": "2 changed files lack tests",
       "files": [
-        "packages/core-iching/src/practices-queries.ts",
-        "packages/core-iching/src/practices.ts"
+        "packages/akasha-core/src/index.ts",
+        "packages/core-iching/src/practices-queries.ts"
       ]
     },
     {
@@ -1159,7 +1161,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "095f8b05474be5b14ca0d73ec5b278b538d63019",
+  "git_head": "f78c98ce6aaa333e74d51a522d1355167054dd6a",
   "decision_factors": {
     "has_pending_features": true
   }
