@@ -122,6 +122,7 @@ export interface AreaNarrative {
     tantra: string;
     odus: string;
     astrologia: string;
+    iching: string;
   };
   practicalAdvice: string;
   dailyRitual: {
@@ -162,3 +163,4 @@ export interface AkashaSynthesis {
 
 // Re-export from hologram-aggregator so consumers can import from a single place
 export type { AkashicHologram };
+

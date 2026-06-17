@@ -345,7 +345,7 @@ export default function MandalaChart({ data }: Props) {
                   y={labelPos.y}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  fontSize="9"
+                  fontSize="10"
                   fill="#5C6691"
                 >
                   {sym}
@@ -374,8 +374,8 @@ export default function MandalaChart({ data }: Props) {
                     y={toXY(angle, 145).y}
                     textAnchor="middle"
                     dominantBaseline="central"
-                    fontSize="6"
-                    fill="rgba(255,255,255,0.45)"
+                    fontSize="10"
+                    fill="rgba(255,255,255,0.7)"
                     fontWeight="500"
                   >
                     {h + 1}
@@ -412,7 +412,7 @@ export default function MandalaChart({ data }: Props) {
               x="200"
               y="14"
               textAnchor="middle"
-              fontSize="7"
+              fontSize="10"
               fill="rgba(124,92,255,0.5)"
               letterSpacing="2"
             >
@@ -481,8 +481,8 @@ export default function MandalaChart({ data }: Props) {
                   y={pos.y}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  fontSize="5"
-                  fill="#06070F"
+                  fontSize="10"
+                  fill="#F4F5FF"
                   fontWeight="bold"
                 >
                   {label}
@@ -531,7 +531,7 @@ export default function MandalaChart({ data }: Props) {
                 y="110"
                 textAnchor="middle"
                 dominantBaseline="middle"
-                fontSize="9"
+                fontSize="10"
                 fill="#F4F5FF"
                 fontWeight="700"
               >
@@ -620,7 +620,7 @@ export default function MandalaChart({ data }: Props) {
                   y={pos.y}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  fontSize="8"
+                  fontSize="10"
                   fill="#F4F5FF"
                   fontWeight="700"
                 >
@@ -676,7 +676,7 @@ export default function MandalaChart({ data }: Props) {
               x="200"
               y="216"
               textAnchor="middle"
-              fontSize="6.5"
+              fontSize="10"
               fill="#F0B429"
               fontWeight="600"
             >
@@ -685,7 +685,7 @@ export default function MandalaChart({ data }: Props) {
                 : data.odus.oduName}
             </text>
             {data.odus.orixaRegency[0] && (
-              <text x="200" y="226" textAnchor="middle" fontSize="5.5" fill="rgba(240,180,41,0.65)">
+              <text x="200" y="226" textAnchor="middle" fontSize="10" fill="rgba(240,180,41,0.65)">
                 {data.odus.orixaRegency[0]}
               </text>
             )}
@@ -693,7 +693,7 @@ export default function MandalaChart({ data }: Props) {
 
           {/* ── F — Incomplete data badge ── */}
           {data.incomplete && (
-            <text x="200" y="390" textAnchor="middle" fontSize="7" fill="#FB5781" opacity="0.7">
+            <text x="200" y="390" textAnchor="middle" fontSize="10" fill="#FB5781" opacity="0.7">
               * dados parciais — complete o perfil
             </text>
           )}

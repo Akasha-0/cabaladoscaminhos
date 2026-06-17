@@ -27,8 +27,7 @@ function getPillarColor(pillar: string): string {
 /** Renders common markdown (bold, italic, paragraphs) as React nodes — no library needed */
 function renderOracleText(text: string): React.ReactNode[] {
   if (!text) return [];
-  return text.split(/
-{2,}/).map((para, i) => {
+  return text.split(/\n+/).map((para, i) => {
     // Process inline markdown: **bold** and *italic*
     const processed = para.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/).map((segment, j) => {
       if (segment.startsWith('**') && segment.endsWith('**')) {
@@ -462,7 +461,7 @@ export default function OraculoPage() {
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '4px' }}>
             <span style={{ fontSize: '0.7rem', color: input.length > 200 ? '#FB5781' : 'rgba(255,255,255,0.4)' }}>
               {input.length > 200 ? 'Máx. 200 caracteres' : `${input.length} / 200`}
-              {input.length > 200 ? '' : ` · ${input.length > 200 ? '3 créditos' : '1 crédito'}`}
+              {input.length > 200 ? '' : ' · 1 crédito'}
             </span>
           </div>
         )}
@@ -516,17 +515,17 @@ export default function OraculoPage() {
           </span>
           <button
             type="submit"
-            disabled={loading || !input.trim() || (balance !== null && balance === 0)}
+            disabled={loading || !input.trim() || input.length > 200 || (balance !== null && balance === 0)}
             style={{
               padding: '10px 32px',
               borderRadius: '9999px',
               background:
-                loading || !input.trim() || (balance !== null && balance === 0)
+                loading || !input.trim() || input.length > 200 || (balance !== null && balance === 0)
                   ? 'rgba(124,92,255,0.2)'
                   : '#7C5CFF',
-              color: loading || !input.trim() || (balance !== null && balance === 0) ? '#5C6691' : '#F4F5FF',
+              color: loading || !input.trim() || input.length > 200 || (balance !== null && balance === 0) ? '#5C6691' : '#F4F5FF',
               border: 'none',
-              cursor: loading || !input.trim() || (balance !== null && balance === 0) ? 'not-allowed' : 'pointer',
+              cursor: loading || !input.trim() || input.length > 200 || (balance !== null && balance === 0) ? 'not-allowed' : 'pointer',
               fontSize: '0.9rem',
               fontWeight: 700,
               letterSpacing: '0.06em',

@@ -1,3 +1,4 @@
+import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import ContaClient from './ContaClient';
@@ -11,8 +12,10 @@ export default async function ContaPage({
 }) {
   const { locale } = await params;
   const cookieStore = await cookies();
-  const token = cookieStore.get('akasha_session')?.value;
-  if (!token) redirect(`/${locale}/onboarding`);
+  const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
+  if (!token || !verifyAkashaToken(token, 'access')) {
+    redirect(`/${locale}/login`);
+  }
 
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
   const headers = { Cookie: `akasha_session=${token}` };
@@ -23,8 +26,7 @@ export default async function ContaPage({
     fetch(`${baseUrl}/api/akasha/subscription`, { headers, cache: 'no-store' }),
   ]);
 
-  // AD-T5-D: redirecionar em qualquer falha de /me (não só 401)
-  if (!meRes.ok) redirect(`/${locale}/onboarding`);
+  if (!meRes.ok) redirect(`/${locale}/login`);
 
   const user = await meRes.json();
   const { balance = 0 } = credRes.ok ? await credRes.json() : {};

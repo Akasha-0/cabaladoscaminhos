@@ -31,6 +31,7 @@ vi.mock('@react-three/fiber', () => ({
       data-frameloop={frameloop}
       data-dpr={JSON.stringify(dpr)}
     >
+      <canvas />
       {children}
     </div>
   ),

@@ -6,4 +6,4 @@
  * Desktop: grid 3x3.
  */
 
-export { DimensaoCard } from './DimensaoCard';
+export { DimensaoCard, renderNarrative } from './DimensaoCard';

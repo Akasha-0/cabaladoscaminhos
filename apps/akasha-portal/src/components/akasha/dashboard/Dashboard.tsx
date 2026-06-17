@@ -14,7 +14,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Sparkles, Moon, Sun, Cloud, Loader, 
   RefreshCw, TrendingUp, Award, UserCheck, X, Info, 
-  Clock, Wind, CheckCircle, Heart
+  Clock, Wind, CheckCircle, Heart, Zap
 } from 'lucide-react';
 import { ThemeToggle } from '../ThemeToggle';
 import { DashboardStats } from './components/DashboardStats';
@@ -33,6 +33,7 @@ interface DashboardProps {
   userId: string;
   userName?: string;
   initialPilares?: PilaresDados;
+  locale: string;
 }
 
 type TabType = 'daily' | 'profile' | 'progress';
@@ -106,7 +107,7 @@ function renderNarrative(text: string, fontSize = '0.9rem'): React.ReactNode[] {
   });
 }
 
-export function Dashboard({ userId, userName = 'Viajante', initialPilares }: DashboardProps) {
+export function Dashboard({ userId, userName = 'Viajante', initialPilares, locale }: DashboardProps) {
   const [activeTab, setActiveTab] = useState<TabType>('daily');
   const [completing, setCompleting] = useState(false);
   const [completedToday, setCompletedToday] = useState(false);
@@ -382,6 +383,9 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
               </div>
 
               {/* Cosmic Vibe Grid — selectable chips that filter/highlight sections */}
+              <p className="text-[10px] text-[#A7AECF]/40 text-center tracking-wide">
+                Toque para filtrar · cada chip destaca sua dimensão abaixo
+              </p>
               <div id="daily-vibe" className="grid grid-cols-3 gap-2.5">
 
                 {/* Clima Chip */}
@@ -398,7 +402,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                       <Cloud size={16} className="text-[#2DD4BF]" />
                     </div>
                   </div>
-                  <p className="text-[11px] text-[#2DD4BF]/80 uppercase tracking-widest font-mono font-semibold">Clima</p>
+                  <p className="text-[11px] text-[#2DD4BF]/40 uppercase tracking-widest font-mono font-semibold">Clima</p>
                   <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.climate ?? 'Estável'}</p>
                   {activeFilterChip === 'clima' && (
                     <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#2DD4BF] flex items-center justify-center">
@@ -526,11 +530,11 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                       Regra Prática de Alinhamento
                     </p>
                     <div className="grid grid-cols-[auto_1fr] gap-x-2 gap-y-1.5 items-start">
-                      <span className="text-[10px] text-white/40 uppercase tracking-wider font-mono mt-px">Quando</span>
+                      <span className="text-[10px] text-white/40 uppercase tracking-wider font-mono mt-px">Antes de agir:</span>
                       <p className="text-xs text-white/85 leading-relaxed">
                         {detSintese.autoridade.regra.condicao}
                       </p>
-                      <span className="text-[10px] text-[#9D86FF] uppercase tracking-wider font-mono mt-px">Então</span>
+                      <span className="text-[10px] text-[#9D86FF] uppercase tracking-wider font-mono mt-px">Faça isto:</span>
                       <p className="text-xs text-[#9D86FF] leading-relaxed font-medium">
                         {detSintese.autoridade.regra.accao}
                       </p>
@@ -541,21 +545,6 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                     <div className="space-y-2">
                       <p className="text-[11px] text-[#2DD4BF] uppercase tracking-wider font-mono font-semibold">Melhor Timing</p>
                       <p className="text-white/85 leading-relaxed">{detSintese.autoridade.timing.melhor}</p>
-                      {!completedToday && dailyData?.ritual && (
-                        <button
-                          onClick={handleCompleteRitual}
-                          disabled={completing}
-                          className="mt-1 w-full py-2 px-3 rounded-lg bg-[#2DD4BF]/15 border border-[#2DD4BF]/30 text-[#2DD4BF] text-xs font-semibold hover:bg-[#2DD4BF]/25 transition-all disabled:opacity-50"
-                        >
-                          {completing ? (
-                            <span className="flex items-center justify-center gap-1.5">
-                              <Loader size={12} className="animate-spin" /> Registrando...
-                            </span>
-                          ) : (
-                            'Iniciar Ritual Agora'
-                          )}
-                        </button>
-                      )}
                     </div>
                     <div className="space-y-2">
                       <p className="text-[11px] text-[#FB5781] uppercase tracking-wider font-mono font-semibold">Evitar Decidir</p>
@@ -583,10 +572,11 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                     </div>
                     <div>
                       <p className="text-[10px] text-[#F0B429] font-bold uppercase tracking-wider font-mono">Foco Prioritário de Hoje</p>
-                      <h3 className="text-md font-bold font-cinzel text-white leading-none mt-1">{dimFoco?.titulo}</h3>
+                      <h3 className="text-base font-bold font-cinzel text-white leading-none mt-1">{dimFoco?.titulo}</h3>
+                      <p className="text-[10px] text-[#A7AECF]/50 mt-0.5">A energia de hoje torna esta dimensão especialmente ativa</p>
                     </div>
                   </div>
-                  <span className="shrink-0 px-2 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider bg-[#F0B429] text-[#06070F] shadow-[0_0_8px_rgba(240,180,41,0.4)]">
+                  <span className="shrink-0 px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#F0B429] text-[#06070F] shadow-[0_0_8px_rgba(240,180,41,0.4)]">
                     Foco
                   </span>
                 </div>
@@ -631,6 +621,9 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                   </div>
                 )}
               </div>
+              <a href={`/${locale}/akasha`} className="block text-center text-[11px] text-[#7C5CFF]/60 hover:text-[#7C5CFF] transition-colors py-2 border-t border-white/5">
+                Ver análise completa do seu mandato →
+              </a>
               {/* 4. Daily Ritual Card - Premium Cosmic Design */}
               {dailyData?.ritual && (
                 <div className="relative group">
@@ -652,13 +645,8 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                         <h3 className="text-xl font-bold font-cinzel text-white leading-tight">{dailyData.ritual.titulo}</h3>
                         <div className="flex items-center gap-3 text-xs text-[#A7AECF]/70">
                           <span className="flex items-center gap-1">
-                            <Clock size={12} className="text-[#2DD4BF]" />
+                            <Zap size={12} className="text-[#2DD4BF]" />
                             {dailyData.ritual.cor || '15 min'}
-                          </span>
-                          <span className="w-1 h-1 rounded-full bg-white/20" />
-                          <span className="flex items-center gap-1">
-                            <Wind size={12} className="text-[#F0B429]" />
-                            {dailyData.ritual.elemento || 'Éter'}
                           </span>
                         </div>
                       </div>
@@ -745,13 +733,13 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares }: Das
                             </span>
                           )}
                           <span className="text-lg text-[#9D86FF] group-hover:scale-110 transition-transform duration-300">
-                            <Sparkles size={18} className="text-[#9D86FF]" />
+                            {dim.icone ? dim.icone : <Sparkles size={18} className="text-[#9D86FF]" />}
                           </span>
                           <span className="text-[11px] font-bold text-white leading-tight">
                             {dim.titulo.split(' & ')[0]}
                           </span>
                           {dim.descricao && (
-                            <span className="text-[9px] text-white/30 leading-tight px-1">{dim.descricao.split('.')[0]}.</span>
+                            <span className="text-[10px] text-white/30 leading-tight px-1">{dim.descricao.split('.')[0]}.</span>
                           )}
                           <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-[#7C5CFF]/10 border border-[#7C5CFF]/20 text-[10px] text-[#9D86FF] group-hover:bg-[#7C5CFF]/20 group-hover:border-[#7C5CFF]/40 transition-all">
                             Explorar <span>→</span>

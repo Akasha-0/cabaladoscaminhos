@@ -1,3 +1,23 @@
+## v0.82.4 (2026-06-17) — UX Round 19
+Round 19 — 6 fresh audit agents (QuarrelsomeTuna/Dashboard, RetiredTyrannosaurus/Akasha, OccasionalFirefly/Mandala, MolecularTakin/Diário, StrongShrimp/Oráculo, ElectronicSparrow/Conexões).
+CRÍTICA: Akasha perfilGeral raw <p> → renderNarrative() (was dropping paragraphs). Accordion duplicate removed (expanded showed same content as collapsed preview). Dashboard ritual card mislabeled (Duração + element name).
+ALTA: Footer CTA purely temporal → behavioral framing ("Como vai aplicar isto hoje?"). Conexões legend "Negócio" → "Parceria" (also fixed "proósito" typo). Conexões saved-view missing dominant-type legend. Diário scroll hint in wrong position (S2→S3 instead of S1→S2). Mandala Kabala section headers plain nouns → behavioral framing.
+MÉDIA: Dashboard Cosmic Vibe Chips no subtitle. Dashboard Foco Prioritário no "why" explanation. Mandala Kabala row labels. Screen 5 areas grid no instructional framing.
+FIXED: shadow-sintomas.ts unterminated block comment (JSDoc on shadowPrimtivoFrase) — prevented build entirely.
+Build: 49/49 EXIT 0
+
+## v0.82.3 (2026-06-17) — UX Round 18
+Round 18 — 6 fresh audit agents + 3 fix subagents.
+CRITICAS: Mandala SVG sizes reverted (overwritten) — reapplied all at 10px. Conexoes Sinconia aria-label fully rewritten. Conexao "Conexao Negocio" still in results. "Mista" in legend instead of "Ambos". Saved connections "Negocio" label still present.
+ALTAS: Oraculo renderOracleText splits only on double-newlines. Button not disabled when >200 chars. SignificadoPilar Sombra/Pratica guidance added.
+Build: 49/49
+
+## v0.82.2 (2026-06-17) — UX Round 17 ✅
+Round 17 — 6 audit agents (ObedientLeech/Dashboard, AshamedFalcon/Akasha, PresidentialOx/Diário, SufficientMarsupial/Oráculo, RightTakin/Conexões, CasualElephant/Mandala) + 3 fix agents.
+CRÍTICAS: Mandala SVG WCAG 10px, Oráculo markdown parsing, Akasha autoridade never rendered, Akasha perfilGeral wall-of-text, Diário Voz do Akasha no header, Dashboard invalid Tailwind + contrast + icons + jargon, Conexões Síncronia aria-label-only + birth time hint.
+ALTAS: Diário S2→S3 hint, Diário S4 intro framing, Diário textarea placeholder, Dashboard duplicate CTA, Dashboard ritual.cor unlabeled, Akasha accordion repeat, Akasha ENQUADRAMENTO hardcoded.
+MÉDIAS: Conexões dominantType legend in saved, Akasha footer CTA behavioral framing.
+Build: 49/49 ✅
 # PROGRESS — Cabala dos Caminhos
 
 > **Fonte da verdade** sobre o estado do projeto. Lido no início de cada
@@ -74,6 +94,7 @@ verificáveis.
 
 | Akasha-v3-iter15 | **UX Round 15 — Conexões guidance + score %% + archetype fixes** — Conexoes narrative type mismatch + missing return fixed; DimensionBar %%; saved-connections %%; dominantType legend; post-results guidance; Dashboard dim.descricao added to cards; Akasha archetype ENQUADRAMENTO all 12 paths; footer diary CTA; 5 mapas named; DimensaoCard師父→mestre; Diário ContinuarButton aria-label; Oráculo char count hidden when empty; 49/49 ✅ | (este ciclo) | ✅ |
 | Akasha-v3-iter16 | **Prioridade 3 — Primitive-Driven Narrative (hasCount <= 2 fix)** — `generateAreaNarrativeFull` agora recebe `_synthesizedProfile` como 6° param; primitive anchor: top-2 sombra/luz primitivos alimentam abertura da narrativa integrada quando hasCount <= 2 (dados esparsos); 6 call sites em `derive-area-narratives.ts` atualizados; 3 bug fixes: catch binding syntax (oxc), DimensaoCard.tsx em-dash revertido, ConexoesClient.tsxUnicode revertido; npm build ✅ + 172 síntese testes ✅ | (este ciclo) | ✅ |
+| Akasha-v3-iter17 | **I Ching Phase 2 — `pillarContribution.iching` (Prioridade 3)** — `iching: string` adicionado à interface `AreaNarrative.pillarContribution` em `synthesis-types.ts`; `buildTransformacaoIChingNarrative` exportado de `narrative-generator.ts` (função existia no arquivo mas não era exportada — `TypeError` em runtime); todos os 6 `derive-*` functions em `derive-area-narratives.ts` agora incluem `iching: buildTransformacaoIChingNarrative(holo, '<area>', _synthesizedProfile)`; teste `synthesis-engine.test.ts` atualizado com `pillarContribution com 5 pilares (incluindo iching)` + `pillarContribution distintas (não-identidade) — 3 combos`; npm build ✅ + 1357 testes ✅ (1 failure pre-existing `atmosphere.test.tsx` unrelated); stray `→` (U+2192) artifacts removidos de `narrative-generator.ts` e `derive-area-narratives.ts` | (este ciclo) | ✅ |
 | Rota | Limite | Janela |
 |------|--------|--------|
 | `POST /api/operator/auth/login` | 5 / IP | 15 min |
@@ -1074,3 +1095,32 @@ Commits: 0db9b621 (orixá), be7c0287 (T7.4), 5b50fb84 (dashboard auth),
 
 - Prioridade 1: construir área de Tradução (§5 SPEC)
 - Integrar `ichingHex` no schema Prisma `BirthChart` para ativar pilar I Ching no cron
+
+## Nota da Sessão Atual (2026-06-17) — Iteração 17 Phase 2 (complementar)
+
+**Contexto:** ROADMAP — migrar buildShadowSymptoms() de lógica ad-hoc para mapeamentos curados.
+
+### O que foi feito
+
+1. **shadow-sintomas.ts** (novo, 152L) — mapeamentos curados em apps/akasha-portal/src/lib/grimoire/mapeamentos/:
+   - SHADOW_BY_SATURNO_SIGN (12 signos), SHADOW_BY_PLUTO_SIGN (12 signos)
+   - SHADOW_BY_KARMIC_DEBT (0-9), SHADOW_BY_CHALLENGE (0-9)
+   - SHADOW_BY_ODU_PROHIBITION (18 tipos: alimentos, agua, fogo, sexo, etc.)
+   - shadowPrimtivoFrase() — traduce SynthesizedPrimitivo em frase curada
+   - Estilo: 2-3 frases, 2ª pessoa, específica, com cue de ação
+
+2. **area-builders.ts** — buildShadowSymptoms() refatorado para usar mapeamentos curados
+
+3. **area-builders.test.ts** — 4 testes atualizados para novo formato curado
+
+### Estado
+- TypeScript: 0 erros
+- synthesis-engine: 122/122 testes
+- Build Next.js: TS compilou OK; SSG manifest é problema pré-existente Turbopack/Next.js 16
+
+### Falhas pré-existentes (não afetam síntese)
+- 14 tests: Cannot find package @/lib/ai/* (módulos não existem)
+- 3 tests: .md parsing + package structure + I Ching grimoire
+- 1 test: atmosphere.test.tsx (WebGL/Three.js)
+- 1 test: legacy-shutdown.test.ts (API route path)
+- Build SSG: ssgManifest.js ENOENT (Turbopack + Next.js 16)

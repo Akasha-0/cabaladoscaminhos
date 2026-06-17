@@ -10,8 +10,16 @@
 import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/types';
 import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
 import type { AreaNarrative } from './synthesis-types';
-
 import type { SynthesizedProfile } from '@akasha/core';
+
+import {
+  shadowPrimtivoFrase,
+  SHADOW_BY_KARMIC_DEBT,
+  SHADOW_BY_CHALLENGE,
+  SHADOW_BY_SATURNO_SIGN,
+  SHADOW_BY_PLUTO_SIGN,
+  SHADOW_BY_ODU_PROHIBITION,
+} from '@/lib/grimoire/mapeamentos/shadow-sintomas';
 
 // ─── Shadow ────────────────────────────────────────────────────────────────
 
@@ -25,36 +33,51 @@ export function buildShadowSymptoms(
 ): string[] {
   const symptoms: string[] = [];
 
-  // Enrichment: top-2 sombra primitives from synthesizePrimitives
+  // Top-2 sombra primitivos com tradução curada (mapeamentos/)
   if (_synthesizedProfile?.primitivos) {
     const sombras = _synthesizedProfile.primitivos
       .filter(p => p.polaridade === 'sombra')
       .sort((a, b) => b.magnitude - a.magnitude)
       .slice(0, 2);
     for (const s of sombras) {
-      symptoms.push(`Primitivo sombra: ${s.primitivo} (magnitude ${s.magnitude.toFixed(1)})`);
+      symptoms.push(shadowPrimtivoFrase(s));
     }
   }
 
+  // Dívidas kármicas — tradução curada por número
   if (kab?.karmicDebts?.length) {
-    symptoms.push(`Dívida kármica ${kab.karmicDebts.join(', ')}`);
-  }
-  if (kab?.challenges?.first) {
-    symptoms.push(`Desafio principal: ${kab.challenges.first}`);
+    for (const debt of kab.karmicDebts) {
+      const frase = SHADOW_BY_KARMIC_DEBT[debt];
+      if (frase) symptoms.push(frase);
+    }
   }
 
+  // Desafio principal — tradução curada por número
+  if (kab?.challenges?.first !== undefined) {
+    const frase = SHADOW_BY_CHALLENGE[kab.challenges.first];
+    if (frase) symptoms.push(frase);
+  }
+
+  // Saturno por signo — tradução curada
   const saturn = astro?.planets?.find(p => p.planet === 'Saturn' || p.planet === 'Saturno');
   if (saturn) {
-    symptoms.push(`Saturno em ${saturn.sign} trazendo lições de limite e paciência`);
+    const frase = SHADOW_BY_SATURNO_SIGN[saturn.sign];
+    if (frase) symptoms.push(frase);
   }
 
+  // Plutão por signo — tradução curada
   const pluto = astro?.planets?.find(p => p.planet === 'Pluto' || p.planet === 'Plutão');
   if (pluto) {
-    symptoms.push(`Plutão em ${pluto.sign} gerando transformações profundas e às vezes dolorosas`);
+    const frase = SHADOW_BY_PLUTO_SIGN[pluto.sign];
+    if (frase) symptoms.push(frase);
   }
 
+  // Proibições do Odu — tradução curada
   if (odu?.prohibitions?.length) {
-    symptoms.push(`Proibições do Odu que causam tensão: ${odu.prohibitions.join(', ')}`);
+    for (const prohibition of odu.prohibitions) {
+      const frase = SHADOW_BY_ODU_PROHIBITION[prohibition];
+      if (frase) symptoms.push(frase);
+    }
   }
 
   return symptoms.length > 0 ? symptoms : ['Padrão de sombra não identificado — mantenha autocompaixão'];

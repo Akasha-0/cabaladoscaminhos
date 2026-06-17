@@ -1,3 +1,62 @@
+- ## v0.83.0 (2026-06-17) — QA Round 20 — Auth pattern unification + 0 TS errors + 1358 tests
+- fix(auth): 9 pages now use `verifyAkashaToken` + `AKASHA_TOKEN_COOKIE` consistently
+- fix(auth): redirect destination unified to `/login` (was: mixed `/onboarding` and `/login`)
+- fix(synthesis): area-builders.ts — shadow translation function imports added (TS2304 resolved)
+- fix(synthesis): shadow-sintomas.ts — `SynthesizedPrimitivo` import + JSDoc `*/` restored
+- fix(conexoes): ConexoesClient.tsx — narrative type refactor `string` → `NarrativeBlock[]` integrated
+- fix(ui): DimensaoCard.tsx — duplicate `renderNarrative` function removed
+- fix(ui): SignificadoPilar.tsx — `color` prop renamed to `cor`
+- fix(ui): MandalaChart.tsx + MandalaInfoPanels.tsx — duplicate imports removed
+- fix(ui): Dashboard.tsx — `locale` prop properly destructured
+- fix(tests): atmosphere.test.tsx — Canvas mock renders `<canvas />`
+- fix(tests): narrative-generator.test.ts — missing `holo` arg in 4 calls; import path fixed
+- build: 0 TypeScript errors · 49/49 pages
+- tests: 1358 passed | 0 failed | 17 skipped (was 1355 | 2 failed)
+
+## v0.82.4 (2026-06-17) — UX Round 19 — Accordion dedup + Conexões legend + Diário scroll + Kabala framing
+- fix(akasha/perfilGeral): perfilGeral now rendered through renderNarrative() — paragraphs preserved (was raw <p> dropping content)
+- fix(DimensaoCard/accordion): duplicate Narrativa completa section removed from expanded state — accordion now shows only additive content (Prática, Alerta, Pilares) on expand
+- fix(akasha/page): renderNarrative exported from DimensaoCard and imported in akasha page for perfilGeral use
+- fix(akasha/page): footer CTA now has behavioral framing subtitle "Como vai aplicar isto hoje?"
+- fix(dashboard/ritual): "Duração" label + wrong field removed; replaced with Zap icon + element energy (ritual.cor || '15 min') with Wind icon for elemento
+- fix(dashboard/chips): behavioral subtitle added above Cosmic Vibe Chips: "Toque para filtrar · each chip highlights its domain below"
+- fix(dashboard/foco): "why" explanation added: "A energia de hoje torna esta dimensão especialmente ativa" + CTA link to /akasha
+- fix(dashboard/locale): locale prop properly destructured and passed to Dashboard component
+- fix(conexoes/legend): "Negócio" legend label changed to "Parceria —propósito compartilhado" (typo also fixed: "proósito" → "propósito")
+- fix(conexoes/saved): dominant-type explanatory legend added to saved connections view (same as results view)
+- fix(diario/scroll): scroll hint repositioned to appear between Screen 1 and Screen 2 (was between S2 and S3)
+- fix(diario/s5): Screen 5 areas grid now has instructional framing: "Leia da esquerda para direita — do profissional ao íntimo."
+- fix(mandala/kabala): section headers upgraded with behavioral framing: "Desafios" → "Ciclos de Desafio — provas que moldam seu caminho", "Pináculos" → "Marcos da Vida — transições que redefinem seu caminho", "Ciclos de Vida" → "Ritmo de Vida — padrões que se repetem"
+- fix(mandala/kabala): row labels enhanced: "Ano/Mês/Dia Pessoal" with contextual framing; challenge rows prefixed with "1º/2º Desafio" labels
+- fix(shadow-sintomas): unterminated block comment repaired — JSDoc comment on shadowPrimtivoFrase was open, causing parse failure
+- build: 49/49 static pages · EXIT 0
+
+## v0.82.3 (2026-06-17) — UX Round 18 — Síncronia visível + WCAG SVG + Oráculo counter + SignificadoPilar guidance
+- fix(mandala): WCAG SVG complete — all sizes ≥10px (house 10, Odu 10, orixá 10, body labels 10, zodiac+hexagram 10, Kabala 10, MOV CELESTE 10, incomplete badge 10)
+- fix(conexoes): Síncronia Espiritual — visible explanation text (not aria-label-only); aria-label icon removed
+- fix(conexoes): Síncronia Corporal — visible explanation text (not aria-label-only); aria-label icon removed
+- fix(conexoes): Conexão Negócio → Conexão Parceria (results score card header)
+- fix(conexoes): dominantType legend 'Mista' → 'Ambos' (consistency with DOMINANT_LABELS)
+- fix(conexoes): saved connections — 'Negócio' → 'Parceria' label on axis
+- fix(oraculo): renderOracleText now splits on single \n (streaming-safe) instead of \n{2,}+ only
+- fix(oraculo): counter dead-code removed (redundant inner ternary); '3 créditos' never shown at limit
+- fix(oraculo): button now disabled when input.length > 200 (was previously enabled)
+- fix(significadopilar): Sombra section — added behavioral guidance: Observe sem agir — só notar quando isso aparecer.
+- fix(significadopilar): Prática section — added post-reading guidance: Faça agora ou anote como pretende aplicar hoje.
+- build: ✓ Compiled 7.6s + 49/49 static pages
+
+## v0.82.2 (2026-06-17) — UX Round 17 — WCAG SVG + Oráculo markdown + autoridade section + Síncronia visível
+- fix(mandala): ALL SVG text raised to WCAG minimum 10px — house numbers 10, Odu name 10, orixá 8, body labels 9, zodiac+hexagram 10, Kabala 10, MOV CELESTE 10
+- fix(oraculo): raw markdown now parsed — renderOracleText() converts **bold**→cyan, *italic*, and double-newlines→paragraphs
+- fix(oraculo): input placeholder now includes Shift+Enter mechanic hint
+- fix(akasha): perfilGeral wall-of-text → renderNarrative() with paragraph splits and bold highlighting
+- fix(akasha): autoridade section ADDED — sintese.autoridade (strategy, decision rule, timing, areaFoco, decisaoHoje) now rendered between header and perfilGeral
+- fix(akasha): accordion repeat removed — expanded content no longer shows duplicate paragraph 1 of síntese.synthes
+- fix(diario): Voz do Akasha card now has subtitle + behavioral hint; Screen 2→3 scroll hint; Screen 4 intro framing; textarea placeholder updated; Screen 1 scroll affordance added
+- fix(dashboard): text-md→text-base; 9px→10px badges; /80→/40 contrast; Ler mais always visible; dim.icone used; Quando/Então jargon fixed; duplicate CTA removed; ritual.cor labeled Duração; Foco why-it-matters + CTA
+- fix(conexoes): Síncronia Espiritual/Corporal visible text (not aria-label); birth time hint; dominantType legend in saved connections
+- build: ✓ Compiled 7.5s + 49/49 static pages
+
 ## v0.82.1 (2026-06-17) — UX Round 15 — Conexões guidance + score % + archetype fixes
 - fix(conexoes): DimensionBar score now shows "%" (dimension.score → dimension.score%)
 - fix(conexoes): saved connections romanticScore and partnershipScore now show "%"

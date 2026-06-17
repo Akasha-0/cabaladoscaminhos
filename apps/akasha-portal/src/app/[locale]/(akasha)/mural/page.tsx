@@ -1,3 +1,4 @@
+import { verifyAkashaToken } from '@/lib/application/auth/akasha-jwt';
 /**
  * Mural coletivo — F-234
  *
@@ -17,6 +18,7 @@
  */
 
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { kinDaData, familias, type KinTzolkin } from '@/lib/grimoire/mural-tzolkin';
 import { significadoGenericoDoPilar, type Pilar } from '@/lib/grimoire/significados-curados';
@@ -68,7 +70,9 @@ export default async function MuralPage({
   const { locale } = await params;
   const cookieStore = await cookies();
   const token = cookieStore.get('akasha_session')?.value;
-
+  if (!verifyAkashaToken(token, 'access')) {
+    redirect(`/${locale}/login`);
+  }
   const hoje = kinDaData();
   const fams = familias();
   const portais = proximosPortais(hoje, 60);

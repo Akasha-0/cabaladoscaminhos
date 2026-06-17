@@ -28,10 +28,11 @@ export interface DimensaoCardProps {
 // ─── Markdown-like renderer ────────────────────────────────────────────────
 
 /** Converte **bold** → <strong> e \n\n → parágrafos. */
-function renderNarrative(text: string): React.ReactNode[] {
+export function renderNarrative(text: string, skipFirst = false): React.ReactNode[] {
   if (!text) return [];
   const paragraphs = text.split('\n\n').filter(Boolean);
-  return paragraphs.map((para, i) => {
+  const start = skipFirst && paragraphs.length > 1 ? 1 : 0;
+  return paragraphs.slice(start).map((para, i) => {
     // Substitui **termo** por <strong>termo</strong>
     const parts = para.split(/\*\*(.+?)\*\*/g);
     const isBold = parts.length > 1;
@@ -154,7 +155,7 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
           WebkitMaskImage: aberto ? 'none' : 'linear-gradient(to bottom, black 50%, transparent 100%)',
         }}
       >
-        {renderNarrative(sintese.synthes)}
+        {renderNarrative(sintese.synthes, true)}
       </div>
 
       {/* Conteúdo expandido */}
@@ -169,19 +170,6 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
             gap: 14,
           }}
         >
-          {/* Narrativa completa */}
-          <section>
-            <div
-              style={{
-                fontSize: '0.88rem',
-                color: 'rgba(232,224,255,0.8)',
-                lineHeight: 1.6,
-              }}
-            >
-              {renderNarrative(sintese.synthes)}
-            </div>
-          </section>
-
           {/* Prática */}
           {sintese.praktika && (
             <section>

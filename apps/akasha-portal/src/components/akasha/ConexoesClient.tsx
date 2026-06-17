@@ -264,7 +264,7 @@ export default function ConexoesClient({ userProfile }: Props) {
 
   const DOMINANT_LABELS: Record<string, string> = {
     romantic: 'Amorosa',
-    partnership: 'Negócio/Parceria',
+    partnership: 'Parceria',
     both: 'Ambos',
     challenging: 'Desafiadora',
   };
@@ -507,7 +507,7 @@ export default function ConexoesClient({ userProfile }: Props) {
               </p>
             </div>
             <div className="rounded-2xl border border-[#fbbf24]/30 bg-[#fbbf24]/5 p-5 text-center">
-              <p className="text-xs text-white/50 mb-1">Conexão Negócio</p>
+              <p className="text-xs text-white/50 mb-1">Conexão Parceria</p>
               <p className="text-4xl font-black text-[#fbbf24]">{result.partnership}%</p>
               <p className="text-[10px] text-white/30 mt-1 italic">Propósito, visão e ação conjunta no mundo</p>
               <p className={`text-xs font-semibold mt-1 ${
@@ -545,20 +545,15 @@ export default function ConexoesClient({ userProfile }: Props) {
             </div>
             <div className="space-y-1">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-white/50 flex items-center gap-1">
-                  Sincronia Espiritual
-                  <span aria-label="Como a autoridade espiritual dos dois mapas se relacionam." className="cursor-help text-white/30 hover:text-white/50 transition-colors">
-                    <Info size={12} />
-                  </span>
-                </span>
-                <span className="font-bold" style={{ color: authColor }}>
+                <span className="text-white/50">Sincronia Espiritual</span>
+                <span className="font-bold text-xs" style={{ color: authColor }}>
                   {AUTHORITY_LABELS[result.authorityMatch]}
                 </span>
               </div>
-              <p className="text-[10px] text-white/30 pl-0.5">
-                {result.authorityMatch === 'aligned' ? 'alinhamento forte — autoridades compatíveis' :
-                 result.authorityMatch === 'complementary' ? 'autoridades complementares com diferenças' :
-                 'contrastes entre os tipos de decisão'}
+              <p className="text-[10px] text-white/40 pl-0.5">
+                {result.authorityMatch === 'aligned' ? 'Autoridades compatíveis — decisões alinhadas' :
+                 result.authorityMatch === 'complementary' ? 'Autoridades complementares — diferenças sombreadas' :
+                 'Contrastes entre tipos de decisão'}
               </p>
             </div>
           </div>
@@ -566,14 +561,10 @@ export default function ConexoesClient({ userProfile }: Props) {
           {/* Odu + Body sync */}
           <div className="grid grid-cols-2 gap-4">
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <p className="text-xs text-white/50 mb-1 flex items-center gap-1">
-                Sincronia Corporal
-                <span aria-label="Compatibilidade entre os corpos tântricos dos dois mapas." className="cursor-help text-white/30 hover:text-white/50 transition-colors">
-                  <Info size={12} />
-                </span>
-              </p>
+              <p className="text-xs text-white/50 mb-1">Sincronia Corporal</p>
               <p className="text-lg font-black text-[#2DD4BF]">{result.bodySync.score}%</p>
               <p className="text-xs text-white/40 mt-1">{result.bodySync.description}</p>
+              <p className="text-[10px] text-white/25 mt-1">Compatibilidade entre os corpos tântricos dos dois mapas.</p>
             </div>
           </div>
 
@@ -641,9 +632,9 @@ export default function ConexoesClient({ userProfile }: Props) {
             <p className="text-[10px] text-white/30 mb-2 uppercase tracking-wider">Tipo dominante: significado</p>
             <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px] text-white/40">
               <span><span className="text-[#f87171]">Amorosa</span> —afetividade em primeiro plano</span>
-              <span><span className="text-[#fbbf24]">Negócio</span> —proósito compartilhado</span>
+              <span><span className="text-[#fbbf24]">Parceria</span> —propósito compartilhado</span>
               <span><span className="text-[#c084fc]">Desafiadora</span> —contraste como motor</span>
-              <span><span className="text-[#7C5CFF]">Mista</span> —equilíbrio entre ambos</span>
+              <span><span className="text-[#7C5CFF]">Ambos</span> —equilíbrio entre ambos</span>
             </div>
           </div>
 
@@ -745,6 +736,17 @@ export default function ConexoesClient({ userProfile }: Props) {
             </button>
           </div>
 
+          {/* Dominant type legend — same as results view */}
+          <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+            <p className="text-[10px] text-white/30 mb-2 uppercase tracking-wider">Tipo dominante: significado</p>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px] text-white/40">
+              <span><span className="text-[#f87171]">Amorosa</span> —afetividade em primeiro plano</span>
+              <span><span className="text-[#fbbf24]">Parceria</span> —propósito compartilhado</span>
+              <span><span className="text-[#c084fc]">Desafiadora</span> —contraste como motor</span>
+              <span><span className="text-[#7C5CFF]">Ambos</span> —equilíbrio entre ambos</span>
+            </div>
+          </div>
+
           {savedConnections.length === 0 ? (
             <div className="rounded-2xl border border-white/10 bg-white/5 p-8 text-center">
               <Heart size={32} className="text-white/20 mx-auto mb-3" />
@@ -784,7 +786,7 @@ export default function ConexoesClient({ userProfile }: Props) {
                       <p className="text-lg font-black text-[#f87171]">{conn.romanticScore}%</p>
                     </div>
                     <div className="rounded-xl bg-[#fbbf24]/5 border border-[#fbbf24]/20 p-2 text-center">
-                      <p className="text-xs text-white/40">Negócio</p>
+                      <p className="text-xs text-white/40">Parceria</p>
                       <p className="text-lg font-black text-[#fbbf24]">{conn.partnershipScore}%</p>
                     </div>
                   </div>

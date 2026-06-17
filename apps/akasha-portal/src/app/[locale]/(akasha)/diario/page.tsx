@@ -14,6 +14,7 @@
  * redação LLM; o que o F-202 já trata como "esqueleto" será preenchido
  * sem mudanças de UI.
  */
+import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -317,9 +318,8 @@ export default async function DiarioPage({
   const { locale } = await params;
   const { intencao } = await searchParams;
   const cookieStore = await cookies();
-  const token = cookieStore.get('akasha_session')?.value;
-
-  if (!token) redirect(`/${locale}/onboarding`);
+  const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
+  if (!verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
 
   const qs = intencao?.trim() ? `?intencao=${encodeURIComponent(intencao.trim())}` : '';
 
@@ -327,12 +327,12 @@ export default async function DiarioPage({
     `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia${qs}`,
     {
       method: 'GET',
-      headers: { Cookie: `akasha_session=${token}` },
+      headers: { Cookie: `${AKASHA_TOKEN_COOKIE}=${token}` },
       cache: 'no-store',
     }
   );
 
-  if (res.status === 401 || res.status === 404) redirect(`/${locale}/onboarding`);
+  if (res.status === 401 || res.status === 404) redirect(`/${locale}/login`);
   if (!res.ok) {
     return (
       <div style={{ ...wrapStyle, padding: '48px 20px' }}>
@@ -431,6 +431,7 @@ export default async function DiarioPage({
           ) : (
             <div style={cardStyle(pilarInfo.cor)}>
                 A Voz do Akasha
+              <span style={{fontSize:'0.72rem', color:C.txtMut, fontStyle:'italic', display:'block', marginBottom:4}}>Três frases que condensam a mensagem energética do seu mapa para hoje.</span>
               {frases.map((f, i) => (
                 <p
                   key={i}
@@ -443,6 +444,7 @@ export default async function DiarioPage({
                   {f}
                 </p>
               ))}
+              <span style={{fontSize:'0.68rem', color:C.txtSec, display:'block', marginTop:4}}>Leia em voz alta. Observe o que mais ressoa.</span>
 
               {/* Pilares relevantes como badges coloridos */}
               {mandato.pilares_relevantes.length > 0 && (
@@ -458,6 +460,7 @@ export default async function DiarioPage({
                 </div>
               )}
 
+              <div style={{textAlign:'center', marginTop:8}}><span style={{fontSize:'0.7rem', color:C.txtMut}}>↓ Continue para a pergunta do dia</span></div>
               {/* Fontes citadas — proveniência obrigatória (Ethics §1) */}
               {mandato.cita_fontes.length > 0 && (
                 <details className="mt-2" aria-label="Fontes e referências desta análise">
@@ -488,7 +491,7 @@ export default async function DiarioPage({
               Respire. Deixe a resposta emergir antes de buscar palavras.
             </p>
             <textarea
-              placeholder="Deixe sua reflexão emergir..."
+              placeholder="Qual é a primeira resposta que vem, antes da mente julgar?"
               style={{
                 width: '100%',
                 minHeight: 100,
@@ -511,6 +514,7 @@ export default async function DiarioPage({
           </div>
         </div>
       </div>
+      
 
       {/* Tela 3: O Micro-Ritual */}
       <div id="tela-3" style={screenStyle}>
@@ -547,9 +551,7 @@ export default async function DiarioPage({
           <div style={screenStyle}>
             <div style={innerStyle}>
             <div style={screenNumStyle}>04\u00A0/\u00A005 — Significado</div>
-              <p style={{ ...bodyStyle, color: C.txtSec, marginBottom: 8 }}>
-                Cinco leituras, uma pessoa. Leia cada Pilar para refletir.
-              </p>
+              <p style={{...bodyStyle, color:C.txtSec, marginBottom:8}}>Leia cada Pilar na ordem. Para cada um: note a <em>Sombra</em> primeiro (o que tende a recusar), depois a <em>Prática</em> (o antídoto). Ao final, veja como se conectam.</p>
               {ordem.map((p) => (
                 <div key={p} style={{ marginBottom: 14 }}>
                   <SignificadoPilar
@@ -580,8 +582,11 @@ export default async function DiarioPage({
           <div style={screenStyle}>
             <div style={innerStyle}>
               <div style={screenNumStyle}>05\u00A0/\u00A005 — Para suas áreas</div>
-              <p style={{ ...bodyStyle, color: C.txtSec, marginBottom: 8 }}>
+              <p style={{ ...bodyStyle, color: C.txtSec, marginBottom: 4 }}>
                 O pilar {pilarInfo.nome} traduzido para cada área da sua vida.
+              </p>
+              <p style={{ fontSize: '0.68rem', color: C.txtMut, marginBottom: 8 }}>
+                Leia da esquerda para direita — do profissional ao íntimo.
               </p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 10 }}>
                 {AREAS.map((a) => {

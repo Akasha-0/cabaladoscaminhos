@@ -202,7 +202,7 @@ export interface AreaNarrativeFull {
  * Uses holo.ichingHex (hexagram from hologram) to derive area-specific I Ching guidance.
  * Falls back gracefully when no hexagram is present.
  */
-function buildTransformacaoIChingNarrative(
+export function buildTransformacaoIChingNarrative(
   holo: AkashicHologram | null,
   area: string,
   _synthesizedProfile?: SynthesizedProfile,
@@ -833,3 +833,5 @@ export function generateSynthesisParagraph(
   const restText = rest.length > 0 ? ' ' + rest.join(' ') : '';
   return `${main}.${restText}`.trim();
 }
+
+

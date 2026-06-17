@@ -7,7 +7,7 @@
 
 import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/types';
 import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
-import { generateAreaNarrativeFull } from '../narrative-generator';
+import { generateAreaNarrativeFull, buildTransformacaoIChingNarrative } from '../narrative-generator';
 import type { AreaNarrative } from './synthesis-types';
 import {
   buildAreaRitual,
@@ -247,6 +247,7 @@ export function deriveVitalidadeEnergia(
       tantra: tantraStr,
       odus: oduStr,
       astrologia: astroStr,
+      iching: buildTransformacaoIChingNarrative(holo, 'vitalidadeEnergia', _synthesizedProfile),
     },
     practicalAdvice: buildPracticalAdvice(astro, kab, tantra, odu, 'vitalidade'),
     dailyRitual,
@@ -319,6 +320,7 @@ export function deriveConexoesAmor(
       tantra: soulStr,
       odus: '',
       astrologia: `${venusStr} ${moonStr} ${lilithStr}`.trim(),
+      iching: buildTransformacaoIChingNarrative(holo, 'conexoesAmor', _synthesizedProfile),
     },
     practicalAdvice: buildPracticalAdvice(astro, kab, tantra, odu, 'conexoes'),
     dailyRitual,
@@ -390,6 +392,7 @@ export function deriveCarreiraProsperidade(
       tantra: divineGiftStr,
       odus: '',
       astrologia: midheavenStr || jupiterStr,
+      iching: buildTransformacaoIChingNarrative(holo, 'carreiraProsperidade', _synthesizedProfile),
     },
     practicalAdvice: buildPracticalAdvice(astro, kab, tantra, odu, 'carreira'),
     dailyRitual,
@@ -450,6 +453,7 @@ export function deriveOriCabecaQuizilas(
       tantra: purposeStr,
       odus: `${oduStr} ${elementalStr}`.trim(),
       astrologia: '',
+      iching: buildTransformacaoIChingNarrative(holo, 'oriCabecaQuizilas', _synthesizedProfile),
     },
     practicalAdvice: buildPracticalAdvice(astro, kab, tantra, odu, 'ori'),
     dailyRitual,
@@ -515,6 +519,7 @@ export function deriveMissaoDestino(
       tantra: `${tantricPathStr} ${destinyStr}`.trim(),
       odus: '',
       astrologia: '',
+      iching: buildTransformacaoIChingNarrative(holo, 'missaoDestino', _synthesizedProfile),
     },
     practicalAdvice: buildPracticalAdvice(astro, kab, tantra, odu, 'missao'),
     dailyRitual,
@@ -580,6 +585,7 @@ export function deriveDesafiosSombras(
       tantra: tantra?.karma ? `Seu Carma Tântrico ${tantra.karma} indica padrões a serem transmutados nesta vida.` : '',
       odus: odu?.lifeLesson ? `Lição de Vida Ifá: ${odu.lifeLesson}.` : '',
       astrologia: `${saturnStr} ${plutoStr}`.trim(),
+      iching: buildTransformacaoIChingNarrative(holo, 'desafiosSombras', _synthesizedProfile),
     },
     practicalAdvice: buildPracticalAdvice(astro, kab, tantra, odu, 'desafios'),
     dailyRitual,

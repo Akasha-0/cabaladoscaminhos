@@ -8,6 +8,7 @@
  * Mobile-first: accordion vertical.
  */
 
+import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
@@ -47,19 +48,18 @@ export default async function MinhaCaixaPage({
 }) {
   const { locale } = await params;
   const cookieStore = await cookies();
-  const token = cookieStore.get('akasha_session')?.value;
-
-  if (!token) redirect(`/${locale}/onboarding`);
+  const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
+  if (!verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia`,
     {
-      headers: { Cookie: `akasha_session=${token}` },
+      headers: { Cookie: `${AKASHA_TOKEN_COOKIE}=${token}` },
       cache: 'no-store',
     }
   );
 
-  if (res.status === 401 || res.status === 404) redirect(`/${locale}/onboarding`);
+  if (res.status === 401 || res.status === 404) redirect(`/${locale}/login`);
 
   let pilares: PilaresDados | null = null;
   if (res.ok) {

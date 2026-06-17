@@ -198,6 +198,9 @@ export function SignificadoPilar({
         >
           {sombra}
         </p>
+        <p style={{ fontSize: '0.68rem', color: '#5C6691', marginTop: 4 }}>
+          Observe sem agir — só notar quando isso aparecer.
+        </p>
       </section>
 
       {/* F-235 — Sexualidade: Lilith + Casa 8 (apenas Pilar 2 Astrologia) */}
@@ -314,6 +317,9 @@ export function SignificadoPilar({
           }}
         >
           {pratica}
+        </p>
+        <p style={{ fontSize: '0.68rem', color: cor, marginTop: 4, opacity: 0.7 }}>
+          Faça agora ou anote como pretende aplicar hoje.
         </p>
       </section>
 

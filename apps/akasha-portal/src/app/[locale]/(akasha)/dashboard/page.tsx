@@ -65,7 +65,8 @@ export default async function LocalizedDashboardPage({ params }: DashboardPagePr
     <Dashboard 
       userId={payload.sub} 
       userName={user?.name ?? 'Viajante'} 
-      initialPilares={initialPilares} 
+      initialPilares={initialPilares}
+      locale={locale}
     />
   );
 }

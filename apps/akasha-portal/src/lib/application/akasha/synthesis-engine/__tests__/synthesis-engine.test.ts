@@ -233,7 +233,7 @@ describe('buildAkashaSynthesis — happy path', () => {
     }
   });
 
-  it('cada área tem pillarContribution com 4 pilares', () => {
+  it('cada área tem pillarContribution com 5 pilares (incluindo iching)', () => {
     const synth = buildAkashaSynthesis(
       makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), TODAY
     );
@@ -242,6 +242,29 @@ describe('buildAkashaSynthesis — happy path', () => {
       expect(area.pillarContribution).toHaveProperty('tantra');
       expect(area.pillarContribution).toHaveProperty('odus');
       expect(area.pillarContribution).toHaveProperty('astrologia');
+      expect(area.pillarContribution).toHaveProperty('iching');
+    }
+  });
+
+  it('cada área gera pillarContribution distintas (não-identidade) — 3 combos', () => {
+    // 3 combos: all-null, só kab, full — cobrem os caminhos de fallback
+    const allNull = buildAkashaSynthesis(null, null, null, null, makeHolo(), TODAY);
+    const kabOnly = buildAkashaSynthesis(null, makeKab(), null, null, makeHolo(), TODAY);
+    const full = buildAkashaSynthesis(makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), TODAY);
+
+    for (const areaKey of Object.keys(full.areas) as Array<keyof typeof full.areas>) {
+      const a = allNull.areas[areaKey].pillarContribution;
+      const b = kabOnly.areas[areaKey].pillarContribution;
+      const c = full.areas[areaKey].pillarContribution;
+
+      // Ao menos 2 das 3 combinações devem ser diferentes entre si
+      // (fallback '' vs dado real é sempre diferente; se todas iguais → bug)
+      const ab = JSON.stringify(a) === JSON.stringify(b);
+      const bc = JSON.stringify(b) === JSON.stringify(c);
+      const ac = JSON.stringify(a) === JSON.stringify(c);
+      expect(ab && bc && ac,
+        `Área ${areaKey}: todas as 3 combinações de pilares são idênticas — bug no generateAreaNarrativeFull`
+      ).toBe(false);
     }
   });
 
@@ -440,3 +463,4 @@ describe('buildAkashaSynthesis — error handling', () => {
     consoleSpy.mockRestore();
   });
 });
+

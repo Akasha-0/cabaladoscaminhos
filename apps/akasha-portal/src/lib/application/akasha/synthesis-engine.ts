@@ -130,7 +130,7 @@ function buildFallbackArea(area: string): AreaNarrative {
     shadowSymptoms: [],
     giftPattern: '',
     giftStrengths: [],
-    pillarContribution: { cabala: '', tantra: '', odus: '', astrologia: '' },
+    pillarContribution: { cabala: '', tantra: '', odus: '', astrologia: '', iching: '' },
     practicalAdvice: 'Aguarde a correção do sistema.',
     dailyRitual: { title: 'Aguardar', instruction: 'Aguarde', duration: '5 min', element: 'ar', color: '#888888' },
     transformationPrompt: 'O sistema está corrigindo esta área.',

@@ -1,3 +1,4 @@
+import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 /**
  * Akasha — F-223 v3
  *
@@ -12,7 +13,7 @@ import { significadoPorPilar } from '@/lib/grimoire/significados-curados';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { DimensaoCard } from '@/components/akasha/CaixaUnificada';
+import { DimensaoCard, renderNarrative } from '@/components/akasha/CaixaUnificada';
 import { sintetizarMapa } from '@/lib/grimoire/synthesis/synthesizer';
 import type { PilaresDados } from '@/lib/grimoire/significados-curados';
 
@@ -41,19 +42,18 @@ export default async function MinhaCaixaPage({
 }) {
   const { locale } = await params;
   const cookieStore = await cookies();
-  const token = cookieStore.get('akasha_session')?.value;
-
-  if (!token) redirect(`/${locale}/onboarding`);
+  const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
+  if (!verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia`,
     {
-      headers: { Cookie: `akasha_session=${token}` },
+      headers: { Cookie: `${AKASHA_TOKEN_COOKIE}=${token}` },
       cache: 'no-store',
     }
   );
 
-  if (res.status === 401 || res.status === 404) redirect(`/${locale}/onboarding`);
+  if (res.status === 401 || res.status === 404) redirect(`/${locale}/login`);
 
   let pilares: PilaresDados | null = null;
   if (res.ok) {
@@ -155,6 +155,109 @@ export default async function MinhaCaixaPage({
             })()
           )}
         </header>
+        {/* ── Sua Autoridade Akasha ── */}
+        {sintese && sintese.autoridade && (
+          <>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+              <span style={{ color: C.dourado, fontSize: '1rem' }}>✦</span>
+              <h2 style={{ fontFamily: 'var(--font-cinzel, serif)', color: C.txtPri, fontSize: '0.95rem', margin: 0, fontWeight: 600 }}>
+                Sua Autoridade Akasha
+              </h2>
+            </div>
+            <section
+              style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(240,180,41,0.3)',
+                borderRadius: 14,
+                padding: '14px 18px',
+                marginBottom: 20,
+              }}
+            >
+              {/* Strategy badge + authority type */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                <span style={{
+                  fontSize: '0.7rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  padding: '3px 10px',
+                  borderRadius: 20,
+                  background: sintese.autoridade.estrategia === 'act'
+                    ? 'rgba(240,180,41,0.2)'
+                    : sintese.autoridade.estrategia === 'wait'
+                    ? 'rgba(56,189,248,0.2)'
+                    : sintese.autoridade.estrategia === 'observe'
+                    ? 'rgba(124,92,255,0.2)'
+                    : 'rgba(196,62,142,0.2)',
+                  color: sintese.autoridade.estrategia === 'act'
+                    ? C.dourado
+                    : sintese.autoridade.estrategia === 'wait'
+                    ? '#38BDF8'
+                    : sintese.autoridade.estrategia === 'observe'
+                    ? C.violeta
+                    : C.rosa,
+                }}>
+                  {sintese.autoridade.estrategia === 'act' ? 'Agir'
+                    : sintese.autoridade.estrategia === 'wait' ? 'Esperar'
+                    : sintese.autoridade.estrategia === 'observe' ? 'Observar'
+                    : 'Entregar'}
+                </span>
+                <span style={{ color: C.txtSec, fontSize: '0.8rem' }}>
+                  Autoridade {sintese.autoridade.autoridade}
+                </span>
+              </div>
+
+              {/* Explanation */}
+              <p style={{ color: C.txtPri, fontSize: '0.88rem', lineHeight: 1.5, margin: '0 0 12px' }}>
+                {sintese.autoridade.explicacao}
+              </p>
+
+              {/* Decision rule */}
+              <div style={{
+                background: 'rgba(240,180,41,0.08)',
+                border: '1px solid rgba(240,180,41,0.2)',
+                borderRadius: 8,
+                padding: '8px 12px',
+                marginBottom: 12,
+              }}>
+                <p style={{ color: C.dourado, fontSize: '0.82rem', fontWeight: 600, margin: '0 0 2px' }}>
+                  Regra de decisão
+                </p>
+                <p style={{ color: C.txtPri, fontSize: '0.85rem', margin: 0 }}>
+                  Quando {sintese.autoridade.regra.condicao} → {sintese.autoridade.regra.accao}
+                </p>
+              </div>
+
+              {/* Timing + Area + Decisão */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                <div>
+                  <p style={{ color: C.txtSec, fontSize: '0.75rem', margin: '0 0 3px' }}>Melhor momento</p>
+                  <p style={{ color: C.dourado, fontSize: '0.82rem', fontWeight: 600, margin: 0 }}>
+                    {sintese.autoridade.timing.melhor}
+                  </p>
+                </div>
+                <div>
+                  <p style={{ color: C.txtSec, fontSize: '0.75rem', margin: '0 0 3px' }}>Evitar</p>
+                  <p style={{ color: '#f87171', fontSize: '0.82rem', fontWeight: 600, margin: 0 }}>
+                    {sintese.autoridade.timing.pior}
+                  </p>
+                </div>
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <p style={{ color: C.txtSec, fontSize: '0.75rem', margin: '0 0 3px' }}>Área de foco</p>
+                  <p style={{ color: C.txtPri, fontSize: '0.82rem', margin: 0 }}>
+                    {sintese.autoridade.areaFoco}
+                  </p>
+                </div>
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <p style={{ color: C.txtSec, fontSize: '0.75rem', margin: '0 0 3px' }}>Decisão de hoje</p>
+                  <p style={{ color: C.violeta, fontSize: '0.82rem', fontWeight: 600, margin: 0 }}>
+                    {sintese.autoridade.decisaoHoje}
+                  </p>
+                </div>
+              </div>
+            </section>
+          </>
+        )}
 
         {/* Header do perfil */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
@@ -174,16 +277,11 @@ export default async function MinhaCaixaPage({
               marginBottom: 20,
             }}
           >
-            <p
-              style={{
-                color: C.txtPri,
-                fontSize: '0.92rem',
-                lineHeight: 1.55,
-                margin: 0,
-              }}
-            >
-              {sintese.perfilGeral}
-            </p>
+            {renderNarrative(sintese.perfilGeral).map((node, i) => (
+              <div key={i} style={{ color: C.txtPri, fontSize: '0.92rem', lineHeight: 1.55, margin: 0 }}>
+                {node}
+              </div>
+            ))}
           </section>
         )}
 
@@ -225,6 +323,9 @@ export default async function MinhaCaixaPage({
 
         {/* Footer CTA */}
         <footer style={{ marginTop: 32, textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <p style={{ fontSize: '0.72rem', color: 'rgba(232,224,255,0.35)', margin: '0 0 4px', letterSpacing: '0.04em' }}>
+            Como vai aplicar isto hoje?
+          </p>
           <Link
             href={`/${locale}/diario`}
             style={{

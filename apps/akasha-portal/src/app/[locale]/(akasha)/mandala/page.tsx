@@ -1,3 +1,4 @@
+import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
@@ -20,19 +21,18 @@ function getSaudacao(): string {
 export default async function MandalaPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const cookieStore = await cookies();
-  const token = cookieStore.get('akasha_session')?.value;
-
-  if (!token) redirect(`/${locale}/onboarding`);
+  const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
+  if (!verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandala`,
     {
-      headers: { Cookie: `akasha_session=${token}` },
+      headers: { Cookie: `${AKASHA_TOKEN_COOKIE}=${token}` },
       cache: 'no-store',
     }
   );
 
-  if (res.status === 401 || res.status === 404) redirect(`/${locale}/onboarding`);
+  if (res.status === 401 || res.status === 404) redirect(`/${locale}/login`);
 
   const data = await res.json();
 

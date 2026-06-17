@@ -29,10 +29,10 @@ export function TantricBodyInfoPanel({ tantra, inactiveBodies }: TantricBodyInfo
       title="Corpo e Energia — Os 11 Corpos"
       subtitle="Teia de Conexão · Camada 3"
     >
-      <Row label="Caminho Tântrico" value={tantra.tantricPath} />
-      <Row label="Alma" value={tantra.soul} />
-      <Row label="Karma" value={tantra.karma} />
-      <Row label="Dom Divino" value={tantra.divineGift} />
+      <Row label="Caminho Tântrico — sua prática de integração" value={tantra.tantricPath} />
+      <Row label="Alma — essência que reencarna" value={tantra.soul} />
+      <Row label="Karma — legado de ações passadas" value={tantra.karma} />
+      <Row label="Dom Divino — talento espiritual a cultivar" value={tantra.divineGift} />
       <Divider />
       {inactiveBodies.length === 0 ? (
         <Insight color="#2DD4BF">
@@ -153,27 +153,27 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
       subtitle="Geometria Interna · Camada 2"
     >
       <Row
-        label="Caminho de Vida"
+        label="Caminho de Vida — o mapa da sua jornada"
         value={kabala.lifePath}
         master={kabala.lifePathMaster}
       />
       <Row
-        label="Expressão"
+        label="Expressão — como você se manifesta"
         value={kabala.expression}
         master={kabala.expressionMaster}
       />
-      <Row label="Motivação" value={kabala.motivation} />
-      <Row label="Impressão" value={kabala.impression} />
-      <Row label="Missão" value={kabala.mission} />
-      <Row label="Ano Pessoal" value={kabala.personalYear} />
-      <Row label="Mês Pessoal" value={kabala.personalMonth} />
-      <Row label="Dia Pessoal" value={kabala.personalDay} />
-      <Row label="Sefira" value={kabala.sefira} />
-      <Row label="Letra Hebraica" value={kabala.hebrewLetter} />
+      <Row label="Motivação — o que move suas escolhas" value={kabala.motivation} />
+      <Row label="Impressão — como os outros te percebem" value={kabala.impression} />
+      <Row label="Missão — seu propósito incarnatório" value={kabala.mission} />
+      <Row label="Ano Pessoal — energia deste ciclo" value={kabala.personalYear} />
+      <Row label="Mês Pessoal — energia deste mês" value={kabala.personalMonth} />
+      <Row label="Dia Pessoal — energia de hoje" value={kabala.personalDay} />
+      <Row label="Sefira — atributo divino em ação" value={kabala.sefira} />
+      <Row label="Letra Hebraica — som sagrado do seu caminho" value={kabala.hebrewLetter} />
       {kabala.tarotCard && (
         <>
           <Row
-            label="Carta de Tarot"
+            label="Carta de Tarot — arcano do seu destino"
             value={`${kabala.tarotCard.name} (#${kabala.tarotCard.major})`}
           />
           {kabala.tarotCard.meaning && (
@@ -201,12 +201,12 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                     marginBottom: '0.35rem',
                   }}
                 >
-                  Desafios
+                  Ciclos de Desafio — provas que moldam seu caminho
                 </p>
-                <Row label="Primeiro Desafio" value={kabala.challenges.first} />
-                <Row label="Segundo Desafio" value={kabala.challenges.second} />
-                <Row label="Desafio Principal" value={kabala.challenges.main} />
-                <Row label="Último Desafio" value={kabala.challenges.last} />
+                <Row label="1º Desafio — o que enfrentar primeiro" value={kabala.challenges.first} />
+                <Row label="2º Desafio — o que superar" value={kabala.challenges.second} />
+                <Row label="Desafio Principal — a prova central" value={kabala.challenges.main} />
+                <Row label="Último Desafio — lição final a harmonizar" value={kabala.challenges.last} />
               </>
             )}
             {kabala.pinnacles && (
@@ -220,7 +220,7 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                     marginBottom: '0.35rem',
                   }}
                 >
-                  Pináculos
+                  Marcos da Vida — transições que redefinem seu caminho
                 </p>
                 {kabala.pinnacles.first && (
                   <>
@@ -279,7 +279,7 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                     marginBottom: '0.35rem',
                   }}
                 >
-                  Ciclos de Vida
+                  Ritmo de Vida — ciclos que pedem consciência
                 </p>
                 {kabala.lifeCycles.first && (
                   <Row
