@@ -3,9 +3,8 @@
  * Derived lookup indexes and query helpers for integrative practices.
  */
 
-import type { Element, PracticeCategory } from './types';
-import type { IntegrativePractice } from './types';
-import { PRACTICES } from './practices';
+import { PRACTICES } from './practices-data';
+import type { Element, PracticeCategory, IntegrativePractice } from './types';
 
 /** Mapa de práticas por ID para busca rápida. */
 const PRACTICES_BY_ID = Object.fromEntries(PRACTICES.map((p) => [p.id, p]));

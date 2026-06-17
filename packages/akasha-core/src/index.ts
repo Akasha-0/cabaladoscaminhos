@@ -56,11 +56,31 @@ export type {
 // dashboard-service.ts
 export { DashboardService, calculateStreak } from './dashboard-service';
 
+// dashboard-types.ts
+export type {
+  DashboardStats,
+  StreakDay,
+  RitualHistoryItem,
+  RitualCompletionData,
+  RitualCompletionResponse,
+  DashboardViewConfig,
+} from './dashboard-types';
+
+// ritual-types.ts
+export type { AkashaCode } from './correlation-engine';
+export type {
+  RitualComponentes,
+  RitualConfig,
+  Quizila,
+  RitualCode,
+  RitualResponse,
+  CodeOfDayResult,
+} from './ritual-types';
+
 // interpretation-engine/queries.ts
 export { interpretarVida, interpretarVidaArea } from './interpretation-engine/queries';
 
 // recommendation-generator.ts
 export { generateHybrid } from './recommendation-generator';
 
-// ritual-calculator.ts
-export { buildRitual } from './ritual-calculator';
+export { buildRitual, calculateCodeOfDay } from './ritual-calculator';
