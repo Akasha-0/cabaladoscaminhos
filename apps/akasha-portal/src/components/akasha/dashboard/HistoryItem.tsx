@@ -57,7 +57,7 @@ export function HistoryItem({ item }: HistoryItemProps) {
   return (
     <motion.div
       whileHover={{ scale: 1.02, x: 4 }}
-      transition={{ duration: 0.2 }}
+      transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
       className="group"
     >
       <a

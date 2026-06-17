@@ -32,8 +32,9 @@ export function useCountUp(end: number, duration: number = 2000) {
     
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      setCount(Math.floor(progress * end));
+      const rawProgress = Math.min((timestamp - startTime) / duration, 1);
+      const progress = 1 - Math.pow(1 - rawProgress, 3); // easeOutCubic
+      setCount(Math.round(progress * end));
       
       if (progress < 1) {
         animationFrame = requestAnimationFrame(animate);
@@ -50,7 +51,7 @@ export function useCountUp(end: number, duration: number = 2000) {
 // Pulse animation for streak calendar
 export const pulse = {
   scale: [1, 1.05, 1],
-  transition: { duration: 1, repeat: Infinity },
+  transition: { duration: 1, repeat: Infinity, ease: 'easeInOut' },
 };
 
 export const PulseDiv = ({ children, className }: { children: React.ReactNode; className?: string }) => (
