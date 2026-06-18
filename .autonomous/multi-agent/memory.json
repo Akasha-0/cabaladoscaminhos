@@ -1042,6 +1042,39 @@
       "details": {
         "files_changed": 0
       }
+    },
+    {
+      "ts": "2026-06-18T11:37:33.863341+00:00",
+      "agent": "daemon",
+      "phase": "RELEASE",
+      "feature_id": "missing_tests",
+      "outcome": "implemented",
+      "summary": "1 changed files lack tests",
+      "details": {
+        "files_changed": 0
+      }
+    },
+    {
+      "ts": "2026-06-18T11:37:33.863361+00:00",
+      "agent": "daemon",
+      "phase": "RELEASE",
+      "feature_id": "tech_debt",
+      "outcome": "implemented",
+      "summary": "2 files with XXX",
+      "details": {
+        "files_changed": 0
+      }
+    },
+    {
+      "ts": "2026-06-18T11:37:33.863368+00:00",
+      "agent": "daemon",
+      "phase": "RELEASE",
+      "feature_id": "large_file",
+      "outcome": "implemented",
+      "summary": "46 oversized files",
+      "details": {
+        "files_changed": 0
+      }
     }
   ],
   "iteration": 101
