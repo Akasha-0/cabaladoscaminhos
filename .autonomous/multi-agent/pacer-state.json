@@ -1,13 +1,10 @@
 {
   "state": "SLOW",
   "quality_ema": 85.0,
-  "failure_rate": 0.65,
-  "outcome_count": 33,
+  "failure_rate": 0.7,
+  "outcome_count": 36,
   "outcome_history": [
     true,
-    true,
-    true,
-    true,
     false,
     true,
     true,
@@ -22,6 +19,9 @@
     false,
     false,
     false,
+    false,
+    true,
+    true,
     false,
     true
   ],
@@ -155,6 +155,14 @@
       "reason": "quality regression",
       "quality": 85.0,
       "failure": 0.6
+    },
+    {
+      "ts": "2026-06-18T11:23:10.011029+00:00",
+      "from": "SLOW",
+      "to": "SLOW",
+      "reason": "quality regression",
+      "quality": 85.0,
+      "failure": 0.65
     }
   ]
 }

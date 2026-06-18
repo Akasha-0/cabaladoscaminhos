@@ -1,6 +1,29 @@
 {
   "improvements": [
     {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "1 changed files lack tests",
+      "files": [
+        "packages/akasha-core/src/mapeamentos/synthesis-engine/iching-primitives.ts"
+      ],
+      "reasoning": {
+        "pros": [
+          "Low-risk change; safe to apply even to a fragile baseline",
+          "Moderate impact (0.50)"
+        ],
+        "cons": [],
+        "risk": "low",
+        "impact": 0.5,
+        "compound_potential": 0.5,
+        "assessment_notes": [
+          "No directly relevant learnings found — reasoning is based on project state",
+          "No direct intersection with known error patterns"
+        ]
+      },
+      "reasoning_score": 0.5
+    },
+    {
       "type": "tech_debt",
       "priority": 5,
       "description": "2 files with XXX",
@@ -30,8 +53,8 @@
       "description": "46 oversized files",
       "files": [
         {
-          "file": "packages/akasha-core/src/mapeamentos/iching-base.ts",
-          "lines": 1511
+          "file": "packages/akasha-core/src/mapeamentos/synthesis-engine/iching-base-data.ts",
+          "lines": 1483
         },
         {
           "file": "packages/akasha-core/src/mapeamentos/index.ts",
@@ -59,5 +82,5 @@
       "reasoning_score": 0.5
     }
   ],
-  "iteration": 4
+  "iteration": 5
 }

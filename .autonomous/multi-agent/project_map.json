@@ -1,6 +1,6 @@
 {
-  "scanned_at": 1781780995.7789526,
-  "scanned_at_iso": "2026-06-18T11:09:55.778956+00:00",
+  "scanned_at": 1781781839.5440464,
+  "scanned_at_iso": "2026-06-18T11:23:59.544051+00:00",
   "areas": {
     "UI/Design": {
       "description": "User interface components and design system",
@@ -188,8 +188,10 @@
     "API/Logic": {
       "description": "Business logic, API routes, and core library code",
       "files": [
-        "packages/akasha-core/src/mapeamentos/iching-contribution.ts",
         "packages/akasha-core/src/mapeamentos/iching-base.ts",
+        "packages/akasha-core/src/mapeamentos/synthesis-engine/iching-base-data.ts",
+        "packages/akasha-core/src/mapeamentos/synthesis-engine/iching-primitives.ts",
+        "packages/akasha-core/src/mapeamentos/iching-contribution.ts",
         "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/index.ts",
         "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/synthesis-engine/exercise-derivers.ts",
         "packages/akasha-core/src/mapeamentos/types.ts",
@@ -523,14 +525,14 @@
         "packages/core-tantra/src/numerology-tantric.ts",
         "packages/core-cabala/src/sefirot-meanings.ts"
       ],
-      "file_count": 334,
-      "last_modified": 1781777993.4703934,
-      "last_modified_iso": "2026-06-18T10:19:53.470393+00:00",
-      "quality_score": 72.6,
+      "file_count": 336,
+      "last_modified": 1781781654.8693593,
+      "last_modified_iso": "2026-06-18T11:20:54.869359+00:00",
+      "quality_score": 72.5,
       "activity_level": "hot",
-      "improvement_potential": 40.7,
-      "total_lines": 20323,
-      "coverage_estimate": 0.23247232472324722
+      "improvement_potential": 40.8,
+      "total_lines": 19661,
+      "coverage_estimate": 0.23076923076923078
     },
     "Database/Prisma": {
       "description": "Database schema, Prisma ORM, and data access",
@@ -1932,8 +1934,8 @@
     "Docs": {
       "description": "Documentation files and project specifications",
       "files": [
-        "Plans.md",
         "CHANGELOG.md",
+        "Plans.md",
         "AGENTS.md",
         "VERSION",
         "MAPA.md",
@@ -2015,12 +2017,12 @@
         "CONTRIBUTING.md"
       ],
       "file_count": 81,
-      "last_modified": 1781780288.747258,
-      "last_modified_iso": "2026-06-18T10:58:08.747258+00:00",
+      "last_modified": 1781781722.1441379,
+      "last_modified_iso": "2026-06-18T11:22:02.144138+00:00",
       "quality_score": 83.5,
       "activity_level": "hot",
       "improvement_potential": 9.3,
-      "total_lines": 15854,
+      "total_lines": 15857,
       "coverage_estimate": 1.0
     },
     "Grimoire": {
@@ -2145,30 +2147,30 @@
     "Autonomous loop": {
       "description": "Self-evolution, autonomous agents, and loop infrastructure",
       "files": [
-        ".autonomous/multi-agent/tuning.json",
-        ".autonomous/multi-agent/project_map.json",
-        ".autonomous/multi-agent/skills/akasha-evolution/SKILL.md",
-        ".autonomous/multi-agent/state.json",
-        ".autonomous/multi-agent/context_engine_v2.py",
+        ".autonomous/multi-agent/context_snapshot.json",
+        ".autonomous/multi-agent/triad-cache.json",
         ".autonomous/multi-agent/state-checkpoint.json",
         ".autonomous/multi-agent/memory-warm.json",
         ".autonomous/multi-agent/.git-head-tracked.json",
-        ".autonomous/multi-agent/omp-agent-results.json",
-        ".autonomous/multi-agent/akasha-loop-daemon-v8.py",
         ".autonomous/multi-agent/pacer-state.json",
-        ".autonomous/multi-agent/task-implementation.json",
-        ".autonomous/multi-agent/smart_iterator_history.json",
-        ".autonomous/multi-agent/context_snapshot.json",
-        ".autonomous/multi-agent/triad-cache.json",
-        ".autonomous/multi-agent/prompt_engine_v2_outcomes.json",
-        ".autonomous/multi-agent/prompt_engine_v2.py",
+        ".autonomous/multi-agent/project_map.json",
         ".autonomous/multi-agent/memory.json",
         ".autonomous/multi-agent/loop-tuning.json",
+        ".autonomous/multi-agent/tuning.json",
+        ".autonomous/multi-agent/state.json",
         ".autonomous/multi-agent/metrics.json",
+        ".autonomous/multi-agent/agent-results/result-ta-1781781362-1.json",
+        ".autonomous/multi-agent/omp-agent-results.json",
+        ".autonomous/multi-agent/agent-results/result-ta-1781781362-0.json",
+        ".autonomous/multi-agent/akasha-loop-daemon-v8.py",
+        ".autonomous/multi-agent/task-implementation.json",
+        ".autonomous/multi-agent/smart_iterator_history.json",
+        ".autonomous/multi-agent/skills/akasha-evolution/SKILL.md",
+        ".autonomous/multi-agent/context_engine_v2.py",
+        ".autonomous/multi-agent/prompt_engine_v2_outcomes.json",
+        ".autonomous/multi-agent/prompt_engine_v2.py",
         ".autonomous/multi-agent/continuity_manager.py",
         ".autonomous/multi-agent/run-24-7.sh",
-        ".autonomous/multi-agent/agent-results/result-ta-1781778904-1.json",
-        ".autonomous/multi-agent/agent-results/result-ta-1781778904-0.json",
         ".autonomous/multi-agent/confidence_history/calibration_goal.json",
         ".autonomous/multi-agent/reasoning_chain_v2.py",
         ".autonomous/multi-agent/run-loop-supervised.sh",
@@ -2361,12 +2363,12 @@
         ".autonomous/bootstrap-prompt.json"
       ],
       "file_count": 214,
-      "last_modified": 1781780989.3305762,
-      "last_modified_iso": "2026-06-18T11:09:49.330576+00:00",
-      "quality_score": 60.5,
+      "last_modified": 1781781832.3971264,
+      "last_modified_iso": "2026-06-18T11:23:52.397126+00:00",
+      "quality_score": 60.4,
       "activity_level": "hot",
       "improvement_potential": 44.5,
-      "total_lines": 54342,
+      "total_lines": 54516,
       "coverage_estimate": 0.0
     }
   }

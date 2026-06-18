@@ -1,15 +1,16 @@
 {
   "phase": "RELEASE",
-  "iteration": 4,
+  "iteration": 5,
   "running": true,
   "current_features": [
+    "missing_tests",
     "tech_debt",
     "large_file"
   ],
   "retry_count": 0,
   "intensity": 5,
-  "qa_failures": 1,
-  "quality_snapshot": 0.498,
+  "qa_failures": 2,
+  "quality_snapshot": 0.649,
   "consecutive_no_changes": 0,
   "last_cycle_time": 1781779007.4376087,
   "quality_trend": "stable",

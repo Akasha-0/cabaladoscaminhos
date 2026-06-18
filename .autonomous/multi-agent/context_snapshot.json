@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-18T11:09:55.787374+00:00",
+  "generated_at": "2026-06-18T11:23:10.017469+00:00",
   "version": "0.91.0",
   "features": {
     "pending_features": [
@@ -1152,16 +1152,18 @@
       "- [~] **PLN-003[2]** -- [general] large_file | 46 oversized files",
       "- [~] **PLN-004[1]** -- [general] tech_debt | 2 files with XXX",
       "- [~] **PLN-004[2]** -- [general] large_file | 46 oversized files",
+      "- [~] **PLN-004[1]** -- [general] tech_debt | 2 files with XXX",
+      "- [~] **PLN-004[2]** -- [general] large_file | 46 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2",
       "- [~] **PLN-AE-003** — Ralph-loop continuous | QA cycling (v0.12.1)"
     ],
-    "pending_count": 1152
+    "pending_count": 1154
   },
   "git": {
-    "untracked": 5,
-    "modified": 20,
-    "total": 25,
+    "untracked": 0,
+    "modified": 10,
+    "total": 10,
     "has_changes": true
   },
   "triad": {
@@ -1180,7 +1182,7 @@
     }
   },
   "codegraph": {
-    "pending_files": 1,
+    "pending_files": 0,
     "ok": true
   },
   "improvement_candidates": [
@@ -1209,8 +1211,8 @@
       "description": "46 oversized files",
       "files": [
         {
-          "file": "packages/akasha-core/src/mapeamentos/iching-base.ts",
-          "lines": 1511
+          "file": "packages/akasha-core/src/mapeamentos/synthesis-engine/iching-base-data.ts",
+          "lines": 1483
         },
         {
           "file": "packages/akasha-core/src/mapeamentos/index.ts",
@@ -1223,6 +1225,14 @@
       ]
     },
     {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "1 changed files lack tests",
+      "files": [
+        "packages/akasha-core/src/mapeamentos/synthesis-engine/iching-primitives.ts"
+      ]
+    },
+    {
       "type": "missing_tradition",
       "priority": 8,
       "description": "ODUS missing from traducao-areas",
@@ -1230,7 +1240,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "e2c73f40f004982c630e8ad89e5234473e6ec9ba",
+  "git_head": "0c4418705648310ac1ec7e3269c4c2e4f84fc7ca",
   "decision_factors": {
     "has_pending_features": true
   }

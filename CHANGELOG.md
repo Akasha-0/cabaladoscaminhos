@@ -893,3 +893,5 @@ Todas as mudanças significativas são documentadas aqui — reverts e regressõ
 ## v0.86.0+ (iter 2) — tech_debt, large_file
 
 ## v0.86.0+ (iter 3) — tech_debt, large_file
+
+## v0.86.0+ (iter 4) — tech_debt, large_file
