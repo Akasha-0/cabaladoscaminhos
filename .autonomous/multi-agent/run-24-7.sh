@@ -25,7 +25,7 @@
 #
 set -euo pipefail
 
-ROOT="/home/skynet/cabala-dos-caminhos"
+ROOT="$(git rev-parse --show-toplevel)"
 MA="$ROOT/.autonomous/multi-agent"
 DAEMON="$MA/akasha-loop-daemon.py"
 SUPERVISOR="$MA/run-loop-supervised.sh"
