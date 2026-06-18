@@ -1,24 +1,41 @@
 {
   "improvements": [
     {
+      "type": "tech_debt",
+      "priority": 5,
+      "description": "2 files with XXX",
+      "files": [
+        "apps/akasha-portal/src/components/akasha/PlainEnglishPlanet.tsx",
+        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx"
+      ]
+    },
+    {
+      "type": "console_cleanup",
+      "priority": 5,
+      "description": "1 files with console statements",
+      "files": [
+        "packages/akasha-core/src/mapeamentos/types.ts"
+      ]
+    },
+    {
       "type": "large_file",
       "priority": 4,
-      "description": "28 oversized files",
+      "description": "36 oversized files",
       "files": [
         {
-          "file": "packages/core-iching/src/practices.ts",
-          "lines": 930
+          "file": "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/index.ts",
+          "lines": 1101
         },
         {
-          "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts",
-          "lines": 809
+          "file": "apps/akasha-portal/src/components/akasha/dashboard/AkashaLifeAreasDashboard.tsx",
+          "lines": 1078
         },
         {
-          "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
-          "lines": 773
+          "file": "apps/akasha-portal/src/components/akasha/dashboard/Dashboard.tsx",
+          "lines": 1021
         }
       ]
     }
   ],
-  "iteration": 24
+  "iteration": 25
 }

@@ -98,31 +98,56 @@ Default section order:
 
 When the user requests a durable behavior change, record it here or in the relevant child AGENTS.md
 
-**akasha-loop-daemon** (PRIMARY): Socket daemon v3 with supervisor watchdog.
-  Script: `.autonomous/multi-agent/akasha-loop-daemon.py` (v3, async socket daemon).
-  Start: `bash .autonomous/multi-agent/run-loop-supervised.sh`.
+**akasha-loop-daemon-v4** (PRIMARY): 24/7 Autonomous Evolution Engine.
+  Script: `.autonomous/multi-agent/akasha-loop-daemon-v4.py` (v4 event-driven).
+  Start: `bash .autonomous/multi-agent/run-24-7.sh` (or `run-loop-supervised.sh`).
   Flow: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE.
-  Intelligence: `memory.json` with exponential learning (34 learnings, 40 decisions).
-  Bootstrap: `context_bootstrap.py` (fresh project context every iteration).
-  Triad cache: `triad-cache.json` with 300s TTL + git HEAD invalidation.
-  Supervised by: `run-loop-supervised.sh` (watchdog auto-restarts daemon on death).
-  Evals: `evals.py` + `eval-report.py` for loop quality measurement.
+  Integrated subsystems:
+    - Guardian (`guardian.py`): process supervision, exponential backoff restart
+    - Memory Manager (`memory_manager.py`): 3-tier archival (hot/warm/cold)
+    - Telemetry (`telemetry.py`): real-time phase metrics, anomaly detection
+    - Adaptive Pacer (`adaptive_pacer.py`): quality-based speed (FAST/NORMAL/SLOW/PAUSE)
+    - Self-Healer (`self_healer.py`): deadlock detection, circuit breaker
+    - Predictive Engine (`predictive_engine.py`): proactive risk detection
+    - Skill Discoverer (`skill_discoverer.py`): autonomous pattern learning
+    - Continuity Manager (`continuity_manager.py`): cross-session state preservation
+  Bootstrap: `context_bootstrap.py` v2 with smart caching (5min TTL, light triad)
+  Evals: `evals.py` v2 with real-time recalculation (60s cache, weighted quality)
+  Supervised by: `run-loop-supervised.sh` → `run-24-7.sh` (24/7 orchestration)
 **akasha-evolution-loop** (LEGACY): Ralph-style continuous loop, 5-agent parallel v2.
   Script: `.autonomous/multi-agent/akasha-evolution-loop.py`.
   Start: `bash .autonomous/multi-agent/start-akasha-evolution.sh`.
-  Use: fallback only. Primary loop is the daemon above.
+  Use: fallback only. Primary loop is the v4 daemon above.
 **Ralph-loop** (legacy/fallback): Single-agent 6-phase loop.
   Scripts: `.autonomous/ralph-loop/akasha-ralph-loop.py`.
 **Headroom proxy**: Running on port 8787. All large tool outputs (>5k tokens) use Headroom compression.
 **CodeGraph**: Primary exploration tool — `codegraph_explore` before Read/Grep/Glob.
+**24/7 Operations**:
+  Start: `bash .autonomous/multi-agent/run-24-7.sh start`
+  Status: `bash .autonomous/multi-agent/run-24-7.sh detailed`
+  Health: `bash .autonomous/multi-agent/run-24-7.sh health`
+  Telemetry: `bash .autonomous/multi-agent/run-24-7.sh telemetry`
+  Validate: `bash .autonomous/multi-agent/run-24-7.sh validate`
+  Architecture: `.autonomous/multi-agent/AUTONOMOUS-EVOLUTION-BLUEPRINT.md`
 
 ## Child DOX Index
 
-  - `multi-agent/akasha-loop-daemon.py` — socket daemon v3 with supervisor (PRIMARY)
+  - `multi-agent/akasha-loop-daemon-v4.py` — 24/7 autonomous daemon (PRIMARY)
+  - `multi-agent/akasha-loop-daemon.py` — socket daemon v3 (legacy)
+  - `multi-agent/guardian.py` — process supervisor with backoff restart
+  - `multi-agent/memory_manager.py` — 3-tier memory (hot/warm/cold) + archival
+  - `multi-agent/telemetry.py` — real-time metrics + anomaly detection
+  - `multi-agent/adaptive_pacer.py` — quality-based iteration speed control
+  - `multi-agent/self_healer.py` — deadlock detection + recovery + circuit breaker
+  - `multi-agent/predictive_engine.py` — proactive risk detection + forecasting
+  - `multi-agent/skill_discoverer.py` — autonomous pattern learning
+  - `multi-agent/continuity_manager.py` — cross-session state preservation
   - `multi-agent/akasha-evolution-loop.py` — 5-agent parallel loop v2 (legacy, fallback)
   - `multi-agent/intelligence.py` — evidence-based decisions + exponential learning
-  - `multi-agent/context_bootstrap.py` — fresh project context every iteration
-  - `multi-agent/evals.py` + `eval-report.py` — loop quality measurement
+  - `multi-agent/context_bootstrap.py` — fresh project context every iteration (v2 smart cache)
+  - `multi-agent/evals.py` + `eval-report.py` — loop quality measurement (v2 real-time)
+  - `multi-agent/run-24-7.sh` — 24/7 orchestration script
+  - `multi-agent/AUTONOMOUS-EVOLUTION-BLUEPRINT.md` — architecture blueprint
   - `ralph-loop/` — Ralph-style 6-phase autonomous loop (fallback)
   - `skills/akasha-evolution/` — OMP skill for autonomous evolution loop
 - `apps/` — aplicações do produto

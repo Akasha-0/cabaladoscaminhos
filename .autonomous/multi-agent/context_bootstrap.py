@@ -23,6 +23,8 @@ import json
 import os
 import subprocess
 import hashlib
+import time as _time
+import fnmatch as _fnmatch
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
@@ -32,6 +34,224 @@ MA = ROOT / ".autonomous/multi-agent"
 SNAPSHOT_FILE = MA / "context_snapshot.json"
 MEMORY_FILE = MA / "memory.json"
 PY_HEADROOM = ROOT / ".headroom-venv/bin/python"
+
+# ─── Cache TTL constants ─────────────────────────────────────────────────────
+TRIAD_CACHE_TTL = 300   # 5 minutes — triad results cached per git HEAD
+GIT_CACHE_TTL   = 60   # 1 minute  — git status cached this long
+CACHE_FILE      = MA / "bootstrap_cache.json"
+PREV_SNAPSHOT   = MA / "prev_context_snapshot.json"
+
+# ─── Light triad phases ───────────────────────────────────────────────────────
+LIGHT_TRIAD_PHASES = {"RESEARCH", "PLANNING"}
+
+# ─── Cache helpers ────────────────────────────────────────────────────────────
+
+def _load_cache() -> dict:
+    """Load cache from disk."""
+    if CACHE_FILE.exists():
+        try:
+            return json.loads(CACHE_FILE.read_text())
+        except Exception:
+            pass
+    return {"triad": None, "git": None, "full": None, "meta": {}}
+
+
+def _save_cache(cache: dict) -> None:
+    """Persist cache to disk."""
+    content = json.dumps(cache, indent=2, ensure_ascii=False)
+    CACHE_FILE.write_text(content)
+
+
+def get_git_head() -> str:
+    """Return current git HEAD commit hash."""
+    try:
+        r = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            capture_output=True, text=True, timeout=10, cwd=str(ROOT)
+        )
+        return r.stdout.strip() if r.returncode == 0 else ""
+    except Exception:
+        return ""
+
+
+def _file_has_changed(pattern: str, since_mtime: float) -> bool:
+    """
+    Return True if any file matching `pattern` (e.g. '*.py') has mtime > since_mtime.
+    Only checks apps/ and packages/ directories.
+    """
+    roots = [ROOT / "apps", ROOT / "packages"]
+    cutoff = since_mtime
+    for root in roots:
+        if not root.exists():
+            continue
+        for dirpath, _, filenames in os.walk(root):
+            for fname in filenames:
+                if _fnmatch.fnmatch(fname, pattern):
+                    fpath = Path(dirpath) / fname
+                    try:
+                        if fpath.stat().st_mtime > cutoff:
+                            return True
+                    except OSError:
+                        pass
+    return False
+
+
+def _dox_has_changed(since_mtime: float) -> bool:
+    """Return True if any AGENTS.md or DOX file changed since `since_mtime`."""
+    roots = [ROOT, ROOT / "apps", ROOT / "packages", ROOT / "grimoire",
+             ROOT / "tests", ROOT / "docs"]
+    patterns = ["AGENTS.md", "DOX*", "*.DOX"]
+    cutoff = since_mtime
+    for root in roots:
+        if not root.exists():
+            continue
+        for dirpath, _, filenames in os.walk(root):
+            for fname in filenames:
+                if any(_fnmatch.fnmatch(fname, p) for p in patterns):
+                    fpath = Path(dirpath) / fname
+                    try:
+                        if fpath.stat().st_mtime > cutoff:
+                            return True
+                    except OSError:
+                        pass
+    return False
+
+
+def _package_json_changed(since_mtime: float) -> bool:
+    """Return True if package.json or any lock file changed."""
+    files = [
+        ROOT / "package.json",
+        ROOT / "pnpm-lock.yaml",
+        ROOT / "pnpm-workspace.yaml",
+        ROOT / "apps" / "akasha-portal" / "package.json",
+        ROOT / "packages" / "akasha-core" / "package.json",
+    ]
+    cutoff = since_mtime
+    for f in files:
+        if f.exists():
+            try:
+                if f.stat().st_mtime > cutoff:
+                    return True
+            except OSError:
+                pass
+    return False
+
+
+def invalidate_cache(pattern: str = "full") -> dict:
+    """
+    Invalidate cache entries matching `pattern`.
+
+    Patterns:
+      - "triad"            — invalidate only the triad cache
+      - "git"              — invalidate only the git status cache
+      - "context"           — invalidate the full context cache
+      - "full"             — invalidate all caches (triad + git + context)
+      - "triad_and_context" — invalidate triad + context
+
+    Returns dict describing what was invalidated.
+    """
+    cache = _load_cache()
+    invalidated = []
+
+    if pattern in ("triad", "full", "triad_and_context"):
+        if cache.get("triad"):
+            invalidated.append("triad")
+            cache["triad"] = None
+
+    if pattern in ("git", "full"):
+        if cache.get("git"):
+            invalidated.append("git")
+            cache["git"] = None
+
+    if pattern in ("context", "full", "triad_and_context"):
+        if cache.get("full"):
+            invalidated.append("context")
+            cache["full"] = None
+
+    _save_cache(cache)
+    return {"invalidated": invalidated, "pattern": pattern}
+
+
+def get_cached_triad(git_head: str = "") -> dict | None:
+    """
+    Return cached triad result if HEAD matches and TTL has not expired.
+    Returns None if cache is stale or missing.
+    """
+    cache = _load_cache()
+    triad = cache.get("triad")
+    if not triad:
+        return None
+    meta = triad.get("_meta", {})
+    cached_head = meta.get("git_head", "")
+    cached_at = meta.get("cached_at", 0)
+    age = _time.time() - cached_at
+    if age > TRIAD_CACHE_TTL:
+        return None
+    if git_head and cached_head and cached_head != git_head:
+        return None
+    return triad
+
+
+def get_cached_git() -> dict | None:
+    """Return cached git status if TTL has not expired."""
+    cache = _load_cache()
+    git = cache.get("git")
+    if not git:
+        return None
+    meta = git.get("_meta", {})
+    cached_at = meta.get("cached_at", 0)
+    if _time.time() - cached_at > GIT_CACHE_TTL:
+        return None
+    return git
+
+
+def _store_triad_cache(triad: dict, git_head: str) -> None:
+    """Store triad result in cache with timestamp and HEAD."""
+    triad["_meta"] = {
+        "cached_at": _time.time(),
+        "git_head": git_head,
+        "cache_hit": False,
+    }
+    cache = _load_cache()
+    cache["triad"] = triad
+    _save_cache(cache)
+
+
+def _store_git_cache(git: dict) -> None:
+    """Store git status in cache."""
+    git["_meta"] = {"cached_at": _time.time()}
+    cache = _load_cache()
+    cache["git"] = git
+    _save_cache(cache)
+
+
+def _auto_detect_invalidation() -> str | None:
+    """
+    Check file-system timestamps to determine if any cache should be invalidated.
+
+    Returns:
+      - "full"    — package.json/lock changed
+      - "context" — AGENTS.md/DOX changed
+      - "triad"   — source files (.py/.ts/.tsx) changed
+      - None      — no invalidation needed
+    """
+    cache = _load_cache()
+    triad_meta = (cache.get("triad") or {}).get("_meta", {})
+    triad_mtime = triad_meta.get("cached_at", 0)
+    if not triad_mtime:
+        return None
+
+    if _package_json_changed(triad_mtime):
+        return "full"
+    if _dox_has_changed(triad_mtime):
+        return "context"
+    if (_file_has_changed("*.py",  triad_mtime) or
+        _file_has_changed("*.ts",  triad_mtime) or
+        _file_has_changed("*.tsx", triad_mtime)):
+        return "triad"
+
+    return None
+
 
 # ─── CodeGraph wrapper ────────────────────────────────────────────────────────
 
@@ -85,19 +305,16 @@ def cg_architecture_summary() -> dict:
     """Get a high-level architecture summary via CodeGraph."""
     summary = {}
 
-    # Key packages
     for pkg in ["akasha-core", "core-astrology", "core-cabala", "core-iching",
                 "core-odus", "core-tantra", "mentor"]:
         result = cg_explore(f"what does {pkg} export and what are its main entry points", max_lines=30)
         if result:
             summary[pkg] = result[:300]
 
-    # Portal routes
     result = cg_explore("API routes in apps/akasha-portal/src/app/api", max_lines=40)
     if result:
         summary["api_routes"] = result[:300]
 
-    # Key engines
     for engine in ["synthesis-engine", "birth-chart", "mandala", "mentor"]:
         result = cg_explore(f"how does {engine} work and what files use it", max_lines=40)
         if result:
@@ -152,15 +369,14 @@ def parse_plans_md() -> dict:
         content = (ROOT / "Plans.md").read_text()
         import re
 
-        # Extract iteration blocks
         iter_blocks = re.findall(
             r"(?-mix:## cc: Ralph-loop iter (\d+).*?(?=## cc:|$))",
             content, re.DOTALL
         )
         for block in iter_blocks:
             iter_num = int(re.search(r"\d+", block).group()) if re.search(r"\d+", block) else 0
-            done = "[x]" in block or "✅" in block
-            pending = "[~]" in block or "⏳" in block
+            done = "[x]" in block or "[x]" in block
+            pending = "[~]" in block or "[x]" in block
             plans["iterations"].append({
                 "num": iter_num,
                 "done": done,
@@ -168,15 +384,12 @@ def parse_plans_md() -> dict:
                 "preview": block[:200],
             })
 
-        # Find pending items
         pending_items = re.findall(r"- \[ \] \*\*([A-Z]+-\d+)\*\*", content)
         plans["pending"] = pending_items[:20]
 
-        # Find done items
         done_items = re.findall(r"- \[x\] \*\*([A-Z]+-\d+)\*\*", content)
         plans["done"] = done_items[-20:]
 
-        # Current iteration number
         if iter_blocks:
             nums = []
             for b in iter_blocks:
@@ -251,7 +464,6 @@ def git_status() -> dict:
 def run_triad() -> dict:
     """Run typecheck + tests + lint. Returns pass/fail per tool."""
     results = {}
-    # typecheck
     try:
         r = subprocess.run(
             ["pnpm", "--filter", "akasha-portal", "typecheck"],
@@ -261,13 +473,11 @@ def run_triad() -> dict:
     except Exception as e:
         results["typecheck"] = {"pass": False, "error": str(e)}
 
-    # tests (quick run, not watch)
     try:
         r = subprocess.run(
             ["pnpm", "--filter", "akasha-portal", "test:run"],
             capture_output=True, text=True, timeout=180, cwd=str(ROOT)
         )
-        # Parse test summary
         import re
         summary = r.stdout + r.stderr
         passed_m = re.search(r"(\d+) passed", summary)
@@ -282,7 +492,6 @@ def run_triad() -> dict:
     except Exception as e:
         results["tests"] = {"pass": False, "error": str(e)}
 
-    # lint
     try:
         r = subprocess.run(
             ["pnpm", "--filter", "akasha-portal", "lint"],
@@ -292,6 +501,25 @@ def run_triad() -> dict:
     except Exception as e:
         results["lint"] = {"pass": False, "error": str(e)}
 
+    return results
+
+
+def run_triad_light() -> dict:
+    """
+    Light triad: typecheck only.
+    Used for RESEARCH/PLANNING phases to skip expensive test/lint runs.
+    """
+    results = {}
+    try:
+        r = subprocess.run(
+            ["pnpm", "--filter", "akasha-portal", "typecheck"],
+            capture_output=True, text=True, timeout=120, cwd=str(ROOT)
+        )
+        results["typecheck"] = {"pass": r.returncode == 0, "lines": len(r.stdout.splitlines())}
+        results["_light"] = True
+    except Exception as e:
+        results["typecheck"] = {"pass": False, "error": str(e)}
+        results["_light"] = True
     return results
 
 
@@ -359,16 +587,10 @@ def build_snapshot(iteration: int = 0) -> dict:
         "decision_factors": {},
     }
 
-    # 1. Plans.md
     snapshot["plans"] = parse_plans_md()
-
-    # 2. Feature list
     snapshot["features"] = parse_feature_list()
-
-    # 3. Git status
     snapshot["git"] = git_status()
 
-    # 4. CodeGraph status + architecture summary
     cg_stat = cg_status()
     snapshot["codegraph"] = {
         "status_ok": cg_stat["ok"],
@@ -377,7 +599,6 @@ def build_snapshot(iteration: int = 0) -> dict:
         "stats": cg_stat.get("stats", {}),
     }
 
-    # Architecture summary (compressed)
     arch = cg_architecture_summary()
     compressed_arch = {}
     total_arch = sum(len(v) for v in arch.values())
@@ -389,13 +610,9 @@ def build_snapshot(iteration: int = 0) -> dict:
         compressed_arch = arch
     snapshot["codegraph"]["architecture"] = compressed_arch
 
-    # 5. AGENTS.md chain
     snapshot["agents_chain"] = read_agents_chain()
-
-    # 6. Triad (typecheck + tests + lint)
     snapshot["triad"] = run_triad()
 
-    # 7. Decision factors
     pf = snapshot["features"]
     pending_count = pf.get("pending_count", 0)
     triad = snapshot["triad"]
@@ -417,14 +634,100 @@ def build_snapshot(iteration: int = 0) -> dict:
     return snapshot
 
 
-def save_snapshot(snap: dict) -> int:
-    """Save snapshot. Compress if > 50KB. Returns size in bytes."""
+def build_snapshot_smart(iteration: int = 0, phase: str = "RESEARCH") -> dict:
+    """
+    Build a context snapshot with intelligent caching.
+
+    - Caches triad results for TRIAD_CACHE_TTL (5 min) per git HEAD.
+    - Caches git status for GIT_CACHE_TTL (1 min).
+    - Automatically invalidates caches when source files change.
+    - Uses light triad (typecheck only) for RESEARCH/PLANNING phases.
+    - Adds cache statistics to snapshot metadata.
+
+    Returns the same structure as build_snapshot() plus:
+      _cache_stats: {triad_cache_hit, triad_cache_age_s, git_cache_hit, git_cache_age_s}
+    """
+    cache_stats = {
+        "triad_cache_hit": False,
+        "triad_cache_age_s": 0.0,
+        "git_cache_hit": False,
+        "git_cache_age_s": 0.0,
+    }
+
+    pattern = _auto_detect_invalidation()
+    if pattern:
+        invalidate_cache(pattern)
+
+    head = get_git_head()
+    cached_triad = get_cached_triad(git_head=head)
+    use_light_triad = phase in LIGHT_TRIAD_PHASES
+
+    if cached_triad is not None:
+        cache_stats["triad_cache_hit"] = True
+        cache_stats["triad_cache_age_s"] = _time.time() - cached_triad["_meta"]["cached_at"]
+        triad = cached_triad
+    elif use_light_triad:
+        triad = run_triad_light()
+    else:
+        triad = run_triad()
+
+    snap = build_snapshot(iteration=iteration)
+    snap["triad"] = triad
+
+    cached_git = get_cached_git()
+    if cached_git is not None:
+        cache_stats["git_cache_hit"] = True
+        cache_stats["git_cache_age_s"] = _time.time() - cached_git["_meta"]["cached_at"]
+        snap["git"] = cached_git
+    else:
+        fresh_git = git_status()
+        snap["git"] = fresh_git
+        _store_git_cache(fresh_git)
+
+    if not cache_stats["triad_cache_hit"]:
+        _store_triad_cache(triad, head)
+
+    snap["_cache_stats"] = cache_stats
+
+    triad_result = snap["triad"]
+    pf = snap["features"]
+    pending_count = pf.get("pending_count", 0)
+    cg = snap["codegraph"]
+    git = snap["git"]
+
+    factors = {
+        "has_pending_features": pending_count > 0,
+        "pending_count": pending_count,
+        "triad_all_green": all(t.get("pass", False) for t in triad_result.values() if isinstance(t, dict)),
+        "triad_status": {k: v.get("pass", False) if isinstance(v, dict) else False for k, v in triad_result.items()},
+        "codegraph_needs_sync": cg.get("needs_sync", False),
+        "git_has_changes": git.get("has_changes", False),
+        "untracked_files": git.get("untracked", 0),
+        "current_phase": snap["plans"].get("current_iteration", iteration),
+    }
+    snap["decision_factors"] = factors
+
+    return snap
+
+
+def save_snapshot(snap: dict, save_prev: bool = True) -> int:
+    """
+    Save snapshot. Compress if > 50KB. Returns size in bytes.
+    If save_prev=True (default), copies the current snapshot to PREV_SNAPSHOT
+    before overwriting, enabling compare_to_previous on the next run.
+    """
     content = json.dumps(snap, indent=2, ensure_ascii=False)
     if len(content) > 50_000:
         compressed, saved = compress_text(content)
         content = compressed
         snap["_compressed"] = True
         snap["_compression_saved"] = saved
+
+    if save_prev and SNAPSHOT_FILE.exists():
+        try:
+            PREV_SNAPSHOT.write_text(SNAPSHOT_FILE.read_text())
+        except Exception:
+            pass
 
     SNAPSHOT_FILE.write_text(content)
     return len(content)
@@ -440,6 +743,47 @@ def load_snapshot() -> dict:
     return {}
 
 
+def compare_to_previous(snap: dict) -> dict:
+    """
+    Diff `snap` against the last saved snapshot (PREV_SNAPSHOT).
+    Returns dict with keys:
+      - changed_sections: top-level keys whose value changed
+      - added: top-level keys present in snap but not in prev
+      - removed: top-level keys present in prev but not in snap
+      - has_changes: True if any diff detected
+    """
+    prev_path = PREV_SNAPSHOT
+    if not prev_path.exists():
+        return {"changed_sections": [], "added": [], "removed": [], "has_changes": False, "note": "no previous snapshot"}
+
+    try:
+        prev = json.loads(prev_path.read_text())
+    except Exception:
+        return {"changed_sections": [], "added": [], "removed": [], "has_changes": False, "note": "could not parse previous snapshot"}
+
+    changed, added, removed = [], [], []
+    all_keys = set(snap.keys()) | set(prev.keys())
+    for key in all_keys:
+        if key not in prev:
+            added.append(key)
+        elif key not in snap:
+            removed.append(key)
+        else:
+            cur_val, prev_val = snap[key], prev[key]
+            if isinstance(cur_val, dict) and isinstance(prev_val, dict):
+                if json.dumps(cur_val, sort_keys=True) != json.dumps(prev_val, sort_keys=True):
+                    changed.append(key)
+            elif cur_val != prev_val:
+                changed.append(key)
+
+    return {
+        "changed_sections": changed,
+        "added": added,
+        "removed": removed,
+        "has_changes": len(changed) > 0 or len(added) > 0 or len(removed) > 0,
+    }
+
+
 def get_decision_recommendation(snap: dict) -> str:
     """
     Analyze snapshot and recommend the next action.
@@ -453,27 +797,22 @@ def get_decision_recommendation(snap: dict) -> str:
 
     recommendations = []
 
-    # CodeGraph sync check
     if cg.get("needs_sync"):
         recommendations.append(("codegraph_sync", "high", "CodeGraph index has pending changes — sync before spawning agents"))
 
-    # Git changes check
     if git.get("has_changes"):
         untracked = git.get("untracked", 0)
         recommendations.append(("git_commit", "medium", f"Working tree has {untracked} untracked + {git.get('modified',0)} modified files"))
 
-    # Triad health
     if not all(t.get("pass", False) for t in triad.values() if isinstance(t, dict)):
         failing = [k for k, v in triad.items() if isinstance(v, dict) and not v.get("pass", False)]
         recommendations.append(("fix_triad", "high", f"Triad failing: {failing} — fix before new work"))
 
-    # Pending features
     pending = features.get("pending", [])
     if pending:
         top = pending[0] if pending else "?"
         recommendations.append(("next_feature", "normal", f"Top pending: {top}"))
 
-    # Build decision
     priority_order = ["fix_triad", "codegraph_sync", "git_commit", "next_feature"]
     for action, _, reason in recommendations:
         if action in priority_order[:2]:
@@ -491,7 +830,8 @@ def get_decision_recommendation(snap: dict) -> str:
 if __name__ == "__main__":
     import sys
 
-    snap = build_snapshot()
+    phase = os.environ.get("LOOP_PHASE", "RESEARCH")
+    snap = build_snapshot_smart(phase=phase)
     size = save_snapshot(snap)
     recommendation = get_decision_recommendation(snap)
 
@@ -505,3 +845,15 @@ if __name__ == "__main__":
     print(f"  Git:      untracked={snap['git'].get('untracked', 0)}, modified={snap['git'].get('modified', 0)}")
     if snap.get("plans", {}).get("pending"):
         print(f"  Plans:    {snap['plans']['pending'][:5]}")
+
+    cs = snap.get("_cache_stats", {})
+    if cs:
+        print()
+        print(f"  Cache stats:")
+        print(f"    Triad:  hit={cs.get('triad_cache_hit', False)}, age={cs.get('triad_cache_age_s', 0):.1f}s")
+        print(f"    Git:    hit={cs.get('git_cache_hit', False)}, age={cs.get('git_cache_age_s', 0):.1f}s")
+
+    diff = compare_to_previous(snap)
+    if diff.get("has_changes"):
+        print()
+        print(f"  Snapshot changed: added={diff.get('added', [])}, changed={diff.get('changed_sections', [])}, removed={diff.get('removed', [])}")

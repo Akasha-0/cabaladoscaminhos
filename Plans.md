@@ -1246,6 +1246,9 @@
 - [~] **PLN-022[1]** -- large_file | 28 oversized files
 - [~] **PLN-023[1]** -- large_file | 28 oversized files
 - [~] **PLN-024[1]** -- large_file | 28 oversized files
+- [~] **PLN-025[1]** -- tech_debt | 2 files with XXX
+- [~] **PLN-025[2]** -- console_cleanup | 1 files with console statements
+- [~] **PLN-025[3]** -- large_file | 36 oversized files
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)

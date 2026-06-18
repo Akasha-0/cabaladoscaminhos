@@ -99,7 +99,6 @@ const AREA_ICONS = {
   espiritualidade: MessageCircle,
 };
 export function SuggestedQuestions({
-export function SuggestedQuestions({
   sunSign,
   lifeArea = 'proposito',
   onSelectQuestion,
@@ -151,6 +150,7 @@ export function SuggestedQuestions({
           flexDirection: 'column',
           gap: '8px',
         }}
+        >
         {isLoading ? (
           [0, 1, 2].map((i) => (
             <div

@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-18T00:33:58.609617+00:00",
-  "version": "0.85.2",
+  "generated_at": "2026-06-17T02:35:58.012998+00:00",
+  "version": "0.80.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-UI/UX-001** — ralph_loop_ui_improvements | 0.13.2",
@@ -1082,37 +1082,36 @@
       "- [~] **PLN-022[1]** -- large_file | 28 oversized files",
       "- [~] **PLN-023[1]** -- large_file | 28 oversized files",
       "- [~] **PLN-024[1]** -- large_file | 28 oversized files",
-      "- [~] **PLN-025[1]** -- tech_debt | 2 files with XXX",
-      "- [~] **PLN-025[2]** -- console_cleanup | 1 files with console statements",
-      "- [~] **PLN-025[3]** -- large_file | 36 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2",
       "- [~] **PLN-AE-003** — Ralph-loop continuous | QA cycling (v0.12.1)"
     ],
-    "pending_count": 1085
+    "pending_count": 1082
   },
   "git": {
-    "untracked": 14,
-    "modified": 16,
-    "total": 30,
+    "untracked": 2,
+    "modified": 15,
+    "total": 17,
     "has_changes": true
   },
   "triad": {
     "typecheck": {
       "pass": false,
       "errors": [
-        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(174,19): error TS1005: ',' expected.",
-        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(221,9): error TS1005: ',' expected."
+        "packages/akasha-core/src/index.test.ts(26,41): error TS2345: Argument of type '\"Ogbe\"' is not assignable to parameter of type 'IfaOdu'.",
+        "packages/akasha-core/src/index.test.ts(74,39): error TS2345: Argument of type '\"Ogbe\"' is not assignable to parameter of type 'IfaOdu'.",
+        "packages/akasha-core/src/index.test.ts(96,60): error TS2345: Argument of type '\"chakra\"' is not assignable to parameter of type 'Tradition'.",
+        "packages/akasha-core/src/index.test.ts(141,5): error TS2322: Type '\"meditation\"' is not assignable to type 'PracticeCategory'."
       ]
     },
     "lint": {
-      "pass": false,
+      "pass": true,
       "warnings": 0
     },
     "tests": {
       "pass": false,
-      "passed": 1376,
-      "failed": 1
+      "passed": 1776,
+      "failed": 219
     }
   },
   "codegraph": {
@@ -1123,57 +1122,40 @@
     {
       "type": "typecheck_errors",
       "priority": 9,
-      "description": "2 TypeScript errors",
+      "description": "4 TypeScript errors",
       "errors": [
-        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(174,19): error TS1005: ',' expected.",
-        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(221,9): error TS1005: ',' expected."
+        "packages/akasha-core/src/index.test.ts(26,41): error TS2345: Argument of type '\"Ogbe\"' is not assignable to parameter of type 'IfaOdu'.",
+        "packages/akasha-core/src/index.test.ts(74,39): error TS2345: Argument of type '\"Ogbe\"' is not assignable to parameter of type 'IfaOdu'.",
+        "packages/akasha-core/src/index.test.ts(96,60): error TS2345: Argument of type '\"chakra\"' is not assignable to parameter of type 'Tradition'.",
+        "packages/akasha-core/src/index.test.ts(141,5): error TS2322: Type '\"meditation\"' is not assignable to type 'PracticeCategory'."
       ]
     },
     {
       "type": "tech_debt",
       "priority": 5,
-      "description": "3 files with TODO",
+      "description": "2 files with TODO",
       "files": [
-        "apps/akasha-portal/src/app/api/cron/daily-push/route.ts",
         "apps/akasha-portal/src/lib/grimoire/significados-curados-helpers.test.ts",
         "apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts"
       ]
     },
     {
-      "type": "tech_debt",
-      "priority": 5,
-      "description": "2 files with XXX",
-      "files": [
-        "apps/akasha-portal/src/components/akasha/PlainEnglishPlanet.tsx",
-        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx"
-      ]
-    },
-    {
       "type": "large_file",
       "priority": 4,
-      "description": "37 oversized files",
+      "description": "28 oversized files",
       "files": [
         {
-          "file": "apps/akasha-portal/src/components/akasha/dashboard/AkashaLifeAreasDashboard.tsx",
-          "lines": 1078
+          "file": "packages/core-iching/src/practices.ts",
+          "lines": 930
         },
         {
-          "file": "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/index.ts",
-          "lines": 1027
+          "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts",
+          "lines": 809
         },
         {
-          "file": "apps/akasha-portal/src/components/akasha/dashboard/Dashboard.tsx",
-          "lines": 1021
+          "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
+          "lines": 773
         }
-      ]
-    },
-    {
-      "type": "missing_tests",
-      "priority": 6,
-      "description": "2 changed files lack tests",
-      "files": [
-        "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/area-history/index.ts",
-        "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/index.ts"
       ]
     },
     {
@@ -1184,7 +1166,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "9b5abe0ef6f2e5e806688a382fe93ab6c1afead7",
+  "git_head": "c916a044373bddfd097c3c36e035a62e07c597a8",
   "decision_factors": {
     "has_pending_features": true
   }

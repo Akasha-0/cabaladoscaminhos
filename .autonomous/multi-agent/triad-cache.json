@@ -1,20 +1,22 @@
 {
   "triad": {
     "typecheck": {
-      "pass": true,
-      "errors": []
+      "pass": false,
+      "errors": [
+        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(174,19): error TS1005: ',' expected.",
+        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(221,9): error TS1005: ',' expected."
+      ]
     },
     "lint": {
-      "pass": true,
+      "pass": false,
       "warnings": 0
     },
     "tests": {
-      "pass": true,
-      "passed": 1385,
-      "failed": 0
+      "pass": false,
+      "passed": 1376,
+      "failed": 1
     }
   },
-  "git_head": "6c6e04e42fdb1814fb0c6ffb9f08975730299588",
-  "cached_at": "2026-06-17T20:52:00Z",
-  "feature_summary": "v0.85.2: Iter43 — cut /mapa redirect-only entry point (MAPA cleanup); IDOR security fix in mentor/ask and mentor/history routes (requireAkashaApi enforces authenticated user). Iter42 tunable weights complete. All priorities P1-P7 delivered."
+  "git_head": "9b5abe0ef6f2e5e806688a382fe93ab6c1afead7",
+  "cached_at": 1781742861.6731687
 }
