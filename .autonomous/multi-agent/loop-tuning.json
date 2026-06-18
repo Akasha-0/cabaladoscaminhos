@@ -1,5 +1,5 @@
 {
-  "ts": "2026-06-18T02:09:57.634961+00:00",
+  "ts": "2026-06-18T10:15:40.799409+00:00",
   "params": {
     "pacing_multiplier": {
       "name": "pacing_multiplier",
@@ -68,6 +68,36 @@
       "memory_mb": 0.0,
       "success": true,
       "quality": 0.0,
+      "improvements": 2,
+      "commit_ok": true
+    },
+    {
+      "iteration": 0,
+      "ts": "2026-06-18T09:38:35.986017+00:00",
+      "duration_s": 1.6242470703125,
+      "loop_quality": 0.0,
+      "phase_durations": {},
+      "phase_quality": {},
+      "parallel_agents": 1,
+      "cpu_percent": 0.0,
+      "memory_mb": 0.0,
+      "success": true,
+      "quality": 0.28,
+      "improvements": 2,
+      "commit_ok": true
+    },
+    {
+      "iteration": 0,
+      "ts": "2026-06-18T10:15:40.798558+00:00",
+      "duration_s": 0.17123486328125,
+      "loop_quality": 0.0,
+      "phase_durations": {},
+      "phase_quality": {},
+      "parallel_agents": 1,
+      "cpu_percent": 0.0,
+      "memory_mb": 0.0,
+      "success": true,
+      "quality": 0.412,
       "improvements": 2,
       "commit_ok": true
     }

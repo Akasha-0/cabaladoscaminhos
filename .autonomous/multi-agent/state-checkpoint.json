@@ -1,10 +1,9 @@
 {
-  "ts": "2026-06-18T10:14:39.471984+00:00",
+  "ts": "2026-06-18T10:23:17.041433+00:00",
   "phase": "RELEASE",
-  "iteration": 0,
-  "quality_snapshot": 0.412,
+  "iteration": 1,
+  "quality_snapshot": 0.465,
   "current_features": [
-    "missing_tests",
     "tech_debt",
     "large_file"
   ],

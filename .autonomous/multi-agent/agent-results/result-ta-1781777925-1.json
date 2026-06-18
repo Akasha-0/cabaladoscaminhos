@@ -1,0 +1,9 @@
+{
+  "success": false,
+  "message": "Cannot extract helper from packages/akasha-core/src/mapeamentos/iching-base.ts: file is pure data (BASE ~1470 lines + ICHING_PRIMITIVES transformation ~20 lines). No helper functions exist in this file to extract.",
+  "type": "large_file",
+  "file_size": 1517,
+  "data_lines": 1470,
+  "code_lines": 20,
+  "exports": ["BASE", "ICHING_PRIMITIVES"]
+}

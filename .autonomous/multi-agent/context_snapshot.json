@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-18T02:52:00.131613+00:00",
+  "generated_at": "2026-06-18T10:16:49.463713+00:00",
   "version": "0.91.0",
   "features": {
     "pending_features": [
@@ -1142,28 +1142,27 @@
       "- [~] **PLN-000[2]** -- [general] large_file | 37 oversized files",
       "- [~] **PLN-000[1]** -- [general] tech_debt | 2 files with XXX",
       "- [~] **PLN-000[2]** -- [general] large_file | 37 oversized files",
+      "- [~] **PLN-000[1]** -- [general] tech_debt | 2 files with XXX",
+      "- [~] **PLN-000[2]** -- [general] large_file | 37 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2",
       "- [~] **PLN-AE-003** — Ralph-loop continuous | QA cycling (v0.12.1)"
     ],
-    "pending_count": 1142
+    "pending_count": 1144
   },
   "git": {
-    "untracked": 26,
-    "modified": 24,
-    "total": 50,
+    "untracked": 0,
+    "modified": 12,
+    "total": 12,
     "has_changes": true
   },
   "triad": {
     "typecheck": {
-      "pass": false,
-      "errors": [
-        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(174,19): error TS1005: ',' expected.",
-        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(221,9): error TS1005: ',' expected."
-      ]
+      "pass": true,
+      "errors": []
     },
     "lint": {
-      "pass": false,
+      "pass": true,
       "warnings": 0
     },
     "tests": {
@@ -1177,15 +1176,6 @@
     "ok": true
   },
   "improvement_candidates": [
-    {
-      "type": "typecheck_errors",
-      "priority": 9,
-      "description": "2 TypeScript errors",
-      "errors": [
-        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(174,19): error TS1005: ',' expected.",
-        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(221,9): error TS1005: ',' expected."
-      ]
-    },
     {
       "type": "tech_debt",
       "priority": 5,
@@ -1208,19 +1198,19 @@
     {
       "type": "large_file",
       "priority": 4,
-      "description": "37 oversized files",
+      "description": "46 oversized files",
       "files": [
         {
-          "file": "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/index.ts",
-          "lines": 976
+          "file": "packages/akasha-core/src/mapeamentos/iching-base.ts",
+          "lines": 1517
         },
         {
-          "file": "apps/akasha-portal/src/components/akasha/dashboard/Dashboard.tsx",
-          "lines": 966
+          "file": "packages/akasha-core/src/mapeamentos/index.ts",
+          "lines": 1208
         },
         {
-          "file": "packages/core-iching/src/practices.ts",
-          "lines": 930
+          "file": "apps/akasha-portal/src/lib/application/akasha/narrative-generator.ts",
+          "lines": 1187
         }
       ]
     },
@@ -1232,7 +1222,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "f8ee97d2bf758238aba37dee4e58806a3a8d1685",
+  "git_head": "f6407bfea4d7f8153aca277c717b0a928810df01",
   "decision_factors": {
     "has_pending_features": true
   }

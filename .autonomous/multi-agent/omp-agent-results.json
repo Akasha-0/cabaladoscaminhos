@@ -2,19 +2,26 @@
   "results": [
     {
       "success": true,
-      "message": "Fixed 0 tech_debt comments in 0 files (target files contain F-XXX docblocks, not tech_debt)",
+      "message": "Fixed 0 tech_debt comments in 0 files — no tech_debt comments found in target files (only F-XXX feature placeholders in docstrings)",
       "type": "tech_debt"
     },
     {
-      "success": true,
-      "message": "Extracted helper from packages/akasha-core/src/mapeamentos/iching.ts",
-      "type": "large_file"
+      "success": false,
+      "message": "Cannot extract helper from packages/akasha-core/src/mapeamentos/iching-base.ts: file is pure data (BASE ~1470 lines + ICHING_PRIMITIVES transformation ~20 lines). No helper functions exist in this file to extract.",
+      "type": "large_file",
+      "file_size": 1517,
+      "data_lines": 1470,
+      "code_lines": 20,
+      "exports": [
+        "BASE",
+        "ICHING_PRIMITIVES"
+      ]
     }
   ],
   "summary": {
-    "success": 2,
+    "success": 1,
     "total": 2,
-    "rate": 1.0,
+    "rate": 0.5,
     "files_changed": 0
   }
 }
