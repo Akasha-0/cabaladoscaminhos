@@ -26,7 +26,7 @@ const PROHIBITED_PATTERNS = [
   // Cache
   'ioredis',
   // Direct env access (should be abstracted)
-  'process.env',
+  'process\\.env',
 ];
 
 describe('Clean Architecture Guardian', () => {
