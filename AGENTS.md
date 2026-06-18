@@ -99,13 +99,13 @@ Default section order:
 When the user requests a durable behavior change, record it here or in the relevant child AGENTS.md
 
 **akasha-loop-daemon** (PRIMARY): 24/7 Autonomous Evolution Engine (canonical).
-  Script: `.autonomous/multi-agent/akasha-loop-daemon.py` (socket daemon, portable).
+  Script: `.autonomous/multi-agent/akasha-loop-daemon.py` (v9, portable).
   Start: `bash .autonomous/multi-agent/run-24-7.sh start` (or `run-loop-supervised.sh`).
   Flow: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE.
   Modules (portable, no hardcoded paths): Guardian, MemoryManager, Telemetry,
     AdaptivePacer, SelfHealer, PredictiveEngine, SkillDiscoverer, ContinuityManager,
     ProjectMap, ReasoningChain, ContextEngine, Evolver, PromptEngine,
-    AgentOrchestrator, Intelligence, ProjectScanner.
+    AgentOrchestrator.
   Performance: select.poll() (zero CPU idle), adaptive polling 1s→10s,
     in-memory state cache (TTL 2s), parallel QA via ThreadPoolExecutor.
   Skill: `.autonomous/multi-agent/skills/akasha-evolution/SKILL.md`.
@@ -139,8 +139,9 @@ When the user requests a durable behavior change, record it here or in the relev
   - `multi-agent/evolver.py` — autonomous brain, self-optimizing, intensity 1-10
   - `multi-agent/prompt_engine.py` — 8 area templates, learnings/decisions injection
   - `multi-agent/agent_orchestrator.py` — parallel spawning + /proc resource monitoring
-  - `multi-agent/intelligence.py` — evidence-based decisions + exponential learning
-  - `multi-agent/project_scanner.py` — project structure scanning + quality scoring
+  - `multi-agent/loop_optimizer.py` — self-optimization engine: tunes pacing, parallelism, timeouts, quality thresholds
+  - `multi-agent/smart_iterator.py` — intelligent iteration prioritizer using ProjectMap; scores by neglect×0.30 + potential×0.30 + compounding×0.20 + ease×0.20
+  - `multi-agent/memory_compressor.py` — memory compression for unbounded context with bounded resources; preserves ADRs, critical decisions, failure learnings
   - `multi-agent/evals.py` + `eval-report.py` — loop quality measurement
   - `multi-agent/run-24-7.sh` — 24/7 operational commands (start/stop/health/validate)
   - `multi-agent/AUTONOMOUS-EVOLUTION-BLUEPRINT.md` — architecture blueprint

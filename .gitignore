@@ -160,6 +160,8 @@ __pycache__/
 .autonomous/multi-agent/behavior_history.json
 .autonomous/multi-agent/skills.json
 .autonomous/multi-agent/version.json
+.autonomous/multi-agent/state.json
+.autonomous/multi-agent/state-checkpoint.json
 .autonomous/multi-agent/sessions/
 .autonomous/multi-agent/logs/
 .autonomous/multi-agent/project_scanner_v2/cache.json
