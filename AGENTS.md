@@ -98,24 +98,17 @@ Default section order:
 
 When the user requests a durable behavior change, record it here or in the relevant child AGENTS.md
 
-**akasha-loop-daemon** (PRIMARY): 24/7 Autonomous Evolution Engine v9.
-  Script: `.autonomous/multi-agent/akasha-loop-daemon.py` ((canonical, evolved from v9)).
+**akasha-loop-daemon** (PRIMARY): 24/7 Autonomous Evolution Engine (canonical).
+  Script: `.autonomous/multi-agent/akasha-loop-daemon.py` (socket daemon, portable).
   Start: `bash .autonomous/multi-agent/run-24-7.sh start` (or `run-loop-supervised.sh`).
   Flow: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE.
-  v1 subsystems (8): Guardian, Memory Manager, Telemetry, Adaptive Pacer, SelfHealer,
-    Predictive Engine, Skill Discoverer, Continuity Manager.
-  v2 engine (6): ProjectMap, ReasoningChain, ContextEngine, Evolver,
-    PromptEngine, AgentOrchestrator.
+  Modules (portable, no hardcoded paths): Guardian, MemoryManager, Telemetry,
+    AdaptivePacer, SelfHealer, PredictiveEngine, SkillDiscoverer, ContinuityManager,
+    ProjectMap, ReasoningChain, ContextEngine, Evolver, PromptEngine,
+    AgentOrchestrator, Intelligence, ProjectScanner.
   Performance: select.poll() (zero CPU idle), adaptive polling 1s→10s,
     in-memory state cache (TTL 2s), parallel QA via ThreadPoolExecutor.
   Skill: `.autonomous/multi-agent/skills/akasha-evolution/SKILL.md`.
-**akasha-evolution-loop-v2** (ACTIVE): Standalone loop using v2 engine modules.
-  Script: `.autonomous/multi-agent/akasha-evolution-loop-v2.py` (27KB).
-  Start: `python3 akasha-evolution-loop-v2.py [num_iterations]`.
-**akasha-evolution-loop** (LEGACY): Ralph-style continuous loop, 5-agent parallel v2.
-  Script: `.autonomous/multi-agent/akasha-evolution-loop.py`.
-  Start: `bash .autonomous/multi-agent/start-akasha-evolution.sh`.
-  Use: fallback only. Primary loop is the v9 daemon above.
 **Ralph-loop** (legacy/fallback): Single-agent 6-phase loop.
   Scripts: `.autonomous/ralph-loop/akasha-ralph-loop.py`.
 **Headroom proxy**: Running on port 8787. All large tool outputs (>5k tokens) use Headroom compression.
@@ -133,9 +126,7 @@ When the user requests a durable behavior change, record it here or in the relev
 
 ## Child DOX Index
 
-  - `multi-agent/akasha-loop-daemon.py` — 24/7 autonomous daemon (canonical, evolved from v9)
-  - `multi-agent/akasha-evolution-loop-v2.py` — standalone loop v2 (active)
-  - `multi-agent/akasha-loop-daemon.py` — socket daemon v3 (legacy)
+  - `multi-agent/akasha-loop-daemon.py` — 24/7 autonomous daemon (canonical)
   - `multi-agent/guardian.py` — process supervisor with exponential backoff restart
   - `multi-agent/memory_manager.py` — 3-tier memory (hot/warm/cold) + forgetting curve
   - `multi-agent/telemetry.py` — real-time metrics + anomaly detection (mean+2σ)
@@ -150,14 +141,13 @@ When the user requests a durable behavior change, record it here or in the relev
   - `multi-agent/evolver.py` — autonomous brain, self-optimizing, intensity 1-10
   - `multi-agent/prompt_engine.py` — 8 area templates, learnings/decisions injection
   - `multi-agent/agent_orchestrator.py` — parallel spawning + /proc resource monitoring
-  - `multi-agent/akasha-evolution-loop.py` — 5-agent parallel loop v2 (legacy, fallback)
   - `multi-agent/intelligence.py` — evidence-based decisions + exponential learning
-  - `multi-agent/context_bootstrap.py` — fresh project context every iteration (v2 smart cache)
-  - `multi-agent/evals.py` + `eval-report.py` — loop quality measurement (v2 real-time)
+  - `multi-agent/project_scanner.py` — project structure scanning + quality scoring
+  - `multi-agent/evals.py` + `eval-report.py` — loop quality measurement
   - `multi-agent/run-24-7.sh` — 24/7 operational commands (start/stop/health/validate)
   - `multi-agent/AUTONOMOUS-EVOLUTION-BLUEPRINT.md` — architecture blueprint
   - `skills/akasha-evolution/` — OMP skill: start akasha-evolution
-  - `ralph-loop/` — Ralph-style 6-phase autonomous loop (fallback)
+  - `ralph-loop/` — Ralph-style 6-phase loop (legacy/fallback, per constitution §3)
 - `apps/` — aplicações do produto
 - `packages/` — workspaces compartilhados e engines
 - `docs/` — documentação canônica
