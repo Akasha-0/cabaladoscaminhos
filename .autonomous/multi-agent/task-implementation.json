@@ -3,9 +3,11 @@
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "1 changed files lack tests",
+      "description": "3 changed files lack tests",
       "files": [
-        "tests/lib/grimoire/mural-tzolkin.test.ts"
+        "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/cycle-modulation.ts",
+        "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/index.ts",
+        "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/lunar-exercises.ts"
       ]
     },
     {
@@ -37,5 +39,5 @@
       ]
     }
   ],
-  "iteration": 26
+  "iteration": 27
 }

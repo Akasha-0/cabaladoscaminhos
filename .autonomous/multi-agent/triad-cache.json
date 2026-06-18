@@ -2,18 +2,21 @@
   "triad": {
     "typecheck": {
       "pass": false,
-      "errors": []
+      "errors": [
+        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(174,19): error TS1005: ',' expected.",
+        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(221,9): error TS1005: ',' expected."
+      ]
     },
     "lint": {
       "pass": false,
       "warnings": 0
     },
     "tests": {
-      "pass": false,
-      "passed": 1382,
-      "failed": 1
+      "pass": true,
+      "passed": 1383,
+      "failed": 0
     }
   },
-  "git_head": "346179da855ac39cbaec297901a9dd3925ad8f40",
-  "cached_at": 1781743768.4768825
+  "git_head": "b3200cda5d014965c2312ab2ac6c3a97f3ef65ab",
+  "cached_at": 1781743860.360659
 }

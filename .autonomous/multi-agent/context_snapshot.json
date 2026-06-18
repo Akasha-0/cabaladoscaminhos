@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-18T00:50:14.763052+00:00",
-  "version": "0.82.0",
+  "generated_at": "2026-06-18T00:52:57.255687+00:00",
+  "version": "0.83.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-UI/UX-001** — ralph_loop_ui_improvements | 0.13.2",
@@ -1121,31 +1121,37 @@
       "- [~] **PLN-026[1]** -- missing_tests | 1 changed files lack tests",
       "- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX",
       "- [~] **PLN-026[3]** -- large_file | 37 oversized files",
+      "- [~] **PLN-027[1]** -- missing_tests | 3 changed files lack tests",
+      "- [~] **PLN-027[2]** -- tech_debt | 2 files with XXX",
+      "- [~] **PLN-027[3]** -- large_file | 37 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2",
       "- [~] **PLN-AE-003** — Ralph-loop continuous | QA cycling (v0.12.1)"
     ],
-    "pending_count": 1121
+    "pending_count": 1124
   },
   "git": {
-    "untracked": 63,
-    "modified": 24,
-    "total": 87,
+    "untracked": 4,
+    "modified": 12,
+    "total": 16,
     "has_changes": true
   },
   "triad": {
     "typecheck": {
       "pass": false,
-      "errors": []
+      "errors": [
+        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(174,19): error TS1005: ',' expected.",
+        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(221,9): error TS1005: ',' expected."
+      ]
     },
     "lint": {
       "pass": false,
       "warnings": 0
     },
     "tests": {
-      "pass": false,
-      "passed": 1382,
-      "failed": 1
+      "pass": true,
+      "passed": 1383,
+      "failed": 0
     }
   },
   "codegraph": {
@@ -1156,8 +1162,11 @@
     {
       "type": "typecheck_errors",
       "priority": 9,
-      "description": "0 TypeScript errors",
-      "errors": []
+      "description": "2 TypeScript errors",
+      "errors": [
+        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(174,19): error TS1005: ',' expected.",
+        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(221,9): error TS1005: ',' expected."
+      ]
     },
     {
       "type": "tech_debt",
@@ -1200,9 +1209,11 @@
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "1 changed files lack tests",
+      "description": "3 changed files lack tests",
       "files": [
-        "tests/lib/grimoire/mural-tzolkin.test.ts"
+        "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/cycle-modulation.ts",
+        "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/index.ts",
+        "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/lunar-exercises.ts"
       ]
     },
     {
@@ -1213,7 +1224,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "346179da855ac39cbaec297901a9dd3925ad8f40",
+  "git_head": "b3200cda5d014965c2312ab2ac6c3a97f3ef65ab",
   "decision_factors": {
     "has_pending_features": true
   }
