@@ -60,7 +60,6 @@ export function AkashaNavigation({ locale, user }: AkashaNavigationProps) {
     { href: `/${locale}/diario`, label: 'Diário', icon: BookOpen },
     { href: `/${locale}/conexoes`, label: 'Conexões', icon: Heart },
     { href: `/${locale}/oraculo`, label: 'Oráculo', icon: MessageSquare },
-    { href: `/${locale}/mural`, label: 'Mural', icon: Calendar },
     { href: `/${locale}/sobre`, label: 'Sobre', icon: Info },
   ];
 

@@ -201,14 +201,6 @@
 
 ---
 
-#### `/mural` — Mural Coletivo (Tzolkin)
-- **Rota:** `[locale]/(akasha)/mural/page.tsx`
-- **Pergunta:** (nenhuma — cadência coletiva)
-- **Camada:** 5
-- **Estado:** **candidata a corte**
-- **Resumo:** Ciclo de 260 dias (cadência inspirada no Tzolkin maia). Kin do dia + 4 portais especiais + 5 Famílias Terrestres. Incluye aviso ético de que tradição maia é viva. Não responde às 5 perguntas da constituição — é feature de comunidade/engajamento. **Avaliação necessária:** manter se há KPI de engajamento justifying; caso contrário, remover ou mover para uma seção dentro de `/sobre`.
-
----
 
 ### API Routes — `/api/akasha/`
 
