@@ -14,15 +14,9 @@
  *    só são consumidos dentro dos corpos das funções).
  *  - `./builders`: monta AreaInterpretation a partir de NumeroContent.
  */
-
-import type {
-  AreaInterpretation,
-  VidaInterpretation,
-  AkashaLevel,
-  LifeArea,
-} from '@akasha/types';
-import { buildInterpretation, buildFallback } from './builders';
+import type { AreaInterpretation, VidaInterpretation, AkashaLevel, LifeArea } from '@akasha/types';
 import { MASTER_NUMBERS, VIDA_CONTENT } from '../interpretation-engine';
+import { buildInterpretation, buildFallback } from './builders';
 
 /**
  * Gera a interpretação profunda de um Número de Vida.
@@ -82,7 +76,7 @@ export function interpretarVida(numero: number): VidaInterpretation {
 export function interpretarVidaArea(
   numero: number,
   area: LifeArea,
-  nivel: AkashaLevel = 'gift',
+  nivel: AkashaLevel = 'gift'
 ): AreaInterpretation | null {
   const vida = interpretarVida(numero);
   const interp = vida.levels[nivel];

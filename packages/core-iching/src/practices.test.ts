@@ -2,7 +2,6 @@
  * @akasha/core-iching — practices.ts tests
  * Tests the re-export and lookup functions that operate on PRACTICES.
  */
-
 import { PRACTICES } from './practices';
 import {
   getPractice,
@@ -94,9 +93,7 @@ describe('getPracticesByLifeArea', () => {
     expect(Array.isArray(result)).toBe(true);
     expect(result.length).toBeGreaterThan(0);
     for (const p of result) {
-      expect(
-        p.lifeAreas.some((area) => area.toLowerCase().includes('saúde'))
-      ).toBe(true);
+      expect(p.lifeAreas.some((area) => area.toLowerCase().includes('saúde'))).toBe(true);
     }
   });
 

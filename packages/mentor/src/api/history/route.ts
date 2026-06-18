@@ -1,5 +1,4 @@
 // API route: GET /api/mentor/history
-
 import { NextRequest, NextResponse } from 'next/server';
 
 interface HistoryRequest {
@@ -31,10 +30,7 @@ export async function DELETE(request: NextRequest) {
   const sessionId = searchParams.get('sessionId');
 
   if (!sessionId) {
-    return NextResponse.json(
-      { error: 'Session ID is required' },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: 'Session ID is required' }, { status: 400 });
   }
 
   // Placeholder implementation

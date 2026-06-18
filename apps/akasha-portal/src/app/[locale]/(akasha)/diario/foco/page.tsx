@@ -15,15 +15,14 @@
  * Server component. Reaproveita o módulo de Foco (`foco-area.ts`).
  * Cores por Pilar (mesma paleta da Mandala). Aviso ético Pilar 4.
  */
-
 import { cookies, headers } from 'next/headers';
-import { redirect } from 'next/navigation';
-import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { FocoDoDiaPanel } from '@/components/akasha/FocoDoDiaPanel';
+import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import { gerarFocoDoDia } from '@/lib/grimoire/foco-area';
-import { AREAS, AREA_LABEL, AREA_ICONE, type Area } from '@/lib/grimoire/traducao-areas';
 import type { Pilar } from '@/lib/grimoire/significados-curados';
+import { AREAS, AREA_LABEL, AREA_ICONE, type Area } from '@/lib/grimoire/traducao-areas';
 
 const C = {
   violeta: '#7C5CFF',
@@ -39,11 +38,19 @@ const C = {
 
 const PILARES_VALIDOS: Pilar[] = ['cabala', 'astrologia', 'tantrica', 'odu', 'iching'];
 const PILAR_CORES: Record<Pilar, string> = {
-  cabala: C.violeta, astrologia: C.aurora, tantrica: C.dourado, odu: C.magenta, iching: C.ocre,
+  cabala: C.violeta,
+  astrologia: C.aurora,
+  tantrica: C.dourado,
+  odu: C.magenta,
+  iching: C.ocre,
 };
 
 const PILAR_LABEL: Record<Pilar, string> = {
-  cabala: 'Cabala', astrologia: 'Astrologia', tantrica: 'Tântrica', odu: 'Odu', iching: 'I Ching',
+  cabala: 'Cabala',
+  astrologia: 'Astrologia',
+  tantrica: 'Tântrica',
+  odu: 'Odu',
+  iching: 'I Ching',
 };
 
 type MandatoEsqueleto = {
@@ -60,7 +67,13 @@ type MentorHook = {
 type MandatoDoDiaResponse = {
   date: string;
   mandato: MandatoEsqueleto;
-  pilares: { cabala: { life_path: number }; astrologia: { sol_signo: string }; tantrica: { corpo_predominante: number }; odu: { odu_principal: string }; iching: { hexagrama_dia: number } };
+  pilares: {
+    cabala: { life_path: number };
+    astrologia: { sol_signo: string };
+    tantrica: { corpo_predominante: number };
+    odu: { odu_principal: string };
+    iching: { hexagrama_dia: number };
+  };
   mentor_hook: MentorHook;
 };
 
@@ -81,7 +94,8 @@ export default async function FocoPage({
   const cookieStore = await cookies();
   const authStatus = (await headers()).get('X-Akasha-Auth');
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
-  if (authStatus !== 'refreshed' && !verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
+  if (authStatus !== 'refreshed' && !verifyAkashaToken(token, 'access'))
+    redirect(`/${locale}/login`);
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia`,
@@ -134,9 +148,8 @@ export default async function FocoPage({
             Onde precisa de luz HOJE?
           </h1>
           <p style={{ color: C.txtSec, fontSize: '0.95rem', lineHeight: 1.5, margin: 0 }}>
-            Você vive em áreas — paz, saúde, relações, dinheiro, trabalho, propósito,
-            criatividade, espiritualidade, sexualidade. Escolha 1 e medite o que seu
-            mapa diz para ela hoje.
+            Você vive em áreas — paz, saúde, relações, dinheiro, trabalho, propósito, criatividade,
+            espiritualidade, sexualidade. Escolha 1 e medite o que seu mapa diz para ela hoje.
           </p>
           <p
             style={{
@@ -225,8 +238,8 @@ function FocoFallback() {
     <main style={{ background: C.bgVoid, minHeight: 'calc(100vh - 56px)', padding: '32px 20px' }}>
       <div style={{ maxWidth: 720, margin: '0 auto' }}>
         <p style={{ color: C.txtSec, lineHeight: 1.5 }}>
-          Não conseguimos carregar seu mapa agora. Volte ao Mandato do Dia, que recalcula
-          seu mapa. Se o problema persistir, verifique seus dados natais.
+          Não conseguimos carregar seu mapa agora. Volte ao Mandato do Dia, que recalcula seu mapa.
+          Se o problema persistir, verifique seus dados natais.
         </p>
       </div>
     </main>

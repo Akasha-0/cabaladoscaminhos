@@ -1,9 +1,8 @@
 /**
  * @akasha/portal — Dashboard Mocks
- * 
+ *
  * Dados mockados realistas para desenvolvimento e fallback.
  */
-
 import type { DashboardStats, StreakDay, RitualHistoryItem } from '@akasha/core';
 
 // ─── Mock Stats ─────────────────────────────────────────────────────────────
@@ -15,11 +14,38 @@ export const mockStats: DashboardStats = {
   longestStreak: 14,
   completionRate: 87,
   lastRitualDate: '2026-06-08',
-  weeklyProgress: [1, 1, 1, 1, 1, 1, 1],      // Semana completa
+  weeklyProgress: [1, 1, 1, 1, 1, 1, 1], // Semana completa
   monthlyProgress: [
-    1, 0, 1, 1, 0, 1, 1, 0, 1, 1,           // Dias 1-10
-    1, 0, 1, 1, 1, 0, 1, 1, 1, 0,           // Dias 11-20
-    1, 1, 0, 1, 1, 1, 0, 1, 1, 0            // Dias 21-30
+    1,
+    0,
+    1,
+    1,
+    0,
+    1,
+    1,
+    0,
+    1,
+    1, // Dias 1-10
+    1,
+    0,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    0, // Dias 11-20
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    0, // Dias 21-30
   ],
 };
 
@@ -28,39 +54,41 @@ export const mockStats: DashboardStats = {
 function generateStreakDays(): StreakDay[] {
   const days: StreakDay[] = [];
   const today = new Date('2026-06-09');
-  
+
   // Padrão: dias alternados com mais completados na semana
   const completionPattern = [
     // Semanas: seg, ter, qua, qui, sex, sáb, dom
-    [1, 1, 1, 1, 1, 1, 1],   // semana 1
-    [1, 0, 1, 1, 1, 0, 1],   // semana 2
-    [1, 1, 1, 0, 1, 1, 1],   // semana 3
-    [1, 1, 1, 1, 1, 1, 0],   // semana 4
-    [1, 1, 0, 1, 1, 0, 1],   // semana 5
-    [1, 1, 1, 1, 1, 1, 1],   // semana 6
-    [1, 1, 1, 1, 1, 1, 0],   // semana 7
-    [1, 0, 1, 1, 0, 1, 0],   // semana 8
-    [0, 0, 0, 0, 0, 0, 0],   // semana 9 (futuro)
+    [1, 1, 1, 1, 1, 1, 1], // semana 1
+    [1, 0, 1, 1, 1, 0, 1], // semana 2
+    [1, 1, 1, 0, 1, 1, 1], // semana 3
+    [1, 1, 1, 1, 1, 1, 0], // semana 4
+    [1, 1, 0, 1, 1, 0, 1], // semana 5
+    [1, 1, 1, 1, 1, 1, 1], // semana 6
+    [1, 1, 1, 1, 1, 1, 0], // semana 7
+    [1, 0, 1, 1, 0, 1, 0], // semana 8
+    [0, 0, 0, 0, 0, 0, 0], // semana 9 (futuro)
   ];
-  
+
   const ritualTypes = ['oracao-manha', 'meditacao', 'leitura-grimorio', 'ritual-completo'];
-  
+
   for (let i = 59; i >= 0; i--) {
     const date = new Date(today);
     date.setDate(date.getDate() - i);
-    
+
     const weekIndex = Math.floor((59 - i) / 7);
     const dayOfWeek = (59 - i) % 7;
-    
+
     const completed = weekIndex < 8 && completionPattern[weekIndex]?.[dayOfWeek] === 1;
-    
+
     days.push({
       date: date.toISOString().split('T')[0],
       completed,
-      ritualType: completed ? ritualTypes[Math.floor(Math.random() * ritualTypes.length)] : undefined,
+      ritualType: completed
+        ? ritualTypes[Math.floor(Math.random() * ritualTypes.length)]
+        : undefined,
     });
   }
-  
+
   return days;
 }
 

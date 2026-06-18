@@ -1,4 +1,3 @@
-
 export type SpreadType = 'celtic-cross' | 'three-card' | 'single-card';
 
 export interface SpreadPosition {
@@ -20,7 +19,8 @@ export interface TarotSpread {
 const celticCross: TarotSpread = {
   id: 'celtic-cross',
   name: 'Cruz Celta',
-  description: 'Leitura completa de 10 cartas para análise profunda de uma situação, seus obstáculos e caminhos futuros.',
+  description:
+    'Leitura completa de 10 cartas para análise profunda de uma situação, seus obstáculos e caminhos futuros.',
   totalCards: 10,
   positions: [
     {
@@ -38,7 +38,8 @@ const celticCross: TarotSpread = {
     {
       position: 3,
       name: 'Base/Fundação',
-      description: 'As raízes da questão, o passado que influencia o presente. A base sobre a qual tudo foi construído.',
+      description:
+        'As raízes da questão, o passado que influencia o presente. A base sobre a qual tudo foi construído.',
       orientation: 'both',
     },
     {
@@ -50,7 +51,8 @@ const celticCross: TarotSpread = {
     {
       position: 5,
       name: 'Possível Futuro',
-      description: 'O resultado mais provável se o curso atual for mantido. A tendência inalterada.',
+      description:
+        'O resultado mais provável se o curso atual for mantido. A tendência inalterada.',
       orientation: 'both',
     },
     {
@@ -80,7 +82,8 @@ const celticCross: TarotSpread = {
     {
       position: 10,
       name: 'Resultado Final',
-      description: 'A síntese de tudo, o resultado final da situação quando todas as forças se equilibrarem.',
+      description:
+        'A síntese de tudo, o resultado final da situação quando todas as forças se equilibrarem.',
       orientation: 'both',
     },
   ],
@@ -90,7 +93,8 @@ const celticCross: TarotSpread = {
 const threeCard: TarotSpread = {
   id: 'three-card',
   name: 'Três Cartas',
-  description: 'Leitura rápida de 3 cartas representando passado, presente e futuro de uma situação.',
+  description:
+    'Leitura rápida de 3 cartas representando passado, presente e futuro de uma situação.',
   totalCards: 3,
   positions: [
     {
@@ -144,7 +148,9 @@ const spreads: Record<SpreadType, TarotSpread> = {
 export function getSpread(type: SpreadType): TarotSpread {
   const spread = spreads[type];
   if (!spread) {
-    throw new Error(`Spread type "${type}" not found. Valid types: ${Object.keys(spreads).join(', ')}`);
+    throw new Error(
+      `Spread type "${type}" not found. Valid types: ${Object.keys(spreads).join(', ')}`
+    );
   }
   return spread;
 }

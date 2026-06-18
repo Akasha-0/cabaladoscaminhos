@@ -1,7 +1,7 @@
 'use client';
 
-import { MentorChat } from './MentorChat';
 import type { UserMaps } from '../types';
+import { MentorChat } from './MentorChat';
 
 interface MentorPageProps {
   userId: string;

@@ -4,7 +4,6 @@
  * Dados de práticas integrativas usando cristais,
  * extraídos de practices-data.ts para organização.
  */
-
 import type { IntegrativePractice } from './types';
 
 export const CRISTAIS_PRACTICES: IntegrativePractice[] = [
@@ -21,7 +20,8 @@ export const CRISTAIS_PRACTICES: IntegrativePractice[] = [
       hexagrams: [5, 31],
     },
     lifeAreas: ['amor', 'autoestima', 'cura emocional', 'relações'],
-    howTo: 'Segure o quartzo rosa em cada mão durante 10 minutos. Visualize uma luz rosa envolvendo seu coração enquanto respira profundamente.',
+    howTo:
+      'Segure o quartzo rosa em cada mão durante 10 minutos. Visualize uma luz rosa envolvendo seu coração enquanto respira profundamente.',
     frequency: 'Diariamente ao acordar ou antes de dormir.',
     isSafe: true,
   },
@@ -39,7 +39,8 @@ export const CRISTAIS_PRACTICES: IntegrativePractice[] = [
       hexagrams: [29, 30],
     },
     lifeAreas: ['espiritualidade', 'calma', 'intuição', 'sonhos'],
-    howTo: 'Coloque uma ametista sob o travesseiro para dormir ou segure durante meditação. Programar a pedra mentalizando intenção por 3 minutos.',
+    howTo:
+      'Coloque uma ametista sob o travesseiro para dormir ou segure durante meditação. Programar a pedra mentalizando intenção por 3 minutos.',
     frequency: 'Durante meditação diária e no quarto de dormir.',
     isSafe: true,
   },
@@ -57,7 +58,8 @@ export const CRISTAIS_PRACTICES: IntegrativePractice[] = [
       hexagrams: [2, 18],
     },
     lifeAreas: ['proteção', 'aterramento', 'absorção de energias negativas'],
-    howTo: 'Segure a turmalina negra na mão esquerda por 5 minutos ao acordar. Ou placing-a na entrada do ambiente para formar escudo protetor.',
+    howTo:
+      'Segure a turmalina negra na mão esquerda por 5 minutos ao acordar. Ou placing-a na entrada do ambiente para formar escudo protetor.',
     frequency: 'Diariamente, especialmente em dias de alta energia negativa.',
     isSafe: true,
   },
@@ -75,7 +77,8 @@ export const CRISTAIS_PRACTICES: IntegrativePractice[] = [
       hexagrams: [14, 26],
     },
     lifeAreas: ['prosperidade', 'abundância', 'confiança', 'realização'],
-    howTo: 'Segure o citrino na mão direita enquanto visualiza sua intenção de prosperidade. Mantenha perto da carteira ou cofre.',
+    howTo:
+      'Segure o citrino na mão direita enquanto visualiza sua intenção de prosperidade. Mantenha perto da carteira ou cofre.',
     frequency: 'Diariamente, carregando sempre que possível.',
     isSafe: true,
   },
@@ -93,7 +96,8 @@ export const CRISTAIS_PRACTICES: IntegrativePractice[] = [
       hexagrams: [1, 30],
     },
     lifeAreas: ['clareza mental', 'amplificação de intenções', 'cura', 'equilíbrio'],
-    howTo: 'Segure o quartzo transparente na mão dominante. Projete sua intenção euse-o como amplificador visualizando luz passando pela pedra.',
+    howTo:
+      'Segure o quartzo transparente na mão dominante. Projete sua intenção euse-o como amplificador visualizando luz passando pela pedra.',
     frequency: 'Durante meditação e trabalho com outras práticas.',
     isSafe: true,
   },

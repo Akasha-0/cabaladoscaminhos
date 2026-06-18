@@ -127,10 +127,25 @@ class Learning:
             content=str(d["content"]),
             score=float(d.get("score", 0.5)),
             iteration=int(d.get("iteration", 0)),
-            timestamp=float(d.get("timestamp", time.time())),
+            timestamp=_parse_timestamp(d.get("timestamp")),
             tags=list(d.get("tags", [])),
             metadata=dict(d.get("metadata", {})),
         )
+
+
+def _parse_timestamp(val: Any) -> float:
+    """Parse timestamp from float, int, ISO string, or None."""
+    if val is None:
+        return time.time()
+    if isinstance(val, (int, float)):
+        return float(val)
+    if isinstance(val, str):
+        try:
+            return datetime.fromisoformat(val.replace('Z', '+00:00')).timestamp()
+        except Exception:
+            return time.time()
+    return time.time()
+
 
 
 # ── Memory Manager ─────────────────────────────────────────────────────────────

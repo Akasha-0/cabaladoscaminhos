@@ -1,6 +1,6 @@
 /**
  * @akasha/portal — Dashboard Module
- * 
+ *
  * Exports do módulo de Dashboard.
  */
 
@@ -15,12 +15,7 @@ export type {
 } from '@akasha/core';
 
 // Re-export mock data
-export {
-  mockStats,
-  mockStreak,
-  mockHistory,
-  mockDashboardData,
-} from './mocks';
+export { mockStats, mockStreak, mockHistory, mockDashboardData } from './mocks';
 
 // Re-export components
 export { Dashboard } from './Dashboard';
@@ -31,7 +26,4 @@ export { StreakCalendar } from './StreakCalendar';
 
 // Re-export hook
 export { useDashboardData } from './hooks/useDashboardData';
-export type {
-  DashboardData,
-  UseDashboardDataOptions,
-} from './hooks/useDashboardData';
+export type { DashboardData, UseDashboardDataOptions } from './hooks/useDashboardData';

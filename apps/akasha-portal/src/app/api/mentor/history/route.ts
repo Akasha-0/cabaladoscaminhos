@@ -7,10 +7,9 @@
  * any other user's mentor history (IDOR vulnerability). Now uses requireAkashaApi
  * to enforce authentication and returns only the authenticated user's history.
  */
-
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/infrastructure/prisma';
 import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
+import { prisma } from '@/lib/infrastructure/prisma';
 
 export async function GET(request: NextRequest) {
   const authResult = await requireAkashaApi(request);
@@ -43,8 +42,8 @@ export async function GET(request: NextRequest) {
     });
 
     // Flatten messages from all sessions
-    const messages = sessions.flatMap(session =>
-      session.messages.map(msg => ({
+    const messages = sessions.flatMap((session) =>
+      session.messages.map((msg) => ({
         id: msg.id,
         sessionId: session.id,
         role: msg.role === 'USER' ? 'user' : 'mentor',
@@ -56,9 +55,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ messages });
   } catch (error) {
     console.error('Mentor history error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

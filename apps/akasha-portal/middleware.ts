@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
+import { defaultLocale, locales, type Locale } from '@/i18n/config';
 import { generateRequestId } from '@/lib/shared/logging';
 import { checkApiRateLimit } from '@/middleware/rateLimit';
-import { defaultLocale, locales, type Locale } from '@/i18n/config';
 
 // ============================================
 // CORS Configuration
@@ -100,7 +100,9 @@ function decodeAccessTokenExp(accessToken: string | undefined): number | null {
     return null;
   }
 }
-async function authRefresh(request: NextRequest): Promise<{ name: string; value: string }[] | null> {
+async function authRefresh(
+  request: NextRequest
+): Promise<{ name: string; value: string }[] | null> {
   try {
     // Build the internal request to the refresh endpoint.
     // We pass the refresh cookie directly to the endpoint.
@@ -131,8 +133,17 @@ async function authRefresh(request: NextRequest): Promise<{ name: string; value:
 }
 
 const PROTECTED_PATH_PREFIXES = [
-  '/dashboard', '/conta', '/diario', '/diario/foco', '/mandala', '/oraculo',
-  '/conexoes', '/mapa', '/mapa/significado', '/manifesto', '/meu-dia',
+  '/dashboard',
+  '/conta',
+  '/diario',
+  '/diario/foco',
+  '/mandala',
+  '/oraculo',
+  '/conexoes',
+  '/mapa',
+  '/mapa/significado',
+  '/manifesto',
+  '/meu-dia',
   '/significado-primeiro',
 ];
 
@@ -140,9 +151,10 @@ function shouldRefreshAuth(pathname: string): boolean {
   // Strip locale prefix (e.g. /pt-BR, /en) before checking protected paths.
   // auth refresh never fires → expired access token → redirect to /login.
   const segments = pathname.split('/'); // ['', 'pt-BR', 'dashboard']
-  const pathWithoutLocale = (segments.length >= 2 && (locales as readonly string[]).includes(segments[1]))
-    ? '/' + segments.slice(2).join('/')
-    : pathname;
+  const pathWithoutLocale =
+    segments.length >= 2 && (locales as readonly string[]).includes(segments[1])
+      ? '/' + segments.slice(2).join('/')
+      : pathname;
   return PROTECTED_PATH_PREFIXES.some(
     (prefix) => pathWithoutLocale.startsWith(prefix) || pathWithoutLocale.includes('/akasha')
   );
@@ -163,9 +175,12 @@ export async function middleware(request: NextRequest) {
   const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value;
   const acceptLang = request.headers.get('accept-language') ?? '';
   const headerLocale = acceptLang.toLowerCase().includes('en') ? 'en' : null;
-  const locale: Locale = cookieLocale === 'en' || cookieLocale === 'pt-BR'
-    ? (cookieLocale as Locale)
-    : (headerLocale === 'en' ? 'en' : defaultLocale);
+  const locale: Locale =
+    cookieLocale === 'en' || cookieLocale === 'pt-BR'
+      ? (cookieLocale as Locale)
+      : headerLocale === 'en'
+        ? 'en'
+        : defaultLocale;
 
   // ============================================
   // Locale prefix redirect — Doc 25 §9 / v0.0.4-T9.9

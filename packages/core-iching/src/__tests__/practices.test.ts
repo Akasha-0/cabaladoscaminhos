@@ -1,7 +1,6 @@
 /**
  * @akasha/core-iching — Testes para Práticas Integrativas
  */
-
 import {
   PRACTICES,
   getPractice,

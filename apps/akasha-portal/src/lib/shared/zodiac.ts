@@ -20,8 +20,18 @@ export function formatDegreeToZodiac(deg: number | string | null | undefined): s
   if (isNaN(num)) return String(deg);
 
   const signs = [
-    'Áries', 'Touro', 'Gêmeos', 'Câncer', 'Leão', 'Virgem',
-    'Libra', 'Escorpião', 'Sagitário', 'Capricórnio', 'Aquário', 'Peixes',
+    'Áries',
+    'Touro',
+    'Gêmeos',
+    'Câncer',
+    'Leão',
+    'Virgem',
+    'Libra',
+    'Escorpião',
+    'Sagitário',
+    'Capricórnio',
+    'Aquário',
+    'Peixes',
   ];
 
   const signIndex = Math.floor(num / 30) % 12;
@@ -31,31 +41,31 @@ export function formatDegreeToZodiac(deg: number | string | null | undefined): s
 
 // Mandala Fase 3: glifos astrológicos unicode padrão para os 10 planetas.
 export const GLYPHS_BY_PLANET: Record<string, string> = {
-  'Sol': '☉',
-  'Lua': '☽',
-  'Mercúrio': '☿',
-  'Vênus': '♀',
-  'Marte': '♂',
-  'Júpiter': '♃',
-  'Saturno': '♄',
-  'Urano': '♅',
-  'Netuno': '♆',
-  'Plutão': '♇',
+  Sol: '☉',
+  Lua: '☽',
+  Mercúrio: '☿',
+  Vênus: '♀',
+  Marte: '♂',
+  Júpiter: '♃',
+  Saturno: '♄',
+  Urano: '♅',
+  Netuno: '♆',
+  Plutão: '♇',
 };
 
 // Mandala Fase 3: cores fixas por planeta.
 // Luminares (Sol/Lua) recebem tons quentes; clássicos ficam brancos; modernos em cinza.
 export const PLANET_COLORS: Record<string, string> = {
-  'Sol': '#FFD166',      // dourado
-  'Lua': '#C9D4E0',      // prata
-  'Mercúrio': '#FFFFFF', // branco
-  'Vênus': '#FFFFFF',
-  'Marte': '#FF7A7A',    // vermelho claro (Marte é vermelho por tradição)
-  'Júpiter': '#FFFFFF',
-  'Saturno': '#FFFFFF',
-  'Urano': '#A8B5C8',    // cinza-azulado
-  'Netuno': '#A8B5C8',
-  'Plutão': '#A8B5C8',
+  Sol: '#FFD166', // dourado
+  Lua: '#C9D4E0', // prata
+  Mercúrio: '#FFFFFF', // branco
+  Vênus: '#FFFFFF',
+  Marte: '#FF7A7A', // vermelho claro (Marte é vermelho por tradição)
+  Júpiter: '#FFFFFF',
+  Saturno: '#FFFFFF',
+  Urano: '#A8B5C8', // cinza-azulado
+  Netuno: '#A8B5C8',
+  Plutão: '#A8B5C8',
 };
 
 /**

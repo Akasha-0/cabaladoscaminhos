@@ -9,7 +9,7 @@ interface CosmicBackgroundProps {
 /**
  * Mystical cosmic background component with CSS-only animated stars and nebula effects.
  * Purely decorative Server Component that wraps pages.
- * 
+ *
  * @example
  * ```tsx
  * <CosmicBackground variant="default">
@@ -17,12 +17,13 @@ interface CosmicBackgroundProps {
  * </CosmicBackground>
  * ```
  */
-export function CosmicBackground({ variant = 'default', className = '', children }: CosmicBackgroundProps) {
+export function CosmicBackground({
+  variant = 'default',
+  className = '',
+  children,
+}: CosmicBackgroundProps) {
   return (
-    <div
-      className={cn('cosmic-bg-wrapper relative overflow-hidden', className)}
-      aria-hidden="true"
-    >
+    <div className={cn('cosmic-bg-wrapper relative overflow-hidden', className)} aria-hidden="true">
       {/* Stars layer - CSS box-shadow generated stars */}
       <div
         className={cn(
@@ -45,9 +46,7 @@ export function CosmicBackground({ variant = 'default', className = '', children
       <div className="cosmic-particles absolute inset-0" />
 
       {/* Content slot */}
-      <div className="relative z-10">
-        {children}
-      </div>
+      <div className="relative z-10">{children}</div>
 
       <style jsx>{`
         /* Void background */
@@ -100,15 +99,13 @@ export function CosmicBackground({ variant = 'default', className = '', children
             70vw 80vh 0 0 rgba(255, 255, 255, 0.7),
             80vw 55vh 0 0 rgba(255, 255, 255, 0.85),
             90vw 95vh 0 0 rgba(255, 255, 255, 0.8),
-            /* Gold-tinted stars */
-            8vw 30vh 0 0 rgba(212, 175, 55, 0.8),
+            /* Gold-tinted stars */ 8vw 30vh 0 0 rgba(212, 175, 55, 0.8),
             18vw 55vh 0 0 rgba(212, 175, 55, 0.7),
             38vw 22vh 0 0 rgba(212, 175, 55, 0.85),
             58vw 48vh 0 0 rgba(212, 175, 55, 0.75),
             78vw 12vh 0 0 rgba(212, 175, 55, 0.8),
             88vw 68vh 0 0 rgba(212, 175, 55, 0.7),
-            /* Violet-tinted stars */
-            12vw 42vh 0 0 rgba(139, 92, 246, 0.7),
+            /* Violet-tinted stars */ 12vw 42vh 0 0 rgba(139, 92, 246, 0.7),
             32vw 78vh 0 0 rgba(139, 92, 246, 0.8),
             52vw 28vh 0 0 rgba(139, 92, 246, 0.75),
             72vw 88vh 0 0 rgba(139, 92, 246, 0.7);
@@ -225,47 +222,56 @@ export function CosmicBackground({ variant = 'default', className = '', children
          * KEYFRAME ANIMATIONS
          * ======================================== */
         @keyframes starTwinkle {
-          0%, 100% { 
+          0%,
+          100% {
             opacity: 0.7;
             filter: brightness(1);
           }
-          50% { 
+          50% {
             opacity: 1;
             filter: brightness(1.2);
           }
         }
 
         @keyframes nebulaDrift {
-          0%, 100% { 
+          0%,
+          100% {
             transform: translate(0, 0) scale(1);
             opacity: 1;
           }
-          25% { 
+          25% {
             transform: translate(8px, -4px) scale(1.02);
             opacity: 0.95;
           }
-          50% { 
+          50% {
             transform: translate(-4px, 6px) scale(0.98);
             opacity: 1;
           }
-          75% { 
+          75% {
             transform: translate(6px, 4px) scale(1.01);
             opacity: 0.97;
           }
         }
 
         @keyframes particleFloat {
-          0% { transform: translateY(0) rotate(0deg); }
-          50% { transform: translateY(-15px) rotate(180deg); }
-          100% { transform: translateY(0) rotate(360deg); }
+          0% {
+            transform: translateY(0) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-15px) rotate(180deg);
+          }
+          100% {
+            transform: translateY(0) rotate(360deg);
+          }
         }
 
         @keyframes particleGlow {
-          0%, 100% { 
+          0%,
+          100% {
             transform: scale(1);
             opacity: 0.5;
           }
-          50% { 
+          50% {
             transform: scale(1.5);
             opacity: 0.8;
           }
@@ -287,11 +293,11 @@ export function CosmicBackground({ variant = 'default', className = '', children
           .cosmic-particles::after {
             animation: none !important;
           }
-          
+
           .cosmic-stars {
             opacity: 0.8;
           }
-          
+
           .cosmic-nebula {
             opacity: 0.7;
           }

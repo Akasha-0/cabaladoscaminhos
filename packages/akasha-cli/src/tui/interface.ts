@@ -29,8 +29,10 @@ const USAGE_FORMAT = '{{used}}K/{{limit}}K';
 // ─── Funções Auxiliares ───────────────────────────────────────────────────────
 
 function formatUsage(used: number, limit: number): string {
-  return USAGE_FORMAT.replace('{{used}}', (used / 1000).toFixed(1))
-    .replace('{{limit}}', (limit / 1000).toFixed(0));
+  return USAGE_FORMAT.replace('{{used}}', (used / 1000).toFixed(1)).replace(
+    '{{limit}}',
+    (limit / 1000).toFixed(0)
+  );
 }
 
 function formatProgress(used: number, limit: number): string {
@@ -62,7 +64,9 @@ export class ChatScreen {
 
     // Verificar se é TTY
     if (!process.stdin.isTTY) {
-      throw new Error('Este comando requer um terminal interativo (TTY). Use akasha -q para modo não-interativo.');
+      throw new Error(
+        'Este comando requer um terminal interativo (TTY). Use akasha -q para modo não-interativo.'
+      );
     }
 
     // Criar screen
@@ -99,8 +103,7 @@ export class ChatScreen {
     const used = tokenUsage?.used ?? 0;
     const limit = tokenUsage?.limit ?? 200000;
 
-    const content = HEADER_TEMPLATE
-      .replace('{{title}}', chalk.cyan('⚕ Akasha'))
+    const content = HEADER_TEMPLATE.replace('{{title}}', chalk.cyan('⚕ Akasha'))
       .replace('{{version}}', chalk.bold(version))
       .replace('{{usage}}', formatUsage(used, limit))
       .replace('{{progress}}', formatProgress(used, limit))
@@ -200,7 +203,13 @@ export class ChatScreen {
         fg: 'white',
         bg: 'black',
       },
-      content: chalk.dim('>') + ' Enter para enviar | ' + chalk.dim('Shift+Enter') + ' para nova linha | ' + chalk.dim('/help') + ' para comandos',
+      content:
+        chalk.dim('>') +
+        ' Enter para enviar | ' +
+        chalk.dim('Shift+Enter') +
+        ' para nova linha | ' +
+        chalk.dim('/help') +
+        ' para comandos',
       tags: false,
     });
   }
@@ -239,8 +248,7 @@ export class ChatScreen {
   }
 
   updateProgress(used: number, limit: number): void {
-    const content = HEADER_TEMPLATE
-      .replace('{{title}}', chalk.cyan('⚕ Akasha'))
+    const content = HEADER_TEMPLATE.replace('{{title}}', chalk.cyan('⚕ Akasha'))
       .replace('{{version}}', chalk.bold(this.config.version))
       .replace('{{usage}}', formatUsage(used, limit))
       .replace('{{progress}}', formatProgress(used, limit))

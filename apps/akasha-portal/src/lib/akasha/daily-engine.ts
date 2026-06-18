@@ -79,18 +79,25 @@ export function buildDailyContent(
 
   const crossResult = crossAnalyze(enrichedAstro, bodyMap, oduMap);
 
-  const glossary = oduMap.oduName
-    ? formatGlossarySection(buildOduGlossary(oduMap))
-    : undefined;
+  const glossary = oduMap.oduName ? formatGlossarySection(buildOduGlossary(oduMap)) : undefined;
 
   const dateStr = date.toISOString().split('T')[0];
 
   return {
     date: dateStr,
     climate: crossResult?.climate ?? 'Clima equilibrado',
-    ritual: crossResult?.ritual ?? { titulo: 'Ritual Padrão', instrucao: 'Pratique com atenção', cor: 'azul', elemento: 'água' },
+    ritual: crossResult?.ritual ?? {
+      titulo: 'Ritual Padrão',
+      instrucao: 'Pratique com atenção',
+      cor: 'azul',
+      elemento: 'água',
+    },
     alert: crossResult?.alert ?? 'Mantenha-se centrado',
-    tensionPoint: crossResult?.tensionPoint ?? { pillar: 'corpo-aurico', theme: 'Tensão leve', intensity: 3 },
+    tensionPoint: crossResult?.tensionPoint ?? {
+      pillar: 'corpo-aurico',
+      theme: 'Tensão leve',
+      intensity: 3,
+    },
     moonPhase: transitData.moonPhase?.name ?? 'Lua',
     overallTheme: transitData.overallTheme ?? 'Dia neutro',
     glossarySection: glossary,

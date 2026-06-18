@@ -1,14 +1,14 @@
-import type { 
-  PracticeEmbedding, 
-  SimilarPractice, 
+import type {
+  PracticeEmbedding,
+  SimilarPractice,
   PracticeFilters,
   IntegrativePracticeRef,
-  RAGConfig 
+  RAGConfig,
 } from './index';
 
 /**
  * OpenAI Embedder - Uses OpenAI's text-embedding-3-small model
- * 
+ *
  * Environment variables required:
  * - OPENAI_API_KEY: Your OpenAI API key
  */
@@ -46,7 +46,7 @@ export class OpenAIEmbedder {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.apiKey}`,
+        Authorization: `Bearer ${this.apiKey}`,
       },
       body: JSON.stringify({
         model: this.model,
@@ -59,18 +59,18 @@ export class OpenAIEmbedder {
       throw new Error(`OpenAI API error: ${response.status} - ${error}`);
     }
 
-    const data = await response.json() as { data: Array<{ embedding: number[] }> };
+    const data = (await response.json()) as { data: Array<{ embedding: number[] }> };
     const embedding = data.data[0].embedding;
 
     // Cache the result
     this.cache.set(cacheKey, embedding);
-    
+
     return embedding;
   }
 
   /**
    * Find similar practices using OpenAI embeddings
-   * 
+   *
    * This is a mock implementation that stores practices in memory.
    * In production, use a vector database like Pinecone, Weaviate, or pgvector.
    */
@@ -85,14 +85,24 @@ export class OpenAIEmbedder {
     // In production, this would query a vector database
     // For now, return mock results structure
     const mockPractices: IntegrativePracticeRef[] = [
-      { id: '1', name: 'Meditação Kundalini', category: 'meditation', description: 'Prática de despertar energia' },
-      { id: '2', name: 'Respirações Prânicas', category: 'breathwork', description: 'Técnicas de respiração energética' },
+      {
+        id: '1',
+        name: 'Meditação Kundalini',
+        category: 'meditation',
+        description: 'Prática de despertar energia',
+      },
+      {
+        id: '2',
+        name: 'Respirações Prânicas',
+        category: 'breathwork',
+        description: 'Técnicas de respiração energética',
+      },
     ];
 
     // Calculate cosine similarity (mock)
     const results: SimilarPractice[] = mockPractices.map((practice, index) => ({
       practice,
-      score: 1 - (index * 0.1), // Mock scores: 1.0, 0.9, etc.
+      score: 1 - index * 0.1, // Mock scores: 1.0, 0.9, etc.
       highlights: practice.description ? [practice.description] : [],
     }));
 

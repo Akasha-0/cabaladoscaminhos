@@ -5,7 +5,6 @@
 // correlações: Astrologia, Numerologia, Odu, Orixá, Chakra, Elementos.
 // Extraído do index.ts principal para manter arquivo focado.
 // ============================================================
-
 import type { LifeAreaId, LifeArea } from './types';
 
 // ============================================================
@@ -267,7 +266,12 @@ export const LIFE_AREAS: Record<LifeAreaId, LifeArea> = {
       'Qual é seu nível de energia?',
       'O que seu corpo está pedindo?',
     ],
-    practices: ['Exercícios regulares', 'Alimentação consciente', 'Sono de qualidade', 'Cura energética'],
+    practices: [
+      'Exercícios regulares',
+      'Alimentação consciente',
+      'Sono de qualidade',
+      'Cura energética',
+    ],
     crystals: ['Quartzo Verde', 'Cornalina', 'Granada', 'Olho de Tigre'],
     challenges: [],
     affirmations: [
@@ -795,7 +799,13 @@ export const LIFE_AREAS: Record<LifeAreaId, LifeArea> = {
       'Como você se relaciona com suas sombras?',
       'O que seu corpo guarda de memórias antigas?',
     ],
-    practices: ['Terapia', 'Journaling', 'Meditação profunda', 'Trabalho corporal', 'Astrologia terapêutica'],
+    practices: [
+      'Terapia',
+      'Journaling',
+      'Meditação profunda',
+      'Trabalho corporal',
+      'Astrologia terapêutica',
+    ],
     crystals: ['Obsidiana negra', 'Sugilita', 'Labradorita', 'Pedra Lua'],
     challenges: [],
     affirmations: [

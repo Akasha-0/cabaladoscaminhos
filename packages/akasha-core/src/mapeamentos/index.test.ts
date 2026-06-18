@@ -2,14 +2,16 @@
  * Tests for mapeamentos/ — Akasha Synthesis Engine
  * Covers: getIChingContribution, synthesizePrimitives, PESOS_TRADICAO_DOMINIO, PRIMITIVOS
  */
-
 import { describe, it, expect } from 'vitest';
-import {
-  getIChingContribution,
-  synthesizePrimitives,
-} from './index';
+import type {
+  PilarIChing,
+  PilarCabala,
+  PilarAstrologia,
+  PilarTantrica,
+  PilarOdu,
+} from '../akasha-core';
+import { getIChingContribution, synthesizePrimitives } from './index';
 import { PRIMITIVOS, PESOS_TRADICAO_DOMINIO } from './types';
-import type { PilarIChing, PilarCabala, PilarAstrologia, PilarTantrica, PilarOdu } from '../akasha-core';
 
 // ─── Fixtures ─────────────────────────────────────────────────────────────────
 
@@ -97,9 +99,18 @@ describe('PRIMITIVOS', () => {
 
   it('todos os primitivos esperados estão presentes', () => {
     const esperados = new Set([
-      'Transformacao','Expansao','Ordem','Expressao','Amor',
-      'Poder','Sabedoria','Movimento','Servico','Materializacao',
-      'Intuicao','Conexao',
+      'Transformacao',
+      'Expansao',
+      'Ordem',
+      'Expressao',
+      'Amor',
+      'Poder',
+      'Sabedoria',
+      'Movimento',
+      'Servico',
+      'Materializacao',
+      'Intuicao',
+      'Conexao',
     ]);
     for (const p of PRIMITIVOS) {
       expect(esperados.has(p)).toBe(true);
@@ -111,8 +122,14 @@ describe('PRIMITIVOS', () => {
 
 describe('PESOS_TRADICAO_DOMINIO', () => {
   const dominios = [
-    'identidade','talentos','desafios','missao',
-    'evolucao','relacoes','prosperidade','espiritualidade',
+    'identidade',
+    'talentos',
+    'desafios',
+    'missao',
+    'evolucao',
+    'relacoes',
+    'prosperidade',
+    'espiritualidade',
   ] as const;
 
   it('cada tradição tem exactamente as 8 entradas de domínio', () => {
@@ -222,19 +239,15 @@ describe('synthesizePrimitives — determinismo', () => {
 
   it('mesmos pilares sempre produzem o mesmo resultado (idempotência)', async () => {
     const p = base();
-    const [r1, r2] = await Promise.all([
-      synthesizePrimitives(p),
-      synthesizePrimitives(p),
-    ]);
-    expect(r1.primitivos.map(p => p.magnitude))
-      .toEqual(r2.primitivos.map(p => p.magnitude));
+    const [r1, r2] = await Promise.all([synthesizePrimitives(p), synthesizePrimitives(p)]);
+    expect(r1.primitivos.map((p) => p.magnitude)).toEqual(r2.primitivos.map((p) => p.magnitude));
     expect(r1.dominioPredominante).toBe(r2.dominioPredominante);
     expect(r1.narrativaCentral).toBe(r2.narrativaCentral);
   });
 
   it('não há inversões graves na ordenação por magnitude', async () => {
     const result = await synthesizePrimitives(base());
-    const mags = result.primitivos.map(p => p.magnitude);
+    const mags = result.primitivos.map((p) => p.magnitude);
     for (let i = 0; i < mags.length - 1; i++) {
       if (mags[i] > mags[i + 1] + 1) {
         expect(mags[i]).toBeGreaterThan(mags[i + 1]);
@@ -244,12 +257,12 @@ describe('synthesizePrimitives — determinismo', () => {
 
   it('dominantes são os de maior magnitude', async () => {
     const result = await synthesizePrimitives(base());
-    const dominantes = result.primitivos.filter(p => p.dominante);
+    const dominantes = result.primitivos.filter((p) => p.dominante);
     expect(dominantes.length).toBeGreaterThanOrEqual(1);
     expect(dominantes.length).toBeLessThanOrEqual(3);
     const sorted = [...result.primitivos].sort((a, b) => b.magnitude - a.magnitude);
     for (let di = 0; di < dominantes.length; di++) {
-      const rank = sorted.findIndex(p => p.primitivo === dominantes[di].primitivo);
+      const rank = sorted.findIndex((p) => p.primitivo === dominantes[di].primitivo);
       expect(rank).toBeLessThan(dominantes.length);
     }
   });
@@ -284,8 +297,14 @@ describe('synthesizePrimitives — determinismo', () => {
 
   it('dominioPredominante é um Dominio válido', async () => {
     const validos = new Set([
-      'identidade','talentos','desafios','missao',
-      'evolucao','relacoes','prosperidade','espiritualidade',
+      'identidade',
+      'talentos',
+      'desafios',
+      'missao',
+      'evolucao',
+      'relacoes',
+      'prosperidade',
+      'espiritualidade',
     ]);
     const result = await synthesizePrimitives(base());
     expect(validos.has(result.dominioPredominante)).toBe(true);
@@ -318,7 +337,7 @@ describe('synthesizePrimitives — Cabala', () => {
       tantrica: F_TANTRICA,
       odu: F_ODU,
     });
-    const sab = result.primitivos.find(p => p.primitivo === 'Sabedoria');
+    const sab = result.primitivos.find((p) => p.primitivo === 'Sabedoria');
     expect(sab).toBeTruthy();
     expect(sab!.magnitude).toBeGreaterThan(0);
   });
@@ -331,7 +350,7 @@ describe('synthesizePrimitives — Cabala', () => {
       tantrica: F_TANTRICA,
       odu: F_ODU,
     });
-    const intu = result.primitivos.find(p => p.primitivo === 'Intuicao');
+    const intu = result.primitivos.find((p) => p.primitivo === 'Intuicao');
     expect(intu).toBeTruthy();
     expect(intu!.magnitude).toBeGreaterThan(0);
   });
@@ -344,7 +363,7 @@ describe('synthesizePrimitives — Cabala', () => {
       tantrica: F_TANTRICA,
       odu: F_ODU,
     });
-    const mat = result.primitivos.find(p => p.primitivo === 'Materializacao');
+    const mat = result.primitivos.find((p) => p.primitivo === 'Materializacao');
     expect(mat).toBeTruthy();
     expect(mat!.magnitude).toBeGreaterThan(0);
   });
@@ -361,7 +380,7 @@ describe('synthesizePrimitives — I Ching', () => {
       tantrica: F_TANTRICA,
       odu: F_ODU,
     });
-    const expan = result.primitivos.find(p => p.primitivo === 'Expansao');
+    const expan = result.primitivos.find((p) => p.primitivo === 'Expansao');
     expect(expan).toBeTruthy();
     expect(expan!.magnitude).toBeGreaterThan(0);
   });
@@ -381,8 +400,8 @@ describe('synthesizePrimitives — I Ching', () => {
       tantrica: F_TANTRICA,
       odu: F_ODU,
     });
-    const eg = gift.primitivos.find(p => p.primitivo === 'Expansao');
-    const es = siddhi.primitivos.find(p => p.primitivo === 'Expansao');
+    const eg = gift.primitivos.find((p) => p.primitivo === 'Expansao');
+    const es = siddhi.primitivos.find((p) => p.primitivo === 'Expansao');
     expect(es!.magnitude).toBeGreaterThanOrEqual(eg!.magnitude);
   });
 
@@ -402,8 +421,8 @@ describe('synthesizePrimitives — I Ching', () => {
       tantrica: F_TANTRICA,
       odu: F_ODU,
     });
-    const tg = gift.primitivos.find(p => p.primitivo === 'Transformacao');
-    const ts = shadow.primitivos.find(p => p.primitivo === 'Transformacao');
+    const tg = gift.primitivos.find((p) => p.primitivo === 'Transformacao');
+    const ts = shadow.primitivos.find((p) => p.primitivo === 'Transformacao');
     expect(tg!.magnitude).toBeGreaterThan(0);
     expect(ts!.magnitude).toBeGreaterThan(0);
     expect(ts!.magnitude).toBeLessThanOrEqual(tg!.magnitude);
@@ -423,8 +442,8 @@ describe('synthesizePrimitives — tensão', () => {
       tantrica: F_TANTRICA,
       odu: F_ODU,
     });
-    const poder = result.primitivos.find(p => p.primitivo === 'Poder');
-    const servico = result.primitivos.find(p => p.primitivo === 'Servico');
+    const poder = result.primitivos.find((p) => p.primitivo === 'Poder');
+    const servico = result.primitivos.find((p) => p.primitivo === 'Servico');
     expect(poder).toBeTruthy();
     expect(servico).toBeTruthy();
     // A lógica não crasha; verifica apenas estrutura
@@ -440,8 +459,7 @@ describe('synthesizePrimitives — tensão', () => {
       odu: F_ODU,
     });
     if (result.tensaoPrincipal) {
-      expect(result.tensaoPrincipal.primitivoA)
-        .not.toBe(result.tensaoPrincipal.primitivoB);
+      expect(result.tensaoPrincipal.primitivoA).not.toBe(result.tensaoPrincipal.primitivoB);
     }
   });
 

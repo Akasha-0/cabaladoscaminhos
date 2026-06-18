@@ -42,7 +42,8 @@ function mulberry32(seed: number): () => number {
 
 function pickWeighted(rand: () => number): Hexagram {
   // 16 curados × 4 + 48 restantes × 1 = 112 slots
-  const total = CURATED_THRESHOLD * CURATED_WEIGHT + (ALL.length - CURATED_THRESHOLD) * DEFAULT_WEIGHT;
+  const total =
+    CURATED_THRESHOLD * CURATED_WEIGHT + (ALL.length - CURATED_THRESHOLD) * DEFAULT_WEIGHT;
   let n = Math.floor(rand() * total);
   for (const hex of ALL) {
     const weight = hex.number <= CURATED_THRESHOLD ? CURATED_WEIGHT : DEFAULT_WEIGHT;

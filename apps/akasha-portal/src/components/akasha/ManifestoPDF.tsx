@@ -286,7 +286,6 @@ export default function ManifestoPDF({ content }: { content: ManifestoContent })
 
   return (
     <Document title={`Manifesto Akáshico — ${userName}`} author="Sistema Akasha">
-
       {/* ── CAPA ─────────────────────────────────────────────── */}
       <Page size="A4" style={styles.coverPage}>
         <View style={styles.coverAccent} />
@@ -310,7 +309,9 @@ export default function ManifestoPDF({ content }: { content: ManifestoContent })
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionLabel}>Visão Unificada</Text>
             <Text style={[styles.sectionTitle, { color: MAGENTA }]}>SÍNTESE DOS 4 PILARES</Text>
-            <Text style={styles.sectionSubtitle}>O Cruzamento dos Mapas · A Equação Espiritual</Text>
+            <Text style={styles.sectionSubtitle}>
+              O Cruzamento dos Mapas · A Equação Espiritual
+            </Text>
           </View>
           <View style={styles.synthesisBox}>
             <Text style={styles.synthesisText}>{synthesis}</Text>
@@ -336,7 +337,8 @@ export default function ManifestoPDF({ content }: { content: ManifestoContent })
 
           {odus.oduName ? (
             <Text style={styles.highlight}>
-              {odus.oduName}{odus.oduNumber !== null ? ` (${odus.oduNumber})` : ''}
+              {odus.oduName}
+              {odus.oduNumber !== null ? ` (${odus.oduNumber})` : ''}
             </Text>
           ) : null}
 
@@ -361,7 +363,9 @@ export default function ManifestoPDF({ content }: { content: ManifestoContent })
             <View>
               <Text style={styles.preceitosTitle}>Preceitos</Text>
               {odus.preceitos.map((p, i) => (
-                <Text key={i} style={styles.preceitoItem}>· {p}</Text>
+                <Text key={i} style={styles.preceitoItem}>
+                  · {p}
+                </Text>
               ))}
             </View>
           )}
@@ -377,13 +381,16 @@ export default function ManifestoPDF({ content }: { content: ManifestoContent })
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionLabel}>II</Text>
-            <Text style={[styles.sectionTitle, { color: VIOLET }]}>O VERBO — NUMEROLOGIA CABALÍSTICA</Text>
+            <Text style={[styles.sectionTitle, { color: VIOLET }]}>
+              O VERBO — NUMEROLOGIA CABALÍSTICA
+            </Text>
             <Text style={styles.sectionSubtitle}>O Contrato de Alma · O Propósito</Text>
           </View>
 
           {kabala.lifePath !== null && (
             <Text style={styles.highlight}>
-              {kabala.lifePath}{kabala.lifePathMaster ? ' ✦' : ''}
+              {kabala.lifePath}
+              {kabala.lifePathMaster ? ' ✦' : ''}
             </Text>
           )}
 
@@ -424,13 +431,13 @@ export default function ManifestoPDF({ content }: { content: ManifestoContent })
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionLabel}>III</Text>
-            <Text style={[styles.sectionTitle, { color: AURORA }]}>A ANATOMIA SUTIL — NUMEROLOGIA TÂNTRICA</Text>
+            <Text style={[styles.sectionTitle, { color: AURORA }]}>
+              A ANATOMIA SUTIL — NUMEROLOGIA TÂNTRICA
+            </Text>
             <Text style={styles.sectionSubtitle}>Os 11 Corpos Espirituais · O Veículo</Text>
           </View>
 
-          {tantra.soul !== null && (
-            <Text style={styles.highlight}>Alma: {tantra.soul}</Text>
-          )}
+          {tantra.soul !== null && <Text style={styles.highlight}>Alma: {tantra.soul}</Text>}
 
           <View style={styles.metaRow}>
             {tantra.karma !== null && (
@@ -462,7 +469,9 @@ export default function ManifestoPDF({ content }: { content: ManifestoContent })
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionLabel}>IV</Text>
-            <Text style={[styles.sectionTitle, { color: VIOLET }]}>O MAPA DE BORDO — ASTROLOGIA</Text>
+            <Text style={[styles.sectionTitle, { color: VIOLET }]}>
+              O MAPA DE BORDO — ASTROLOGIA
+            </Text>
             <Text style={styles.sectionSubtitle}>O Céu Natal · O Tempo Cósmico</Text>
           </View>
 
@@ -483,7 +492,10 @@ export default function ManifestoPDF({ content }: { content: ManifestoContent })
             <View style={styles.metaItem}>
               <Text style={styles.metaLabel}>Planetas Principais</Text>
               <Text style={[styles.metaValue, { marginTop: 3 }]}>
-                {astrology.mainPlanets.slice(0, 5).map(p => `${p.name} em ${p.sign}`).join(' · ')}
+                {astrology.mainPlanets
+                  .slice(0, 5)
+                  .map((p) => `${p.name} em ${p.sign}`)
+                  .join(' · ')}
               </Text>
             </View>
           )}
@@ -498,7 +510,6 @@ export default function ManifestoPDF({ content }: { content: ManifestoContent })
 
         <Footer label="III – IV" />
       </Page>
-
     </Document>
   );
 }

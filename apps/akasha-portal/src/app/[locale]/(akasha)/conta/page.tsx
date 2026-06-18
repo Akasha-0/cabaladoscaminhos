@@ -1,6 +1,6 @@
-import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import ContaClient from './ContaClient';
 
 export default async function ContaPage({
@@ -25,14 +25,11 @@ export default async function ContaPage({
     fetch(`${baseUrl}/api/akasha/subscription`, { headers: requestHeaders, cache: 'no-store' }),
   ]);
 
-
   if (!meRes.ok) redirect(`/${locale}/login`);
 
   const user = await meRes.json();
   const { balance = 0 } = credRes.ok ? await credRes.json() : {};
-  const subscription = subRes.ok
-    ? await subRes.json()
-    : { plan: 'FREEMIUM', status: 'ACTIVE' };
+  const subscription = subRes.ok ? await subRes.json() : { plan: 'FREEMIUM', status: 'ACTIVE' };
   const subscriptionError = !subRes.ok;
 
   const sp = await searchParams;

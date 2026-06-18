@@ -1,4 +1,17 @@
 // ============================================================
+// CORE CALCULATIONS
+// ============================================================
+import { computeDailyHexagram } from '@/lib/domain/iching';
+import {
+  PINNACLE_THEMES,
+  CHALLENGE_DESCRIPTIONS,
+  KARMIC_LESSON_DESCRIPTIONS,
+  MATURITY_THEMES,
+} from '@/lib/grimoire/mapeamentos/personal-cycle';
+import { PERSONAL_DAY_DATA } from './personal-cycle-day-data';
+import { reduce, sumDigits, ageInYears } from './personal-cycle-numerology';
+
+// ============================================================
 // PERSONAL CYCLE ENGINE
 // ============================================================
 // Motor que calcula dinamicamente todos os ciclos pessoais:
@@ -22,10 +35,19 @@
 export interface PersonalDay {
   number: number;
   universalDay: number;
-  combined: number;          // Soma do dia pessoal + dia universal
+  combined: number; // Soma do dia pessoal + dia universal
   masterNumber: boolean;
-  energy: 'leadership' | 'diplomacy' | 'creativity' | 'foundation' | 'change' |
-          'nurturing' | 'introspection' | 'power' | 'completion' | 'spiritual';
+  energy:
+    | 'leadership'
+    | 'diplomacy'
+    | 'creativity'
+    | 'foundation'
+    | 'change'
+    | 'nurturing'
+    | 'introspection'
+    | 'power'
+    | 'completion'
+    | 'spiritual';
   keywords: string[];
   chakra: string;
   color: string;
@@ -37,7 +59,7 @@ export interface PersonalDay {
 
 export interface PersonalMonth {
   number: number;
-  combined: number;          // Mês pessoal + dia pessoal do 1º dia
+  combined: number; // Mês pessoal + dia pessoal do 1º dia
   energy: string;
   theme: string;
   keywords: string[];
@@ -60,7 +82,7 @@ export interface PersonalYear {
 
 export interface UniversalYear {
   year: number;
-  number: number;            // 1-9
+  number: number; // 1-9
   theme: string;
   globalEnergy: string;
 }
@@ -68,8 +90,8 @@ export interface UniversalYear {
 export interface Pinnacle {
   number: number;
   startAge: number;
-  endAge: number | null;     // null = até o fim
-  period: string;            // "0-30 anos" etc
+  endAge: number | null; // null = até o fim
+  period: string; // "0-30 anos" etc
   theme: string;
   opportunities: string[];
   challenges: string[];
@@ -86,15 +108,15 @@ export interface Challenge {
 }
 
 export interface KarmicLesson {
-  missing: number;            // 1-9 (ou 0 para zero)
+  missing: number; // 1-9 (ou 0 para zero)
   description: string;
   howToLearn: string;
   lifeArea: string;
 }
 
 export interface MaturityNumber {
-  number: number;            // Caminho de Vida + Expressão
-  year: number;              // Idade em que ativa
+  number: number; // Caminho de Vida + Expressão
+  year: number; // Idade em que ativa
   theme: string;
   description: string;
   gifts: string[];
@@ -124,34 +146,22 @@ export interface PersonalCycleSnapshot {
   ichingHex?: {
     number: number;
     name: string;
-    upperTrigram: number;   // 1-8 (TrigramId King Wen)
-    lowerTrigram: number;   // 1-8 (TrigramId King Wen)
+    upperTrigram: number; // 1-8 (TrigramId King Wen)
+    lowerTrigram: number; // 1-8 (TrigramId King Wen)
     judgment: string;
     image: string;
   };
 
   // Meta
   synthesis: string;
-  overallEnergy: number;     // 0-100
+  overallEnergy: number; // 0-100
 }
-
-// ============================================================
-// CORE CALCULATIONS
-// ============================================================
-
-import { reduce, sumDigits, ageInYears } from './personal-cycle-numerology';
-import { PERSONAL_DAY_DATA } from './personal-cycle-day-data';
-import { computeDailyHexagram } from '@/lib/domain/iching';
 
 // ============================================================
 // DIA PESSOAL
 // ============================================================
 
-function calculatePersonalDay(
-  birthDate: Date,
-  currentDate: Date,
-  lifePath: number
-): PersonalDay {
+function calculatePersonalDay(birthDate: Date, currentDate: Date, lifePath: number): PersonalDay {
   const day = currentDate.getDate();
   const month = currentDate.getMonth() + 1;
   const year = currentDate.getFullYear();
@@ -161,9 +171,18 @@ function calculatePersonalDay(
   const combined = reduce(personalDay + universalDay);
 
   const energies: Record<number, PersonalDay['energy']> = {
-    1: 'leadership', 2: 'diplomacy', 3: 'creativity', 4: 'foundation',
-    5: 'change', 6: 'nurturing', 7: 'introspection', 8: 'power',
-    9: 'completion', 11: 'spiritual', 22: 'spiritual', 33: 'spiritual',
+    1: 'leadership',
+    2: 'diplomacy',
+    3: 'creativity',
+    4: 'foundation',
+    5: 'change',
+    6: 'nurturing',
+    7: 'introspection',
+    8: 'power',
+    9: 'completion',
+    11: 'spiritual',
+    22: 'spiritual',
+    33: 'spiritual',
   };
 
   // dayData moved to personal-cycle-day-data.ts → PERSONAL_DAY_DATA
@@ -183,10 +202,7 @@ function calculatePersonalDay(
 // MÊS PESSOAL
 // ============================================================
 
-function calculatePersonalMonth(
-  personalYear: number,
-  currentDate: Date
-): PersonalMonth {
+function calculatePersonalMonth(personalYear: number, currentDate: Date): PersonalMonth {
   const month = currentDate.getMonth() + 1;
   const personalMonth = reduce(personalYear + month);
 
@@ -294,11 +310,7 @@ function calculatePersonalMonth(
 // ANO PESSOAL
 // ============================================================
 
-function calculatePersonalYear(
-  birthDate: Date,
-  currentDate: Date,
-  lifePath: number
-): PersonalYear {
+function calculatePersonalYear(birthDate: Date, currentDate: Date, lifePath: number): PersonalYear {
   const day = birthDate.getDate();
   const month = birthDate.getMonth() + 1;
   const year = currentDate.getFullYear();
@@ -465,7 +477,13 @@ function calculatePinnacles(
   const p3Num = reduce(p1Num + p2Num);
   const p4Num = reduce(month + year);
 
-  const makePinnacle = (num: number, start: number, end: number | null, period: string, keyQ: string): Pinnacle => {
+  const makePinnacle = (
+    num: number,
+    start: number,
+    end: number | null,
+    period: string,
+    keyQ: string
+  ): Pinnacle => {
     const t = PINNACLE_THEMES[num] ?? PINNACLE_THEMES[1];
     return {
       number: num,
@@ -487,21 +505,18 @@ function calculatePinnacles(
   ];
 }
 
-function getCurrentPinnacle(
-  pinnacles: Pinnacle[],
-  age: number
-): Pinnacle {
-  return pinnacles.find(p => age >= p.startAge && (p.endAge === null || age <= p.endAge)) || pinnacles[3];
+function getCurrentPinnacle(pinnacles: Pinnacle[], age: number): Pinnacle {
+  return (
+    pinnacles.find((p) => age >= p.startAge && (p.endAge === null || age <= p.endAge)) ||
+    pinnacles[3]
+  );
 }
 
 // ============================================================
 // DESAFIOS
 // ============================================================
 
-function calculateChallenges(
-  birthDate: Date,
-  lifePath: number
-): Challenge[] {
+function calculateChallenges(birthDate: Date, lifePath: number): Challenge[] {
   const month = birthDate.getMonth() + 1;
   const day = birthDate.getDate();
 
@@ -519,32 +534,44 @@ function calculateChallenges(
   const allNumbers = [firstChallenge, secondChallenge, thirdChallenge, fourthChallenge];
 
   return [
-    { level: 1, name: 'Primeiro Desafio', number: allNumbers[0], ...CHALLENGE_DESCRIPTIONS[allNumbers[0]] },
-    { level: 2, name: 'Segundo Desafio', number: allNumbers[1], ...CHALLENGE_DESCRIPTIONS[allNumbers[1]] },
-    { level: 3, name: 'Terceiro Desafio', number: allNumbers[2], ...CHALLENGE_DESCRIPTIONS[allNumbers[2]] },
-    { level: 4, name: 'Quarto Desafio', number: allNumbers[3], ...CHALLENGE_DESCRIPTIONS[allNumbers[3]] },
+    {
+      level: 1,
+      name: 'Primeiro Desafio',
+      number: allNumbers[0],
+      ...CHALLENGE_DESCRIPTIONS[allNumbers[0]],
+    },
+    {
+      level: 2,
+      name: 'Segundo Desafio',
+      number: allNumbers[1],
+      ...CHALLENGE_DESCRIPTIONS[allNumbers[1]],
+    },
+    {
+      level: 3,
+      name: 'Terceiro Desafio',
+      number: allNumbers[2],
+      ...CHALLENGE_DESCRIPTIONS[allNumbers[2]],
+    },
+    {
+      level: 4,
+      name: 'Quarto Desafio',
+      number: allNumbers[3],
+      ...CHALLENGE_DESCRIPTIONS[allNumbers[3]],
+    },
   ];
 }
-
-import {
-  PINNACLE_THEMES,
-  CHALLENGE_DESCRIPTIONS,
-  KARMIC_LESSON_DESCRIPTIONS,
-  MATURITY_THEMES,
-} from '@/lib/grimoire/mapeamentos/personal-cycle';
 
 // ============================================================
 // LIÇÕES CÁRMICAS
 // ============================================================
 
-function calculateKarmicLessons(
-  birthDate: Date,
-  fullName: string = ''
-): KarmicLesson[] {
+function calculateKarmicLessons(birthDate: Date, fullName: string = ''): KarmicLesson[] {
   const day = birthDate.getDate();
   const month = birthDate.getMonth() + 1;
   const year = birthDate.getFullYear();
-  const dateDigits = String(day + month + year).split('').map(d => parseInt(d, 10));
+  const dateDigits = String(day + month + year)
+    .split('')
+    .map((d) => parseInt(d, 10));
 
   // Soma das letras do nome (A=1, B=2, etc)
   const nameDigits: number[] = [];
@@ -552,7 +579,11 @@ function calculateKarmicLessons(
     for (const char of fullName.toUpperCase().replace(/[^A-Z]/g, '')) {
       const value = char.charCodeAt(0) - 64;
       if (value > 0 && value < 27) {
-        nameDigits.push(...String(value).split('').map(d => parseInt(d, 10)));
+        nameDigits.push(
+          ...String(value)
+            .split('')
+            .map((d) => parseInt(d, 10))
+        );
       }
     }
   }
@@ -623,14 +654,19 @@ export function buildCycleSnapshot(
     personalDay.number === personalMonth.number,
     personalMonth.number === personalYear.number,
     personalDay.number === personalYear.number,
-    personalDay.energy === 'spiritual' || personalMonth.energy.includes('Inici') || personalYear.theme.includes('poder'),
+    personalDay.energy === 'spiritual' ||
+      personalMonth.energy.includes('Inici') ||
+      personalYear.theme.includes('poder'),
   ].filter(Boolean).length;
-  const overallEnergy = 50 + (energyMatches * 12);
+  const overallEnergy = 50 + energyMatches * 12;
 
   const synthesis = `📅 **HOJE — ${currentDate.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })}**
 
 🌟 **Sua energia hoje (Dia Pessoal ${personalDay.number}):** ${personalDay.energy}
-${personalDay.keywords.slice(0, 3).map(k => `• ${k}`).join('\n')}
+${personalDay.keywords
+  .slice(0, 3)
+  .map((k) => `• ${k}`)
+  .join('\n')}
 
 📆 **Mês Pessoal ${personalMonth.number}:** ${personalMonth.theme}
 

@@ -8,15 +8,14 @@
 // em inglês); usar PT-BR (Sombra, Dom, Siddhi). Componentes abaixo
 // usam PT-BR internally; API aceita strings em inglês para compat
 // com código existente.
-
 import { CheckCircle2, Star, XCircle, type LucideIcon } from 'lucide-react';
 
 export type FrequencyLevel = 'shadow' | 'gift' | 'siddhi';
 
 const FREQ_CONFIG: Record<FrequencyLevel, { label: string; color: string; Icon: LucideIcon }> = {
   shadow: { label: 'Sombra', color: '#FF2D55', Icon: XCircle },
-  gift:   { label: 'Dom',   color: '#34C759', Icon: CheckCircle2 },
-  siddhi: { label: 'Siddhi',color: '#AF52DE', Icon: Star },
+  gift: { label: 'Dom', color: '#34C759', Icon: CheckCircle2 },
+  siddhi: { label: 'Siddhi', color: '#AF52DE', Icon: Star },
 };
 
 export interface FrequencyBadgeProps {

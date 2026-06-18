@@ -6,9 +6,8 @@
  * As Asas agrupam hexagramas por tema/arquetípico, facilitando
  * a leitura espiritual e o estudo comparado.
  */
-
-import type { Wing, HexagramWithWings } from './types';
 import { getHexagram } from './hexagrams';
+import type { Wing, HexagramWithWings } from './types';
 
 /** As 10 Asas do I Ching em ordem canônica. */
 const WINGS: Wing[] = [
@@ -16,7 +15,8 @@ const WINGS: Wing[] = [
     id: 1,
     name: '天璜',
     nameEn: 'Tian Huang (Heavenly Wing)',
-    description: 'Céu e Ambiente — O aspecto criativo e espiritual. Governa os processos de nascimento e renovação cósmica.',
+    description:
+      'Céu e Ambiente — O aspecto criativo e espiritual. Governa os processos de nascimento e renovação cósmica.',
     themes: ['criação', 'espírito', 'movimento celestial', 'renovação cósmica'],
     hexagrams: [1, 2, 3, 4, 5, 6],
   },
@@ -24,7 +24,8 @@ const WINGS: Wing[] = [
     id: 2,
     name: '坤璜',
     nameEn: 'Kun Huang (Earthly Wing)',
-    description: 'Terra — A dimensão receptiva e nutritiva. Representa o plano material e a devoção à vida.',
+    description:
+      'Terra — A dimensão receptiva e nutritiva. Representa o plano material e a devoção à vida.',
     themes: ['terra', 'nutrição', 'receptividade', 'devoção'],
     hexagrams: [7, 8, 9, 10, 11, 12, 13, 14],
   },
@@ -32,7 +33,8 @@ const WINGS: Wing[] = [
     id: 3,
     name: '同人璜',
     nameEn: 'Wei Ren (Social Consciousness Wing)',
-    description: 'Consciência Social — O reconhecimento da humanidade como coletivo. Harmonia entre pessoas.',
+    description:
+      'Consciência Social — O reconhecimento da humanidade como coletivo. Harmonia entre pessoas.',
     themes: ['humanidade', 'comunidade', 'cooperação', 'fraternidade'],
     hexagrams: [15, 16, 17, 18, 19],
   },
@@ -40,7 +42,8 @@ const WINGS: Wing[] = [
     id: 4,
     name: '咸璜',
     nameEn: 'Xian Huang (Intimacy Wing)',
-    description: 'Intimidade — A conexão coração-a-coração. Relacionamentos, casamento e influência mútua.',
+    description:
+      'Intimidade — A conexão coração-a-coração. Relacionamentos, casamento e influência mútua.',
     themes: ['intimidade', 'relacionamento', 'casamento', 'influência'],
     hexagrams: [20, 21, 22, 23],
   },
@@ -48,7 +51,8 @@ const WINGS: Wing[] = [
     id: 5,
     name: '遯璜',
     nameEn: 'Dun Huang (Isolation Wing)',
-    description: 'Isolamento — A sabedoria de recuar. Saber quando se retirar para preservar a essência.',
+    description:
+      'Isolamento — A sabedoria de recuar. Saber quando se retirar para preservar a essência.',
     themes: ['retirada', 'preservação', 'discernimento', 'timing'],
     hexagrams: [24, 25, 26, 27, 28],
   },
@@ -80,7 +84,8 @@ const WINGS: Wing[] = [
     id: 9,
     name: '豐璜',
     nameEn: 'Feng Huang (Abundance Wing)',
-    description: 'Abundância — A plenitude e a transformação. Caldeirão alquímico e mudança de era.',
+    description:
+      'Abundância — A plenitude e a transformação. Caldeirão alquímico e mudança de era.',
     themes: ['abundância', 'transformação', 'plenitude', 'alquimia'],
     hexagrams: [47, 48, 49, 50, 51, 52],
   },
@@ -88,7 +93,8 @@ const WINGS: Wing[] = [
     id: 10,
     name: '旅璜',
     nameEn: 'Lu Huang (Wanderer Wing)',
-    description: 'Wanderer — O andante e a jornada. Viagem interior e exterior, estrangeiro e peregrino.',
+    description:
+      'Wanderer — O andante e a jornada. Viagem interior e exterior, estrangeiro e peregrino.',
     themes: ['viagem', 'andança', 'estrangeiro', 'peregrinação'],
     hexagrams: [53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64],
   },

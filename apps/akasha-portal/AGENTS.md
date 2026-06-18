@@ -1,11 +1,13 @@
 # Portal DOX
 
 ## Purpose
+
 Aplicação web principal do Akasha — Next.js 16 + React 19. Portal
 acessível aos usuários com Mandala, Mandato, Mentor, dashboard,
 Meu Dia, Minha Caixa, e 9 dimensões de vida. PWA-ready (F-228 mobile strategy).
 
 ## Ownership
+
 - `src/app/`: App Router (rotas, layouts, server components)
   - `api/akasha/`: API routes (~50+ endpoints tracked, auth via JWT)
   - `api/akasha/mandala/route.ts`: payload Mandala com `planets[].absoluteLongitude` (Fase 3)
@@ -16,7 +18,7 @@ Meu Dia, Minha Caixa, e 9 dimensões de vida. PWA-ready (F-228 mobile strategy).
     - `dashboard/`: Mandala + Daily synthesis + DailyDecisionCard
     - `diario/`: Mandato do Dia (F-235)
     - `significado-primeiro/`: First-time user flow
-- `src/components/`: Componentes React (akasha/*, ui/*, shared/*)
+- `src/components/`: Componentes React (akasha/_, ui/_, shared/\*)
   - `src/components/akasha/MandalaChart.tsx`: SVG do Mandala (5 camadas). Fase 3: 10 glifos de planetas com longitude absoluta + 12 casas numeradas + tooltips (F-206). Sem rotação contínua.
   - `src/components/akasha/MyDayScreen.tsx`: ONE SCREEN client component (F-224)
   - `src/components/akasha/AkashaAuthorityPrompt/`: F-227 decision card ("Paz vs Ansiedade")
@@ -35,6 +37,7 @@ Meu Dia, Minha Caixa, e 9 dimensões de vida. PWA-ready (F-228 mobile strategy).
 - `next.config.ts`: Next.js config (TypeScript)
 
 ## Local Contracts
+
 - `verifyAkashaToken(token, 'access')` para auth em rotas protegidas
 - Zod para validação de input em rotas mutating
 - Mandato + Mandala vêm de `@akasha/core` (5 Pilares)
@@ -48,6 +51,7 @@ Meu Dia, Minha Caixa, e 9 dimensões de vida. PWA-ready (F-228 mobile strategy).
 - **PWA** (F-228): `output: 'export'` PROIBIDO (incompatível com `cookies()` em rotas auth); usar Vercel Fluid Compute para runtime
 
 ## Work Guidance
+
 - PT-BR primeiro (i18n config)
 - Pilar 4 (Odu) ethics invariant: aviso `requer consentimento + terreiro`
 - LGPD by design: mínimo PII em responses (omitir pilares quando sensível)
@@ -59,6 +63,7 @@ Meu Dia, Minha Caixa, e 9 dimensões de vida. PWA-ready (F-228 mobile strategy).
 - 9 dimensões: usar `deriveAkashaAuthority` para decidir foco do dia
 
 ## Verification
+
 - `pnpm test:run` antes de commit
 - `pnpm typecheck` antes de merge (0 errors esperado)
 - `pnpm lint` antes de merge (0 errors; 200+ warnings pré-existentes documentados)
@@ -68,15 +73,16 @@ Meu Dia, Minha Caixa, e 9 dimensões de vida. PWA-ready (F-228 mobile strategy).
 
 ## Spec Coverage (v0.0.19 — Akasha Evolution)
 
-| Feature | Status | Files |
-|---|---|---|
-| R-023 Synthesis Framework | ✅ Done | `lib/grimoire/synthesis/` |
-| F-223 Caixa Akasha | ✅ Done | `components/akasha/CaixaUnificada/` + `[locale]/(akasha)/minha-caixa/` |
-| F-224 Meu Dia | ✅ Done | `components/akasha/MyDayScreen.tsx` + `[locale]/(akasha)/meu-dia/` |
-| F-225 Sexualidade Deep | ✅ Done | `lib/application/akasha/synthesis-engine.ts:deriveSexualArchetype` |
-| F-226 Narrative Generator | ✅ Done | `lib/application/akasha/narrative-generator.ts` |
-| F-227 Akasha Authority | ✅ Done | `lib/grimoire/akasha-authority.ts` + `components/akasha/AkashaAuthorityPrompt/` |
-| F-228 Mobile Strategy | ✅ Doc done | `.trae/specs/akasha-v0.0.19/mobile-strategy.md` (PWA-first) |
+| Feature                   | Status      | Files                                                                           |
+| ------------------------- | ----------- | ------------------------------------------------------------------------------- |
+| R-023 Synthesis Framework | ✅ Done     | `lib/grimoire/synthesis/`                                                       |
+| F-223 Caixa Akasha        | ✅ Done     | `components/akasha/CaixaUnificada/` + `[locale]/(akasha)/minha-caixa/`          |
+| F-224 Meu Dia             | ✅ Done     | `components/akasha/MyDayScreen.tsx` + `[locale]/(akasha)/meu-dia/`              |
+| F-225 Sexualidade Deep    | ✅ Done     | `lib/application/akasha/synthesis-engine.ts:deriveSexualArchetype`              |
+| F-226 Narrative Generator | ✅ Done     | `lib/application/akasha/narrative-generator.ts`                                 |
+| F-227 Akasha Authority    | ✅ Done     | `lib/grimoire/akasha-authority.ts` + `components/akasha/AkashaAuthorityPrompt/` |
+| F-228 Mobile Strategy     | ✅ Doc done | `.trae/specs/akasha-v0.0.19/mobile-strategy.md` (PWA-first)                     |
 
 ## Child DOX Index
+
 - [prisma](file:///home/skynet/cabala-dos-caminhos/apps/akasha-portal/prisma/AGENTS.md) — DB schema, migrations, D-040 design proposal (awaiting human approval)

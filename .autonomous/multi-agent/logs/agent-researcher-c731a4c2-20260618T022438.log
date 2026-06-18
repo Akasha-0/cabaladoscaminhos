@@ -1,0 +1,19 @@
+# Agent: researcher | ID: researcher-c731a4c2
+# Spawned: 2026-06-18T02:24:38.780662+00:00
+# Result: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/result-researcher-c731a4c2.json
+
+Research complete. The JSON result has been written to `.autonomous/multi-agent/result-researcher-c731a4c2.json`.
+
+**Summary of findings:**
+
+- **Current count**: 42 oversized files (41 TypeScript/TSX ≥500L in `apps/`, `packages/`, `tests/` + 1 root-level duplicate `traducao-areas.ts`)
+- **Prior result**: 43 — so 1 file was refactored below threshold since the last scan
+- **Plans.md tracked value**: 36 (the gap suggests either threshold discrepancies or some refactoring happened without Plans.md being updated)
+
+**6 prioritized refactoring actions:**
+1. **Delete** root `traducao-areas.ts` (739L) — it's an exact duplicate of the one in `lib/grimoire/`
+2. **Split** `Dashboard.tsx` (966L) — extract DailyTab, ProfileTab, ProgressTab panels
+3. **Split** `AkashaLifeAreasDashboard.tsx` (1017L) — extract AreaCard, OneProfileCard, FrequencyPathExplorer
+4. **Split** `MandalaChart.tsx` (749L) — extract layer builders into a `layer-builders/` subdir
+5. **Split** `ConexoesClient.tsx` (878L) — extract sub-components
+6. **Split** `derive-area-narratives.ts` (597L) — extract narrative-segment builders

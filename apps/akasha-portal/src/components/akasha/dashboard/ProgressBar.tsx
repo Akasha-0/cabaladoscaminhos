@@ -5,7 +5,6 @@
  *
  * Barra de progresso horizontal com animação shimmer e glow cósmico.
  */
-
 import { motion } from 'framer-motion';
 
 interface ProgressBarProps {
@@ -17,7 +16,14 @@ interface ProgressBarProps {
   accentColor?: string;
 }
 
-export function ProgressBar({ value, max, label, showPercent = true, showShimmer = true, accentColor }: ProgressBarProps) {
+export function ProgressBar({
+  value,
+  max,
+  label,
+  showPercent = true,
+  showShimmer = true,
+  accentColor,
+}: ProgressBarProps) {
   const percent = max > 0 ? Math.round((value / max) * 100) : 0;
   const primaryColor = accentColor || '#7C5CFF';
 
@@ -27,7 +33,9 @@ export function ProgressBar({ value, max, label, showPercent = true, showShimmer
         <div className="flex justify-between text-sm">
           {label && <span className="text-white/60">{label}</span>}
           {showPercent && (
-            <span className="text-white/80 font-medium">{value}/{max}</span>
+            <span className="text-white/80 font-medium">
+              {value}/{max}
+            </span>
           )}
         </div>
       )}
@@ -53,7 +61,8 @@ export function ProgressBar({ value, max, label, showPercent = true, showShimmer
             className="absolute top-0 left-0 h-full rounded-full"
             style={{
               width: `${percent}%`,
-              background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%)',
+              background:
+                'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%)',
             }}
             animate={{
               x: ['0%', '200%'],

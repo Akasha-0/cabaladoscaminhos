@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 type Props = { locale: string };
 
@@ -83,9 +83,7 @@ export default function LoginClient({ locale }: Props) {
       }}
     >
       <label style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-        <span style={{ fontSize: '0.875rem', color: '#8B92B5', fontWeight: 500 }}>
-          Email
-        </span>
+        <span style={{ fontSize: '0.875rem', color: '#8B92B5', fontWeight: 500 }}>Email</span>
         <input
           type="email"
           value={email}
@@ -98,9 +96,7 @@ export default function LoginClient({ locale }: Props) {
       </label>
 
       <label style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-        <span style={{ fontSize: '0.875rem', color: '#8B92B5', fontWeight: 500 }}>
-          Senha
-        </span>
+        <span style={{ fontSize: '0.875rem', color: '#8B92B5', fontWeight: 500 }}>Senha</span>
         <input
           type="password"
           value={password}

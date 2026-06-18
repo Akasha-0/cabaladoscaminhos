@@ -1,5 +1,4 @@
 // Session memory management
-
 import type { ChatSession, MentorMessage, MentorContext } from './types';
 
 export interface MemoryStore {
@@ -17,7 +16,7 @@ export function createSession(context: MentorContext): ChatSession {
     context,
     createdAt: Date.now(),
   };
-  
+
   store.sessions.set(session.id, session);
   return session;
 }
@@ -39,7 +38,7 @@ export function addMessage(sessionId: string, message: MentorMessage): void {
 export function getHistory(sessionId: string, limit?: number): MentorMessage[] {
   const session = store.sessions.get(sessionId);
   if (!session) return [];
-  
+
   const messages = session.messages;
   return limit ? messages.slice(-limit) : messages;
 }

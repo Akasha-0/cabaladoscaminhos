@@ -1,6 +1,5 @@
 // Mock LLM Provider — Fallback when no real LLM is available
 // Simulates streaming responses with spiritual/Akasha context
-
 import type { LLMProvider } from './index';
 
 export class MockProvider implements LLMProvider {

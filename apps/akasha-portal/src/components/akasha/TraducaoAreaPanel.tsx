@@ -15,12 +15,7 @@
  *   │ via Mispar Hechrachi            │
  *   └─────────────────────────────────┘
  */
-
-import {
-  AREA_LABEL,
-  AREA_ICONE,
-  type TraducaoArea,
-} from '@/lib/grimoire/traducao-areas';
+import { AREA_LABEL, AREA_ICONE, type TraducaoArea } from '@/lib/grimoire/traducao-areas';
 
 const DIMENSAO_NOME: Record<TraducaoArea['pilar'], string> = {
   cabala: 'Ancestralidade',
@@ -38,11 +33,7 @@ export interface TraducaoAreaPanelProps {
   variant?: 'compact' | 'expanded';
 }
 
-export function TraducaoAreaPanel({
-  traducao,
-  cor,
-  variant = 'compact',
-}: TraducaoAreaPanelProps) {
+export function TraducaoAreaPanel({ traducao, cor, variant = 'compact' }: TraducaoAreaPanelProps) {
   const { pilar, area, frase, fonte, requer_terreiro } = traducao;
   return (
     <article

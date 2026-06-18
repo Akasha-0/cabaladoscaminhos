@@ -1,7 +1,6 @@
 // Numerology calculation generator
 // Export calculateNumerology(name, date)
 // Includes all methods: pitagorica, caldeia, cabalistica, tantrica, destino
-
 import {
   calcularPitagorica,
   calcularCaldeia,

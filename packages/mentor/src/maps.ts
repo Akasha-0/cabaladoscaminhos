@@ -1,13 +1,19 @@
 /**
  * Maps wrapper — carrega os 4 mapas do usuário a partir dos cores existentes.
  */
-
-import type { UserMaps, CabalaMap, OduMap, AstrologyMap, TantraMap, CabalaData, AstrologyData } from './types';
-
+import { getBirthChart, type BirthChart } from '@akasha/core-astrology';
 import { buildKabalisticMap } from '@akasha/core-cabala';
 import { calculateBirthOdu } from '@akasha/core-odus';
-import { getBirthChart, type BirthChart } from '@akasha/core-astrology';
 import { buildTantricMap } from '@akasha/core-tantra';
+import type {
+  UserMaps,
+  CabalaMap,
+  OduMap,
+  AstrologyMap,
+  TantraMap,
+  CabalaData,
+  AstrologyData,
+} from './types';
 
 export interface MapLoaderConfig {
   prisma: any; // PrismaClient
@@ -21,7 +27,20 @@ function extractPlanetSign(chart: BirthChart, planet: string): string {
   const pos = chart.planets.find((p) => p.planet === planet);
   if (!pos) return 'desconhecido';
   const signIndex = Math.floor(pos.longitude / 30);
-  const signs = ['aries', 'touro', 'gemeos', 'cancer', 'leao', 'virgem', 'libra', 'escorpio', 'sagitario', 'capricornio', 'aquario', 'peixes'];
+  const signs = [
+    'aries',
+    'touro',
+    'gemeos',
+    'cancer',
+    'leao',
+    'virgem',
+    'libra',
+    'escorpio',
+    'sagitario',
+    'capricornio',
+    'aquario',
+    'peixes',
+  ];
   return signs[signIndex % 12] ?? 'desconhecido';
 }
 
@@ -62,7 +81,7 @@ const SEFIROT_PATHS: Record<number, string> = {
 export async function loadUserMaps(config: MapLoaderConfig): Promise<UserMaps> {
   const user = await config.prisma.user.findUnique({
     where: { id: config.userId },
-    select: { birthDate: true, name: true, location: true }
+    select: { birthDate: true, name: true, location: true },
   });
 
   if (!user) throw new Error('User not found');
@@ -165,7 +184,7 @@ export function formatMapsSummary(maps: UserMaps): string {
   const astrology = maps.astrology as AstrologyData | undefined;
   const odu = maps.odus;
   const tantra = maps.tantra;
-  
+
   return `
 📊 SEUS MAPAS:
 • Caminho de Vida: ${cabala?.lifePath ?? 'N/A'} (${cabala?.description ?? 'N/A'})
@@ -183,7 +202,7 @@ export function mapsToPromptContext(maps: UserMaps): string {
   const astrology = maps.astrology as AstrologyData | undefined;
   const odu = maps.odus;
   const tantra = maps.tantra;
-  
+
   return `
 MAPAS ESPIRITUAIS DO USUÁRIO:
 1. CABALA - Caminho de Vida: ${cabala?.lifePath ?? 'N/A'}
@@ -197,7 +216,13 @@ MAPAS ESPIRITUAIS DO USUÁRIO:
 3. ASTROLOGIA - Sol: ${astrology?.sign ?? 'N/A'}
    Lua: ${astrology?.moon ?? 'N/A'}
    Ascendente: ${astrology?.rising ?? 'N/A'}
-   Planetas: ${astrology?.planets ? Object.entries(astrology.planets).map(([k, v]) => `${k}: ${v}`).join(', ') : 'N/A'}
+   Planetas: ${
+     astrology?.planets
+       ? Object.entries(astrology.planets)
+           .map(([k, v]) => `${k}: ${v}`)
+           .join(', ')
+       : 'N/A'
+   }
 
 4. TANTRA - Corpo Primário: ${tantra?.primary ?? 'N/A'}
    Corpo Secundário: ${tantra?.secondary ?? 'N/A'}

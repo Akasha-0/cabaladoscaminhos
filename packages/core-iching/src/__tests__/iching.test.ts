@@ -17,7 +17,7 @@ describe('@akasha/core-iching', () => {
     it('contains all 8 expected Chinese names', () => {
       const names = Object.values(TRIGRAMS).map((t: Trigram) => t.chineseName);
       expect(names).toEqual(
-        expect.arrayContaining(['Qian', 'Kun', 'Kan', 'Li', 'Zhen', 'Gen', 'Xun', 'Dui']),
+        expect.arrayContaining(['Qian', 'Kun', 'Kan', 'Li', 'Zhen', 'Gen', 'Xun', 'Dui'])
       );
     });
     it('getTrigram(1) returns Qian (Heaven)', () => {

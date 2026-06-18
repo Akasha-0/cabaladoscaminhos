@@ -1,22 +1,3 @@
-import type { UserSpiritualData, ChatMessage } from './types';
-import { generateMinimaxResponse } from './minimax';
-import {
-  SYSTEM_ENERGIES,
-  getTarotName,
-  hasDataForSystem,
-  getSystemTargets,
-  getDataPresenceMultiplier,
-  findSharedEnergy,
-  calculateSystemHarmony,
-  calculatePairHarmony,
-} from './deep-correlation-engine/system-helpers';
-import {
-  detectRecurringNumberPatterns,
-  detectElementalImbalance,
-  detectKarmicThemes,
-  detectSpiritualBlocks,
-  ODU_TAROT_MAP,
-} from './deep-correlation-engine/pattern-detectors';
 import {
   calculateBaseCorrelation,
   LIFE_PATH_ZODIAC_MAP,
@@ -31,12 +12,37 @@ import {
   SEPHIROT_SIGN_MAP,
   SEPHIROT_ORIXA_MAP,
 } from './deep-correlation-engine/correlation-maps';
+import {
+  detectRecurringNumberPatterns,
+  detectElementalImbalance,
+  detectKarmicThemes,
+  detectSpiritualBlocks,
+  ODU_TAROT_MAP,
+} from './deep-correlation-engine/pattern-detectors';
+import {
+  SYSTEM_ENERGIES,
+  getTarotName,
+  hasDataForSystem,
+  getSystemTargets,
+  getDataPresenceMultiplier,
+  findSharedEnergy,
+  calculateSystemHarmony,
+  calculatePairHarmony,
+} from './deep-correlation-engine/system-helpers';
+import { generateMinimaxResponse } from './minimax';
+import type { UserSpiritualData, ChatMessage } from './types';
 
 // ============================================================
 // TYPES
 // ============================================================
 
-export type SpiritualSource = 'kabbalah' | 'ifa' | 'candomble' | 'tarot' | 'astrology' | 'numerology';
+export type SpiritualSource =
+  | 'kabbalah'
+  | 'ifa'
+  | 'candomble'
+  | 'tarot'
+  | 'astrology'
+  | 'numerology';
 
 export interface SpiritualCorrelation {
   source: SpiritualSource;
@@ -62,7 +68,16 @@ export interface DetectedPattern {
   urgency: 'low' | 'medium' | 'high';
 }
 
-export type SpiritualSystem = 'kabbalah' | 'ifa' | 'candomble' | 'tarot' | 'astrology' | 'numerology' | 'chakra' | 'element' | 'temporal';
+export type SpiritualSystem =
+  | 'kabbalah'
+  | 'ifa'
+  | 'candomble'
+  | 'tarot'
+  | 'astrology'
+  | 'numerology'
+  | 'chakra'
+  | 'element'
+  | 'temporal';
 
 export interface CrossSystemPattern {
   name: string;
@@ -102,31 +117,50 @@ const PATTERN_DEFINITIONS: PatternDefinition[] = [
     name: 'Light Bearer',
     description: 'Pattern of illumination and spiritual enlightenment across traditions',
     triggers: {
-      kabbalah: (d) => d.sefirotDominante?.includes('Keter') || d.sefirotDominante?.includes('Chokhmah'),
+      kabbalah: (d) =>
+        d.sefirotDominante?.includes('Keter') || d.sefirotDominante?.includes('Chokhmah'),
       tarot: (d) => d.arcoMaior?.includes(0) || d.arcoMaior?.includes(1),
       astrology: (d) => d.sign === 'Leo' || d.sign === 'Aries',
     },
-    manifestations: ['Inner light activation', 'Spiritual awakening', 'Teaching ability', 'Enlightenment energy'],
+    manifestations: [
+      'Inner light activation',
+      'Spiritual awakening',
+      'Teaching ability',
+      'Enlightenment energy',
+    ],
   },
   {
     name: 'Wisdom Seeker',
     description: 'Pattern of deep knowledge and intellectual spiritual pursuits',
     triggers: {
-      kabbalah: (d) => d.sefirotDominante?.includes('Chokhmah') || d.sefirotDominante?.includes('Binah'),
+      kabbalah: (d) =>
+        d.sefirotDominante?.includes('Chokhmah') || d.sefirotDominante?.includes('Binah'),
       ifa: (d) => d.odu === 'Ogbe' || d.odu === 'Oxossi',
       numerology: (d) => d.numeroPessoal === 5 || d.numeroPessoal === 7,
     },
-    manifestations: ['Deep contemplation', 'Scholarly pursuits', 'Philosophical insight', 'Ancient wisdom'],
+    manifestations: [
+      'Deep contemplation',
+      'Scholarly pursuits',
+      'Philosophical insight',
+      'Ancient wisdom',
+    ],
   },
   {
     name: 'Transformation Master',
     description: 'Pattern of personal and spiritual metamorphosis',
     triggers: {
-      kabbalah: (d) => d.sefirotDominante?.includes('Gevurah') || d.sefirotDominante?.includes('Tipheret'),
-      tarot: (d) => d.arcoMaior?.includes(12) || d.arcoMaior?.includes(14) || d.arcoMaior?.includes(21),
+      kabbalah: (d) =>
+        d.sefirotDominante?.includes('Gevurah') || d.sefirotDominante?.includes('Tipheret'),
+      tarot: (d) =>
+        d.arcoMaior?.includes(12) || d.arcoMaior?.includes(14) || d.arcoMaior?.includes(21),
       candomble: (d) => d.orixaRegente === 'Oxum' || d.orixaRegente === 'Omulu',
     },
-    manifestations: ['Personal alchemy', 'Rebirth energy', 'Psychic integration', 'Ego transcendence'],
+    manifestations: [
+      'Personal alchemy',
+      'Rebirth energy',
+      'Psychic integration',
+      'Ego transcendence',
+    ],
   },
   {
     name: 'Ancestral Channel',
@@ -136,26 +170,41 @@ const PATTERN_DEFINITIONS: PatternDefinition[] = [
       ifa: (d) => d.odu !== undefined,
       astrology: (d) => d.houses?.['4'] !== undefined,
     },
-    manifestations: ['Ancestor veneration', 'Lineage healing', 'Family karma resolution', 'Heritage wisdom'],
+    manifestations: [
+      'Ancestor veneration',
+      'Lineage healing',
+      'Family karma resolution',
+      'Heritage wisdom',
+    ],
   },
   {
     name: 'Fate Walker',
     description: 'Pattern of destiny consciousness and cosmic alignment',
     triggers: {
       ifa: (d) => d.odu !== undefined,
-      tarot: (d) => d.arcoMaior?.includes(10) || d.arcoMaior?.includes(15) || d.arcoMaior?.includes(21),
+      tarot: (d) =>
+        d.arcoMaior?.includes(10) || d.arcoMaior?.includes(15) || d.arcoMaior?.includes(21),
       numerology: (d) => d.numeroPessoal === 9 || d.numeroPessoal === 11,
       astrology: (d) => d.rashi !== undefined,
     },
-    manifestations: ['Destiny awareness', 'Karmic reading', 'Life purpose clarity', 'Cosmic synchronicity'],
+    manifestations: [
+      'Destiny awareness',
+      'Karmic reading',
+      'Life purpose clarity',
+      'Cosmic synchronicity',
+    ],
   },
   {
     name: 'Elemental Adept',
     description: 'Pattern of elemental mastery and nature connection',
     triggers: {
       candomble: (d) => d.orixaRegente !== undefined,
-      tarot: (d) => d.arcoMaior?.includes(0) || d.arcoMaior?.includes(1) || d.arcoMaior?.includes(2) || d.arcoMaior?.includes(3),
-      kabbalah: (d) => d.sefirotDominante?.every(s => ['Netzach', 'Hod', 'Yesod'].includes(s)),
+      tarot: (d) =>
+        d.arcoMaior?.includes(0) ||
+        d.arcoMaior?.includes(1) ||
+        d.arcoMaior?.includes(2) ||
+        d.arcoMaior?.includes(3),
+      kabbalah: (d) => d.sefirotDominante?.every((s) => ['Netzach', 'Hod', 'Yesod'].includes(s)),
     },
     manifestations: ['Elemental command', 'Nature spirits', 'Weather attunement', 'Earth healing'],
   },
@@ -172,7 +221,14 @@ class DeepCorrelationEngine {
   analyzeCorrelations(userData: UserSpiritualData): SpiritualCorrelation[] {
     (userData as unknown as { odx?: string }).odx; // Access odx to prevent unused warning
     const correlations: SpiritualCorrelation[] = [];
-    const sources: SpiritualSource[] = ['kabbalah', 'ifa', 'candomble', 'tarot', 'astrology', 'numerology'];
+    const sources: SpiritualSource[] = [
+      'kabbalah',
+      'ifa',
+      'candomble',
+      'tarot',
+      'astrology',
+      'numerology',
+    ];
 
     for (const source of sources) {
       if (!hasDataForSystem(userData, source)) continue;
@@ -209,7 +265,10 @@ class DeepCorrelationEngine {
       let matchStrength = 0;
       const matchedManifestations: string[] = [];
 
-      for (const [system, trigger] of Object.entries(patternDef.triggers) as [SpiritualSource, (data: UserSpiritualData) => boolean][]) {
+      for (const [system, trigger] of Object.entries(patternDef.triggers) as [
+        SpiritualSource,
+        (data: UserSpiritualData) => boolean,
+      ][]) {
         if (trigger(userData)) {
           involvedSystems.push(system);
           matchStrength += 1;
@@ -217,7 +276,8 @@ class DeepCorrelationEngine {
       }
 
       if (involvedSystems.length >= 2) {
-        matchStrength = matchStrength / (involvedSystems.length + PATTERN_DEFINITIONS.indexOf(patternDef) + 1);
+        matchStrength =
+          matchStrength / (involvedSystems.length + PATTERN_DEFINITIONS.indexOf(patternDef) + 1);
 
         if (involvedSystems.length >= 3) {
           matchStrength = Math.min(1, matchStrength * 1.2);
@@ -242,7 +302,14 @@ class DeepCorrelationEngine {
    * Calculate energy harmony between all spiritual systems
    */
   calculateEnergyHarmony(userData: UserSpiritualData): EnergyHarmonyReport {
-    const sources: SpiritualSource[] = ['kabbalah', 'ifa', 'candomble', 'tarot', 'astrology', 'numerology'];
+    const sources: SpiritualSource[] = [
+      'kabbalah',
+      'ifa',
+      'candomble',
+      'tarot',
+      'astrology',
+      'numerology',
+    ];
     const systemHarmonies: Record<SpiritualSource, number> = {} as Record<SpiritualSource, number>;
     const harmonious: string[] = [];
     const conflicting: string[] = [];
@@ -291,24 +358,41 @@ class DeepCorrelationEngine {
     // Generate recommendations
     const recommendations: string[] = [];
     if (conflicting.length > 0) {
-      recommendations.push('Focus on integrating conflicting systems through meditation and reflection');
+      recommendations.push(
+        'Focus on integrating conflicting systems through meditation and reflection'
+      );
     }
     if (maxHarmony > 0.8) {
       recommendations.push('Your dominant energy is strong — use it to support weaker areas');
     }
     if (systemsWithData.length >= 4) {
-      recommendations.push('Your spiritual profile is well-rounded — continue exploring cross-tradition insights');
+      recommendations.push(
+        'Your spiritual profile is well-rounded — continue exploring cross-tradition insights'
+      );
     }
-    if (!harmonious.includes('kabbalah-numerology') && systemHarmonies.kabbalah > 0 && systemHarmonies.numerology > 0) {
-      recommendations.push('Bridge Kabbalah and Numerology through the Sefirot correspondence for deeper numeric wisdom');
+    if (
+      !harmonious.includes('kabbalah-numerology') &&
+      systemHarmonies.kabbalah > 0 &&
+      systemHarmonies.numerology > 0
+    ) {
+      recommendations.push(
+        'Bridge Kabbalah and Numerology through the Sefirot correspondence for deeper numeric wisdom'
+      );
     }
-    if (!harmonious.includes('candomble-ifa') && systemHarmonies.candomble > 0 && systemHarmonies.ifa > 0) {
-      recommendations.push('Connect Candomblé and Ifá through African ancestor reverence practices');
+    if (
+      !harmonious.includes('candomble-ifa') &&
+      systemHarmonies.candomble > 0 &&
+      systemHarmonies.ifa > 0
+    ) {
+      recommendations.push(
+        'Connect Candomblé and Ifá through African ancestor reverence practices'
+      );
     }
 
-    const overallScore = systemsWithData.length > 0
-      ? Object.values(systemHarmonies).reduce((a, b) => a + b, 0) / systemsWithData.length
-      : 0;
+    const overallScore =
+      systemsWithData.length > 0
+        ? Object.values(systemHarmonies).reduce((a, b) => a + b, 0) / systemsWithData.length
+        : 0;
 
     return {
       overall_score: overallScore,
@@ -326,14 +410,14 @@ class DeepCorrelationEngine {
    */
   correlateNumerologyAstrology(lifePath: number, sign: string): SystemCorrelation {
     const compatibleSigns = LIFE_PATH_ZODIAC_MAP[lifePath] || [];
-    const isCompatible = compatibleSigns.some(s => s.toLowerCase() === sign.toLowerCase());
-    
+    const isCompatible = compatibleSigns.some((s) => s.toLowerCase() === sign.toLowerCase());
+
     return {
       source: 'numerology',
       target: 'astrology',
       correlationType: 'numerical',
       strength: isCompatible ? 0.9 : compatibleSigns.length > 0 ? 0.4 : 0.2,
-      explanation: isCompatible 
+      explanation: isCompatible
         ? `O número do caminho de vida ${lifePath} ressoa harmonicamente com ${sign}, indicando uma conexão espiritual profunda entre a numerologia e a astrologia.`
         : `O número do caminho de vida ${lifePath} e o signo ${sign} apresentam diferentes energias, mas podem ser integrados através de práticas espirituais específicas.`,
     };
@@ -345,7 +429,7 @@ class DeepCorrelationEngine {
   correlateIfaCabala(odu: string, sephirot: string[]): SystemCorrelation[] {
     const correlations: SystemCorrelation[] = [];
     const oduSephirot = ODU_SEPHIROT_MAP[odu] || [];
-    
+
     for (const sp of sephirot) {
       if (oduSephirot.includes(sp)) {
         correlations.push({
@@ -365,7 +449,7 @@ class DeepCorrelationEngine {
         });
       }
     }
-    
+
     return correlations;
   }
 
@@ -374,11 +458,11 @@ class DeepCorrelationEngine {
    */
   correlateTarotOrixa(arcanaNumbers: number[], orixa: string): SystemCorrelation[] {
     const correlations: SystemCorrelation[] = [];
-    
+
     for (const arcanaNum of arcanaNumbers) {
       const orixas = TAROT_ORIXA_MAP[arcanaNum] || [];
-      const isMatch = orixas.some(o => o.toLowerCase() === orixa.toLowerCase());
-      
+      const isMatch = orixas.some((o) => o.toLowerCase() === orixa.toLowerCase());
+
       correlations.push({
         source: 'tarot',
         target: 'candomble',
@@ -389,7 +473,7 @@ class DeepCorrelationEngine {
           : `O Arcano Maior ${arcanaNum} e ${orixa} têm energias complementares que podem ser harmonizadas através de rituais específicos.`,
       });
     }
-    
+
     return correlations;
   }
 
@@ -398,10 +482,10 @@ class DeepCorrelationEngine {
    */
   correlateChakraElement(chakras: string[]): SystemCorrelation[] {
     const correlations: SystemCorrelation[] = [];
-    
+
     for (const chakra of chakras) {
       const element = CHAKRA_ELEMENT_MAP[chakra] || 'Desconhecido';
-      
+
       correlations.push({
         source: 'chakra',
         target: 'element',
@@ -410,7 +494,7 @@ class DeepCorrelationEngine {
         explanation: `O chakra ${chakra} está asociado ao elemento ${element}. Esta correlação é fundamental para equilibrar sua energia espiritual e física.`,
       });
     }
-    
+
     return correlations;
   }
 
@@ -420,7 +504,7 @@ class DeepCorrelationEngine {
   correlatePlanetOrixa(planet: string, orixa: string): SystemCorrelation {
     const regent = PLANET_ORIXA_MAP[planet];
     const isMatch = regent?.toLowerCase() === orixa.toLowerCase();
-    
+
     return {
       source: 'astrology',
       target: 'candomble',
@@ -437,7 +521,7 @@ class DeepCorrelationEngine {
    */
   correlateDayEnergy(dayOfWeek: string): SystemCorrelation {
     const dayData = DAY_ENERGY_MAP[dayOfWeek];
-    
+
     if (!dayData) {
       return {
         source: 'element',
@@ -447,7 +531,7 @@ class DeepCorrelationEngine {
         explanation: `O dia ${dayOfWeek} não possui uma correlação espiritual mapeada em nosso sistema.`,
       };
     }
-    
+
     return {
       source: 'element',
       target: 'temporal',
@@ -483,7 +567,6 @@ class DeepCorrelationEngine {
     const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
     const dayOfWeek = days[new Date().getDay()];
     correlations.push(this.correlateDayEnergy(dayOfWeek));
-
 
     return correlations.sort((a, b) => b.strength - a.strength);
   }
@@ -524,13 +607,13 @@ class DeepCorrelationEngine {
 
   private detectRecurringNumberPatterns(userData: UserSpiritualData): DetectedPattern[] {
     const patterns: DetectedPattern[] = [];
-    
+
     if (userData.numeroPessoal) {
       // Check if personal number matches any arcana or odu
       const matchingArcana = Object.entries(ODU_TAROT_MAP)
         .filter(([_, nums]) => nums.includes(userData.numeroPessoal!))
         .map(([odu]) => odu);
-      
+
       if (matchingArcana.length > 0) {
         patterns.push({
           patternType: 'recurring_number',
@@ -546,13 +629,14 @@ class DeepCorrelationEngine {
     if (userData.numeroPessoal && userData.numeroPessoal > 9) {
       const digits = userData.numeroPessoal.toString().split('');
       const hasRepeating = digits.some((d, i) => digits.indexOf(d) !== i);
-      
+
       if (hasRepeating) {
         patterns.push({
           patternType: 'recurring_number',
           systems: ['numerology'],
           description: `Seu número pessoal contém dígitos repetidos, indicando uma ênfase específica em sua energia vibracional.`,
-          recommendation: 'Trabalhe com a energia dos dígitos repetidos para amplificar seus pontos fortes.',
+          recommendation:
+            'Trabalhe com a energia dos dígitos repetidos para amplificar seus pontos fortes.',
           urgency: 'low',
         });
       }
@@ -563,21 +647,21 @@ class DeepCorrelationEngine {
 
   private detectElementalImbalance(userData: UserSpiritualData): DetectedPattern[] {
     const patterns: DetectedPattern[] = [];
-    
+
     // Collect elements from different systems
     const elements: string[] = [];
-    
+
     if (userData.orixaRegente) {
       // Each Orixá has element associations
       const orixaElements: Record<string, string> = {
-        'Ogum': 'Fogo',
-        'Oxum': 'Água',
-        'Iemanjá': 'Água',
-        'Oxossi': 'Ar',
-        'Obatalá': 'Terra',
-        'Omulu': 'Terra',
-        'Xangô': 'Fogo',
-        'Iansã': 'Ar',
+        Ogum: 'Fogo',
+        Oxum: 'Água',
+        Iemanjá: 'Água',
+        Oxossi: 'Ar',
+        Obatalá: 'Terra',
+        Omulu: 'Terra',
+        Xangô: 'Fogo',
+        Iansã: 'Ar',
       };
       const elem = orixaElements[userData.orixaRegente];
       if (elem) elements.push(elem);
@@ -586,10 +670,18 @@ class DeepCorrelationEngine {
     if (userData.sign) {
       // Zodiac signs have element associations
       const signElements: Record<string, string> = {
-        'Aries': 'Fogo', 'Leo': 'Fogo', 'Sagittarius': 'Fogo',
-        'Taurus': 'Terra', 'Virgo': 'Terra', 'Capricorn': 'Terra',
-        'Gemini': 'Ar', 'Libra': 'Ar', 'Aquarius': 'Ar',
-        'Cancer': 'Água', 'Scorpio': 'Água', 'Pisces': 'Água',
+        Aries: 'Fogo',
+        Leo: 'Fogo',
+        Sagittarius: 'Fogo',
+        Taurus: 'Terra',
+        Virgo: 'Terra',
+        Capricorn: 'Terra',
+        Gemini: 'Ar',
+        Libra: 'Ar',
+        Aquarius: 'Ar',
+        Cancer: 'Água',
+        Scorpio: 'Água',
+        Pisces: 'Água',
       };
       const elem = signElements[userData.sign];
       if (elem) elements.push(elem);
@@ -602,12 +694,11 @@ class DeepCorrelationEngine {
     }
 
     // Detect imbalance (one element strongly dominant)
-    const dominantElement = Object.entries(elementCounts)
-      .sort((a, b) => b[1] - a[1])[0];
+    const dominantElement = Object.entries(elementCounts).sort((a, b) => b[1] - a[1])[0];
 
     if (dominantElement && dominantElement[1] >= 2 && Object.keys(elementCounts).length >= 2) {
-      const missingElements = ['Fogo', 'Terra', 'Água', 'Ar'].filter(e => !elementCounts[e]);
-      
+      const missingElements = ['Fogo', 'Terra', 'Água', 'Ar'].filter((e) => !elementCounts[e]);
+
       patterns.push({
         patternType: 'elemental_imbalance',
         systems: ['candomble', 'astrology'],
@@ -646,7 +737,8 @@ class DeepCorrelationEngine {
         patternType: 'karmic_theme',
         systems,
         description: `Sua jornada espiritual mostra múltiplos indicadores de temas cármicos: ${systems.join(', ')}. Você está em um caminho de resolução de karma e evoluÇão espiritual profunda.`,
-        recommendation: 'Pratique a gratidão e o perdão diariamente. Rituais de ancestor могут ajudar na limpeza cármica.',
+        recommendation:
+          'Pratique a gratidão e o perdão diariamente. Rituais de ancestor могут ajudar na limpeza cármica.',
         urgency: 'medium',
       });
     }
@@ -678,7 +770,8 @@ class DeepCorrelationEngine {
         patternType: 'spiritual_block',
         systems: blocks,
         description: `Você apresenta bloqueios espirituais nos sistemas: ${blocks.join(', ')}. Estes gaps estão limitando sua evolução espiritual completa.`,
-        recommendation: 'Estude os sistemas faltantes para integrar completamente sua jornada espiritual. Consulte um Babalawo ou especialista em Tarot.',
+        recommendation:
+          'Estude os sistemas faltantes para integrar completamente sua jornada espiritual. Consulte um Babalawo ou especialista em Tarot.',
         urgency: 'high',
       });
     }
@@ -734,7 +827,8 @@ Forneça:
     const messages: ChatMessage[] = [
       {
         role: 'system',
-        content: 'Você é um conselheiro espiritual especializado em fornecer conselhos práticos para crescimento espiritual. Responda apenas em português, de forma clara e objetiva.',
+        content:
+          'Você é um conselheiro espiritual especializado em fornecer conselhos práticos para crescimento espiritual. Responda apenas em português, de forma clara e objetiva.',
       },
       {
         role: 'user',

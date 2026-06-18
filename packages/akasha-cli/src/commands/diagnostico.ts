@@ -1,8 +1,8 @@
-import pc from 'picocolors';
 import { exec } from 'child_process';
-import { promisify } from 'util';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
+import pc from 'picocolors';
+import { promisify } from 'util';
 
 const execAsync = promisify(exec);
 
@@ -24,7 +24,7 @@ async function checkNode(): Promise<DiagnosticResult> {
     name: 'Node.js',
     status: 'error',
     message: `v${version.slice(1)} (mínimo: v18)`,
-    suggestion: 'Atualize para Node.js 18+ via nvm ou site oficial'
+    suggestion: 'Atualize para Node.js 18+ via nvm ou site oficial',
   };
 }
 
@@ -41,14 +41,14 @@ async function checkPnpm(): Promise<DiagnosticResult> {
       name: 'pnpm',
       status: 'warning',
       message: `v${version} (recomendado: v8+)`,
-      suggestion: 'Considere atualizar: npm install -g pnpm'
+      suggestion: 'Considere atualizar: npm install -g pnpm',
     };
   } catch {
     return {
       name: 'pnpm',
       status: 'error',
       message: 'Não encontrado',
-      suggestion: 'Instale: npm install -g pnpm'
+      suggestion: 'Instale: npm install -g pnpm',
     };
   }
 }
@@ -65,7 +65,7 @@ async function checkPostgres(): Promise<DiagnosticResult> {
       name: 'PostgreSQL',
       status: 'error',
       message: 'Não encontrado ou não acessível',
-      suggestion: 'Execute: akasha setup'
+      suggestion: 'Execute: akasha setup',
     };
   }
 }
@@ -81,7 +81,7 @@ async function checkEnvFile(): Promise<DiagnosticResult> {
       name: 'Arquivo .env',
       status: 'error',
       message: 'Nenhum arquivo de ambiente encontrado',
-      suggestion: 'Execute: akasha setup'
+      suggestion: 'Execute: akasha setup',
     };
   }
 
@@ -97,14 +97,14 @@ async function checkEnvFile(): Promise<DiagnosticResult> {
       name: 'Arquivo .env',
       status: 'error',
       message: 'DATABASE_URL não encontrado',
-      suggestion: 'Adicione DATABASE_URL ao arquivo .env'
+      suggestion: 'Adicione DATABASE_URL ao arquivo .env',
     };
   } catch {
     return {
       name: 'Arquivo .env',
       status: 'error',
       message: 'Erro ao ler arquivo',
-      suggestion: 'Verifique as permissões do arquivo'
+      suggestion: 'Verifique as permissões do arquivo',
     };
   }
 }
@@ -118,7 +118,7 @@ async function checkMigrations(): Promise<DiagnosticResult> {
       name: 'Prisma Schema',
       status: 'warning',
       message: 'schema.prisma não encontrado',
-      suggestion: 'Verifique se o projeto está configurado corretamente'
+      suggestion: 'Verifique se o projeto está configurado corretamente',
     };
   }
 
@@ -127,7 +127,7 @@ async function checkMigrations(): Promise<DiagnosticResult> {
       name: 'Migrations',
       status: 'warning',
       message: 'Nenhuma migration encontrada',
-      suggestion: 'Execute: npx prisma migrate dev --name init'
+      suggestion: 'Execute: npx prisma migrate dev --name init',
     };
   }
 
@@ -142,16 +142,22 @@ async function checkDependencies(): Promise<DiagnosticResult> {
       name: 'Dependências',
       status: 'error',
       message: 'node_modules não encontrado',
-      suggestion: 'Execute: pnpm install'
+      suggestion: 'Execute: pnpm install',
     };
   }
 
   try {
-    const { stdout } = await execAsync('pnpm list --depth 0 2>/dev/null || echo ""', { timeout: 10000 });
+    const { stdout } = await execAsync('pnpm list --depth 0 2>/dev/null || echo ""', {
+      timeout: 10000,
+    });
     const depsCount = (stdout.match(/\n/g) || []).length;
 
     if (depsCount > 0) {
-      return { name: 'Dependências', status: 'ok', message: `${depsCount} dependências instaladas` };
+      return {
+        name: 'Dependências',
+        status: 'ok',
+        message: `${depsCount} dependências instaladas`,
+      };
     }
     return { name: 'Dependências', status: 'warning', message: 'Verificação inconclusiva' };
   } catch {
@@ -186,12 +192,15 @@ export async function diagnostico(): Promise<void> {
   ];
 
   for (const result of results) {
-    const icon = result.status === 'ok' ? pc.green('✓') :
-                 result.status === 'warning' ? pc.yellow('!') :
-                 pc.red('✗');
+    const icon =
+      result.status === 'ok'
+        ? pc.green('✓')
+        : result.status === 'warning'
+          ? pc.yellow('!')
+          : pc.red('✗');
 
-    const statusColor = result.status === 'ok' ? pc.green :
-                         result.status === 'warning' ? pc.yellow : pc.red;
+    const statusColor =
+      result.status === 'ok' ? pc.green : result.status === 'warning' ? pc.yellow : pc.red;
 
     lines.push(`  ${icon} ${pc.bold(result.name)}`);
     lines.push(`     ${statusColor(result.message)}`);
@@ -202,8 +211,8 @@ export async function diagnostico(): Promise<void> {
   }
 
   // Resumo
-  const errors = results.filter(r => r.status === 'error').length;
-  const warnings = results.filter(r => r.status === 'warning').length;
+  const errors = results.filter((r) => r.status === 'error').length;
+  const warnings = results.filter((r) => r.status === 'warning').length;
 
   lines.push(divider);
   lines.push('');

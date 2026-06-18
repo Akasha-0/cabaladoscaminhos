@@ -25,6 +25,12 @@ import { getOrixaFrequency } from '../correlation/orixa-frequency';
 import { getOrixaNumerology } from '../correlation/orixa-numerology';
 import { getOrixaPlanet } from '../correlation/orixa-planet';
 import {
+  getElementFromSigno,
+  getElementFromNumber,
+  calculateCorrelationStrength,
+  getElement,
+} from './element-correlation';
+import {
   getOrixa,
   getAllOrixas,
   normalizeOrixaKey,
@@ -35,12 +41,6 @@ import {
   getOrixaNumeros,
   ORIXAS_UNIFIED,
 } from './types';
-import {
-  getElementFromSigno,
-  getElementFromNumber,
-  calculateCorrelationStrength,
-  getElement,
-} from './element-correlation';
 
 // ════════════════════════════════════════════════════════════════════════════
 // TYPE DEFINITIONS

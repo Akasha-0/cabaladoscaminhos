@@ -3,11 +3,10 @@
  *
  * Testa o script de audit de curadoria como subprocesso.
  */
-
-import { describe, it, expect, beforeEach } from 'vitest';
 import { execSync } from 'child_process';
 import { existsSync } from 'fs';
 import path from 'path';
+import { describe, it, expect, beforeEach } from 'vitest';
 
 const SCRIPT_PATH = path.resolve(__dirname, './grimoire-audit.ts');
 
@@ -108,10 +107,7 @@ describe('grimoire-audit script', () => {
     });
 
     it('todos PASS faz allPassed ser true', () => {
-      const results = [
-        { status: 'PASS' as const },
-        { status: 'PASS' as const },
-      ];
+      const results = [{ status: 'PASS' as const }, { status: 'PASS' as const }];
       const passed = results.filter((r) => r.status === 'PASS').length;
       const total = results.length;
       const allPassed = passed === total && total > 0;
@@ -120,10 +116,7 @@ describe('grimoire-audit script', () => {
     });
 
     it('um FAIL faz allPassed ser false', () => {
-      const results = [
-        { status: 'PASS' as const },
-        { status: 'FAIL' as const },
-      ];
+      const results = [{ status: 'PASS' as const }, { status: 'FAIL' as const }];
       const passed = results.filter((r) => r.status === 'PASS').length;
       const total = results.length;
       const allPassed = passed === total && total > 0;

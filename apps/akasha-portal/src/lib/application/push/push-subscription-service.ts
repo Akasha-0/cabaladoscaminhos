@@ -4,7 +4,6 @@
  * Helpers para salvar/buscar/deletar push subscriptions no PostgreSQL.
  * O modelo `pushSubscription` está no schema Prisma com FK para `userId`.
  */
-
 import { prisma } from '@/lib/infrastructure/prisma';
 import type { PushSubscriptionJSON } from './web-push-server';
 

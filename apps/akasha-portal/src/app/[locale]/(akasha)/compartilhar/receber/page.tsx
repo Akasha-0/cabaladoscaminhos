@@ -11,9 +11,8 @@
  * falha (e.g., user cancela). O 99% dos casos, o browser nem renderiza — só
  * faz POST e redirect.
  */
-
-import { redirect } from 'next/navigation';
 import { cookies, headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 
 export const dynamic = 'force-dynamic';
@@ -33,7 +32,9 @@ export default async function CompartilharReceberPage({ params, searchParams }: 
   // Redirect to login when no valid session (skip during middleware refresh — authStatus='refreshed'
   // means the redirect target will carry fresh cookies and succeed on next request).
   if (!payload && authStatus !== 'refreshed') {
-    redirect(`/${locale}/login?return=${encodeURIComponent('/' + locale + '/compartilhar/receber')}`);
+    redirect(
+      `/${locale}/login?return=${encodeURIComponent('/' + locale + '/compartilhar/receber')}`
+    );
   }
 
   // Se recebeu intent via query (fallback), forward para /oraculo

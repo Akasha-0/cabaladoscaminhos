@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-18T01:13:43.383814+00:00",
-  "version": "0.90.0",
+  "generated_at": "2026-06-18T02:52:00.131613+00:00",
+  "version": "0.91.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-UI/UX-001** — ralph_loop_ui_improvements | 0.13.2",
@@ -1138,16 +1138,20 @@
       "- [~] **PLN-033[2]** -- large_file | 37 oversized files",
       "- [~] **PLN-034[1]** -- tech_debt | 2 files with XXX",
       "- [~] **PLN-034[2]** -- large_file | 37 oversized files",
+      "- [~] **PLN-000[1]** -- [general] tech_debt | 2 files with XXX",
+      "- [~] **PLN-000[2]** -- [general] large_file | 37 oversized files",
+      "- [~] **PLN-000[1]** -- [general] tech_debt | 2 files with XXX",
+      "- [~] **PLN-000[2]** -- [general] large_file | 37 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2",
       "- [~] **PLN-AE-003** — Ralph-loop continuous | QA cycling (v0.12.1)"
     ],
-    "pending_count": 1138
+    "pending_count": 1142
   },
   "git": {
-    "untracked": 2,
-    "modified": 13,
-    "total": 15,
+    "untracked": 26,
+    "modified": 24,
+    "total": 50,
     "has_changes": true
   },
   "triad": {
@@ -1164,7 +1168,7 @@
     },
     "tests": {
       "pass": true,
-      "passed": 1383,
+      "passed": 1396,
       "failed": 0
     }
   },
@@ -1208,15 +1212,15 @@
       "files": [
         {
           "file": "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/index.ts",
-          "lines": 1028
+          "lines": 976
         },
         {
           "file": "apps/akasha-portal/src/components/akasha/dashboard/Dashboard.tsx",
-          "lines": 1021
+          "lines": 966
         },
         {
-          "file": "apps/akasha-portal/src/components/akasha/dashboard/AkashaLifeAreasDashboard.tsx",
-          "lines": 1017
+          "file": "packages/core-iching/src/practices.ts",
+          "lines": 930
         }
       ]
     },
@@ -1228,7 +1232,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "eec823f474a3a0d180804fa66d9aff0ab4c1dfb9",
+  "git_head": "f8ee97d2bf758238aba37dee4e58806a3a8d1685",
   "decision_factors": {
     "has_pending_features": true
   }

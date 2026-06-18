@@ -14,18 +14,11 @@
  * - `id === pilar` para que `significadoPorPilar(pilar, pilar)` resolva
  *   via fallback genérico.
  */
-
 import { describe, it, expect } from 'vitest';
-import { significadoGenericoDoPilar } from './significados-curados-helpers';
 import type { Pilar, SignificadoCurado } from './significados-curados';
+import { significadoGenericoDoPilar } from './significados-curados-helpers';
 
-const TODOS_PILARES: Pilar[] = [
-  'cabala',
-  'astrologia',
-  'tantrica',
-  'odu',
-  'iching',
-];
+const TODOS_PILARES: Pilar[] = ['cabala', 'astrologia', 'tantrica', 'odu', 'iching'];
 
 const CAMPOS_OBRIGATORIOS: (keyof SignificadoCurado)[] = [
   'id',
@@ -49,7 +42,7 @@ describe('significados-curados-helpers: significadoGenericoDoPilar', () => {
           const valor = v[campo];
           expect(
             typeof valor === 'string' && valor.trim().length > 0,
-            `Pilar ${pilar}: campo obrigatório "${String(campo)}" vazio ou não-string`,
+            `Pilar ${pilar}: campo obrigatório "${String(campo)}" vazio ou não-string`
           ).toBe(true);
         });
       });
@@ -106,7 +99,7 @@ describe('significados-curados-helpers: significadoGenericoDoPilar', () => {
         const v = significadoGenericoDoPilar(p);
         expect(
           v.requer_terreiro,
-          `Pilar ${p} não deveria ter requer_terreiro=true`,
+          `Pilar ${p} não deveria ter requer_terreiro=true`
         ).toBeUndefined();
       });
     });
@@ -144,7 +137,7 @@ describe('significados-curados-helpers: significadoGenericoDoPilar', () => {
         const isPtBr = PT_BR_RE.test(registro);
         expect(
           isPtBr,
-          `Pilar ${p} registro sem marcadores PT-BR: "${registro.slice(0, 100)}…"`,
+          `Pilar ${p} registro sem marcadores PT-BR: "${registro.slice(0, 100)}…"`
         ).toBe(true);
       });
     });

@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
 import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
-import { upsertPushSubscription, deletePushSubscription, getUserPushSubscriptions, type PushSubscription } from '@/lib/push/push-subscription-service';
+import { prisma } from '@/lib/prisma';
+import {
+  upsertPushSubscription,
+  deletePushSubscription,
+  getUserPushSubscriptions,
+  type PushSubscription,
+} from '@/lib/push/push-subscription-service';
 
 export interface PushSubscriptionPayload {
   endpoint: string;
@@ -32,7 +37,9 @@ function isValidSubscription(sub: unknown): sub is PushSubscriptionPayload {
   );
 }
 
-export async function POST(req: NextRequest): Promise<NextResponse<SubscribeResponse | { error: string }>> {
+export async function POST(
+  req: NextRequest
+): Promise<NextResponse<SubscribeResponse | { error: string }>> {
   const authResult = await requireAkashaApi(req);
   if (authResult instanceof NextResponse) return authResult;
   const user = authResult as { id: string };
@@ -52,7 +59,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<SubscribeResp
   await upsertPushSubscription(
     user.id,
     { endpoint: sub.endpoint, keys: { p256dh: sub.keys.p256dh, auth: sub.keys.auth } },
-    req.headers.get('user-agent') ?? undefined,
+    req.headers.get('user-agent') ?? undefined
   );
   await prisma.user.update({
     where: { id: user.id },
@@ -62,7 +69,9 @@ export async function POST(req: NextRequest): Promise<NextResponse<SubscribeResp
   return NextResponse.json({ ok: true });
 }
 
-export async function DELETE(req: NextRequest): Promise<NextResponse<{ ok: true } | { error: string }>> {
+export async function DELETE(
+  req: NextRequest
+): Promise<NextResponse<{ ok: true } | { error: string }>> {
   const authResult = await requireAkashaApi(req);
   if (authResult instanceof NextResponse) return authResult;
   const user = authResult as { id: string };

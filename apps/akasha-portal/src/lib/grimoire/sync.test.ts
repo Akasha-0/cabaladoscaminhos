@@ -58,10 +58,10 @@ describe('syncGrimoire', () => {
     mockResolve.mockImplementation((...args: string[]) => args.join('/'));
     mockRelative.mockImplementation((_from: string, to: string) => to);
     mockJoin.mockImplementation((...args: string[]) => args.join('/'));
-    
+
     const { prisma } = await import('@/lib/infrastructure/prisma');
     vi.mocked(prisma.grimoireEntry.upsert).mockImplementation(mockUpsert);
-    
+
     // Reset global fetch mock
     global.fetch = vi.fn() as unknown as typeof fetch;
   });
@@ -74,7 +74,9 @@ describe('syncGrimoire', () => {
 
       expect(result.success).toBe(false);
       expect(result.count).toBe(0);
-      expect(result.warnings.some(w => w.includes('Directory') && w.includes('not found'))).toBe(true);
+      expect(result.warnings.some((w) => w.includes('Directory') && w.includes('not found'))).toBe(
+        true
+      );
     });
   });
 
@@ -86,7 +88,9 @@ describe('syncGrimoire', () => {
     it('should sync markdown files successfully', async () => {
       mockReaddirSync.mockReturnValue(['test-note.md'] as unknown as import('fs').Dirent[]);
       mockStatSync.mockReturnValue({ isDirectory: () => false } as import('fs').Stats);
-      mockReadFileSync.mockReturnValue('---\ntitle: Test Note\nslug: test-note\ncategory: wisdom\n---\n\nThis is test content.' as unknown as Buffer);
+      mockReadFileSync.mockReturnValue(
+        '---\ntitle: Test Note\nslug: test-note\ncategory: wisdom\n---\n\nThis is test content.' as unknown as Buffer
+      );
       mockMatter.mockReturnValue({
         data: { title: 'Test Note', slug: 'test-note', category: 'wisdom' },
         content: 'This is test content.',
@@ -115,7 +119,9 @@ describe('syncGrimoire', () => {
     it('should handle Ollama offline gracefully', async () => {
       mockReaddirSync.mockReturnValue(['offline-test.md'] as unknown as import('fs').Dirent[]);
       mockStatSync.mockReturnValue({ isDirectory: () => false } as import('fs').Stats);
-      mockReadFileSync.mockReturnValue('---\ntitle: Offline Test\n---\n\nContent without embedding.' as unknown as Buffer);
+      mockReadFileSync.mockReturnValue(
+        '---\ntitle: Offline Test\n---\n\nContent without embedding.' as unknown as Buffer
+      );
       mockMatter.mockReturnValue({
         data: { title: 'Offline Test' },
         content: 'Content without embedding.',
@@ -136,7 +142,7 @@ describe('syncGrimoire', () => {
       mockReaddirSync
         .mockReturnValueOnce(['subdir', 'root-note.md'] as unknown as import('fs').Dirent[])
         .mockReturnValueOnce(['nested-note.md'] as unknown as import('fs').Dirent[]);
-      
+
       mockStatSync
         .mockReturnValueOnce({ isDirectory: () => true } as import('fs').Stats)
         .mockReturnValueOnce({ isDirectory: () => false } as import('fs').Stats)

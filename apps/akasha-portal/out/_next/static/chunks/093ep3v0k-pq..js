@@ -1,1 +1,448 @@
-(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,21709,e=>{"use strict";var r=e.i(30722),t=e.i(52330);let l={Botânica:"#2DD4BF",Odus:"#F0B429",Diagnóstico:"#FB5781",Astrologia:"#7C5CFF",Tarot:"#F0B429",Numerologia:"#2DD4BF",Chakras:"#FB5781",Kabala:"#7C5CFF"};e.s(["default",0,function(){let[e,o]=(0,t.useState)([]),[n,a]=(0,t.useState)(""),[i,s]=(0,t.useState)(!1),[d,c]=(0,t.useState)(null),[p,x]=(0,t.useState)(null),g=(0,t.useRef)(null);(0,t.useEffect)(()=>{fetch("/api/akasha/credits").then(e=>e.json()).then(e=>{"number"==typeof e.balance&&c(e.balance)}).catch(()=>{})},[]),(0,t.useEffect)(()=>{g.current?.scrollIntoView({behavior:"smooth"})},[e]);let u=n.length>200?3:1;async function h(e){e.preventDefault();let r=n.trim();if(r&&!i){a(""),s(!0),o(e=>[...e,{role:"user",content:r},{role:"oracle",content:""}]);try{let e=await fetch("/api/akasha/consult",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({question:r,consultationId:p})});if(!e.ok){let r=await e.json().catch(()=>({error:"Erro desconhecido"}));o(e=>{let t=[...e];return t[t.length-1]={role:"oracle",content:`⚠ ${r.error??"Erro ao consultar o oráculo."}`},t}),s(!1);return}let t=e.body.getReader(),l=new TextDecoder,n="";for(;;){let{done:e,value:r}=await t.read();if(e)break;let a=(n+=l.decode(r,{stream:!0})).split("\n");n=a.pop()??"";let i="";for(let e of a)if(e.startsWith("event: "))i=e.slice(7).trim();else if(e.startsWith("data: ")){try{let r=JSON.parse(e.slice(6));"token"===i&&r.delta?o(e=>{let t=[...e];return t[t.length-1]={role:"oracle",content:t[t.length-1].content+r.delta,pillarsConsulted:t[t.length-1].pillarsConsulted},t}):"done"===i?(r.consultationId&&x(r.consultationId),"number"==typeof r.remainingBalance&&c(r.remainingBalance),Array.isArray(r.pillarsConsulted)&&o(e=>{let t=[...e];return t[t.length-1]={...t[t.length-1],pillarsConsulted:r.pillarsConsulted},t})):"error"===i&&o(e=>{let t=[...e];return t[t.length-1]={role:"oracle",content:`⚠ ${r.message??"Erro no oráculo."}`},t})}catch{}i=""}}}catch{o(e=>{let r=[...e];return r[r.length-1]={role:"oracle",content:"⚠ Falha de conexão com o oráculo."},r})}finally{s(!1)}}}return(0,r.jsxs)("main",{style:{display:"flex",flexDirection:"column",height:"calc(100vh - 56px)",background:"#06070F",color:"#F4F5FF"},children:[(0,r.jsxs)("header",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"16px 24px",borderBottom:"1px solid rgba(124,92,255,0.2)",background:"rgba(11,14,28,0.95)",backdropFilter:"blur(12px)",flexShrink:0},children:[(0,r.jsx)("h1",{style:{fontFamily:"var(--font-cinzel, serif)",fontSize:"1.3rem",fontWeight:700,background:"linear-gradient(90deg, #7C5CFF 0%, #2DD4BF 100%)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text",letterSpacing:"0.12em",margin:0},children:"✦ ORÁCULO AKASHA"}),(0,r.jsxs)("div",{style:{padding:"6px 16px",borderRadius:"9999px",background:"rgba(124,92,255,0.1)",border:"1px solid rgba(124,92,255,0.3)",fontSize:"0.82rem",color:"#A7AECF",display:"flex",alignItems:"center",gap:"6px"},children:[(0,r.jsx)("span",{style:{color:"#7C5CFF"},children:"✦"}),(0,r.jsxs)("span",{children:[(0,r.jsx)("span",{style:{fontWeight:700,color:"#F4F5FF"},children:null===d?"…":d})," ","créditos"]})]})]}),(0,r.jsxs)("div",{style:{flex:1,overflowY:"auto",padding:"28px 24px",display:"flex",flexDirection:"column",gap:"20px"},children:[0===e.length&&(0,r.jsxs)("div",{style:{margin:"auto",textAlign:"center",maxWidth:"520px",display:"flex",flexDirection:"column",alignItems:"center",gap:"16px"},children:[(0,r.jsx)("div",{style:{width:"64px",height:"64px",borderRadius:"50%",background:"radial-gradient(circle, rgba(124,92,255,0.3) 0%, rgba(45,212,191,0.1) 100%)",border:"1px solid rgba(124,92,255,0.4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.8rem"},children:"✦"}),(0,r.jsx)("div",{style:{padding:"20px 28px",borderRadius:"16px",background:"rgba(11,14,28,0.8)",backdropFilter:"blur(16px)",border:"1px solid rgba(45,212,191,0.2)",boxShadow:"0 0 32px rgba(45,212,191,0.06)"},children:(0,r.jsxs)("p",{style:{margin:0,color:"#A7AECF",fontSize:"1rem",lineHeight:1.7,fontStyle:"italic"},children:["Saudações. Sou a Voz do Akasha.",(0,r.jsx)("br",{}),"Seu mapa está aberto diante de mim."," ",(0,r.jsx)("span",{style:{color:"#2DD4BF"},children:"O que você precisa compreender hoje?"})]})})]}),e.map((e,t)=>(0,r.jsxs)("div",{style:{display:"flex",flexDirection:"column",alignItems:"user"===e.role?"flex-end":"flex-start",gap:"6px"},children:[(0,r.jsxs)("div",{style:"user"===e.role?{maxWidth:"68%",padding:"12px 18px",borderRadius:"18px 18px 4px 18px",background:"rgba(124,92,255,0.15)",border:"1px solid rgba(124,92,255,0.3)",color:"#F4F5FF",fontSize:"0.95rem",lineHeight:1.65}:{maxWidth:"75%",padding:"16px 20px",borderRadius:"18px 18px 18px 4px",background:"rgba(11,14,28,0.8)",backdropFilter:"blur(16px)",border:"1px solid rgba(45,212,191,0.2)",color:"#F4F5FF",fontSize:"0.95rem",lineHeight:1.75,boxShadow:"0 0 24px rgba(45,212,191,0.06), 0 2px 8px rgba(0,0,0,0.4)",whiteSpace:"pre-wrap"},children:["oracle"===e.role&&(0,r.jsx)("span",{style:{color:"#2DD4BF",marginRight:"8px",fontSize:"0.8rem",verticalAlign:"middle"},children:"✦"}),"oracle"===e.role&&""===e.content&&i?(0,r.jsx)("span",{style:{color:"#5C6691",fontStyle:"italic"},children:"O Akasha contempla…"}):(0,r.jsx)("span",{style:{verticalAlign:"middle"},children:e.content})]}),"oracle"===e.role&&e.pillarsConsulted&&e.pillarsConsulted.length>0&&(0,r.jsx)("div",{style:{display:"flex",flexWrap:"wrap",gap:"6px",paddingLeft:"4px"},children:e.pillarsConsulted.map(e=>{let t=l[e]??"#A7AECF";return(0,r.jsx)("span",{style:{padding:"2px 10px",borderRadius:"9999px",fontSize:"0.72rem",fontWeight:600,letterSpacing:"0.05em",color:t,background:`${t}18`,border:`1px solid ${t}40`},children:e},e)})})]},t)),(0,r.jsx)("div",{ref:g})]}),(0,r.jsxs)("form",{onSubmit:h,style:{padding:"16px 24px",borderTop:"1px solid rgba(124,92,255,0.2)",background:"rgba(11,14,28,0.95)",backdropFilter:"blur(12px)",display:"flex",flexDirection:"column",gap:"10px",flexShrink:0},children:[(0,r.jsx)("textarea",{value:n,onChange:e=>a(e.target.value),onKeyDown:e=>{"Enter"!==e.key||e.shiftKey||(e.preventDefault(),h(e))},disabled:i,placeholder:"Faça sua pergunta ao Akasha…",rows:3,style:{width:"100%",resize:"none",padding:"12px 16px",borderRadius:"12px",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(124,92,255,0.3)",color:"#F4F5FF",fontSize:"0.95rem",outline:"none",fontFamily:"inherit",lineHeight:1.5,boxSizing:"border-box",transition:"border-color 0.2s ease"}}),(0,r.jsxs)("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between"},children:[(0,r.jsxs)("span",{style:{fontSize:"0.78rem",color:"#5C6691"},children:["Custo estimado:"," ",(0,r.jsxs)("strong",{style:{color:"#A7AECF"},children:[u," ",1===u?"crédito":"créditos"]})]}),(0,r.jsx)("button",{type:"submit",disabled:i||!n.trim(),style:{padding:"10px 32px",borderRadius:"9999px",background:i||!n.trim()?"rgba(124,92,255,0.2)":"#7C5CFF",color:i||!n.trim()?"#5C6691":"#F4F5FF",border:"none",cursor:i||!n.trim()?"not-allowed":"pointer",fontSize:"0.9rem",fontWeight:700,letterSpacing:"0.06em",transition:"all 0.2s ease",boxShadow:i||!n.trim()?"none":"0 0 20px rgba(124,92,255,0.4)"},children:i?"Consultando…":"Consultar"})]})]})]})}])}]);
+(globalThis.TURBOPACK || (globalThis.TURBOPACK = [])).push([
+  'object' == typeof document ? document.currentScript : void 0,
+  21709,
+  (e) => {
+    'use strict';
+    var r = e.i(30722),
+      t = e.i(52330);
+    let l = {
+      Botânica: '#2DD4BF',
+      Odus: '#F0B429',
+      Diagnóstico: '#FB5781',
+      Astrologia: '#7C5CFF',
+      Tarot: '#F0B429',
+      Numerologia: '#2DD4BF',
+      Chakras: '#FB5781',
+      Kabala: '#7C5CFF',
+    };
+    e.s([
+      'default',
+      0,
+      function () {
+        let [e, o] = (0, t.useState)([]),
+          [n, a] = (0, t.useState)(''),
+          [i, s] = (0, t.useState)(!1),
+          [d, c] = (0, t.useState)(null),
+          [p, x] = (0, t.useState)(null),
+          g = (0, t.useRef)(null);
+        ((0, t.useEffect)(() => {
+          fetch('/api/akasha/credits')
+            .then((e) => e.json())
+            .then((e) => {
+              'number' == typeof e.balance && c(e.balance);
+            })
+            .catch(() => {});
+        }, []),
+          (0, t.useEffect)(() => {
+            g.current?.scrollIntoView({ behavior: 'smooth' });
+          }, [e]));
+        let u = n.length > 200 ? 3 : 1;
+        async function h(e) {
+          e.preventDefault();
+          let r = n.trim();
+          if (r && !i) {
+            (a(''),
+              s(!0),
+              o((e) => [...e, { role: 'user', content: r }, { role: 'oracle', content: '' }]));
+            try {
+              let e = await fetch('/api/akasha/consult', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question: r, consultationId: p }),
+              });
+              if (!e.ok) {
+                let r = await e.json().catch(() => ({ error: 'Erro desconhecido' }));
+                (o((e) => {
+                  let t = [...e];
+                  return (
+                    (t[t.length - 1] = {
+                      role: 'oracle',
+                      content: `⚠ ${r.error ?? 'Erro ao consultar o oráculo.'}`,
+                    }),
+                    t
+                  );
+                }),
+                  s(!1));
+                return;
+              }
+              let t = e.body.getReader(),
+                l = new TextDecoder(),
+                n = '';
+              for (;;) {
+                let { done: e, value: r } = await t.read();
+                if (e) break;
+                let a = (n += l.decode(r, { stream: !0 })).split('\n');
+                n = a.pop() ?? '';
+                let i = '';
+                for (let e of a)
+                  if (e.startsWith('event: ')) i = e.slice(7).trim();
+                  else if (e.startsWith('data: ')) {
+                    try {
+                      let r = JSON.parse(e.slice(6));
+                      'token' === i && r.delta
+                        ? o((e) => {
+                            let t = [...e];
+                            return (
+                              (t[t.length - 1] = {
+                                role: 'oracle',
+                                content: t[t.length - 1].content + r.delta,
+                                pillarsConsulted: t[t.length - 1].pillarsConsulted,
+                              }),
+                              t
+                            );
+                          })
+                        : 'done' === i
+                          ? (r.consultationId && x(r.consultationId),
+                            'number' == typeof r.remainingBalance && c(r.remainingBalance),
+                            Array.isArray(r.pillarsConsulted) &&
+                              o((e) => {
+                                let t = [...e];
+                                return (
+                                  (t[t.length - 1] = {
+                                    ...t[t.length - 1],
+                                    pillarsConsulted: r.pillarsConsulted,
+                                  }),
+                                  t
+                                );
+                              }))
+                          : 'error' === i &&
+                            o((e) => {
+                              let t = [...e];
+                              return (
+                                (t[t.length - 1] = {
+                                  role: 'oracle',
+                                  content: `⚠ ${r.message ?? 'Erro no oráculo.'}`,
+                                }),
+                                t
+                              );
+                            });
+                    } catch {}
+                    i = '';
+                  }
+              }
+            } catch {
+              o((e) => {
+                let r = [...e];
+                return (
+                  (r[r.length - 1] = {
+                    role: 'oracle',
+                    content: '⚠ Falha de conexão com o oráculo.',
+                  }),
+                  r
+                );
+              });
+            } finally {
+              s(!1);
+            }
+          }
+        }
+        return (0, r.jsxs)('main', {
+          style: {
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'calc(100vh - 56px)',
+            background: '#06070F',
+            color: '#F4F5FF',
+          },
+          children: [
+            (0, r.jsxs)('header', {
+              style: {
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '16px 24px',
+                borderBottom: '1px solid rgba(124,92,255,0.2)',
+                background: 'rgba(11,14,28,0.95)',
+                backdropFilter: 'blur(12px)',
+                flexShrink: 0,
+              },
+              children: [
+                (0, r.jsx)('h1', {
+                  style: {
+                    fontFamily: 'var(--font-cinzel, serif)',
+                    fontSize: '1.3rem',
+                    fontWeight: 700,
+                    background: 'linear-gradient(90deg, #7C5CFF 0%, #2DD4BF 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    letterSpacing: '0.12em',
+                    margin: 0,
+                  },
+                  children: '✦ ORÁCULO AKASHA',
+                }),
+                (0, r.jsxs)('div', {
+                  style: {
+                    padding: '6px 16px',
+                    borderRadius: '9999px',
+                    background: 'rgba(124,92,255,0.1)',
+                    border: '1px solid rgba(124,92,255,0.3)',
+                    fontSize: '0.82rem',
+                    color: '#A7AECF',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  },
+                  children: [
+                    (0, r.jsx)('span', { style: { color: '#7C5CFF' }, children: '✦' }),
+                    (0, r.jsxs)('span', {
+                      children: [
+                        (0, r.jsx)('span', {
+                          style: { fontWeight: 700, color: '#F4F5FF' },
+                          children: null === d ? '…' : d,
+                        }),
+                        ' ',
+                        'créditos',
+                      ],
+                    }),
+                  ],
+                }),
+              ],
+            }),
+            (0, r.jsxs)('div', {
+              style: {
+                flex: 1,
+                overflowY: 'auto',
+                padding: '28px 24px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '20px',
+              },
+              children: [
+                0 === e.length &&
+                  (0, r.jsxs)('div', {
+                    style: {
+                      margin: 'auto',
+                      textAlign: 'center',
+                      maxWidth: '520px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: '16px',
+                    },
+                    children: [
+                      (0, r.jsx)('div', {
+                        style: {
+                          width: '64px',
+                          height: '64px',
+                          borderRadius: '50%',
+                          background:
+                            'radial-gradient(circle, rgba(124,92,255,0.3) 0%, rgba(45,212,191,0.1) 100%)',
+                          border: '1px solid rgba(124,92,255,0.4)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '1.8rem',
+                        },
+                        children: '✦',
+                      }),
+                      (0, r.jsx)('div', {
+                        style: {
+                          padding: '20px 28px',
+                          borderRadius: '16px',
+                          background: 'rgba(11,14,28,0.8)',
+                          backdropFilter: 'blur(16px)',
+                          border: '1px solid rgba(45,212,191,0.2)',
+                          boxShadow: '0 0 32px rgba(45,212,191,0.06)',
+                        },
+                        children: (0, r.jsxs)('p', {
+                          style: {
+                            margin: 0,
+                            color: '#A7AECF',
+                            fontSize: '1rem',
+                            lineHeight: 1.7,
+                            fontStyle: 'italic',
+                          },
+                          children: [
+                            'Saudações. Sou a Voz do Akasha.',
+                            (0, r.jsx)('br', {}),
+                            'Seu mapa está aberto diante de mim.',
+                            ' ',
+                            (0, r.jsx)('span', {
+                              style: { color: '#2DD4BF' },
+                              children: 'O que você precisa compreender hoje?',
+                            }),
+                          ],
+                        }),
+                      }),
+                    ],
+                  }),
+                e.map((e, t) =>
+                  (0, r.jsxs)(
+                    'div',
+                    {
+                      style: {
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'user' === e.role ? 'flex-end' : 'flex-start',
+                        gap: '6px',
+                      },
+                      children: [
+                        (0, r.jsxs)('div', {
+                          style:
+                            'user' === e.role
+                              ? {
+                                  maxWidth: '68%',
+                                  padding: '12px 18px',
+                                  borderRadius: '18px 18px 4px 18px',
+                                  background: 'rgba(124,92,255,0.15)',
+                                  border: '1px solid rgba(124,92,255,0.3)',
+                                  color: '#F4F5FF',
+                                  fontSize: '0.95rem',
+                                  lineHeight: 1.65,
+                                }
+                              : {
+                                  maxWidth: '75%',
+                                  padding: '16px 20px',
+                                  borderRadius: '18px 18px 18px 4px',
+                                  background: 'rgba(11,14,28,0.8)',
+                                  backdropFilter: 'blur(16px)',
+                                  border: '1px solid rgba(45,212,191,0.2)',
+                                  color: '#F4F5FF',
+                                  fontSize: '0.95rem',
+                                  lineHeight: 1.75,
+                                  boxShadow:
+                                    '0 0 24px rgba(45,212,191,0.06), 0 2px 8px rgba(0,0,0,0.4)',
+                                  whiteSpace: 'pre-wrap',
+                                },
+                          children: [
+                            'oracle' === e.role &&
+                              (0, r.jsx)('span', {
+                                style: {
+                                  color: '#2DD4BF',
+                                  marginRight: '8px',
+                                  fontSize: '0.8rem',
+                                  verticalAlign: 'middle',
+                                },
+                                children: '✦',
+                              }),
+                            'oracle' === e.role && '' === e.content && i
+                              ? (0, r.jsx)('span', {
+                                  style: { color: '#5C6691', fontStyle: 'italic' },
+                                  children: 'O Akasha contempla…',
+                                })
+                              : (0, r.jsx)('span', {
+                                  style: { verticalAlign: 'middle' },
+                                  children: e.content,
+                                }),
+                          ],
+                        }),
+                        'oracle' === e.role &&
+                          e.pillarsConsulted &&
+                          e.pillarsConsulted.length > 0 &&
+                          (0, r.jsx)('div', {
+                            style: {
+                              display: 'flex',
+                              flexWrap: 'wrap',
+                              gap: '6px',
+                              paddingLeft: '4px',
+                            },
+                            children: e.pillarsConsulted.map((e) => {
+                              let t = l[e] ?? '#A7AECF';
+                              return (0, r.jsx)(
+                                'span',
+                                {
+                                  style: {
+                                    padding: '2px 10px',
+                                    borderRadius: '9999px',
+                                    fontSize: '0.72rem',
+                                    fontWeight: 600,
+                                    letterSpacing: '0.05em',
+                                    color: t,
+                                    background: `${t}18`,
+                                    border: `1px solid ${t}40`,
+                                  },
+                                  children: e,
+                                },
+                                e
+                              );
+                            }),
+                          }),
+                      ],
+                    },
+                    t
+                  )
+                ),
+                (0, r.jsx)('div', { ref: g }),
+              ],
+            }),
+            (0, r.jsxs)('form', {
+              onSubmit: h,
+              style: {
+                padding: '16px 24px',
+                borderTop: '1px solid rgba(124,92,255,0.2)',
+                background: 'rgba(11,14,28,0.95)',
+                backdropFilter: 'blur(12px)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+                flexShrink: 0,
+              },
+              children: [
+                (0, r.jsx)('textarea', {
+                  value: n,
+                  onChange: (e) => a(e.target.value),
+                  onKeyDown: (e) => {
+                    'Enter' !== e.key || e.shiftKey || (e.preventDefault(), h(e));
+                  },
+                  disabled: i,
+                  placeholder: 'Faça sua pergunta ao Akasha…',
+                  rows: 3,
+                  style: {
+                    width: '100%',
+                    resize: 'none',
+                    padding: '12px 16px',
+                    borderRadius: '12px',
+                    background: 'rgba(255,255,255,0.04)',
+                    border: '1px solid rgba(124,92,255,0.3)',
+                    color: '#F4F5FF',
+                    fontSize: '0.95rem',
+                    outline: 'none',
+                    fontFamily: 'inherit',
+                    lineHeight: 1.5,
+                    boxSizing: 'border-box',
+                    transition: 'border-color 0.2s ease',
+                  },
+                }),
+                (0, r.jsxs)('div', {
+                  style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
+                  children: [
+                    (0, r.jsxs)('span', {
+                      style: { fontSize: '0.78rem', color: '#5C6691' },
+                      children: [
+                        'Custo estimado:',
+                        ' ',
+                        (0, r.jsxs)('strong', {
+                          style: { color: '#A7AECF' },
+                          children: [u, ' ', 1 === u ? 'crédito' : 'créditos'],
+                        }),
+                      ],
+                    }),
+                    (0, r.jsx)('button', {
+                      type: 'submit',
+                      disabled: i || !n.trim(),
+                      style: {
+                        padding: '10px 32px',
+                        borderRadius: '9999px',
+                        background: i || !n.trim() ? 'rgba(124,92,255,0.2)' : '#7C5CFF',
+                        color: i || !n.trim() ? '#5C6691' : '#F4F5FF',
+                        border: 'none',
+                        cursor: i || !n.trim() ? 'not-allowed' : 'pointer',
+                        fontSize: '0.9rem',
+                        fontWeight: 700,
+                        letterSpacing: '0.06em',
+                        transition: 'all 0.2s ease',
+                        boxShadow: i || !n.trim() ? 'none' : '0 0 20px rgba(124,92,255,0.4)',
+                      },
+                      children: i ? 'Consultando…' : 'Consultar',
+                    }),
+                  ],
+                }),
+              ],
+            }),
+          ],
+        });
+      },
+    ]);
+  },
+]);

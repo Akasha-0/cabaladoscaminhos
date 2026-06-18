@@ -1,7 +1,6 @@
 /**
  * F-211: Rahu/Ketu (eixos nodais lunares) — tests
  */
-
 import { describe, it, expect } from 'vitest';
 import {
   calcularRahuLongitude,

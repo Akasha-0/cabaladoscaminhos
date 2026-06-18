@@ -15,7 +15,7 @@ saída (testável, auditável).
 
 - `src/calculos.ts`: Cálculos numerológicos agregados
   (calcularPitagorica, calcularCaldeia, calcularCabalistica,
-   calcularTantrica, calcularCaminhoVida)
+  calcularTantrica, calcularCaminhoVida)
 - `src/numerology-kabalah.ts`: Implementação principal (reduceToSingleDigit
   com master numbers 11/22/33, deriva Expression/Motivation/Impression
   /Mission)
@@ -44,7 +44,7 @@ saída (testável, auditável).
   reduz como Pitagórico padrão.
 - **Determinístico**: zero `Math.random()`. Mesma data de nascimento
   → mesmo `lifePath`, mesmo `expression`, etc.
-- **Multiple reduceTo* implementations**: há 2 implementações
+- **Multiple reduceTo\* implementations**: há 2 implementações
   (`reduceToSingleDigit` em `numerology-kabalah.ts`,
   `reduceToDigits` em `calculator.ts`). **A de `calculator.ts` é
   dead code** — não exportada pelo `index.ts`. Future cleanup:
@@ -82,14 +82,14 @@ saída (testável, auditável).
   `index.ts`. Future F-100 cleanup: deletar.
 - **`calculos.ts` e `numerology-kabalah.ts` ambos calculam** —
   alguma duplicação. `calculos.ts` é re-export wrapper; `numerology-
-  kabalah.ts` é a implementação. `index.ts` re-exporta de
+kabalah.ts` é a implementação. `index.ts` re-exporta de
   `numerology-kabalah.ts`. Future F-100 cleanup: consolidar.
 
 ## Related Files
 
 - `packages/core-astrology/AGENTS.md` — Pilar 2 (sibling)
 - `packages/core-odus/AGENTS.md` — Pilar 4 (sibling) — `odu-
-  correlations.ts` cruza
+correlations.ts` cruza
 - `apps/akasha-portal/AGENTS.md` §Local Contracts — Mandala
   data.kabala shape
 

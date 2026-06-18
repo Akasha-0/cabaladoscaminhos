@@ -432,11 +432,17 @@ export default function SobrePage() {
           <span>9 Sistemas que Estudamos, 5 que Herdamos</span>
         </h2>
         <p style={{ ...bodyStyle, color: C.txtSec, marginBottom: 18 }}>
-          Antes de construir qualquer coisa, estudamos o que já existe. Destilamos
-          o que ENTREGA valor real ao usuário — não fetichismo esotérico. Veja
-          cada herança em <code>.autonomous/research/synthesis/</code>.
+          Antes de construir qualquer coisa, estudamos o que já existe. Destilamos o que ENTREGA
+          valor real ao usuário — não fetichismo esotérico. Veja cada herança em{' '}
+          <code>.autonomous/research/synthesis/</code>.
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 12 }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+            gap: 12,
+          }}
+        >
           {resumoSistemasHerdados().map((s) => (
             <div key={s.nome} style={cardStyle(C.bronze)}>
               <span style={labelStyle(C.bronze)}>{s.nome}</span>

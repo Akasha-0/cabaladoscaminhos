@@ -1,8 +1,8 @@
 /**
  * @akasha/core — Testes do RecommendationGenerator
  */
-
 import { describe, it, expect } from 'vitest';
+import type { RecommendationContext } from './correlation-engine';
 import {
   RecommendationGenerator,
   createRecommendationGenerator,
@@ -10,7 +10,6 @@ import {
   generateFromRAG,
   generateHybrid,
 } from './recommendation-generator';
-import type { RecommendationContext } from './correlation-engine';
 
 // ─── Dados de Teste ───────────────────────────────────────────────────────────
 
@@ -32,14 +31,14 @@ describe('RecommendationGenerator', () => {
     it('deve retornar array de recomendações', () => {
       const generator = new RecommendationGenerator();
       const resultado = generator.generateFromRules(contextoTeste);
-      
+
       expect(Array.isArray(resultado)).toBe(true);
     });
 
     it('deve retornar recomendações com campos obrigatórios', () => {
       const generator = new RecommendationGenerator();
       const resultado = generator.generateFromRules(contextoTeste);
-      
+
       if (resultado.length > 0) {
         const rec = resultado[0];
         expect(rec).toHaveProperty('practice');
@@ -55,8 +54,8 @@ describe('RecommendationGenerator', () => {
     it('deve usar CorrelationEngine internamente', () => {
       const generator = new RecommendationGenerator();
       const resultado = generator.generateFromRules(contextoTeste);
-      
-      resultado.forEach(rec => {
+
+      resultado.forEach((rec) => {
         expect(rec.personalizedReason).toContain('Hexagrama');
       });
     });
@@ -66,7 +65,7 @@ describe('RecommendationGenerator', () => {
     it('deve retornar array de recomendações', async () => {
       const generator = new RecommendationGenerator();
       const resultado = await generator.generateFromRAG('meditação para ansiedade', 5);
-      
+
       expect(Array.isArray(resultado)).toBe(true);
       expect(resultado.length).toBeLessThanOrEqual(5);
     });
@@ -74,9 +73,9 @@ describe('RecommendationGenerator', () => {
     it('deve retornar recomendações com fonte RAG', async () => {
       const generator = new RecommendationGenerator();
       const resultado = await generator.generateFromRAG('oração para paz', 3);
-      
+
       if (resultado.length > 0) {
-        resultado.forEach(rec => {
+        resultado.forEach((rec) => {
           expect(rec.source).toBe('rag');
         });
       }
@@ -86,7 +85,7 @@ describe('RecommendationGenerator', () => {
       const generator = new RecommendationGenerator();
       const limite = 3;
       const resultado = await generator.generateFromRAG('cristal para proteção', limite);
-      
+
       expect(resultado.length).toBeLessThanOrEqual(limite);
     });
 
@@ -94,7 +93,7 @@ describe('RecommendationGenerator', () => {
       const generator = new RecommendationGenerator();
       const query = 'oração para saúde';
       const resultado = await generator.generateFromRAG(query, 5);
-      
+
       if (resultado.length > 0) {
         expect(resultado[0].personalizedReason).toBeDefined();
         expect(resultado[0].personalizedReason.length).toBeGreaterThan(0);
@@ -106,16 +105,16 @@ describe('RecommendationGenerator', () => {
     it('deve retornar array de recomendações', async () => {
       const generator = new RecommendationGenerator();
       const resultado = await generator.generateHybrid(contextoTeste, 5);
-      
+
       expect(Array.isArray(resultado)).toBe(true);
     });
 
     it('deve retornar fonte híbrida', async () => {
       const generator = new RecommendationGenerator();
       const resultado = await generator.generateHybrid(contextoTeste, 5);
-      
+
       if (resultado.length > 0) {
-        resultado.forEach(rec => {
+        resultado.forEach((rec) => {
           expect(rec.source).toBe('hybrid');
         });
       }
@@ -125,15 +124,15 @@ describe('RecommendationGenerator', () => {
       const generator = new RecommendationGenerator();
       const limite = 3;
       const resultado = await generator.generateHybrid(contextoTeste, limite);
-      
+
       expect(resultado.length).toBeLessThanOrEqual(limite);
     });
 
     it('deve combinar scores de regras e RAG', async () => {
       const generator = new RecommendationGenerator();
       const resultado = await generator.generateHybrid(contextoTeste, 5);
-      
-      resultado.forEach(rec => {
+
+      resultado.forEach((rec) => {
         expect(rec.confidence).toBeGreaterThanOrEqual(0);
         expect(rec.confidence).toBeLessThanOrEqual(1);
       });
@@ -142,7 +141,7 @@ describe('RecommendationGenerator', () => {
     it('deve ordenar por confiança decrescente', async () => {
       const generator = new RecommendationGenerator();
       const resultado = await generator.generateHybrid(contextoTeste, 10);
-      
+
       if (resultado.length > 1) {
         for (let i = 0; i < resultado.length - 1; i++) {
           expect(resultado[i].confidence).toBeGreaterThanOrEqual(resultado[i + 1].confidence);
@@ -187,10 +186,10 @@ describe('Casos de borda', () => {
         lifeArea: 'saude',
       },
     };
-    
+
     const generator = new RecommendationGenerator();
     const resultado = await generator.generateHybrid(contextoSemArea, 5);
-    
+
     expect(Array.isArray(resultado)).toBe(true);
   });
 
@@ -203,24 +202,24 @@ describe('Casos de borda', () => {
       },
       lifeArea: 'financas',
     };
-    
+
     const generator = new RecommendationGenerator();
     const resultado = generator.generateFromRules(contextoSemContexto);
-    
+
     expect(Array.isArray(resultado)).toBe(true);
   });
 
   it('deve retornar array vazio para query muito específica sem matches', async () => {
     const generator = new RecommendationGenerator();
     const resultado = await generator.generateFromRAG('xyzabc123 nenhum match', 5);
-    
+
     expect(Array.isArray(resultado)).toBe(true);
   });
 
   it('deve aceitar limite zero', async () => {
     const generator = new RecommendationGenerator();
     const resultado = await generator.generateFromRAG('oração', 0);
-    
+
     expect(resultado).toEqual([]);
   });
 
@@ -232,12 +231,12 @@ describe('Casos de borda', () => {
         lifeArea: 'familia',
       },
     };
-    
+
     const generator = new RecommendationGenerator();
     const resultado = generator.generateFromRules(contextoSemOdu);
-    
+
     expect(Array.isArray(resultado)).toBe(true);
-    resultado.forEach(rec => {
+    resultado.forEach((rec) => {
       expect(rec.personalizedReason).toBeDefined();
     });
   });
@@ -254,10 +253,10 @@ describe('Níveis de código', () => {
         lifeArea: 'relacionamentos',
       },
     };
-    
+
     const generator = new RecommendationGenerator();
     const resultado = generator.generateFromRules(contextoShadow);
-    
+
     expect(Array.isArray(resultado)).toBe(true);
   });
 
@@ -269,10 +268,10 @@ describe('Níveis de código', () => {
         lifeArea: 'carreira',
       },
     };
-    
+
     const generator = new RecommendationGenerator();
     const resultado = generator.generateFromRules(contextoGift);
-    
+
     expect(Array.isArray(resultado)).toBe(true);
   });
 
@@ -284,10 +283,10 @@ describe('Níveis de código', () => {
         lifeArea: 'espiritualidade',
       },
     };
-    
+
     const generator = new RecommendationGenerator();
     const resultado = generator.generateFromRules(contextoSiddhi);
-    
+
     expect(Array.isArray(resultado)).toBe(true);
   });
 });

@@ -11,7 +11,6 @@
  * P6 (iter33): Agente Evolutivo persistence layer.
  * P7 (iter34): Adds getCycleHistory — retrieves stored snapshots for pattern display.
  */
-
 import { useCallback, useRef } from 'react';
 import type { DailyContentUI, CycleSnapshotUI, AkashaSynthesisUI } from './useAkashaSynthesis';
 
@@ -87,18 +86,21 @@ export function useCyclePersistence({
         const synthesis: AkashaSynthesisUI | null = daily.synthesis ?? null;
 
         // Build area map from synthesis.areas
-        const areas: Record<string, {
-          frequency: string;
-          intensity: number;
-          pillarContribution: Record<string, string>;
-          dailyRitual?: {
-            title: string;
-            instruction: string;
-            duration: string;
-            element: string;
-            color: string;
-          };
-        }> = {};
+        const areas: Record<
+          string,
+          {
+            frequency: string;
+            intensity: number;
+            pillarContribution: Record<string, string>;
+            dailyRitual?: {
+              title: string;
+              instruction: string;
+              duration: string;
+              element: string;
+              color: string;
+            };
+          }
+        > = {};
 
         if (synthesis?.areas) {
           for (const [area, narrative] of Object.entries(synthesis.areas)) {
@@ -107,16 +109,22 @@ export function useCyclePersistence({
               areas[area] = {
                 frequency: narrative.frequency ?? 'shadow',
                 intensity: narrative.intensity ?? 1,
-                pillarContribution: (narrative as unknown as Record<string, unknown>).pillarContribution as Record<string, string> ?? {},
-                ...(dr ? {
-                  dailyRitual: {
-                    title: dr.title,
-                    instruction: dr.instruction,
-                    duration: dr.duration,
-                    element: dr.element,
-                    color: dr.color,
-                  },
-                } : {}),
+                pillarContribution:
+                  ((narrative as unknown as Record<string, unknown>).pillarContribution as Record<
+                    string,
+                    string
+                  >) ?? {},
+                ...(dr
+                  ? {
+                      dailyRitual: {
+                        title: dr.title,
+                        instruction: dr.instruction,
+                        duration: dr.duration,
+                        element: dr.element,
+                        color: dr.color,
+                      },
+                    }
+                  : {}),
               };
             }
           }
@@ -124,10 +132,10 @@ export function useCyclePersistence({
 
         // Flatten exercises from cycle.exercises.prioritizedExercises
         const exercises = (cycle.exercises?.prioritizedExercises ?? []).map((ex) => ({
-          id: (ex as Record<string, unknown>).id as string ?? ex.title,
+          id: ((ex as Record<string, unknown>).id as string) ?? ex.title,
           area: ex.area,
           title: ex.title,
-          instruction: (ex as Record<string, unknown>).description as string ?? '',
+          instruction: ((ex as Record<string, unknown>).description as string) ?? '',
           duration: ex.duration,
           difficulty: ex.difficulty,
           type: ex.type,
@@ -144,7 +152,11 @@ export function useCyclePersistence({
             personalYear: cycle.snapshot.personalYear as unknown as Record<string, unknown>,
             universalYear: cycle.snapshot.universalYear as unknown as Record<string, unknown>,
             currentPinnacle: cycle.snapshot.currentPinnacle as unknown as Record<string, unknown>,
-            challenges: (cycle.snapshot as unknown as Record<string, unknown>).challenges as Record<string, unknown> ?? {},
+            challenges:
+              ((cycle.snapshot as unknown as Record<string, unknown>).challenges as Record<
+                string,
+                unknown
+              >) ?? {},
             karmicLessons: cycle.snapshot.karmicLessons as unknown as Record<string, unknown>,
             maturity: cycle.snapshot.maturity as unknown as Record<string, unknown>,
             synthesis: cycle.snapshot.synthesis,
@@ -173,7 +185,9 @@ export function useCyclePersistence({
         return { success: false, error: msg };
       } finally {
         // Unlock after a short delay to handle rapid re-fetches
-        setTimeout(() => { persistLock.current = false; }, 2000);
+        setTimeout(() => {
+          persistLock.current = false;
+        }, 2000);
       }
     },
     [userId]
@@ -201,10 +215,9 @@ export function useCyclePersistence({
     async (days = 30): Promise<CycleHistoryData | null> => {
       if (!userId) return null;
       try {
-        const res = await fetch(
-          `/api/akasha/cycle/snapshot?days=${days}`,
-          { headers: { 'Content-Type': 'application/json' } }
-        );
+        const res = await fetch(`/api/akasha/cycle/snapshot?days=${days}`, {
+          headers: { 'Content-Type': 'application/json' },
+        });
         if (!res.ok) return null;
         const data: CycleHistoryData = await res.json();
         return data;

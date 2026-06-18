@@ -1,7 +1,7 @@
 'use client';
 
-import { useTheme } from './ThemeProvider';
 import { Moon, Sun, Monitor } from 'lucide-react';
+import { useTheme } from './ThemeProvider';
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -19,9 +19,7 @@ export function ThemeToggle() {
           key={value}
           onClick={() => setTheme(value)}
           className={`p-2 rounded-md transition-colors ${
-            theme === value 
-              ? 'bg-background shadow-sm' 
-              : 'hover:bg-background/50'
+            theme === value ? 'bg-background shadow-sm' : 'hover:bg-background/50'
           }`}
           title={label}
         >

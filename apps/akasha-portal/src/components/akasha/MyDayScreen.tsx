@@ -16,11 +16,10 @@
  * Inspiração: Co-Star daily + AstroSage daily guidance.
  * Foco: ZERO navegação. Tudo visível no scroll.
  */
-
-import Link from 'next/link';
-import { useAkashaSynthesis } from './dashboard/hooks/useAkashaSynthesis';
-import { AkashaAuthorityPrompt } from './AkashaAuthorityPrompt';
 import { Sparkles, Clock, AlertTriangle, Compass, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
+import { AkashaAuthorityPrompt } from './AkashaAuthorityPrompt';
+import { useAkashaSynthesis } from './dashboard/hooks/useAkashaSynthesis';
 
 export interface MyDayScreenProps {
   userName: string;
@@ -39,13 +38,17 @@ export function MyDayScreen({ userName, locale }: MyDayScreenProps) {
           padding: '24px 20px 80px',
         }}
       >
-        <div style={{ maxWidth: 480, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div
+          style={{
+            maxWidth: 480,
+            margin: '0 auto',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 16,
+          }}
+        >
           {[...Array(4)].map((_, i) => (
-            <div
-              key={i}
-              className="animate-pulse rounded-2xl bg-white/5"
-              style={{ height: 96 }}
-            />
+            <div key={i} className="animate-pulse rounded-2xl bg-white/5" style={{ height: 96 }} />
           ))}
         </div>
       </main>
@@ -73,10 +76,7 @@ export function MyDayScreen({ userName, locale }: MyDayScreenProps) {
   const hoje = new Date();
   const hora = hoje.getHours();
   const saudacaoTemporal =
-    hora < 6 ? 'Boa madrugada' :
-    hora < 12 ? 'Bom dia' :
-    hora < 18 ? 'Boa tarde' :
-    'Boa noite';
+    hora < 6 ? 'Boa madrugada' : hora < 12 ? 'Bom dia' : hora < 18 ? 'Boa tarde' : 'Boa noite';
 
   const dataFormatada = hoje.toLocaleDateString(locale === 'pt-BR' ? 'pt-BR' : 'en-US', {
     weekday: 'long',
@@ -102,10 +102,26 @@ export function MyDayScreen({ userName, locale }: MyDayScreenProps) {
         padding: '24px 20px 80px',
       }}
     >
-      <div style={{ maxWidth: 480, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div
+        style={{
+          maxWidth: 480,
+          margin: '0 auto',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 16,
+        }}
+      >
         {/* 1. Saudação personalizada */}
         <header>
-          <p style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', letterSpacing: '0.2em', textTransform: 'uppercase', margin: 0 }}>
+          <p
+            style={{
+              fontSize: '0.7rem',
+              color: 'rgba(255,255,255,0.5)',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              margin: 0,
+            }}
+          >
             {dataFormatada}
           </p>
           <h1
@@ -119,7 +135,14 @@ export function MyDayScreen({ userName, locale }: MyDayScreenProps) {
           >
             {saudacaoTemporal}, {userName}.
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.95rem', margin: 0, lineHeight: 1.5 }}>
+          <p
+            style={{
+              color: 'rgba(255,255,255,0.6)',
+              fontSize: '0.95rem',
+              margin: 0,
+              lineHeight: 1.5,
+            }}
+          >
             {data.climate}
           </p>
         </header>
@@ -131,7 +154,9 @@ export function MyDayScreen({ userName, locale }: MyDayScreenProps) {
         >
           <div className="flex items-center gap-2 mb-2">
             <Sparkles size={14} className="text-[#FF9500]" aria-hidden />
-            <span className="text-xs text-white/60 uppercase tracking-widest font-medium">Clima Energético</span>
+            <span className="text-xs text-white/60 uppercase tracking-widest font-medium">
+              Clima Energético
+            </span>
           </div>
           <p className="text-sm text-white/85 leading-relaxed">{data.overallTheme}</p>
         </div>
@@ -157,7 +182,9 @@ export function MyDayScreen({ userName, locale }: MyDayScreenProps) {
                 </span>
               </div>
               <p className="text-sm text-white font-medium leading-snug">{data.ritual.titulo}</p>
-              <p className="text-xs text-white/70 mt-1.5 leading-relaxed">{data.ritual.instrucao}</p>
+              <p className="text-xs text-white/70 mt-1.5 leading-relaxed">
+                {data.ritual.instrucao}
+              </p>
             </div>
           )}
 
@@ -171,7 +198,9 @@ export function MyDayScreen({ userName, locale }: MyDayScreenProps) {
           >
             <div className="flex items-center gap-2 mb-2">
               <Clock size={14} className="text-[#34C759]" aria-hidden />
-              <span className="text-xs text-[#34C759] uppercase tracking-widest font-semibold">Janela de clareza</span>
+              <span className="text-xs text-[#34C759] uppercase tracking-widest font-semibold">
+                Janela de clareza
+              </span>
             </div>
             <p className="text-sm text-white/85 leading-relaxed">
               {temSynthesis && authority
@@ -191,7 +220,9 @@ export function MyDayScreen({ userName, locale }: MyDayScreenProps) {
             >
               <div className="flex items-center gap-2 mb-2">
                 <AlertTriangle size={14} className="text-[#FF3B30]" aria-hidden />
-                <span className="text-xs text-[#FF3B30] uppercase tracking-widest font-semibold">Evite hoje</span>
+                <span className="text-xs text-[#FF3B30] uppercase tracking-widest font-semibold">
+                  Evite hoje
+                </span>
               </div>
               <p className="text-sm text-white/85 leading-relaxed">{data.alert}</p>
             </div>
@@ -215,9 +246,7 @@ export function MyDayScreen({ userName, locale }: MyDayScreenProps) {
             <span className="text-xs text-white/50 uppercase tracking-widest font-medium block mb-2">
               Tensão ativa
             </span>
-            <p className="text-sm text-white/80 leading-relaxed">
-              {data.tensionPoint.theme}
-            </p>
+            <p className="text-sm text-white/80 leading-relaxed">{data.tensionPoint.theme}</p>
           </div>
         )}
 

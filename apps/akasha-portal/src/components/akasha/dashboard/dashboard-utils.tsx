@@ -3,8 +3,15 @@
  * and shared badge components for the Akasha life-areas dashboard.
  */
 import {
-  Zap, Heart, TrendingUp, Brain, Sparkles, AlertTriangle,
-  CheckCircle2, XCircle, Star,
+  Zap,
+  Heart,
+  TrendingUp,
+  Brain,
+  Sparkles,
+  AlertTriangle,
+  CheckCircle2,
+  XCircle,
+  Star,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -12,12 +19,12 @@ import {
 
 // Map legacy tradition names to Akasha-native labels used in chainOfReasoning
 const TRADITION_MAP: Record<string, string> = {
-  'Cabala':        'Número de Vida',
-  'Astrologia':    'Movimento Celeste',
-  'Odus':         'Ancestralidade',
-  'Odu':          'Ancestralidade',
-  'Tantra':       'Corpo e Energia',
-  'I Ching':      'Mutação do Caminho',
+  Cabala: 'Número de Vida',
+  Astrologia: 'Movimento Celeste',
+  Odus: 'Ancestralidade',
+  Odu: 'Ancestralidade',
+  Tantra: 'Corpo e Energia',
+  'I Ching': 'Mutação do Caminho',
 };
 
 export function cleanTraditionName(text: string): string {
@@ -30,13 +37,16 @@ export function cleanTraditionName(text: string): string {
 
 // ─── Area config ─────────────────────────────────────────────────────────────
 
-export const AREA_CONFIG: Record<string, {
-  icon: LucideIcon;
-  color: string;
-  bgColor: string;
-  label: string;
-  description: string;
-}> = {
+export const AREA_CONFIG: Record<
+  string,
+  {
+    icon: LucideIcon;
+    color: string;
+    bgColor: string;
+    label: string;
+    description: string;
+  }
+> = {
   vitalidadeEnergia: {
     icon: Zap,
     color: '#FF9500',

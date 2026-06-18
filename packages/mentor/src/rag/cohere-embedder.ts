@@ -1,16 +1,11 @@
-import type { 
-  SimilarPractice, 
-  PracticeFilters,
-  IntegrativePracticeRef,
-  RAGConfig 
-} from './index';
+import type { SimilarPractice, PracticeFilters, IntegrativePracticeRef, RAGConfig } from './index';
 
 /**
  * Cohere Embedder - Uses Cohere's embed-multilingual-v3.0 model
- * 
+ *
  * Environment variables required:
  * - COHERE_API_KEY: Your Cohere API key
- * 
+ *
  * This is the fallback embedder when OpenAI is not available.
  */
 export class CohereEmbedder {
@@ -47,7 +42,7 @@ export class CohereEmbedder {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.apiKey}`,
+        Authorization: `Bearer ${this.apiKey}`,
       },
       body: JSON.stringify({
         model: this.model,
@@ -61,12 +56,12 @@ export class CohereEmbedder {
       throw new Error(`Cohere API error: ${response.status} - ${error}`);
     }
 
-    const data = await response.json() as { embeddings: number[][] };
+    const data = (await response.json()) as { embeddings: number[][] };
     const embedding = data.embeddings[0];
 
     // Cache the result
     this.cache.set(cacheKey, embedding);
-    
+
     return embedding;
   }
 
@@ -84,14 +79,24 @@ export class CohereEmbedder {
     // In production, this would query a vector database
     // For now, return mock results structure (same as OpenAI)
     const mockPractices: IntegrativePracticeRef[] = [
-      { id: '1', name: 'Meditação Kundalini', category: 'meditation', description: 'Prática de despertar energia' },
-      { id: '2', name: 'Respirações Prânicas', category: 'breathwork', description: 'Técnicas de respiração energética' },
+      {
+        id: '1',
+        name: 'Meditação Kundalini',
+        category: 'meditation',
+        description: 'Prática de despertar energia',
+      },
+      {
+        id: '2',
+        name: 'Respirações Prânicas',
+        category: 'breathwork',
+        description: 'Técnicas de respiração energética',
+      },
     ];
 
     // Calculate cosine similarity (mock)
     const results: SimilarPractice[] = mockPractices.map((practice, index) => ({
       practice,
-      score: 1 - (index * 0.1),
+      score: 1 - index * 0.1,
       highlights: practice.description ? [practice.description] : [],
     }));
 

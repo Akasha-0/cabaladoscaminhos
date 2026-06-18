@@ -13,7 +13,14 @@ export function toJulianDate(data: Date): number {
   const y = ano + 4800 - a;
   const m = mes + 12 * a - 3;
 
-  const jd = dia + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+  const jd =
+    dia +
+    Math.floor((153 * m + 2) / 5) +
+    365 * y +
+    Math.floor(y / 4) -
+    Math.floor(y / 100) +
+    Math.floor(y / 400) -
+    32045;
 
   return jd + hora / 24;
 }
@@ -30,8 +37,18 @@ export function normalizeDegrees(degrees: number): number {
 
 export function getSigno(longitude: number): Signo {
   const signos: Signo[] = [
-    'aries', 'touro', 'gemeos', 'cancer', 'leao', 'virgem',
-    'libra', 'escorpio', 'sagitario', 'capricornio', 'aquario', 'peixes'
+    'aries',
+    'touro',
+    'gemeos',
+    'cancer',
+    'leao',
+    'virgem',
+    'libra',
+    'escorpio',
+    'sagitario',
+    'capricornio',
+    'aquario',
+    'peixes',
   ];
   const idx = Math.floor(longitude / 30) % 12;
   return signos[idx];
@@ -48,7 +65,9 @@ function calcularSol(data: Date): { longitude: number; velocidade: number } {
   const L0 = 280.46646 + 0.9856474 * d;
   const g = 357.52911 + 0.98560028 * d;
 
-  const L = normalizeDegrees(L0 + 1.915 * Math.sin(g * DEG_TO_RAD) + 0.020 * Math.sin(2 * g * DEG_TO_RAD));
+  const L = normalizeDegrees(
+    L0 + 1.915 * Math.sin(g * DEG_TO_RAD) + 0.02 * Math.sin(2 * g * DEG_TO_RAD)
+  );
 
   return { longitude: L, velocidade: 0.9856 };
 }
@@ -57,14 +76,14 @@ function calcularLua(data: Date): { longitude: number; velocidade: number } {
   const jd = toJulianDate(data);
   const d = jd - 2451545.0;
 
-  const L0 = 218.3165 + 481267.8813 * d / 1440;
-  const M0 = 134.9634 + 477198.8675 * d / 1440;
+  const L0 = 218.3165 + (481267.8813 * d) / 1440;
+  const M0 = 134.9634 + (477198.8675 * d) / 1440;
 
   const L = normalizeDegrees(
-    L0
-    + 6.29 * Math.sin(M0 * DEG_TO_RAD)
-    - 1.27 * Math.sin((M0 - 2 * L0) * DEG_TO_RAD)
-    + 0.66 * Math.sin(2 * L0 * DEG_TO_RAD)
+    L0 +
+      6.29 * Math.sin(M0 * DEG_TO_RAD) -
+      1.27 * Math.sin((M0 - 2 * L0) * DEG_TO_RAD) +
+      0.66 * Math.sin(2 * L0 * DEG_TO_RAD)
   );
 
   return { longitude: L, velocidade: 13.1764 };
@@ -80,7 +99,7 @@ function calcularPlaneta(
   const L = elementos.L0 + elementos.L1 * d;
   const M = L - elementos.Omega;
 
-  const C = 1.9148 * Math.sin(M * DEG_TO_RAD) + 0.0200 * Math.sin(2 * M * DEG_TO_RAD);
+  const C = 1.9148 * Math.sin(M * DEG_TO_RAD) + 0.02 * Math.sin(2 * M * DEG_TO_RAD);
 
   const lambda = normalizeDegrees(L + C);
 
@@ -126,12 +145,12 @@ function calcularLilith(data: Date): { longitude: number; velocidade: number } {
 const ELEMENTOS_ORBITAIS: Record<string, { L0: number; L1: number; Omega: number }> = {
   mercurio: { L0: 252.2509, L1: 149472.6746, Omega: 48.3313 },
   venus: { L0: 181.9798, L1: 58517.8157, Omega: 76.6799 },
-  marte: { L0: 355.4330, L1: 19140.2993, Omega: 49.5574 },
+  marte: { L0: 355.433, L1: 19140.2993, Omega: 49.5574 },
   jupiter: { L0: 34.3515, L1: 3034.9057, Omega: 100.4644 },
   saturno: { L0: 50.0774, L1: 1222.1138, Omega: 113.6637 },
-  urano: { L0: 314.0550, L1: 428.4669, Omega: 74.0005 },
+  urano: { L0: 314.055, L1: 428.4669, Omega: 74.0005 },
   netuno: { L0: 304.3487, L1: 218.4822, Omega: 131.7846 },
-  plutao: { L0: 238.9290, L1: 145.1839, Omega: 110.2991 },
+  plutao: { L0: 238.929, L1: 145.1839, Omega: 110.2991 },
 };
 
 const DISTANCIAS_APROX: Record<string, number> = {
@@ -224,17 +243,17 @@ export function calcularCasas(
   let theta = 280.46061837 + 360.98564736629 * d;
   theta = normalizeDegrees(theta);
 
-  let ascendente = Math.atan2(
-    Math.sin((theta + longitude) * DEG_TO_RAD),
-    Math.cos(latitude * DEG_TO_RAD) * Math.cos((theta + longitude) * DEG_TO_RAD)
-  ) * RAD_TO_DEG;
+  let ascendente =
+    Math.atan2(
+      Math.sin((theta + longitude) * DEG_TO_RAD),
+      Math.cos(latitude * DEG_TO_RAD) * Math.cos((theta + longitude) * DEG_TO_RAD)
+    ) * RAD_TO_DEG;
 
   ascendente = normalizeDegrees(ascendente + 180);
 
-  let mc = Math.atan2(
-    -Math.sin(latitude * DEG_TO_RAD),
-    Math.cos((theta + longitude) * DEG_TO_RAD)
-  ) * RAD_TO_DEG;
+  let mc =
+    Math.atan2(-Math.sin(latitude * DEG_TO_RAD), Math.cos((theta + longitude) * DEG_TO_RAD)) *
+    RAD_TO_DEG;
 
   mc = normalizeDegrees(mc);
 
@@ -266,16 +285,17 @@ function calcularGrauCasa(houseIndex: number, ascendente: number, mc: number): n
   return startAngle + diff * factor;
 }
 
-function getQuadrantAngles(
-  quadrant: number,
-  ascendente: number,
-  mc: number
-): [number, number] {
+function getQuadrantAngles(quadrant: number, ascendente: number, mc: number): [number, number] {
   switch (quadrant) {
-    case 0: return [ascendente, mc];
-    case 1: return [mc, ascendente + 180];
-    case 2: return [ascendente + 180, mc + 180];
-    case 3: return [mc + 180, ascendente];
-    default: return [ascendente, mc];
+    case 0:
+      return [ascendente, mc];
+    case 1:
+      return [mc, ascendente + 180];
+    case 2:
+      return [ascendente + 180, mc + 180];
+    case 3:
+      return [mc + 180, ascendente];
+    default:
+      return [ascendente, mc];
   }
 }

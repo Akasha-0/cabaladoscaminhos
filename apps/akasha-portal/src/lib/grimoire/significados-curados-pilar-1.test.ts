@@ -4,10 +4,9 @@
  * Foco: invariantes estruturais + princípios editoriais (VISION §3).
  * Não testamos CADA string (são dados curados, não lógica).
  */
-
 import { describe, it, expect } from 'vitest';
-import { PILAR_1_SERIES } from './significados-curados-pilar-1';
 import type { SignificadoCurado } from './significados-curados';
+import { PILAR_1_SERIES } from './significados-curados-pilar-1';
 
 const CAMPOS_OBRIGATORIOS: Array<keyof SignificadoCurado> = [
   'id',
@@ -51,13 +50,19 @@ describe('significados-curados-pilar-1', () => {
       });
       porSerie.forEach((ids, serie) => {
         const unicos = new Set(ids);
-        expect(unicos.size, `série "${serie}" tem IDs duplicados: ${ids.join(',')}`).toBe(ids.length);
+        expect(unicos.size, `série "${serie}" tem IDs duplicados: ${ids.join(',')}`).toBe(
+          ids.length
+        );
       });
     });
 
     it('IDs cobrem 1-9, 11, 22, 33 na série primária (Life Path)', () => {
       const lifePath = PILAR_1_SERIES.filter(
-        (s) => typeof s.id === 'number' && s.id <= 33 && s.titulo && !/Expressão|Talento|Ano/.test(s.titulo),
+        (s) =>
+          typeof s.id === 'number' &&
+          s.id <= 33 &&
+          s.titulo &&
+          !/Expressão|Talento|Ano/.test(s.titulo)
       );
       const lifeIds = lifePath.map((s) => s.id).sort((a, b) => (a as number) - (b as number));
       // 1-9 + 11 + 22 + 33
@@ -70,7 +75,10 @@ describe('significados-curados-pilar-1', () => {
           const valor = s[c];
           expect(valor, `entrada[${i}] campo "${c}" vazio`).toBeTruthy();
           if (typeof valor === 'string') {
-            expect(valor.trim().length, `entrada[${i}] campo "${c}" só tem whitespace`).toBeGreaterThan(0);
+            expect(
+              valor.trim().length,
+              `entrada[${i}] campo "${c}" só tem whitespace`
+            ).toBeGreaterThan(0);
           }
         });
       });
@@ -102,19 +110,17 @@ describe('significados-curados-pilar-1', () => {
         const isPtBr = PT_BR_RE.test(registro);
         expect(
           isPtBr,
-          `entrada[${i}] (id=${s.id}) sem marcadores PT-BR: "${registro.slice(0, 100)}…"`,
+          `entrada[${i}] (id=${s.id}) sem marcadores PT-BR: "${registro.slice(0, 100)}…"`
         ).toBe(true);
       });
     });
 
     it('princípio de concisão: essencia ≤ 22 palavras', () => {
       // Diretriz editorial: cada essencia ≤ 22 palavras (VISION §3, curadoria).
-      const longas = PILAR_1_SERIES.filter(
-        (s) => s.essencia.split(/\s+/).length > 22,
-      );
+      const longas = PILAR_1_SERIES.filter((s) => s.essencia.split(/\s+/).length > 22);
       expect(
         longas.map((s) => ({ id: s.id, n: s.essencia.split(/\s+/).length })),
-        'essencias longas (>22 palavras)',
+        'essencias longas (>22 palavras)'
       ).toEqual([]);
     });
   });

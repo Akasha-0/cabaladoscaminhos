@@ -9,16 +9,29 @@
  *
  * O usuário entende SEU perfil antes de ver qualquer número ou símbolo.
  */
-
-import { useState } from 'react';
-
 import { motion, AnimatePresence } from 'framer-motion';
-import Link from 'next/link';
 import {
-  Zap, Heart, TrendingUp, Brain, Sparkles, AlertTriangle,
-  ChevronDown, ArrowRight, Star, CheckCircle2, XCircle,
-  Waves, Building, Flame, Shield, Radio, FlaskConical, Building2,
+  Zap,
+  Heart,
+  TrendingUp,
+  Brain,
+  Sparkles,
+  AlertTriangle,
+  ChevronDown,
+  ArrowRight,
+  Star,
+  CheckCircle2,
+  XCircle,
+  Waves,
+  Building,
+  Flame,
+  Shield,
+  Radio,
+  FlaskConical,
+  Building2,
 } from 'lucide-react';
+import { useState } from 'react';
+import Link from 'next/link';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -58,35 +71,83 @@ interface MandalaNarrativeProps {
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
-const AREA_CONFIG: Record<string, {
-  icon: typeof Zap;
-  color: string;
-  bgColor: string;
-  label: string;
-}> = {
-  vitalidadeEnergia:    { icon: Zap,           color: '#FF9500', bgColor: 'rgba(255,149,0,0.12)',  label: 'Corpo & Energia' },
-  conexoesAmor:        { icon: Heart,         color: '#FF3B30', bgColor: 'rgba(255,59,48,0.12)',  label: 'Relações & Amor' },
-  carreiraProsperidade: { icon: TrendingUp,    color: '#34C759', bgColor: 'rgba(52,199,89,0.12)', label: 'Carreira & Dinheiro' },
-  oriCabecaQuizilas:    { icon: Brain,         color: '#5856D6', bgColor: 'rgba(88,86,214,0.12)', label: 'Mente & Propósito' },
-  missaoDestino:       { icon: Sparkles,      color: '#AF52DE', bgColor: 'rgba(175,82,222,0.12)', label: 'Missão & Destino' },
-  desafiosSombras:     { icon: AlertTriangle, color: '#FF375F', bgColor: 'rgba(255,55,95,0.12)',  label: 'Transformação' },
+const AREA_CONFIG: Record<
+  string,
+  {
+    icon: typeof Zap;
+    color: string;
+    bgColor: string;
+    label: string;
+  }
+> = {
+  vitalidadeEnergia: {
+    icon: Zap,
+    color: '#FF9500',
+    bgColor: 'rgba(255,149,0,0.12)',
+    label: 'Corpo & Energia',
+  },
+  conexoesAmor: {
+    icon: Heart,
+    color: '#FF3B30',
+    bgColor: 'rgba(255,59,48,0.12)',
+    label: 'Relações & Amor',
+  },
+  carreiraProsperidade: {
+    icon: TrendingUp,
+    color: '#34C759',
+    bgColor: 'rgba(52,199,89,0.12)',
+    label: 'Carreira & Dinheiro',
+  },
+  oriCabecaQuizilas: {
+    icon: Brain,
+    color: '#5856D6',
+    bgColor: 'rgba(88,86,214,0.12)',
+    label: 'Mente & Propósito',
+  },
+  missaoDestino: {
+    icon: Sparkles,
+    color: '#AF52DE',
+    bgColor: 'rgba(175,82,222,0.12)',
+    label: 'Missão & Destino',
+  },
+  desafiosSombras: {
+    icon: AlertTriangle,
+    color: '#FF375F',
+    bgColor: 'rgba(255,55,95,0.12)',
+    label: 'Transformação',
+  },
 };
 
 const FREQ_CONFIG = {
   shadow: { label: 'Sombra', color: '#FF2D55', Icon: XCircle },
-  gift:   { label: 'Dom',   color: '#34C759', Icon: CheckCircle2 },
-  siddhi: { label: 'Siddhi',color: '#AF52DE', Icon: Star },
+  gift: { label: 'Dom', color: '#34C759', Icon: CheckCircle2 },
+  siddhi: { label: 'Siddhi', color: '#AF52DE', Icon: Star },
 };
 
 const TYPE_COLORS: Record<string, string> = {
-  catalisador: '#FF6B35', receptor: '#0A84FF', construtor: '#30D158',
-  transformador: '#BF5AF2', guardiao: '#64D2FF', curador: '#FF375F',
-  canal: '#FFD60A', alquimista: '#AC8E68', arquiteto: '#8E8E93',
+  catalisador: '#FF6B35',
+  receptor: '#0A84FF',
+  construtor: '#30D158',
+  transformador: '#BF5AF2',
+  guardiao: '#64D2FF',
+  curador: '#FF375F',
+  canal: '#FFD60A',
+  alquimista: '#AC8E68',
+  arquiteto: '#8E8E93',
 };
-const TYPE_ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: string; style?: React.CSSProperties }>> = {
-  catalisador: Zap, receptor: Waves, construtor: Building,
-  transformador: Flame, guardiao: Shield, curador: Heart,
-  canal: Radio, alquimista: FlaskConical, arquiteto: Building2,
+const TYPE_ICON_MAP: Record<
+  string,
+  React.ComponentType<{ size?: number; className?: string; style?: React.CSSProperties }>
+> = {
+  catalisador: Zap,
+  receptor: Waves,
+  construtor: Building,
+  transformador: Flame,
+  guardiao: Shield,
+  curador: Heart,
+  canal: Radio,
+  alquimista: FlaskConical,
+  arquiteto: Building2,
 };
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
@@ -114,7 +175,12 @@ function AreaCard({
   defaultOpen?: boolean;
 }) {
   const [open, setOpen] = useState(defaultOpen);
-  const cfg = AREA_CONFIG[area] ?? { icon: Zap, color: '#888', bgColor: 'rgba(136,136,136,0.12)', label: area };
+  const cfg = AREA_CONFIG[area] ?? {
+    icon: Zap,
+    color: '#888',
+    bgColor: 'rgba(136,136,136,0.12)',
+    label: area,
+  };
   const { label } = cfg;
   const Icon = cfg.icon;
   const freqColor = FREQ_CONFIG[narrative.frequency]?.color ?? '#888';
@@ -172,7 +238,9 @@ function AreaCard({
                 className="rounded-xl p-3 text-sm"
                 style={{ backgroundColor: `${freqColor}15`, borderLeft: `3px solid ${freqColor}` }}
               >
-                <p className="text-xs text-white/40 uppercase tracking-wider mb-1 font-medium">Prática de Hoje</p>
+                <p className="text-xs text-white/40 uppercase tracking-wider mb-1 font-medium">
+                  Prática de Hoje
+                </p>
                 <p className="text-sm text-white/90 leading-snug">{narrative.practicalExample}</p>
               </div>
             </div>
@@ -201,9 +269,7 @@ export function MandalaNarrative({ synthesis, loading }: MandalaNarrativeProps) 
   if (!synthesis?.oneProfile) {
     return (
       <div className="rounded-2xl border border-[#FF9500]/30 bg-[#FF9500]/5 p-6 text-center">
-        <p className="text-white/60 text-sm">
-          Seu perfil Akasha está sendo calculado…
-        </p>
+        <p className="text-white/60 text-sm">Seu perfil Akasha está sendo calculado…</p>
       </div>
     );
   }
@@ -228,11 +294,16 @@ export function MandalaNarrative({ synthesis, loading }: MandalaNarrativeProps) 
         >
           {/* Type + icon */}
           <div className="flex items-start gap-4 mb-5">
-            <span className="flex items-center justify-center w-16 h-16 rounded-2xl shrink-0" style={{ background: `${accentColor}20`, color: accentColor }}>
+            <span
+              className="flex items-center justify-center w-16 h-16 rounded-2xl shrink-0"
+              style={{ background: `${accentColor}20`, color: accentColor }}
+            >
               <TypeIcon size={36} />
             </span>
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-white/40 uppercase tracking-widest font-medium mb-1">Seu Tipo Akasha</p>
+              <p className="text-xs text-white/40 uppercase tracking-widest font-medium mb-1">
+                Seu Tipo Akasha
+              </p>
               <h2 className="text-2xl font-bold text-white leading-tight">{oneProfile.typeName}</h2>
               <p className="text-sm text-white/60 mt-1 italic">{oneProfile.corePattern}</p>
               {oneProfile.typeConfidence && (
@@ -241,16 +312,16 @@ export function MandalaNarrative({ synthesis, loading }: MandalaNarrativeProps) 
                     oneProfile.typeConfidence === 'alta'
                       ? 'bg-[#30D158]/15 border-[#30D158]/30 text-[#30D158]'
                       : oneProfile.typeConfidence === 'media'
-                      ? 'bg-[#FFD60A]/15 border-[#FFD60A]/30 text-[#FFD60A]'
-                      : 'bg-[#FF375F]/15 border-[#FF375F]/30 text-[#FF375F]'
+                        ? 'bg-[#FFD60A]/15 border-[#FFD60A]/30 text-[#FFD60A]'
+                        : 'bg-[#FF375F]/15 border-[#FF375F]/30 text-[#FF375F]'
                   }`}
                 >
                   <span className="inline-block w-1.5 h-1.5 rounded-full bg-current" />
                   {oneProfile.typeConfidence === 'alta'
                     ? 'Alta convergência — perfil bem definido'
                     : oneProfile.typeConfidence === 'media'
-                    ? 'Convergência média — perfil em formação'
-                    : 'Baixa convergência — mais dados fortalecem o perfil'}
+                      ? 'Convergência média — perfil em formação'
+                      : 'Baixa convergência — mais dados fortalecem o perfil'}
                 </div>
               )}
             </div>
@@ -258,7 +329,9 @@ export function MandalaNarrative({ synthesis, loading }: MandalaNarrativeProps) 
               className="px-3 py-1 rounded-full text-xs font-semibold shrink-0"
               style={{ backgroundColor: `${accentColor}22`, color: accentColor }}
             >
-              {oneProfile.dimensionOrigin ? oneProfile.dimensionOrigin.split('—')[0].trim() : 'Akasha'}
+              {oneProfile.dimensionOrigin
+                ? oneProfile.dimensionOrigin.split('—')[0].trim()
+                : 'Akasha'}
             </span>
           </div>
           {/* Power phrase */}
@@ -266,21 +339,27 @@ export function MandalaNarrative({ synthesis, loading }: MandalaNarrativeProps) 
             className="rounded-2xl p-5 mb-5"
             style={{ background: 'rgba(0,0,0,0.4)', borderLeft: `4px solid ${accentColor}` }}
           >
-            <p className="text-lg font-semibold text-white leading-snug">
-              {oneProfile.oneLiner}
-            </p>
+            <p className="text-lg font-semibold text-white leading-snug">{oneProfile.oneLiner}</p>
           </div>
 
           {/* Strategy + Authority */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-xs text-white/40 uppercase tracking-wider mb-1 font-medium">Estratégia</p>
+              <p className="text-xs text-white/40 uppercase tracking-wider mb-1 font-medium">
+                Estratégia
+              </p>
               <p className="text-sm font-semibold text-white">{oneProfile.strategy}</p>
-              <p className="text-xs text-white/50 mt-1 leading-relaxed">{oneProfile.strategyDetail}</p>
+              <p className="text-xs text-white/50 mt-1 leading-relaxed">
+                {oneProfile.strategyDetail}
+              </p>
             </div>
             <div>
-              <p className="text-xs text-white/40 uppercase tracking-wider mb-1 font-medium">Autoridade</p>
-              <p className="text-sm text-white/80 italic leading-snug">&ldquo;{oneProfile.authorityPractice}&rdquo;</p>
+              <p className="text-xs text-white/40 uppercase tracking-wider mb-1 font-medium">
+                Autoridade
+              </p>
+              <p className="text-sm text-white/80 italic leading-snug">
+                &ldquo;{oneProfile.authorityPractice}&rdquo;
+              </p>
             </div>
           </div>
         </div>
@@ -288,8 +367,12 @@ export function MandalaNarrative({ synthesis, loading }: MandalaNarrativeProps) 
         {/* Daily directive + growth */}
         <div className="px-6 pb-6 border-t border-white/8 pt-4 grid grid-cols-1 gap-3">
           <div className="bg-[#FF9500]/10 border border-[#FF9500]/20 rounded-xl px-4 py-3">
-            <p className="text-xs text-[#FF9500]/80 uppercase tracking-wider font-semibold mb-1">Diretiva de Hoje</p>
-            <p className="text-sm text-white font-medium leading-snug">{oneProfile.dailyDirective}</p>
+            <p className="text-xs text-[#FF9500]/80 uppercase tracking-wider font-semibold mb-1">
+              Diretiva de Hoje
+            </p>
+            <p className="text-sm text-white font-medium leading-snug">
+              {oneProfile.dailyDirective}
+            </p>
           </div>
           <div className="flex items-start gap-2">
             <ArrowRight size={14} className="text-[#30D158] mt-0.5 shrink-0" />
@@ -318,7 +401,9 @@ export function MandalaNarrative({ synthesis, loading }: MandalaNarrativeProps) 
         >
           <div className="flex items-center gap-2 mb-3">
             <Sparkles size={14} className="text-[#7C5CFF]" />
-            <span className="text-xs text-[#7C5CFF] uppercase tracking-wider font-semibold">Síntese Akasha</span>
+            <span className="text-xs text-[#7C5CFF] uppercase tracking-wider font-semibold">
+              Síntese Akasha
+            </span>
           </div>
           <p className="text-sm text-white/80 leading-relaxed">{synthesisParagraph}</p>
         </motion.div>
@@ -333,9 +418,13 @@ export function MandalaNarrative({ synthesis, loading }: MandalaNarrativeProps) 
         >
           <div className="flex items-center gap-2 mb-3">
             <Brain size={14} className="text-[#2DD4BF]" />
-            <span className="text-xs text-[#2DD4BF] uppercase tracking-wider font-semibold">Síntese Akáshica</span>
+            <span className="text-xs text-[#2DD4BF] uppercase tracking-wider font-semibold">
+              Síntese Akáshica
+            </span>
           </div>
-          <p className="text-sm text-white/80 leading-relaxed italic">&ldquo;{narrativaCentral}&rdquo;</p>
+          <p className="text-sm text-white/80 leading-relaxed italic">
+            &ldquo;{narrativaCentral}&rdquo;
+          </p>
         </motion.div>
       )}
 
@@ -350,10 +439,7 @@ export function MandalaNarrative({ synthesis, loading }: MandalaNarrativeProps) 
           className="w-full flex items-center justify-between mb-3"
         >
           <h3 className="text-sm font-semibold text-white/80">Suas 6 Áreas de Vida</h3>
-          <motion.span
-            animate={{ rotate: areasOpen ? 180 : 0 }}
-            className="text-white/30"
-          >
+          <motion.span animate={{ rotate: areasOpen ? 180 : 0 }} className="text-white/30">
             <ChevronDown size={16} />
           </motion.span>
         </button>

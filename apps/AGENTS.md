@@ -1,10 +1,12 @@
 # Apps DOX
 
 ## Purpose
+
 Aplicações web do monorepo `cabala-dos-caminhos`. A única app atualmente
 é o portal Next.js; CLI e outros binários vivem em `packages/`.
 
 ## Ownership
+
 - `akasha-portal/`: Portal Next.js 16 (Fluid Compute) — Akasha OS
   - App Router com i18n (`[locale]/(akasha)/`)
   - 50+ API routes em `src/app/api/`
@@ -13,7 +15,8 @@ Aplicações web do monorepo `cabala-dos-caminhos`. A única app atualmente
   - F-240 Share Target (Web Share Target API)
 
 ## Local Contracts
-- **Apps são CLIENTES dos packages** (akasha-core, mentor, core-*,
+
+- **Apps são CLIENTES dos packages** (akasha-core, mentor, core-\*,
   akasha-cli). Business logic NÃO vive em `apps/`.
 - **API routes em `src/app/api/`** seguem REST:
   - GET = read, POST = create, PATCH = update, DELETE = remove
@@ -30,6 +33,7 @@ Aplicações web do monorepo `cabala-dos-caminhos`. A única app atualmente
   `output: 'export'` (incompatível com `cookies()` em rotas auth).
 
 ## Work Guidance
+
 - **TypeScript estrito** (zero `any` em código novo)
 - **Tests co-located** com código (lesson N+24) — `*.test.ts` ao lado
   de `*.ts`. API route tests em `tests/integration/api/`
@@ -42,6 +46,7 @@ Aplicações web do monorepo `cabala-dos-caminhos`. A única app atualmente
   `messages/{en,pt-BR}.json`
 
 ## Verification
+
 - `pnpm typecheck` (0 errors)
 - `pnpm test:run` (suite)
 - `pnpm lint` (0 errors; warnings pré-existentes documentados)
@@ -51,9 +56,10 @@ Aplicações web do monorepo `cabala-dos-caminhos`. A única app atualmente
 ## Padrões comuns
 
 ### Auth guard em API route
+
 ```ts
-import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { NextResponse } from 'next/server';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 
 export async function POST(request: NextRequest) {
   const authResult = await requireAkashaApi(request);
@@ -64,9 +70,10 @@ export async function POST(request: NextRequest) {
 ```
 
 ### Cron guard
+
 ```ts
-import { verifyCronSecret } from '@/lib/application/auth/cron-guard';
 import { NextResponse, NextRequest } from 'next/server';
+import { verifyCronSecret } from '@/lib/application/auth/cron-guard';
 
 export async function GET(request: NextRequest) {
   const guard = verifyCronSecret(request);
@@ -76,6 +83,7 @@ export async function GET(request: NextRequest) {
 ```
 
 ### Server Component
+
 ```ts
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -91,4 +99,5 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
 ```
 
 ## Child DOX Index
+
 - [akasha-portal](file:///home/skynet/cabala-dos-caminhos/apps/akasha-portal/AGENTS.md) — Portal Akasha OS (Next.js 16, App Router, PWA)

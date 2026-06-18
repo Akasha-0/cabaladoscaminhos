@@ -29,7 +29,7 @@ export function getKnowledgeBase(_library?: string): KnowledgeBase {
     async load() {},
     getRelevant(domains: string[]) {
       return {
-        entries: this.entries.filter(e => domains.includes(e.domain)),
+        entries: this.entries.filter((e) => domains.includes(e.domain)),
       };
     },
   };

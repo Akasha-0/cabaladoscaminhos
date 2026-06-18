@@ -6,11 +6,10 @@
  *   - buildInterpretation: monta AreaInterpretation completa a partir de NumeroContent
  *   - buildFallback: gera interpretação genérica para números fora do catálogo
  */
-
+import type { AkashaLevel, LifeArea } from '@akasha/types';
 import { describe, it, expect } from 'vitest';
 import { baseInterpretation, buildInterpretation, buildFallback } from './builders';
 import type { NumeroContent } from './types';
-import type { AkashaLevel, LifeArea } from '@akasha/types';
 
 // ─── Fixtures ──────────────────────────────────────────────────────────────
 

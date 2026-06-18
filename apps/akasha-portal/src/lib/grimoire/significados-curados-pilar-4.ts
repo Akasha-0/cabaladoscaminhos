@@ -19,7 +19,6 @@
  * - Citação obrigatória (Axioma 4).
  * - Ética Ifá: jamais substituir terreiro/babalaô (R-022 §4.4).
  */
-
 import type { SignificadoCurado } from './significados-curados';
 
 const PILAR_4: SignificadoCurado[] = [

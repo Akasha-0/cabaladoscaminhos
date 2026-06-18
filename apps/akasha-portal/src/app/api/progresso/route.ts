@@ -6,15 +6,19 @@
 // - Achievement system with milestones
 // - Statistics aggregation
 // ============================================================
-
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/domain/types/spiritual-filters';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
+import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/domain/types/spiritual-filters';
 
 // ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 const CategorySchema = z.enum([
-  'readings', 'rituals', 'meditation', 'credits', 'streaks', 'exploration'
+  'readings',
+  'rituals',
+  'meditation',
+  'credits',
+  'streaks',
+  'exploration',
 ]);
 const RaritySchema = z.enum(['common', 'uncommon', 'rare', 'epic', 'legendary']);
 const AchievementSchema = z.object({
@@ -32,20 +36,28 @@ const AchievementSchema = z.object({
   element: ElementSchema.optional(),
   orixa: z.string().optional(),
   affirmation: z.string().optional(),
-  spiritualCorrelations: z.object({
-    sefirot: z.array(SefirotSchema),
-    chakra: z.number().int().min(1).max(7),
-    element: ElementSchema,
-    orixa: z.string(),
-    affirmation: z.string(),
-    frequency: z.string(),
-  }).optional(),
+  spiritualCorrelations: z
+    .object({
+      sefirot: z.array(SefirotSchema),
+      chakra: z.number().int().min(1).max(7),
+      element: ElementSchema,
+      orixa: z.string(),
+      affirmation: z.string(),
+      frequency: z.string(),
+    })
+    .optional(),
 });
 
 const ProgressQuerySchema = z.object({
   userId: z.string().optional(),
-  achievements: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
-  stats: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
+  achievements: z
+    .enum(['true', 'false'])
+    .transform((v) => v === 'true')
+    .optional(),
+  stats: z
+    .enum(['true', 'false'])
+    .transform((v) => v === 'true')
+    .optional(),
   sefirot: SefirotSchema.optional(),
   chakra: ChakraSchema.optional(),
   element: ElementSchema.optional(),
@@ -97,14 +109,17 @@ export type MeditationProgress = z.infer<typeof MeditationProgressSchema>;
 export const dynamic = 'force-dynamic';
 
 // ─── Achievement Spiritual Correlations ──────────────────────────────────────────
-const ACHIEVEMENT_SPIRITUAL_CORRELATIONS: Record<string, {
-  sefirot: string[];
-  chakra: number;
-  element: string;
-  orixa: string;
-  affirmation: string;
-  frequency: string;
-}> = {
+const ACHIEVEMENT_SPIRITUAL_CORRELATIONS: Record<
+  string,
+  {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  }
+> = {
   first_reading: {
     sefirot: ['Kether'],
     chakra: 7,
@@ -301,35 +316,245 @@ interface AchievementBase {
 
 const ACHIEVEMENTS: AchievementBase[] = [
   // Readings achievements
-  { id: 'first_reading', name: 'Primeiros Passos', description: 'Complete sua primeira consulta', icon: '✨', target: 1, category: 'readings', rarity: 'common', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['first_reading'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['first_reading'] },
-  { id: 'reader_10', name: 'Iniciante', description: 'Complete 10 consultas', icon: '📜', target: 10, category: 'readings', rarity: 'common', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['reader_10'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['reader_10'] },
-  { id: 'reader_50', name: 'Explorador', description: 'Complete 50 consultas', icon: '🔮', target: 50, category: 'readings', rarity: 'uncommon', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['reader_50'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['reader_50'] },
-  { id: 'reader_100', name: 'Seekers Ancião', description: 'Complete 100 consultas', icon: '👁️', target: 100, category: 'readings', rarity: 'rare', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['reader_100'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['reader_100'] },
-  { id: 'reader_500', name: 'Mestre das Artes Arcanas', description: 'Complete 500 consultas', icon: '🌟', target: 500, category: 'readings', rarity: 'epic', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['reader_500'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['reader_500'] },
-  { id: 'all_types', name: 'Polímata Espiritual', description: 'Experimente todos os tipos de consulta', icon: '🎭', target: 8, category: 'readings', rarity: 'rare', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['all_types'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['all_types'] },
-  
+  {
+    id: 'first_reading',
+    name: 'Primeiros Passos',
+    description: 'Complete sua primeira consulta',
+    icon: '✨',
+    target: 1,
+    category: 'readings',
+    rarity: 'common',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['first_reading'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['first_reading'],
+  },
+  {
+    id: 'reader_10',
+    name: 'Iniciante',
+    description: 'Complete 10 consultas',
+    icon: '📜',
+    target: 10,
+    category: 'readings',
+    rarity: 'common',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['reader_10'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['reader_10'],
+  },
+  {
+    id: 'reader_50',
+    name: 'Explorador',
+    description: 'Complete 50 consultas',
+    icon: '🔮',
+    target: 50,
+    category: 'readings',
+    rarity: 'uncommon',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['reader_50'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['reader_50'],
+  },
+  {
+    id: 'reader_100',
+    name: 'Seekers Ancião',
+    description: 'Complete 100 consultas',
+    icon: '👁️',
+    target: 100,
+    category: 'readings',
+    rarity: 'rare',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['reader_100'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['reader_100'],
+  },
+  {
+    id: 'reader_500',
+    name: 'Mestre das Artes Arcanas',
+    description: 'Complete 500 consultas',
+    icon: '🌟',
+    target: 500,
+    category: 'readings',
+    rarity: 'epic',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['reader_500'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['reader_500'],
+  },
+  {
+    id: 'all_types',
+    name: 'Polímata Espiritual',
+    description: 'Experimente todos os tipos de consulta',
+    icon: '🎭',
+    target: 8,
+    category: 'readings',
+    rarity: 'rare',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['all_types'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['all_types'],
+  },
+
   // Ritual achievements
-  { id: 'ritual_1', name: 'Praticante', description: 'Complete seu primeiro ritual', icon: '🕯️', target: 1, category: 'rituals', rarity: 'common', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_1'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_1'] },
-  { id: 'ritual_streak_7', name: 'Dedicado', description: 'Mantenha uma sequência de 7 dias', icon: '🔥', target: 7, category: 'streaks', rarity: 'uncommon', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_streak_7'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_streak_7'] },
-  { id: 'ritual_streak_30', name: 'Devoto', description: 'Mantenha uma sequência de 30 dias', icon: '⚡', target: 30, category: 'streaks', rarity: 'rare', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_streak_30'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_streak_30'] },
-  { id: 'ritual_streak_100', name: 'Mestre Devocional', description: 'Mantenha uma sequência de 100 dias', icon: '💫', target: 100, category: 'streaks', rarity: 'epic', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_streak_100'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_streak_100'] },
-  { id: 'ritual_master', name: 'Mestre dos Rituais', description: 'Complete 100 rituais', icon: '🏆', target: 100, category: 'rituals', rarity: 'epic', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_master'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_master'] },
-  
+  {
+    id: 'ritual_1',
+    name: 'Praticante',
+    description: 'Complete seu primeiro ritual',
+    icon: '🕯️',
+    target: 1,
+    category: 'rituals',
+    rarity: 'common',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_1'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_1'],
+  },
+  {
+    id: 'ritual_streak_7',
+    name: 'Dedicado',
+    description: 'Mantenha uma sequência de 7 dias',
+    icon: '🔥',
+    target: 7,
+    category: 'streaks',
+    rarity: 'uncommon',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_streak_7'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_streak_7'],
+  },
+  {
+    id: 'ritual_streak_30',
+    name: 'Devoto',
+    description: 'Mantenha uma sequência de 30 dias',
+    icon: '⚡',
+    target: 30,
+    category: 'streaks',
+    rarity: 'rare',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_streak_30'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_streak_30'],
+  },
+  {
+    id: 'ritual_streak_100',
+    name: 'Mestre Devocional',
+    description: 'Mantenha uma sequência de 100 dias',
+    icon: '💫',
+    target: 100,
+    category: 'streaks',
+    rarity: 'epic',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_streak_100'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_streak_100'],
+  },
+  {
+    id: 'ritual_master',
+    name: 'Mestre dos Rituais',
+    description: 'Complete 100 rituais',
+    icon: '🏆',
+    target: 100,
+    category: 'rituals',
+    rarity: 'epic',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_master'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['ritual_master'],
+  },
+
   // Meditation achievements
-  { id: 'meditation_first', name: 'Calma Interior', description: 'Complete sua primeira meditação', icon: '🧘', target: 1, category: 'meditation', rarity: 'common', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['meditation_first'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['meditation_first'] },
-  { id: 'meditation_hour', name: 'Meditador Horário', description: 'Medite por um total de 1 hora', icon: '⏰', target: 60, category: 'meditation', rarity: 'uncommon', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['meditation_hour'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['meditation_hour'] },
-  { id: 'meditation_master', name: 'Mestre da Mente', description: 'Medite por um total de 100 horas', icon: '🧠', target: 6000, category: 'meditation', rarity: 'legendary', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['meditation_master'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['meditation_master'] },
-  
+  {
+    id: 'meditation_first',
+    name: 'Calma Interior',
+    description: 'Complete sua primeira meditação',
+    icon: '🧘',
+    target: 1,
+    category: 'meditation',
+    rarity: 'common',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['meditation_first'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['meditation_first'],
+  },
+  {
+    id: 'meditation_hour',
+    name: 'Meditador Horário',
+    description: 'Medite por um total de 1 hora',
+    icon: '⏰',
+    target: 60,
+    category: 'meditation',
+    rarity: 'uncommon',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['meditation_hour'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['meditation_hour'],
+  },
+  {
+    id: 'meditation_master',
+    name: 'Mestre da Mente',
+    description: 'Medite por um total de 100 horas',
+    icon: '🧠',
+    target: 6000,
+    category: 'meditation',
+    rarity: 'legendary',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['meditation_master'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['meditation_master'],
+  },
+
   // Credit achievements
-  { id: 'first_purchase', name: 'Investidor Espiritual', description: 'Faça sua primeira compra', icon: '💰', target: 1, category: 'credits', rarity: 'common', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['first_purchase'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['first_purchase'] },
-  { id: 'vip_member', name: 'Membro VIP', description: 'Adquira créditos pela primeira vez', icon: '👑', target: 1, category: 'credits', rarity: 'uncommon', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['vip_member'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['vip_member'] },
-  
+  {
+    id: 'first_purchase',
+    name: 'Investidor Espiritual',
+    description: 'Faça sua primeira compra',
+    icon: '💰',
+    target: 1,
+    category: 'credits',
+    rarity: 'common',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['first_purchase'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['first_purchase'],
+  },
+  {
+    id: 'vip_member',
+    name: 'Membro VIP',
+    description: 'Adquira créditos pela primeira vez',
+    icon: '👑',
+    target: 1,
+    category: 'credits',
+    rarity: 'uncommon',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['vip_member'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['vip_member'],
+  },
+
   // Exploration achievements
-  { id: 'orixa_explorer', name: 'Explorador dos Orixás', description: 'Descubra 5 Orixás diferentes', icon: '🌊', target: 5, category: 'exploration', rarity: 'uncommon', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['orixa_explorer'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['orixa_explorer'] },
-  { id: 'numerology_explorer', name: 'Mestre dos Números', description: 'Calcule 10 mapas numerológicos', icon: '🔢', target: 10, category: 'exploration', rarity: 'uncommon', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['numerology_explorer'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['numerology_explorer'] },
-  { id: 'tarot_explorer', name: 'Leitor de Tarô', description: 'Faça 20 leituras de tarô', icon: '🃏', target: 20, category: 'exploration', rarity: 'rare', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['tarot_explorer'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['tarot_explorer'] },
-  { id: 'astrology_explorer', name: 'Astrologista', description: 'Calcule 10 mapas astrológicos', icon: '⭐', target: 10, category: 'exploration', rarity: 'rare', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['astrology_explorer'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['astrology_explorer'] },
-  { id: 'sacred_geometry_explorer', name: 'Geômetra Sagrado', description: 'Explore todas as formas geométricas', icon: '🔷', target: 10, category: 'exploration', rarity: 'epic', ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['sacred_geometry_explorer'], spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['sacred_geometry_explorer'] },
+  {
+    id: 'orixa_explorer',
+    name: 'Explorador dos Orixás',
+    description: 'Descubra 5 Orixás diferentes',
+    icon: '🌊',
+    target: 5,
+    category: 'exploration',
+    rarity: 'uncommon',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['orixa_explorer'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['orixa_explorer'],
+  },
+  {
+    id: 'numerology_explorer',
+    name: 'Mestre dos Números',
+    description: 'Calcule 10 mapas numerológicos',
+    icon: '🔢',
+    target: 10,
+    category: 'exploration',
+    rarity: 'uncommon',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['numerology_explorer'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['numerology_explorer'],
+  },
+  {
+    id: 'tarot_explorer',
+    name: 'Leitor de Tarô',
+    description: 'Faça 20 leituras de tarô',
+    icon: '🃏',
+    target: 20,
+    category: 'exploration',
+    rarity: 'rare',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['tarot_explorer'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['tarot_explorer'],
+  },
+  {
+    id: 'astrology_explorer',
+    name: 'Astrologista',
+    description: 'Calcule 10 mapas astrológicos',
+    icon: '⭐',
+    target: 10,
+    category: 'exploration',
+    rarity: 'rare',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['astrology_explorer'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['astrology_explorer'],
+  },
+  {
+    id: 'sacred_geometry_explorer',
+    name: 'Geômetra Sagrado',
+    description: 'Explore todas as formas geométricas',
+    icon: '🔷',
+    target: 10,
+    category: 'exploration',
+    rarity: 'epic',
+    ...ACHIEVEMENT_SPIRITUAL_CORRELATIONS['sacred_geometry_explorer'],
+    spiritualCorrelations: ACHIEVEMENT_SPIRITUAL_CORRELATIONS['sacred_geometry_explorer'],
+  },
 ];
 
 // ─── Achievement Helper Functions ──────────────────────────────────────────────────────────
@@ -342,12 +567,12 @@ function calculateLevel(experience: number): LevelResult {
   const multiplier = 1.5;
   let level = 1;
   let totalExp = 0;
-  
+
   while (totalExp + baseExp * Math.pow(multiplier, level - 1) <= experience) {
     totalExp += baseExp * Math.pow(multiplier, level - 1);
     level++;
   }
-  
+
   const expToNext = baseExp * Math.pow(multiplier, level - 1);
   return { level, expToNext };
 }
@@ -385,43 +610,61 @@ export interface SpiritualStats {
 }
 function calculateSpiritualStats(achievements: Achievement[]): SpiritualStats {
   return {
-    bySefirot: achievements.reduce((acc, a) => {
-      if (a.spiritualCorrelations) {
-        a.spiritualCorrelations.sefirot.forEach(s => {
-          acc[s] = (acc[s] || 0) + 1;
-        });
-      }
-      return acc;
-    }, {} as Record<string, number>),
-    byChakra: achievements.reduce((acc, a) => {
-      if (a.spiritualCorrelations?.chakra) {
-        const c = a.spiritualCorrelations.chakra;
-        acc[c] = (acc[c] || 0) + 1;
-      }
-      return acc;
-    }, {} as Record<string, number>),
-    byElement: achievements.reduce((acc, a) => {
-      if (a.spiritualCorrelations?.element) {
-        const e = a.spiritualCorrelations.element;
-        acc[e] = (acc[e] || 0) + 1;
-      }
-      return acc;
-    }, {} as Record<string, number>),
-    byOrixa: achievements.reduce((acc, a) => {
-      if (a.spiritualCorrelations?.orixa) {
-        const o = a.spiritualCorrelations.orixa;
-        acc[o] = (acc[o] || 0) + 1;
-      }
-      return acc;
-    }, {} as Record<string, number>),
-    byRarity: achievements.reduce((acc, a) => {
-      acc[a.rarity] = (acc[a.rarity] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>),
-    byCategory: achievements.reduce((acc, a) => {
-      acc[a.category] = (acc[a.category] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>),
+    bySefirot: achievements.reduce(
+      (acc, a) => {
+        if (a.spiritualCorrelations) {
+          a.spiritualCorrelations.sefirot.forEach((s) => {
+            acc[s] = (acc[s] || 0) + 1;
+          });
+        }
+        return acc;
+      },
+      {} as Record<string, number>
+    ),
+    byChakra: achievements.reduce(
+      (acc, a) => {
+        if (a.spiritualCorrelations?.chakra) {
+          const c = a.spiritualCorrelations.chakra;
+          acc[c] = (acc[c] || 0) + 1;
+        }
+        return acc;
+      },
+      {} as Record<string, number>
+    ),
+    byElement: achievements.reduce(
+      (acc, a) => {
+        if (a.spiritualCorrelations?.element) {
+          const e = a.spiritualCorrelations.element;
+          acc[e] = (acc[e] || 0) + 1;
+        }
+        return acc;
+      },
+      {} as Record<string, number>
+    ),
+    byOrixa: achievements.reduce(
+      (acc, a) => {
+        if (a.spiritualCorrelations?.orixa) {
+          const o = a.spiritualCorrelations.orixa;
+          acc[o] = (acc[o] || 0) + 1;
+        }
+        return acc;
+      },
+      {} as Record<string, number>
+    ),
+    byRarity: achievements.reduce(
+      (acc, a) => {
+        acc[a.rarity] = (acc[a.rarity] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    ),
+    byCategory: achievements.reduce(
+      (acc, a) => {
+        acc[a.category] = (acc[a.category] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    ),
   };
 }
 
@@ -467,7 +710,10 @@ function createSupabase(): SupabaseClient {
 }
 
 async function getAuthenticatedUser(supabase: SupabaseClient) {
-  const { data: { user }, error } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
   return { user, error };
 }
 
@@ -486,10 +732,7 @@ async function getUserProgress(supabase: SupabaseClient, userId: string) {
 }
 
 async function getUserAchievementProgress(supabase: SupabaseClient, userId: string) {
-  const { data } = await supabase
-    .from('user_achievements')
-    .select('*')
-    .eq('user_id', userId);
+  const { data } = await supabase.from('user_achievements').select('*').eq('user_id', userId);
 
   const progressMap = new Map<string, AchievementProgressMap>();
   if (data) {
@@ -505,13 +748,15 @@ async function getUserAchievementProgress(supabase: SupabaseClient, userId: stri
 
 // ─── Query Parsing Functions ─────────────────────────────────────────────────────────
 
-function parseQueryParams(searchParams: URLSearchParams): { 
-  success: true; 
-  data: ParsedProgressQuery 
-} | { 
-  success: false; 
-  error: z.ZodError 
-} {
+function parseQueryParams(searchParams: URLSearchParams):
+  | {
+      success: true;
+      data: ParsedProgressQuery;
+    }
+  | {
+      success: false;
+      error: z.ZodError;
+    } {
   const result = ProgressQuerySchema.safeParse({
     userId: searchParams.get('userId'),
     achievements: searchParams.get('achievements'),
@@ -544,24 +789,18 @@ function applySpiritualFilters(
   let filtered = achievements;
 
   if (filters.sefirot) {
-    filtered = filtered.filter(a =>
+    filtered = filtered.filter((a) =>
       (a.spiritualCorrelations?.sefirot as readonly string[])?.includes(filters.sefirot!)
     );
   }
   if (filters.chakra) {
-    filtered = filtered.filter(a => 
-      a.spiritualCorrelations?.chakra === filters.chakra
-    );
+    filtered = filtered.filter((a) => a.spiritualCorrelations?.chakra === filters.chakra);
   }
   if (filters.element) {
-    filtered = filtered.filter(a => 
-      a.spiritualCorrelations?.element === filters.element
-    );
+    filtered = filtered.filter((a) => a.spiritualCorrelations?.element === filters.element);
   }
   if (filters.orixa) {
-    filtered = filtered.filter(a => 
-      a.spiritualCorrelations?.orixa === filters.orixa
-    );
+    filtered = filtered.filter((a) => a.spiritualCorrelations?.orixa === filters.orixa);
   }
 
   return filtered;
@@ -646,24 +885,37 @@ export async function GET(request: NextRequest) {
     const { user, error: authError } = await getAuthenticatedUser(supabase);
 
     if (authError || !user) {
-      return NextResponse.json({
-        success: false,
-        error: 'Usuário não autenticado',
-      }, { status: 401 });
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Usuário não autenticado',
+        },
+        { status: 401 }
+      );
     }
 
     const searchParams = request.nextUrl.searchParams;
     const queryResult = parseQueryParams(searchParams);
 
     if (!queryResult.success) {
-      return NextResponse.json({
-        success: false,
-        error: 'Parâmetros inválidos',
-        details: queryResult.error.flatten().fieldErrors,
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Parâmetros inválidos',
+          details: queryResult.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      );
     }
 
-    const { achievements: includeAchievements, stats: includeStats, sefirot, chakra, element, orixa } = queryResult.data;
+    const {
+      achievements: includeAchievements,
+      stats: includeStats,
+      sefirot,
+      chakra,
+      element,
+      orixa,
+    } = queryResult.data;
 
     const rawProgressData = await getUserProgress(supabase, user.id);
     const progressData = normalizeProgressData(rawProgressData);
@@ -671,12 +923,17 @@ export async function GET(request: NextRequest) {
 
     const achievementProgress = await getUserAchievementProgress(supabase, user.id);
 
-    const enrichedAchievements = ACHIEVEMENTS.map(a => {
+    const enrichedAchievements = ACHIEVEMENTS.map((a) => {
       const progress = achievementProgress.get(a.id);
       return enrichAchievement(a, progress?.progress || 0, progress?.unlockedAt || null);
     });
 
-    const filteredAchievements = applySpiritualFilters(enrichedAchievements, { sefirot, chakra, element, orixa });
+    const filteredAchievements = applySpiritualFilters(enrichedAchievements, {
+      sefirot,
+      chakra,
+      element,
+      orixa,
+    });
     const spiritualStats = calculateSpiritualStats(filteredAchievements);
 
     const response: Record<string, unknown> = {
@@ -695,7 +952,7 @@ export async function GET(request: NextRequest) {
 
     if (includeAchievements !== false) {
       response.achievements = filteredAchievements;
-      response.unlockedCount = filteredAchievements.filter(a => a.unlockedAt !== null).length;
+      response.unlockedCount = filteredAchievements.filter((a) => a.unlockedAt !== null).length;
       response.totalCount = filteredAchievements.length;
     }
 
@@ -705,9 +962,12 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(response);
   } catch (error) {
     console.error('Progress API error:', error);
-    return NextResponse.json({
-      success: false,
-      error: 'Erro interno ao buscar progresso',
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Erro interno ao buscar progresso',
+      },
+      { status: 500 }
+    );
   }
 }

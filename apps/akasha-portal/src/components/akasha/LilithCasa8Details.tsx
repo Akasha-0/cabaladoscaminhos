@@ -35,8 +35,13 @@ export function LilithCasa8Details({ cor }: { cor: string }) {
       {mostrar && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 3, marginTop: 6 }}>
           <span>• Sua assinatura sexual é reconhecível: um padrão fixo, não situacional.</span>
-          <span>• O que é reprimido aqui tende a se expressar por outros canais (projeção, obsessão, transformação).</span>
-          <span>• Não é necessário "aceitar" — é necessário notar o padrão e escolher conscientemente.</span>
+          <span>
+            • O que é reprimido aqui tende a se expressar por outros canais (projeção, obsessão,
+            transformação).
+          </span>
+          <span>
+            • Não é necessário "aceitar" — é necessário notar o padrão e escolher conscientemente.
+          </span>
         </div>
       )}
     </div>

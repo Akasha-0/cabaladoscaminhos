@@ -25,16 +25,16 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const root = document.documentElement;
-    
+
     const updateTheme = () => {
       let resolved: 'light' | 'dark';
-      
+
       if (theme === 'system') {
         resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       } else {
         resolved = theme;
       }
-      
+
       root.classList.remove('light', 'dark');
       root.classList.add(resolved);
       setResolvedTheme(resolved);

@@ -22,7 +22,6 @@
  * Stubs determinísticos — Fase 6 integra engines reais.
  * Não modifique: o conteúdo é a verdade-base do D-043.
  */
-
 import type { AkashaInput } from './akasha-core';
 
 export interface Perfil {
@@ -101,7 +100,8 @@ export const PERFIS: readonly Perfil[] = [
       data_nascimento: '1985-12-30',
       hora_nascimento: '17:45',
       local_nascimento: 'Belo Horizonte, MG',
-      intencao_inicial: 'quero entender como integrar minha carreira de terapeuta, minha relação amorosa e minha busca espiritual sem perder o equilíbrio entre elas',
+      intencao_inicial:
+        'quero entender como integrar minha carreira de terapeuta, minha relação amorosa e minha busca espiritual sem perder o equilíbrio entre elas',
     },
   },
   {
@@ -125,7 +125,8 @@ export const PERFIS: readonly Perfil[] = [
       data_nascimento: '1968-02-14',
       hora_nascimento: '09:00',
       local_nascimento: 'São Luís, MA',
-      intencao_inicial: 'quero ver como Cabala, Candomblé, Astrologia, Tantra e I Ching se cruzam no meu mapa',
+      intencao_inicial:
+        'quero ver como Cabala, Candomblé, Astrologia, Tantra e I Ching se cruzam no meu mapa',
     },
   },
   {

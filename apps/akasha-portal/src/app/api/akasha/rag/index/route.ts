@@ -1,7 +1,7 @@
 /**
  * POST /api/akasha/rag/index
  * Indexa uma prática no RAG
- * 
+ *
  * Body:
  * - id: string
  * - name: string
@@ -9,10 +9,10 @@
  * - description?: string
  * - tags?: string[]
  */
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { initializeRAG, indexPractice, createRAGConfigFromEnv } from '@akasha/mentor/rag';
+import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 
 const indexBodySchema = z.object({
   id: z.string(),
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
   // 1. Autenticar (apenas admins)
   const authResult = await requireAkashaApi(request);
   if (authResult instanceof NextResponse) return authResult;
-  
+
   // 2. Validar body
   let parsed: z.infer<typeof indexBodySchema>;
   try {
@@ -54,25 +54,25 @@ export async function POST(request: NextRequest) {
     }
     return NextResponse.json({ error: 'Body inválido' }, { status: 400 });
   }
-  
+
   const { id, name, category, description, tags } = parsed;
-  
+
   // 3. Indexar
   try {
     await ensureRAGInitialized();
-    
+
     if (!ragInitialized) {
       return NextResponse.json(
         { error: 'RAG não configurado. Configure OPENAI_API_KEY ou COHERE_API_KEY.' },
         { status: 503 }
       );
     }
-    
+
     await indexPractice({ id, name, category, description: description ?? '', tags });
-    
-    return NextResponse.json({ 
+
+    return NextResponse.json({
       success: true,
-      message: `Prática '${name}' indexada com sucesso` 
+      message: `Prática '${name}' indexada com sucesso`,
     });
   } catch (err) {
     console.error('[rag/index] Erro:', err);

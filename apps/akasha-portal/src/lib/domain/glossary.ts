@@ -13,7 +13,6 @@
  * Fonte: docs/15_glossario-oracular.md + src/lib/akasha/odu-data.ts
  * (a tabela canônica de Odus usada por cross-engine).
  */
-
 import { getOduByName, type OduData } from './odu-data';
 
 export interface OduGlossarySection {

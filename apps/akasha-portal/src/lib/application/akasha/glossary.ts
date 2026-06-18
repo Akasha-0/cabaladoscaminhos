@@ -1,6 +1,6 @@
 /**
  * Glossary - Builds glossary sections for AI prompts
- * 
+ *
  * STUB: Implementação real do Grimório
  */
 
@@ -16,7 +16,7 @@ export interface OduGlossarySection {
  */
 export function buildOduGlossary(odues: unknown): OduGlossarySection | null {
   if (!odues) return null;
-  
+
   // Se for array de strings
   if (Array.isArray(odues)) {
     const name = odues[0] as string;
@@ -30,7 +30,7 @@ export function buildOduGlossary(odues: unknown): OduGlossarySection | null {
     }
     return null;
   }
-  
+
   // Se for objeto (como vem do chart)
   if (typeof odues === 'object') {
     const odu = odues as Record<string, unknown>;
@@ -44,7 +44,7 @@ export function buildOduGlossary(odues: unknown): OduGlossarySection | null {
       };
     }
   }
-  
+
   return null;
 }
 

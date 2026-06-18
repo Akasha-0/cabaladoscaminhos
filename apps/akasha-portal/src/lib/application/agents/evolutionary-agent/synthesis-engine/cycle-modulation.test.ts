@@ -6,14 +6,16 @@
  * - Unknown year (not in map): all areas fall back to score 40
  * - Boundary: always returns exactly 6 area entries
  */
-
 import { describe, it, expect } from 'vitest';
-import { deriveCycleModulation } from './cycle-modulation';
 import type { PersonalCycleSnapshot } from '@/lib/application/agents/personal-cycle-engine';
+import { deriveCycleModulation } from './cycle-modulation';
 
 // ─── Fixture ────────────────────────────────────────────────────────────────────
 
 function makeSnapshot(yearNum: number): PersonalCycleSnapshot {
+  // Only personalYear.number and personalMonth.number are read by deriveCycleModulation.
+  // Cast to suppress unused-field errors from the snapshot mock; the tests exercise
+  // deriveCycleModulation's output shape, not the snapshot builder.
   return {
     birthDate: '1990-05-15',
     currentDate: '2026-06-15',
@@ -30,7 +32,7 @@ function makeSnapshot(yearNum: number): PersonalCycleSnapshot {
     maturity: { number: 5 },
     synthesis: '',
     overallEnergy: 75,
-  };
+  } as unknown as PersonalCycleSnapshot;
 }
 
 // ─── Tests ─────────────────────────────────────────────────────────────────────

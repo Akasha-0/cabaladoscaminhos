@@ -9,14 +9,23 @@
  *
  * Cobertura: ~30% → ~50% (com este test file).
  */
-
 import { describe, it, expect, vi } from 'vitest';
+import { buildDailyContent } from './daily-engine';
 
 // Mock heavy dependencies
 vi.mock('@/lib/application/agents/transit-engine', () => ({
   buildDailyEnergy: vi.fn(() => ({
     date: '2026-06-15',
-    moonPhase: { phase: 'cheia', name: 'Lua Cheia', energy: 'expansão', action: 'colher', avoid: 'forçar', rituals: [], favorableFor: [], illumination: 100 },
+    moonPhase: {
+      phase: 'cheia',
+      name: 'Lua Cheia',
+      energy: 'expansão',
+      action: 'colher',
+      avoid: 'forçar',
+      rituals: [],
+      favorableFor: [],
+      illumination: 100,
+    },
     retrogradePlanets: [],
     majorAspects: [],
     overallEnergy: 75,
@@ -68,7 +77,12 @@ vi.mock('@/lib/domain/mapa/hologram-aggregator', () => ({
 
 vi.mock('./synthesis-engine', () => ({
   buildAkashaSynthesis: vi.fn(() => ({
-    akashaProfile: { dominantFrequency: 'gift', overallFrequencyScore: 60, transformationStage: 'deepening', activeSequence: 'heart' },
+    akashaProfile: {
+      dominantFrequency: 'gift',
+      overallFrequencyScore: 60,
+      transformationStage: 'deepening',
+      activeSequence: 'heart',
+    },
     oneProfile: null,
     lifePath: 1,
     areas: {
@@ -79,12 +93,17 @@ vi.mock('./synthesis-engine', () => ({
       missaoDestino: { title: 'Missão', frequency: 'gift', intensity: 2 },
       desafiosSombras: { title: 'Desafios', frequency: 'gift', intensity: 2 },
     },
-    dailyDecision: { strategy: 'observe', strategyExplanation: '...', authority: 'mental', authorityQuestion: '...', recommendation: '...', avoid: '...' },
+    dailyDecision: {
+      strategy: 'observe',
+      strategyExplanation: '...',
+      authority: 'mental',
+      authorityQuestion: '...',
+      recommendation: '...',
+      avoid: '...',
+    },
     synthesisParagraph: 'Você está em fase de deep dive.',
   })),
 }));
-
-import { buildDailyContent } from './daily-engine';
 
 const TODAY = new Date('2026-06-15T12:00:00Z');
 
@@ -139,7 +158,9 @@ describe('buildDailyContent — graceful fallback', () => {
   it('nunca throws com inputs vazios', () => {
     expect(() => buildDailyContent({}, {}, {}, {}, TODAY)).not.toThrow();
     expect(() => buildDailyContent(null, null, null, null, TODAY)).not.toThrow();
-    expect(() => buildDailyContent(undefined, undefined, undefined, undefined, TODAY)).not.toThrow();
+    expect(() =>
+      buildDailyContent(undefined, undefined, undefined, undefined, TODAY)
+    ).not.toThrow();
   });
 
   it('date sempre é string válida', () => {

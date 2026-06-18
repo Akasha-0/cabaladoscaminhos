@@ -9,7 +9,6 @@
  * - Performance: < 10ms por chamada
  * - Edge cases: ano bissexto, séculos diferentes
  */
-
 import { describe, it, expect } from 'vitest';
 import { findPrenatalMoment } from './prenatal-date';
 import { calcularPosicao } from './swiss-ephemeris';

@@ -1,9 +1,9 @@
 'use client';
 
-import { useMemo } from 'react';
 import { TrendingUp, TrendingDown, Minus, Sparkles, Target, Calendar } from 'lucide-react';
-import type { CycleHistoryData } from './hooks/useCyclePersistence';
+import { useMemo } from 'react';
 import ptBR from '@/i18n/pt-BR.json';
+import type { CycleHistoryData } from './hooks/useCyclePersistence';
 
 interface EvolutionPatternsProps {
   history: CycleHistoryData | null;
@@ -80,7 +80,7 @@ interface DetectedPattern {
 function detectPatterns(
   history: CycleHistoryData,
   areaLabels: Record<string, string>,
-  freqLabels: Record<string, string>,
+  freqLabels: Record<string, string>
 ): DetectedPattern[] {
   const patterns: DetectedPattern[] = [];
   const areaHistory = history.areaHistory;
@@ -166,10 +166,13 @@ function FrequencyBar({
       if (f in acc) acc[f]++;
       return acc;
     },
-    { shadow: 0, gift: 0, siddhi: 0 },
+    { shadow: 0, gift: 0, siddhi: 0 }
   );
 
-  const total = Math.max(Object.values(counts).reduce((a, b) => a + b, 0), 1);
+  const total = Math.max(
+    Object.values(counts).reduce((a, b) => a + b, 0),
+    1
+  );
   return (
     <div className="flex gap-2 items-center">
       {(Object.keys(FREQ_COLOR) as FrequencyLevel[]).map((freq) => {
@@ -229,10 +232,7 @@ function AlignmentTrends({
             {areaLabels[area] ?? area}
           </span>
           <Sparkline scores={scores} color={color} />
-          <span
-            className="text-[10px] font-mono w-8 text-right shrink-0"
-            style={{ color }}
-          >
+          <span className="text-[10px] font-mono w-8 text-right shrink-0" style={{ color }}>
             {latest}
           </span>
         </div>
@@ -279,10 +279,7 @@ function RitualTrendsSection({
                 month: 'short',
               });
               return (
-                <div
-                  key={entry.id}
-                  className="flex items-center gap-2 text-[10px]"
-                >
+                <div key={entry.id} className="flex items-center gap-2 text-[10px]">
                   <div
                     className="w-2 h-2 rounded-full shrink-0"
                     style={{ backgroundColor: color, opacity: 1 - i * 0.25 }}
@@ -296,9 +293,7 @@ function RitualTrendsSection({
                     {entry.ritualTitle}
                   </span>
                   {entry.ritualElement && (
-                    <span className="text-white/30 shrink-0">
-                      {entry.ritualElement}
-                    </span>
+                    <span className="text-white/30 shrink-0">{entry.ritualElement}</span>
                   )}
                 </div>
               );
@@ -338,7 +333,8 @@ function FrequencyTrends({
       .slice(-10);
     const scores = entries.map((e) => freqToScore(e.dominantFrequency));
     const latestFreq = (entries[entries.length - 1]?.dominantFrequency as Freq) ?? 'shadow';
-    const color = latestFreq === 'siddhi' ? '#9D86FF' : latestFreq === 'gift' ? '#2DD4BF' : '#FB5781';
+    const color =
+      latestFreq === 'siddhi' ? '#9D86FF' : latestFreq === 'gift' ? '#2DD4BF' : '#FB5781';
     return { area, scores, latestFreq, color };
   }).filter((t) => t.scores.length > 0);
 
@@ -355,11 +351,13 @@ function FrequencyTrends({
           </span>
           <div className="flex items-end gap-px h-6 flex-1">
             {scores.map((score, i) => {
-              const freq = (history.areaHistory
-                .filter((e) => e.area === area)
-                .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-                .slice(-10)[i]?.dominantFrequency as Freq) ?? 'shadow';
-              const barColor = freq === 'siddhi' ? '#9D86FF' : freq === 'gift' ? '#2DD4BF' : '#FB5781';
+              const freq =
+                (history.areaHistory
+                  .filter((e) => e.area === area)
+                  .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+                  .slice(-10)[i]?.dominantFrequency as Freq) ?? 'shadow';
+              const barColor =
+                freq === 'siddhi' ? '#9D86FF' : freq === 'gift' ? '#2DD4BF' : '#FB5781';
               const heightPct = Math.max(10, score);
               return (
                 <div
@@ -375,10 +373,7 @@ function FrequencyTrends({
               );
             })}
           </div>
-          <span
-            className="text-[10px] font-mono w-14 text-right shrink-0"
-            style={{ color }}
-          >
+          <span className="text-[10px] font-mono w-14 text-right shrink-0" style={{ color }}>
             {freqLabels[latestFreq] ?? latestFreq}
           </span>
         </div>
@@ -389,10 +384,7 @@ function FrequencyTrends({
 
 // ── Main component ─────────────────────────────────────────────────────────────
 
-export function EvolutionPatterns({
-  history,
-  loading,
-}: EvolutionPatternsProps) {
+export function EvolutionPatterns({ history, loading }: EvolutionPatternsProps) {
   // Client-safe translation using pt-BR bundle (synchronous, no server deps)
   const T = (key: string): string => {
     const parts = key.split('.');
@@ -424,7 +416,7 @@ export function EvolutionPatterns({
 
   const patterns = useMemo(
     () => (history ? detectPatterns(history, areaLabels, freqLabels) : []),
-    [history, areaLabels, freqLabels],
+    [history, areaLabels, freqLabels]
   );
 
   if (loading) {
@@ -450,7 +442,9 @@ export function EvolutionPatterns({
           </h3>
         </div>
         <p className="text-[11px] text-white/40 leading-relaxed">
-          {'Continue praticando para que o Agente Evolutivo detecte seus padrões ao longo do tempo. Cada dia de prática enriquece seu histórico.'}
+          {
+            'Continue praticando para que o Agente Evolutivo detecte seus padrões ao longo do tempo. Cada dia de prática enriquece seu histórico.'
+          }
         </p>
       </div>
     );
@@ -471,9 +465,7 @@ export function EvolutionPatterns({
           </h3>
         </div>
         <span className="text-[10px] text-white/40 font-mono">
-          {totalDays}{' '}
-          {totalDays !== 1 ? 'dias' : 'dia'} ·{' '}
-          {history.meta.days} {'dias'}
+          {totalDays} {totalDays !== 1 ? 'dias' : 'dia'} · {history.meta.days} {'dias'}
         </span>
       </div>
 
@@ -536,9 +528,7 @@ export function EvolutionPatterns({
           </div>
           <div className="flex-1">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-[11px] text-white/70">
-                {'Exercícios completados'}
-              </span>
+              <span className="text-[11px] text-white/70">{'Exercícios completados'}</span>
               <span className="text-[11px] font-mono text-[#2DD4BF]">
                 {exerciseCompleted}/{exerciseTotal}
               </span>
@@ -568,11 +558,7 @@ export function EvolutionPatterns({
           <div className="space-y-1.5">
             {patterns.map((p, i) => (
               <div key={i} className="flex items-start gap-2 text-[11px]">
-                <span
-                  className="shrink-0 mt-0.5"
-                  style={{ color: p.color }}
-                  aria-hidden="true"
-                >
+                <span className="shrink-0 mt-0.5" style={{ color: p.color }} aria-hidden="true">
                   {p.icon}
                 </span>
                 <span className="text-white/70" style={{ color: p.color + 'CC' }}>

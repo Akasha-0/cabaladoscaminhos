@@ -1,5 +1,5 @@
-import type { UserSpiritualData } from '../types';
 import type { DetectedPattern } from '../deep-correlation-engine';
+import type { UserSpiritualData } from '../types';
 
 // ============================================================
 // ODÚ → TAROT ARCANA MAP (used by recurring-number detector)
@@ -7,22 +7,22 @@ import type { DetectedPattern } from '../deep-correlation-engine';
 // 16 Odús → Tarot Major Arcana — canonical names per constants/odus.ts
 // Arcano numbers follow Merindilogun position: Ogbe=0, Ejiokô=1, Etogundá=2, etc.
 export const ODU_TAROT_MAP: Record<string, number[]> = {
-  'Ogbe': [0],
-  'Ejiokô': [1],
-  'Etogundá': [2],
-  'Irosun': [3],
-  'Oxê': [4],
-  'Obará': [5],
-  'Odi': [6],
-  'Ejionile': [7],
-  'Ossá': [8],
-  'Ofun': [9],
-  'Owarin': [10],
-  'Ejilaxebô': [11],
-  'Oturupon': [12],
-  'Oturá': [13],
-  'Iká': [14],
-  'Ofurufu': [15],
+  Ogbe: [0],
+  Ejiokô: [1],
+  Etogundá: [2],
+  Irosun: [3],
+  Oxê: [4],
+  Obará: [5],
+  Odi: [6],
+  Ejionile: [7],
+  Ossá: [8],
+  Ofun: [9],
+  Owarin: [10],
+  Ejilaxebô: [11],
+  Oturupon: [12],
+  Oturá: [13],
+  Iká: [14],
+  Ofurufu: [15],
 };
 
 // ============================================================
@@ -33,9 +33,7 @@ export const ODU_TAROT_MAP: Record<string, number[]> = {
 // DeepCorrelationEngine to keep that class focused on orchestration.
 // ============================================================
 
-export function detectRecurringNumberPatterns(
-  userData: UserSpiritualData
-): DetectedPattern[] {
+export function detectRecurringNumberPatterns(userData: UserSpiritualData): DetectedPattern[] {
   const patterns: DetectedPattern[] = [];
 
   if (userData.numeroPessoal) {
@@ -75,9 +73,7 @@ export function detectRecurringNumberPatterns(
   return patterns;
 }
 
-export function detectElementalImbalance(
-  userData: UserSpiritualData
-): DetectedPattern[] {
+export function detectElementalImbalance(userData: UserSpiritualData): DetectedPattern[] {
   const patterns: DetectedPattern[] = [];
 
   // Collect elements from different systems
@@ -86,14 +82,14 @@ export function detectElementalImbalance(
   if (userData.orixaRegente) {
     // Each Orixá has element associations
     const orixaElements: Record<string, string> = {
-      'Ogum': 'Fogo',
-      'Oxum': 'Água',
-      'Iemanjá': 'Água',
-      'Oxossi': 'Ar',
-      'Obatalá': 'Terra',
-      'Omulu': 'Terra',
-      'Xangô': 'Fogo',
-      'Iansã': 'Ar',
+      Ogum: 'Fogo',
+      Oxum: 'Água',
+      Iemanjá: 'Água',
+      Oxossi: 'Ar',
+      Obatalá: 'Terra',
+      Omulu: 'Terra',
+      Xangô: 'Fogo',
+      Iansã: 'Ar',
     };
     const elem = orixaElements[userData.orixaRegente];
     if (elem) elements.push(elem);
@@ -102,10 +98,18 @@ export function detectElementalImbalance(
   if (userData.sign) {
     // Zodiac signs have element associations
     const signElements: Record<string, string> = {
-      'Aries': 'Fogo', 'Leo': 'Fogo', 'Sagittarius': 'Fogo',
-      'Taurus': 'Terra', 'Virgo': 'Terra', 'Capricorn': 'Terra',
-      'Gemini': 'Ar', 'Libra': 'Ar', 'Aquarius': 'Ar',
-      'Cancer': 'Água', 'Scorpio': 'Água', 'Pisces': 'Água',
+      Aries: 'Fogo',
+      Leo: 'Fogo',
+      Sagittarius: 'Fogo',
+      Taurus: 'Terra',
+      Virgo: 'Terra',
+      Capricorn: 'Terra',
+      Gemini: 'Ar',
+      Libra: 'Ar',
+      Aquarius: 'Ar',
+      Cancer: 'Água',
+      Scorpio: 'Água',
+      Pisces: 'Água',
     };
     const elem = signElements[userData.sign];
     if (elem) elements.push(elem);
@@ -118,18 +122,10 @@ export function detectElementalImbalance(
   }
 
   // Detect imbalance (one element strongly dominant)
-  const dominantElement = Object.entries(elementCounts).sort(
-    (a, b) => b[1] - a[1]
-  )[0];
+  const dominantElement = Object.entries(elementCounts).sort((a, b) => b[1] - a[1])[0];
 
-  if (
-    dominantElement &&
-    dominantElement[1] >= 2 &&
-    Object.keys(elementCounts).length >= 2
-  ) {
-    const missingElements = ['Fogo', 'Terra', 'Água', 'Ar'].filter(
-      (e) => !elementCounts[e]
-    );
+  if (dominantElement && dominantElement[1] >= 2 && Object.keys(elementCounts).length >= 2) {
+    const missingElements = ['Fogo', 'Terra', 'Água', 'Ar'].filter((e) => !elementCounts[e]);
 
     patterns.push({
       patternType: 'elemental_imbalance',
@@ -143,9 +139,7 @@ export function detectElementalImbalance(
   return patterns;
 }
 
-export function detectKarmicThemes(
-  userData: UserSpiritualData
-): DetectedPattern[] {
+export function detectKarmicThemes(userData: UserSpiritualData): DetectedPattern[] {
   const patterns: DetectedPattern[] = [];
   const systems: string[] = [];
 
@@ -180,9 +174,7 @@ export function detectKarmicThemes(
   return patterns;
 }
 
-export function detectSpiritualBlocks(
-  userData: UserSpiritualData
-): DetectedPattern[] {
+export function detectSpiritualBlocks(userData: UserSpiritualData): DetectedPattern[] {
   const patterns: DetectedPattern[] = [];
   const blocks: string[] = [];
 

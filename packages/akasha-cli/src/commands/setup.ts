@@ -1,9 +1,9 @@
 import { exec } from 'child_process';
-import { promisify } from 'util';
+import { existsSync } from 'fs';
+import { dirname, join } from 'path';
 import pc from 'picocolors';
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-import { existsSync } from 'fs';
+import { promisify } from 'util';
 
 const execAsync = promisify(exec);
 const __filename = fileURLToPath(import.meta.url);
@@ -29,7 +29,6 @@ export async function setup(options: SetupOptions = {}): Promise<void> {
     const { stdout, stderr } = await execAsync(`bash "${scriptPath}" ${flags}`.trim(), {
       cwd: join(__dirname, '../../../../'),
     });
-
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error(pc.red(`❌ Erro ao executar setup: ${errorMessage}`));

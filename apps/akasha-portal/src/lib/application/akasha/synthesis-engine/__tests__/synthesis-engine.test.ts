@@ -14,8 +14,9 @@
  *  - Determinism: same inputs → same outputs
  *  - Custom date parameter is respected
  */
-
+import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/types';
 import { describe, it, expect, vi } from 'vitest';
+import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
 import {
   buildAkashaSynthesis,
   deriveAkashaType,
@@ -43,13 +44,6 @@ import {
   buildTransformationPrompt,
   buildSynthesisParagraph,
 } from '../../synthesis-engine';
-import type {
-  AstrologyMap,
-  KabalisticMap,
-  TantricMap,
-  OduBirth,
-} from '@akasha/types';
-import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
 
 // ─── Fixtures ────────────────────────────────────────────────────────────────
 
@@ -146,7 +140,12 @@ const TODAY = new Date('2026-06-15T12:00:00Z');
 describe('buildAkashaSynthesis — happy path', () => {
   it('retorna estrutura completa com 6 áreas', () => {
     const synth = buildAkashaSynthesis(
-      makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), TODAY
+      makeAstro(),
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(),
+      TODAY
     );
     expect(Object.keys(synth.areas)).toHaveLength(6);
     expect(synth.areas.vitalidadeEnergia).toBeDefined();
@@ -159,28 +158,50 @@ describe('buildAkashaSynthesis — happy path', () => {
 
   it('akashaProfile contém dominantFrequency válida', () => {
     const synth = buildAkashaSynthesis(
-      makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), TODAY
+      makeAstro(),
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(),
+      TODAY
     );
     expect(['shadow', 'gift', 'siddhi']).toContain(synth.akashaProfile.dominantFrequency);
   });
 
   it('akashaProfile contém transformationStage válido', () => {
     const synth = buildAkashaSynthesis(
-      makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), TODAY
+      makeAstro(),
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(),
+      TODAY
     );
-    expect(['surface', 'deepening', 'embodying']).toContain(synth.akashaProfile.transformationStage);
+    expect(['surface', 'deepening', 'embodying']).toContain(
+      synth.akashaProfile.transformationStage
+    );
   });
 
   it('akashaProfile contém activeSequence válido', () => {
     const synth = buildAkashaSynthesis(
-      makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), TODAY
+      makeAstro(),
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(),
+      TODAY
     );
     expect(['vitality', 'heart', 'purpose']).toContain(synth.akashaProfile.activeSequence);
   });
 
   it('akashaProfile.overallFrequencyScore está entre 0 e 100', () => {
     const synth = buildAkashaSynthesis(
-      makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), TODAY
+      makeAstro(),
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(),
+      TODAY
     );
     expect(synth.akashaProfile.overallFrequencyScore).toBeGreaterThanOrEqual(0);
     expect(synth.akashaProfile.overallFrequencyScore).toBeLessThanOrEqual(100);
@@ -188,7 +209,12 @@ describe('buildAkashaSynthesis — happy path', () => {
 
   it('oneProfile é definido e tem type/typeName válidos', () => {
     const synth = buildAkashaSynthesis(
-      makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), TODAY
+      makeAstro(),
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(),
+      TODAY
     );
     expect(synth.oneProfile).toBeDefined();
     expect(synth.oneProfile?.type).toBeTruthy();
@@ -198,7 +224,12 @@ describe('buildAkashaSynthesis — happy path', () => {
 
   it('dailyDecision tem strategy e authority válidos', () => {
     const synth = buildAkashaSynthesis(
-      makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), TODAY
+      makeAstro(),
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(),
+      TODAY
     );
     expect(['act', 'wait', 'observe']).toContain(synth.dailyDecision.strategy);
     expect(['emotional', 'sacral', 'splenic', 'mental']).toContain(synth.dailyDecision.authority);
@@ -206,7 +237,12 @@ describe('buildAkashaSynthesis — happy path', () => {
 
   it('synthesisParagraph é string não vazia', () => {
     const synth = buildAkashaSynthesis(
-      makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), TODAY
+      makeAstro(),
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(),
+      TODAY
     );
     expect(typeof synth.synthesisParagraph).toBe('string');
     expect(synth.synthesisParagraph.length).toBeGreaterThan(10);
@@ -214,7 +250,12 @@ describe('buildAkashaSynthesis — happy path', () => {
 
   it('cada área tem campos essenciais (title, frequency, intensity)', () => {
     const synth = buildAkashaSynthesis(
-      makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), TODAY
+      makeAstro(),
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(),
+      TODAY
     );
     for (const area of Object.values(synth.areas)) {
       expect(area.title).toBeTruthy();
@@ -225,7 +266,12 @@ describe('buildAkashaSynthesis — happy path', () => {
 
   it('cada área tem shadowPattern e giftPattern', () => {
     const synth = buildAkashaSynthesis(
-      makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), TODAY
+      makeAstro(),
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(),
+      TODAY
     );
     for (const area of Object.values(synth.areas)) {
       expect(typeof area.shadowPattern).toBe('string');
@@ -235,7 +281,12 @@ describe('buildAkashaSynthesis — happy path', () => {
 
   it('cada área tem pillarContribution com 5 pilares (incluindo iching)', () => {
     const synth = buildAkashaSynthesis(
-      makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), TODAY
+      makeAstro(),
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(),
+      TODAY
     );
     for (const area of Object.values(synth.areas)) {
       expect(area.pillarContribution).toHaveProperty('cabala');
@@ -250,7 +301,14 @@ describe('buildAkashaSynthesis — happy path', () => {
     // 3 combos: all-null, só kab, full — cobrem os caminhos de fallback
     const allNull = buildAkashaSynthesis(null, null, null, null, makeHolo(), TODAY);
     const kabOnly = buildAkashaSynthesis(null, makeKab(), null, null, makeHolo(), TODAY);
-    const full = buildAkashaSynthesis(makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), TODAY);
+    const full = buildAkashaSynthesis(
+      makeAstro(),
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(),
+      TODAY
+    );
 
     for (const areaKey of Object.keys(full.areas) as Array<keyof typeof full.areas>) {
       const a = allNull.areas[areaKey].pillarContribution;
@@ -262,7 +320,8 @@ describe('buildAkashaSynthesis — happy path', () => {
       const ab = JSON.stringify(a) === JSON.stringify(b);
       const bc = JSON.stringify(b) === JSON.stringify(c);
       const ac = JSON.stringify(a) === JSON.stringify(c);
-      expect(ab && bc && ac,
+      expect(
+        ab && bc && ac,
         `Área ${areaKey}: todas as 3 combinações de pilares são idênticas — bug no generateAreaNarrativeFull`
       ).toBe(false);
     }
@@ -270,7 +329,12 @@ describe('buildAkashaSynthesis — happy path', () => {
 
   it('cada área tem dailyRitual com title/instruction/element/color', () => {
     const synth = buildAkashaSynthesis(
-      makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), TODAY
+      makeAstro(),
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(),
+      TODAY
     );
     for (const area of Object.values(synth.areas)) {
       expect(area.dailyRitual).toBeDefined();
@@ -341,9 +405,7 @@ describe('buildAkashaSynthesis — date parameter', () => {
   it('aceita date customizada', () => {
     const customDate = new Date('2025-12-25T08:00:00Z');
     expect(() =>
-      buildAkashaSynthesis(
-        makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), customDate
-      )
+      buildAkashaSynthesis(makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), customDate)
     ).not.toThrow();
   });
 
@@ -359,14 +421,22 @@ describe('buildAkashaSynthesis — lifePath variations', () => {
     const synth = buildAkashaSynthesis(
       makeAstro(),
       makeKab({ lifePath: 22, lifePathMaster: true }),
-      makeTantra(), makeOdu(), makeHolo(), TODAY
+      makeTantra(),
+      makeOdu(),
+      makeHolo(),
+      TODAY
     );
     expect(synth.lifePath).toBe(22);
   });
 
   it('lifePath default é 1 quando kabalisticMap é null', () => {
     const synth = buildAkashaSynthesis(
-      makeAstro(), null, makeTantra(), makeOdu(), makeHolo(), TODAY
+      makeAstro(),
+      null,
+      makeTantra(),
+      makeOdu(),
+      makeHolo(),
+      TODAY
     );
     expect(synth.lifePath).toBe(1);
   });
@@ -377,20 +447,40 @@ describe('buildAkashaSynthesis — lifePath variations', () => {
 describe('buildAkashaSynthesis — determinismo', () => {
   it('mesmas entradas → mesma synthesisParagraph', () => {
     const a = buildAkashaSynthesis(
-      makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), TODAY
+      makeAstro(),
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(),
+      TODAY
     );
     const b = buildAkashaSynthesis(
-      makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), TODAY
+      makeAstro(),
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(),
+      TODAY
     );
     expect(a.synthesisParagraph).toBe(b.synthesisParagraph);
   });
 
   it('mesmas entradas → mesmo akashaProfile.overallFrequencyScore', () => {
     const a = buildAkashaSynthesis(
-      makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), TODAY
+      makeAstro(),
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(),
+      TODAY
     );
     const b = buildAkashaSynthesis(
-      makeAstro(), makeKab(), makeTantra(), makeOdu(), makeHolo(), TODAY
+      makeAstro(),
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(),
+      TODAY
     );
     expect(a.akashaProfile.overallFrequencyScore).toBe(b.akashaProfile.overallFrequencyScore);
   });
@@ -454,12 +544,12 @@ describe('buildAkashaSynthesis — error handling', () => {
   it('captura erro de derive e retorna fallback completo', () => {
     // Mock console.error para evitar poluir output
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    
+
     // Não há forma fácil de injetar erro, então testamos via undefined que já
     // é tratado pelo fallback. Aqui validamos que console.error existe como API.
     const synth = buildAkashaSynthesis(null, null, null, null, makeHolo(), TODAY);
     expect(synth).toBeDefined();
-    
+
     consoleSpy.mockRestore();
   });
 });
@@ -476,7 +566,12 @@ describe('buildAkashaSynthesis — determinism & non-repetition', () => {
     const fragments: string[] = [];
     const areas = Object.values(s.areas);
     for (const area of areas) {
-      fragments.push(area.shadowPattern, area.giftPattern, area.practicalAdvice, area.transformationPrompt);
+      fragments.push(
+        area.shadowPattern,
+        area.giftPattern,
+        area.practicalAdvice,
+        area.transformationPrompt
+      );
       fragments.push(...area.shadowSymptoms);
       fragments.push(...area.giftStrengths);
       if (area.dailyRitual) fragments.push(area.dailyRitual.title, area.dailyRitual.instruction);
@@ -488,7 +583,7 @@ describe('buildAkashaSynthesis — determinism & non-repetition', () => {
           area.expandedNarrative.oduNarrative,
           area.expandedNarrative.ichingNarrative,
           area.expandedNarrative.integratedNarrative,
-          area.expandedNarrative.practicalExample,
+          area.expandedNarrative.practicalExample
         );
       }
       if (area.chainOfReasoning) fragments.push(...area.chainOfReasoning);
@@ -498,7 +593,11 @@ describe('buildAkashaSynthesis — determinism & non-repetition', () => {
       fragments.push(s.oneProfile.corePattern, s.oneProfile.oneLiner, s.oneProfile.strategyDetail);
     }
     fragments.push(s.synthesisParagraph ?? '');
-    fragments.push(s.dailyDecision.strategyExplanation, s.dailyDecision.recommendation, s.dailyDecision.avoid);
+    fragments.push(
+      s.dailyDecision.strategyExplanation,
+      s.dailyDecision.recommendation,
+      s.dailyDecision.avoid
+    );
     return fragments.filter(Boolean);
   }
 
@@ -514,24 +613,64 @@ describe('buildAkashaSynthesis — determinism & non-repetition', () => {
   }
 
   // Pool of realistic values for each dimension
-  const SIGNS = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
-  const PLANETS = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn','Pluto'];
-  const HOUSES = [1,2,3,4,5,6,7,8,9,10,11,12];
-  const ODUS = ['Ogbe','Oyeku','Iwori','Odi','Ogbe','Owonrin','Obarra','Okanran','Ohu','Ogunda','Osa','Ika','Ikadipo','Olikenu','Shin','Fun'];
-  const PROHIBITIONS_POOL = [
-    ['comida com sal'], ['agua'], ['pimenta'], ['dendê'], ['alimentos'],
-    ['carne'], ['frutos do mar'], ['lechuga'], ['fogo'], ['fera'],
-    ['alimentos e agua'], ['pimenta e sal'], ['comida quente'],
+  const SIGNS = [
+    'Áries',
+    'Touro',
+    'Gêmeos',
+    'Câncer',
+    'Leão',
+    'Virgem',
+    'Libra',
+    'Escorpião',
+    'Sagitário',
+    'Capricórnio',
+    'Aquário',
+    'Peixes',
   ];
-  const BODY_NUMS = [1,2,3,4,5,6,7,8,9,10,11];
-  const SOUL_BODIES = ['Alma','Mente','Espírito'];
+  const PLANETS = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Pluto'];
+  const HOUSES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  const ODUS = [
+    'Ogbe',
+    'Oyeku',
+    'Iwori',
+    'Odi',
+    'Ogbe',
+    'Owonrin',
+    'Obarra',
+    'Okanran',
+    'Ohu',
+    'Ogunda',
+    'Osa',
+    'Ika',
+    'Ikadipo',
+    'Olikenu',
+    'Shin',
+    'Fun',
+  ];
+  const PROHIBITIONS_POOL = [
+    ['comida com sal'],
+    ['agua'],
+    ['pimenta'],
+    ['dendê'],
+    ['alimentos'],
+    ['carne'],
+    ['frutos do mar'],
+    ['lechuga'],
+    ['fogo'],
+    ['fera'],
+    ['alimentos e agua'],
+    ['pimenta e sal'],
+    ['comida quente'],
+  ];
+  const BODY_NUMS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+  const SOUL_BODIES = ['Alma', 'Mente', 'Espírito'];
 
   function pickRandom<T>(arr: T[], rng: () => number): T {
     return arr[Math.floor(rng() * arr.length)];
   }
 
   function makeRandomAstro(rng: () => number): AstrologyMap {
-    const planetList = PLANETS.map(p => ({
+    const planetList = PLANETS.map((p) => ({
       planet: p,
       sign: pickRandom(SIGNS, rng),
       degree: Math.floor(rng() * 30) + 1,
@@ -539,16 +678,35 @@ describe('buildAkashaSynthesis — determinism & non-repetition', () => {
     }));
     return {
       planets: planetList,
-      houses: HOUSES.map(h => ({ house: h, sign: pickRandom(SIGNS, rng), degree: Math.floor(rng() * 30) + 1 })),
+      houses: HOUSES.map((h) => ({
+        house: h,
+        sign: pickRandom(SIGNS, rng),
+        degree: Math.floor(rng() * 30) + 1,
+      })),
       ascendant: pickRandom(SIGNS, rng),
       midheaven: pickRandom(SIGNS, rng),
-      lunarPhase: pickRandom(['nova','crescente','cheia','minguante'], rng),
-      elementalChart: { fire: parseFloat(rng().toFixed(2)), earth: parseFloat(rng().toFixed(2)), air: parseFloat(rng().toFixed(2)), water: parseFloat(rng().toFixed(2)) },
-      modality: { cardinal: parseFloat(rng().toFixed(2)), fixed: parseFloat(rng().toFixed(2)), mutable: parseFloat(rng().toFixed(2)) },
+      lunarPhase: pickRandom(['nova', 'crescente', 'cheia', 'minguante'], rng),
+      elementalChart: {
+        fire: parseFloat(rng().toFixed(2)),
+        earth: parseFloat(rng().toFixed(2)),
+        air: parseFloat(rng().toFixed(2)),
+        water: parseFloat(rng().toFixed(2)),
+      },
+      modality: {
+        cardinal: parseFloat(rng().toFixed(2)),
+        fixed: parseFloat(rng().toFixed(2)),
+        mutable: parseFloat(rng().toFixed(2)),
+      },
       quality: { individual: 1, relational: 1, transform: 1, social: 0, traditional: 0 },
       dominantPlanet: pickRandom(PLANETS, rng),
-      signRuler: pickRandom(['Marte','Vênus','Mercúrio','Júpiter','Saturno','Plutão','Sol','Lua'], rng),
-      houseRuler: pickRandom(['Sol','Lua','Marte','Vênus','Mercúrio','Júpiter','Saturno'], rng),
+      signRuler: pickRandom(
+        ['Marte', 'Vênus', 'Mercúrio', 'Júpiter', 'Saturno', 'Plutão', 'Sol', 'Lua'],
+        rng
+      ),
+      houseRuler: pickRandom(
+        ['Sol', 'Lua', 'Marte', 'Vênus', 'Mercúrio', 'Júpiter', 'Saturno'],
+        rng
+      ),
     } as unknown as AstrologyMap;
   }
 
@@ -588,7 +746,7 @@ describe('buildAkashaSynthesis — determinism & non-repetition', () => {
         astral: { number: pickRandom(BODY_NUMS, rng), description: 'Astral' },
         mental: { number: pickRandom(BODY_NUMS, rng), description: 'Mental' },
       },
-      temperamento_atual: pickRandom(['sanguineo','colerico','melancólico','fleumático'], rng),
+      temperamento_atual: pickRandom(['sanguineo', 'colerico', 'melancólico', 'fleumático'], rng),
     } as unknown as TantricMap;
   }
 
@@ -596,10 +754,31 @@ describe('buildAkashaSynthesis — determinism & non-repetition', () => {
     return {
       oduName: pickRandom(ODUS, rng),
       oduNumber: Math.floor(rng() * 16) + 1,
-      elementalForce: pickRandom(['Fogo','Água','Terra','Ar','埃'], rng),
+      elementalForce: pickRandom(['Fogo', 'Água', 'Terra', 'Ar', '埃'], rng),
       prohibitions: pickRandom(PROHIBITIONS_POOL, rng),
-      orixaRegency: [pickRandom(['Ogum','Iemanjá','Oxum','Xangô','Ibeji','Nanã','Obaluaiê','Omulu','Oxumar','Oxalufã','Oduduwa','Orunmilá'], rng)],
-      lifeLesson: pickRandom(['Clareza','Força','Amor','Destino','Cura','Liberdade','Sabedoria'], rng),
+      orixaRegency: [
+        pickRandom(
+          [
+            'Ogum',
+            'Iemanjá',
+            'Oxum',
+            'Xangô',
+            'Ibeji',
+            'Nanã',
+            'Obaluaiê',
+            'Omulu',
+            'Oxumar',
+            'Oxalufã',
+            'Oduduwa',
+            'Orunmilá',
+          ],
+          rng
+        ),
+      ],
+      lifeLesson: pickRandom(
+        ['Clareza', 'Força', 'Amor', 'Destino', 'Cura', 'Liberdade', 'Sabedoria'],
+        rng
+      ),
       provisional: rng() > 0.5,
     } as unknown as OduBirth;
   }
@@ -607,9 +786,19 @@ describe('buildAkashaSynthesis — determinism & non-repetition', () => {
   function makeRandomHolo(rng: () => number): AkashicHologram {
     return {
       ichingHex: Math.floor(rng() * 64) + 1,
-      vitalidadeEnergia: { title: 'Vitalidade', chakra: 'muladhara', color: '#FF3B30', keyData: {} },
+      vitalidadeEnergia: {
+        title: 'Vitalidade',
+        chakra: 'muladhara',
+        color: '#FF3B30',
+        keyData: {},
+      },
       conexoesAmor: { title: 'Conexões', chakra: 'anahata', color: '#34C759', keyData: {} },
-      carreiraProsperidade: { title: 'Carreira', chakra: 'manipura', color: '#FFCC00', keyData: {} },
+      carreiraProsperidade: {
+        title: 'Carreira',
+        chakra: 'manipura',
+        color: '#FFCC00',
+        keyData: {},
+      },
       oriCabecaQuizilas: { title: 'Ori', chakra: 'ajna', color: '#5856D6', keyData: {} },
       missaoDestino: { title: 'Missão', chakra: 'sahasrara', color: '#AF52DE', keyData: {} },
       desafiosSombras: { title: 'Desafios', chakra: 'svadhisthana', color: '#FF9500', keyData: {} },
@@ -631,7 +820,7 @@ describe('buildAkashaSynthesis — determinism & non-repetition', () => {
     }
 
     // Fingerprint = concatenated narrative fragments per synthesis
-    const fingerprints = synths.map(s => extractNarrativeFingerprint(s).join('\x00'));
+    const fingerprints = synths.map((s) => extractNarrativeFingerprint(s).join('\x00'));
 
     // Check: no two fingerprints may be identical
     const seen = new Set<string>();
@@ -646,11 +835,11 @@ describe('buildAkashaSynthesis — determinism & non-repetition', () => {
   });
 
   it('mesmos inputs → mesmo output (determinismo)', () => {
-    const astro  = makeRandomAstro(makeRng(12345));
-    const kab    = makeRandomKab(makeRng(12345));
+    const astro = makeRandomAstro(makeRng(12345));
+    const kab = makeRandomKab(makeRng(12345));
     const tantra = makeRandomTantra(makeRng(12345));
-    const odu   = makeRandomOdu(makeRng(12345));
-    const holo  = makeRandomHolo(makeRng(12345));
+    const odu = makeRandomOdu(makeRng(12345));
+    const holo = makeRandomHolo(makeRng(12345));
 
     const s1 = buildAkashaSynthesis(astro, kab, tantra, odu, holo, TODAY);
     const s2 = buildAkashaSynthesis(astro, kab, tantra, odu, holo, TODAY);
@@ -727,7 +916,10 @@ describe('assessAreaFrequency — Siddhi path', () => {
     // challenge.first → shadowScore=1
     // lifePathMaster → +2; soul=33 → +1 → giftScore=3
     // giftScore(3) > shadowScore(1) AND giftScore >= 2 → gift
-    const kab = { lifePathMaster: true, challenges: { first: 8 } } as import('@akasha/types').KabalisticMap;
+    const kab = {
+      lifePathMaster: true,
+      challenges: { first: 8 },
+    } as import('@akasha/types').KabalisticMap;
     const tantra = { soul: 33 } as import('@akasha/types').TantricMap;
     const result = assessAreaFrequency(nullAstro, kab, tantra, nullOdu, 'vitalidade');
     expect(result.frequency).toBe('gift');
@@ -737,7 +929,10 @@ describe('assessAreaFrequency — Siddhi path', () => {
     // shadowScore NOT > giftScore, so shadow path doesn't trigger
     // giftScore(3) >= 2 AND giftScore(3) >= shadowScore(3) → gift path returns gift
     // Change: remove soul=33 so giftScore=2 only (lifePathMaster only)
-    const kab = { lifePathMaster: true, challenges: { first: 8 } } as import('@akasha/types').KabalisticMap;
+    const kab = {
+      lifePathMaster: true,
+      challenges: { first: 8 },
+    } as import('@akasha/types').KabalisticMap;
     const tantra = { soul: 5 } as import('@akasha/types').TantricMap;
     const astro = {
       planets: [{ planet: 'Pluto' }, { planet: 'Saturn' }],
@@ -764,24 +959,84 @@ describe('deriveDominantFrequency — Siddhi majority', () => {
   // Minimal areaNarrative helpers — dailyRitual is required by AreaNarrative type
   const dailyRitual = { title: 't', instruction: 't', duration: 't', element: 't', color: 't' };
   const shadow = (): import('../synthesis-types').AreaNarrative =>
-    ({ frequency: 'shadow', intensity: 1, area: 'vitalidadeEnergia', title: 't', shadowPattern: '', shadowSymptoms: [], giftPattern: '', giftStrengths: [], pillarContribution: { cabala: '', tantra: '', odus: '', astrologia: '', iching: '' }, practicalAdvice: '', dailyRitual, transformationPrompt: '' }) as import('../synthesis-types').AreaNarrative;
+    ({
+      frequency: 'shadow',
+      intensity: 1,
+      area: 'vitalidadeEnergia',
+      title: 't',
+      shadowPattern: '',
+      shadowSymptoms: [],
+      giftPattern: '',
+      giftStrengths: [],
+      pillarContribution: { cabala: '', tantra: '', odus: '', astrologia: '', iching: '' },
+      practicalAdvice: '',
+      dailyRitual,
+      transformationPrompt: '',
+    }) as import('../synthesis-types').AreaNarrative;
   const gift = (): import('../synthesis-types').AreaNarrative =>
-    ({ frequency: 'gift', intensity: 2, area: 'vitalidadeEnergia', title: 't', shadowPattern: '', shadowSymptoms: [], giftPattern: '', giftStrengths: [], pillarContribution: { cabala: '', tantra: '', odus: '', astrologia: '', iching: '' }, practicalAdvice: '', dailyRitual, transformationPrompt: '' }) as import('../synthesis-types').AreaNarrative;
+    ({
+      frequency: 'gift',
+      intensity: 2,
+      area: 'vitalidadeEnergia',
+      title: 't',
+      shadowPattern: '',
+      shadowSymptoms: [],
+      giftPattern: '',
+      giftStrengths: [],
+      pillarContribution: { cabala: '', tantra: '', odus: '', astrologia: '', iching: '' },
+      practicalAdvice: '',
+      dailyRitual,
+      transformationPrompt: '',
+    }) as import('../synthesis-types').AreaNarrative;
   const siddhi = (): import('../synthesis-types').AreaNarrative =>
-    ({ frequency: 'siddhi', intensity: 3, area: 'vitalidadeEnergia', title: 't', shadowPattern: '', shadowSymptoms: [], giftPattern: '', giftStrengths: [], pillarContribution: { cabala: '', tantra: '', odus: '', astrologia: '', iching: '' }, practicalAdvice: '', dailyRitual, transformationPrompt: '' }) as import('../synthesis-types').AreaNarrative;
+    ({
+      frequency: 'siddhi',
+      intensity: 3,
+      area: 'vitalidadeEnergia',
+      title: 't',
+      shadowPattern: '',
+      shadowSymptoms: [],
+      giftPattern: '',
+      giftStrengths: [],
+      pillarContribution: { cabala: '', tantra: '', odus: '', astrologia: '', iching: '' },
+      practicalAdvice: '',
+      dailyRitual,
+      transformationPrompt: '',
+    }) as import('../synthesis-types').AreaNarrative;
 
   it('retorna siddhi quando 3+ áreas são siddhi', () => {
-    const result = deriveDominantFrequency(siddhi(), siddhi(), siddhi(), gift(), shadow(), shadow());
+    const result = deriveDominantFrequency(
+      siddhi(),
+      siddhi(),
+      siddhi(),
+      gift(),
+      shadow(),
+      shadow()
+    );
     expect(result).toBe('siddhi');
   });
 
   it('retorna siddhi quando 4 áreas são siddhi', () => {
-    const result = deriveDominantFrequency(siddhi(), siddhi(), siddhi(), siddhi(), gift(), shadow());
+    const result = deriveDominantFrequency(
+      siddhi(),
+      siddhi(),
+      siddhi(),
+      siddhi(),
+      gift(),
+      shadow()
+    );
     expect(result).toBe('siddhi');
   });
 
   it('retorna siddhi quando todas 6 são siddhi', () => {
-    const result = deriveDominantFrequency(siddhi(), siddhi(), siddhi(), siddhi(), siddhi(), siddhi());
+    const result = deriveDominantFrequency(
+      siddhi(),
+      siddhi(),
+      siddhi(),
+      siddhi(),
+      siddhi(),
+      siddhi()
+    );
     expect(result).toBe('siddhi');
   });
 
@@ -791,12 +1046,26 @@ describe('deriveDominantFrequency — Siddhi majority', () => {
   });
 
   it('retorna shadow quando siddhi < 3 e shadows >= gifts', () => {
-    const result = deriveDominantFrequency(siddhi(), gift(), shadow(), shadow(), shadow(), shadow());
+    const result = deriveDominantFrequency(
+      siddhi(),
+      gift(),
+      shadow(),
+      shadow(),
+      shadow(),
+      shadow()
+    );
     expect(result).toBe('shadow');
   });
 
   it('retorna shadow por omissão (mais sombras que dons)', () => {
-    const result = deriveDominantFrequency(shadow(), shadow(), gift(), shadow(), shadow(), shadow());
+    const result = deriveDominantFrequency(
+      shadow(),
+      shadow(),
+      gift(),
+      shadow(),
+      shadow(),
+      shadow()
+    );
     expect(result).toBe('shadow');
   });
 });
@@ -817,7 +1086,13 @@ describe('computeOverallScore — Siddhi contributes more than gift', () => {
     const kabGift = {} as import('@akasha/types').KabalisticMap;
     const tantraGift = { soul: 5 } as import('@akasha/types').TantricMap;
 
-    const areaSiddhi = assessAreaFrequency(nullAstro, kabSiddhi, tantraSiddhi, nullOdu, 'vitalidade');
+    const areaSiddhi = assessAreaFrequency(
+      nullAstro,
+      kabSiddhi,
+      tantraSiddhi,
+      nullOdu,
+      'vitalidade'
+    );
     const areaGift = assessAreaFrequency(nullAstro, kabGift, tantraGift, nullOdu, 'vitalidade');
 
     expect(areaSiddhi.frequency).toBe('siddhi');

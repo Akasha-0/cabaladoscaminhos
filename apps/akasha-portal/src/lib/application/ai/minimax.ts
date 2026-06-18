@@ -2,7 +2,6 @@
  * MiniMax M3 API integration.
  * STUB: Implementação real na Onda 3 (Oráculo Vivo).
  */
-
 import type { ChatMessage } from './types';
 
 export async function generateMinimaxResponse(

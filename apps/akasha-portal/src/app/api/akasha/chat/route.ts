@@ -10,7 +10,9 @@ export interface ChatResponse {
   message: string;
 }
 
-export async function POST(req: NextRequest): Promise<NextResponse<ChatResponse | { error: string }>> {
+export async function POST(
+  req: NextRequest
+): Promise<NextResponse<ChatResponse | { error: string }>> {
   const authResult = await requireAkashaApi(req);
   if (authResult instanceof NextResponse) return authResult;
 

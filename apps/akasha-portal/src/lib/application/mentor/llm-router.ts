@@ -14,13 +14,12 @@
  *  - M3 raciocínio profundo: ideal para cruzar 5 Pilares + grimório curado.
  *  - Cadeia de pensamento explícita (reasoning_content) — audita decisões.
  */
-
-import type { UserMaps, MentorMessage } from '@akasha/mentor/types';
-import { mapsToPromptContext } from '@akasha/mentor/maps';
 import { getCorrelations, correlationsToContext } from '@akasha/mentor/correlation';
-import { ragForUserMaps, type UserMapsLike } from '@/lib/grimoire/rag-mapa';
+import { mapsToPromptContext } from '@akasha/mentor/maps';
+import type { UserMaps, MentorMessage } from '@akasha/mentor/types';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
+import { ragForUserMaps, type UserMapsLike } from '@/lib/grimoire/rag-mapa';
 
 const MINIMAX_ENDPOINT =
   process.env.MINIMAX_API_BASE_URL ?? 'https://api.minimaxi.chat/v1/text/chatcompletion_v2';
@@ -69,19 +68,17 @@ export async function* streamMentorResponse(
     { role: 'system' as const, content: mapsContext },
     { role: 'system' as const, content: 'GRIMÓRIO CURADO (F-233):\n' + ragContext },
     { role: 'system' as const, content: `CORRELAÇÕES IDENTIFICADAS: ${correlationsContext}` },
-    ...history.map(m => ({
+    ...history.map((m) => ({
       role: m.role as 'user' | 'assistant',
-      content: m.content
+      content: m.content,
     })),
-    { role: 'user' as const, content: request.question }
+    { role: 'user' as const, content: request.question },
   ];
 
   // Priority: provider explícito → env detection
-  const provider = config.provider ?? (
-    process.env.MINIMAX_API_TOKEN ? 'minimax' :
-    process.env.OPENAI_API_KEY ? 'openai' :
-    'ollama'
-  );
+  const provider =
+    config.provider ??
+    (process.env.MINIMAX_API_TOKEN ? 'minimax' : process.env.OPENAI_API_KEY ? 'openai' : 'ollama');
 
   try {
     switch (provider) {
@@ -95,7 +92,9 @@ export async function* streamMentorResponse(
         yield* streamWithOllama(messages, config);
         return;
       case 'mock':
-        yield* streamWithMock(messages as { role: 'user' | 'assistant' | 'system'; content: string }[]);
+        yield* streamWithMock(
+          messages as { role: 'user' | 'assistant' | 'system'; content: string }[]
+        );
         return;
     }
   } catch (_err) {
@@ -121,7 +120,7 @@ async function streamWithMiniMax(
   const response = await fetch(MINIMAX_ENDPOINT, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${apiToken}`,
+      Authorization: `Bearer ${apiToken}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -163,7 +162,7 @@ async function* streamWithOpenAI(
 }
 
 async function* streamWithMock(
-  _messages: { role: string; content: string }[],
+  _messages: { role: string; content: string }[]
 ): AsyncGenerator<string> {
   // Dev-only mock: yields a simple test response
   const response = 'Olá! Sou o Mentor Akasha. Como posso ajudar você hoje? (mock mode)';

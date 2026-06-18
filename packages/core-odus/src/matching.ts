@@ -1,6 +1,5 @@
 // Odu Matching Logic - Cabala Dos Caminhos
 // Matches Odu to rituals, ebós, and spiritual practices
-
 import { OduInfo } from './calculos';
 
 /**
@@ -75,7 +74,10 @@ export interface OduMatchingResult {
   contraindicacoes: string[];
 }
 
-const oduRitualMap: Record<number, { tipo: RitualType; urgencia: 'baixa' | 'media' | 'alta'; prazo: string }> = {
+const oduRitualMap: Record<
+  number,
+  { tipo: RitualType; urgencia: 'baixa' | 'media' | 'alta'; prazo: string }
+> = {
   1: { tipo: 'caminho', urgencia: 'alta', prazo: 'urgent' },
   2: { tipo: 'prosperidade', urgencia: 'media', prazo: 'semana' },
   3: { tipo: 'defesa', urgencia: 'alta', prazo: 'hoje' },
@@ -144,7 +146,10 @@ const EBO_ELEMENT_TOKENS: [string, string][] = [
 /**
  * Ritual definitions by type
  */
-const ritualDefinitions: Record<RitualType, { nome: string; descricao: string; componentes: string[] }> = {
+const ritualDefinitions: Record<
+  RitualType,
+  { nome: string; descricao: string; componentes: string[] }
+> = {
   caminho: {
     nome: 'Ritual de Caminho',
     descricao: 'Abre caminhos e remove obstáculos, especialmente em encruzilhadas',
@@ -210,7 +215,10 @@ const ritualDefinitions: Record<RitualType, { nome: string; descricao: string; c
 /**
  * Ebó definitions by category
  */
-const eboDefinitions: Record<EboCategory, { nome: string; elementos: string[]; passos: string[]; observacoes: string[] }> = {
+const eboDefinitions: Record<
+  EboCategory,
+  { nome: string; elementos: string[]; passos: string[]; observacoes: string[] }
+> = {
   caminho: {
     nome: 'Ebó de Caminho/Limpeza',
     elementos: ['Despachos', 'Moedas', 'Pipoca', 'Panos escuros'],
@@ -371,44 +379,123 @@ const oduRelatedOrixas: Record<number, string[]> = {
  * Daily practices by Odu type
  */
 const dailyPractices: Record<number, string[]> = {
-  1: ['Cultive a paciência', 'Não aja por impulso', 'Cuide de Exu e dos antepassados', 'Evite discussões desnecessárias'],
-  2: ['Mantenha a alegria interna', 'Cuide da criança interior', 'Busque sociedades justas', 'Evite mentiras'],
-  3: ['Evite brigas', 'Mantenha foco no trabalho', 'Não demande contra outros', 'Pratique a justiça'],
-  4: ['Desenvolva a intuição', 'Preste atenção aos sonhos', 'Cuide da saúde dos olhos', 'Evite ignorar avisos'],
-  5: ['Cuide da autoestima', 'Use perfumes agradáveis', 'Mantenha higiene espiritual', 'Busque diplomacia'],
+  1: [
+    'Cultive a paciência',
+    'Não aja por impulso',
+    'Cuide de Exu e dos antepassados',
+    'Evite discussões desnecessárias',
+  ],
+  2: [
+    'Mantenha a alegria interna',
+    'Cuide da criança interior',
+    'Busque sociedades justas',
+    'Evite mentiras',
+  ],
+  3: [
+    'Evite brigas',
+    'Mantenha foco no trabalho',
+    'Não demande contra outros',
+    'Pratique a justiça',
+  ],
+  4: [
+    'Desenvolva a intuição',
+    'Preste atenção aos sonhos',
+    'Cuide da saúde dos olhos',
+    'Evite ignorar avisos',
+  ],
+  5: [
+    'Cuide da autoestima',
+    'Use perfumes agradáveis',
+    'Mantenha higiene espiritual',
+    'Busque diplomacia',
+  ],
   6: ['Seja generoso', 'Estude regularmente', 'Pratique gratidão', 'Mantenha cabeça erguida'],
   7: ['Pratique desapego', 'Aceite mudanças', 'Evite persistir no erro', 'Cuide do ambiente'],
   8: ['Cuide do Ori (cabeça)', 'Busque paz interior', 'Evite orgulho', 'Pratique humildade'],
   9: ['Respeite o poder feminino', 'Controle palavras', 'Flua com mudanças', 'Evite fofocas'],
   10: ['Vista branco', 'Mantenha silêncio', 'Estude espiritualidade', 'Respeite mais velhos'],
-  11: ['Organize mente e rotina', 'Canalize ansiedade em algo produtivo', 'Pratique atividades físicas', 'Evite procrastinação'],
-  12: ['Mantenha integridade', 'Não julgue sem provas', 'Equilibre razão e emoção', 'Busque justiça'],
-  13: ['Respeite o tempo', 'Busque sabedoria dos mais velhos', 'Cuide das articulações', 'Evite ambientes sujos'],
+  11: [
+    'Organize mente e rotina',
+    'Canalize ansiedade em algo produtivo',
+    'Pratique atividades físicas',
+    'Evite procrastinação',
+  ],
+  12: [
+    'Mantenha integridade',
+    'Não julgue sem provas',
+    'Equilibre razão e emoção',
+    'Busque justiça',
+  ],
+  13: [
+    'Respeite o tempo',
+    'Busque sabedoria dos mais velhos',
+    'Cuide das articulações',
+    'Evite ambientes sujos',
+  ],
   14: ['Mantenha discrição', 'Cultive flexibilidade', 'Evite falsidade', 'Respeite segredos'],
-  15: ['Busque paz no lar', 'Proteja sua energia', 'Foque no amor próprio', 'Evite brigas domésticas'],
-  16: ['Mantenha práticas em dia', 'Compartilhe sabedoria', 'Seja grato', 'Não duvide da espiritualidade'],
+  15: [
+    'Busque paz no lar',
+    'Proteja sua energia',
+    'Foque no amor próprio',
+    'Evite brigas domésticas',
+  ],
+  16: [
+    'Mantenha práticas em dia',
+    'Compartilhe sabedoria',
+    'Seja grato',
+    'Não duvide da espiritualidade',
+  ],
 };
 
 /**
  * Contraindications by Odu
  */
 const contraindications: Record<number, string[]> = {
-  1: ['Não ingira carne de porco em excesso', 'Evite cachaça em excesso', 'Não ande na rua ao meio-dia sem necessidade'],
+  1: [
+    'Não ingira carne de porco em excesso',
+    'Evite cachaça em excesso',
+    'Não ande na rua ao meio-dia sem necessidade',
+  ],
   2: ['Não coma ovos', 'Evite rã', 'Jamais minta ou traia confiança'],
-  3: ['Evite usar facas sem necessidade', 'Não coma carne de galo', 'Não pratique violência verbal'],
+  3: [
+    'Evite usar facas sem necessidade',
+    'Não coma carne de galo',
+    'Não pratique violência verbal',
+  ],
   4: ['Não olhe para buracos vazios', 'Evite roupas muito vermelhas em crises', 'Nunca minta'],
   5: ['Não coma ovos', 'Evite comidas muito salgadas', 'Não reclame da vida'],
-  6: ['Evite inveja', 'Não conte planos antes de realizar', 'Não coma abóbora em excesso', 'Evite teimosia extrema'],
+  6: [
+    'Evite inveja',
+    'Não conte planos antes de realizar',
+    'Não coma abóbora em excesso',
+    'Evite teimosia extrema',
+  ],
   7: ['Não durma no escuro absoluto se tiver medo', 'Evite carne de caça', 'Não persista no erro'],
-  8: ['Não use roupas pretas', 'Evite carne vermelha em dias de preceito', 'Cuide do Ori com reverência'],
+  8: [
+    'Não use roupas pretas',
+    'Evite carne vermelha em dias de preceito',
+    'Cuide do Ori com reverência',
+  ],
   9: ['Não espalhe fofocas', 'Evite ventanias fortes na praia', 'Não use roupas rasgadas'],
   10: ['Não use roupas pretas', 'Evite comida amanhecida', 'Respeite mais velhos'],
   11: ['Não guarde objetos quebrados', 'Evite procrastinação', 'Não use roupas muito escuras'],
-  12: ['Não pratique injustiça', 'Jamais acoberte mentiras', 'Evite abóbora/quiabo em excesso em crises'],
+  12: [
+    'Não pratique injustiça',
+    'Jamais acoberte mentiras',
+    'Evite abóbora/quiabo em excesso em crises',
+  ],
   13: ['Evite ambientes bagunçados', 'Não coma rã ou tartaruga', 'Não reclame da velhice'],
   14: ['Evite falsidade', 'Não maltrate animais', 'Nunca revele segredos confiados'],
-  15: ['Não inveje espaço alheio', 'Evite comidas apimentadas perto de dormir', 'Não brigue em casa'],
-  16: ['Não duvide da própria espiritualidade', 'Evite orgulho e arrogância', 'Ouça conselhos dos mais velhos'],
+  15: [
+    'Não inveje espaço alheio',
+    'Evite comidas apimentadas perto de dormir',
+    'Não brigue em casa',
+  ],
+  16: [
+    'Não duvide da própria espiritualidade',
+    'Evite orgulho e arrogância',
+    'Ouça conselhos dos mais velhos',
+  ],
 };
 
 /**
@@ -474,7 +561,7 @@ function parseEboFromOdu(odu: OduInfo): EboSuggestion | null {
 
 /**
  * Main matching function - matches an Odu to rituals, ebós, and suggestions
- * 
+ *
  * @param odu - Odu object to match
  * @returns Complete matching result with rituals, ebós, and suggestions
  */
@@ -503,7 +590,7 @@ export function matchOduToRitual(odu: OduInfo): OduMatchingResult {
  * Match multiple Odus for complex readings
  */
 function matchMultipleOduToRituals(odus: OduInfo[]): OduMatchingResult[] {
-  return odus.map(odu => matchOduToRitual(odu));
+  return odus.map((odu) => matchOduToRitual(odu));
 }
 
 /**
@@ -515,12 +602,12 @@ function getRitualSummary(results: OduMatchingResult[]): {
   orixas: string[];
   tipos: RitualType[];
 } {
-  const allUrgencias = results.flatMap(r => r.rituais.map(rit => rit.urgencia));
+  const allUrgencias = results.flatMap((r) => r.rituais.map((rit) => rit.urgencia));
   const urgenciaMax = allUrgencias.includes('alta')
     ? 'alta'
     : allUrgencias.includes('media')
-    ? 'media'
-    : 'baixa';
+      ? 'media'
+      : 'baixa';
   const orixaSet = new Set<string>();
   const tipoSet = new Set<RitualType>();
   for (const result of results) {

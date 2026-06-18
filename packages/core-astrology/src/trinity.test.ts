@@ -9,10 +9,9 @@
  * - dominantTrinity: maioria determina
  * - Edge case: empate entre níveis
  */
-
 import { describe, it, expect } from 'vitest';
-import { classifyAspect, countTrinity, dominantTrinity } from './trinity';
 import type { Aspecto } from './tipos';
+import { classifyAspect, countTrinity, dominantTrinity } from './trinity';
 
 function makeAspect(overrides: Partial<Aspecto>): Aspecto {
   return {
@@ -46,24 +45,24 @@ describe('F-209: Tríade Sombra/Dom/Graça', () => {
     it('conjunção exata Sol-Lua (orbe < 1°) → Graça', () => {
       expect(
         classifyAspect(
-          makeAspect({ tipo: 'conjunção', orb: 0.5, planeta1: 'sol', planeta2: 'lua' }),
-        ),
+          makeAspect({ tipo: 'conjunção', orb: 0.5, planeta1: 'sol', planeta2: 'lua' })
+        )
       ).toBe('graca');
     });
 
     it('conjunção Sol-Vênus com orbe grande → Dom (não Graça)', () => {
       expect(
         classifyAspect(
-          makeAspect({ tipo: 'conjunção', orb: 3.0, planeta1: 'sol', planeta2: 'venus' }),
-        ),
+          makeAspect({ tipo: 'conjunção', orb: 3.0, planeta1: 'sol', planeta2: 'venus' })
+        )
       ).toBe('dom');
     });
 
     it('conjunção Mercúrio-Marte (não luminares) → Dom', () => {
       expect(
         classifyAspect(
-          makeAspect({ tipo: 'conjunção', orb: 0.3, planeta1: 'mercurio', planeta2: 'marte' }),
-        ),
+          makeAspect({ tipo: 'conjunção', orb: 0.3, planeta1: 'mercurio', planeta2: 'marte' })
+        )
       ).toBe('dom');
     });
   });

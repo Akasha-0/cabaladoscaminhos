@@ -4,7 +4,6 @@
 // subscriptions — saves them to PostgreSQL (via Prisma), lists by user,
 // and removes them when they expire (404/410 from web-push-server).
 // This test mocks the Prisma client entirely.
-
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const upsert = vi.fn();

@@ -1,3 +1,12 @@
+// ─── Imports por Pilar (curadoria externa) ───────────────────────────────
+import { ESCALA_TEMPORAL } from './significados-curados-escala-temporal';
+import { PILAR_1_SERIES } from './significados-curados-pilar-1';
+import { PILAR_2_SERIES } from './significados-curados-pilar-2';
+import { PILAR_3_SERIES } from './significados-curados-pilar-3';
+import { PILAR_4_SERIES } from './significados-curados-pilar-4';
+import { PILAR_5_HEXAGRAMAS_1_32 } from './significados-curados-pilar-5a';
+import { PILAR_5_HEXAGRAMAS_33_64 } from './significados-curados-pilar-5b';
+
 /**
  * Significados Curados — Camada de Significado do Grimório (F-219, F-220)
  *
@@ -60,16 +69,6 @@ export interface SignificadoCurado {
   /** Apenas Pilar 4 (Odu). Veja R-022 §4.4. */
   requer_terreiro?: boolean;
 }
-
-// ─── Imports por Pilar (curadoria externa) ───────────────────────────────
-
-import { PILAR_1_SERIES } from './significados-curados-pilar-1';
-import { PILAR_2_SERIES } from './significados-curados-pilar-2';
-import { PILAR_3_SERIES } from './significados-curados-pilar-3';
-import { PILAR_4_SERIES } from './significados-curados-pilar-4';
-import { PILAR_5_HEXAGRAMAS_1_32 } from './significados-curados-pilar-5a';
-import { PILAR_5_HEXAGRAMAS_33_64 } from './significados-curados-pilar-5b';
-import { ESCALA_TEMPORAL } from './significados-curados-escala-temporal';
 
 // ─── Agregação indexada para busca ──────────────────────────────────────
 

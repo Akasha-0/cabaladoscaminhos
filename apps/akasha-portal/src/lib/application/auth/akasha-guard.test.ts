@@ -67,7 +67,11 @@ describe('akasha-guard', () => {
     });
 
     it('returns 401 when user is not found in database', async () => {
-      mockVerifyAkashaToken.mockReturnValue({ sub: 'user-1', email: 'test@example.com', type: 'access' });
+      mockVerifyAkashaToken.mockReturnValue({
+        sub: 'user-1',
+        email: 'test@example.com',
+        type: 'access',
+      });
       mockPrismaUserFindUnique.mockResolvedValue(null);
       const request = makeRequestWithCookie('valid-token');
 
@@ -79,7 +83,11 @@ describe('akasha-guard', () => {
     });
 
     it('returns user object when token is valid and user exists', async () => {
-      mockVerifyAkashaToken.mockReturnValue({ sub: 'user-1', email: 'test@example.com', type: 'access' });
+      mockVerifyAkashaToken.mockReturnValue({
+        sub: 'user-1',
+        email: 'test@example.com',
+        type: 'access',
+      });
       mockPrismaUserFindUnique.mockResolvedValue(MOCK_USER);
       const request = makeRequestWithCookie('valid-token');
 
@@ -90,7 +98,11 @@ describe('akasha-guard', () => {
     });
 
     it('returns 401 when DB lookup throws', async () => {
-      mockVerifyAkashaToken.mockReturnValue({ sub: 'user-1', email: 'test@example.com', type: 'access' });
+      mockVerifyAkashaToken.mockReturnValue({
+        sub: 'user-1',
+        email: 'test@example.com',
+        type: 'access',
+      });
       mockPrismaUserFindUnique.mockRejectedValue(new Error('DB connection failed'));
       const request = makeRequestWithCookie('valid-token');
 
@@ -117,7 +129,11 @@ describe('akasha-guard', () => {
     });
 
     it('throws Error when user is not found in database', async () => {
-      mockVerifyAkashaToken.mockReturnValue({ sub: 'user-1', email: 'test@example.com', type: 'access' });
+      mockVerifyAkashaToken.mockReturnValue({
+        sub: 'user-1',
+        email: 'test@example.com',
+        type: 'access',
+      });
       mockPrismaUserFindUnique.mockResolvedValue(null);
       const request = makeRequestWithCookie('valid-token');
 
@@ -125,7 +141,11 @@ describe('akasha-guard', () => {
     });
 
     it('returns user object when authenticated', async () => {
-      mockVerifyAkashaToken.mockReturnValue({ sub: 'user-1', email: 'test@example.com', type: 'access' });
+      mockVerifyAkashaToken.mockReturnValue({
+        sub: 'user-1',
+        email: 'test@example.com',
+        type: 'access',
+      });
       mockPrismaUserFindUnique.mockResolvedValue(MOCK_USER);
       const request = makeRequestWithCookie('valid-token');
 

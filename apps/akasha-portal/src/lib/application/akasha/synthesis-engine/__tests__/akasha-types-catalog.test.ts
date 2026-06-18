@@ -10,7 +10,6 @@
  *  - Default export shape
  *  - Content sanity checks (icons, typeName patterns, etc.)
  */
-
 import { describe, it, expect } from 'vitest';
 import AKASHA_TYPES from '../akasha-types-catalog';
 import type { AkashaTypeProfile } from '../synthesis-types';
@@ -27,7 +26,9 @@ const EXPECTED_TYPES = [
   'arquiteto',
 ] as const;
 
-const REQUIRED_BASE_FIELDS: Array<keyof Omit<AkashaTypeProfile, 'authority' | 'authorityPractice' | 'dailyDirective' | 'oneLiner'>> = [
+const REQUIRED_BASE_FIELDS: Array<
+  keyof Omit<AkashaTypeProfile, 'authority' | 'authorityPractice' | 'dailyDirective' | 'oneLiner'>
+> = [
   'type',
   'typeName',
   'typeIcon',
@@ -76,7 +77,10 @@ describe('akasha-types-catalog — estrutura', () => {
       expect(typeData.type.length).toBeGreaterThan(0);
       expect(typeof typeData.typeName).toBe('string');
       expect(typeData.typeName.length).toBeGreaterThan(0);
-      expect(typeData.typeName.startsWith('O '), `typeName de ${typeKey} deve começar com "O "`).toBe(true);
+      expect(
+        typeData.typeName.startsWith('O '),
+        `typeName de ${typeKey} deve começar com "O "`
+      ).toBe(true);
     }
   });
 
@@ -99,7 +103,7 @@ describe('akasha-types-catalog — qualidade do conteúdo', () => {
     for (const [typeKey, typeData] of Object.entries(AKASHA_TYPES)) {
       expect(
         typeof typeData.dimensionOrigin === 'string' && typeData.dimensionOrigin.length > 0,
-        `dimensionOrigin de ${typeKey} deve ser string não-vazia`,
+        `dimensionOrigin de ${typeKey} deve ser string não-vazia`
       ).toBe(true);
     }
   });
@@ -129,7 +133,9 @@ describe('akasha-types-catalog — tipo arquiteto (referência)', () => {
     expect(last).toBe('arquiteto');
     const arquiteto = AKASHA_TYPES.arquiteto;
     expect(arquiteto.typeName).toBe('O Arquiteto');
-    expect(typeof arquiteto.dimensionOrigin === 'string' && arquiteto.dimensionOrigin.length > 0).toBe(true);
+    expect(
+      typeof arquiteto.dimensionOrigin === 'string' && arquiteto.dimensionOrigin.length > 0
+    ).toBe(true);
   });
 });
 
@@ -158,11 +164,9 @@ describe('akasha-types-catalog — tipos individuais', () => {
         typeData.growthEdge,
         typeData.shadowTrap,
       ].join(' ');
-      const hasVoce = allText.toLowerCase().includes('você') || allText.toLowerCase().includes('voce');
-      expect(
-        hasVoce,
-        `${typeKey} deve usar linguagem em 2ª pessoa`
-      ).toBe(true);
+      const hasVoce =
+        allText.toLowerCase().includes('você') || allText.toLowerCase().includes('voce');
+      expect(hasVoce, `${typeKey} deve usar linguagem em 2ª pessoa`).toBe(true);
     }
   });
 });

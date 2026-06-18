@@ -5,8 +5,8 @@
  * Transforma dados brutos do mapa (5 pilares) em síntese por dimensão de vida.
  * v2: usa Narrative Generator para gerar narrativas profundas e unificadas.
  */
-
 import type { PilaresDados } from '../significados-curados';
+import type { Pilar } from '../significados-curados';
 import type { Area } from '../traducao-areas';
 import { traducaoPara } from '../traducao-areas';
 import {
@@ -16,11 +16,7 @@ import {
   type DimensaoId,
   type DimensaoContribuicao,
 } from './dimensoes';
-import type { Pilar } from '../significados-curados';
-import {
-  gerarNarrativaDimensao,
-  gerarPerfilGeral,
-} from './narrative-generator';
+import { gerarNarrativaDimensao, gerarPerfilGeral } from './narrative-generator';
 
 // ─── Tipos de Saída ────────────────────────────────────────────────────
 
@@ -47,7 +43,7 @@ export interface DimensaoSintese {
     readonly tipo: 'paz' | 'ansiedade';
     readonly aplicavel: boolean;
     readonly timing?: string;
-  }
+  };
 }
 
 // ─── Akasha Authority — Sistema de Decisão ─────────────────────────────────
@@ -132,16 +128,19 @@ export function deriveAkashaAuthority(pilares: Partial<PilaresDados>): AkashaAut
 
   if (corpo === 8) {
     autoridade = 'sagrada';
-    autoridadeExplicacao = 'O Corpo 8 (Prana) é sua autoridade — quando sente expansão no corpo, é sim. Quando sente contracção ou tensão, é não. Confie na sabedoria corporal.';
+    autoridadeExplicacao =
+      'O Corpo 8 (Prana) é sua autoridade — quando sente expansão no corpo, é sim. Quando sente contracção ou tensão, é não. Confie na sabedoria corporal.';
   } else if (corpo === 4) {
     autoridade = 'emocional';
-    autoridadeExplicacao = 'O Corpo 4 (Mente Negativa) traz pensamento repetitivo. Antes de decidir, espere até sentir paz emocional — não clareza mental. A mente pode argumentar para os dois lados.';
+    autoridadeExplicacao =
+      'O Corpo 4 (Mente Negativa) traz pensamento repetitivo. Antes de decidir, espere até sentir paz emocional — não clareza mental. A mente pode argumentar para os dois lados.';
   } else if (casa8Signo) {
     autoridade = 'esplénica';
     autoridadeExplicacao = `A Casa 8 em ${casa8Signo} dá-lheintuição directa. Quando sentir um "sim" no corpo — uma expansão, um calor — é a resposta. Não pense; sinta.`;
   } else {
     autoridade = 'mental';
-    autoridadeExplicacao = 'Sua decisão pede reflexão antes de actão. Mas não fique em loop: defina um prazo máximo de 48h para decidir. Depois, actue mesmo sem certeza total.';
+    autoridadeExplicacao =
+      'Sua decisão pede reflexão antes de actão. Mas não fique em loop: defina um prazo máximo de 48h para decidir. Depois, actue mesmo sem certeza total.';
   }
 
   // ── Derivar Timing ────────────────────────────────────────
@@ -165,19 +164,24 @@ export function deriveAkashaAuthority(pilares: Partial<PilaresDados>): AkashaAut
   if (lp !== undefined) {
     if ([1, 3, 5].includes(lp)) {
       areaFoco = 'trabalho';
-      decisaoHoje = 'Hoje é dia de avançar no que você começou. Não espere inspiração — actue e a inspiração vem no caminho.';
+      decisaoHoje =
+        'Hoje é dia de avançar no que você começou. Não espere inspiração — actue e a inspiração vem no caminho.';
     } else if ([2, 6, 7].includes(lp)) {
       areaFoco = 'relacoes';
-      decisaoHoje = 'O trabalho pode esperar; a conexão não. Se há alguém que precisa de sua presença hoje, vá.';
+      decisaoHoje =
+        'O trabalho pode esperar; a conexão não. Se há alguém que precisa de sua presença hoje, vá.';
     } else if ([4, 8, 9, 11].includes(lp)) {
       areaFoco = 'proposito';
-      decisaoHoje = 'Você não precisa de mais informação — precisa de decisão. O que você sabe que deve fazer há mais de 6 meses? Hoje é o dia.';
+      decisaoHoje =
+        'Você não precisa de mais informação — precisa de decisão. O que você sabe que deve fazer há mais de 6 meses? Hoje é o dia.';
     } else if (lp === 22 || lp === 33) {
       areaFoco = 'espiritualidade';
-      decisaoHoje = 'Não force aacção. Hoje é dia de silêncio, reflexão e trustedo que está a emergir. O próximo passo vai estar mais claro amanhã.';
+      decisaoHoje =
+        'Não force aacção. Hoje é dia de silêncio, reflexão e trustedo que está a emergir. O próximo passo vai estar mais claro amanhã.';
     } else {
       areaFoco = 'trabalho';
-      decisaoHoje = 'Mantenha o ritmo. As pequenas acções consistentes superam as grandes decisões dramáticas.';
+      decisaoHoje =
+        'Mantenha o ritmo. As pequenas acções consistentes superam as grandes decisões dramáticas.';
     }
   }
 
@@ -186,20 +190,22 @@ export function deriveAkashaAuthority(pilares: Partial<PilaresDados>): AkashaAut
     autoridade,
     explicacao: `${estrategiaExplicacao} ${autoridadeExplicacao}`,
     regra: {
-      condicao: autoridade === 'sagrada'
-        ? 'se sentir expansão no corpo ao pensar na decisão'
-        : autoridade === 'emocional'
-        ? 'se sentir paz emocional — não só vontade de fazer'
-        : autoridade === 'esplénica'
-        ? 'se sentir um "sim" intuitivo, não um "talvez" mental'
-        : 'se tiver reflexão clara e ausência de ansiedade',
-      accao: estrategia === 'act'
-        ? 'actue nos próximos 30 minutos antes que a mente intervenha'
-        : estrategia === 'wait'
-        ? 'aguarde até sentir reconhecimento externo ou paz interior'
-        : estrategia === 'observe'
-        ? 'observe mais 24-48h antes de decidir — a clarity virá'
-        : 'confie no processo; não force o resultado hoje',
+      condicao:
+        autoridade === 'sagrada'
+          ? 'se sentir expansão no corpo ao pensar na decisão'
+          : autoridade === 'emocional'
+            ? 'se sentir paz emocional — não só vontade de fazer'
+            : autoridade === 'esplénica'
+              ? 'se sentir um "sim" intuitivo, não um "talvez" mental'
+              : 'se tiver reflexão clara e ausência de ansiedade',
+      accao:
+        estrategia === 'act'
+          ? 'actue nos próximos 30 minutos antes que a mente intervenha'
+          : estrategia === 'wait'
+            ? 'aguarde até sentir reconhecimento externo ou paz interior'
+            : estrategia === 'observe'
+              ? 'observe mais 24-48h antes de decidir — a clarity virá'
+              : 'confie no processo; não force o resultado hoje',
     },
     timing,
     areaFoco,
@@ -247,9 +253,7 @@ export function sintetizarMapa(pilares: PilaresDados): CaixaSintese {
   const dimensoes: DimensaoSintese[] = [];
 
   for (const dimensao of DIMENSOES) {
-    const areasCorrespondentes = (
-      Object.entries(DIMENSAO_DE_AREA) as [Area, DimensaoId][]
-    )
+    const areasCorrespondentes = (Object.entries(DIMENSAO_DE_AREA) as [Area, DimensaoId][])
       .filter(([, dimId]) => dimId === dimensao.id)
       .map(([area]) => area);
 

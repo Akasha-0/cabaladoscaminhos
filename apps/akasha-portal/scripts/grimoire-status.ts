@@ -17,7 +17,6 @@
  *     "newestUpdatedAt": "2026-06-01T..."
  *   }
  */
-
 import { prisma } from '../src/lib/prisma';
 
 async function main() {
@@ -39,9 +38,7 @@ async function main() {
     byBiblioteca[e.biblioteca] = (byBiblioteca[e.biblioteca] ?? 0) + 1;
   }
 
-  const sorted = [...all].sort(
-    (a, b) => a.updatedAt.getTime() - b.updatedAt.getTime()
-  );
+  const sorted = [...all].sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
   const oldestUpdatedAt = sorted[0]?.updatedAt?.toISOString() ?? null;
   const newestUpdatedAt = sorted[sorted.length - 1]?.updatedAt?.toISOString() ?? null;
 

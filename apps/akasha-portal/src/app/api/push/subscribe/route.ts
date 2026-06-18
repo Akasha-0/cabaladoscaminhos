@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/infrastructure/prisma';
 import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
-import { upsertPushSubscription, deletePushSubscription } from '@/lib/application/push/push-subscription-service';
+import {
+  upsertPushSubscription,
+  deletePushSubscription,
+} from '@/lib/application/push/push-subscription-service';
 import { getPublicVapidKey } from '@/lib/application/push/web-push-server';
+import { prisma } from '@/lib/infrastructure/prisma';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,7 +35,11 @@ export async function POST(request: NextRequest) {
     subscription?: { endpoint: string; keys: { p256dh: string; auth: string } };
   };
 
-  if (!body.subscription?.endpoint || !body.subscription.keys?.p256dh || !body.subscription.keys?.auth) {
+  if (
+    !body.subscription?.endpoint ||
+    !body.subscription.keys?.p256dh ||
+    !body.subscription.keys?.auth
+  ) {
     return NextResponse.json(
       { error: 'subscription inválida — campos endpoint, keys.p256dh, keys.auth são obrigatórios' },
       { status: 400 }

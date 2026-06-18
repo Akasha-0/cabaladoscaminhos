@@ -2,10 +2,9 @@
  * System prompt loader for the mentor.
  * Loads the system prompt from grimoire/mentor/system-prompt.md
  */
-
+import { calculateCodeOfDay } from '@akasha/core';
 import * as fs from 'fs';
 import * as path from 'path';
-import { calculateCodeOfDay } from '@akasha/core';
 
 /**
  * Fallback system prompt if file cannot be loaded.

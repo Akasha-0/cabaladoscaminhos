@@ -1,8 +1,8 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { Sparkles } from 'lucide-react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/shared/utils';
 
 const mysticButtonVariants = cva(
@@ -31,7 +31,8 @@ const mysticButtonVariants = cva(
 );
 
 export interface MysticButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'size' | 'ref'>,
+  extends
+    Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'size' | 'ref'>,
     VariantProps<typeof mysticButtonVariants> {
   loading?: boolean;
 }
@@ -53,9 +54,7 @@ export function MysticButton({
       aria-busy={loading}
       {...props}
     >
-      {loading && (
-        <Sparkles size={14} className="mystic-spinner" aria-hidden="true" />
-      )}
+      {loading && <Sparkles size={14} className="mystic-spinner" aria-hidden="true" />}
       {children}
       <style>{`
         .mystic-spinner {

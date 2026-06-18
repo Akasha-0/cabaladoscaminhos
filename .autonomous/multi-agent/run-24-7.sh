@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #
-# run-24-7.sh — Akasha 24/7 Autonomous Evolution Engine v5
+# run-24-7.sh — Akasha 24/7 Autonomous Evolution Engine v6
 # =========================================================
 #
-# Full 24/7 operation with Guardian + Loop Daemon v5.
+# Full 24/7 operation with Guardian + Loop Daemon v6.
 # Implements: Guardian supervision, adaptive pacing, cross-session continuity,
 #             ProjectMap, ReasoningChain, ContextEngine, Evolver, PromptEngine,
 #             AgentOrchestrator.
@@ -21,13 +21,13 @@
 #   ./run-24-7.sh validate    — Run validation suite
 #
 # Flow:
-#   run-24-7.sh → run-loop-supervised.sh → akasha-loop-daemon-v5.py
+#   run-24-7.sh → run-loop-supervised.sh → akasha-loop-daemon-v6.py
 #
 set -euo pipefail
 
 ROOT="/home/skynet/cabala-dos-caminhos"
 MA="$ROOT/.autonomous/multi-agent"
-DAEMON_V5="$MA/akasha-loop-daemon-v5.py"
+DAEMON_V6="$MA/akasha-loop-daemon-v6.py"
 SUPERVISOR="$MA/run-loop-supervised.sh"
 PID_FILE="$MA/loop-daemon.pid"
 STATE_FILE="$MA/state.json"
@@ -46,7 +46,7 @@ log_err(){ echo -e "[$(date +%H:%M:%S)]$RED ERR $1$NC"; }
 
 preflight(){
     log "Pre-flight checks..."
-    if [[ ! -f "$DAEMON_V5" ]]; then log_err "v5 daemon not found"; exit 1; fi
+    if [[ ! -f "$DAEMON_V6" ]]; then log_err "v6 daemon not found"; exit 1; fi
     local missing=()
     for mod in adaptive_pacer self_healer predictive_engine skill_discoverer \
                continuity_manager memory_manager guardian telemetry \
@@ -55,7 +55,7 @@ preflight(){
         [[ ! -f "$MA/${mod}.py" ]] && missing+=("$mod")
     done
     [[ ${#missing[@]} -gt 0 ]] && { log_err "Missing: ${missing[*]}"; exit 1; }
-    log_ok "Pre-flight passed — v5 ready"
+    log_ok "Pre-flight passed — v6 ready"
 }
 
 get_status(){

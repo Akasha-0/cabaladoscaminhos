@@ -5,5 +5,5 @@
 
 export function getOrixaNumerology(orixaName: string, oduNumber: number): number {
   // Stub: correlação simples
-  return (orixaName.length + oduNumber) % 9 + 1;
+  return ((orixaName.length + oduNumber) % 9) + 1;
 }

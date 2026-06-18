@@ -55,7 +55,8 @@ const PLANETAS_DATA: Record<Planeta, Omit<PlanetaNumerologia, 'planeta'>> = {
     signoRegra: 'Leão',
     qualidade: 'fixed',
     arquetipo: 'Consciência/Yo',
-    fonte: 'Astrologia Clássica — Sol = centro do sistema, princípio Yang, fogo fixo, regente de Leão, arquétipo do Pai/Yo',
+    fonte:
+      'Astrologia Clássica — Sol = centro do sistema, princípio Yang, fogo fixo, regente de Leão, arquétipo do Pai/Yo',
   },
   Lua: {
     frequencia: 2,
@@ -63,7 +64,8 @@ const PLANETAS_DATA: Record<Planeta, Omit<PlanetaNumerologia, 'planeta'>> = {
     signoRegra: 'Câncer',
     qualidade: 'cardinal',
     arquetipo: 'Inconsciente/She',
-    fonte: 'Astrologia Clássica — Lua = receptividade, princípio Yin, água cardinal, regente de Câncer, arquétipo da Mãe/She',
+    fonte:
+      'Astrologia Clássica — Lua = receptividade, princípio Yin, água cardinal, regente de Câncer, arquétipo da Mãe/She',
   },
   Mercúrio: {
     frequencia: 5,
@@ -71,7 +73,8 @@ const PLANETAS_DATA: Record<Planeta, Omit<PlanetaNumerologia, 'planeta'>> = {
     signoRegra: 'Gêmeos',
     qualidade: 'mutable',
     arquetipo: 'Mensageiro',
-    fonte: 'Astrologia Clássica — Mercúrio = comunicação, número 5 na tradição pitagórica, ar mutável, regente de Gêmeos',
+    fonte:
+      'Astrologia Clássica — Mercúrio = comunicação, número 5 na tradição pitagórica, ar mutável, regente de Gêmeos',
   },
   Vênus: {
     frequencia: 6,
@@ -79,7 +82,8 @@ const PLANETAS_DATA: Record<Planeta, Omit<PlanetaNumerologia, 'planeta'>> = {
     signoRegra: 'Touro',
     qualidade: 'fixed',
     arquetipo: 'Amor/Afrodite',
-    fonte: 'Astrologia Clássica — Vênus = atrativo, número 6 na tradição, terra fixa taurina, arquétipo de Afrodite',
+    fonte:
+      'Astrologia Clássica — Vênus = atrativo, número 6 na tradição, terra fixa taurina, arquétipo de Afrodite',
   },
   Marte: {
     frequencia: 9,
@@ -87,7 +91,8 @@ const PLANETAS_DATA: Record<Planeta, Omit<PlanetaNumerologia, 'planeta'>> = {
     signoRegra: 'Áries',
     qualidade: 'cardinal',
     arquetipo: 'Vontade/Ares',
-    fonte: 'Astrologia Clássica — Marte = vontade, número 9 na tradição, fogo cardinal, deus da guerra, arquétipo de Ares',
+    fonte:
+      'Astrologia Clássica — Marte = vontade, número 9 na tradição, fogo cardinal, deus da guerra, arquétipo de Ares',
   },
   Júpiter: {
     frequencia: 3,
@@ -95,7 +100,8 @@ const PLANETAS_DATA: Record<Planeta, Omit<PlanetaNumerologia, 'planeta'>> = {
     signoRegra: 'Sagitário',
     qualidade: 'mutable',
     arquetipo: 'Expansão/Zeus',
-    fonte: 'Astrologia Clássica — Júpiter = expansão, número 3 na tradição pitagórica, fogo mutável, regente de Sagitário, arquétipo de Zeus',
+    fonte:
+      'Astrologia Clássica — Júpiter = expansão, número 3 na tradição pitagórica, fogo mutável, regente de Sagitário, arquétipo de Zeus',
   },
   Saturno: {
     frequencia: 8,
@@ -103,7 +109,8 @@ const PLANETAS_DATA: Record<Planeta, Omit<PlanetaNumerologia, 'planeta'>> = {
     signoRegra: 'Capricórnio',
     qualidade: 'cardinal',
     arquetipo: 'Contenção/Cronos',
-    fonte: 'Astrologia Clássica — Saturno = contenção, número 8 na tradição, terra cardinal, deus do tempo, arquétipo de Cronos',
+    fonte:
+      'Astrologia Clássica — Saturno = contenção, número 8 na tradição, terra cardinal, deus do tempo, arquétipo de Cronos',
   },
   Urano: {
     frequencia: 4,
@@ -111,7 +118,8 @@ const PLANETAS_DATA: Record<Planeta, Omit<PlanetaNumerologia, 'planeta'>> = {
     signoRegra: 'Aquário',
     qualidade: 'fixed',
     arquetipo: 'Individuação/Hermes',
-    fonte: 'Astrologia Moderna — Urano = electricidade, número 4 na numerologia esotérica, ar fixo, regente de Aquário, arquétipo de Hermes/Revolução',
+    fonte:
+      'Astrologia Moderna — Urano = electricidade, número 4 na numerologia esotérica, ar fixo, regente de Aquário, arquétipo de Hermes/Revolução',
   },
   Netuno: {
     frequencia: 7,
@@ -119,7 +127,8 @@ const PLANETAS_DATA: Record<Planeta, Omit<PlanetaNumerologia, 'planeta'>> = {
     signoRegra: 'Peixes',
     qualidade: 'mutable',
     arquetipo: 'Transcendência/Poseidon',
-    fonte: 'Astrologia Moderna — Netuno = transcendência, número 7 na numerologia esotérica, água mutável, regente de Peixes, arquétipo de Poseidon',
+    fonte:
+      'Astrologia Moderna — Netuno = transcendência, número 7 na numerologia esotérica, água mutável, regente de Peixes, arquétipo de Poseidon',
   },
   Plutão: {
     frequencia: 1,
@@ -127,7 +136,8 @@ const PLANETAS_DATA: Record<Planeta, Omit<PlanetaNumerologia, 'planeta'>> = {
     signoRegra: 'Escorpião',
     qualidade: 'fixed',
     arquetipo: 'Metamorfose/Hades',
-    fonte: 'Astrologia Moderna — Plutão = transformação profunda, número 1 em numerologia (1+0=1), água fixa, regente de Escorpião, arquétipo de Hades',
+    fonte:
+      'Astrologia Moderna — Plutão = transformação profunda, número 1 em numerologia (1+0=1), água fixa, regente de Escorpião, arquétipo de Hades',
   },
 };
 
@@ -135,8 +145,10 @@ const PLANETAS_DATA: Record<Planeta, Omit<PlanetaNumerologia, 'planeta'>> = {
  * Tabela completa de planetas para numerologia astrológica.
  * Key: nome do planeta (Planeta)
  */
-export const PLANETAS_NUMEROLOGIA: Record<Planeta, PlanetaNumerologia> =
-  {} as Record<Planeta, PlanetaNumerologia>;
+export const PLANETAS_NUMEROLOGIA: Record<Planeta, PlanetaNumerologia> = {} as Record<
+  Planeta,
+  PlanetaNumerologia
+>;
 
 for (const planeta of Object.keys(PLANETAS_DATA) as Planeta[]) {
   PLANETAS_NUMEROLOGIA[planeta] = {
@@ -155,10 +167,6 @@ export function getPlanetaNumerologia(planeta: Planeta): PlanetaNumerologia {
 /**
  * Returns all planets that share the same element.
  */
-export function getPlanetasPorElemento(
-  elemento: ElementoAstro,
-): PlanetaNumerologia[] {
-  return Object.values(PLANETAS_NUMEROLOGIA).filter(
-    (p) => p.elemento === elemento,
-  );
+export function getPlanetasPorElemento(elemento: ElementoAstro): PlanetaNumerologia[] {
+  return Object.values(PLANETAS_NUMEROLOGIA).filter((p) => p.elemento === elemento);
 }

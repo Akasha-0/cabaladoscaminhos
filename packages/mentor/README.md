@@ -38,8 +38,8 @@ const response = await fetch('/api/mentor/ask', {
   body: JSON.stringify({
     question: 'Como posso melhorar meu trabalho em grupo?',
     userId: 'user-123',
-    sessionHistory: []
-  })
+    sessionHistory: [],
+  }),
 });
 
 // Streaming response
@@ -74,12 +74,12 @@ for await (const chunk of response.body) {
 
 ## Mapas Suportados
 
-| Tradição | Função | Status |
-|----------|--------|--------|
-| Cabala | calculateLifePath | ✅ |
-| Ifá | getOduBirth | ✅ |
-| Astrologia | getBirthChart | ✅ |
-| Tantra | getTantraBody | ✅ |
+| Tradição   | Função            | Status |
+| ---------- | ----------------- | ------ |
+| Cabala     | calculateLifePath | ✅     |
+| Ifá        | getOduBirth       | ✅     |
+| Astrologia | getBirthChart     | ✅     |
+| Tantra     | getTantraBody     | ✅     |
 
 ## Configuração
 

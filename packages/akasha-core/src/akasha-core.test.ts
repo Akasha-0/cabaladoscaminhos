@@ -6,7 +6,6 @@
  *   2. Bruno (sem hora) — testa flag hora_desconhecida
  *   3. Carlos (em crise) — testa detecção de crise → CVV-188
  */
-
 import { describe, it, expect } from 'vitest';
 import { calcular, AkashaInputSchema, type AkashaInput } from './akasha-core';
 
@@ -68,7 +67,7 @@ describe('akasha.calcular() — 3 personas', () => {
     expect(leitura.pilares.tantrica.corpo_predominante).toBeGreaterThanOrEqual(1);
     expect(leitura.pilares.tantrica.corpo_predominante).toBeLessThanOrEqual(11);
     expect(leitura.pilares.odu.odu_principal).toMatch(
-      /^(Ogbe|Ejiokô|Etogundá|Irosun|Oxê|Obará|Odi|Ejionile|Ossá|Ofun|Owarin|Ejilaxebô|Oturupon|Oturá|Iká|Ofurufu|Oyeku|Iwori|Owonrin|Obara|Okanran|Ogunda|Osa|Ika|Otura|Irete|Eji|Ose)$/,
+      /^(Ogbe|Ejiokô|Etogundá|Irosun|Oxê|Obará|Odi|Ejionile|Ossá|Ofun|Owarin|Ejilaxebô|Oturupon|Oturá|Iká|Ofurufu|Oyeku|Iwori|Owonrin|Obara|Okanran|Ogunda|Osa|Ika|Otura|Irete|Eji|Ose)$/
     );
     expect(leitura.pilares.odu.aviso).toContain('consentimento');
     expect(leitura.pilares.iching.hexagrama_natal).toBeGreaterThanOrEqual(1);
@@ -109,14 +108,10 @@ describe('Limites éticos (R-022 §5.5-5.6)', () => {
       odu: 'ifá',
       iching: 'i ching',
     };
-    expect(leitura.mandato.pilares_relevantes.length).toBe(
-      leitura.mandato.cita_fontes.length,
-    );
+    expect(leitura.mandato.pilares_relevantes.length).toBe(leitura.mandato.cita_fontes.length);
     for (const pilar of leitura.mandato.pilares_relevantes) {
       const esperado = mapa[pilar];
-      const temFonte = leitura.mandato.cita_fontes.some((f) =>
-        f.toLowerCase().includes(esperado),
-      );
+      const temFonte = leitura.mandato.cita_fontes.some((f) => f.toLowerCase().includes(esperado));
       expect(temFonte).toBe(true);
     }
   });

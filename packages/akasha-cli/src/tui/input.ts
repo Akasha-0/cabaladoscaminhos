@@ -211,8 +211,7 @@ export class InputHandler {
     if (!text.startsWith('/')) return;
 
     const partial = text.slice(1).toLowerCase();
-    const matches = Array.from(this.commands.keys())
-      .filter((cmd) => cmd.startsWith(partial));
+    const matches = Array.from(this.commands.keys()).filter((cmd) => cmd.startsWith(partial));
 
     if (matches.length === 1) {
       this.input.setValue(`/${matches[0]} `);

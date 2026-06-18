@@ -13,12 +13,11 @@
  * A página é MÍNIMA — não repete o Diario nem o Mural. É 1 ABRAÇO
  * de boas-vindas com o que ENTREGA DE VALOR (significado, não número).
  */
-
-import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import { cookies, headers } from 'next/headers';
-import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { SignificadoPilar } from '@/components/akasha/SignificadoPilar';
+import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import { significadosEspecificos, type PilaresDados } from '@/lib/grimoire/significados-curados';
 
 const C = {
@@ -84,7 +83,8 @@ export default async function SignificadoPrimeiroPage({
   const cookieStore = await cookies();
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
   const authStatus = (await headers()).get('X-Akasha-Auth');
-  if (authStatus !== 'refreshed' && !verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
+  if (authStatus !== 'refreshed' && !verifyAkashaToken(token, 'access'))
+    redirect(`/${locale}/login`);
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia`,
@@ -103,9 +103,7 @@ export default async function SignificadoPrimeiroPage({
   }
 
   const cor = CORES_PILAR[pilarPrincipal];
-  const sig = pilares
-    ? significadosEspecificos(pilares)[pilarPrincipal]
-    : null;
+  const sig = pilares ? significadosEspecificos(pilares)[pilarPrincipal] : null;
 
   return (
     <main
@@ -167,9 +165,8 @@ export default async function SignificadoPrimeiroPage({
               margin: 0,
             }}
           >
-            Cinco tradições convergem em você. Aqui, você começa pelo Pilar que
-            mais ilumina o seu momento. Não é só um número — é o que ele
-            SIGNIFICA.
+            Cinco tradições convergem em você. Aqui, você começa pelo Pilar que mais ilumina o seu
+            momento. Não é só um número — é o que ele SIGNIFICA.
           </p>
         </header>
 
@@ -181,7 +178,16 @@ export default async function SignificadoPrimeiroPage({
           </p>
         )}
 
-        <div style={{ marginTop: 28, textAlign: 'center', display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+        <div
+          style={{
+            marginTop: 28,
+            textAlign: 'center',
+            display: 'flex',
+            gap: 12,
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+          }}
+        >
           <Link
             href={`/${locale}/mandala`}
             style={{
@@ -239,7 +245,8 @@ export default async function SignificadoPrimeiroPage({
             textAlign: 'center',
           }}
         >
-          Pilar de hoje: <span style={{ color: cor, fontWeight: 600 }}>{PILAR_NOME[pilarPrincipal]}</span>
+          Pilar de hoje:{' '}
+          <span style={{ color: cor, fontWeight: 600 }}>{PILAR_NOME[pilarPrincipal]}</span>
         </p>
       </div>
     </main>

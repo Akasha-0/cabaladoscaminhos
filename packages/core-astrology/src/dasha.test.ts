@@ -9,7 +9,6 @@
  * - calculate current Mahadasha em data arbitrária
  * - Edge cases: Lua em 0°, Lua em 360°
  */
-
 import { describe, it, expect } from 'vitest';
 import {
   getNakshatra,
@@ -146,7 +145,7 @@ describe('F-210: Vimshottari Dasha (Jyotish)', () => {
       const maha = result.currentMahadasha;
       const antaTotal = result.currentMahadashaAntardashas.reduce(
         (acc, a) => acc + a.durationYears,
-        0,
+        0
       );
       // 9 antardashas × duração(anta_graha) / 120 somam = duração(maha)
       // (com tolerância para ponto flutuante)
@@ -158,7 +157,7 @@ describe('F-210: Vimshottari Dasha (Jyotish)', () => {
       const result = calcularVimshottari(birth, 0);
       for (let i = 0; i < result.fullLifeMahadashas.length - 1; i++) {
         expect(result.fullLifeMahadashas[i].endDate.getTime()).toBe(
-          result.fullLifeMahadashas[i + 1].startDate.getTime(),
+          result.fullLifeMahadashas[i + 1].startDate.getTime()
         );
       }
     });

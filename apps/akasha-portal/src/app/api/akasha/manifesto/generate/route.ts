@@ -1,8 +1,8 @@
+import type { Prisma } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
+import { buildManifestoContent } from '@/lib/application/akasha/manifesto-builder';
 import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { prisma } from '@/lib/infrastructure/prisma';
-import { buildManifestoContent } from '@/lib/application/akasha/manifesto-builder';
-import type { Prisma } from '@prisma/client';
 
 export async function POST(request: NextRequest) {
   const auth = await requireAkashaApi(request);

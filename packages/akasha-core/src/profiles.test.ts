@@ -13,7 +13,6 @@
  * Estes testes validam o **contrato** do R-030 antes da Fase 6
  * integrar engines reais.
  */
-
 import { describe, it, expect } from 'vitest';
 import { calcular, AkashaInputSchema } from './akasha-core';
 import { PERFIS, PERFIL_BY_ID, PERFIL_CRISIS } from './profiles-fixtures';

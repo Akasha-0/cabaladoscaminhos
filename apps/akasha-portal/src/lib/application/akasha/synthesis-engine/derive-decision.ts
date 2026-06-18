@@ -4,7 +4,6 @@
  * Decisão diária (Strategy + Authority) baseada na área mais intensa do
  * perfil. Split de synthesis-engine.ts.
  */
-
 import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/types';
 import type {
   AkashaAuthority,
@@ -85,32 +84,41 @@ export function deriveRecommendationAvoid(
   switch (mostIntense.area) {
     case 'vitalidadeEnergia':
       return {
-        recommendation: mostIntense.practicalAdvice || 'Respeite seus ciclos de energia — descanse se precisar.',
+        recommendation:
+          mostIntense.practicalAdvice || 'Respeite seus ciclos de energia — descanse se precisar.',
         avoid: 'Evite forçar atividades físicas intensas ou ignorar sinais de fadiga.',
       };
     case 'conexoesAmor':
       return {
-        recommendation: mostIntense.practicalAdvice || 'Hoje: esteja presente com quem você ama sem expectativa.',
+        recommendation:
+          mostIntense.practicalAdvice || 'Hoje: esteja presente com quem você ama sem expectativa.',
         avoid: 'Evite iniciar conflitos emocionais ou tomar decisões sobre relacionamentos hoje.',
       };
     case 'carreiraProsperidade':
       return {
-        recommendation: mostIntense.practicalAdvice || 'Prepare terreno: revise planos, organize prioridades, sonhe com o futuro.',
+        recommendation:
+          mostIntense.practicalAdvice ||
+          'Prepare terreno: revise planos, organize prioridades, sonhe com o futuro.',
         avoid: 'Evite fechar contratos importantes ou fazer grandes gastos hoje.',
       };
     case 'oriCabecaQuizilas':
       return {
-        recommendation: mostIntense.practicalAdvice || 'Confie mais na sua intuição e menos em opiniões externas.',
+        recommendation:
+          mostIntense.practicalAdvice ||
+          'Confie mais na sua intuição e menos em opiniões externas.',
         avoid: 'Evite tomar decisões baseadas em medo ou pressão de outros.',
       };
     case 'missaoDestino':
       return {
-        recommendation: mostIntense.practicalAdvice || 'Pergunte-se: estou vivendo minha verdade ou estou vivendo o esperado?',
+        recommendation:
+          mostIntense.practicalAdvice ||
+          'Pergunte-se: estou vivendo minha verdade ou estou vivendo o esperado?',
         avoid: 'Evite fugir de sua autenticidade para agradar ou pertencer.',
       };
     case 'desafiosSombras':
       return {
-        recommendation: mostIntense.practicalAdvice || 'Olhe para o padrão com compaixão, não julgamento.',
+        recommendation:
+          mostIntense.practicalAdvice || 'Olhe para o padrão com compaixão, não julgamento.',
         avoid: 'Evite fugir da dor ou usar substâncias/distrações para evitar o confronto.',
       };
   }
@@ -134,10 +142,7 @@ export function deriveDailyDecision(
   date: Date = new Date()
 ): DailyDecision {
   const areas = [areaVitalidade, areaConexoes, areaCarreira, areaOri, areaMissao, areaDesafios];
-  const mostIntense = areas.reduce(
-    (max, a) => (a.intensity > max.intensity ? a : max),
-    areas[0]
-  );
+  const mostIntense = areas.reduce((max, a) => (a.intensity > max.intensity ? a : max), areas[0]);
 
   const strategy = deriveStrategy(mostIntense, astro, kab, tantra, odu, date);
   const authority = deriveAkashaAuthorityForDecision(astro, kab, tantra, odu);

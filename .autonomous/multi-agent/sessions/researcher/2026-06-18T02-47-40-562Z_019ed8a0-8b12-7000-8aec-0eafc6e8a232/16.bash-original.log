@@ -1,0 +1,19 @@
+.autonomous/multi-agent/akasha-evolution-loop.py:278:        large_files = []
+.autonomous/multi-agent/akasha-evolution-loop.py:285:                        large_files.append({"file": f, "lines": lines})
+.autonomous/multi-agent/akasha-evolution-loop.py:288:        if large_files:
+.autonomous/multi-agent/akasha-evolution-loop.py:289:            large_files.sort(key=lambda x: x["lines"], reverse=True)
+.autonomous/multi-agent/akasha-evolution-loop.py:290:            candidates.append({"type": "large_file", "priority": 4,
+.autonomous/multi-agent/akasha-evolution-loop.py:291:                             "description": f"{len(large_files)} oversized files",
+.autonomous/multi-agent/akasha-evolution-loop.py:292:                             "files": large_files[:3]})
+.autonomous/multi-agent/akasha-evolution-loop.py:431:    Ensures variety: no duplicate types (except tech_debt/large_file/missing_tests),
+.autonomous/multi-agent/akasha-evolution-loop.py:466:        if imp_type in recent_types and imp_type not in ("tech_debt", "large_file", "missing_tests"):
+.autonomous/multi-agent/akasha-evolution-loop.py:586:    - Missing tests: target max 2 files, ensure no overlap with large_file targets
+.autonomous/multi-agent/akasha-evolution-loop.py:618:        # Target max 2 files that avoid common large_file targets
+.autonomous/multi-agent/akasha-evolution-loop.py:707:    elif imp_type == "large_file":
+.autonomous/multi-agent/akasha-evolution-loop.py:717:            f"You are extracting ONE helper module from ONE oversized file in the AKASHA project.\n"
+.autonomous/multi-agent/akasha-evolution-loop.py:728:            f'{{"success": true, "message": "Extracted helper from {target_file}", "type": "large_file"}}\n'
+.autonomous/multi-agent/memory_manager.py:264:        # Auto-archive if file is oversized
+.autonomous/multi-agent/smart_iterator.py:140:    "large_file",    # Split oversized files
+.autonomous/multi-agent/smart_iterator.py:170:    "large_file": 0.4,
+.autonomous/multi-agent/smart_iterator.py:581:        # Historical: lots of small console_cleanup / large_file entries = debt
+.autonomous/multi-agent/smart_iterator.py:583:        debt += len([e for e in entries if e.get("type") in {"large_file", "tech_debt"}]) * 2

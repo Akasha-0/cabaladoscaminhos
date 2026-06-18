@@ -1,101 +1,130 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cabala - Teste</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { 
-      min-height: 100vh; 
-      background: #0f172a; 
-      color: white;
-      font-family: system-ui, -apple-system, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-    }
-    .container {
-      width: 100%;
-      max-width: 400px;
-      background: #1e293b;
-      padding: 2rem;
-      border-radius: 1rem;
-      text-align: center;
-    }
-    h1 { color: #fbbf24; font-size: 2rem; margin-bottom: 2rem; }
-    p { color: #94a3b8; margin-bottom: 1rem; }
-    button {
-      width: 100%;
-      padding: 1rem;
-      background: #7c3aed;
-      color: white;
-      border: none;
-      border-radius: 0.5rem;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 1rem;
-    }
-    button:hover { background: #6d28d9; }
-    .success { color: #4ade80; font-size: 1.5rem; margin-bottom: 1rem; }
-    .hidden { display: none; }
-    #dashboard-view { display: none; }
-    #dashboard-view.show { display: block; }
-    #login-view.hidden { display: none; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <!-- LOGIN VIEW -->
-    <div id="login-view">
-      <h1>✦ CABALA ✦</h1>
-      <p>Acesse sua conta</p>
-      <button id="login-btn" onclick="doLogin()">ENTRAR</button>
-      <p style="margin-top: 1rem; font-size: 0.875rem; color: #64748b;">
-        (Demo: demo@cabala.com)
-      </p>
-    </div>
-    
-    <!-- DASHBOARD VIEW -->
-    <div id="dashboard-view">
-      <h1>✦ DASHBOARD ✦</h1>
-      <p class="success">✅ Login funcionou!</p>
-      <p>Você está logado.</p>
-      <button onclick="doLogout()">SAIR</button>
-    </div>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cabala - Teste</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        min-height: 100vh;
+        background: #0f172a;
+        color: white;
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+      .container {
+        width: 100%;
+        max-width: 400px;
+        background: #1e293b;
+        padding: 2rem;
+        border-radius: 1rem;
+        text-align: center;
+      }
+      h1 {
+        color: #fbbf24;
+        font-size: 2rem;
+        margin-bottom: 2rem;
+      }
+      p {
+        color: #94a3b8;
+        margin-bottom: 1rem;
+      }
+      button {
+        width: 100%;
+        padding: 1rem;
+        background: #7c3aed;
+        color: white;
+        border: none;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-top: 1rem;
+      }
+      button:hover {
+        background: #6d28d9;
+      }
+      .success {
+        color: #4ade80;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      .hidden {
+        display: none;
+      }
+      #dashboard-view {
+        display: none;
+      }
+      #dashboard-view.show {
+        display: block;
+      }
+      #login-view.hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- LOGIN VIEW -->
+      <div id="login-view">
+        <h1>✦ CABALA ✦</h1>
+        <p>Acesse sua conta</p>
+        <button id="login-btn" onclick="doLogin()">ENTRAR</button>
+        <p style="margin-top: 1rem; font-size: 0.875rem; color: #64748b">(Demo: demo@cabala.com)</p>
+      </div>
 
-  <script>
-    // Simple vanilla JavaScript - no React, no Next.js
-    const loginView = document.getElementById('login-view')
-    const dashboardView = document.getElementById('dashboard-view')
-    
-    function doLogin() {
-      // Store in localStorage
-      localStorage.setItem('cabala_user', JSON.stringify({
-        email: 'demo@cabala.com',
-        name: 'demo',
-        id: '123'
-      }))
-      
-      // Switch views instantly
-      loginView.classList.add('hidden')
-      dashboardView.classList.add('show')
-    }
-    
-    function doLogout() {
-      localStorage.removeItem('cabala_user')
-      dashboardView.classList.remove('show')
-      loginView.classList.remove('hidden')
-    }
-    
-    // Check if already logged in
-    const stored = localStorage.getItem('cabala_user')
-    if (stored) {
-      loginView.classList.add('hidden')
-      dashboardView.classList.add('show')
-    }
-  </script>
-</body>
+      <!-- DASHBOARD VIEW -->
+      <div id="dashboard-view">
+        <h1>✦ DASHBOARD ✦</h1>
+        <p class="success">✅ Login funcionou!</p>
+        <p>Você está logado.</p>
+        <button onclick="doLogout()">SAIR</button>
+      </div>
+    </div>
+
+    <script>
+      // Simple vanilla JavaScript - no React, no Next.js
+      const loginView = document.getElementById('login-view');
+      const dashboardView = document.getElementById('dashboard-view');
+
+      function doLogin() {
+        // Store in localStorage
+        localStorage.setItem(
+          'cabala_user',
+          JSON.stringify({
+            email: 'demo@cabala.com',
+            name: 'demo',
+            id: '123',
+          })
+        );
+
+        // Switch views instantly
+        loginView.classList.add('hidden');
+        dashboardView.classList.add('show');
+      }
+
+      function doLogout() {
+        localStorage.removeItem('cabala_user');
+        dashboardView.classList.remove('show');
+        loginView.classList.remove('hidden');
+      }
+
+      // Check if already logged in
+      const stored = localStorage.getItem('cabala_user');
+      if (stored) {
+        loginView.classList.add('hidden');
+        dashboardView.classList.add('show');
+      }
+    </script>
+  </body>
 </html>

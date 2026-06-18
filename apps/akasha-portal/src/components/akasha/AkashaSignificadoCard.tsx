@@ -13,15 +13,23 @@
  *
  * DEC-004:shadow/gift/siddhi inspirado em Gene Keys (Richard Rudd).
  */
-
-import { useState } from 'react';
 import { interpretarVida } from '@akasha/core';
 import type { AreaInterpretation, LifeArea, VidaInterpretation } from '@akasha/types';
+import { useState } from 'react';
+
 type Nivel = 'shadow' | 'gift' | 'siddhi';
 
 /** Áreas com aplicacao preenchida no motor de interpretação (7 de 9 áreas DEC-005).
  * familia e criatividade existem no tipo LifeArea mas não têm aplicacao em VIDA_CONTENT. */
-const AREAS_WITH_DATA: LifeArea[] = ['proposito', 'carreira', 'financas', 'saude', 'relacionamentos', 'sexualidade', 'espiritualidade'];
+const AREAS_WITH_DATA: LifeArea[] = [
+  'proposito',
+  'carreira',
+  'financas',
+  'saude',
+  'relacionamentos',
+  'sexualidade',
+  'espiritualidade',
+];
 
 const NIVEL_LABEL: Record<Nivel, { titulo: string; cor: string; emoji: string }> = {
   shadow: {
@@ -123,7 +131,6 @@ export function AkashaSignificadoCard({ lifePath, defaultNivel = 'gift' }: Props
         </p>
       </div>
 
-
       {/* Attribution — DEC-004 */}
       <div style={{ marginBottom: 12 }}>
         <span style={{ fontSize: '0.68rem', color: '#6b6480', letterSpacing: '0.04em' }}>
@@ -195,20 +202,31 @@ export function AkashaSignificadoCard({ lifePath, defaultNivel = 'gift' }: Props
                     fontSize: '0.68rem',
                     fontFamily: 'var(--font-cinzel, serif)',
                     letterSpacing: '0.04em',
-                    background: area === a ? `${NIVEL_LABEL[nivel].cor}22` : 'rgba(255,255,255,0.06)',
+                    background:
+                      area === a ? `${NIVEL_LABEL[nivel].cor}22` : 'rgba(255,255,255,0.06)',
                     color: area === a ? NIVEL_LABEL[nivel].cor : '#706686',
-                    borderBottom: area === a ? `1.5px solid ${NIVEL_LABEL[nivel].cor}` : '1.5px solid transparent',
+                    borderBottom:
+                      area === a
+                        ? `1.5px solid ${NIVEL_LABEL[nivel].cor}`
+                        : '1.5px solid transparent',
                     transition: 'all 0.15s ease',
                   }}
                 >
-                  {a === 'proposito' ? '✦ Propósito' :
-                   a === 'carreira' ? '◈ Carreira' :
-                   a === 'financas' ? '◉ Finanças' :
-                   a === 'saude' ? '◐ Saúde' :
-                   a === 'relacionamentos' ? '◑ Relacionamentos' :
-                   a === 'sexualidade' ? '✧ Sexualidade' :
-                   a === 'espiritualidade' ? '✦ Espiritualidade' :
-                   a}
+                  {a === 'proposito'
+                    ? '✦ Propósito'
+                    : a === 'carreira'
+                      ? '◈ Carreira'
+                      : a === 'financas'
+                        ? '◉ Finanças'
+                        : a === 'saude'
+                          ? '◐ Saúde'
+                          : a === 'relacionamentos'
+                            ? '◑ Relacionamentos'
+                            : a === 'sexualidade'
+                              ? '✧ Sexualidade'
+                              : a === 'espiritualidade'
+                                ? '✦ Espiritualidade'
+                                : a}
                 </button>
               );
             })}
@@ -251,14 +269,21 @@ export function AkashaSignificadoCard({ lifePath, defaultNivel = 'gift' }: Props
               fontWeight: 600,
             }}
           >
-            {area === 'proposito' ? '✦ No seu Propósito' :
-             area === 'carreira' ? '◈ Na Carreira e Vocação' :
-             area === 'financas' ? '◉ Nas Finanças e Prosperidade' :
-             area === 'saude' ? '◐ Na Saúde e Corpo' :
-             area === 'relacionamentos' ? '◑ Nos Relacionamentos' :
-             area === 'sexualidade' ? '✧ Na Sexualidade' :
-             area === 'espiritualidade' ? '✦ Na Espiritualidade' :
-             '◑ Nos Relacionamentos'}
+            {area === 'proposito'
+              ? '✦ No seu Propósito'
+              : area === 'carreira'
+                ? '◈ Na Carreira e Vocação'
+                : area === 'financas'
+                  ? '◉ Nas Finanças e Prosperidade'
+                  : area === 'saude'
+                    ? '◐ Na Saúde e Corpo'
+                    : area === 'relacionamentos'
+                      ? '◑ Nos Relacionamentos'
+                      : area === 'sexualidade'
+                        ? '✧ Na Sexualidade'
+                        : area === 'espiritualidade'
+                          ? '✦ Na Espiritualidade'
+                          : '◑ Nos Relacionamentos'}
           </p>
           <p
             style={{

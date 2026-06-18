@@ -12,13 +12,14 @@ interface MandalaNarrativeLoaderProps {
 }
 
 export function MandalaNarrativeLoader({ locale }: MandalaNarrativeLoaderProps) {
-  const [synthesis, setSynthesis] = useState<Parameters<typeof MandalaNarrative>[0]['synthesis']>(null);
+  const [synthesis, setSynthesis] =
+    useState<Parameters<typeof MandalaNarrative>[0]['synthesis']>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(`/api/akasha/daily`)
-      .then(r => r.ok ? r.json() : null)
-      .then(json => {
+      .then((r) => (r.ok ? r.json() : null))
+      .then((json) => {
         if (json?.synthesis) {
           // F-232: flatten synthesizedProfile.narrativaCentral for MandalaNarrative
           const s = json.synthesis;

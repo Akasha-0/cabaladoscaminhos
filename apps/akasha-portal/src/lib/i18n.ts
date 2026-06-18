@@ -9,9 +9,8 @@
  *   const t = getTranslations(locale, 'evolution');
  *   t('areas.vitalidadeEnergia');  // → 'Vitalidade' | 'Vitality'
  */
-
-import ptBR from '@/i18n/pt-BR.json';
 import en from '@/i18n/en.json';
+import ptBR from '@/i18n/pt-BR.json';
 
 export const SUPPORTED_LOCALES = ['pt-BR', 'en'] as const;
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];

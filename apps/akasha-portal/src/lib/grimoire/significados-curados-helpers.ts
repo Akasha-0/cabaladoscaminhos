@@ -11,7 +11,6 @@
  * - Axioma 4: Citação obrigatória. Toda afirmação cita fonte.
  * - Axioma 8: PT-BR primeiro.
  */
-
 import type { Pilar, SignificadoCurado } from './significados-curados';
 
 export function significadoGenericoDoPilar(pilar: Pilar): SignificadoCurado {

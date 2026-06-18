@@ -10,20 +10,10 @@
  * - Graceful fallback: empty/missing pilares
  * - Edge cases: master numbers, all-shadow, all-gift frequencies
  */
-
+import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/types';
 import { describe, it, expect } from 'vitest';
-import {
-  buildAkashaSynthesis,
-  deriveAkashaType,
-  type AkashaTypeProfile,
-} from './synthesis-engine';
-import type {
-  AstrologyMap,
-  KabalisticMap,
-  TantricMap,
-  OduBirth,
-} from '@akasha/types';
 import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
+import { buildAkashaSynthesis, deriveAkashaType, type AkashaTypeProfile } from './synthesis-engine';
 
 // ─── Fixtures ───────────────────────────────────────────────────────────────
 
@@ -137,7 +127,12 @@ describe('buildAkashaSynthesis — integração completa (F-226/227/242)', () =>
   it('retorna 6 áreas (vitalidade/conexões/carreira/ori/missão/desafios)', () => {
     const astro = makeAstro();
     const synth = buildAkashaSynthesis(
-      astro, makeKab(), makeTantra(), makeOdu(), makeHolo(astro), TODAY
+      astro,
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(astro),
+      TODAY
     );
     expect(Object.keys(synth.areas)).toHaveLength(6);
     expect(synth.areas.vitalidadeEnergia).toBeDefined();
@@ -151,7 +146,12 @@ describe('buildAkashaSynthesis — integração completa (F-226/227/242)', () =>
   it('cada área tem title, frequency, intensity', () => {
     const astro = makeAstro();
     const synth = buildAkashaSynthesis(
-      astro, makeKab(), makeTantra(), makeOdu(), makeHolo(astro), TODAY
+      astro,
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(astro),
+      TODAY
     );
     for (const area of Object.values(synth.areas)) {
       expect(area.title).toBeTruthy();
@@ -163,7 +163,12 @@ describe('buildAkashaSynthesis — integração completa (F-226/227/242)', () =>
   it('inclui dailyDecision com strategy + authority (F-227)', () => {
     const astro = makeAstro();
     const synth = buildAkashaSynthesis(
-      astro, makeKab(), makeTantra(), makeOdu(), makeHolo(astro), TODAY
+      astro,
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(astro),
+      TODAY
     );
     expect(['act', 'wait', 'observe']).toContain(synth.dailyDecision.strategy);
     expect(['emotional', 'sacral', 'splenic', 'mental']).toContain(synth.dailyDecision.authority);
@@ -174,7 +179,12 @@ describe('buildAkashaSynthesis — integração completa (F-226/227/242)', () =>
   it('inclui synthesisParagraph (1-3 frases)', () => {
     const astro = makeAstro();
     const synth = buildAkashaSynthesis(
-      astro, makeKab(), makeTantra(), makeOdu(), makeHolo(astro), TODAY
+      astro,
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(astro),
+      TODAY
     );
     expect(synth.synthesisParagraph).toBeTruthy();
     expect(synth.synthesisParagraph.length).toBeGreaterThan(20);
@@ -183,10 +193,17 @@ describe('buildAkashaSynthesis — integração completa (F-226/227/242)', () =>
   it('inclui akashaProfile (dominantFrequency + transformationStage)', () => {
     const astro = makeAstro();
     const synth = buildAkashaSynthesis(
-      astro, makeKab(), makeTantra(), makeOdu(), makeHolo(astro), TODAY
+      astro,
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(astro),
+      TODAY
     );
     expect(['shadow', 'gift', 'siddhi']).toContain(synth.akashaProfile.dominantFrequency);
-    expect(['surface', 'deepening', 'embodying']).toContain(synth.akashaProfile.transformationStage);
+    expect(['surface', 'deepening', 'embodying']).toContain(
+      synth.akashaProfile.transformationStage
+    );
     expect(synth.akashaProfile.overallFrequencyScore).toBeGreaterThanOrEqual(0);
     expect(synth.akashaProfile.overallFrequencyScore).toBeLessThanOrEqual(100);
   });
@@ -194,7 +211,12 @@ describe('buildAkashaSynthesis — integração completa (F-226/227/242)', () =>
   it('F-227: oneProfile presente quando há dados', () => {
     const astro = makeAstro();
     const synth = buildAkashaSynthesis(
-      astro, makeKab(), makeTantra(), makeOdu(), makeHolo(astro), TODAY
+      astro,
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(astro),
+      TODAY
     );
     expect(synth.oneProfile).toBeDefined();
     expect(synth.oneProfile?.type).toBeTruthy();
@@ -224,7 +246,10 @@ describe('buildAkashaSynthesis — fallback gracioso', () => {
     // Even with malformed inputs, should not throw
     expect(() =>
       buildAkashaSynthesis(
-        undefined as any, undefined as any, undefined as any, undefined as any,
+        undefined as any,
+        undefined as any,
+        undefined as any,
+        undefined as any,
         makeHolo(makeAstro()),
         TODAY
       )
@@ -240,7 +265,10 @@ describe('buildAkashaSynthesis — Life Path variations', () => {
     const synth = buildAkashaSynthesis(
       astro,
       makeKab({ lifePath: 11, lifePathMaster: true }),
-      makeTantra(), makeOdu(), makeHolo(astro), TODAY
+      makeTantra(),
+      makeOdu(),
+      makeHolo(astro),
+      TODAY
     );
     // synth.lifePath é o que buildAkashaSynthesis expõe (kabalisticMap?.lifePath ?? 1)
     expect(typeof synth.lifePath).toBe('number');
@@ -258,7 +286,10 @@ describe('buildAkashaSynthesis — Life Path variations', () => {
       const synth = buildAkashaSynthesis(
         astro,
         makeKab({ lifePath: lp, lifePathMaster: lp === 11 || lp === 22 || lp === 33 }),
-        makeTantra(), makeOdu(), makeHolo(astro), TODAY
+        makeTantra(),
+        makeOdu(),
+        makeHolo(astro),
+        TODAY
       );
       expect(['act', 'wait', 'observe']).toContain(synth.dailyDecision.strategy);
     }
@@ -294,13 +325,18 @@ describe('deriveAkashaType — 9 Akasha Types', () => {
 // ─── deriveAkashaType — 5-pillar voting (ROADMAP Iter. 6 Prioridade 2) ─────
 
 describe('deriveAkashaType — 5-pillar voting', () => {
-
   it('Odu wins over IChing when Odu is stronger (Ogbe×3 vs nuclear×2)', () => {
     // Ogbe → catalisador (×3); Hex 30 (Li/Fire) → canal (×2)
     // Kab LP 1 → catalisador (×2): Odu+Kab = 5 for catalisador vs IChing+Astro = 3 for canal
     const astro = makeAstro({ dominantPlanet: 'Mercúrio' });
     const holo = makeHolo(astro, { ichingHex: 30 });
-    const profile = deriveAkashaType(astro, makeKab({ lifePath: 1 }), makeTantra(), makeOdu({ oduName: 'Ogbe' }), holo);
+    const profile = deriveAkashaType(
+      astro,
+      makeKab({ lifePath: 1 }),
+      makeTantra(),
+      makeOdu({ oduName: 'Ogbe' }),
+      holo
+    );
     expect(profile.type).toBe('catalisador');
   });
 
@@ -312,7 +348,13 @@ describe('deriveAkashaType — 5-pillar voting', () => {
     // Result: catalisador = 5, no strong contender → catalisador wins
     const astro = makeAstro({ dominantPlanet: 'Sol' });
     const holo = makeHolo(astro, { ichingHex: 1 });
-    const profile = deriveAkashaType(astro, makeKab({ lifePath: 1 }), makeTantra(), makeOdu({ oduName: '' }), holo);
+    const profile = deriveAkashaType(
+      astro,
+      makeKab({ lifePath: 1 }),
+      makeTantra(),
+      makeOdu({ oduName: '' }),
+      holo
+    );
     expect(profile.type).toBe('catalisador');
   });
 
@@ -320,7 +362,13 @@ describe('deriveAkashaType — 5-pillar voting', () => {
     // LP 22 → construtor (×2); Astro Lua → receptor (×1); Odu empty → null (×0)
     // construtor: 2; receptor: 1 → construtor wins
     const astro = makeAstro({ dominantPlanet: 'Lua' });
-    const profile = deriveAkashaType(astro, makeKab({ lifePath: 22, lifePathMaster: true }), makeTantra(), makeOdu({ oduName: '' }), makeHolo(astro));
+    const profile = deriveAkashaType(
+      astro,
+      makeKab({ lifePath: 22, lifePathMaster: true }),
+      makeTantra(),
+      makeOdu({ oduName: '' }),
+      makeHolo(astro)
+    );
     expect(profile.type).toBe('construtor');
   });
   it('I Ching only — IChing wins over empty Odu fallback (precedence > votes)', () => {
@@ -329,7 +377,13 @@ describe('deriveAkashaType — 5-pillar voting', () => {
     // catalisador wins on precedence even though fewer raw votes
     const astro = makeAstro({ dominantPlanet: '' });
     const holo = makeHolo(astro, { ichingHex: 1 });
-    const profile = deriveAkashaType(astro, makeKab({ lifePath: undefined }), makeTantra(), makeOdu({ oduName: '' }), holo);
+    const profile = deriveAkashaType(
+      astro,
+      makeKab({ lifePath: undefined }),
+      makeTantra(),
+      makeOdu({ oduName: '' }),
+      holo
+    );
     expect(profile.type).toBe('catalisador');
   });
 
@@ -343,7 +397,7 @@ describe('deriveAkashaType — 5-pillar voting', () => {
     const holo = makeHolo(astro, { ichingHex: 14 }); // Fire hex → canal
     const profile = deriveAkashaType(
       astro,
-      makeKab({ lifePath: 2 }),      // receptor (×2)
+      makeKab({ lifePath: 2 }), // receptor (×2)
       makeTantra(),
       makeOdu({ oduName: 'Oyeku' }), // construtor (×3)
       holo
@@ -358,7 +412,13 @@ describe('deriveAkashaType — 5-pillar voting', () => {
     // alquimista wins: 2 votes but precedence 2 > Odu's 0
     const astro = makeAstro({ dominantPlanet: '' });
     const holo = makeHolo(astro);
-    const profile = deriveAkashaType(astro, makeKab({ lifePath: 33, lifePathMaster: true }), makeTantra(), makeOdu({ oduName: '' }), holo);
+    const profile = deriveAkashaType(
+      astro,
+      makeKab({ lifePath: 33, lifePathMaster: true }),
+      makeTantra(),
+      makeOdu({ oduName: '' }),
+      holo
+    );
     expect(profile.type).toBe('alquimista');
   });
 
@@ -368,7 +428,13 @@ describe('deriveAkashaType — 5-pillar voting', () => {
     // construtor wins on precedence even though fewer raw votes
     const astro = makeAstro({ dominantPlanet: '' });
     const holo = makeHolo(astro, { ichingHex: 11 });
-    const profile = deriveAkashaType(astro, makeKab({ lifePath: undefined }), makeTantra(), makeOdu({ oduName: '' }), holo);
+    const profile = deriveAkashaType(
+      astro,
+      makeKab({ lifePath: undefined }),
+      makeTantra(),
+      makeOdu({ oduName: '' }),
+      holo
+    );
     expect(profile.type).toBe('construtor');
   });
 
@@ -381,7 +447,13 @@ describe('deriveAkashaType — 5-pillar voting', () => {
     // → construtor wins on precedence (2 > 1)
     const astro = makeAstro({ dominantPlanet: 'Saturno' });
     const holo = makeHolo(astro);
-    const profile = deriveAkashaType(astro, makeKab({ lifePath: 22, lifePathMaster: true }), makeTantra(), makeOdu({ oduName: '' }), holo);
+    const profile = deriveAkashaType(
+      astro,
+      makeKab({ lifePath: 22, lifePathMaster: true }),
+      makeTantra(),
+      makeOdu({ oduName: '' }),
+      holo
+    );
     expect(profile.type).toBe('construtor');
   });
 
@@ -391,7 +463,13 @@ describe('deriveAkashaType — 5-pillar voting', () => {
     // ROADMAP: LP 33 is a master number that maps directly to alquimista
     const astro = makeAstro({ dominantPlanet: 'Saturno' });
     const holo = makeHolo(astro);
-    const profile = deriveAkashaType(astro, makeKab({ lifePath: 33, lifePathMaster: true }), makeTantra(), makeOdu({ oduName: '' }), holo);
+    const profile = deriveAkashaType(
+      astro,
+      makeKab({ lifePath: 33, lifePathMaster: true }),
+      makeTantra(),
+      makeOdu({ oduName: '' }),
+      holo
+    );
     expect(profile.type).toBe('alquimista');
   });
 
@@ -408,7 +486,15 @@ describe('deriveAkashaType — 5-pillar voting', () => {
     const profile = deriveAkashaType(
       astro,
       makeKab({ lifePath: 22 }),
-      makeTantra({ bodies: { fisico: { number: 3 }, mental: { number: 9 }, emocional: { number: 5 }, pranic: { number: 4 }, espiritual: { number: 1 } } }),
+      makeTantra({
+        bodies: {
+          fisico: { number: 3 },
+          mental: { number: 9 },
+          emocional: { number: 5 },
+          pranic: { number: 4 },
+          espiritual: { number: 1 },
+        },
+      }),
       makeOdu({ oduName: 'Ogbe' }),
       holo
     );
@@ -418,7 +504,13 @@ describe('deriveAkashaType — 5-pillar voting', () => {
   it('ichingHex null → no IChing votes (graceful)', () => {
     const astro = makeAstro({ dominantPlanet: 'Júpiter' });
     const holo = makeHolo(astro, { ichingHex: null });
-    const profile = deriveAkashaType(astro, makeKab({ lifePath: 5 }), makeTantra(), makeOdu({ oduName: 'Ogunda' }), holo);
+    const profile = deriveAkashaType(
+      astro,
+      makeKab({ lifePath: 5 }),
+      makeTantra(),
+      makeOdu({ oduName: 'Ogunda' }),
+      holo
+    );
     // Ogunda → transformador (×3); LP 5 → transformador (×2); Astro Júpiter → transformador (×1)
     // transformador: 6 votes
     expect(profile.type).toBe('transformador');
@@ -427,12 +519,17 @@ describe('deriveAkashaType — 5-pillar voting', () => {
   it('ichingHex out of range → ignored gracefully', () => {
     const astro = makeAstro({ dominantPlanet: 'Sol' });
     const holo = makeHolo(astro, { ichingHex: 999 });
-    const profile = deriveAkashaType(astro, makeKab({ lifePath: 1 }), makeTantra(), makeOdu({ oduName: 'Ogbe' }), holo);
+    const profile = deriveAkashaType(
+      astro,
+      makeKab({ lifePath: 1 }),
+      makeTantra(),
+      makeOdu({ oduName: 'Ogbe' }),
+      holo
+    );
     // Ogbe → catalisador (×3); LP 1 → catalisador (×2); Astro Sol → catalisador (×1)
     // catalisador: 6 votes
     expect(profile.type).toBe('catalisador');
   });
-
 });
 
 // ─── Frequency assessment (assessAreaFrequency) ────────────────────────────
@@ -441,7 +538,12 @@ describe('buildAkashaSynthesis — frequency mix', () => {
   it('mistura shadow/gift/siddhi entre as 6 áreas (não todas iguais)', () => {
     const astro = makeAstro();
     const synth = buildAkashaSynthesis(
-      astro, makeKab(), makeTantra(), makeOdu(), makeHolo(astro), TODAY
+      astro,
+      makeKab(),
+      makeTantra(),
+      makeOdu(),
+      makeHolo(astro),
+      TODAY
     );
     const freqs = Object.values(synth.areas).map((a) => a.frequency);
     // Pelo menos 2 frequências distintas (regra heurística do engine)

@@ -13,7 +13,6 @@
 //
 // The browser-API functions are exercised by the integration test at
 // `apps/akasha-portal/src/app/api/push/subscribe/route.ts` consumer.
-
 import { describe, expect, it } from 'vitest';
 
 // Re-implementation of the helper from subscribe.ts. Kept in sync

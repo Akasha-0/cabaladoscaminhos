@@ -10,7 +10,7 @@ async function main() {
 }
 
 main()
-  .catch(err => {
+  .catch((err) => {
     console.error('Sync failed:', err);
     process.exit(1);
   })

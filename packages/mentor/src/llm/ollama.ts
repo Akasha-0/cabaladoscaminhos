@@ -1,5 +1,4 @@
 // Ollama Provider — Local LLM via Ollama API
-
 import type { LLMProvider } from './index';
 
 const OLLAMA_DEFAULT_URL = 'http://localhost:11434';

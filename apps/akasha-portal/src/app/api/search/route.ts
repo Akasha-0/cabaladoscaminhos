@@ -4,12 +4,12 @@
 // Search across: Odús, Orixás, rituals, tarot
 // Includes filters by category, element, orixa
 // ============================================================
-
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';
 import { orixas, odus } from '@/lib/domain/data/spiritual-data';
 import { TAROT_DECK } from '@/lib/domain/tarot/cards';
 import { searchParamsToObject } from '@/lib/shared/query-params';
+
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const SearchTypeSchema = z.enum(['odu', 'orixa', 'ritual', 'tarot']);
 
@@ -62,7 +62,8 @@ const ritualsData = [
     type: 'ritual' as const,
     title: 'Ebó de Caminho',
     subtitle: 'Abertura de caminhos',
-    description: 'Ebó realizado para abrir caminhos bloqueados, com despachos em encruzilhadas, moedas, pipoca e panos escuros.',
+    description:
+      'Ebó realizado para abrir caminhos bloqueados, com despachos em encruzilhadas, moedas, pipoca e panos escuros.',
     elementos: ['Terra', 'Fogo'],
     orixas: ['Exu', 'Omolu'],
   },
@@ -71,7 +72,8 @@ const ritualsData = [
     type: 'ritual' as const,
     title: 'Ebó de Prosperidade',
     subtitle: 'Atração de fartura',
-    description: 'Ebó para atrair prosperidade e fartura, com doces, frutas e comidas leves em praças ou jardins.',
+    description:
+      'Ebó para atrair prosperidade e fartura, com doces, frutas e comidas leves em praças ou jardins.',
     elementos: ['Ar', 'Terra'],
     orixas: ['Ibeji', 'Ogum'],
   },
@@ -80,7 +82,8 @@ const ritualsData = [
     type: 'ritual' as const,
     title: 'Ebó de Defesa',
     subtitle: 'Proteção espiritual',
-    description: 'Ebó de proteção contra energias negativas, com inhames assados, paliteiros de Ogum e limpeza com folhas.',
+    description:
+      'Ebó de proteção contra energias negativas, com inhames assados, paliteiros de Ogum e limpeza com folhas.',
     elementos: ['Fogo', 'Terra'],
     orixas: ['Ogum', 'Obaluaê'],
   },
@@ -89,7 +92,8 @@ const ritualsData = [
     type: 'ritual' as const,
     title: 'Ebó de Proteção',
     subtitle: 'Escudo espiritual',
-    description: 'Ebó para proteção espiritual com alimentos brancos, canjica na beira-mar para Iemanjá e banhos de folhas frias.',
+    description:
+      'Ebó para proteção espiritual com alimentos brancos, canjica na beira-mar para Iemanjá e banhos de folhas frias.',
     elementos: ['Fogo', 'Terra'],
     orixas: ['Iemanjá', 'Oxóssi', 'Egum'],
   },
@@ -98,7 +102,8 @@ const ritualsData = [
     type: 'ritual' as const,
     title: 'Ebó de Atração/Ouro',
     subtitle: 'Riqueza e doçura',
-    description: 'Ebó para atrair riqueza e amor, com banhos de mel, caldas de frutas e oferendas com moedas douradas.',
+    description:
+      'Ebó para atrair riqueza e amor, com banhos de mel, caldas de frutas e oferendas com moedas douradas.',
     elementos: ['Água'],
     orixas: ['Oxum', 'Logun Edé'],
   },
@@ -107,7 +112,8 @@ const ritualsData = [
     type: 'ritual' as const,
     title: 'Ebó de Fartura',
     subtitle: 'Abundância material',
-    description: 'Ebó para fartura com seis tipos de frutas, amalá para Xangô e partilha de banquetes.',
+    description:
+      'Ebó para fartura com seis tipos de frutas, amalá para Xangô e partilha de banquetes.',
     elementos: ['Ar', 'Fogo'],
     orixas: ['Xangô', 'Oxóssi', 'Logun Edé'],
   },
@@ -116,7 +122,8 @@ const ritualsData = [
     type: 'ritual' as const,
     title: 'Ebó de Transmutação',
     subtitle: 'Transformação de energias',
-    description: 'Ebó para transmutar energias pesadas com pipoca para Omolu, banhos de lama e defumações pesadas.',
+    description:
+      'Ebó para transmutar energias pesadas com pipoca para Omolu, banhos de lama e defumações pesadas.',
     elementos: ['Terra', 'Água'],
     orixas: ['Omolu', 'Xangô'],
   },
@@ -125,7 +132,8 @@ const ritualsData = [
     type: 'ritual' as const,
     title: 'Ebó de Amor',
     subtitle: 'Harmonia afetiva',
-    description: 'Ebó para questões amorosas com flores roses, mel, velas rosas e banhos de alecrim.',
+    description:
+      'Ebó para questões amorosas com flores roses, mel, velas rosas e banhos de alecrim.',
     elementos: ['Água', 'Fogo'],
     orixas: ['Oxum', 'Iemanjá'],
   },
@@ -143,7 +151,8 @@ const ritualsData = [
     type: 'ritual' as const,
     title: 'Ebó Ancestral',
     subtitle: 'Conexão com antepassados',
-    description: 'Ebó para honrar antepassados com alimentos simples, velas brancas e oferendas na terra.',
+    description:
+      'Ebó para honrar antepassados com alimentos simples, velas brancas e oferendas na terra.',
     elementos: ['Terra'],
     orixas: ['Iemanjá', 'Omolu'],
   },
@@ -152,26 +161,32 @@ const ritualsData = [
 // ─── Search Functions ──────────────────────────────────────────────────────────────
 function calculateRelevance(query: string, text: string): number {
   if (!query || !text) return 0;
-  
-  const normalizedQuery = query.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  const normalizedText = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  
+
+  const normalizedQuery = query
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+  const normalizedText = text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+
   const queryWords = normalizedQuery.split(/\s+/).filter(Boolean);
   const textWords = normalizedText.split(/\s+/);
-  
+
   let matches = 0;
   for (const word of queryWords) {
     if (normalizedText.includes(word)) {
       matches++;
     }
   }
-  
+
   if (matches === 0) return 0;
-  
+
   const exactMatch = normalizedText.includes(normalizedQuery) ? 50 : 0;
   const wordMatch = (matches / queryWords.length) * 30;
   const lengthPenalty = Math.max(0, 20 - Math.abs(textWords.length - queryWords.length) * 2);
-  
+
   return Math.min(100, exactMatch + wordMatch + lengthPenalty);
 }
 
@@ -179,13 +194,9 @@ function searchOdus(query: string): SearchResult[] {
   const results: SearchResult[] = [];
 
   for (const odu of odus) {
-    const searchFields = [
-      odu.nome,
-      odu.significado,
-      odu.orixas[0],
-      odu.elementos,
-      odu.ebo,
-    ].join(' ');
+    const searchFields = [odu.nome, odu.significado, odu.orixas[0], odu.elementos, odu.ebo].join(
+      ' '
+    );
 
     const relevance = calculateRelevance(query, searchFields);
     if (relevance > 0) {
@@ -378,15 +389,25 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
 
     const parseResult = SearchQuerySchema.safeParse(
-      searchParamsToObject(searchParams, ['q', 'query', 'categories', 'elements', 'orixas', 'limit'])
+      searchParamsToObject(searchParams, [
+        'q',
+        'query',
+        'categories',
+        'elements',
+        'orixas',
+        'limit',
+      ])
     );
 
     if (!parseResult.success) {
-      return NextResponse.json({
-        success: false,
-        error: 'Parâmetros inválidos',
-        details: parseResult.error.flatten().fieldErrors,
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Parâmetros inválidos',
+          details: parseResult.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      );
     }
 
     const { q, query, categories, elements, orixas, limit } = parseResult.data;
@@ -396,18 +417,21 @@ export async function GET(request: NextRequest) {
     const orixaList = orixas?.split(',').filter(Boolean) || [];
 
     if (!searchQuery && !categoryList.length && !elementList.length && !orixaList.length) {
-      return NextResponse.json({
-        success: true,
-        query: '',
-        results: [],
-        total: 0,
-        filters: getAvailableFilters(),
-        timestamp: new Date().toISOString(),
-      }, {
-        headers: {
-          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+      return NextResponse.json(
+        {
+          success: true,
+          query: '',
+          results: [],
+          total: 0,
+          filters: getAvailableFilters(),
+          timestamp: new Date().toISOString(),
         },
-      });
+        {
+          headers: {
+            'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+          },
+        }
+      );
     }
 
     let allResults: SearchResult[] = [];
@@ -436,10 +460,13 @@ export async function GET(request: NextRequest) {
 
     // Statistics
     const stats = {
-      byType: filteredResults.reduce((acc, r) => {
-        acc[r.type] = (acc[r.type] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
+      byType: filteredResults.reduce(
+        (acc, r) => {
+          acc[r.type] = (acc[r.type] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
       totalSearched: allResults.length,
       matched: filteredResults.length,
     };
@@ -452,20 +479,26 @@ export async function GET(request: NextRequest) {
       timestamp: new Date().toISOString(),
     };
 
-    return NextResponse.json({
-      success: true,
-      ...response,
-      stats,
-    }, {
-      headers: {
-        'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+    return NextResponse.json(
+      {
+        success: true,
+        ...response,
+        stats,
       },
-    });
+      {
+        headers: {
+          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+        },
+      }
+    );
   } catch (error) {
     const err = error as Error;
-    return NextResponse.json({
-      success: false,
-      error: `Erro interno: ${err.message}`,
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: `Erro interno: ${err.message}`,
+      },
+      { status: 500 }
+    );
   }
 }

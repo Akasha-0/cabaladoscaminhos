@@ -10,8 +10,9 @@
 // stay consistent with the running app.
 import { config as loadRootEnv } from 'dotenv';
 import { config as loadLocalEnv } from 'dotenv';
-import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { defineConfig } from 'prisma/config';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 // Root .env (workspace-level) is the source of truth for DATABASE_URL —
@@ -19,8 +20,6 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 // .env points to a different local DB and is intentionally NOT loaded
 // here (no `override: true`) to stay consistent with runtime.
 loadRootEnv({ path: path.resolve(here, '../../.env') });
-
-import { defineConfig } from 'prisma/config';
 
 export default defineConfig({
   schema: path.resolve(here, 'prisma/schema.prisma'),
@@ -31,4 +30,3 @@ export default defineConfig({
     path: path.resolve(here, 'prisma/migrations'),
   },
 });
-

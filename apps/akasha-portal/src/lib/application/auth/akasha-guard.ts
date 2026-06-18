@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from './akasha-jwt';
 import { prisma } from '@/lib/infrastructure/prisma';
+import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from './akasha-jwt';
 
 export interface AkashaUser {
   id: string;

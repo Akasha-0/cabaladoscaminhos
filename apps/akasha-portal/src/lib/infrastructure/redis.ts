@@ -36,21 +36,17 @@ function createInMemoryStore(): RedisLike {
       return entry.value;
     },
 
-    async set(
-      key: string,
-      value: string | number,
-      ...args: unknown[]
-    ): Promise<"OK"> {
+    async set(key: string, value: string | number, ...args: unknown[]): Promise<'OK'> {
       let ttlSeconds: number | undefined;
       const mode = args[0] as string | undefined;
-      if (mode === "EX" && typeof args[1] === "number") {
+      if (mode === 'EX' && typeof args[1] === 'number') {
         ttlSeconds = args[1];
       }
       memoryStore.set(key, {
         value: String(value),
-        expiresAt: ttlSeconds ? Date.now() + ttlSeconds * 1000 : undefined
+        expiresAt: ttlSeconds ? Date.now() + ttlSeconds * 1000 : undefined,
       });
-      return "OK";
+      return 'OK';
     },
 
     async incr(key: string): Promise<number> {
@@ -83,36 +79,32 @@ function createInMemoryStore(): RedisLike {
     },
 
     async ping(): Promise<string> {
-      return "PONG";
+      return 'PONG';
     },
 
-    async quit(): Promise<"OK"> {
-      return "OK";
+    async quit(): Promise<'OK'> {
+      return 'OK';
     },
 
-    disconnect(): void {}
+    disconnect(): void {},
   };
 }
 
-async function createRedisClient(
-  url: string,
-  onDisconnect?: () => void
-): Promise<RedisLike> {
+async function createRedisClient(url: string, onDisconnect?: () => void): Promise<RedisLike> {
   // Dynamic import with proper type handling
-   
+
   let Redis: new (url: string, options?: object) => any;
   try {
     // ioredis is optional - fallback to in-memory store if not available
-     
-     
+
     // @ts-ignore - ioredis is optional dependency
     const ioredisModule = await import('ioredis');
     Redis = ioredisModule.default ?? ioredisModule;
   } catch {
-    throw new Error("ioredis module not available");
+    throw new Error('ioredis module not available');
   }
   if (!Redis) {
-    throw new Error("ioredis module not available");
+    throw new Error('ioredis module not available');
   }
   const client = new Redis(url, {
     maxRetriesPerRequest: 3,
@@ -120,14 +112,14 @@ async function createRedisClient(
     retryStrategy(times: number) {
       if (times > 3) return null;
       return Math.min(times * 100, 1000);
-    }
+    },
   });
-  client.on("error", () => {
+  client.on('error', () => {
     // errors are expected — fallback will be used
   });
 
   if (onDisconnect) {
-    client.on("close", () => onDisconnect());
+    client.on('close', () => onDisconnect());
   }
 
   // Test connectivity
@@ -135,7 +127,7 @@ async function createRedisClient(
     await client.ping();
   } catch {
     await client.quit().catch(() => {});
-    throw new Error("Redis connection failed");
+    throw new Error('Redis connection failed');
   }
 
   return client as unknown as RedisLike;
@@ -152,7 +144,7 @@ export async function getRedisClient(): Promise<RedisLike> {
 
   const redisUrl =
     process.env.REDIS_URL ||
-    (typeof globalThis !== "undefined"
+    (typeof globalThis !== 'undefined'
       ? (globalThis as Record<string, unknown>).__REDIS_URL__
       : undefined);
 

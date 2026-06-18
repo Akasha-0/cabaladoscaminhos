@@ -66,9 +66,9 @@ Packages principais (todos com AGENTS.md dedicado):
 // Em apps/akasha-portal/src/...
 import { calcular, AkashaInputSchema } from '@akasha/core';
 import type { AstrologyMap, KabalisticMap } from '@akasha/types';
-
 // Em packages/akasha-core/src/...
 import type { AstrologyMap } from '@akasha/types';
+
 // Lazy import engines (graceful degradation):
 const cabala = await import('@akasha/core-cabala').catch(() => null);
 ```

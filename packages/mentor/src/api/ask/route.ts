@@ -1,5 +1,4 @@
 // API route: POST /api/mentor/ask
-
 import { NextRequest, NextResponse } from 'next/server';
 
 interface AskRequest {
@@ -16,10 +15,7 @@ export async function POST(request: NextRequest) {
     const body: AskRequest = await request.json();
 
     if (!body.question) {
-      return NextResponse.json(
-        { error: 'Question is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Question is required' }, { status: 400 });
     }
 
     // Placeholder implementation
@@ -31,10 +27,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(response);
   } catch {
-    return NextResponse.json(
-      { error: 'Invalid request body' },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
   }
 }
 

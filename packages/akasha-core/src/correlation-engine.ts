@@ -1,11 +1,11 @@
 /**
  * @akasha/core — CorrelationEngine
- * 
+ *
  * Motor de correlações para recomendações de práticas integrativas.
  * Conecta o código Akasha (hexagrama + Odu + nível) com práticas seguras
  * através de correlações cross-tradição.
  */
-
+import { PRACTICES as MOCK_PRACTICES } from '../../core-iching/src/practices';
 import type { IntegrativePractice } from '../../core-iching/src/types';
 import {
   type CrossTraditionCorrelation,
@@ -14,18 +14,17 @@ import {
   ifaToIchingMap,
 } from './correlation-map';
 import { validatePractice, isSafePractice } from './practices-guardrails';
-import { PRACTICES as MOCK_PRACTICES } from '../../core-iching/src/practices';
 
 // ─── Tipos do CorrelationEngine ──────────────────────────────────────────────
 
 /** Áreas de vida para filtro de relevância. */
-export type LifeArea = 
-  | 'saude' 
-  | 'financas' 
-  | 'relacionamentos' 
-  | 'carreira' 
-  | 'espiritualidade' 
-  | 'familia' 
+export type LifeArea =
+  | 'saude'
+  | 'financas'
+  | 'relacionamentos'
+  | 'carreira'
+  | 'espiritualidade'
+  | 'familia'
   | 'criatividade';
 
 /** Nível do código Akasha. */
@@ -159,10 +158,7 @@ function oduCorrelatesWithHexagram(odu: string, hexagram: number): boolean {
  * Calcula o score de correlação entre código e prática.
  * Retorna valor entre 0 e 100.
  */
-function calculateCorrelationScore(
-  code: AkashaCode,
-  practice: IntegrativePractice
-): number {
+function calculateCorrelationScore(code: AkashaCode, practice: IntegrativePractice): number {
   let score = 0;
   let matches = 0;
 
@@ -223,10 +219,7 @@ function calculateSafetyScore(practice: IntegrativePractice): number {
  * Calcula o score de relevância por área de vida.
  * Retorna valor entre 0 e 100.
  */
-function calculateRelevanceScore(
-  practice: IntegrativePractice,
-  lifeArea?: LifeArea
-): number {
+function calculateRelevanceScore(practice: IntegrativePractice, lifeArea?: LifeArea): number {
   if (!lifeArea) {
     return 50; // Sem filtro, neutral
   }
@@ -326,14 +319,14 @@ function generateReason(
 
 /**
  * Motor de correlações para recomendações de práticas integrativas.
- * 
+ *
  * Uso:
  * ```typescript
  * const engine = new CorrelationEngine({
  *   userCode: { hexagram: 1, level: 'gift', lifeArea: 'espiritualidade' },
  *   lifeArea: 'espiritualidade',
  * });
- * 
+ *
  * const correlations = engine.findCorrelations();
  * const scored = engine.scorePractices(practices);
  * const recommendations = engine.recommend(5);
@@ -380,11 +373,7 @@ export class CorrelationEngine {
     const correlationScore = calculateCorrelationScore(this.userCode, practice);
     const safetyScore = calculateSafetyScore(practice);
     const relevanceScore = calculateRelevanceScore(practice, this.lifeArea);
-    const recencyScore = calculateRecencyScore(
-      practice.id,
-      this.practiceUsage,
-      this.now
-    );
+    const recencyScore = calculateRecencyScore(practice.id, this.practiceUsage, this.now);
 
     // Score final ponderado (spec 13.2) — pesos somam 1.0
     const score = Math.round(
@@ -409,12 +398,12 @@ export class CorrelationEngine {
    * Calcula scores para múltiplas práticas.
    */
   scorePractices(practices: IntegrativePractice[]): ScoredPractice[] {
-    return practices.map(p => this.scorePractice(p));
+    return practices.map((p) => this.scorePractice(p));
   }
 
   /**
    * Gera recomendações ordenadas por score.
-   * 
+   *
    * @param count Número de recomendações a retornar
    */
   recommend(count: number): PracticeRecommendation[] {
@@ -423,11 +412,10 @@ export class CorrelationEngine {
     const practices = this.getPracticesForCode();
 
     // Filtra, valida e calcula scores em uma única passagem
-    const scored = this.scorePractices(practices)
-      .filter(s => {
-        const validation = validatePractice(s.practice);
-        return validation.isValid;
-      });
+    const scored = this.scorePractices(practices).filter((s) => {
+      const validation = validatePractice(s.practice);
+      return validation.isValid;
+    });
 
     // Ordena por score decrescente
     scored.sort((a, b) => b.score - a.score);
@@ -435,7 +423,7 @@ export class CorrelationEngine {
     // Gera recomendações com validação já calculada
     const correlations = this.findCorrelations();
 
-    return scored.slice(0, count).map(s => ({
+    return scored.slice(0, count).map((s) => ({
       practice: s.practice,
       score: s.score,
       reason: s.reason,
@@ -472,8 +460,8 @@ export class CorrelationEngine {
    */
   private getPracticesForCode(): IntegrativePractice[] {
     // Filtra práticas que correspondem ao hexagrama do usuário
-    const matchingPractices = MOCK_PRACTICES.filter(
-      p => p.associations.hexagrams?.includes(this.userCode.hexagram)
+    const matchingPractices = MOCK_PRACTICES.filter((p) =>
+      p.associations.hexagrams?.includes(this.userCode.hexagram)
     );
 
     // Se não houver correspondência direta, retorna todas as práticas (fallback)

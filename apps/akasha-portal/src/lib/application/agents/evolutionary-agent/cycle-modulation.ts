@@ -4,7 +4,6 @@
  * Cycle area-alignment helpers extracted from evolutionary-agent/index.ts.
  * Calculates how each life area aligns with the current personal cycle.
  */
-
 import type { PersonalCycleSnapshot } from '@/lib/application/agents/personal-cycle-engine';
 import type { CycleModulation } from './area-history';
 

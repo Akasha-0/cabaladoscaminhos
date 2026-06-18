@@ -1,18 +1,18 @@
 'use client';
 import { useState } from 'react';
-
+import { Divider, InfoPanel, Insight, Row } from '@/components/akasha/MandalaChartInfoPanel';
 import { PILAR_COLORS } from '@/components/akasha/mandala-geometry';
 import { TANTRIC_BODY_WISDOM } from '@/components/akasha/mandala-meanings';
 import { resolveSig, SignificadoEmbed } from '@/components/akasha/mandala-meanings';
-import { Divider, InfoPanel, Insight, Row } from '@/components/akasha/MandalaChartInfoPanel';
 import { KOSHAS } from '@/lib/shared/koshas';
 import type { MandalaData } from './MandalaChart';
+
 const KOSHA_PT: Record<string, string> = {
-  'Anna-maya':    'Corpo Físico — estrutura e movimento',
-  'Prana-maya':   'Corpo Vital — respiração e energia',
-  'Mano-maya':    'Corpo Mental — pensamentos e emoções',
+  'Anna-maya': 'Corpo Físico — estrutura e movimento',
+  'Prana-maya': 'Corpo Vital — respiração e energia',
+  'Mano-maya': 'Corpo Mental — pensamentos e emoções',
   'Vijnana-maya': 'Corpo Intuitivo — sabedoria e discernimento',
-  'Ananda-maya':  'Corpo de Bem-aventurança — propósito e trascendência',
+  'Ananda-maya': 'Corpo de Bem-aventurança — propósito e trascendência',
 };
 
 // ── Layer 3 — Corpo e Energia (Tantric Bodies + Koshas) ──────────────────────
@@ -83,17 +83,27 @@ export function TantricBodyInfoPanel({ tantra, inactiveBodies }: TantricBodyInfo
       {showAdvanced ? (
         <>
           <Divider />
-          <p style={{ fontSize: '0.75rem', color: '#2DD4BF', fontWeight: 600, marginBottom: '0.5rem' }}>
+          <p
+            style={{
+              fontSize: '0.75rem',
+              color: '#2DD4BF',
+              fontWeight: 600,
+              marginBottom: '0.5rem',
+            }}
+          >
             5 Koshas (Tantra Védica){' '}
-            <span style={{ color: '#A7AECF', fontWeight: 400 }}>
-              — os 5 revestimentos do ser
-            </span>
+            <span style={{ color: '#A7AECF', fontWeight: 400 }}>— os 5 revestimentos do ser</span>
           </p>
           {KOSHAS.map((k) => (
             <div
               key={k.id}
               data-testid={`kosha-${k.id}`}
-              style={{ marginBottom: '0.5rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}
+              style={{
+                marginBottom: '0.5rem',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '0.5rem',
+              }}
             >
               <span
                 aria-hidden
@@ -205,8 +215,8 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
           <Insight color={PILAR_COLORS[2]}>{lpMeaning}</Insight>
         </>
       )}
-      {(kabala.challenges || kabala.pinnacles || kabala.lifeCycles) && (
-        showAdvanced ? (
+      {(kabala.challenges || kabala.pinnacles || kabala.lifeCycles) &&
+        (showAdvanced ? (
           <>
             {kabala.challenges && (
               <>
@@ -220,14 +230,20 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                   }}
                 >
                   Ciclos de Desafio{' '}
-            <span style={{ color: '#A7AECF', fontWeight: 400 }}>
-              — provas que moldam seu caminho
-            </span>
-          </p>
-                <Row label="1º Desafio — o que enfrentar primeiro" value={kabala.challenges.first} />
+                  <span style={{ color: '#A7AECF', fontWeight: 400 }}>
+                    — provas que moldam seu caminho
+                  </span>
+                </p>
+                <Row
+                  label="1º Desafio — o que enfrentar primeiro"
+                  value={kabala.challenges.first}
+                />
                 <Row label="2º Desafio — o que superar" value={kabala.challenges.second} />
                 <Row label="Desafio Principal — a prova central" value={kabala.challenges.main} />
-                <Row label="Último Desafio — lição final a harmonizar" value={kabala.challenges.last} />
+                <Row
+                  label="Último Desafio — lição final a harmonizar"
+                  value={kabala.challenges.last}
+                />
               </>
             )}
             {kabala.pinnacles && (
@@ -242,10 +258,10 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                   }}
                 >
                   Marcos da Vida{' '}
-            <span style={{ color: '#A7AECF', fontWeight: 400 }}>
-              — transições que redefinem seu caminho
-            </span>
-          </p>
+                  <span style={{ color: '#A7AECF', fontWeight: 400 }}>
+                    — transições que redefinem seu caminho
+                  </span>
+                </p>
                 {kabala.pinnacles.first && (
                   <>
                     <Row
@@ -304,10 +320,10 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                   }}
                 >
                   Ritmo de Vida{' '}
-            <span style={{ color: '#A7AECF', fontWeight: 400 }}>
-              — ciclos que pedem consciência
-            </span>
-          </p>
+                  <span style={{ color: '#A7AECF', fontWeight: 400 }}>
+                    — ciclos que pedem consciência
+                  </span>
+                </p>
                 {kabala.lifeCycles.first && (
                   <Row
                     label="1º Ciclo — primeiro ritmo de vida"
@@ -360,8 +376,7 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
           >
             Mostrar detalhes avançados →
           </button>
-        )
-      )}
+        ))}
       <SignificadoEmbed
         significado={resolveSig('cabala', kabala.lifePath)}
         color={PILAR_COLORS[2]}

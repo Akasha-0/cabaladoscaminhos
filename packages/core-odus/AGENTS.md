@@ -70,7 +70,7 @@ entry própria. (Ver lesson `session-n-plus-15-f-219-pilar4-truth-base.md`.)
 - Antes de merge: rodar typecheck + portal typecheck (MandalaChart,
   Mandato, Mentor importam este package)
 - Test pollution check (lesson N+18): rodar `pnpm test:run
-  tests/<relevant>` isolado E em suite
+tests/<relevant>` isolado E em suite
 - Determinism check: para uma entrada conhecida, output deve ser
   byte-identical entre runs
 

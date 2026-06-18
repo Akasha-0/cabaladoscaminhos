@@ -1,4 +1,3 @@
-  
 'use client';
 import { useState, useEffect } from 'react';
 import type { InsightData } from '@/lib/application/ai/mapa-insights/types';
@@ -28,7 +27,14 @@ export function useMapaInsights(options?: UseMapaInsightsOptions) {
         return;
       }
 
-      let profile: { nomeCompleto: string; dataNascimento: string; hora?: string; cidade?: string; estado?: string; pais?: string };
+      let profile: {
+        nomeCompleto: string;
+        dataNascimento: string;
+        hora?: string;
+        cidade?: string;
+        estado?: string;
+        pais?: string;
+      };
       try {
         profile = JSON.parse(savedProfile);
       } catch {
@@ -81,7 +87,14 @@ export function useMapaInsights(options?: UseMapaInsightsOptions) {
       return;
     }
 
-    let profile: { nomeCompleto: string; dataNascimento: string; hora?: string; cidade?: string; estado?: string; pais?: string };
+    let profile: {
+      nomeCompleto: string;
+      dataNascimento: string;
+      hora?: string;
+      cidade?: string;
+      estado?: string;
+      pais?: string;
+    };
     try {
       profile = JSON.parse(savedProfile);
     } catch {

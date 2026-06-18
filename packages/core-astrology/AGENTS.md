@@ -33,7 +33,7 @@ saída (testável, auditável).
 
 - **Pilar 2 engine**: alimenta Mandala `data.astrology` (planets +
   aspects + ascendant + midheaven). Ver `apps/akasha-portal/
-  AGENTS.md` §Local Contracts para o shape exato.
+AGENTS.md` §Local Contracts para o shape exato.
 - **Pilar 1 vs 2 colors** (MandalaChart): Cabala usa **indigo**
   (`#5C7CFF`); Astrologia usa **roxo/ar** (`#7C5CFF`). Distintos
   no `PILAR_COLORS` de MandalaChart.tsx:198-204.

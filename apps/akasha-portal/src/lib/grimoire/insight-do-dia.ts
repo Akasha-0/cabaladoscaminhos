@@ -8,7 +8,6 @@
  * F-234 (futuro): usar este esqueleto como RAG para LLM Mentor redigir
  * versão mais rica mantendo a estrutura.
  */
-
 import type {
   PilarDadosCabala,
   PilarDadosAstrologia,
@@ -49,7 +48,8 @@ const PRATICAS: Record<string, string> = {
   agir: 'Faça 1 ato que você vem adiando. Pequeno. 5 min. Comece HOJE, não segunda.',
   colher:
     'Liste 3 coisas que deram certo nas últimas 2 semanas. Agradeça em voz alta. Solte 1 tensão específica.',
-  soltar: 'Jogue fora 1 objeto hoje. 1 só. Sinta o espaço que abre. O soltar é tão importante quanto o plantar.',
+  soltar:
+    'Jogue fora 1 objeto hoje. 1 só. Sinta o espaço que abre. O soltar é tão importante quanto o plantar.',
 };
 
 const PRATICA_NEUTRA =

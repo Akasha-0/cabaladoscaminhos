@@ -3,12 +3,7 @@
 // Correlaciona o perfil completo do usuário com cada área da vida
 // Retorna um "score" e correlação para cada área
 // ============================================================
-
-import {
-  LifeArea,
-  LifeAreaId,
-  getAllLifeAreas,
-} from './life-areas-engine';
+import { LifeArea, LifeAreaId, getAllLifeAreas } from './life-areas-engine';
 
 // ============================================================
 // TYPES
@@ -46,29 +41,29 @@ export interface UserProfile {
 
 export interface AreaCorrelation {
   area: LifeArea;
-  score: number;                    // 0-100 - quão forte é essa área para o usuário
+  score: number; // 0-100 - quão forte é essa área para o usuário
   intensidade: 'muito alta' | 'alta' | 'média' | 'baixa' | 'muito baixa';
-  matches: AreaMatch[];             // Correspondências encontradas
-  challenges: string[];             // Desafios apontados
-  gifts: string[];                  // Dons e talentos
-  guidance: string;                 // Orientação geral
+  matches: AreaMatch[]; // Correspondências encontradas
+  challenges: string[]; // Desafios apontados
+  gifts: string[]; // Dons e talentos
+  guidance: string; // Orientação geral
 }
 
 export interface AreaMatch {
   source: 'numerologia' | 'astrologia' | 'odu' | 'orixa' | 'chakra' | 'elemento';
-  category: string;     // ex: 'Caminho de Vida', 'Planeta regente', 'Odu', 'Orixá'
-  value: string;        // ex: '7', 'Netuno', 'Irosun', 'Oxum'
-  resonance: number;    // 0-100
+  category: string; // ex: 'Caminho de Vida', 'Planeta regente', 'Odu', 'Orixá'
+  value: string; // ex: '7', 'Netuno', 'Irosun', 'Oxum'
+  resonance: number; // 0-100
   interpretation: string; // Texto explicando a correlação
 }
 
 export interface LifeMapResult {
   user: UserProfile;
   correlations: AreaCorrelation[];
-  topAreas: LifeAreaId[];        // Áreas de maior afinidade
-  growthAreas: LifeAreaId[];     // Áreas de maior crescimento
-  shadowAreas: LifeAreaId[];     // Áreas que pedem cura
-  synthesis: string;             // Síntese geral
+  topAreas: LifeAreaId[]; // Áreas de maior afinidade
+  growthAreas: LifeAreaId[]; // Áreas de maior crescimento
+  shadowAreas: LifeAreaId[]; // Áreas que pedem cura
+  synthesis: string; // Síntese geral
 }
 
 // ============================================================
@@ -91,27 +86,27 @@ const NUMEROLOGY_AREAS: Record<number, LifeAreaId[]> = {
 };
 
 const ORIXAS_AREAS: Record<string, LifeAreaId[]> = {
-  'oxala': ['espiritualidade', 'proposito', 'autoconhecimento'],
-  'oxaguia': ['espiritualidade', 'carreira', 'proposito'],
-  'oxum': ['relacionamentos', 'financas', 'sexualidade'],
-  'iansa': ['sexualidade', 'criatividade', 'carreira'],
-  'xango': ['carreira', 'autoconhecimento', 'relacionamentos'],
-  'ogum': ['carreira', 'financas', 'autoconhecimento'],
-  'oxossi': ['conhecimento', 'criatividade', 'carreira'],
-  'iemanja': ['relacionamentos', 'familia', 'espiritualidade'],
-  'omolu': ['saude', 'autoconhecimento', 'familia'],
-  'nana': ['familia', 'autoconhecimento', 'espiritualidade'],
-  'exu': ['amizades', 'carreira', 'conhecimento'],
+  oxala: ['espiritualidade', 'proposito', 'autoconhecimento'],
+  oxaguia: ['espiritualidade', 'carreira', 'proposito'],
+  oxum: ['relacionamentos', 'financas', 'sexualidade'],
+  iansa: ['sexualidade', 'criatividade', 'carreira'],
+  xango: ['carreira', 'autoconhecimento', 'relacionamentos'],
+  ogum: ['carreira', 'financas', 'autoconhecimento'],
+  oxossi: ['conhecimento', 'criatividade', 'carreira'],
+  iemanja: ['relacionamentos', 'familia', 'espiritualidade'],
+  omolu: ['saude', 'autoconhecimento', 'familia'],
+  nana: ['familia', 'autoconhecimento', 'espiritualidade'],
+  exu: ['amizades', 'carreira', 'conhecimento'],
   'pomba-gira': ['sexualidade', 'relacionamentos', 'autoconhecimento'],
-  'loguned': ['relacionamentos', 'criatividade', 'sexualidade'],
+  loguned: ['relacionamentos', 'criatividade', 'sexualidade'],
 };
 
 const ELEMENT_AREAS: Record<string, LifeAreaId[]> = {
-  'fogo': ['carreira', 'sexualidade', 'criatividade'],
-  'agua': ['relacionamentos', 'sexualidade', 'espiritualidade'],
-  'terra': ['saude', 'financas', 'familia'],
-  'ar': ['conhecimento', 'amizades', 'criatividade'],
-  'eter': ['espiritualidade', 'proposito', 'autoconhecimento'],
+  fogo: ['carreira', 'sexualidade', 'criatividade'],
+  agua: ['relacionamentos', 'sexualidade', 'espiritualidade'],
+  terra: ['saude', 'financas', 'familia'],
+  ar: ['conhecimento', 'amizades', 'criatividade'],
+  eter: ['espiritualidade', 'proposito', 'autoconhecimento'],
 };
 
 // ============================================================
@@ -119,7 +114,8 @@ const ELEMENT_AREAS: Record<string, LifeAreaId[]> = {
 // ============================================================
 
 function normalize(s: string): string {
-  return s.toLowerCase()
+  return s
+    .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .trim();
@@ -128,7 +124,7 @@ function normalize(s: string): string {
 function getOrixaMatches(orixa: string): string {
   const norm = normalize(orixa);
   // Return original form for matching
-  const matches = Object.keys(ORIXAS_AREAS).find(k => normalize(k) === norm);
+  const matches = Object.keys(ORIXAS_AREAS).find((k) => normalize(k) === norm);
   return matches || '';
 }
 
@@ -143,9 +139,9 @@ function classifyIntensity(score: number): AreaCorrelation['intensidade'] {
 function getIntensityEmoji(intensity: AreaCorrelation['intensidade']): string {
   return {
     'muito alta': '🔥🔥🔥',
-    'alta': '🔥🔥',
-    'média': '🔥',
-    'baixa': '💧',
+    alta: '🔥🔥',
+    média: '🔥',
+    baixa: '💧',
     'muito baixa': '🌫️',
   }[intensity];
 }
@@ -159,7 +155,7 @@ function getIntensityEmoji(intensity: AreaCorrelation['intensidade']): string {
 // ============================================================
 function correlateLifeAreas(user: UserProfile): LifeMapResult {
   // Compute correlation for each life area
-  const correlations = getAllLifeAreas().map(area => computeAreaCorrelation(area, user));
+  const correlations = getAllLifeAreas().map((area) => computeAreaCorrelation(area, user));
   // Sort by score descending
   correlations.sort((a, b) => b.score - a.score);
   // Classify areas
@@ -181,33 +177,33 @@ function correlateLifeAreas(user: UserProfile): LifeMapResult {
 // ============================================================
 
 const ASTROLOGY_PLANET_AREAS: Record<string, LifeAreaId[]> = {
-  'sol': ['proposito', 'criatividade'],
-  'lua': ['familia', 'relacionamentos'],
-  'mercurio': ['conhecimento', 'amizades'],
-  'venus': ['relacionamentos', 'financas', 'sexualidade'],
-  'marte': ['carreira', 'sexualidade', 'saude'],
-  'jupiter': ['financas', 'conhecimento', 'espiritualidade'],
-  'saturno': ['carreira', 'familia', 'autoconhecimento'],
-  'urano': ['amizades', 'criatividade'],
-  'netuno': ['espiritualidade', 'autoconhecimento'],
-  'plutao': ['sexualidade', 'autoconhecimento', 'relacionamentos'],
-  'quiron': ['autoconhecimento', 'relacionamentos', 'saude'],
-  'lilith': ['sexualidade', 'autoconhecimento', 'relacionamentos'],
+  sol: ['proposito', 'criatividade'],
+  lua: ['familia', 'relacionamentos'],
+  mercurio: ['conhecimento', 'amizades'],
+  venus: ['relacionamentos', 'financas', 'sexualidade'],
+  marte: ['carreira', 'sexualidade', 'saude'],
+  jupiter: ['financas', 'conhecimento', 'espiritualidade'],
+  saturno: ['carreira', 'familia', 'autoconhecimento'],
+  urano: ['amizades', 'criatividade'],
+  netuno: ['espiritualidade', 'autoconhecimento'],
+  plutao: ['sexualidade', 'autoconhecimento', 'relacionamentos'],
+  quiron: ['autoconhecimento', 'relacionamentos', 'saude'],
+  lilith: ['sexualidade', 'autoconhecimento', 'relacionamentos'],
 };
 
 const ASTROLOGY_SIGN_AREAS: Record<string, LifeAreaId[]> = {
-  'aries': ['carreira', 'sexualidade', 'criatividade'],
-  'touro': ['financas', 'relacionamentos'],
-  'gemeos': ['conhecimento', 'amizades'],
-  'cancer': ['familia', 'relacionamentos'],
-  'leao': ['criatividade', 'proposito'],
-  'virgem': ['saude', 'conhecimento'],
-  'libra': ['relacionamentos', 'criatividade'],
-  'escorpiao': ['sexualidade', 'autoconhecimento'],
-  'sagitario': ['espiritualidade', 'conhecimento'],
-  'capricornio': ['carreira', 'familia'],
-  'aquario': ['amizades', 'criatividade'],
-  'peixes': ['espiritualidade', 'autoconhecimento'],
+  aries: ['carreira', 'sexualidade', 'criatividade'],
+  touro: ['financas', 'relacionamentos'],
+  gemeos: ['conhecimento', 'amizades'],
+  cancer: ['familia', 'relacionamentos'],
+  leao: ['criatividade', 'proposito'],
+  virgem: ['saude', 'conhecimento'],
+  libra: ['relacionamentos', 'criatividade'],
+  escorpiao: ['sexualidade', 'autoconhecimento'],
+  sagitario: ['espiritualidade', 'conhecimento'],
+  capricornio: ['carreira', 'familia'],
+  aquario: ['amizades', 'criatividade'],
+  peixes: ['espiritualidade', 'autoconhecimento'],
 };
 
 // ============================================================
@@ -219,7 +215,7 @@ function generateSynthesis(correlations: AreaCorrelation[], user: UserProfile): 
   const second = correlations[1];
   const third = correlations[2];
 
-  const topNames = [top, second, third].map(c => c.area.name).join(', ');
+  const topNames = [top, second, third].map((c) => c.area.name).join(', ');
 
   return `Olá, ${user.nome}! 🌟
 
@@ -243,7 +239,7 @@ function getTopArea(result: LifeMapResult): AreaCorrelation {
 }
 
 function getAreaById(result: LifeMapResult, id: LifeAreaId): AreaCorrelation | undefined {
-  return result.correlations.find(c => c.area.id === id);
+  return result.correlations.find((c) => c.area.id === id);
 }
 // ============================================================
 // SCORE CALCULATION
@@ -345,8 +341,8 @@ function collectOrixaMatches(area: LifeArea, user: UserProfile, matches: AreaMat
 }
 function collectOduMatches(area: LifeArea, user: UserProfile, matches: AreaMatch[]): void {
   const oduLower = normalize(user.oduNascimento);
-  const isPrimary = area.odu.primaryOdus.some(o => normalize(o) === oduLower);
-  const isFavorable = area.odu.favorableOdus.some(o => normalize(o) === oduLower);
+  const isPrimary = area.odu.primaryOdus.some((o) => normalize(o) === oduLower);
+  const isFavorable = area.odu.favorableOdus.some((o) => normalize(o) === oduLower);
   if (isPrimary) {
     matches.push({
       source: 'odu',
@@ -367,8 +363,8 @@ function collectOduMatches(area: LifeArea, user: UserProfile, matches: AreaMatch
 }
 function collectChakraMatches(area: LifeArea, user: UserProfile, matches: AreaMatch[]): void {
   if (!user.chakraDominante) return;
-  const chakraMatch = area.chakra.primary.some(
-    c => normalize(c).includes(normalize(user.chakraDominante!))
+  const chakraMatch = area.chakra.primary.some((c) =>
+    normalize(c).includes(normalize(user.chakraDominante!))
   );
   if (chakraMatch) {
     matches.push({
@@ -429,16 +425,16 @@ function classifyAreas(correlations: AreaCorrelation[]): {
   shadowAreas: LifeAreaId[];
 } {
   const topAreas = correlations
-    .filter(c => c.score >= 70)
-    .map(c => c.area.id)
+    .filter((c) => c.score >= 70)
+    .map((c) => c.area.id)
     .slice(0, 3);
   const shadowAreas = correlations
-    .filter(c => c.score < 50)
-    .map(c => c.area.id)
+    .filter((c) => c.score < 50)
+    .map((c) => c.area.id)
     .slice(0, 3);
   const growthAreas = correlations
-    .filter(c => c.score >= 50 && c.score < 70)
-    .map(c => c.area.id)
+    .filter((c) => c.score >= 50 && c.score < 70)
+    .map((c) => c.area.id)
     .slice(0, 3);
   return { topAreas, growthAreas, shadowAreas };
 }

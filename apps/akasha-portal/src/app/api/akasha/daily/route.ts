@@ -1,12 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
-import { prisma } from '@/lib/infrastructure/prisma';
-import { buildDailyContent } from '@/lib/application/akasha/daily-engine';
-import { computeDailyHexagram } from '@/lib/domain/iching';
+import {
+  deriveExercisesFromSnapshot,
+  deriveCycleModulation,
+} from '@/lib/application/agents/evolutionary-agent';
+import type {
+  CycleExerciseSet,
+  CycleModulation,
+} from '@/lib/application/agents/evolutionary-agent';
 import { buildCycleSnapshot } from '@/lib/application/agents/personal-cycle-engine';
-import { deriveExercisesFromSnapshot, deriveCycleModulation } from '@/lib/application/agents/evolutionary-agent';
 import type { PersonalCycleSnapshot } from '@/lib/application/agents/personal-cycle-engine';
-import type { CycleExerciseSet, CycleModulation } from '@/lib/application/agents/evolutionary-agent';
+import { buildDailyContent } from '@/lib/application/akasha/daily-engine';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
+import { computeDailyHexagram } from '@/lib/domain/iching';
+import { prisma } from '@/lib/infrastructure/prisma';
 
 // Cast stored JSON maps to engine types
 interface AstrologyMap {
@@ -21,8 +27,12 @@ interface KabalisticMap {
   expression?: number;
   [key: string]: unknown;
 }
-interface BodyMap { [key: string]: unknown; }
-interface OduMap { [key: string]: unknown; }
+interface BodyMap {
+  [key: string]: unknown;
+}
+interface OduMap {
+  [key: string]: unknown;
+}
 
 // ─── Cycle snapshot UI type (mirrored in useAkashaSynthesis.ts) ──────────────
 
@@ -103,12 +113,55 @@ export interface CycleSnapshotUI {
       duration: string;
       phase?: string;
     }>;
-    personalDay: Array<{ type: string; title: string; description: string; area: string; difficulty: string; duration: string }>;
-    personalMonth: Array<{ type: string; title: string; description: string; area: string; difficulty: string; duration: string }>;
-    personalYear: Array<{ type: string; title: string; description: string; area: string; difficulty: string; duration: string }>;
-    pinnacle: Array<{ type: string; title: string; description: string; area: string; difficulty: string; duration: string }>;
-    karmicLessons: Array<{ type: string; title: string; description: string; area: string; difficulty: string; duration: string }>;
-    lunar: Array<{ type: string; title: string; description: string; area: string; difficulty: string; duration: string; phase: string }>;
+    personalDay: Array<{
+      type: string;
+      title: string;
+      description: string;
+      area: string;
+      difficulty: string;
+      duration: string;
+    }>;
+    personalMonth: Array<{
+      type: string;
+      title: string;
+      description: string;
+      area: string;
+      difficulty: string;
+      duration: string;
+    }>;
+    personalYear: Array<{
+      type: string;
+      title: string;
+      description: string;
+      area: string;
+      difficulty: string;
+      duration: string;
+    }>;
+    pinnacle: Array<{
+      type: string;
+      title: string;
+      description: string;
+      area: string;
+      difficulty: string;
+      duration: string;
+    }>;
+    karmicLessons: Array<{
+      type: string;
+      title: string;
+      description: string;
+      area: string;
+      difficulty: string;
+      duration: string;
+    }>;
+    lunar: Array<{
+      type: string;
+      title: string;
+      description: string;
+      area: string;
+      difficulty: string;
+      duration: string;
+      phase: string;
+    }>;
   };
   modulation: Array<{
     area: string;
@@ -118,7 +171,11 @@ export interface CycleSnapshotUI {
   }>;
 }
 
-function toCycleSnapshotUI(raw: PersonalCycleSnapshot, exercises: CycleExerciseSet, modulation: CycleModulation[]): CycleSnapshotUI {
+function toCycleSnapshotUI(
+  raw: PersonalCycleSnapshot,
+  exercises: CycleExerciseSet,
+  modulation: CycleModulation[]
+): CycleSnapshotUI {
   return {
     snapshot: {
       birthDate: raw.birthDate,
@@ -145,22 +202,53 @@ function toCycleSnapshotUI(raw: PersonalCycleSnapshot, exercises: CycleExerciseS
         duration: e.duration,
       })),
       personalDay: exercises.personalDay.map((e) => ({
-        type: e.type, title: e.title, description: e.instruction, area: e.area, difficulty: e.difficulty, duration: e.duration,
+        type: e.type,
+        title: e.title,
+        description: e.instruction,
+        area: e.area,
+        difficulty: e.difficulty,
+        duration: e.duration,
       })),
       personalMonth: exercises.personalMonth.map((e) => ({
-        type: e.type, title: e.title, description: e.instruction, area: e.area, difficulty: e.difficulty, duration: e.duration,
+        type: e.type,
+        title: e.title,
+        description: e.instruction,
+        area: e.area,
+        difficulty: e.difficulty,
+        duration: e.duration,
       })),
       personalYear: exercises.personalYear.map((e) => ({
-        type: e.type, title: e.title, description: e.instruction, area: e.area, difficulty: e.difficulty, duration: e.duration,
+        type: e.type,
+        title: e.title,
+        description: e.instruction,
+        area: e.area,
+        difficulty: e.difficulty,
+        duration: e.duration,
       })),
       pinnacle: exercises.pinnacle.map((e) => ({
-        type: e.type, title: e.title, description: e.instruction, area: e.area, difficulty: e.difficulty, duration: e.duration,
+        type: e.type,
+        title: e.title,
+        description: e.instruction,
+        area: e.area,
+        difficulty: e.difficulty,
+        duration: e.duration,
       })),
       karmicLessons: exercises.karmicLessons.map((e) => ({
-        type: e.type, title: e.title, description: e.instruction, area: e.area, difficulty: e.difficulty, duration: e.duration,
+        type: e.type,
+        title: e.title,
+        description: e.instruction,
+        area: e.area,
+        difficulty: e.difficulty,
+        duration: e.duration,
       })),
       lunar: exercises.lunar.map((e) => ({
-        type: e.type, title: e.title, description: e.instruction, area: e.area, difficulty: e.difficulty, duration: e.duration, phase: e.cycleAnchor?.lunar ? (raw.currentDate ?? '') : '',
+        type: e.type,
+        title: e.title,
+        description: e.instruction,
+        area: e.area,
+        difficulty: e.difficulty,
+        duration: e.duration,
+        phase: e.cycleAnchor?.lunar ? (raw.currentDate ?? '') : '',
       })),
     },
     modulation: modulation.map((m) => ({

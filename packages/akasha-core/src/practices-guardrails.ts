@@ -2,7 +2,6 @@
  * @akasha/core — Guardrails para Práticas Integrativas
  * Validação e segurança para práticas espirituais e integrativas.
  */
-
 import type { IntegrativePractice, PracticeCategory } from '../../core-iching/src/types';
 
 /**
@@ -89,8 +88,9 @@ export function validatePractice(
 
   // Verifica guardrails de cautela
   for (const caution of GUARDRAILS_CAUTION) {
-    const hasCaution = practice.howTo.toLowerCase().includes(caution) ||
-                       practice.warnings?.some(w => w.toLowerCase().includes(caution));
+    const hasCaution =
+      practice.howTo.toLowerCase().includes(caution) ||
+      practice.warnings?.some((w) => w.toLowerCase().includes(caution));
 
     if (hasCaution) {
       recommendations.push(`Tenha cautela: ${caution}.`);
@@ -99,8 +99,9 @@ export function validatePractice(
 
   // Verifica guardrails proibidos
   for (const prohibited of GUARDRAILS_PROHIBITED) {
-    const isProhibited = practice.howTo.toLowerCase().includes(prohibited) ||
-                         practice.name.toLowerCase().includes(prohibited);
+    const isProhibited =
+      practice.howTo.toLowerCase().includes(prohibited) ||
+      practice.name.toLowerCase().includes(prohibited);
 
     if (isProhibited) {
       warnings.push(`Prática potencialmente problemática: "${prohibited}".`);
@@ -123,7 +124,7 @@ export function validatePractice(
     warnings.push('Frequência recomendada não está claramente definida.');
   }
 
-  const isValid = warnings.length === 0 || warnings.every(w => !w.includes('problemática'));
+  const isValid = warnings.length === 0 || warnings.every((w) => !w.includes('problemática'));
 
   return { isValid, warnings, recommendations };
 }

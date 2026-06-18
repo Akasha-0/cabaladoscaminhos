@@ -34,8 +34,7 @@ export async function GET() {
         { headers: { 'Cache-Control': 'public, max-age=300' } }
       );
     }
-  } catch (err) {
-  }
+  } catch (err) {}
 
   // 2. Fallback: arquivo JSON
   try {
@@ -55,8 +54,7 @@ export async function GET() {
         );
       }
     }
-  } catch (err) {
-  }
+  } catch (err) {}
 
   // 3. Sem dados — degrada com mensagem clara
   return NextResponse.json(

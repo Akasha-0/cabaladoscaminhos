@@ -1,0 +1,195 @@
+{
+  "improvement": "36 oversized files",
+  "area": "general",
+  "priority": 4,
+  "research_summary": "Found 41 TypeScript/TSX source files ≥500 lines in apps/packages/tests, plus 1 root-level duplicate (traducao-areas.ts). The '36' in the issue title is the Plans.md tracked value; actual current count is 42 total oversized files (41 project + 1 root duplicate). Prior result reported 43, indicating 1 file was reduced below threshold. 6 refactoring priorities identified.",
+  "total_oversized_count": 42,
+  "threshold_lines": 500,
+  "previously_reported_count": 43,
+  "delta": -1,
+  "files_by_category": {
+    "DUPLICATE_FILES": {
+      "count": 1,
+      "files": [
+        {
+          "path": "traducao-areas.ts",
+          "lines": 739,
+          "location": "project root",
+          "duplicate_of": "apps/akasha-portal/src/lib/grimoire/traducao-areas.ts (665L)",
+          "note": "Orphaned root-level duplicate. Should be deleted after verifying no imports from root."
+        }
+      ]
+    },
+    "MONOLITHIC_COMPONENTS": {
+      "count": 6,
+      "files": [
+        {"path": "apps/akasha-portal/src/components/akasha/dashboard/AkashaLifeAreasDashboard.tsx", "lines": 1017},
+        {"path": "apps/akasha-portal/src/components/akasha/dashboard/Dashboard.tsx", "lines": 966},
+        {"path": "apps/akasha-portal/src/components/akasha/ConexoesClient.tsx", "lines": 878},
+        {"path": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx", "lines": 749},
+        {"path": "apps/akasha-portal/src/components/akasha/ManifestoPDF.tsx", "lines": 504},
+        {"path": "apps/akasha-portal/src/components/akasha/dashboard/EvolutionPatterns.tsx", "lines": 588}
+      ]
+    },
+    "LARGE_ENGINE_FILES": {
+      "count": 7,
+      "files": [
+        {"path": "apps/akasha-portal/src/lib/application/akasha/narrative-generator.ts", "lines": 851},
+        {"path": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts", "lines": 772},
+        {"path": "apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts", "lines": 708},
+        {"path": "apps/akasha-portal/src/lib/domain/orixa/types.ts", "lines": 684},
+        {"path": "apps/akasha-portal/src/lib/domain/engines/spiritual-engine.ts", "lines": 683},
+        {"path": "apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts", "lines": 662},
+        {"path": "apps/akasha-portal/src/lib/application/agents/transit-engine.ts", "lines": 565}
+      ]
+    },
+    "MONOLITHIC_PAGE_FILES": {
+      "count": 5,
+      "files": [
+        {"path": "apps/akasha-portal/src/app/[locale]/(akasha)/diario/page.tsx", "lines": 611},
+        {"path": "apps/akasha-portal/src/app/[locale]/(akasha)/oraculo/page.tsx", "lines": 589},
+        {"path": "apps/akasha-portal/src/app/[locale]/(akasha)/conta/ContaClient.tsx", "lines": 565},
+        {"path": "apps/akasha-portal/src/app/[locale]/(akasha)/onboarding/OnboardingClient.tsx", "lines": 538},
+        {"path": "apps/akasha-portal/src/app/api/progresso/route.ts", "lines": 713}
+      ]
+    },
+    "LARGE_API_ROUTES": {
+      "count": 1,
+      "files": [
+        {"path": "apps/akasha-portal/src/app/api/progresso/route.ts", "lines": 713}
+      ]
+    },
+    "LARGE_TEST_FILES": {
+      "count": 6,
+      "files": [
+        {"path": "tests/lib/engines/spiritual-engine.test.ts", "lines": 1272},
+        {"path": "tests/e2e/user-flows.test.ts", "lines": 1057},
+        {"path": "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/__tests__/synthesis-engine.test.ts", "lines": 826},
+        {"path": "tests/lib/hooks/useDataSync.test.ts", "lines": 595},
+        {"path": "tests/lib/ai/mapa-insights.test.ts", "lines": 569},
+        {"path": "tests/integration/divination-multimodal.test.ts", "lines": 513},
+        {"path": "tests/integration/middleware-auth.test.ts", "lines": 500}
+      ]
+    },
+    "LARGE_PACKAGE_FILES": {
+      "count": 9,
+      "files": [
+        {"path": "packages/core-iching/src/practices.ts", "lines": 930},
+        {"path": "packages/akasha-core/src/mapeamentos/iching.ts", "lines": 811},
+        {"path": "packages/akasha-core/src/interpretation-engine.ts", "lines": 727},
+        {"path": "packages/akasha-core/src/mapeamentos/index.ts", "lines": 706},
+        {"path": "packages/core-iching/src/practices-data.ts", "lines": 664},
+        {"path": "packages/akasha-core/src/conexoes.ts", "lines": 627},
+        {"path": "packages/akasha-core/src/akasha-core.ts", "lines": 598},
+        {"path": "packages/core-cabala/src/numerology-kabalah.ts", "lines": 572},
+        {"path": "packages/core-odus/src/suggestions.ts", "lines": 561},
+        {"path": "packages/core-tantra/src/numerology-tantric.ts", "lines": 538},
+        {"path": "packages/core-odus/src/matching.ts", "lines": 535},
+        {"path": "packages/akasha-core/src/correlation-engine.ts", "lines": 503}
+      ]
+    },
+    "LARGE_LIFE_AREAS_FILES": {
+      "count": 2,
+      "files": [
+        {"path": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/life-areas-data.ts", "lines": 809},
+        {"path": "apps/akasha-portal/src/lib/grimoire/traducao-areas.ts", "lines": 665}
+      ]
+    },
+    "LARGE_SYNTHESIS_SUBDIR_FILES": {
+      "count": 1,
+      "files": [
+        {"path": "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/derive-area-narratives.ts", "lines": 597}
+      ]
+    }
+  },
+  "previously_split_files": {
+    "note": "synthesis-engine subdir was previously a single monolithic file. Now split into 11+ files. Most are under 500L except derive-area-narratives.ts (597L).",
+    "synthesis-engine-files": [
+      "derive-area-narratives.ts (597L - still oversized)",
+      "derive-sexual-archetype.ts",
+      "akasha-types-catalog.ts",
+      "area-builders.ts",
+      "frequency-analysis.ts",
+      "synthesis-paragraph.ts",
+      "derive-decision.ts",
+      "derive-akasha-type.ts",
+      "derive-daily-transit.ts",
+      "odu-narrative-engine.ts",
+      "synthesis-types.ts",
+      "semantic-lookups.ts"
+    ]
+  },
+  "key_patterns": {
+    "components": "Monolithic React components holding multiple tab panels, charts, and data-fetching logic in one file",
+    "engines": "Large engine files containing both type definitions and business logic, often 600-850L",
+    "packages": "Core packages with large mapping/lookup tables (iching.ts, conexoes.ts, practices.ts) that could be data-driven",
+    "pages": "Route page files mixing page layout, server/client component boundaries, and data fetching",
+    "tests": "Large test files with extensive mock setups; user-flows.test.ts at 1057L is an e2e file"
+  },
+  "refactoring_priority": [
+    {
+      "priority": 1,
+      "action": "Delete root-level traducao-areas.ts (duplicate)",
+      "file": "traducao-areas.ts",
+      "impact": "1 file removed; no code change needed elsewhere if no imports from root",
+      "effort": "minimal",
+      "status": "pending"
+    },
+    {
+      "priority": 2,
+      "action": "Extract Dashboard.tsx tab panels into separate client components (DailyTab, ProfileTab, ProgressTab)",
+      "file": "apps/akasha-portal/src/components/akasha/dashboard/Dashboard.tsx",
+      "current_lines": 966,
+      "target_lines": "~400",
+      "impact": "Dashboard.tsx 966L → ~400L; reusable tab components",
+      "effort": "medium",
+      "status": "pending"
+    },
+    {
+      "priority": 3,
+      "action": "Extract AkashaLifeAreasDashboard.tsx sub-components (AreaCard, OneProfileCard, FrequencyPathExplorer)",
+      "file": "apps/akasha-portal/src/components/akasha/dashboard/AkashaLifeAreasDashboard.tsx",
+      "current_lines": 1017,
+      "target_lines": "~500",
+      "impact": "AkashaLifeAreasDashboard.tsx 1017L → ~500L",
+      "effort": "medium",
+      "status": "pending"
+    },
+    {
+      "priority": 4,
+      "action": "Extract MandalaChart.tsx layer builders into layer-builders/ subdir",
+      "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
+      "current_lines": 749,
+      "target_lines": "~450",
+      "impact": "MandalaChart.tsx 749L → ~450L",
+      "effort": "medium",
+      "status": "pending"
+    },
+    {
+      "priority": 5,
+      "action": "Extract ConexoesClient.tsx sub-components",
+      "file": "apps/akasha-portal/src/components/akasha/ConexoesClient.tsx",
+      "current_lines": 878,
+      "target_lines": "~500",
+      "impact": "ConexoesClient.tsx 878L → ~500L",
+      "effort": "medium",
+      "status": "pending"
+    },
+    {
+      "priority": 6,
+      "action": "Split derive-area-narratives.ts (597L) further - extract narrative-segment builders",
+      "file": "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/derive-area-narratives.ts",
+      "current_lines": 597,
+      "target_lines": "~350",
+      "impact": "derive-area-narratives.ts 597L → ~350L",
+      "effort": "medium",
+      "status": "pending"
+    }
+  ],
+  "progress_tracking": {
+    "plans_md_count": "36 (tracked value)",
+    "current_count": 42,
+    "trend": "stable to slightly improved (was 43, now 42)",
+    "note": "The gap between Plans.md (36) and actual (42) suggests some files were refactored but Plans.md not updated, or threshold discrepancy"
+  }
+}

@@ -2,10 +2,9 @@
 
 /**
  * @akasha/portal — ProgressChart Component
- * 
+ *
  * Exibe progresso semanal e mensal do usuário.
  */
-
 import { motion } from 'framer-motion';
 import { ProgressBar } from './ProgressBar';
 import { useDashboardData } from './hooks/useDashboardData';
@@ -53,17 +52,13 @@ export function ProgressChart({ userId }: ProgressChartProps) {
     >
       {/* Progresso Semanal */}
       <div className="space-y-3">
-        <h3 className="text-lg font-medium text-white/80">
-          Progresso Semanal
-        </h3>
+        <h3 className="text-lg font-medium text-white/80">Progresso Semanal</h3>
         <ProgressBar value={weeklyValue} max={7} />
       </div>
 
       {/* Progresso Mensal */}
       <div className="space-y-3">
-        <h3 className="text-lg font-medium text-white/80">
-          Progresso Mensal
-        </h3>
+        <h3 className="text-lg font-medium text-white/80">Progresso Mensal</h3>
         <ProgressBar value={monthlyValue} max={30} />
       </div>
     </motion.div>

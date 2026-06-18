@@ -8,7 +8,6 @@
  *   color, affirmation, action, avoid, favorable)
  * - Edge case: unknown key falls back to entry 1 (defensive lookup)
  */
-
 import { describe, it, expect } from 'vitest';
 import { PERSONAL_DAY_DATA } from './personal-cycle-day-data';
 
@@ -71,7 +70,7 @@ describe('PERSONAL_DAY_DATA master numbers', () => {
   it('22 inclui keyword de construção mestre', () => {
     const entry = PERSONAL_DAY_DATA[22];
     const hasMasterKeyword = entry.keywords.some(
-      k => k.includes('construtor') || k.includes('manifestação')
+      (k) => k.includes('construtor') || k.includes('manifestação')
     );
     expect(hasMasterKeyword).toBe(true);
   });
@@ -79,7 +78,7 @@ describe('PERSONAL_DAY_DATA master numbers', () => {
   it('33 inclui keyword de serviço compassivo', () => {
     const entry = PERSONAL_DAY_DATA[33];
     const hasServiceKeyword = entry.keywords.some(
-      k => k.includes('serviço') || k.includes('curador')
+      (k) => k.includes('serviço') || k.includes('curador')
     );
     expect(hasServiceKeyword).toBe(true);
   });

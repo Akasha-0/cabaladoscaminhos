@@ -45,20 +45,25 @@ export async function searchGrimoireHybrid(
   const tagFilter = query.tags ?? filters?.tags ?? {};
 
   try {
-    const rows = await prisma.$queryRaw<KnowledgeEntry[]>`
+    const rows = (await prisma.$queryRaw<KnowledgeEntry[]>`
       SELECT id, slug, title, conteudo as content, categoria, biblioteca,
              metadata, embedding
       FROM "GrimoireEntry"
       WHERE metadata @> ${JSON.stringify(tagFilter)}::jsonb
       LIMIT ${limit}
-    ` as KnowledgeEntry[];
+    `) as KnowledgeEntry[];
 
     // Fallback: if composite returns 0 and has elemento, try elemento-only query
     if (rows.length === 0 && tagFilter.elemento) {
       try {
-        const elementoFallback = await (prisma.grimoireEntry as unknown as {
-          findMany: (args: { where: Record<string, unknown>; take: number }) => Promise<KnowledgeEntry[]>;
-        }).findMany({
+        const elementoFallback = await (
+          prisma.grimoireEntry as unknown as {
+            findMany: (args: {
+              where: Record<string, unknown>;
+              take: number;
+            }) => Promise<KnowledgeEntry[]>;
+          }
+        ).findMany({
           where: {
             metadata: { path: ['elemento'], equals: tagFilter.elemento },
           } as Record<string, unknown>,
@@ -87,15 +92,17 @@ export async function searchGrimoireHybrid(
           }),
         });
         if (embedRes.ok) {
-          const { embedding } = await embedRes.json() as { embedding: number[] };
+          const { embedding } = (await embedRes.json()) as { embedding: number[] };
           // Re-rank by cosine similarity (simple dot product)
           const ranked = rows
             .filter((r) => r.embedding && r.embedding.length === embedding.length)
             .map((r) => ({
               ...r,
-              distance: r.embedding!.reduce((sum, v, i) => sum + v * embedding[i], 0) /
+              distance:
+                r.embedding!.reduce((sum, v, i) => sum + v * embedding[i], 0) /
                 (Math.sqrt(r.embedding!.reduce((s, v) => s + v * v, 0)) *
-                  Math.sqrt(embedding.reduce((s, v) => s + v * v, 0)) + 1e-9),
+                  Math.sqrt(embedding.reduce((s, v) => s + v * v, 0)) +
+                  1e-9),
             }))
             .sort((a, b) => (b.distance ?? 0) - (a.distance ?? 0))
             .slice(0, limit);

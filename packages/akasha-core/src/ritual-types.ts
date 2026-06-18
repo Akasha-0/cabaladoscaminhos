@@ -1,13 +1,14 @@
+import type { IntegrativePractice, HexagramWithWings } from '../../core-iching/src/types';
+import type { AkashaCode } from './correlation-engine';
+
 /**
  * @akasha/core — Tipos de Ritual
- * 
+ *
  * Modelos para o ritual diário do Akasha OS.
  * Conecta código Akasha com componentes de prática espiritual.
  */
 
 export type { AkashaCode } from './correlation-engine';
-import type { AkashaCode } from './correlation-engine';
-import type { IntegrativePractice, HexagramWithWings } from '../../core-iching/src/types';
 
 // ─── Componentes do Ritual ────────────────────────────────────────────────────
 
@@ -21,8 +22,8 @@ export interface RitualComponentes {
 
 /** Configuração do ritual diário. */
 export interface RitualConfig {
-  horario: string;           // HH:MM - horário configurável
-  timezone: string;           // Timezone do usuário (ex: "America/Sao_Paulo")
+  horario: string; // HH:MM - horário configurável
+  timezone: string; // Timezone do usuário (ex: "America/Sao_Paulo")
   ativo: boolean;
   componentes: RitualComponentes;
 }

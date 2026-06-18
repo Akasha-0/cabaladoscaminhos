@@ -6,12 +6,9 @@
  * Integra práticas ancestrais com os 64 hexagramas para ampliar
  * o alcance terapêutico e espiritual do sistema oracular.
  */
-
-import type {
-  IntegrativePractice,
-} from './types';
 import { CRISTAIS_PRACTICES } from './practices-cristais';
 import { CROMOTERAPIA_PRACTICES } from './practices-cromoterapia';
+import type { IntegrativePractice } from './types';
 
 const PRACTICES: IntegrativePractice[] = [
   // ── Ifá/Candomblé (5) ─────────────────────────────────────────────────────
@@ -30,7 +27,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [5, 60],
     },
     lifeAreas: ['amor', 'prosperidade', 'fertilidade', 'autoestima'],
-    howTo: 'Ferva folhas de oxum fresco em 1 litro de água por 15 minutos. Coe e reserve a água. Tome um banho de imersão por 20 minutos ao amanhecer.',
+    howTo:
+      'Ferva folhas de oxum fresco em 1 litro de água por 15 minutos. Coe e reserve a água. Tome um banho de imersão por 20 minutos ao amanhecer.',
     frequency: 'Uma vez por semana, preferencialmente sextas-feiras.',
     isSafe: true,
   },
@@ -49,7 +47,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [26, 18],
     },
     lifeAreas: ['proteção', 'força', 'coragem', 'determinação'],
-    howTo: 'Amasse folhas de ogum fresco e faça uma pasta com água de coco. Aplique no corpo da cintura para baixo enquanto mentaliza sua intenção.',
+    howTo:
+      'Amasse folhas de ogum fresco e faça uma pasta com água de coco. Aplique no corpo da cintura para baixo enquanto mentaliza sua intenção.',
     frequency: 'Diariamente durante 7 dias, ao amanhecer.',
     isSafe: true,
   },
@@ -68,7 +67,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [29, 8],
     },
     lifeAreas: ['amor', 'família', 'proteção', 'realização'],
-    howTo: 'Embeber 7 pedras de sal marinho em água de flor de maracujá. Banho de imersão de 30 minutos ao entardecer, mentalizando o caminho se abrindo.',
+    howTo:
+      'Embeber 7 pedras de sal marinho em água de flor de maracujá. Banho de imersão de 30 minutos ao entardecer, mentalizando o caminho se abrindo.',
     frequency: 'Uma vez ao mês, preferencialmente em lua cheia.',
     isSafe: true,
   },
@@ -86,7 +86,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [30, 36],
     },
     lifeAreas: ['limpeza', 'proteção', 'espiritualidade', 'clareza'],
-    howTo: 'Acenda o palo santo e deixe a chama formar brasa. Use um lebrê para passar a fumaça pelo ambiente e ao redor do corpo no sentido horário.',
+    howTo:
+      'Acenda o palo santo e deixe a chama formar brasa. Use um lebrê para passar a fumaça pelo ambiente e ao redor do corpo no sentido horário.',
     frequency: 'Ao acordar ou antes de meditação.',
     isSafe: true,
   },
@@ -104,7 +105,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [18, 41],
     },
     lifeAreas: ['proteção', 'purificação', 'prosperidade', 'trabalho'],
-    howTo: 'Misture 7 colheres de sal grosso com 1 maço de alecrim fresco em 2 litros de água fervente. Coe e tome banho de chuveiro.',
+    howTo:
+      'Misture 7 colheres de sal grosso com 1 maço de alecrim fresco em 2 litros de água fervente. Coe e tome banho de chuveiro.',
     frequency: 'Segunda e quinta-feira, durante 21 dias.',
     isSafe: true,
   },
@@ -127,7 +129,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [29, 51],
     },
     lifeAreas: ['calma', 'sono', 'redução de estresse', 'relaxamento'],
-    howTo: 'Misture 3 gotas de óleo essencial de lavanda em 1 colher de óleo base (coco ou amêndoas). Aplique nas têmporas e pulseiras.',
+    howTo:
+      'Misture 3 gotas de óleo essencial de lavanda em 1 colher de óleo base (coco ou amêndoas). Aplique nas têmporas e pulseiras.',
     frequency: 'Antes de dormir ou em momentos de estresse.',
     isSafe: true,
   },
@@ -145,7 +148,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [5, 31],
     },
     lifeAreas: ['amor', 'autoestima', 'cura emocional', ' romance'],
-    howTo: 'Dilua 2 gotas em 1 colher de óleo base. Aplique no pulso e no coração. Para ambiente, use difusor com 3-5 gotas.',
+    howTo:
+      'Dilua 2 gotas em 1 colher de óleo base. Aplique no pulso e no coração. Para ambiente, use difusor com 3-5 gotas.',
     frequency: 'Diariamente ou antes de encontros importantes.',
     isSafe: true,
   },
@@ -163,7 +167,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [30, 36],
     },
     lifeAreas: ['espiritualidade', 'meditação', 'proteção', 'conexão superior'],
-    howTo: 'Dilua 3 gotas em óleo base e aplique no terceiro olho. Ou difunda 5 gotas durante rituals ou meditação.',
+    howTo:
+      'Dilua 3 gotas em óleo base e aplique no terceiro olho. Ou difunda 5 gotas durante rituals ou meditação.',
     frequency: 'Durante práticas espirituais e meditação.',
     isSafe: true,
   },
@@ -181,7 +186,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [24, 51],
     },
     lifeAreas: ['relaxamento', 'calma', 'digestão', 'sono'],
-    howTo: 'Infusion 1 colher de flores de camomila secas em 200ml de água quente por 5-7 minutos. Beba lentamente em ambiente tranquilo.',
+    howTo:
+      'Infusion 1 colher de flores de camomila secas em 200ml de água quente por 5-7 minutos. Beba lentamente em ambiente tranquilo.',
     frequency: 'Antes de dormir ou após refeições pesadas.',
     isSafe: true,
   },
@@ -199,7 +205,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [26, 34],
     },
     lifeAreas: ['energia', 'vitalidade', 'digestão', 'aquecimento'],
-    howTo: 'Fatie 3-4 rodelas de gengibre fresco e ferva em 300ml de água por 10 minutos. Adicione mel se desejar.',
+    howTo:
+      'Fatie 3-4 rodelas de gengibre fresco e ferva em 300ml de água por 10 minutos. Adicione mel se desejar.',
     frequency: 'Manhãs ou quando precisar de energia.',
     isSafe: true,
   },
@@ -222,7 +229,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [1, 11],
     },
     lifeAreas: ['paz', 'sabedoria', 'purificação', 'proteção espiritual'],
-    howTo: 'Ferva folhas de oxalá fresco em 1 litro de água por 15 minutos. Coe e tome banho de chuveiro, começando pelos pés.',
+    howTo:
+      'Ferva folhas de oxalá fresco em 1 litro de água por 15 minutos. Coe e tome banho de chuveiro, começando pelos pés.',
     frequency: 'Sábados, uma vez por semana, ou em momentos de necessidade de paz.',
     isSafe: true,
   },
@@ -241,7 +249,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [26, 34],
     },
     lifeAreas: ['justiça', 'força', 'coragem', 'vitória'],
-    howTo: 'Amasse folhas de xangô fresco e faça uma infusão com águada chuva. Tome banho de imersão por 15 minutos.',
+    howTo:
+      'Amasse folhas de xangô fresco e faça uma infusão com águada chuva. Tome banho de imersão por 15 minutos.',
     frequency: 'Quartas-feiras e sábados, durante 7 dias.',
     isSafe: true,
   },
@@ -259,7 +268,12 @@ const PRACTICES: IntegrativePractice[] = [
       chakra: 6,
       hexagrams: [2, 23],
     },
-    lifeAreas: ['sabedoria ancestral', 'transformação', 'respeito aos idosos', 'cura de feridas antigas'],
+    lifeAreas: [
+      'sabedoria ancestral',
+      'transformação',
+      'respeito aos idosos',
+      'cura de feridas antigas',
+    ],
     howTo: 'Macere folhas de Nanã com água de coco verde. Banho de chuveiro da cintura para baixo.',
     frequency: 'Uma vez ao mês, preferencialmente em dias de Saturno.',
     isSafe: true,
@@ -279,7 +293,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [18, 52],
     },
     lifeAreas: ['saúde', 'proteção contra pragas', 'cura de epidemias', 'higiene espiritual'],
-    howTo: 'Queime casca de pau brasil e leve as cinzas ao ambiente. Ou faça chá de ewe de obaluaiê para limpeza.',
+    howTo:
+      'Queime casca de pau brasil e leve as cinzas ao ambiente. Ou faça chá de ewe de obaluaiê para limpeza.',
     frequency: 'Durante epidemias ou quando precisar de proteção sanitária.',
     isSafe: true,
     warnings: ['Não aplicar diretamente em feridas abertas sem supervisão.'],
@@ -299,7 +314,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [2, 18],
     },
     lifeAreas: ['renovação', 'cura de doenças crônicas', 'proteção', 'renascimento'],
-    howTo: 'Folhas de Omulu maceradas com álcool de cereal. Passar pelo corpo no sentido dos pés para cabeça.',
+    howTo:
+      'Folhas de Omulu maceradas com álcool de cereal. Passar pelo corpo no sentido dos pés para cabeça.',
     frequency: 'Durante 9 dias consecutivos, ao anoitecer.',
     isSafe: true,
     warnings: ['Evitar durante gestação.'],
@@ -319,7 +335,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [20, 53],
     },
     lifeAreas: ['equilíbrio', 'renovação cíclica', 'prosperidade', 'proteção familiar'],
-    howTo: 'Prepare água com sal marinho e 7 pedras de cores diferentes. Borrife pelo ambiente enquanto mentaliza arco-íris.',
+    howTo:
+      'Prepare água com sal marinho e 7 pedras de cores diferentes. Borrife pelo ambiente enquanto mentaliza arco-íris.',
     frequency: 'Equinócios e solstícios, ou quando precisar de renovação.',
     isSafe: true,
   },
@@ -338,7 +355,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [5, 57],
     },
     lifeAreas: ['amor', 'beleza', 'elegância', 'sucesso social'],
-    howTo: 'Misture folhas de logun edé com água de colônia neutra. Tome banho de imersão por 20 minutos.',
+    howTo:
+      'Misture folhas de logun edé com água de colônia neutra. Tome banho de imersão por 20 minutos.',
     frequency: 'Sextas-feiras, durante 7 semanas.',
     isSafe: true,
   },
@@ -357,7 +375,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [26, 34],
     },
     lifeAreas: ['proteção', 'vitória', 'força', 'coragem'],
-    howTo: 'Misture 7 folhas de alfavaca com 7 pedras de sal e 1 garrafa de águada chuva. Tome banho de chuveiro.',
+    howTo:
+      'Misture 7 folhas de alfavaca com 7 pedras de sal e 1 garrafa de águada chuva. Tome banho de chuveiro.',
     frequency: 'Sextas-feiras ou antes de processos importantes.',
     isSafe: true,
   },
@@ -375,7 +394,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [8, 29],
     },
     lifeAreas: ['abertura de caminhos', 'remoção de obstáculos', 'liberdade', 'novos começos'],
-    howTo: 'Em 3 litros de água morna, misture folhas de开门 com flores blancas. Banho de chuveiro, começando pela cabeça.',
+    howTo:
+      'Em 3 litros de água morna, misture folhas de开门 com flores blancas. Banho de chuveiro, começando pela cabeça.',
     frequency: '3 dias consecutivos para abrir caminhos, ou semanalmente para manutenção.',
     isSafe: true,
   },
@@ -393,7 +413,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [44, 57],
     },
     lifeAreas: ['oportunidades', 'emprego', 'negócios', 'estudos'],
-    howTo: 'Acenda vela verde e escreva seu objetivo em papel. Queime com alecrim fresco enquanto recita sua intenção.',
+    howTo:
+      'Acenda vela verde e escreva seu objetivo em papel. Queime com alecrim fresco enquanto recita sua intenção.',
     frequency: 'Toda lua crescente ou quando precisar de impulso.',
     isSafe: true,
   },
@@ -413,7 +434,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [2, 29],
     },
     lifeAreas: ['proteção', 'força interior', 'resiliência', 'foco'],
-    howTo: 'Segure o ônix na mão esquerda por 10 minutos ao acordar. Ou use como pingente durante o dia.',
+    howTo:
+      'Segure o ônix na mão esquerda por 10 minutos ao acordar. Ou use como pingente durante o dia.',
     frequency: 'Diariamente, especialmente em momentos de estresse.',
     isSafe: true,
   },
@@ -431,7 +453,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [6, 34],
     },
     lifeAreas: ['vitalidade', 'coragem', 'saúde física', 'energia'],
-    howTo: 'Coloque o jaspe vermelho nos pés durante meditação por 15 minutos. Ou carregue no bolso esquerdo.',
+    howTo:
+      'Coloque o jaspe vermelho nos pés durante meditação por 15 minutos. Ou carregue no bolso esquerdo.',
     frequency: 'Manhãs, durante 21 dias para fortalecer vitalidade.',
     isSafe: true,
   },
@@ -449,7 +472,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [17, 43],
     },
     lifeAreas: ['criatividade', 'motivação', 'paixão', 'ação'],
-    howTo: 'Segure a cornalina na mão direita enquanto define suas intenções criativas. Use como joia durante o trabalho.',
+    howTo:
+      'Segure a cornalina na mão direita enquanto define suas intenções criativas. Use como joia durante o trabalho.',
     frequency: 'Diariamente durante projetos criativos ou quando precisar de motivação.',
     isSafe: true,
   },
@@ -467,7 +491,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [5, 45],
     },
     lifeAreas: ['comunicação', 'clareza mental', 'intuição', 'autoconfiança'],
-    howTo: 'Coloque a sodalita na garganta durante meditação por 15 minutos. Ou use como colar durante reuniões importantes.',
+    howTo:
+      'Coloque a sodalita na garganta durante meditação por 15 minutos. Ou use como colar durante reuniões importantes.',
     frequency: 'Quando precisar melhorar comunicação ou clareza de pensamento.',
     isSafe: true,
   },
@@ -485,7 +510,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [29, 36],
     },
     lifeAreas: ['proteção psíquica', 'intuição', 'transformação', 'magia'],
-    howTo: 'Segure a labradorita na mão esquerda e visualize uma barreira luminosa se formando ao seu redor.',
+    howTo:
+      'Segure a labradorita na mão esquerda e visualize uma barreira luminosa se formando ao seu redor.',
     frequency: 'Antes de práticas espirituais ou quando sentir necessidade de proteção energética.',
     isSafe: true,
   },
@@ -505,7 +531,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [5, 31],
     },
     lifeAreas: ['amor', 'romance', 'autoestima', 'relaxamento'],
-    howTo: 'Dilua 3 gotas em 1 colher de óleo base. Aplique no coração, pescoço e pulsos. Para ambiente, use difusor.',
+    howTo:
+      'Dilua 3 gotas em 1 colher de óleo base. Aplique no coração, pescoço e pulsos. Para ambiente, use difusor.',
     frequency: 'Antes de encontros românticos ou para relaxamento noturno.',
     isSafe: true,
   },
@@ -523,7 +550,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [26, 18],
     },
     lifeAreas: ['purificação', 'proteção', 'saúde', 'limpeza energética'],
-    howTo: 'Misture 5 gotas em 50ml de água. Borrife nos ambientes para purificação. Ou adicione ao banho.',
+    howTo:
+      'Misture 5 gotas em 50ml de água. Borrife nos ambientes para purificação. Ou adicione ao banho.',
     frequency: 'Durante gripes, epidemias ou para limpeza de ambiente.',
     isSafe: true,
     warnings: ['Não aplicar puro na pele. Diluir sempre em óleo base.'],
@@ -542,7 +570,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [14, 26],
     },
     lifeAreas: ['prosperidade', 'abundância', 'calor', 'energia'],
-    howTo: 'Dilua 2 gotas em 1 colher de óleo base. Aplique nos pulsos e pescoço pela manhã. Para ambiente, use difusor com 2 gotas.',
+    howTo:
+      'Dilua 2 gotas em 1 colher de óleo base. Aplique nos pulsos e pescoço pela manhã. Para ambiente, use difusor com 2 gotas.',
     frequency: 'Manhãs para energizar ou durante práticas de prosperidade.',
     isSafe: true,
     warnings: ['Pode irritar pele sensível. Testar antes em pequena área.'],
@@ -561,7 +590,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [35, 36],
     },
     lifeAreas: ['clareza mental', 'energia', 'foco', 'digestão'],
-    howTo: 'Inale diretamente do frasco por 30 segundos. Ou dilua 2 gotas em óleo base e aplique nas têmporas.',
+    howTo:
+      'Inale diretamente do frasco por 30 segundos. Ou dilua 2 gotas em óleo base e aplique nas têmporas.',
     frequency: 'Pela manhã para despertar ou durante trabalho intelectual.',
     isSafe: true,
   },
@@ -579,7 +609,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [29, 5],
     },
     lifeAreas: ['limpeza', 'respiração', 'clareza', 'renovação'],
-    howTo: 'Adicione 5 gotas ao difusor ou misture com água e borrife no ambiente. Para inalação, adicione 2 gotas em água quente.',
+    howTo:
+      'Adicione 5 gotas ao difusor ou misture com água e borrife no ambiente. Para inalação, adicione 2 gotas em água quente.',
     frequency: 'Manhãs para energizar ambiente ou durante problemas respiratórios.',
     isSafe: true,
   },
@@ -599,7 +630,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [18, 26],
     },
     lifeAreas: ['proteção', 'limpeza', 'afastamento de energias negativas', 'fortificação'],
-    howTo: 'Queime ramos secos de arruda e passe a fumaça pelo ambiente em sentido anti-horário. Não inale diretamente.',
+    howTo:
+      'Queime ramos secos de arruda e passe a fumaça pelo ambiente em sentido anti-horário. Não inale diretamente.',
     frequency: 'Segunda-feira e quinta-feira, ou após situações de conflito.',
     isSafe: true,
     warnings: ['Grávidas devem evitar. Não inalar fumaça diretamente.'],
@@ -618,7 +650,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [6, 34],
     },
     lifeAreas: ['energia', 'coragem', 'força', 'proteção'],
-    howTo: 'Acenda lasca de pau-brasil e deixe formar brasa. Use lebrê para conduzir a fumaça pelo ambiente.',
+    howTo:
+      'Acenda lasca de pau-brasil e deixe formar brasa. Use lebrê para conduzir a fumaça pelo ambiente.',
     frequency: 'Antes de provas, entrevistas ou momentos que exijam força interior.',
     isSafe: true,
   },
@@ -654,7 +687,8 @@ const PRACTICES: IntegrativePractice[] = [
       hexagrams: [29, 51],
     },
     lifeAreas: ['calma', 'relaxamento', 'sono', 'harmonia'],
-    howTo: 'Acenda flores secas de lavanda e deixe queimar em brasa suave. Passe a fumaça pelo quarto antes de dormir.',
+    howTo:
+      'Acenda flores secas de lavanda e deixe queimar em brasa suave. Passe a fumaça pelo quarto antes de dormir.',
     frequency: 'Antes de dormir ou em momentos de estresse para relaxar ambiente.',
     isSafe: true,
   },

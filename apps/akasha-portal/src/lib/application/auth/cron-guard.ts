@@ -15,7 +15,6 @@
  *   const guard = verifyCronSecret(request);
  *   if (guard) return guard;
  */
-
 import { NextRequest, NextResponse } from 'next/server';
 
 const UNAUTHORIZED = NextResponse.json(

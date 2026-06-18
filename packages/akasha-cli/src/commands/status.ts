@@ -1,8 +1,8 @@
-import pc from 'picocolors';
-import { getPostgresStatus } from '../lib/postgres.js';
-import { getConfigStatus } from '../lib/config.js';
 import { existsSync } from 'fs';
 import { join } from 'path';
+import pc from 'picocolors';
+import { getConfigStatus } from '../lib/config.js';
+import { getPostgresStatus } from '../lib/postgres.js';
 
 const VERSION = '0.0.17';
 
@@ -55,9 +55,12 @@ export async function status(): Promise<void> {
 
   // PostgreSQL
   const pgIcon = status.postgres === 'ok' ? pc.green('✓') : pc.red('✗');
-  const pgLabel = status.postgres === 'ok' ? pc.green('Conectado') :
-                  status.postgres === 'not_found' ? pc.yellow('Não encontrado') :
-                  pc.red('Erro');
+  const pgLabel =
+    status.postgres === 'ok'
+      ? pc.green('Conectado')
+      : status.postgres === 'not_found'
+        ? pc.yellow('Não encontrado')
+        : pc.red('Erro');
   const pgLine = `  ${pgIcon} ${pc.bold('PostgreSQL:')} ${pgLabel}`;
 
   // Configuração
@@ -66,10 +69,18 @@ export async function status(): Promise<void> {
   const envLine = `  ${envIcon} ${pc.bold('Configuração:')} ${envLabel}`;
 
   // Migrations
-  const migIcon = status.migrations === 'ok' ? pc.green('✓') :
-                  status.migrations === 'pending' ? pc.yellow('!') : pc.red('✗');
-  const migLabel = status.migrations === 'ok' ? pc.green('OK') :
-                   status.migrations === 'pending' ? pc.yellow('Pendentes') : pc.red('Erro');
+  const migIcon =
+    status.migrations === 'ok'
+      ? pc.green('✓')
+      : status.migrations === 'pending'
+        ? pc.yellow('!')
+        : pc.red('✗');
+  const migLabel =
+    status.migrations === 'ok'
+      ? pc.green('OK')
+      : status.migrations === 'pending'
+        ? pc.yellow('Pendentes')
+        : pc.red('Erro');
   const migLine = `  ${migIcon} ${pc.bold('Migrations:')} ${migLabel}`;
 
   const divider = pc.bold(pc.cyan('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'));

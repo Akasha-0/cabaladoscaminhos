@@ -1,23 +1,27 @@
+import { findAspects, type Aspecto } from '@akasha/core-astrology';
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { prisma } from '@/lib/infrastructure/prisma';
-import { findAspects, type Aspecto } from '@akasha/core-astrology';
 
 const MAIN_ASPECT_TYPES = ['conjunção', 'oposição', 'trino', 'quadratura', 'sextil'];
 
 // Interpretações简短的 para aspectos principais
 const ASPECT_INTERPRETATIONS: Record<string, string> = {
-  conjunção: 'União de energias — potencial para ação concentrada ou conflito dependendo dos planetas envolvidos.',
-  oposição: 'Tensão entre duas forças — oportunidade para integração e equilíbrio através do autoconhecimento.',
+  conjunção:
+    'União de energias — potencial para ação concentrada ou conflito dependendo dos planetas envolvidos.',
+  oposição:
+    'Tensão entre duas forças — oportunidade para integração e equilíbrio através do autoconhecimento.',
   trino: 'Fluxo harmonioso de energias — facilidade, talento natural e oportunidades favoráveis.',
-  quadratura: 'Tensão construtiva — fonte de dinamismo, desafios que exigem superação para crescimento.',
+  quadratura:
+    'Tensão construtiva — fonte de dinamismo, desafios que exigem superação para crescimento.',
   sextil: 'Oportunidades discretas — ângulos favoráveis para ação e pequenos avanços.',
 };
 
 function interpretAspect(aspect: Aspecto): string {
   const base = ASPECT_INTERPRETATIONS[aspect.tipo] ?? 'Aspecto astrológico.';
   const planets = `${aspect.planeta1}–${aspect.planeta2}`;
-  const nature = aspect.nature === 'harmony' ? 'Harmonioso' : aspect.nature === 'tension' ? 'Tensivo' : 'Neutro';
+  const nature =
+    aspect.nature === 'harmony' ? 'Harmonioso' : aspect.nature === 'tension' ? 'Tensivo' : 'Neutro';
   return `${nature}: ${base} Planetas: ${planets}.`;
 }
 

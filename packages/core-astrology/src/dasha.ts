@@ -26,7 +26,16 @@
  * @see Brihat Parashara Hora Shastra (séc. 7-8 CE)
  */
 
-export type Graha = 'sol' | 'lua' | 'marte' | 'rahu' | 'jupiter' | 'saturno' | 'mercurio' | 'ketu' | 'venus';
+export type Graha =
+  | 'sol'
+  | 'lua'
+  | 'marte'
+  | 'rahu'
+  | 'jupiter'
+  | 'saturno'
+  | 'mercurio'
+  | 'ketu'
+  | 'venus';
 
 export const MAHADASHA_DURATIONS: Record<Graha, number> = {
   sol: 6,
@@ -41,15 +50,47 @@ export const MAHADASHA_DURATIONS: Record<Graha, number> = {
 };
 
 export const DASHA_ORDER: readonly Graha[] = [
-  'sol', 'lua', 'marte', 'rahu', 'jupiter', 'saturno', 'mercurio', 'ketu', 'venus',
+  'sol',
+  'lua',
+  'marte',
+  'rahu',
+  'jupiter',
+  'saturno',
+  'mercurio',
+  'ketu',
+  'venus',
 ] as const;
 
 export const TOTAL_DASHA_YEARS = 120;
 
 export const NAKSHATRA_LORDS: readonly Graha[] = [
-  'ketu', 'venus', 'sol', 'lua', 'marte', 'rahu', 'jupiter', 'saturno', 'mercurio',
-  'ketu', 'venus', 'sol', 'lua', 'marte', 'rahu', 'jupiter', 'saturno', 'mercurio',
-  'ketu', 'venus', 'sol', 'lua', 'marte', 'rahu', 'jupiter', 'saturno', 'mercurio',
+  'ketu',
+  'venus',
+  'sol',
+  'lua',
+  'marte',
+  'rahu',
+  'jupiter',
+  'saturno',
+  'mercurio',
+  'ketu',
+  'venus',
+  'sol',
+  'lua',
+  'marte',
+  'rahu',
+  'jupiter',
+  'saturno',
+  'mercurio',
+  'ketu',
+  'venus',
+  'sol',
+  'lua',
+  'marte',
+  'rahu',
+  'jupiter',
+  'saturno',
+  'mercurio',
 ] as const;
 
 export const NAKSHATRA_SPAN = 360 / 27;
@@ -105,7 +146,7 @@ function yearsToMs(years: number): number {
 function generateFullMahadashas(
   birthDate: Date,
   startingGraha: Graha,
-  birthBalance: number,
+  birthBalance: number
 ): DashaPeriod[] {
   const periods: DashaPeriod[] = [];
   const startIdx = DASHA_ORDER.indexOf(startingGraha);
@@ -141,7 +182,8 @@ function generateAntardashas(mahadasha: DashaPeriod): DashaPeriod[] {
   const periods: DashaPeriod[] = [];
   let cursor = new Date(mahadasha.startDate);
   for (const antaGraha of DASHA_ORDER) {
-    const antaDuration = (mahadasha.durationYears * MAHADASHA_DURATIONS[antaGraha]) / TOTAL_DASHA_YEARS;
+    const antaDuration =
+      (mahadasha.durationYears * MAHADASHA_DURATIONS[antaGraha]) / TOTAL_DASHA_YEARS;
     const end = new Date(cursor.getTime() + yearsToMs(antaDuration));
     periods.push({
       graha: antaGraha,
@@ -169,7 +211,7 @@ function findPeriod(periods: DashaPeriod[], at: Date): DashaPeriod | null {
 export function calcularVimshottari(
   birthDate: Date,
   moonLongitude: number,
-  referenceDate: Date = new Date(),
+  referenceDate: Date = new Date()
 ): VimshottariResult {
   const startingGraha = getNakshatraLord(moonLongitude);
   const birthNakshatra = getNakshatra(moonLongitude);
@@ -179,7 +221,7 @@ export function calcularVimshottari(
   const currentMahadasha = findPeriod(fullLifeMahadashas, referenceDate);
   if (!currentMahadasha) {
     throw new Error(
-      `Reference date ${referenceDate.toISOString()} is outside the 120-year Vimshottari cycle starting at ${birthDate.toISOString()}`,
+      `Reference date ${referenceDate.toISOString()} is outside the 120-year Vimshottari cycle starting at ${birthDate.toISOString()}`
     );
   }
 

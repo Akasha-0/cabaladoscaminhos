@@ -7,7 +7,6 @@
 //
 // See `tests/infrastructure/AGENTS.md` §"Note on test duplication"
 // for the full picture. Do not delete one without updating the other.
-
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
   checkMemoryRateLimit,

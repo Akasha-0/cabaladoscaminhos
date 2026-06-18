@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import pc from 'picocolors';
 import { chat } from './commands/chat.js';
+import { diagnostico } from './commands/diagnostico.js';
 import { setup } from './commands/setup.js';
 import { status } from './commands/status.js';
-import { diagnostico } from './commands/diagnostico.js';
 
 const VERSION = '0.0.17';
 

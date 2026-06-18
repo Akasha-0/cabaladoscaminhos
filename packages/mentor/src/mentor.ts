@@ -1,5 +1,8 @@
 // Mentor orchestration logic
-
+// Import lazy: evita ciclo e permite que @akasha/core seja mockado em testes
+// via `vi.mock('@akasha/core', ...)` antes do import estático.
+import { generateHybrid, buildRitual } from '@akasha/core';
+import { detectIntent } from './intent-detector';
 import type {
   MentorConfig,
   MentorContext,
@@ -12,11 +15,6 @@ import type {
   MentorRitual,
   MentorQuizila,
 } from './types';
-import { detectIntent } from './intent-detector';
-
-// Import lazy: evita ciclo e permite que @akasha/core seja mockado em testes
-// via `vi.mock('@akasha/core', ...)` antes do import estático.
-import { generateHybrid, buildRitual } from '@akasha/core';
 
 /**
  * Extrai o número de hexagrama de um userCode.
@@ -71,7 +69,8 @@ export class MentorEngine {
     const intent: ChatIntent = request.intent ?? detectIntent(request.message);
     const hex = parseHexagramFromUserCode(request.userCode);
 
-    const message = `Olá! Recebi sua mensagem: "${request.message}". ` +
+    const message =
+      `Olá! Recebi sua mensagem: "${request.message}". ` +
       `Estou aqui para apoiar sua jornada espiritual.`;
 
     const response: ChatResponse = {
@@ -112,7 +111,10 @@ export class MentorEngine {
         { hexagram: Number(hex), level: 'gift' } as unknown as never
       ) as unknown as {
         data: Date;
-        codigo: { hexagrama: { id: number; name: string; number: number }; nivel: MentorRitual['level'] };
+        codigo: {
+          hexagrama: { id: number; name: string; number: number };
+          nivel: MentorRitual['level'];
+        };
         pratica: { id: string; name: string; category: string };
         quizilas?: Array<{ id: string; texto: string; tipo?: MentorQuizila['tipo'] }>;
       };
@@ -139,10 +141,7 @@ export class MentorEngine {
    * API legada: recebe histórico de mensagens + contexto, retorna MentorMessage.
    * Mantida para compatibilidade com código pré-F-205.
    */
-  async chatLegacy(
-    messages: MentorMessage[],
-    _context: MentorContext
-  ): Promise<MentorMessage> {
+  async chatLegacy(messages: MentorMessage[], _context: MentorContext): Promise<MentorMessage> {
     // Placeholder implementation
     return {
       id: crypto.randomUUID(),

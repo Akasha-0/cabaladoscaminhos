@@ -1,8 +1,8 @@
 'use client';
 
-import { SuggestedQuestions } from '@/components/akasha/SuggestedQuestions';
 import { Sparkles } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { SuggestedQuestions } from '@/components/akasha/SuggestedQuestions';
 
 interface OracleMessage {
   role: 'user' | 'oracle';
@@ -32,14 +32,26 @@ function renderOracleText(text: string): React.ReactNode[] {
     // Process inline markdown: **bold** and *italic*
     const processed = para.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/).map((segment, j) => {
       if (segment.startsWith('**') && segment.endsWith('**')) {
-        return <strong key={j} style={{ color: '#1EADA3', fontWeight: 600 }}>{segment.slice(2, -2)}</strong>;
+        return (
+          <strong key={j} style={{ color: '#1EADA3', fontWeight: 600 }}>
+            {segment.slice(2, -2)}
+          </strong>
+        );
       }
       if (segment.startsWith('*') && segment.endsWith('*')) {
-        return <em key={j} style={{ color: '#A7AECF' }}>{segment.slice(1, -1)}</em>;
+        return (
+          <em key={j} style={{ color: '#A7AECF' }}>
+            {segment.slice(1, -1)}
+          </em>
+        );
       }
       return segment;
     });
-    return <p key={i} style={{ margin: '0 0 0.75em 0', lineHeight: 1.7 }}>{processed}</p>;
+    return (
+      <p key={i} style={{ margin: '0 0 0.75em 0', lineHeight: 1.7 }}>
+        {processed}
+      </p>
+    );
   });
 }
 
@@ -63,7 +75,9 @@ export default function OraculoPage() {
 
   // Auto-scroll on new messages
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    bottomRef.current?.scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+    });
   }, [messages]);
 
   const estimatedCost = input.length > 200 ? 3 : 1;
@@ -232,7 +246,9 @@ export default function OraculoPage() {
             gap: '6px',
           }}
         >
-          <span style={{ color: '#7C5CFF' }} aria-hidden="true">✦</span>
+          <span style={{ color: '#7C5CFF' }} aria-hidden="true">
+            ✦
+          </span>
           <span style={{ fontWeight: 700, color: '#F4F5FF' }}>
             {balance === null ? '…' : balance}
           </span>
@@ -274,7 +290,8 @@ export default function OraculoPage() {
                 width: '64px',
                 height: '64px',
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(124,92,255,0.3) 0%, rgba(45,212,191,0.1) 100%)',
+                background:
+                  'radial-gradient(circle, rgba(124,92,255,0.3) 0%, rgba(45,212,191,0.1) 100%)',
                 border: '1px solid rgba(124,92,255,0.4)',
                 display: 'flex',
                 alignItems: 'center',
@@ -284,17 +301,23 @@ export default function OraculoPage() {
             >
               <Sparkles size={24} style={{ color: '#9D86FF' }} />
             </div>
-            <p role="heading" aria-level={2} style={{ fontSize: '1.1rem', fontWeight: 600, color: '#2DD4BF', margin: 0 }}>
+            <p
+              role="heading"
+              aria-level={2}
+              style={{ fontSize: '1.1rem', fontWeight: 600, color: '#2DD4BF', margin: 0 }}
+            >
               Bem-vindo ao Oráculo
             </p>
-            <div style={{
-              padding: '20px 28px',
-              borderRadius: '16px',
-              background: 'rgba(11,14,28,0.8)',
-              backdropFilter: 'blur(16px)',
-              border: '1px solid rgba(45,212,191,0.2)',
-              boxShadow: '0 0 32px rgba(45,212,191,0.06)',
-            }}>
+            <div
+              style={{
+                padding: '20px 28px',
+                borderRadius: '16px',
+                background: 'rgba(11,14,28,0.8)',
+                backdropFilter: 'blur(16px)',
+                border: '1px solid rgba(45,212,191,0.2)',
+                boxShadow: '0 0 32px rgba(45,212,191,0.06)',
+              }}
+            >
               <p
                 style={{
                   margin: 0,
@@ -306,19 +329,28 @@ export default function OraculoPage() {
               >
                 O que você precisa compreender hoje?
               </p>
-              <p style={{ margin: '10px 0 0', fontSize: '0.78rem', color: 'rgba(167,174,207,0.6)', lineHeight: 1.5 }}>
+              <p
+                style={{
+                  margin: '10px 0 0',
+                  fontSize: '0.78rem',
+                  color: 'rgba(167,174,207,0.6)',
+                  lineHeight: 1.5,
+                }}
+              >
                 Escolha uma pergunta sugerida ou digite a sua:
               </p>
             </div>
 
             {/* Sugestões de perguntas — UX improvement */}
-            <div style={{
-              width: '100%',
-              padding: '16px 20px',
-              background: 'rgba(11,14,28,0.5)',
-              borderRadius: '14px',
-              border: '1px solid rgba(124,92,255,0.15)',
-            }}>
+            <div
+              style={{
+                width: '100%',
+                padding: '16px 20px',
+                background: 'rgba(11,14,28,0.5)',
+                borderRadius: '14px',
+                border: '1px solid rgba(124,92,255,0.15)',
+              }}
+            >
               <SuggestedQuestions
                 lifeArea="proposito"
                 onSelectQuestion={(question) => {
@@ -336,7 +368,10 @@ export default function OraculoPage() {
         {messages.length > 0 && (
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button
-              onClick={() => { setMessages([]); setInput(''); }}
+              onClick={() => {
+                setMessages([]);
+                setInput('');
+              }}
               style={{
                 padding: '6px 18px',
                 borderRadius: '9999px',
@@ -408,7 +443,16 @@ export default function OraculoPage() {
                 </span>
               )}
               {msg.role === 'oracle' && msg.content === '' && loading ? (
-                <span aria-live="polite" style={{ color: '#5C6691', fontStyle: 'italic', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                <span
+                  aria-live="polite"
+                  style={{
+                    color: '#5C6691',
+                    fontStyle: 'italic',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
                   O Akasha responde
                   <span aria-hidden="true" style={{ display: 'inline-flex', gap: '3px' }}>
                     {[0, 1, 2].map((i) => (
@@ -434,37 +478,42 @@ export default function OraculoPage() {
             </div>
 
             {/* Tradições consultadas label + chips */}
-            {msg.role === 'oracle' &&
-              msg.pillarsConsulted &&
-              msg.pillarsConsulted.length > 0 && (
-                <div role="group" aria-labelledby={`pillars-label-${i}`} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <span id={`pillars-label-${i}`} style={{ fontSize: '0.75rem', color: '#A7AECF', fontWeight: 500 }}>
-                    Tradições que ressoaram
-                  </span>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', paddingLeft: '4px' }}>
-                    {msg.pillarsConsulted.map((pillar) => {
-                      const color = getPillarColor(pillar);
-                      return (
-                        <span
-                          key={pillar}
-                          style={{
-                            padding: '2px 10px',
-                            borderRadius: '9999px',
-                            fontSize: '0.72rem',
-                            fontWeight: 600,
-                            letterSpacing: '0.05em',
-                            color,
-                            background: `${color}18`,
-                            border: `1px solid ${color}40`,
-                          }}
-                        >
-                          {pillar}
-                        </span>
-                      );
-                    })}
-                  </div>
+            {msg.role === 'oracle' && msg.pillarsConsulted && msg.pillarsConsulted.length > 0 && (
+              <div
+                role="group"
+                aria-labelledby={`pillars-label-${i}`}
+                style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}
+              >
+                <span
+                  id={`pillars-label-${i}`}
+                  style={{ fontSize: '0.75rem', color: '#A7AECF', fontWeight: 500 }}
+                >
+                  Tradições que ressoaram
+                </span>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', paddingLeft: '4px' }}>
+                  {msg.pillarsConsulted.map((pillar) => {
+                    const color = getPillarColor(pillar);
+                    return (
+                      <span
+                        key={pillar}
+                        style={{
+                          padding: '2px 10px',
+                          borderRadius: '9999px',
+                          fontSize: '0.72rem',
+                          fontWeight: 600,
+                          letterSpacing: '0.05em',
+                          color,
+                          background: `${color}18`,
+                          border: `1px solid ${color}40`,
+                        }}
+                      >
+                        {pillar}
+                      </span>
+                    );
+                  })}
                 </div>
-              )}
+              </div>
+            )}
           </div>
         ))}
 
@@ -485,18 +534,25 @@ export default function OraculoPage() {
           flexShrink: 0,
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '4px', gap: '8px' }}>
+        <div
+          style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '4px', gap: '8px' }}
+        >
           {balance !== null && balance > 0 && (
-            <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.55)' }}>
-              1 crédito
-            </span>
+            <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.55)' }}>1 crédito</span>
           )}
           {balance === null && (
             <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.25)' }}>
               1–3 créditos
             </span>
           )}
-          <span aria-live={input.length > 200 ? 'polite' : 'off'} aria-atomic="true" style={{ fontSize: '0.7rem', color: input.length > 200 ? '#FB5781' : 'rgba(255,255,255,0.3)' }}>
+          <span
+            aria-live={input.length > 200 ? 'polite' : 'off'}
+            aria-atomic="true"
+            style={{
+              fontSize: '0.7rem',
+              color: input.length > 200 ? '#FB5781' : 'rgba(255,255,255,0.3)',
+            }}
+          >
             {input.length > 200 && <span className="sr-only">Limite excedido </span>}
             {input.length}/200
           </span>
@@ -548,24 +604,56 @@ export default function OraculoPage() {
           )}
           <button
             type="submit"
-            disabled={loading || !input.trim() || input.length > 200 || (balance !== null && balance === 0)}
-            aria-disabled={loading || !input.trim() || input.length > 200 || (balance !== null && balance === 0)}
-            aria-label={loading ? 'Consultando resposta do oráculo…' : !input.trim() ? 'Consultar — digite sua pergunta' : input.length > 200 ? `Consultar — máximo 200 caracteres (${input.length} digitados)` : balance !== null && balance === 0 ? 'Consultar — sem créditos' : 'Enviar pergunta ao Oráculo Akasha'}
+            disabled={
+              loading || !input.trim() || input.length > 200 || (balance !== null && balance === 0)
+            }
+            aria-disabled={
+              loading || !input.trim() || input.length > 200 || (balance !== null && balance === 0)
+            }
+            aria-label={
+              loading
+                ? 'Consultando resposta do oráculo…'
+                : !input.trim()
+                  ? 'Consultar — digite sua pergunta'
+                  : input.length > 200
+                    ? `Consultar — máximo 200 caracteres (${input.length} digitados)`
+                    : balance !== null && balance === 0
+                      ? 'Consultar — sem créditos'
+                      : 'Enviar pergunta ao Oráculo Akasha'
+            }
             style={{
               padding: '10px 32px',
               borderRadius: '9999px',
               background:
-                loading || !input.trim() || input.length > 200 || (balance !== null && balance === 0)
+                loading ||
+                !input.trim() ||
+                input.length > 200 ||
+                (balance !== null && balance === 0)
                   ? 'rgba(124,92,255,0.2)'
                   : '#7C5CFF',
-              color: loading || !input.trim() || input.length > 200 || (balance !== null && balance === 0) ? '#5C6691' : '#F4F5FF',
+              color:
+                loading ||
+                !input.trim() ||
+                input.length > 200 ||
+                (balance !== null && balance === 0)
+                  ? '#5C6691'
+                  : '#F4F5FF',
               border: 'none',
-              cursor: loading || !input.trim() || input.length > 200 || (balance !== null && balance === 0) ? 'not-allowed' : 'pointer',
+              cursor:
+                loading ||
+                !input.trim() ||
+                input.length > 200 ||
+                (balance !== null && balance === 0)
+                  ? 'not-allowed'
+                  : 'pointer',
               fontSize: '0.9rem',
               fontWeight: 700,
               letterSpacing: '0.06em',
               transition: 'all 0.2s ease',
-              boxShadow: loading || !input.trim() || (balance !== null && balance === 0) ? 'none' : '0 0 20px rgba(124,92,255,0.4)',
+              boxShadow:
+                loading || !input.trim() || (balance !== null && balance === 0)
+                  ? 'none'
+                  : '0 0 20px rgba(124,92,255,0.4)',
             }}
           >
             {loading ? 'Consultando…' : 'Consultar'}
@@ -574,7 +662,9 @@ export default function OraculoPage() {
         {balance !== null && balance === 0 && (
           <p style={{ color: '#FB5781', fontSize: '0.8rem', textAlign: 'center', marginTop: 8 }}>
             Você não tem créditos.{' '}
-            <a href="/painel" style={{ color: '#FB5781', textDecoration: 'underline' }}>Ir para meu painel</a>{' '}
+            <a href="/painel" style={{ color: '#FB5781', textDecoration: 'underline' }}>
+              Ir para meu painel
+            </a>{' '}
             para solicitar mais.
           </p>
         )}

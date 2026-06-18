@@ -8,12 +8,11 @@
  * ROADMAP Iter. 6 — Prioridade 2: expandir deriveAkashaType() de
  * Odu+Tantra → voto nos 5 pilares.
  */
-
-import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/types';
 import type { SynthesizedProfile } from '@akasha/core';
+import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/types';
 import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
-import type { AkashaAuthority, AkashaTypeProfile, FrequencyLevel } from './synthesis-types';
 import AKASHA_TYPES from './akasha-types-catalog';
+import type { AkashaAuthority, AkashaTypeProfile, FrequencyLevel } from './synthesis-types';
 
 /** Um dos 9 tipos Akasha. */
 export type AkashaType =
@@ -31,14 +30,23 @@ export type AkashaType =
 
 /** Odu primary → AkashaType. Weight ×3 na votação. */
 const ODU_TO_TYPE: Record<string, AkashaType> = {
-  oje: 'catalisador', ogbe: 'catalisador', oros: 'catalisador',
-  ox: 'receptor', oxu: 'receptor', alavaye: 'receptor',
-  oyeku: 'construtor', otura: 'construtor',
-  ogunda: 'transformador', owonrin: 'transformador',
-  okanran: 'guardiao', logbara: 'guardiao',
+  oje: 'catalisador',
+  ogbe: 'catalisador',
+  oros: 'catalisador',
+  ox: 'receptor',
+  oxu: 'receptor',
+  alavaye: 'receptor',
+  oyeku: 'construtor',
+  otura: 'construtor',
+  ogunda: 'transformador',
+  owonrin: 'transformador',
+  okanran: 'guardiao',
+  logbara: 'guardiao',
   irosun: 'curador',
-  oji: 'canal', ate: 'canal',
-  ica: 'alquimista', idia: 'alquimista',
+  oji: 'canal',
+  ate: 'canal',
+  ica: 'alquimista',
+  idia: 'alquimista',
 };
 
 /**
@@ -55,13 +63,13 @@ const ODU_TO_TYPE: Record<string, AkashaType> = {
  */
 const TRIGRAM_TO_TYPE: Record<number, AkashaType> = {
   1: 'catalisador', // ☰ Heaven
-  2: 'receptor',    // ☷ Earth
-  3: 'construtor',  // ☳ Thunder
+  2: 'receptor', // ☷ Earth
+  3: 'construtor', // ☳ Thunder
   4: 'transformador', // ☵ Water
-  5: 'guardiao',    // ☶ Mountain
-  6: 'canal',       // ☲ Fire
-  7: 'receptor',    // ☱ Lake
-  8: 'canal',       // ☴ Wind
+  5: 'guardiao', // ☶ Mountain
+  6: 'canal', // ☲ Fire
+  7: 'receptor', // ☱ Lake
+  8: 'canal', // ☴ Wind
 };
 
 function ichingNuclearTrigram(hex: number): number {
@@ -78,27 +86,63 @@ function ichingNuclearTrigram(hex: number): number {
  */
 const KABALA_LP_TO_TYPE: Record<number, AkashaType> = {
   // ── LP 1 ── catalisador
-  1: 'catalisador', 10: 'catalisador', 19: 'catalisador', 28: 'catalisador', 37: 'catalisador',
+  1: 'catalisador',
+  10: 'catalisador',
+  19: 'catalisador',
+  28: 'catalisador',
+  37: 'catalisador',
   // ── LP 2 ── receptor
-  2: 'receptor', 20: 'receptor', 29: 'receptor', 38: 'receptor',
+  2: 'receptor',
+  20: 'receptor',
+  29: 'receptor',
+  38: 'receptor',
   // ── LP 3 ── canal
-  3: 'canal', 12: 'canal', 21: 'canal', 30: 'canal', 39: 'canal',
-  48: 'canal', 57: 'canal',
+  3: 'canal',
+  12: 'canal',
+  21: 'canal',
+  30: 'canal',
+  39: 'canal',
+  48: 'canal',
+  57: 'canal',
   // ── LP 4 ── guardiao
-  4: 'guardiao', 13: 'guardiao', 31: 'guardiao', 40: 'guardiao',
-  49: 'guardiao', 58: 'guardiao', 67: 'guardiao',
+  4: 'guardiao',
+  13: 'guardiao',
+  31: 'guardiao',
+  40: 'guardiao',
+  49: 'guardiao',
+  58: 'guardiao',
+  67: 'guardiao',
   // ── LP 5 ── transformador
-  5: 'transformador', 14: 'transformador', 23: 'transformador', 32: 'transformador',
-  41: 'transformador', 50: 'transformador', 59: 'transformador',
+  5: 'transformador',
+  14: 'transformador',
+  23: 'transformador',
+  32: 'transformador',
+  41: 'transformador',
+  50: 'transformador',
+  59: 'transformador',
   // ── LP 6 ── curador
-  6: 'curador', 15: 'curador', 24: 'curador', 42: 'curador',
-  51: 'curador', 60: 'curador',
+  6: 'curador',
+  15: 'curador',
+  24: 'curador',
+  42: 'curador',
+  51: 'curador',
+  60: 'curador',
   // ── LP 7 ── canal
-  7: 'canal', 16: 'canal', 25: 'canal', 61: 'canal', 70: 'canal',
+  7: 'canal',
+  16: 'canal',
+  25: 'canal',
+  61: 'canal',
+  70: 'canal',
   // ── LP 8 ── catalisador
-  8: 'catalisador', 17: 'catalisador', 26: 'catalisador',
+  8: 'catalisador',
+  17: 'catalisador',
+  26: 'catalisador',
   // ── LP 9 ── receptor
-  9: 'receptor', 18: 'receptor', 27: 'receptor', 36: 'receptor', 45: 'receptor',
+  9: 'receptor',
+  18: 'receptor',
+  27: 'receptor',
+  36: 'receptor',
+  45: 'receptor',
   // ── Master number 11 ── canal
   11: 'canal',
   // ── LP 22 ── construtor
@@ -106,42 +150,87 @@ const KABALA_LP_TO_TYPE: Record<number, AkashaType> = {
   // ── LP 33 ── alquimista
   33: 'alquimista',
   // ── Extended LP range 44-99
-  44: 'canal', 46: 'guardiao', 47: 'transformador', 53: 'guardiao',
-  54: 'construtor', 55: 'transformador', 56: 'guardiao', 62: 'guardiao',
-  63: 'canal', 64: 'receptor', 65: 'canal', 66: 'guardiao',
-  68: 'guardiao', 69: 'curador', 71: 'canal', 72: 'receptor',
-  73: 'curador', 74: 'transformador', 75: 'canal', 76: 'guardiao',
-  77: 'alquimista', 78: 'receptor', 79: 'canal', 80: 'guardiao',
-  81: 'catalisador', 82: 'receptor', 83: 'canal', 84: 'guardiao',
-  85: 'canal', 86: 'transformador', 87: 'curador', 88: 'guardiao',
-  89: 'catalisador', 90: 'receptor', 91: 'canal', 92: 'guardiao',
-  93: 'curador', 94: 'transformador', 95: 'catalisador', 96: 'receptor',
-  97: 'canal', 98: 'guardiao', 99: 'curador',
+  44: 'canal',
+  46: 'guardiao',
+  47: 'transformador',
+  53: 'guardiao',
+  54: 'construtor',
+  55: 'transformador',
+  56: 'guardiao',
+  62: 'guardiao',
+  63: 'canal',
+  64: 'receptor',
+  65: 'canal',
+  66: 'guardiao',
+  68: 'guardiao',
+  69: 'curador',
+  71: 'canal',
+  72: 'receptor',
+  73: 'curador',
+  74: 'transformador',
+  75: 'canal',
+  76: 'guardiao',
+  77: 'alquimista',
+  78: 'receptor',
+  79: 'canal',
+  80: 'guardiao',
+  81: 'catalisador',
+  82: 'receptor',
+  83: 'canal',
+  84: 'guardiao',
+  85: 'canal',
+  86: 'transformador',
+  87: 'curador',
+  88: 'guardiao',
+  89: 'catalisador',
+  90: 'receptor',
+  91: 'canal',
+  92: 'guardiao',
+  93: 'curador',
+  94: 'transformador',
+  95: 'catalisador',
+  96: 'receptor',
+  97: 'canal',
+  98: 'guardiao',
+  99: 'curador',
 };
 
 /**
  * Planeta dominante Astro → AkashaType. Weight ×1 na votação.
  */
 const ASTRO_DOMINANT_PLANET_TO_TYPE: Record<string, AkashaType> = {
-  sol: 'catalisador', sun: 'catalisador',
-  lua: 'receptor', moon: 'receptor',
-  mercurio: 'canal', mercury: 'canal',
+  sol: 'catalisador',
+  sun: 'catalisador',
+  lua: 'receptor',
+  moon: 'receptor',
+  mercurio: 'canal',
+  mercury: 'canal',
   venus: 'receptor',
-  marte: 'construtor', mars: 'construtor',
-  jupiter: 'transformador', júpiter: 'transformador',
-  saturno: 'guardiao', saturn: 'guardiao',
-  urano: 'canal', uranus: 'canal',
-  netuno: 'canal', neptune: 'canal',
-  plutão: 'transformador', plutao: 'transformador', pluto: 'transformador',
+  marte: 'construtor',
+  mars: 'construtor',
+  jupiter: 'transformador',
+  júpiter: 'transformador',
+  saturno: 'guardiao',
+  saturn: 'guardiao',
+  urano: 'canal',
+  uranus: 'canal',
+  netuno: 'canal',
+  neptune: 'canal',
+  plutão: 'transformador',
+  plutao: 'transformador',
+  pluto: 'transformador',
 };
 
 // ─── Authority & directive tables ────────────────────────────────────────────
 
 const AUTHORITY_PRACTICE: Record<AkashaAuthority, string> = {
-  emotional: 'Diário: pause antes de decisões importantes e pergunte — como meu peito se sente com isso?',
-  sacral: 'Diário: antes de agir, sinta resposta do seu corpo abaixo do umbigo — sim, não ou talvez.',
+  emotional:
+    'Diário: pause antes de decisões importantes e pergunte — como meu peito se sente com isso?',
+  sacral:
+    'Diário: antes de agir, sinta resposta do seu corpo abaixo do umbigo — sim, não ou talvez.',
   splenic: 'Diário: preste atenção insights súbitos. Não duvide do seu "click" quando ele vier.',
-  mental: 'Diário: questione urgência do pensamento. Pergunte — isto é verdade ou só ruído familiar?',
+  mental:
+    'Diário: questione urgência do pensamento. Pergunte — isto é verdade ou só ruído familiar?',
 };
 
 const DIRECTIVE_BY_AREA_AND_FREQ: Record<string, Record<FrequencyLevel, string>> = {
@@ -161,7 +250,8 @@ const DIRECTIVE_BY_AREA_AND_FREQ: Record<string, Record<FrequencyLevel, string>>
     siddhi: 'Hoje: ajude um colega avançar. Sua abundância se expande ao compartilhar.',
   },
   propósito: {
-    shadow: 'Hoje: preste atenção no que sua intuição sussurra. Não descarte o insight por ser pequeno.',
+    shadow:
+      'Hoje: preste atenção no que sua intuição sussurra. Não descarte o insight por ser pequeno.',
     gift: 'Hoje: siga um insight, mesmo que pareça irracional. Sua mente sabe mais que você.',
     siddhi: 'Hoje: compartilhe o que descobriu consigo mesmo. Clareza se consolida ao ser dita.',
   },
@@ -171,22 +261,33 @@ const DIRECTIVE_BY_AREA_AND_FREQ: Record<string, Record<FrequencyLevel, string>>
     siddhi: 'Hoje: inspire outros pelo que você é, não pelo que você faz. Ser é suficiente.',
   },
   transformação: {
-    shadow: 'Hoje: nomeie o padrão que você está vendo em você mesmo. Sair do invisível é o primeiro passo.',
+    shadow:
+      'Hoje: nomeie o padrão que você está vendo em você mesmo. Sair do invisível é o primeiro passo.',
     gift: 'Hoje: transforme uma tensão antiga em algo criativo. O que te incomodou pode virar arte.',
-    siddhi: 'Hoje: ajude alguém ver seu próprio padrão. Ensinar é forma mais alta de transformação.',
+    siddhi:
+      'Hoje: ajude alguém ver seu próprio padrão. Ensinar é forma mais alta de transformação.',
   },
 };
 
 const ONE_LINER_BY_TYPE: Record<string, string> = {
-  catalisador: 'Você é O Catalisador. Sua presença inicia o que antes era apenas possibilidade — você não espera o momento, você É o momento. Onde outros hesitam, você já acendeu o fogo. Sua lição é não queimar o que ainda precisa de calma.',
-  receptor: 'Você é O Receptor. Antes de qualquer movimento, você já sabe. Sua percepção lê o invisível — o que ninguém disse, o que ninguém quer ouvir. Sua lição é confiar na própria frequência sem buscar provas.',
-  construtor: 'Você é O Construtor. Outros têm ideias; você tem alicerces. Sua energia não é glamourosa — é paciente como água escavando pedra. Cada tijolo que você coloca hoje sustenta um edifício que ninguém mais consegue visualizar ainda. Não apresse o trabalho. Consistência é sua magia.',
-  transformador: 'Você é O Transformador. Você não evita o fogo — você é o fogo. Agregar, separar, reorganizar, atravessar — seu Odu é energia que não aceita que nada permaneça como estava. Outros confiam em você para romper o que precisa ser rompido. Sua presença não permite zoneamento falso.',
-  guardiao: 'Você é O Guardião. Outros entram no território desprotegido; você é fronteira que torna o espaço seguro para outros existirem. Sua energia não inicia, não alarga — ela sustenta e protege. Você é o que impede que sistemas vivam em caos. Outros esquecem de agradecer — mas sentem sua falta quando você se ausenta.',
-  curador: 'Você é O Curador. Sua energia encontra ferida da mente — você sabe onde dói antes da pessoa falar. Você é um espaço emocional seguro onde outros se permittedem ser vulneráveis. Sua presença não julga, não apressa, não conserta — só presencia. Essa qualidade de presença é o que permite que outros se curem por conta própria.',
-  canal: 'Você é O Canal. Sua energia é a ponte entre o visível e o invisível. Você ouve a frequência que outros não captam e traduz em palavras, imagens, gestos. Sua voz é instrumento — afine antes de tocar. Falar é tão sagrado quanto escutar.',
-  alquimista: 'Você é O Alquimista. Sua matéria-prima é a dificuldade — onde outros veem problema, você vê ingrediente. Você transforma resistência em ouro pelo simples ato de não fugir. O que te queima é o que te purifica.',
-  arquiteto: 'Você é O Arquiteto. Outros improvisam estruturas; você projeta sistemas. Você vê interconexão entre campos que parecem separados — carreira toca o corpo, o corpo toca o espírito, o espírito toca o dinheiro. Sua mente é geométrica: cada decisão reflete um padrão. Outros veem 2 + 2; você vê o sistema que contém toda matemática.',
+  catalisador:
+    'Você é O Catalisador. Sua presença inicia o que antes era apenas possibilidade — você não espera o momento, você É o momento. Onde outros hesitam, você já acendeu o fogo. Sua lição é não queimar o que ainda precisa de calma.',
+  receptor:
+    'Você é O Receptor. Antes de qualquer movimento, você já sabe. Sua percepção lê o invisível — o que ninguém disse, o que ninguém quer ouvir. Sua lição é confiar na própria frequência sem buscar provas.',
+  construtor:
+    'Você é O Construtor. Outros têm ideias; você tem alicerces. Sua energia não é glamourosa — é paciente como água escavando pedra. Cada tijolo que você coloca hoje sustenta um edifício que ninguém mais consegue visualizar ainda. Não apresse o trabalho. Consistência é sua magia.',
+  transformador:
+    'Você é O Transformador. Você não evita o fogo — você é o fogo. Agregar, separar, reorganizar, atravessar — seu Odu é energia que não aceita que nada permaneça como estava. Outros confiam em você para romper o que precisa ser rompido. Sua presença não permite zoneamento falso.',
+  guardiao:
+    'Você é O Guardião. Outros entram no território desprotegido; você é fronteira que torna o espaço seguro para outros existirem. Sua energia não inicia, não alarga — ela sustenta e protege. Você é o que impede que sistemas vivam em caos. Outros esquecem de agradecer — mas sentem sua falta quando você se ausenta.',
+  curador:
+    'Você é O Curador. Sua energia encontra ferida da mente — você sabe onde dói antes da pessoa falar. Você é um espaço emocional seguro onde outros se permittedem ser vulneráveis. Sua presença não julga, não apressa, não conserta — só presencia. Essa qualidade de presença é o que permite que outros se curem por conta própria.',
+  canal:
+    'Você é O Canal. Sua energia é a ponte entre o visível e o invisível. Você ouve a frequência que outros não captam e traduz em palavras, imagens, gestos. Sua voz é instrumento — afine antes de tocar. Falar é tão sagrado quanto escutar.',
+  alquimista:
+    'Você é O Alquimista. Sua matéria-prima é a dificuldade — onde outros veem problema, você vê ingrediente. Você transforma resistência em ouro pelo simples ato de não fugir. O que te queima é o que te purifica.',
+  arquiteto:
+    'Você é O Arquiteto. Outros improvisam estruturas; você projeta sistemas. Você vê interconexão entre campos que parecem separados — carreira toca o corpo, o corpo toca o espírito, o espírito toca o dinheiro. Sua mente é geométrica: cada decisão reflete um padrão. Outros veem 2 + 2; você vê o sistema que contém toda matemática.',
 };
 
 // ─── Resolvers (one per pillar) ────────────────────────────────────────────
@@ -256,7 +357,8 @@ function deriveAuthorityFromMaps(
   // astro can be null when pillars are not yet calculated (new user, missing birth data).
   // Guard before accessing dominantPlanet to prevent TypeError.
   if (!astro) return 'sacral';
-  const dominated: string | undefined = (astro as unknown as { dominantPlanet?: string }).dominantPlanet;
+  const dominated: string | undefined = (astro as unknown as { dominantPlanet?: string })
+    .dominantPlanet;
   if (dominated) {
     const lower = dominated.toLowerCase();
     if (['lua', 'moon', 'sol', 'sun', 'venus', 'vênus'].includes(lower)) return 'emotional';
@@ -269,7 +371,7 @@ function refineCorePattern(basePattern: string, dominantBody?: number): string {
   if (dominantBody === undefined || dominantBody < 7) return basePattern;
   return basePattern.replace(
     '.',
-    '. Seus corpos superiores amplificam essa energia — você pensa antes de agir, mas o pensamento já é movimento.',
+    '. Seus corpos superiores amplificam essa energia — você pensa antes de agir, mas o pensamento já é movimento.'
   );
 }
 
@@ -307,18 +409,36 @@ function buildVoteMap(
   oduHasData: boolean,
   ichingHasData: boolean,
   kabHasData: boolean,
-  astroHasData: boolean,
+  astroHasData: boolean
 ): AkashaType {
   // Pillar precedence for tie-breaking: Odu > IChing > Kabala > Astro
   const PRECEDENCE: Record<PillarVote['pillar'], number> = {
-    odu: 4, iching: 3, kabala: 2, astro: 1,
+    odu: 4,
+    iching: 3,
+    kabala: 2,
+    astro: 1,
   };
 
   const pillars: PillarVote[] = [
-    { type: oduType,              weight: oduHasData   ? 3 : 0, hasData: oduHasData,   pillar: 'odu'    },
-    { type: ichingType ?? 'arquiteto', weight: ichingHasData ? 2 : 0, hasData: ichingHasData, pillar: 'iching' },
-    { type: kabType ?? 'arquiteto',    weight: kabHasData   ? 2 : 0, hasData: kabHasData,   pillar: 'kabala' },
-    { type: astroType ?? 'arquiteto',  weight: astroHasData ? 1 : 0, hasData: astroHasData, pillar: 'astro'  },
+    { type: oduType, weight: oduHasData ? 3 : 0, hasData: oduHasData, pillar: 'odu' },
+    {
+      type: ichingType ?? 'arquiteto',
+      weight: ichingHasData ? 2 : 0,
+      hasData: ichingHasData,
+      pillar: 'iching',
+    },
+    {
+      type: kabType ?? 'arquiteto',
+      weight: kabHasData ? 2 : 0,
+      hasData: kabHasData,
+      pillar: 'kabala',
+    },
+    {
+      type: astroType ?? 'arquiteto',
+      weight: astroHasData ? 1 : 0,
+      hasData: astroHasData,
+      pillar: 'astro',
+    },
   ];
 
   // Accumulate votes per type: { type: { votes, maxPillarPrecedence } }
@@ -336,10 +456,7 @@ function buildVoteMap(
   let maxVotes = -1;
   let maxPrecedence = -1;
   for (const [t, data] of Object.entries(acc)) {
-    if (
-      data.votes > maxVotes ||
-      (data.votes === maxVotes && data.precedence > maxPrecedence)
-    ) {
+    if (data.votes > maxVotes || (data.votes === maxVotes && data.precedence > maxPrecedence)) {
       maxVotes = data.votes;
       maxPrecedence = data.precedence;
       winner = t as AkashaType;
@@ -352,10 +469,7 @@ function buildVoteMap(
  * Post-voting refinement using Tantra dominant body.
  * Adjusts the voted type when strong Tantric signal suggests a different direction.
  */
-function refineWithTantra(
-  votedType: AkashaType,
-  dominantBody: number | undefined,
-): AkashaType {
+function refineWithTantra(votedType: AkashaType, dominantBody: number | undefined): AkashaType {
   if (dominantBody === undefined) return votedType;
 
   // Body ≤ 3: person needs more structure → nudge toward Construtor/Guardiao
@@ -385,7 +499,7 @@ export function deriveAkashaType(
   tantra: TantricMap | null,
   odu: OduBirth | null,
   holo: AkashicHologram,
-  synthesizedProfile?: SynthesizedProfile,
+  synthesizedProfile?: SynthesizedProfile
 ): AkashaTypeProfile {
   // Resolve each pillar's type contribution
   const oduType = resolveTypeFromOdu(odu);
@@ -394,14 +508,23 @@ export function deriveAkashaType(
   const astroType = resolveTypeFromAstro(astro);
 
   // Which pillars have real data (vs. fallback)?
-  const oduHasData = !!(odu?.oduName?.trim());
+  const oduHasData = !!odu?.oduName?.trim();
   const ichingHasData = holo.ichingHex !== undefined && holo.ichingHex !== null;
-  const kabHasData = !!(kab?.lifePath);
+  const kabHasData = !!kab?.lifePath;
   const astroDom = (astro as unknown as { dominantPlanet?: string })?.dominantPlanet;
-  const astroHasData = !!(astroDom);
+  const astroHasData = !!astroDom;
 
   // Build weighted vote and refine with Tantra
-  const voted = buildVoteMap(oduType, ichingType, kabType, astroType, oduHasData, ichingHasData, kabHasData, astroHasData);
+  const voted = buildVoteMap(
+    oduType,
+    ichingType,
+    kabType,
+    astroType,
+    oduHasData,
+    ichingHasData,
+    kabHasData,
+    astroHasData
+  );
   const dominantBody = pickDominantBody(tantra);
   const finalType = refineWithTantra(voted, dominantBody);
 
@@ -412,11 +535,10 @@ export function deriveAkashaType(
   // ── Type Confidence from convergence ─────────────────────────────────────
   let typeConfidence: AkashaTypeProfile['typeConfidence'] = null;
   if (synthesizedProfile) {
-    const dominantPrimitives = synthesizedProfile.primitivos
-      .filter(p => p.dominante)
-      .slice(0, 3);
+    const dominantPrimitives = synthesizedProfile.primitivos.filter((p) => p.dominante).slice(0, 3);
     if (dominantPrimitives.length > 0) {
-      const avgConvergence = dominantPrimitives.reduce((sum, p) => sum + p.convergencia, 0) / dominantPrimitives.length;
+      const avgConvergence =
+        dominantPrimitives.reduce((sum, p) => sum + p.convergencia, 0) / dominantPrimitives.length;
       if (avgConvergence >= 0.6) typeConfidence = 'alta';
       else if (avgConvergence >= 0.3) typeConfidence = 'media';
       else typeConfidence = 'baixa';
@@ -425,9 +547,20 @@ export function deriveAkashaType(
 
   // ── Enrich corePattern with tension ─────────────────────────────────────────
   let enrichedCorePattern = corePattern;
-  if (synthesizedProfile?.tensaoPrincipal && synthesizedProfile.tensaoPrincipal.primitivoA !== synthesizedProfile.tensaoPrincipal.primitivoB) {
+  if (
+    synthesizedProfile?.tensaoPrincipal &&
+    synthesizedProfile.tensaoPrincipal.primitivoA !== synthesizedProfile.tensaoPrincipal.primitivoB
+  ) {
     const t = synthesizedProfile.tensaoPrincipal;
-    enrichedCorePattern = corePattern + ' A tensão central do seu campo é entre ' + t.primitivoA + ' e ' + t.primitivoB + ': ' + t.descricao + '.';
+    enrichedCorePattern =
+      corePattern +
+      ' A tensão central do seu campo é entre ' +
+      t.primitivoA +
+      ' e ' +
+      t.primitivoB +
+      ': ' +
+      t.descricao +
+      '.';
   }
 
   const directiveLabel = pickDailyDirectiveLabel(dominantBody);

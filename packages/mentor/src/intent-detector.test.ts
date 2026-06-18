@@ -1,7 +1,6 @@
 /**
  * @akasha/mentor — Testes para Intent Detector
  */
-
 import { describe, it, expect } from 'vitest';
 import { detectIntent, intentLabel } from './intent-detector';
 import type { ChatIntent } from './types';

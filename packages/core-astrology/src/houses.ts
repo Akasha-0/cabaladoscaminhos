@@ -1,4 +1,3 @@
- 
 // tslint:disable
 
 export type HouseSystem = 'placidus' | 'whole_sign';
@@ -28,10 +27,7 @@ function toJulianDate(data: Date): number {
   const ano = data.getUTCFullYear();
   const mes = data.getUTCMonth() + 1;
   const dia = data.getUTCDate();
-  const hora =
-    data.getUTCHours() +
-    data.getUTCMinutes() / 60 +
-    data.getUTCSeconds() / 3600;
+  const hora = data.getUTCHours() + data.getUTCMinutes() / 60 + data.getUTCSeconds() / 3600;
 
   const a = Math.floor((14 - mes) / 12);
   const y = ano + 4800 - a;
@@ -60,17 +56,17 @@ function calculatePlacidus(
   theta = normalizeDegrees(theta);
 
   // ASC
-  let ascendente = Math.atan2(
-    Math.sin((theta + longitude) * DEG_TO_RAD),
-    Math.cos(latitude * DEG_TO_RAD) * Math.cos((theta + longitude) * DEG_TO_RAD)
-  ) * RAD_TO_DEG;
+  let ascendente =
+    Math.atan2(
+      Math.sin((theta + longitude) * DEG_TO_RAD),
+      Math.cos(latitude * DEG_TO_RAD) * Math.cos((theta + longitude) * DEG_TO_RAD)
+    ) * RAD_TO_DEG;
   ascendente = normalizeDegrees(ascendente + 180);
 
   // MC
-  let mc = Math.atan2(
-    -Math.sin(latitude * DEG_TO_RAD),
-    Math.cos((theta + longitude) * DEG_TO_RAD)
-  ) * RAD_TO_DEG;
+  let mc =
+    Math.atan2(-Math.sin(latitude * DEG_TO_RAD), Math.cos((theta + longitude) * DEG_TO_RAD)) *
+    RAD_TO_DEG;
   mc = normalizeDegrees(mc);
 
   // Houses: ASC is house 1, MC is house 10. Other cusps evenly interpolated
@@ -90,7 +86,7 @@ function calculatePlacidus(
       grau = ascendente + diff * factor;
     } else {
       const factor = (i - 9) / 3;
-      let diff = (ascendente + 360) - mc;
+      let diff = ascendente + 360 - mc;
       if (diff < 0) diff += 360;
       grau = mc + diff * factor;
     }
@@ -101,9 +97,7 @@ function calculatePlacidus(
   return { houses, asc: ascendente, mc };
 }
 
-function calculateWholeSign(
-  asc: number
-): { houses: number[]; asc: number; mc: number } {
+function calculateWholeSign(asc: number): { houses: number[]; asc: number; mc: number } {
   // Whole Sign houses: each house = 30° starting from ASC
   const houses: number[] = [];
   for (let i = 0; i < 12; i++) {

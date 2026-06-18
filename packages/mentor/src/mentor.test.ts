@@ -1,7 +1,6 @@
 /**
  * @akasha/mentor — Testes para MentorEngine
  */
-
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MentorEngine } from './mentor';
 import type { ChatRequest, ChatIntent } from './types';
@@ -36,7 +35,7 @@ vi.mock('./intent-detector', () => ({
 // Configurar mocks padrão
 beforeEach(() => {
   vi.clearAllMocks();
-  
+
   mockGenerateHybrid.mockReturnValue([
     {
       practice: {

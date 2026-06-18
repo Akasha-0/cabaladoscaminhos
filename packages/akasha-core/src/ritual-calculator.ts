@@ -1,17 +1,16 @@
 /**
  * @akasha/core — Ritual Calculator
- * 
+ *
  * Calcula o código do dia e monta o ritual diário.
  * Usa timestamp para gerar código determinístico.
  */
-
-import type { AkashaCode, LifeArea, CodeLevel } from './correlation-engine';
-import type { IntegrativePractice, HexagramWithWings } from '../../core-iching/src/types';
-import type { RitualConfig, RitualResponse, Quizila, CodeOfDayResult } from './ritual-types';
-import { ODUS } from '../../core-odus/src/odus-constants';
-import { getQuizilasPorOdu } from '../../core-odus/src/calculos';
-import { createCorrelationEngine } from './correlation-engine';
 import { PRACTICES as MOCK_PRACTICES } from '../../core-iching/src/practices';
+import type { IntegrativePractice, HexagramWithWings } from '../../core-iching/src/types';
+import { getQuizilasPorOdu } from '../../core-odus/src/calculos';
+import { ODUS } from '../../core-odus/src/odus-constants';
+import type { AkashaCode, LifeArea, CodeLevel } from './correlation-engine';
+import { createCorrelationEngine } from './correlation-engine';
+import type { RitualConfig, RitualResponse, Quizila, CodeOfDayResult } from './ritual-types';
 
 // ─── Constantes de Áreas de Vida e Níveis ─────────────────────────────────────
 
@@ -92,7 +91,7 @@ const AFIRMACOES: Record<number, string> = {
   60: 'Eu limites com equilíbrio. A moderação é virtude.',
   61: 'Eu silencio a mente. A paz interior é poder.',
   62: 'Eu pequeno mas completo. A detalhe carrega significado.',
-  63:  'Eu completo com clareza. O fim iluminado revela o caminho.',
+  63: 'Eu completo com clareza. O fim iluminado revela o caminho.',
   64: 'Eu termino um ciclo. A conclusão traz paz.',
 };
 
@@ -179,13 +178,71 @@ interface HexagramData {
 }
 
 const HEXAGRAMS_DATA: HexagramData[] = Array.from({ length: 64 }, (_, i) => ({
-  number: (i + 1) as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
-        | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20
-        | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30
-        | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40
-        | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50
-        | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 | 60
-        | 61 | 62 | 63 | 64,
+  number: (i + 1) as
+    | 1
+    | 2
+    | 3
+    | 4
+    | 5
+    | 6
+    | 7
+    | 8
+    | 9
+    | 10
+    | 11
+    | 12
+    | 13
+    | 14
+    | 15
+    | 16
+    | 17
+    | 18
+    | 19
+    | 20
+    | 21
+    | 22
+    | 23
+    | 24
+    | 25
+    | 26
+    | 27
+    | 28
+    | 29
+    | 30
+    | 31
+    | 32
+    | 33
+    | 34
+    | 35
+    | 36
+    | 37
+    | 38
+    | 39
+    | 40
+    | 41
+    | 42
+    | 43
+    | 44
+    | 45
+    | 46
+    | 47
+    | 48
+    | 49
+    | 50
+    | 51
+    | 52
+    | 53
+    | 54
+    | 55
+    | 56
+    | 57
+    | 58
+    | 59
+    | 60
+    | 61
+    | 62
+    | 63
+    | 64,
   name: `Hexagrama ${i + 1}`,
   chineseName: `Hex${i + 1}`,
   judgment: 'Julgamento do hexagrama.',
@@ -273,7 +330,7 @@ function getHexagramMock(hexagramNumber: number): HexagramWithWings {
  * Obtém prática mock para o hexagrama.
  */
 function getPracticeMock(hexagram: number): IntegrativePractice {
-  const matching = MOCK_PRACTICES.filter(p => p.associations.hexagrams?.includes(hexagram));
+  const matching = MOCK_PRACTICES.filter((p) => p.associations.hexagrams?.includes(hexagram));
   if (matching.length > 0) {
     return matching[0];
   }
@@ -285,19 +342,19 @@ function getPracticeMock(hexagram: number): IntegrativePractice {
 /**
  * Calcula o código do dia baseado na data.
  * Algoritmo determinístico: mesma data = mesmo código.
- * 
+ *
  * @param date Data para calcular o código
  * @param timezone Timezone opcional (padrão: UTC)
  * @returns CodeOfDayResult com código e timestamp
  */
 export function calculateCodeOfDay(date: Date, timezone?: string): CodeOfDayResult {
   const timestamp = date.getTime();
-  
+
   const hexagram = extractFromTimestamp(timestamp, 64, 3) + 1;
   const level = determineLevel(timestamp);
   const lifeArea = determineLifeArea(timestamp);
   const hasOdu = determineHasOdu(timestamp);
-  
+
   const code: AkashaCode = {
     hexagram,
     level,
@@ -310,7 +367,7 @@ export function calculateCodeOfDay(date: Date, timezone?: string): CodeOfDayResu
 
 /**
  * Retorna a afirmação do dia baseada no hexagrama.
- * 
+ *
  * @param code Código Akasha
  * @returns Afirmação em português
  */
@@ -320,7 +377,7 @@ export function getAfirmacaoDoDia(code: AkashaCode): string {
 
 /**
  * Retorna a oração do dia baseada no hexagrama.
- * 
+ *
  * @param code Código Akasha
  * @returns Oração em português
  */
@@ -330,32 +387,33 @@ export function getOracaoDoDia(code: AkashaCode): string {
 
 /**
  * Obtém as quizilas do Odu associado ao código.
- * 
+ *
  * @param odu Odu já encontrado (para evitar busca redundante)
  * @returns Array de Quizila
  */
 function getQuizilasDoOdu(odu: { id: number }): Quizila[] {
   const textosQuizila = getQuizilasPorOdu(odu.id);
-  
+
   return textosQuizila.map((texto, idx) => ({
     id: `quizila-${odu.id}-${idx}`,
     texto,
-    tipo: texto.toLowerCase().includes('não') || texto.toLowerCase().includes('evitar') 
-      ? 'proibicao' 
-      : 'restricao',
+    tipo:
+      texto.toLowerCase().includes('não') || texto.toLowerCase().includes('evitar')
+        ? 'proibicao'
+        : 'restricao',
   }));
 }
 
 /**
  * Constrói a resposta completa do ritual.
- * 
+ *
  * @param config Configuração do ritual
  * @param code Código Akasha calculado
  * @returns RitualResponse com todos os componentes
  */
 export function buildRitual(config: RitualConfig, code: AkashaCode): RitualResponse {
   const hexagramData = getHexagramMock(code.hexagram);
-  
+
   const response: RitualResponse = {
     data: new Date(),
     codigo: {
@@ -368,8 +426,8 @@ export function buildRitual(config: RitualConfig, code: AkashaCode): RitualRespo
     oracao: getOracaoDoDia(code),
   };
 
-  let odu = code.odu ? ODUS.find(o => o.name === code.odu) : undefined;
-  
+  let odu = code.odu ? ODUS.find((o) => o.name === code.odu) : undefined;
+
   if (odu) {
     response.codigo.odu = {
       id: odu.id,

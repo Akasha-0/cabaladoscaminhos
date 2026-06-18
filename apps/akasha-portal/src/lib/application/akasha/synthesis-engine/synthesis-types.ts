@@ -4,19 +4,18 @@
  * Tipos e interfaces do motor de síntese narrativa dos 5 pilares.
  * Split de synthesis-engine.ts para manter separação de responsabilidades.
  */
-
 import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
 import type { AreaNarrativeFull } from '../narrative-generator';
 
 // ─── Life Areas (Maslow + Akasha) ──────────────────────────────────────────
 
 export type LifeArea =
-  | 'vitalidadeEnergia'   // Corpo: saúde, sexualidade, energia vital
-  | 'conexoesAmor'        // Relações: amor, família, vínculos
+  | 'vitalidadeEnergia' // Corpo: saúde, sexualidade, energia vital
+  | 'conexoesAmor' // Relações: amor, família, vínculos
   | 'carreiraProsperidade' // Recursos: finanças, carreira, abundância
-  | 'oriCabecaQuizilas'   // Mente: intuição, propósito, direção
-  | 'missaoDestino'       // Espiritual: missão, destino, transcendência
-  | 'desafiosSombras';    // Transformação: sombras, karma, superação
+  | 'oriCabecaQuizilas' // Mente: intuição, propósito, direção
+  | 'missaoDestino' // Espiritual: missão, destino, transcendência
+  | 'desafiosSombras'; // Transformação: sombras, karma, superação
 
 // ─── Frequência (Gene Keys inspired) ───────────────────────────────────────
 
@@ -169,4 +168,3 @@ export interface AkashaSynthesis {
 
 // Re-export from hologram-aggregator so consumers can import from a single place
 export type { AkashicHologram };
-

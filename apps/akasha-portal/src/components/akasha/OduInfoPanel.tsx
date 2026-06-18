@@ -33,7 +33,10 @@ export function OduInfoPanel({ odu }: Props) {
         label="Odu de Nascimento — sua essência ancestral"
         value={`${odu.oduName}${odu.oduNumber ? ` (${odu.oduNumber})` : ''}`}
       />
-      <Row label="Orixá(s) regente(s) — suas forças espirituais" value={odu.orixaRegency.join(', ')} />
+      <Row
+        label="Orixá(s) regente(s) — suas forças espirituais"
+        value={odu.orixaRegency.join(', ')}
+      />
       <Row label="Força Elemental — seu elemento estruturante" value={odu.elementalForce} />
       {odu.provisional && (
         <p style={{ fontSize: '0.6875rem', color: '#5C6691', marginTop: '0.25rem' }}>
@@ -65,7 +68,7 @@ export function OduInfoPanel({ odu }: Props) {
           </details>
         </>
       )}
-]
+      ]
       {odu.quizilas && odu.quizilas.length > 0 && (
         <>
           <Divider />
@@ -91,7 +94,7 @@ export function OduInfoPanel({ odu }: Props) {
           </details>
         </>
       )}
-]
+      ]
       {(!odu.preceitos || odu.preceitos.length === 0) && (
         <Insight color="#F0B429">
           As quizilás e preceitos específicos do seu Odu serão exibidos quando o Grimório for

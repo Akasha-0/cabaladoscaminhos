@@ -2,7 +2,6 @@
  * @akasha/core-iching — Practice Queries
  * Derived lookup indexes and query helpers for integrative practices.
  */
-
 import { PRACTICES } from './practices-data';
 import type { Element, PracticeCategory, IntegrativePractice } from './types';
 

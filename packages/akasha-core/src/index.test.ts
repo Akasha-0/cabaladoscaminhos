@@ -2,7 +2,6 @@
  * @akasha/core - Test coverage for barrel exports
  * Tests correlation-map functions and practices-guardrails functions
  */
-
 import { describe, it, expect } from 'vitest';
 import {
   // correlation-map
@@ -33,7 +32,7 @@ describe('correlation-map exports', () => {
     });
 
     it('handles all known IFA_ODUS without throwing', () => {
-      IFA_ODUS.forEach(odu => {
+      IFA_ODUS.forEach((odu) => {
         expect(() => getIchingsByIfa(odu)).not.toThrow();
       });
     });
@@ -51,7 +50,7 @@ describe('correlation-map exports', () => {
     });
 
     it('handles hexagram boundary 1-64 without throwing', () => {
-      [1, 32, 64].forEach(hex => {
+      [1, 32, 64].forEach((hex) => {
         expect(() => getIfasByIching(hex)).not.toThrow();
       });
     });
@@ -99,7 +98,9 @@ describe('correlation-map exports', () => {
 
     it('is symmetric regardless of argument order', () => {
       expect(getCorrelationStrength('iching', 'ifa')).toBe(getCorrelationStrength('ifa', 'iching'));
-      expect(getCorrelationStrength('cabala', 'astrology')).toBe(getCorrelationStrength('astrology', 'cabala'));
+      expect(getCorrelationStrength('cabala', 'astrology')).toBe(
+        getCorrelationStrength('astrology', 'cabala')
+      );
     });
   });
 
@@ -121,7 +122,7 @@ describe('correlation-map exports', () => {
 
     it('each correlation has required fields', () => {
       const correlations = findCorrelations('iching', 1);
-      correlations.forEach(corr => {
+      correlations.forEach((corr) => {
         expect(corr).toHaveProperty('id');
         expect(corr).toHaveProperty('source');
         expect(corr).toHaveProperty('target');
@@ -183,23 +184,25 @@ describe('practices-guardrails exports', () => {
     it('flags practice with very short howTo as incomplete', () => {
       const practice = makePractice({ howTo: 'x' });
       const result = validatePractice(practice);
-      expect(result.warnings.some(w => w.includes('incompletas'))).toBe(true);
+      expect(result.warnings.some((w) => w.includes('incompletas'))).toBe(true);
     });
 
     it('flags practice with very short frequency', () => {
       const practice = makePractice({ frequency: 'a' });
       const result = validatePractice(practice);
-      expect(result.warnings.some(w => w.includes('Frequência'))).toBe(true);
+      expect(result.warnings.some((w) => w.includes('Frequência'))).toBe(true);
     });
 
     it('flags practice with prohibited terms in name', () => {
       const practice = makePractice({ name: 'Ritual de trabalho sexual' });
       const result = validatePractice(practice);
-      expect(result.warnings.some(w => w.includes('problemática'))).toBe(true);
+      expect(result.warnings.some((w) => w.includes('problemática'))).toBe(true);
     });
 
     it('flags practice with prohibited terms in howTo', () => {
-      const practice = makePractice({ howTo: 'Isso inclui cura de doenças e manipulação de terceiros' });
+      const practice = makePractice({
+        howTo: 'Isso inclui cura de doenças e manipulação de terceiros',
+      });
       const result = validatePractice(practice);
       expect(result.warnings.length).toBeGreaterThan(0);
     });

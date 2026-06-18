@@ -1,10 +1,9 @@
 /**
  * @akasha/mentor — Detector de Intenção
- * 
+ *
  * Detecta a intenção do usuário para direcionar
  * a resposta do mentor para prática, ritual, etc.
  */
-
 import type { ChatIntent } from './types';
 
 // ─── Padrões de Detecção ─────────────────────────────────────────────────────
@@ -78,7 +77,7 @@ function matchesPatterns(text: string, patterns: string[]): boolean {
 
 /**
  * Detecta a intenção do usuário a partir da mensagem.
- * 
+ *
  * @param message - Mensagem do usuário
  * @returns Intenção detectada ('practice' | 'guidance' | 'ritual' | 'general')
  */

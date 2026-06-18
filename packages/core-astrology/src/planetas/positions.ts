@@ -2,16 +2,21 @@ import { calcularPosicao, getSigno, getGrauNoSigno, toJulianDate } from '../swis
 import type { Planeta, Signo } from '../tipos';
 
 const CLASSICAL_PLANETS: Planeta[] = [
-  'sol', 'lua', 'mercurio', 'venus', 'marte',
-  'jupiter', 'saturno'
+  'sol',
+  'lua',
+  'mercurio',
+  'venus',
+  'marte',
+  'jupiter',
+  'saturno',
 ];
 
 const RETROGRADE_ORBS: Partial<Record<Planeta, number>> = {
   mercurio: 0.15,
   venus: 0.15,
   marte: 0.15,
-  jupiter: 0.10,
-  saturno: 0.10,
+  jupiter: 0.1,
+  saturno: 0.1,
 };
 
 export interface PlanetaryPosition {
@@ -34,9 +39,9 @@ function isRetrograde(planeta: Planeta, data: Date): boolean {
   const orb = RETROGRADE_ORBS[orbKey] ?? 0.15;
 
   const jd = toJulianDate(data);
-  const days = [1, 0, -1].map(d => jd + d);
+  const days = [1, 0, -1].map((d) => jd + d);
 
-  const positions = days.map(d => {
+  const positions = days.map((d) => {
     const date = new Date((d - 2440587.5) * 86400000);
     return calcularPosicao(planeta, date);
   });

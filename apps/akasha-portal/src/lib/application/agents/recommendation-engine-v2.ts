@@ -164,7 +164,15 @@ export async function generateAreaRecommendationV2(
   knowledgeUsed: number;
 }> {
   const context = await buildDailyContext(user, options.currentDate);
-  const area = LIFE_AREAS.find(a => a.id === areaId) ?? { id: areaId as LifeAreaId, name: areaId, description: '', keywords: [], emoji: '', orixa: { primary: [] }, astrology: { planets: [] } };
+  const area = LIFE_AREAS.find((a) => a.id === areaId) ?? {
+    id: areaId as LifeAreaId,
+    name: areaId,
+    description: '',
+    keywords: [],
+    emoji: '',
+    orixa: { primary: [] },
+    astrology: { planets: [] },
+  };
 
   const areaDomainMap: Record<string, string[]> = {
     sexualidade: ['lilith-casa8-sexo', 'chakras', 'corpos-pranicos', 'flora-sagrada'],
@@ -310,10 +318,12 @@ Trabalhe o chakra **${context.personalDay.chakra}** hoje. Beba água, alongue-se
 ${
   plantas.length > 0
     ? `## 🌿 Medicina Sagrada
-${plantas.map((p) => {
-      const plantaData = p.data as { planta?: string; indicacao?: string[] };
-      return `- **${plantaData.planta ?? 'Erva sagrada'}**: ${plantaData.indicacao?.[0] ?? 'uso geral'}`;
-    }).join('\n')}`
+${plantas
+  .map((p) => {
+    const plantaData = p.data as { planta?: string; indicacao?: string[] };
+    return `- **${plantaData.planta ?? 'Erva sagrada'}**: ${plantaData.indicacao?.[0] ?? 'uso geral'}`;
+  })
+  .join('\n')}`
     : ''
 }
 

@@ -237,4 +237,3 @@ export interface ChatResponse {
   ritual?: MentorRitual;
   relevantQuizilas?: MentorQuizila[];
 }
-

@@ -16,7 +16,6 @@
  * Agora: 3 queries totais (findMany batch + groupBy + latest balance lookup).
  * Speedup esperado: 100x para 100+ consultations.
  */
-
 import { prisma } from '@/lib/infrastructure/prisma';
 
 export interface ReconciliationDiscrepancy {
@@ -35,7 +34,7 @@ export interface ReconciliationReport {
 }
 
 const WINDOW_BEFORE_MS = 60_000; // 1 min antes
-const WINDOW_AFTER_MS = 5_000;   // 5s depois
+const WINDOW_AFTER_MS = 5_000; // 5s depois
 
 /**
  * Reconcilia créditos de consultas recentes.
@@ -132,7 +131,7 @@ export async function reconcileCredits(opts: { since?: Date } = {}): Promise<Rec
     const consultWindowStart = new Date(consult.createdAt.getTime() - WINDOW_BEFORE_MS);
     const consultWindowEnd = new Date(consult.createdAt.getTime() + WINDOW_AFTER_MS);
     const matchingEntries = userEntries.filter(
-      (e) => e.createdAt >= consultWindowStart && e.createdAt <= consultWindowEnd,
+      (e) => e.createdAt >= consultWindowStart && e.createdAt <= consultWindowEnd
     );
     const totalDebitado = matchingEntries.reduce((sum, e) => sum + e.delta, 0);
     const expectedDelta = -expectedCost;

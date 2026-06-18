@@ -6,18 +6,18 @@
  *
  * Cobertura: 0% → ~40% (com este test file).
  */
-
 import { describe, it, expect, vi } from 'vitest';
+import type { PilaresDados } from '../significados-curados';
+import { sintetizarMapa } from './synthesizer';
 
 // Mock narrative-generator to avoid DB / heavy deps
 vi.mock('./narrative-generator', () => ({
-  gerarNarrativaDimensao: vi.fn((dimId, _pilares) => `Narrativa curada para ${dimId}: você é único, caminho próprio.`),
+  gerarNarrativaDimensao: vi.fn(
+    (dimId, _pilares) => `Narrativa curada para ${dimId}: você é único, caminho próprio.`
+  ),
   gerarNarrativaSexualidade: vi.fn(() => 'Sexualidade curada: corpo 4, mente positiva.'),
   gerarPerfilGeral: vi.fn(() => 'Perfil Akasha: você é um Catalisador, com 11 corpos.'),
 }));
-
-import { sintetizarMapa } from './synthesizer';
-import type { PilaresDados } from '../significados-curados';
 
 const PILARES_COMPLETOS: PilaresDados = {
   cabala: { life_path: 11, birthday: 7, expression: 5, ano_pessoal: 4 },

@@ -1,11 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import {
-  WINGS,
-  getWing,
-  getAllWings,
-  getWingsByHexagram,
-  getHexagramWithWings,
-} from '../index';
+import { WINGS, getWing, getAllWings, getWingsByHexagram, getHexagramWithWings } from '../index';
 
 describe('@akasha/core-iching — Asas (Wings)', () => {
   describe('WINGS (10 Wings)', () => {

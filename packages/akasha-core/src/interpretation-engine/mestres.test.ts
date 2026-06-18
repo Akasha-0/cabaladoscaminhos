@@ -7,10 +7,9 @@
  *   - Garante que a chave do Record bate com MASTER_NUMBERS (fonte da verdade)
  *   - Edge case: chaves fora do conjunto canônico (ex: 0, 1, 99) não existem
  */
-
 import { describe, it, expect } from 'vitest';
-import { MESTRES_CONTENT } from './mestres';
 import { MASTER_NUMBERS } from '../interpretation-engine';
+import { MESTRES_CONTENT } from './mestres';
 import type { NumeroLevel } from './types';
 
 const MESTRES_NIVEIS: NumeroLevel[] = ['shadow', 'gift', 'siddhi'];
@@ -70,15 +69,11 @@ describe('MESTRES_CONTENT', () => {
   it('as chaves do Record são exatamente o conjunto MASTER_NUMBERS', () => {
     // Edge case: garante que MESTRES_CONTENT e MASTER_NUMBERS não divergem
     // (ex: alguém adiciona 44 ao Set mas esquece de materializar o conteúdo)
-    const chaves = new Set(
-      Object.keys(MESTRES_CONTENT).map((k) => Number(k))
-    );
+    const chaves = new Set(Object.keys(MESTRES_CONTENT).map((k) => Number(k)));
 
     expect(chaves.size).toBe(MASTER_NUMBERS.size);
     for (const m of MASTER_NUMBERS) {
-      expect(chaves.has(m), `MASTER_NUMBERS tem ${m} mas MESTRES_CONTENT não`).toBe(
-        true
-      );
+      expect(chaves.has(m), `MASTER_NUMBERS tem ${m} mas MESTRES_CONTENT não`).toBe(true);
     }
   });
 

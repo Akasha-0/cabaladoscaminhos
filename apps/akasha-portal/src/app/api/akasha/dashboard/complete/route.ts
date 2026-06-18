@@ -1,18 +1,18 @@
 /**
  * POST /api/akasha/dashboard/complete
  * Salva completude de ritual
- * 
+ *
  * Body:
  * - ritualName: string
  * - ritualLevel: 'shadow' | 'gift' | 'siddhi'
  * - grimoireId?: string
  * - duration?: number
  */
-import { NextRequest, NextResponse } from 'next/server';
+import { DashboardService, type RitualCompletionData } from '@akasha/core';
 import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';
 import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { prisma } from '@/lib/infrastructure/prisma';
-import { DashboardService, type RitualCompletionData } from '@akasha/core';
 
 const bodySchema = z.object({
   ritualName: z.string(),

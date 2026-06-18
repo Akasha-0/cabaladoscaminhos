@@ -1,10 +1,9 @@
 /**
  * Storage in-memory para configurações de Ritual.
- * 
+ *
  * ATENÇÃO: Este storage é por processo. Em produção com múltiplas
  * instâncias, usar Prisma ou Redis para persistência compartilhada.
  */
-
 import type { RitualConfig } from '@akasha/core';
 
 const ritualConfigs = new Map<string, RitualConfig>();

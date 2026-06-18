@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronRight, ChevronLeft, Check, Sparkles } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 const STORAGE_KEY = 'akasha-onboarding-complete';
 
@@ -34,7 +34,8 @@ export function Onboarding({ onComplete }: OnboardingProps) {
   const steps = [
     {
       title: 'Bem-vindo ao Akasha OS',
-      description: 'Seu sistema de autoconhecimento espiritual integrado. Explore os quatro pilares: Cabala, Astrologia, Ifá e Tantra.',
+      description:
+        'Seu sistema de autoconhecimento espiritual integrado. Explore os quatro pilares: Cabala, Astrologia, Ifá e Tantra.',
       icon: Sparkles,
     },
     {
@@ -72,10 +73,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
             </div>
             <span className="font-semibold">Akasha OS</span>
           </div>
-          <button
-            onClick={handleSkip}
-            className="p-2 hover:bg-muted rounded-lg transition-colors"
-          >
+          <button onClick={handleSkip} className="p-2 hover:bg-muted rounded-lg transition-colors">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -115,7 +113,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           {/* Navigation */}
           <div className="flex items-center justify-between mt-8">
             <button
-              onClick={() => setCurrentStep(prev => prev - 1)}
+              onClick={() => setCurrentStep((prev) => prev - 1)}
               disabled={currentStep === 0}
               className="p-2 hover:bg-muted rounded-lg transition-colors disabled:opacity-30"
             >
@@ -142,7 +140,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
               </button>
             ) : (
               <button
-                onClick={() => setCurrentStep(prev => prev + 1)}
+                onClick={() => setCurrentStep((prev) => prev + 1)}
                 className="p-2 hover:bg-muted rounded-lg transition-colors"
               >
                 <ChevronRight className="w-5 h-5" />

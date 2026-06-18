@@ -58,7 +58,7 @@ export class MiniMaxProvider implements LLMProvider {
     const response = await fetch(this.baseUrl, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
+        Authorization: `Bearer ${this.apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -71,7 +71,9 @@ export class MiniMaxProvider implements LLMProvider {
 
     if (!response.ok) {
       const errorBody = await response.text();
-      throw new Error(`MiniMax API error: ${response.status} ${response.statusText} - ${errorBody}`);
+      throw new Error(
+        `MiniMax API error: ${response.status} ${response.statusText} - ${errorBody}`
+      );
     }
 
     if (!response.body) {

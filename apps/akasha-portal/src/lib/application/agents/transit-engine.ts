@@ -10,16 +10,31 @@
 //
 // 100% DINÂMICO - funciona para QUALQUER data.
 // ============================================================
-
-import { getPositions, type PlanetPosition, getBirthChart, type BirthChart, findAspects } from '@akasha/core-astrology';
+import {
+  getPositions,
+  type PlanetPosition,
+  getBirthChart,
+  type BirthChart,
+  findAspects,
+} from '@akasha/core-astrology';
 
 // ============================================================
 // TYPES
 // ============================================================
 
-export type Planet = 'sol' | 'lua' | 'mercurio' | 'venus' | 'marte' |
-                     'jupiter' | 'saturno' | 'urano' | 'netuno' | 'plutao' |
-                     'node_norte' | 'node_sul';
+export type Planet =
+  | 'sol'
+  | 'lua'
+  | 'mercurio'
+  | 'venus'
+  | 'marte'
+  | 'jupiter'
+  | 'saturno'
+  | 'urano'
+  | 'netuno'
+  | 'plutao'
+  | 'node_norte'
+  | 'node_sul';
 
 export type AspectType = 'conjuncao' | 'sextil' | 'quadratura' | 'trino' | 'oposicao';
 
@@ -27,20 +42,27 @@ export interface TransitAspect {
   transitPlanet: Planet;
   natalPlanet: Planet;
   aspect: AspectType;
-  exactness: number;          // 0-100 (100 = exato)
+  exactness: number; // 0-100 (100 = exato)
   isApplying: boolean;
-  duration: string;           // "2-3 dias" etc
+  duration: string; // "2-3 dias" etc
   interpretation: string;
-  lifeAreas: string[];        // Áreas da vida afetadas
+  lifeAreas: string[]; // Áreas da vida afetadas
   energy: 'harmonioso' | 'desafiador' | 'neutro';
   recommendation: string;
 }
 
 export interface MoonPhase {
-  phase: 'nova' | 'crescente' | 'cheia' | 'minguante' |
-         'lua-crescente' | 'gibosa-crescente' | 'gibosa-minguante' | 'lua-minguante';
+  phase:
+    | 'nova'
+    | 'crescente'
+    | 'cheia'
+    | 'minguante'
+    | 'lua-crescente'
+    | 'gibosa-crescente'
+    | 'gibosa-minguante'
+    | 'lua-minguante';
   name: string;
-  illumination: number;       // 0-100%
+  illumination: number; // 0-100%
   energy: string;
   action: string;
   avoid: string;
@@ -53,24 +75,27 @@ export interface DailyEnergy {
   moonPhase: MoonPhase;
   retrogradePlanets: Planet[];
   majorAspects: TransitAspect[];
-  overallEnergy: number;      // 0-100
+  overallEnergy: number; // 0-100
   overallTheme: string;
   keyAdvice: string;
   luckyColor: string;
   luckyNumber: number;
-  powerHour: string;          // Horário de pico de energia
+  powerHour: string; // Horário de pico de energia
 }
 
 // ============================================================
 // INTERPRETAÇÕES DOS ASPECTOS DE TRÂNSITO
 // ============================================================
 
-const TRANSIT_INTERPRETATIONS: Record<string, {
-  interpretation: string;
-  lifeAreas: string[];
-  energy: 'harmonioso' | 'desafiador' | 'neutro';
-  recommendation: string;
-}> = {
+const TRANSIT_INTERPRETATIONS: Record<
+  string,
+  {
+    interpretation: string;
+    lifeAreas: string[];
+    energy: 'harmonioso' | 'desafiador' | 'neutro';
+    recommendation: string;
+  }
+> = {
   // Sol em trânsito
   'sol-sol-conjuncao': {
     interpretation: 'Renovação da identidade. Momento de brilhar e ser visto.',
@@ -327,9 +352,7 @@ function calculateMoonPhase(date: Date): MoonPhase {
   }
 
   // Calcular iluminação (0-100%)
-  const illumination = Math.round(
-    (1 - Math.cos(phaseIndex * 2 * Math.PI)) / 2 * 100
-  );
+  const illumination = Math.round(((1 - Math.cos(phaseIndex * 2 * Math.PI)) / 2) * 100);
 
   return {
     phase,
@@ -361,15 +384,12 @@ function calculateTransits(
     for (const natal of natalPositions) {
       if (!transit || !natal) continue;
 
-      const aspect = findSingleAspect(
-        transit.longitude,
-        natal.longitude,
-        orbs
-      );
+      const aspect = findSingleAspect(transit.longitude, natal.longitude, orbs);
 
       if (aspect) {
         const key = `${transit.planet}-${natal.planet}-${aspect}`;
-        const interpretation = TRANSIT_INTERPRETATIONS[key] ||
+        const interpretation =
+          TRANSIT_INTERPRETATIONS[key] ||
           getGenericInterpretation(transit.planet, natal.planet, aspect);
 
         // Calcular exactness
@@ -461,20 +481,29 @@ function getGenericInterpretation(
   transitP: Planet | string,
   natalP: Planet | string,
   aspect: AspectType
-): { interpretation: string; lifeAreas: string[]; energy: 'harmonioso' | 'desafiador' | 'neutro'; recommendation: string } {
+): {
+  interpretation: string;
+  lifeAreas: string[];
+  energy: 'harmonioso' | 'desafiador' | 'neutro';
+  recommendation: string;
+} {
   const energy: 'harmonioso' | 'desafiador' | 'neutro' =
-    aspect === 'trino' || aspect === 'sextil' ? 'harmonioso' :
-    aspect === 'quadratura' || aspect === 'oposicao' ? 'desafiador' : 'neutro';
+    aspect === 'trino' || aspect === 'sextil'
+      ? 'harmonioso'
+      : aspect === 'quadratura' || aspect === 'oposicao'
+        ? 'desafiador'
+        : 'neutro';
 
   return {
     interpretation: `Trânsito de ${String(transitP)} ${aspect} ao ${String(natalP)} natal traz movimento nessa área.`,
     lifeAreas: ['geral'],
     energy,
-    recommendation: energy === 'harmonioso'
-      ? 'Aproveite o fluxo positivo.'
-      : energy === 'desafiador'
-        ? 'Observe a lição, não resista.'
-        : 'Mantenha-se presente e consciente.',
+    recommendation:
+      energy === 'harmonioso'
+        ? 'Aproveite o fluxo positivo.'
+        : energy === 'desafiador'
+          ? 'Observe a lição, não resista.'
+          : 'Mantenha-se presente e consciente.',
   };
 }
 
@@ -493,18 +522,14 @@ export function buildDailyEnergy(
     .filter((p: PlanetPosition) => p?.retrograde)
     .map((p: PlanetPosition) => p.planet as Planet);
 
-  const majorAspects = aspects
-    .filter(a => a.exactness >= 50)
-    .slice(0, 7);
+  const majorAspects = aspects.filter((a) => a.exactness >= 50).slice(0, 7);
 
   // Overall energy
-  const harmonious = majorAspects.filter(a => a.energy === 'harmonioso').length;
-  const challenging = majorAspects.filter(a => a.energy === 'desafiador').length;
-  const moonMultiplier = moonPhase.phase === 'cheia' ? 1.2 :
-                        moonPhase.phase === 'nova' ? 0.8 : 1.0;
-  const overallEnergy = Math.min(100, Math.max(0,
-    50 + (harmonious * 8) - (challenging * 6)
-  )) * moonMultiplier;
+  const harmonious = majorAspects.filter((a) => a.energy === 'harmonioso').length;
+  const challenging = majorAspects.filter((a) => a.energy === 'desafiador').length;
+  const moonMultiplier = moonPhase.phase === 'cheia' ? 1.2 : moonPhase.phase === 'nova' ? 0.8 : 1.0;
+  const overallEnergy =
+    Math.min(100, Math.max(0, 50 + harmonious * 8 - challenging * 6)) * moonMultiplier;
 
   const overallTheme = generateOverallTheme(moonPhase, majorAspects);
   const keyAdvice = generateKeyAdvice(moonPhase, majorAspects);
@@ -548,10 +573,22 @@ function calculateLuckyForDay(date: Date): { luckyColor: string; luckyNumber: nu
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
 
-  const sum = String(day + month + year).split('').reduce((a, b) => a + parseInt(b, 10), 0);
+  const sum = String(day + month + year)
+    .split('')
+    .reduce((a, b) => a + parseInt(b, 10), 0);
   const luckyNumber = ((sum * 7) % 9) + 1;
 
-  const colors = ['Vermelho', 'Laranja', 'Amarelo', 'Verde', 'Azul', 'Violeta', 'Rosa', 'Dourado', 'Branco'];
+  const colors = [
+    'Vermelho',
+    'Laranja',
+    'Amarelo',
+    'Verde',
+    'Azul',
+    'Violeta',
+    'Rosa',
+    'Dourado',
+    'Branco',
+  ];
   const luckyColor = colors[(sum - 1) % colors.length];
 
   return { luckyColor, luckyNumber };
@@ -559,7 +596,9 @@ function calculateLuckyForDay(date: Date): { luckyColor: string; luckyNumber: nu
 
 function calculatePowerHour(date: Date): string {
   // Simplificado: horário de pico baseado no signo solar médio do dia
-  const dayOfYear = Math.floor((date.getTime() - new Date(date.getFullYear(), 0, 0).getTime()) / 86400000);
+  const dayOfYear = Math.floor(
+    (date.getTime() - new Date(date.getFullYear(), 0, 0).getTime()) / 86400000
+  );
   const hours = ['06-08h', '08-10h', '10-12h', '12-14h', '14-16h', '16-18h', '18-20h', '20-22h'];
   return hours[dayOfYear % hours.length];
 }

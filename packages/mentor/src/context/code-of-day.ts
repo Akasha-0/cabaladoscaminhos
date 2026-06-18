@@ -28,13 +28,13 @@ export function getCodeOfDayContext(): string {
  */
 export function calculateHexagramForDate(date: Date): CodeOfDayInfo {
   const { code } = calculateCodeOfDay(date);
-  
+
   const formattedDate = date.toLocaleDateString('pt-BR');
-  
+
   const name = `Hexagrama ${code.hexagram}`;
-  
+
   const formatted = `[Data: ${formattedDate}]\n[Código do Dia: ${name} - Nível ${code.level}]`;
-  
+
   return {
     hexagram: code.hexagram,
     name,

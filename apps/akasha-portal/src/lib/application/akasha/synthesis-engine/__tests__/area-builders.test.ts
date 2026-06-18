@@ -11,8 +11,9 @@
  * Cobre: casos com dados ricos, dados parciais, todos os pilares null,
  * edge cases de planet lookup, mapping de chackras e áreas desconhecidas.
  */
-
+import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/types';
 import { describe, it, expect } from 'vitest';
+import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
 import {
   buildShadowSymptoms,
   buildShadowPattern,
@@ -22,8 +23,6 @@ import {
   buildAreaRitual,
   buildTransformationPrompt,
 } from '../area-builders';
-import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/types';
-import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
 
 // ─── Fixtures ────────────────────────────────────────────────────────────────
 
@@ -76,12 +75,42 @@ function makeOdu(overrides: Partial<OduBirth> = {}): OduBirth {
 
 function makeHolo(overrides: Partial<AkashicHologram> = {}): AkashicHologram {
   const base = {
-    vitalidadeEnergia: { title: 'Vitalidade', chakra: '1º Muladhara (Básico)', color: '#FF3B30', keyData: {} },
-    conexoesAmor: { title: 'Conexões', chakra: '4º Anahata (Cardíaco)', color: '#34C759', keyData: {} },
-    carreiraProsperidade: { title: 'Carreira', chakra: '3º Manipura (Plexo Solar)', color: '#FFCC00', keyData: {} },
-    oriCabecaQuizilas: { title: 'Ori', chakra: '6º Ajna (Terceiro Olho)', color: '#5856D6', keyData: {} },
-    missaoDestino: { title: 'Missão', chakra: '7º Sahasrara (Coronário)', color: '#AF52DE', keyData: {} },
-    desafiosSombras: { title: 'Desafios', chakra: '2º Svadhisthana (Umbilical)', color: '#FF9500', keyData: {} },
+    vitalidadeEnergia: {
+      title: 'Vitalidade',
+      chakra: '1º Muladhara (Básico)',
+      color: '#FF3B30',
+      keyData: {},
+    },
+    conexoesAmor: {
+      title: 'Conexões',
+      chakra: '4º Anahata (Cardíaco)',
+      color: '#34C759',
+      keyData: {},
+    },
+    carreiraProsperidade: {
+      title: 'Carreira',
+      chakra: '3º Manipura (Plexo Solar)',
+      color: '#FFCC00',
+      keyData: {},
+    },
+    oriCabecaQuizilas: {
+      title: 'Ori',
+      chakra: '6º Ajna (Terceiro Olho)',
+      color: '#5856D6',
+      keyData: {},
+    },
+    missaoDestino: {
+      title: 'Missão',
+      chakra: '7º Sahasrara (Coronário)',
+      color: '#AF52DE',
+      keyData: {},
+    },
+    desafiosSombras: {
+      title: 'Desafios',
+      chakra: '2º Svadhisthana (Umbilical)',
+      color: '#FF9500',
+      keyData: {},
+    },
   } as unknown as AkashicHologram;
   return { ...base, ...overrides } as AkashicHologram;
 }
@@ -107,7 +136,9 @@ describe('buildShadowSymptoms', () => {
     const kab = makeKab({ challenges: { first: 5, second: 2, main: 7, last: 3 } });
     const result = buildShadowSymptoms(null, kab, null, null, undefined, 'vitalidadeEnergia');
     // Curated phrase: challenge 5 → 'liberdade como fuga'
-    expect(result.some((s) => s.includes('liberdade') || s.includes('Desafio') || s.includes('fuga'))).toBe(true);
+    expect(
+      result.some((s) => s.includes('liberdade') || s.includes('Desafio') || s.includes('fuga'))
+    ).toBe(true);
   });
 
   it('inclui mensagem de Saturno quando planeta está no mapa', () => {
@@ -232,7 +263,9 @@ describe('buildGiftStrengths', () => {
   it('NÃO marca expressão impactante quando expression <= 5', () => {
     const kab = makeKab({ expression: 5 });
     const result = buildGiftStrengths(null, kab, null, null, undefined, 'vitalidade');
-    expect(result.some((s) => s.toLowerCase().includes('expressão') && s.includes('5'))).toBe(false);
+    expect(result.some((s) => s.toLowerCase().includes('expressão') && s.includes('5'))).toBe(
+      false
+    );
   });
 
   it('inclui nome do Odu quando definido', () => {
@@ -416,7 +449,14 @@ describe('buildAreaRitual', () => {
 
 describe('buildTransformationPrompt', () => {
   it('retorna o defaultPrompt recebido (pass-through)', () => {
-    const result = buildTransformationPrompt(null, null, null, null, 'vitalidade', 'meu-prompt-custom');
+    const result = buildTransformationPrompt(
+      null,
+      null,
+      null,
+      null,
+      'vitalidade',
+      'meu-prompt-custom'
+    );
     expect(result).toBe('meu-prompt-custom');
   });
 

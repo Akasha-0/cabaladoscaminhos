@@ -1,11 +1,11 @@
 'use client';
 import { useState } from 'react';
 import { Divider, InfoPanel, Insight, Row } from '@/components/akasha/MandalaChartInfoPanel';
-import { SignificadoEmbed, resolveSig } from '@/components/akasha/mandala-meanings';
+import { PlainEnglishPlanet } from '@/components/akasha/PlainEnglishPlanet';
 import { ELEMENT_COLORS, ELEMENT_LABELS } from '@/components/akasha/mandala-elements';
 import { ASPECT_SYMBOLS } from '@/components/akasha/mandala-geometry';
+import { SignificadoEmbed, resolveSig } from '@/components/akasha/mandala-meanings';
 import { formatDegreeToZodiac } from '@/lib/shared/zodiac';
-import { PlainEnglishPlanet } from '@/components/akasha/PlainEnglishPlanet';
 
 export interface AstrologyAspect {
   planet1: string;
@@ -104,23 +104,21 @@ export function AstrologyInfoPanel({
             })
           )}
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            {(Object.entries(astrology.elementalBalance) as [string, number][]).map(
-              ([el, val]) => (
-                <span
-                  key={el}
-                  style={{
-                    padding: '3px 10px',
-                    borderRadius: '100px',
-                    fontSize: '0.6875rem',
-                    background: `${ELEMENT_COLORS[el]}18`,
-                    border: `1px solid ${ELEMENT_COLORS[el]}44`,
-                    color: ELEMENT_COLORS[el],
-                  }}
-                >
-                  {ELEMENT_LABELS[el]} {val}%
-                </span>
-              )
-            )}
+            {(Object.entries(astrology.elementalBalance) as [string, number][]).map(([el, val]) => (
+              <span
+                key={el}
+                style={{
+                  padding: '3px 10px',
+                  borderRadius: '100px',
+                  fontSize: '0.6875rem',
+                  background: `${ELEMENT_COLORS[el]}18`,
+                  border: `1px solid ${ELEMENT_COLORS[el]}44`,
+                  color: ELEMENT_COLORS[el],
+                }}
+              >
+                {ELEMENT_LABELS[el]} {val}%
+              </span>
+            ))}
           </div>
           {elemGuidance && (
             <>

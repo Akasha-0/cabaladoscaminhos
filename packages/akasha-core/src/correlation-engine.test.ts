@@ -77,16 +77,16 @@ describe('CorrelationEngine - findCorrelations', () => {
 
   it('correlações incluem I Ching', () => {
     const correlations = engine.findCorrelations();
-    const hasIching = correlations.some(c => 
-      c.source.tradition === 'iching' || c.target.tradition === 'iching'
+    const hasIching = correlations.some(
+      (c) => c.source.tradition === 'iching' || c.target.tradition === 'iching'
     );
     expect(hasIching).toBe(true);
   });
 
   it('correlações incluem Ifá quando Odu disponível', () => {
     const correlations = engine.findCorrelations();
-    const hasIfa = correlations.some(c =>
-      c.source.tradition === 'ifa' || c.target.tradition === 'ifa'
+    const hasIfa = correlations.some(
+      (c) => c.source.tradition === 'ifa' || c.target.tradition === 'ifa'
     );
     expect(hasIfa).toBe(true);
   });
@@ -148,10 +148,10 @@ describe('CorrelationEngine - scorePractice', () => {
   it('prática insegura tem score penalizado', () => {
     const unsafePractice = makePractice({ isSafe: false });
     const safePractice = makePractice({ isSafe: true });
-    
+
     const scoredUnsafe = engine.scorePractice(unsafePractice);
     const scoredSafe = engine.scorePractice(safePractice);
-    
+
     // Prática insegura deve ter score menor que segura equivalente
     expect(scoredUnsafe.score).toBeLessThan(scoredSafe.score);
   });
@@ -183,10 +183,7 @@ describe('CorrelationEngine - scorePractices', () => {
   });
 
   it('retorna array de ScoredPractice', () => {
-    const practices = [
-      makePractice({ id: 'p1' }),
-      makePractice({ id: 'p2' }),
-    ];
+    const practices = [makePractice({ id: 'p1' }), makePractice({ id: 'p2' })];
     const scored = engine.scorePractices(practices);
 
     expect(scored).toHaveLength(2);
@@ -266,7 +263,15 @@ describe('CorrelationEngine - Níveis de Código', () => {
 // ─── Testes: Áreas de Vida ────────────────────────────────────────────────────
 
 describe('CorrelationEngine - Áreas de Vida', () => {
-  const areas: LifeArea[] = ['saude', 'financas', 'relacionamentos', 'carreira', 'espiritualidade', 'familia', 'criatividade'];
+  const areas: LifeArea[] = [
+    'saude',
+    'financas',
+    'relacionamentos',
+    'carreira',
+    'espiritualidade',
+    'familia',
+    'criatividade',
+  ];
 
   it.each(areas)('funciona com área de vida: %s', (area) => {
     const code: AkashaCode = { hexagram: 1, level: 'gift', lifeArea: area };
@@ -445,9 +450,7 @@ describe('CorrelationEngine - Recency Score', () => {
     const fresh = new CorrelationEngine({ userCode: code, now });
     const practice = makePractice();
 
-    expect(veryOld.scorePractice(practice).score).toBe(
-      fresh.scorePractice(practice).score
-    );
+    expect(veryOld.scorePractice(practice).score).toBe(fresh.scorePractice(practice).score);
   });
 
   it('uso no mesmo instante (now == lastUsed) zera a recência', () => {
@@ -477,8 +480,6 @@ describe('CorrelationEngine - Recency Score', () => {
     });
     const practice = makePractice();
 
-    expect(day15.scorePractice(practice).score).toBeGreaterThan(
-      day5.scorePractice(practice).score
-    );
+    expect(day15.scorePractice(practice).score).toBeGreaterThan(day5.scorePractice(practice).score);
   });
 });

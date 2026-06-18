@@ -13,7 +13,6 @@
  *  7 ☴ Xun (Vento)    — yin descendente
  *  8 ☱ Dui (Lago)     — yin ascendente
  */
-
 import type { Trigram, TrigramId } from './types';
 
 export const TRIGRAMS: Record<TrigramId, Trigram> = {

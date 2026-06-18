@@ -9,7 +9,6 @@
  * Helper extraído de `significados-curados.ts` (F-222) para manter o
  * arquivo principal focado em dados curados.
  */
-
 import type { Pilar, SignificadoCurado } from './significados-curados';
 import { significadoGenericoDoPilar, significadoPorPilar } from './significados-curados';
 

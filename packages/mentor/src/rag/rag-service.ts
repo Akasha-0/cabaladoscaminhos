@@ -1,17 +1,17 @@
-import type { 
-  RAGConfig, 
-  RAGService, 
+import { CohereEmbedder } from './cohere-embedder';
+import type {
+  RAGConfig,
+  RAGService,
   RAGProvider,
-  SimilarPractice, 
+  SimilarPractice,
   PracticeFilters,
-  IntegrativePracticeRef
+  IntegrativePracticeRef,
 } from './index';
 import { OpenAIEmbedder } from './openai-embedder';
-import { CohereEmbedder } from './cohere-embedder';
 
 /**
  * RAG Service Factory - Creates and manages RAG embedders
- * 
+ *
  * Supports:
  * - OpenAI (text-embedding-3-small)
  * - Cohere (embed-multilingual-v3.0)
@@ -19,13 +19,13 @@ import { CohereEmbedder } from './cohere-embedder';
 export class RAGServiceFactory {
   private embedder: RAGService | null = null;
   private config: RAGConfig | null = null;
-  
+
   /**
    * Initialize the RAG service with configuration
    */
   async initialize(config: RAGConfig): Promise<void> {
     this.config = config;
-    
+
     switch (config.provider) {
       case 'openai':
         this.embedder = new OpenAIEmbedder(config.apiKey);
@@ -91,7 +91,7 @@ export async function initializeRAG(config: RAGConfig): Promise<void> {
  */
 export function createRAGConfigFromEnv(): RAGConfig {
   const provider = (process.env.RAG_PROVIDER as RAGProvider) || 'openai';
-  
+
   let apiKey = '';
   if (provider === 'openai') {
     apiKey = process.env.OPENAI_API_KEY || '';

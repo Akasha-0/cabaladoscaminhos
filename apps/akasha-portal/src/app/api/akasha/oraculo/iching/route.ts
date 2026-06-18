@@ -8,12 +8,12 @@
  * com metadados estruturados). Leitura cruzada com Cabala e Odu
  * fica como placeholder (T8 não cobre a interpretação).
  */
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
-import { prisma } from '@/lib/infrastructure/prisma';
+import { NextRequest, NextResponse } from 'next/server';
 import { getCreditBalance, addCredits } from '@/lib/application/akasha/stripe-akasha';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { drawIchingHexagram } from '@/lib/domain/oracle/iching-draw';
+import { prisma } from '@/lib/infrastructure/prisma';
 
 const bodySchema = z.object({
   /** Seed opcional para sorteio determinístico (testes). */

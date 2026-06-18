@@ -1,7 +1,6 @@
 /**
  * F-220: 4 Temperamentos — tests
  */
-
 import { describe, it, expect } from 'vitest';
 import {
   TEMPERAMENTOS,
@@ -16,7 +15,7 @@ describe('F-220: 4 Temperamentos Gregos', () => {
   it('TEMPERAMENTOS tem exatamente 4 entradas', () => {
     expect(TEMPERAMENTOS.length).toBe(4);
     expect(TEMPERAMENTOS).toEqual(
-      expect.arrayContaining(['sanguineo', 'colerico', 'melancolico', 'fleumatico']),
+      expect.arrayContaining(['sanguineo', 'colerico', 'melancolico', 'fleumatico'])
     );
   });
 

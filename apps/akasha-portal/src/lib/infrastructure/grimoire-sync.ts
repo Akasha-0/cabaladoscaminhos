@@ -20,10 +20,9 @@
 //   3. The sync is one-way (filesystem → DB). No reverse sync.
 //      Grimoire entries are source-of-truth in the filesystem, the
 //      DB is a search index.
-
+import { Prisma } from '@prisma/client';
 import fs from 'fs';
 import path from 'path';
-import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/infrastructure/prisma';
 
 interface Frontmatter {
@@ -41,18 +40,21 @@ function parseFrontmatter(markdownContent: string): { metadata: Frontmatter; con
   const yaml = parts[1];
   const content = parts.slice(2).join('---').trim();
   const metadata: Frontmatter = {};
-  
-  yaml.split('\n').forEach(line => {
+
+  yaml.split('\n').forEach((line) => {
     const colonIndex = line.indexOf(':');
     if (colonIndex !== -1) {
       const key = line.substring(0, colonIndex).trim();
       let value = line.substring(colonIndex + 1).trim();
-      
+
       // Strip quotes if they surround the value
-      if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+      if (
+        (value.startsWith('"') && value.endsWith('"')) ||
+        (value.startsWith("'") && value.endsWith("'"))
+      ) {
         value = value.substring(1, value.length - 1);
       }
-      
+
       // Convert number string to number if applicable
       const num = Number(value);
       if (value !== '' && !isNaN(num)) {
@@ -66,7 +68,7 @@ function parseFrontmatter(markdownContent: string): { metadata: Frontmatter; con
       }
     }
   });
-  
+
   return { metadata, content };
 }
 
@@ -75,7 +77,7 @@ async function getEmbedding(text: string): Promise<number[] | null> {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
-    
+
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -83,15 +85,15 @@ async function getEmbedding(text: string): Promise<number[] | null> {
         model: 'nomic-embed-text',
         prompt: text,
       }),
-      signal: controller.signal
+      signal: controller.signal,
     });
-    
+
     clearTimeout(timeoutId);
-    
+
     if (!res.ok) {
       throw new Error(`Ollama returned status ${res.status}`);
     }
-    const data = await res.json() as { embedding: number[] };
+    const data = (await res.json()) as { embedding: number[] };
     return data.embedding;
   } catch (error) {
     return null;
@@ -101,9 +103,9 @@ async function getEmbedding(text: string): Promise<number[] | null> {
 function getMdFiles(dir: string): string[] {
   let results: string[] = [];
   if (!fs.existsSync(dir)) return [];
-  
+
   const list = fs.readdirSync(dir);
-  list.forEach(file => {
+  list.forEach((file) => {
     const filePath = path.join(dir, file);
     const stat = fs.statSync(filePath);
     if (stat && stat.isDirectory()) {
@@ -115,24 +117,32 @@ function getMdFiles(dir: string): string[] {
   return results;
 }
 
-export async function syncGrimoire(): Promise<{ success: boolean; count: number; warnings: string[] }> {
+export async function syncGrimoire(): Promise<{
+  success: boolean;
+  count: number;
+  warnings: string[];
+}> {
   // Grimoire directory should be in the root of the workspace.
   // When running inside Next.js, path.resolve('.') will point to the root workspace.
   const grimoireDir = path.resolve('./grimoire');
   const warnings: string[] = [];
-  
+
   if (!fs.existsSync(grimoireDir)) {
-    return { success: false, count: 0, warnings: [`Grimoire directory not found at ${grimoireDir}`] };
+    return {
+      success: false,
+      count: 0,
+      warnings: [`Grimoire directory not found at ${grimoireDir}`],
+    };
   }
-  
+
   const files = getMdFiles(grimoireDir);
   let syncedCount = 0;
-  
+
   for (const file of files) {
     try {
       const rawContent = fs.readFileSync(file, 'utf8');
       const { metadata, content } = parseFrontmatter(rawContent);
-      
+
       const id = metadata.id || path.basename(file, '.md');
       const categoria = metadata.category || metadata.categoria || 'general';
       const biblioteca = metadata.biblioteca || 'diagnostico';
@@ -161,7 +171,7 @@ export async function syncGrimoire(): Promise<{ success: boolean; count: number;
           sourcePath: file,
         },
       });
-      
+
       // Update embedding if available
       if (embedding && embedding.length === 768) {
         const vectorStr = `[${embedding.join(',')}]`;
@@ -171,15 +181,17 @@ export async function syncGrimoire(): Promise<{ success: boolean; count: number;
           WHERE id = ${id}
         `;
       } else if (embedding) {
-        warnings.push(`Embedding vector length is ${embedding.length} for ${id}, expected 768. Skipped vector update.`);
+        warnings.push(
+          `Embedding vector length is ${embedding.length} for ${id}, expected 768. Skipped vector update.`
+        );
       }
-      
+
       syncedCount++;
     } catch (err) {
       warnings.push(`Failed to sync file ${file}: ${(err as Error).message}`);
     }
   }
-  
+
   return {
     success: syncedCount > 0,
     count: syncedCount,

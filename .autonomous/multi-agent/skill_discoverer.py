@@ -95,12 +95,13 @@ class DetectionType(str, Enum):
     RULE_BASED = "rule_based"
 
 
-@dataclass
 class Pattern:
     """Pattern data for a discovered skill."""
     detection_type: DetectionType
-    data: dict[str, Any]
-    
+    def __init__(self, detection_type: DetectionType, data: dict[str, Any]) -> None:
+        self.detection_type = detection_type
+        self.data = data
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "detection_type": self.detection_type.value if isinstance(self.detection_type, DetectionType) else self.detection_type,

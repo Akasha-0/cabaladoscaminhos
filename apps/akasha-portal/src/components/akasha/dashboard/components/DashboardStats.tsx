@@ -17,10 +17,7 @@ export function DashboardStats({ userId }: DashboardStatsProps) {
     return (
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {[...Array(4)].map((_, i) => (
-          <div
-            key={i}
-            className="h-32 animate-pulse rounded-xl bg-[#0B0E1C]/60"
-          />
+          <div key={i} className="h-32 animate-pulse rounded-xl bg-[#0B0E1C]/60" />
         ))}
       </div>
     );
@@ -31,12 +28,8 @@ export function DashboardStats({ userId }: DashboardStatsProps) {
     return (
       <div className="flex min-h-[200px] items-center justify-center rounded-xl bg-[#0B0E1C]/60 border border-white/5">
         <div className="text-center">
-          <p className="text-lg font-medium text-white/40">
-            Nenhum dado disponível
-          </p>
-          <p className="mt-1 text-sm text-white/50">
-            Complete rituais para ver suas estatísticas
-          </p>
+          <p className="text-lg font-medium text-white/40">Nenhum dado disponível</p>
+          <p className="mt-1 text-sm text-white/50">Complete rituais para ver suas estatísticas</p>
         </div>
       </div>
     );

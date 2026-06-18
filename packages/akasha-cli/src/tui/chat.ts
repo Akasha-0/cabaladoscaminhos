@@ -1,8 +1,8 @@
 // ChatSession — Componente principal do TUI Chat
 import chalk from 'chalk';
+import { InputHandler, createInputHandler, type Command } from './input.js';
 import { ChatScreen, createChatScreen, type ChatScreenConfig } from './interface.js';
 import { OutputRenderer, createOutputRenderer, type Message } from './output.js';
-import { InputHandler, createInputHandler, type Command } from './input.js';
 
 // ─── Tipos ────────────────────────────────────────────────────────────────────
 

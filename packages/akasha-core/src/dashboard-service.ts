@@ -1,7 +1,6 @@
 /**
  * Dashboard Service - Gerencia estatísticas e histórico do usuário
  */
-
 import type {
   DashboardStats,
   StreakDay,
@@ -45,18 +44,20 @@ export function calculateStreak(completedDates: Date[]): {
 
   // Ordena datas decrescente (mais recente primeiro)
   const sorted = [...completedDates].sort((a, b) => b.getTime() - a.getTime());
-  
+
   let currentStreak = 0;
   let longestStreak = 0;
   let tempStreak = 1;
-  
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  
+
   // Verifica se o streak atual está ativo (ritual hoje ou ontem)
   const mostRecent = sorted[0];
-  const daysSinceLast = Math.floor((today.getTime() - mostRecent.getTime()) / (1000 * 60 * 60 * 24));
-  
+  const daysSinceLast = Math.floor(
+    (today.getTime() - mostRecent.getTime()) / (1000 * 60 * 60 * 24)
+  );
+
   if (daysSinceLast > 1) {
     // Streak quebrado
     currentStreak = 0;
@@ -64,7 +65,9 @@ export function calculateStreak(completedDates: Date[]): {
     // Conta streak atual
     currentStreak = 1;
     for (let i = 1; i < sorted.length; i++) {
-      const diff = Math.floor((sorted[i - 1].getTime() - sorted[i].getTime()) / (1000 * 60 * 60 * 24));
+      const diff = Math.floor(
+        (sorted[i - 1].getTime() - sorted[i].getTime()) / (1000 * 60 * 60 * 24)
+      );
       if (diff === 1) {
         currentStreak++;
       } else {
@@ -72,10 +75,12 @@ export function calculateStreak(completedDates: Date[]): {
       }
     }
   }
-  
+
   // Calcula longest streak
   for (let i = 1; i < sorted.length; i++) {
-    const diff = Math.floor((sorted[i - 1].getTime() - sorted[i].getTime()) / (1000 * 60 * 60 * 24));
+    const diff = Math.floor(
+      (sorted[i - 1].getTime() - sorted[i].getTime()) / (1000 * 60 * 60 * 24)
+    );
     if (diff === 1) {
       tempStreak++;
     } else {
@@ -84,7 +89,7 @@ export function calculateStreak(completedDates: Date[]): {
     }
   }
   longestStreak = Math.max(longestStreak, tempStreak, currentStreak);
-  
+
   return { current: currentStreak, longest: longestStreak };
 }
 
@@ -110,10 +115,10 @@ export class DashboardService {
 
     const completedDates = completions.map((c: any) => new Date(c.date));
     const streakData = calculateStreak(completedDates);
-    
+
     // Calcular progresso semanal
     const weekDates = getWeekDates();
-    const weeklyProgress = weekDates.map(date => {
+    const weeklyProgress = weekDates.map((date) => {
       const dateStr = getDateString(date);
       return completions.some((c: any) => getDateString(new Date(c.date)) === dateStr) ? 1 : 0;
     });
@@ -123,7 +128,9 @@ export class DashboardService {
     for (let i = 29; i >= 0; i--) {
       const date = getDaysAgo(i);
       const dateStr = getDateString(date);
-      monthlyProgress.push(completions.some((c: any) => getDateString(new Date(c.date)) === dateStr) ? 1 : 0);
+      monthlyProgress.push(
+        completions.some((c: any) => getDateString(new Date(c.date)) === dateStr) ? 1 : 0
+      );
     }
 
     // Calcular taxa de completude (últimos 30 dias)
@@ -131,7 +138,7 @@ export class DashboardService {
       const cDate = new Date(c.date);
       return cDate >= getDaysAgo(30);
     });
-    const completionRate = monthlyProgress.filter(v => v === 1).length / 30 * 100;
+    const completionRate = (monthlyProgress.filter((v) => v === 1).length / 30) * 100;
 
     return {
       userId,
@@ -155,9 +162,7 @@ export class DashboardService {
       take: 60,
     });
 
-    const completedDates = new Set(
-      completions.map((c: any) => getDateString(new Date(c.date)))
-    );
+    const completedDates = new Set(completions.map((c: any) => getDateString(new Date(c.date))));
 
     const days: StreakDay[] = [];
     for (let i = 59; i >= 0; i--) {

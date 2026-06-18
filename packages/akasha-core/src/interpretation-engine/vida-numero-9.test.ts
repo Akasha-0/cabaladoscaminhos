@@ -10,11 +10,10 @@
  * - Conteúdo shadow/gift/siddhi consistente com o tema do 9 (compaixão/serviço)
  * - Acoplamento correto com interpretation-engine.ts (VIDA_CONTENT[9] === VIDA_NUMERO_9)
  */
-
 import { describe, it, expect } from 'vitest';
-import { VIDA_NUMERO_9 } from './vida-numero-9';
 import { VIDA_CONTENT } from '../interpretation-engine';
 import type { NumeroContent } from './types';
+import { VIDA_NUMERO_9 } from './vida-numero-9';
 
 // ─── Testes: VIDA_NUMERO_9 — estrutura ──────────────────────────────────────
 
@@ -60,8 +59,7 @@ describe('VIDA_NUMERO_9', () => {
     // tema do 9: compaixão/serviço/completude — verifica que pelo menos
     // uma palavra-chave aparece em cada nível (case-insensitive)
     const keywords = ['compaix', 'servi', 'humanitári', 'completud', 'generosid', 'sabedori'];
-    const hasKeyword = (text: string) =>
-      keywords.some((k) => text.toLowerCase().includes(k));
+    const hasKeyword = (text: string) => keywords.some((k) => text.toLowerCase().includes(k));
 
     const allText = [
       shadow.significado + ' ' + shadow.padrao,
@@ -72,7 +70,7 @@ describe('VIDA_NUMERO_9', () => {
     for (const block of allText) {
       expect(
         hasKeyword(block),
-        `esperava palavra-chave do 9 (${keywords.join('|')}) em: ${block.slice(0, 80)}…`,
+        `esperava palavra-chave do 9 (${keywords.join('|')}) em: ${block.slice(0, 80)}…`
       ).toBe(true);
     }
   });

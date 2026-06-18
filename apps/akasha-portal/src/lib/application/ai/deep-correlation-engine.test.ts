@@ -119,19 +119,13 @@ describe('DeepCorrelationEngine.getAllSystemCorrelations', () => {
     const corrs = engine.getAllSystemCorrelations(baseUser);
     expect(corrs.length).toBeGreaterThan(0);
     // Deve incluir pelo menos uma correlação numerologia→astrologia
-    const numAst = corrs.find(
-      (c) => c.source === 'numerology' && c.target === 'astrology',
-    );
+    const numAst = corrs.find((c) => c.source === 'numerology' && c.target === 'astrology');
     expect(numAst).toBeDefined();
     // Deve incluir uma correlação ifá→kabbalah
-    const ifaKab = corrs.find(
-      (c) => c.source === 'ifa' && c.target === 'kabbalah',
-    );
+    const ifaKab = corrs.find((c) => c.source === 'ifa' && c.target === 'kabbalah');
     expect(ifaKab).toBeDefined();
     // Deve incluir correlação element→temporal (day energy)
-    const day = corrs.find(
-      (c) => c.source === 'element' && c.target === 'temporal',
-    );
+    const day = corrs.find((c) => c.source === 'element' && c.target === 'temporal');
     expect(day).toBeDefined();
   });
 

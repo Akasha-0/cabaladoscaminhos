@@ -1,6 +1,12 @@
 {
-  "git_head": "138f3347",
-  "saved_at": "2026-06-18T00:35:42.180462+00:00",
-  "auto_save_count": 0,
-  "pid": 1027036
+  "ts": "2026-06-18T09:37:33.202030+00:00",
+  "phase": "RELEASE",
+  "iteration": 0,
+  "quality_snapshot": 0.28,
+  "current_features": [
+    "tech_debt",
+    "large_file"
+  ],
+  "daemon_pid": 1267793,
+  "reason": "post-validation"
 }

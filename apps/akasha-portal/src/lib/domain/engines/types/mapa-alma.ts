@@ -1,4 +1,11 @@
-import type { SpiritualCorrelation, CrossSystemPattern, EnergyHarmonyReport } from '@/lib/application/ai/deep-correlation-engine';
+import type {
+  MapaNatal,
+  Planeta,
+  Signo,
+  Aspecto,
+  Casa,
+  PosicaoPlaneta,
+} from '@akasha/core-astrology';
 /**
  * MapaAlmaCompleto Type Definitions
  * Complete TypeScript types for the full spiritual map (Mapa da Alma Completo)
@@ -10,9 +17,13 @@ import type { SpiritualCorrelation, CrossSystemPattern, EnergyHarmonyReport } fr
 
 import type { NumerologyResult } from '@akasha/core-cabala';
 import type { Odu, DrawResult } from '@akasha/core-odus';
-import type { MapaNatal, Planeta, Signo, Aspecto, Casa, PosicaoPlaneta } from '@akasha/core-astrology';
-import type { CardMeaning } from '../../tarot/meanings';
+import type {
+  SpiritualCorrelation,
+  CrossSystemPattern,
+  EnergyHarmonyReport,
+} from '@/lib/application/ai/deep-correlation-engine';
 import type { ChakraV4Data } from '../../chakra/v4/chakra-v4-data';
+import type { CardMeaning } from '../../tarot/meanings';
 
 export type BirthProfile = {
   nomeCompleto: string;
@@ -154,7 +165,7 @@ export type {
   DrawResult,
   MapaNatal,
   PosicaoPlaneta,
-// fallow-ignore-next-line unused-type
+  // fallow-ignore-next-line unused-type
   Planeta,
   Signo,
   Aspecto,

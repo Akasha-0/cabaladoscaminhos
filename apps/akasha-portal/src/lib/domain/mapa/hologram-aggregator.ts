@@ -4,7 +4,7 @@ import type {
   TantricMap,
   OduBirth,
   ForestMedicineMap,
-  EnergyHealingMap
+  EnergyHealingMap,
 } from '@akasha/types';
 
 export interface HologramDimension {
@@ -34,22 +34,24 @@ export function aggregateHologram(maps: {
   energyHealingMap?: EnergyHealingMap | null;
   ichingHex?: number | null;
 }): AkashicHologram {
-  const astro = maps.astrologyMap || {} as Record<string, unknown>;
-  const kabalah = maps.kabalisticMap || {} as Record<string, unknown>;
-  const tantric = maps.tantricMap || {} as Record<string, unknown>;
-  const odu = maps.oduBirth || {} as Record<string, unknown>;
-  const forest = maps.forestMedicineMap || {} as Record<string, unknown>;
-  const healing = maps.energyHealingMap || {} as Record<string, unknown>;
+  const astro = maps.astrologyMap || ({} as Record<string, unknown>);
+  const kabalah = maps.kabalisticMap || ({} as Record<string, unknown>);
+  const tantric = maps.tantricMap || ({} as Record<string, unknown>);
+  const odu = maps.oduBirth || ({} as Record<string, unknown>);
+  const forest = maps.forestMedicineMap || ({} as Record<string, unknown>);
+  const healing = maps.energyHealingMap || ({} as Record<string, unknown>);
 
   // Helper to find planet position
   const findPlanet = (name: string) =>
-    ((astro.planets as Array<Record<string, unknown>> | undefined) || [])
-      .find((p) => (p.planet as string)?.toLowerCase() === name.toLowerCase()) || null;
+    ((astro.planets as Array<Record<string, unknown>> | undefined) || []).find(
+      (p) => (p.planet as string)?.toLowerCase() === name.toLowerCase()
+    ) || null;
 
   // Helper to find house position
   const findHouse = (num: number) =>
-    ((astro.houses as Array<Record<string, unknown>> | undefined) || [])
-      .find((h) => h.house === num) || null;
+    ((astro.houses as Array<Record<string, unknown>> | undefined) || []).find(
+      (h) => h.house === num
+    ) || null;
 
   return {
     ichingHex: maps.ichingHex ?? null,
@@ -62,12 +64,14 @@ export function aggregateHologram(maps: {
         dominantPlanet: astro.dominantPlanet || null,
         pranicBody: (tantric.bodies as Record<string, unknown> | undefined)?.pranic || null,
         physicalBody: (tantric.bodies as Record<string, unknown> | undefined)?.fisico || null,
-        reikiSymbols: ((healing.reikiSymbols as Array<Record<string, unknown>> | undefined) || [])
-          .filter((s: Record<string, unknown>) =>
-            (s.chakraTarget as string | undefined)?.includes('Básico')) || [],
+        reikiSymbols:
+          ((healing.reikiSymbols as Array<Record<string, unknown>> | undefined) || []).filter(
+            (s: Record<string, unknown>) =>
+              (s.chakraTarget as string | undefined)?.includes('Básico')
+          ) || [],
         groundingProtocol: healing.groundingProtocol || null,
         forestMedicine: forest || null,
-      }
+      },
     },
     conexoesAmor: {
       title: 'Conexões & Amor',
@@ -79,11 +83,13 @@ export function aggregateHologram(maps: {
         lilith: findPlanet('Lilith'),
         house5: findHouse(5),
         house7: findHouse(7),
-        reikiSymbols: ((healing.reikiSymbols as Array<Record<string, unknown>> | undefined) || [])
-          .filter((s: Record<string, unknown>) =>
-            (s.chakraTarget as string | undefined)?.includes('Cardíaco') ||
-            (s.chakraTarget as string | undefined)?.includes('Plexo')) || [],
-      }
+        reikiSymbols:
+          ((healing.reikiSymbols as Array<Record<string, unknown>> | undefined) || []).filter(
+            (s: Record<string, unknown>) =>
+              (s.chakraTarget as string | undefined)?.includes('Cardíaco') ||
+              (s.chakraTarget as string | undefined)?.includes('Plexo')
+          ) || [],
+      },
     },
     carreiraProsperidade: {
       title: 'Carreira & Prosperidade',
@@ -100,7 +106,7 @@ export function aggregateHologram(maps: {
         motivation: kabalah.motivation || null,
         impression: kabalah.impression || null,
         divineGift: tantric.divineGift || null,
-      }
+      },
     },
     oriCabecaQuizilas: {
       title: 'Ori, Cabeça & Quizilas',
@@ -113,11 +119,13 @@ export function aggregateHologram(maps: {
         elementalForce: odu.elementalForce || null,
         prohibitions: odu.prohibitions || [],
         lifeLesson: odu.lifeLesson || null,
-        reikiSymbols: ((healing.reikiSymbols as Array<Record<string, unknown>> | undefined) || [])
-          .filter((s: Record<string, unknown>) =>
-            (s.chakraTarget as string | undefined)?.includes('Terceiro Olho') ||
-            (s.chakraTarget as string | undefined)?.includes('Coronário')) || [],
-      }
+        reikiSymbols:
+          ((healing.reikiSymbols as Array<Record<string, unknown>> | undefined) || []).filter(
+            (s: Record<string, unknown>) =>
+              (s.chakraTarget as string | undefined)?.includes('Terceiro Olho') ||
+              (s.chakraTarget as string | undefined)?.includes('Coronário')
+          ) || [],
+      },
     },
     missaoDestino: {
       title: 'Missão & Destino',
@@ -130,7 +138,7 @@ export function aggregateHologram(maps: {
         pinnacles: kabalah.pinnacles || null,
         tantricPath: tantric.tantricPath || null,
         destiny: tantric.destiny || null,
-      }
+      },
     },
     desafiosSombras: {
       title: 'Desafios & Sombras',
@@ -143,7 +151,7 @@ export function aggregateHologram(maps: {
         karmicDebts: kabalah.karmicDebts || [],
         challenges: kabalah.challenges || null,
         karma: tantric.karma || null,
-      }
-    }
+      },
+    },
   };
 }

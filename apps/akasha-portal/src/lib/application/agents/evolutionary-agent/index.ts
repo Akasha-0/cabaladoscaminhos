@@ -5,8 +5,12 @@
  * Propoe exercícios e rituais personalizados com base no ciclo pessoal,
  * história de áreas e fase lunar.
  */
-
 import type { PersonalCycleSnapshot } from '@/lib/application/agents/personal-cycle-engine';
+// ─── Personal Day Exercises ───────────────────────────────────────────────────
+
+import { PERSONAL_DAY_EXERCISES } from './synthesis-engine/personal-day-exercises-data';
+import type { DayEnergy } from './synthesis-engine/personal-day-exercises-data';
+
 export type { AreaHistoryEntry, CycleModulation } from './area-history';
 export { trackAreaRead, detectAreaPatterns } from './area-history';
 export { LUNAR_EXERCISES, normalizePhase, deriveLunarExercises } from './lunar-exercises';
@@ -208,16 +212,13 @@ const LUNAR_EXERCISES = {
   },
 } as const;
 
-// ─── Personal Day Exercises ───────────────────────────────────────────────────
-
-import { PERSONAL_DAY_EXERCISES } from './synthesis-engine/personal-day-exercises-data';
-import type { DayEnergy } from './synthesis-engine/personal-day-exercises-data';
+// personalMonthExercises and personalYearExercises are declared locally below
 
 // ─── Core Functions ────────────────────────────────────────────────────────────
 
 function lunarExercises(
   moonPhase: string,
-  snapshot: PersonalCycleSnapshot,
+  snapshot: PersonalCycleSnapshot
 ): EvolutionaryExercise[] {
   const phase = normalizePhase(moonPhase);
   const lunar = LUNAR_EXERCISES[phase];
@@ -232,7 +233,12 @@ function lunarExercises(
     social: 'conexoesAmor',
   };
 
-  return (Object.entries(lunar.exercises) as [EvolutionaryExercise['type'], typeof lunar.exercises[EvolutionaryExercise['type']]][]).map(([type, ex]) => {
+  return (
+    Object.entries(lunar.exercises) as [
+      EvolutionaryExercise['type'],
+      (typeof lunar.exercises)[EvolutionaryExercise['type']],
+    ][]
+  ).map(([type, ex]) => {
     const area = areaByType[type] ?? 'missaoDestino';
     const id = `${area}-${type}-${Date.now()}-lunar`;
     return {
@@ -249,9 +255,7 @@ function lunarExercises(
   });
 }
 
-function personalDayExercises(
-  snapshot: PersonalCycleSnapshot,
-): EvolutionaryExercise[] {
+function personalDayExercises(snapshot: PersonalCycleSnapshot): EvolutionaryExercise[] {
   const energy = snapshot.personalDay.energy;
   const base = PERSONAL_DAY_EXERCISES[energy as DayEnergy];
   if (!base) return [];
@@ -276,7 +280,7 @@ function personalDayExercises(
         title: ex.title,
         instruction: ex.instruction,
         duration: ex.duration,
-        difficulty: ex.difficulty,
+        difficulty: ex.difficulty as 'light' | 'moderate' | 'deep',
         type: ex.type as EvolutionaryExercise['type'],
         cycleAnchor: { personalDay: true },
         rationale: `Hoje é um dia pessoal de energia "${energy}" — ${snapshot.personalDay.keywords.slice(0, 2).join(', ')}. Este exercício activa a área de ${ex.area.replace(/([A-Z])/g, ' $1').toLowerCase()} através do canal natural deste dia.`,
@@ -310,7 +314,8 @@ function personalMonthExercises(snapshot: PersonalCycleSnapshot): EvolutionaryEx
     'Construir algo duradouro': 'missaoDestino',
   };
 
-  const matchedArea = focusAreaMap[personalMonth.focus] ?? areaKeys[Math.floor(Date.now() / 1000) % areaKeys.length];
+  const matchedArea =
+    focusAreaMap[personalMonth.focus] ?? areaKeys[Math.floor(Date.now() / 1000) % areaKeys.length];
   const id = `${matchedArea}-ritual-${Date.now()}-month`;
 
   return [
@@ -383,11 +388,24 @@ function karmicLessonExercises(snapshot: PersonalCycleSnapshot): EvolutionaryExe
   if (karmicLessons.length === 0) return [];
 
   return karmicLessons.map((lesson, i) => {
-    const areaKeys = ['desafiosSombras', 'oriCabecaQuizilas', 'missaoDestino', 'carreiraProsperidade', 'conexoesAmor', 'vitalidadeEnergia'];
+    const areaKeys = [
+      'desafiosSombras',
+      'oriCabecaQuizilas',
+      'missaoDestino',
+      'carreiraProsperidade',
+      'conexoesAmor',
+      'vitalidadeEnergia',
+    ];
     const area = areaKeys[i % areaKeys.length];
     const id = `${area}-journaling-${Date.now()}-karmic-${lesson.missing}`;
 
-    const exerciseTypes: EvolutionaryExercise['type'][] = ['journaling', 'ritual', 'meditation', 'movement', 'social'];
+    const exerciseTypes: EvolutionaryExercise['type'][] = [
+      'journaling',
+      'ritual',
+      'meditation',
+      'movement',
+      'social',
+    ];
     const type = exerciseTypes[i % exerciseTypes.length];
 
     const instructionMap: Record<string, string> = {
@@ -428,7 +446,7 @@ function normalizePhase(moonPhase: string): keyof typeof LUNAR_EXERCISES {
  */
 export function deriveExercisesFromSnapshot(
   snapshot: PersonalCycleSnapshot,
-  moonPhase: string = 'nova',
+  moonPhase: string = 'nova'
 ): CycleExerciseSet {
   const date = snapshot.currentDate;
 

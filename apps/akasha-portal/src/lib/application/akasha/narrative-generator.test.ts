@@ -8,9 +8,8 @@
  * - generateSynthesisParagraph: composes full synthesis with typeName
  * - Edge cases: null inputs across all 4 pillars, boundary life paths (master numbers)
  */
-
-import { describe, it, expect } from 'vitest';
 import type { KabalisticMap, AstrologyMap, TantricMap, OduBirth } from '@akasha/types';
+import { describe, it, expect } from 'vitest';
 import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
 import {
   LIFE_AREA_LABELS,
@@ -75,7 +74,7 @@ describe('generateAreaNarrativeFull', () => {
       makeAstrologyMap(),
       makeTantricMap(),
       makeOduBirth(),
-      null,
+      null
     );
 
     expect(result.cabalaNarrative).toBeTruthy();
@@ -89,14 +88,7 @@ describe('generateAreaNarrativeFull', () => {
   });
 
   it('handles null inputs across all 4 pillars (empty/edge case)', () => {
-    const result = generateAreaNarrativeFull(
-      'desafiosSombras',
-      null,
-      null,
-      null,
-      null,
-      null,
-    );
+    const result = generateAreaNarrativeFull('desafiosSombras', null, null, null, null, null);
 
     // All blocks must be present (fallback strings), no crash on nulls
     expect(result.cabalaNarrative).toBeTruthy();
@@ -116,7 +108,7 @@ describe('generateAreaNarrativeFull', () => {
       makeAstrologyMap(),
       makeTantricMap(),
       makeOduBirth(),
-      null,
+      null
     );
     // Master number 11 should produce narrative — at minimum non-empty
     expect(result.cabalaNarrative).toBeTruthy();
@@ -133,7 +125,7 @@ describe('generateAllAreaNarratives', () => {
       makeAstrologyMap(),
       makeTantricMap(),
       makeOduBirth(),
-      null,
+      null
     );
     const labelKeys = Object.keys(LIFE_AREA_LABELS);
     expect(Object.keys(result).sort()).toEqual(labelKeys.sort());
@@ -167,7 +159,7 @@ describe('generateSynthesisParagraph', () => {
       makeAstrologyMap(),
       makeTantricMap({ soul: 5 }),
       makeOduBirth(),
-      'O Catalisador',
+      'O Catalisador'
     );
 
     expect(result).toContain('Catalisador');
@@ -181,7 +173,7 @@ describe('generateSynthesisParagraph', () => {
       makeAstrologyMap(),
       makeTantricMap(),
       makeOduBirth(),
-      'Tipo Desconhecido XYZ',
+      'Tipo Desconhecido XYZ'
     );
 
     // Falls back to "Seu Tipo Akasha é ..."
@@ -194,7 +186,7 @@ describe('generateSynthesisParagraph', () => {
       makeKabalisticMap(),
       makeAstrologyMap(),
       makeTantricMap(),
-      makeOduBirth(),
+      makeOduBirth()
     );
 
     // No "Tipo Akasha" should be present in this case

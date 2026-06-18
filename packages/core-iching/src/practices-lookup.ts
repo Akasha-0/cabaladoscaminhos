@@ -4,17 +4,12 @@
  * Índices e funções de busca para o banco de práticas integrativas.
  * Suporta lookup por ID, elemento, tradição, categoria e área da vida.
  */
-
-import type {
-  IntegrativePractice,
-  Element,
-  PracticeCategory,
-} from './types';
 import { PRACTICES } from './practices';
+import type { IntegrativePractice, Element, PracticeCategory } from './types';
 
 /** Mapa de práticas por ID para busca rápida. */
 export const PRACTICES_BY_ID: Record<string, IntegrativePractice> = Object.fromEntries(
-  PRACTICES.map((p) => [p.id, p]),
+  PRACTICES.map((p) => [p.id, p])
 );
 
 /** Agrupa práticas por elemento. */
@@ -65,7 +60,7 @@ export function getPracticesByCategory(category: PracticeCategory): IntegrativeP
 export function getPracticesByLifeArea(lifeArea: string): IntegrativePractice[] {
   const normalized = lifeArea.toLowerCase().trim();
   return PRACTICES.filter((p) =>
-    p.lifeAreas.some((area) => area.toLowerCase().includes(normalized)),
+    p.lifeAreas.some((area) => area.toLowerCase().includes(normalized))
   );
 }
 

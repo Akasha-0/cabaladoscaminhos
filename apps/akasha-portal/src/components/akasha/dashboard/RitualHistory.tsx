@@ -1,10 +1,9 @@
 'use client';
-import { useState } from 'react';
-
 import { motion } from 'framer-motion';
-import { useDashboardData } from './hooks/useDashboardData';
-import { HistoryItem } from './HistoryItem';
 import { History, Sparkles, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
+import { HistoryItem } from './HistoryItem';
+import { useDashboardData } from './hooks/useDashboardData';
 
 interface RitualHistoryProps {
   userId: string;
@@ -92,7 +91,9 @@ export function RitualHistory({ userId, maxVisible = 10, onAction }: RitualHisto
       {visibleItems.length === 0 ? (
         <div className="text-center py-8">
           <Sparkles size={28} className="text-white/20 mx-auto mb-3" />
-          <p className="text-sm text-white/50 mb-3">Seu histórico está vazio. Complete rituais para vê-los aqui.</p>
+          <p className="text-sm text-white/50 mb-3">
+            Seu histórico está vazio. Complete rituais para vê-los aqui.
+          </p>
           <button
             onClick={onAction}
             className="text-sm text-[#9D86FF] hover:text-[#b8a3ff] transition-colors inline-flex items-center gap-1.5 font-medium"
@@ -118,7 +119,7 @@ export function RitualHistory({ userId, maxVisible = 10, onAction }: RitualHisto
           {hasMore && (
             <div className="mt-4 pt-3 border-t border-white/[0.06] text-center">
               <button
-                onClick={() => setVisibleCount(c => c + maxVisible)}
+                onClick={() => setVisibleCount((c) => c + maxVisible)}
                 className="text-xs text-[#7C5CFF] hover:text-[#9D86FF] transition-colors inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#7C5CFF]/10 hover:bg-[#7C5CFF]/20 border border-[#7C5CFF]/20"
               >
                 Ver mais

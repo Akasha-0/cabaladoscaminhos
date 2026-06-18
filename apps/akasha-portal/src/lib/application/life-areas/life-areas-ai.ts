@@ -3,9 +3,8 @@
 // ============================================================
 // Gera insights profundos com IA MiniMax para cada área da vida
 // ============================================================
-
-import { LifeArea, LifeAreaId, LIFE_AREAS } from './life-areas-engine';
 import { AreaCorrelation, LifeMapResult, UserProfile } from './life-areas-correlator';
+import { LifeArea, LifeAreaId, LIFE_AREAS } from './life-areas-engine';
 
 const MINIMAX_API_BASE = 'https://api.minimaxi.chat/v1';
 const MINIMAX_MODEL = 'minimax-m3';
@@ -39,7 +38,7 @@ function buildInsightPrompt(
   correlation: AreaCorrelation
 ): string {
   const matchesText = correlation.matches
-    .map(m => `- ${m.category}: ${m.value} (ressonância ${m.resonance}%) — ${m.interpretation}`)
+    .map((m) => `- ${m.category}: ${m.value} (ressonância ${m.resonance}%) — ${m.interpretation}`)
     .join('\n');
 
   return `Você é um(a) conselheiro(a) espiritual com profundo conhecimento em:
@@ -119,7 +118,8 @@ async function callMinimax(prompt: string): Promise<string | null> {
         messages: [
           {
             role: 'system',
-            content: 'Você é um(a) sábio(a) conselheiro(a) espiritual especialista em sistemas místicos multi-tradicionais. Suas palavras unem profundidade, calor humano e clareza prática. Você fala português do Brasil com autoridade espiritual mas sem jargões desnecessários. Suas análises são altamente personalizadas e específicas para o perfil apresentado.',
+            content:
+              'Você é um(a) sábio(a) conselheiro(a) espiritual especialista em sistemas místicos multi-tradicionais. Suas palavras unem profundidade, calor humano e clareza prática. Você fala português do Brasil com autoridade espiritual mas sem jargões desnecessários. Suas análises são altamente personalizadas e específicas para o perfil apresentado.',
           },
           {
             role: 'user',
@@ -243,7 +243,7 @@ async function generateTopAreasInsights(
     insights.push(insight);
 
     // Add small delay to avoid rate limits
-    await new Promise(r => setTimeout(r, 300));
+    await new Promise((r) => setTimeout(r, 300));
   }
 
   return insights;

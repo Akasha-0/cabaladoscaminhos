@@ -8,9 +8,8 @@
  * F-232 (Conexões entre Pilares) também é renderizado: matriz 5×5
  * mostrando como cada Pilar fala com os outros 4.
  */
-
-import { type InsightDoDia } from '@/lib/grimoire/insight-do-dia';
 import { type ConexaoPilar } from '@/lib/grimoire/conexoes-pilares';
+import { type InsightDoDia } from '@/lib/grimoire/insight-do-dia';
 import { type Pilar } from '@/lib/grimoire/significados-curados';
 
 const C = {
@@ -45,8 +44,7 @@ export function InsightDoDiaPanel({ insight }: { insight: InsightDoDia }) {
     <section
       data-pilares-destacados={insight.pilares_destacados.join(',')}
       style={{
-        background:
-          'linear-gradient(135deg, rgba(124,92,255,0.12) 0%, rgba(45,212,191,0.08) 100%)',
+        background: 'linear-gradient(135deg, rgba(124,92,255,0.12) 0%, rgba(45,212,191,0.08) 100%)',
         border: '1px solid rgba(124,92,255,0.3)',
         borderRadius: 16,
         padding: '1.5rem 1.6rem',

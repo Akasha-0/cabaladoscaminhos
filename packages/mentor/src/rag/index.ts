@@ -1,5 +1,4 @@
 // RAG Types — Akasha OS v0.0.14
-
 import type { IntegrativePracticeRef } from '../types';
 
 export type { IntegrativePracticeRef } from '../types';
@@ -43,12 +42,10 @@ export interface PracticeFilters {
 export interface RAGService {
   initialize(config: RAGConfig): Promise<void>;
   embed(text: string): Promise<number[]>;
-  findSimilar(
-    query: string,
-    limit: number,
-    filters?: PracticeFilters
-  ): Promise<SimilarPractice[]>;
-  indexPractice(practice: IntegrativePracticeRef & { description?: string; tags?: string[] }): Promise<void>;
+  findSimilar(query: string, limit: number, filters?: PracticeFilters): Promise<SimilarPractice[]>;
+  indexPractice(
+    practice: IntegrativePracticeRef & { description?: string; tags?: string[] }
+  ): Promise<void>;
 }
 
 // Re-export functions from rag-service

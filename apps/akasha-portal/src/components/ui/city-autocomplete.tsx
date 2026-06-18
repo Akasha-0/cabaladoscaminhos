@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
 import { MapPin, Loader2 } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/shared/utils';
 
@@ -87,8 +87,7 @@ export function CityAutocomplete({
 
         const cities: CityResult[] = data.map((item) => {
           const addr = item.address ?? {};
-          const name =
-            addr.city ?? addr.town ?? addr.village ?? item.display_name.split(',')[0];
+          const name = addr.city ?? addr.town ?? addr.village ?? item.display_name.split(',')[0];
           // Extract state from display_name (usually the second-to-last segment for BR)
           const parts = item.display_name.split(',').map((p) => p.trim());
           let state = addr.state ?? '';
@@ -173,8 +172,6 @@ export function CityAutocomplete({
     setSelectedIndex(-1);
   };
 
-
-
   return (
     <div className={cn('relative', className)}>
       <div className="relative">
@@ -223,9 +220,7 @@ export function CityAutocomplete({
               onClick={() => handleSelectCity(city)}
             >
               <span className="font-medium text-foreground">{city.name}</span>
-              {city.state && (
-                <span className="ml-2 text-muted-foreground">{city.state}</span>
-              )}
+              {city.state && <span className="ml-2 text-muted-foreground">{city.state}</span>}
               {city.country && (
                 <span className="ml-1 text-muted-foreground/60">{city.country}</span>
               )}

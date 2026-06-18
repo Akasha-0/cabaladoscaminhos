@@ -4,7 +4,6 @@
 // Fonte: IDEIA.md §5 — Odus canônicos do Sistema Akasha
 // ⚠️ D4 provisional: spelling variants pendentes de validação com especialista
 // ============================================================================
-
 import type { OduInfo } from './calculos';
 
 // Nota: OduInfo é exportado de calculos.ts (fonte canônica)
@@ -54,7 +53,8 @@ export const ODUS_IFA: OduInfo[] = [
   {
     numero: 5,
     nome: 'Oxê (Ogunda)',
-    significado: 'A beleza, o amor, a fertilidade, o magnetismo. Conquista, doçura, poder feminino.',
+    significado:
+      'A beleza, o amor, a fertilidade, o magnetismo. Conquista, doçura, poder feminino.',
     elementos: 'Água',
     orixaRegente: 'Oxum',
     quizilas: [],
@@ -64,7 +64,8 @@ export const ODUS_IFA: OduInfo[] = [
   {
     numero: 6,
     nome: 'Obará',
-    significado: 'A riqueza, a glória, a abundância, a fartura. Prosperidade, fartura material e espiritual.',
+    significado:
+      'A riqueza, a glória, a abundância, a fartura. Prosperidade, fartura material e espiritual.',
     elementos: 'Terra',
     orixaRegente: 'Xangô, Oxóssi',
     quizilas: [],
@@ -74,7 +75,8 @@ export const ODUS_IFA: OduInfo[] = [
   {
     numero: 7,
     nome: 'Odi',
-    significado: 'Os segredos, a transformação, a cautela, a limpeza. Mistério, profundidade, renascimento.',
+    significado:
+      'Os segredos, a transformação, a cautela, a limpeza. Mistério, profundidade, renascimento.',
     elementos: 'Terra / Água',
     orixaRegente: 'Exu, Omolu',
     quizilas: [],
@@ -94,7 +96,8 @@ export const ODUS_IFA: OduInfo[] = [
   {
     numero: 9,
     nome: 'Ossá',
-    significado: 'A proteção feminina, a sabedoria, a turbulência das águas. Cuidado maternal, proteção.',
+    significado:
+      'A proteção feminina, a sabedoria, a turbulência das águas. Cuidado maternal, proteção.',
     elementos: 'Água',
     orixaRegente: 'Iemanjá, Oyá',
     quizilas: [],
@@ -104,7 +107,8 @@ export const ODUS_IFA: OduInfo[] = [
   {
     numero: 10,
     nome: 'Ofun',
-    significado: 'A espiritualidade profunda, o equilíbrio mental, a meditação. Sabedoria ancestral.',
+    significado:
+      'A espiritualidade profunda, o equilíbrio mental, a meditação. Sabedoria ancestral.',
     elementos: 'Ar',
     orixaRegente: 'Oxalufan, Oxalá',
     quizilas: [],
@@ -114,7 +118,8 @@ export const ODUS_IFA: OduInfo[] = [
   {
     numero: 11,
     nome: 'Owarin',
-    significado: 'A dinâmica, o perigo, a astúcia, o movimento rápido. Transformação veloz, alerta.',
+    significado:
+      'A dinâmica, o perigo, a astúcia, o movimento rápido. Transformação veloz, alerta.',
     elementos: 'Ar / Fogo',
     orixaRegente: 'Exu, Oyá',
     quizilas: [],
@@ -164,7 +169,8 @@ export const ODUS_IFA: OduInfo[] = [
   {
     numero: 16,
     nome: 'Ofurufu',
-    significado: 'A completude, a totalidade, a bênção universal. Integração, plenitude, fim de jornada.',
+    significado:
+      'A completude, a totalidade, a bênção universal. Integração, plenitude, fim de jornada.',
     elementos: 'Éter',
     orixaRegente: 'Oxalá, todos os Orixás',
     quizilas: [],

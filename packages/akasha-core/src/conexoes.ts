@@ -129,7 +129,10 @@ const LIFE_PATH_RESONANCE: [number, number][] = [
 
 // ─── Authority scoring ────────────────────────────────────────────────────────
 
-function scoreAuthority(a: AkashaAuthorityInput, b: AkashaAuthorityInput): { score: number; match: AuthorityMatch } {
+function scoreAuthority(
+  a: AkashaAuthorityInput,
+  b: AkashaAuthorityInput
+): { score: number; match: AuthorityMatch } {
   // Same autoridade = aligned
   if (a.autoridade === b.autoridade) {
     return { score: 90, match: 'aligned' };
@@ -144,7 +147,8 @@ function scoreAuthority(a: AkashaAuthorityInput, b: AkashaAuthorityInput): { sco
   ];
 
   const isComplementary = complementary.some(
-    ([x, y]) => (a.autoridade === x && b.autoridade === y) || (a.autoridade === y && b.autoridade === x)
+    ([x, y]) =>
+      (a.autoridade === x && b.autoridade === y) || (a.autoridade === y && b.autoridade === x)
   );
 
   if (isComplementary) {
@@ -158,7 +162,8 @@ function scoreAuthority(a: AkashaAuthorityInput, b: AkashaAuthorityInput): { sco
   ];
 
   const isConflict = conflict.some(
-    ([x, y]) => (a.autoridade === x && b.autoridade === y) || (a.autoridade === y && b.autoridade === x)
+    ([x, y]) =>
+      (a.autoridade === x && b.autoridade === y) || (a.autoridade === y && b.autoridade === x)
   );
 
   if (isConflict) {
@@ -210,7 +215,8 @@ function scoreLua(a: AstrologyMap, b: AstrologyMap): number {
   // Same element = emotional resonance
   if (elemA === elemB) return 88;
   // Water + Earth = good nurturing
-  if ((elemA === 'water' && elemB === 'earth') || (elemA === 'earth' && elemB === 'water')) return 72;
+  if ((elemA === 'water' && elemB === 'earth') || (elemA === 'earth' && elemB === 'water'))
+    return 72;
   // Fire + Air = intellectual/spiritual connection
   if ((elemA === 'fire' && elemB === 'air') || (elemA === 'air' && elemB === 'fire')) return 75;
 
@@ -324,17 +330,25 @@ function scoreTantra(a: TantricMap, b: TantricMap): BodySyncResult {
 
   // Body pairs that create dynamic tension (fire-water, air-earth)
   const tensionPairs: [number, number][] = [
-    [1, 4], [4, 1], // fogo × água
-    [2, 3], [3, 2], // terra × ar
-    [1, 2], [2, 1], // fogo × terra
-    [3, 4], [4, 3], // ar × água
+    [1, 4],
+    [4, 1], // fogo × água
+    [2, 3],
+    [3, 2], // terra × ar
+    [1, 2],
+    [2, 1], // fogo × terra
+    [3, 4],
+    [4, 3], // ar × água
   ];
 
   const harmonyPairs: [number, number][] = [
-    [1, 3], [3, 1], // fogo × ar
-    [2, 4], [4, 2], // água × terra
-    [1, 1], [2, 2], // same
-    [3, 3], [4, 4],
+    [1, 3],
+    [3, 1], // fogo × ar
+    [2, 4],
+    [4, 2], // água × terra
+    [1, 1],
+    [2, 2], // same
+    [3, 3],
+    [4, 4],
   ];
 
   const isTension = tensionPairs.some(([x, y]) => corpoA === x && corpoB === y);
@@ -373,7 +387,10 @@ function scoreLifePath(a: number, b: number): number {
   const aMaster = a > 9 ? a : a;
   const bMaster = b > 9 ? b : b;
 
-  if ((aMaster === 11 || aMaster === 22 || aMaster === 33) && (bMaster === 11 || bMaster === 22 || bMaster === 33)) {
+  if (
+    (aMaster === 11 || aMaster === 22 || aMaster === 33) &&
+    (bMaster === 11 || bMaster === 22 || bMaster === 33)
+  ) {
     return 88; // Two master numbers together
   }
 
@@ -399,42 +416,69 @@ function scoreDimensions(
   return [
     {
       dimension: 'Emocional',
-      score: Math.round((luaScore * 0.5 + authResult.score * 0.3 + casa8Score * 0.2)),
+      score: Math.round(luaScore * 0.5 + authResult.score * 0.3 + casa8Score * 0.2),
       description:
         getLuaSigno(a.astrologyMap) && getLuaSigno(b.astrologyMap)
           ? `Lua em ${getLuaSigno(a.astrologyMap)} encontra Lua em ${getLuaSigno(b.astrologyMap)}. ${luaScore > 75 ? 'Ressonância emocional forte.' : luaScore > 55 ? 'Conexão emocional presente mas com nuances.' : 'Necesitam traduzir necessidades emocionais um para o outro.'}`
           : 'Lua não disponível para comparação.',
-      tip: luaScore > 75 ? 'Confiem na conexão emocional que sentem.' : luaScore > 55 ? 'Dê espaço às emoções para se expressarem antes de agir.' : 'Façam check-ins emocionais regulares.',
+      tip:
+        luaScore > 75
+          ? 'Confiem na conexão emocional que sentem.'
+          : luaScore > 55
+            ? 'Dê espaço às emoções para se expressarem antes de agir.'
+            : 'Façam check-ins emocionais regulares.',
     },
     {
       dimension: 'Sexual',
       score: Math.round(casa8Score * 0.6 + bodySync.score * 0.4),
       description: bodySync.description,
-      tip: casa8Score > 80 ? 'A Casa 8 indica uma conexão de intimidade transformadora.' : casa8Score > 60 ? 'Intimidade profunda possível com presença e presença.' : 'Construam confiança antes de mergulhar na intimidade.',
+      tip:
+        casa8Score > 80
+          ? 'A Casa 8 indica uma conexão de intimidade transformadora.'
+          : casa8Score > 60
+            ? 'Intimidade profunda possível com presença e presença.'
+            : 'Construam confiança antes de mergulhar na intimidade.',
     },
     {
       dimension: 'Espiritual',
       score: Math.round(oduSync.score * 0.7 + lpScore * 0.3),
       description: oduSync.description,
-      tip: oduSync.score > 80 ? 'A conexão espiritual é o ponto forte desta relação.' : 'O caminho espiritual pode ser um terreno de crescimento conjunto.',
+      tip:
+        oduSync.score > 80
+          ? 'A conexão espiritual é o ponto forte desta relação.'
+          : 'O caminho espiritual pode ser um terreno de crescimento conjunto.',
     },
     {
       dimension: 'Material',
       score: Math.round(lpScore * 0.6 + authResult.score * 0.4),
       description: `Caminho de Vida ${a.kabalisticMap.lifePath ?? '—'} × ${b.kabalisticMap.lifePath ?? '—'}. ${lpScore > 75 ? 'Abordagem similar ao mundo material.' : 'Perspectivas diferentes sobre recursos e estabilidade.'}`,
-      tip: lpScore > 75 ? 'Alinham-se naturalmente em questões práticas.' : 'Negociem expectativas materiais com clareza.',
+      tip:
+        lpScore > 75
+          ? 'Alinham-se naturalmente em questões práticas.'
+          : 'Negociem expectativas materiais com clareza.',
     },
     {
       dimension: 'Mental',
-      score: Math.round(authResult.score * 0.5 + lpScore * 0.3 + (100 - Math.abs((a.kabalisticMap.lifePath ?? 0) - (b.kabalisticMap.lifePath ?? 0)) * 5)),
+      score: Math.round(
+        authResult.score * 0.5 +
+          lpScore * 0.3 +
+          (100 - Math.abs((a.kabalisticMap.lifePath ?? 0) - (b.kabalisticMap.lifePath ?? 0)) * 5)
+      ),
       description: `Estratégia ${a.authority.estrategia} × ${b.authority.estrategia}. ${authResult.match === 'aligned' ? 'Tomada de decisão em sintonia.' : authResult.match === 'complementary' ? 'Um complementa o estilo do outro.' : 'Conflito de estilo. Ajustem a comunicação.'}`,
-      tip: authResult.match !== 'conflict' ? 'A comunicação flui bem quando honram as diferenças de estilo.' : 'Estabeleçam acordos claros sobre como tomar decisões juntos.',
+      tip:
+        authResult.match !== 'conflict'
+          ? 'A comunicação flui bem quando honram as diferenças de estilo.'
+          : 'Estabeleçam acordos claros sobre como tomar decisões juntos.',
     },
   ];
 }
 
 // ─── Narrative generation ─────────────────────────────────────────────────────
-function buildNarrative(a: ConexaoMap, b: ConexaoMap, result: Partial<ConexaoResult>): NarrativeBlock[] {
+function buildNarrative(
+  a: ConexaoMap,
+  b: ConexaoMap,
+  result: Partial<ConexaoResult>
+): NarrativeBlock[] {
   const oduA = a.oduBirth.oduName ?? '—';
   const oduB = b.oduBirth.oduName ?? '—';
   const authMatch = result.authorityMatch ?? 'complementary';
@@ -443,15 +487,15 @@ function buildNarrative(a: ConexaoMap, b: ConexaoMap, result: Partial<ConexaoRes
     result.romantic && result.romantic > 75
       ? 'forte conexão romântica'
       : result.romantic && result.romantic > 55
-      ? 'conexão afetiva presente'
-      : 'relação que pede atenção e diálogo sobre as necessidades emocionais';
+        ? 'conexão afetiva presente'
+        : 'relação que pede atenção e diálogo sobre as necessidades emocionais';
 
   const partnershipStrength =
     result.partnership && result.partnership > 75
       ? 'parceria de alto impacto'
       : result.partnership && result.partnership > 55
-      ? 'bom potencial de colaboração'
-      : 'parceria com áreas de desenvolvimento';
+        ? 'bom potencial de colaboração'
+        : 'parceria com áreas de desenvolvimento';
 
   if (result.dominantType === 'romantic' || result.dominantType === 'both') {
     const oduDynamic =
@@ -463,15 +507,15 @@ function buildNarrative(a: ConexaoMap, b: ConexaoMap, result: Partial<ConexaoRes
       authMatch === 'aligned'
         ? 'Alinhamento de Decisão'
         : authMatch === 'complementary'
-        ? 'Complementaridade de Decisão'
-        : 'Atenção à Decisão';
+          ? 'Complementaridade de Decisão'
+          : 'Atenção à Decisão';
 
     const authorityText =
       authMatch === 'aligned'
         ? `${a.name} e ${b.name} possuem autoridade de decisão alinhada — tomam decisões de forma similar. Aproveitem o alinhamento natural para decisões importantes.`
         : authMatch === 'complementary'
-        ? `${a.name} e ${b.name} possuem autoridade de decisão complementar — um traz o que o outro precisa em decisões. Usem essa互补idade a favor da relação.`
-        : `${a.name} e ${b.name} possuem estilos de decisão diferentes — comuniquem-se claramente sobre expectativas antes de decisões importantes.`;
+          ? `${a.name} e ${b.name} possuem autoridade de decisão complementar — um traz o que o outro precisa em decisões. Usem essa互补idade a favor da relação.`
+          : `${a.name} e ${b.name} possuem estilos de decisão diferentes — comuniquem-se claramente sobre expectativas antes de decisões importantes.`;
 
     return [
       {
@@ -525,34 +569,50 @@ function generateRecommendations(result: PartialConexaoResult): string[] {
   const recs: string[] = [];
 
   if (result.romantic > 75) {
-    recs.push('A conexão emocional é forte: marquem tempo de qualidade regularmente para nutrir o vínculo.');
+    recs.push(
+      'A conexão emocional é forte: marquem tempo de qualidade regularmente para nutrir o vínculo.'
+    );
   }
   if (result.romantic < 55) {
-    recs.push('Construam uma linguagem emocional própria: perguntem um ao outro "como você se sente agora?" antes de assumir.');
+    recs.push(
+      'Construam uma linguagem emocional própria: perguntem um ao outro "como você se sente agora?" antes de assumir.'
+    );
   }
   if (result.authorityMatch === 'conflict') {
-    recs.push('Autoridades diferentes: antes de decisões importantes, façam uma pausa de 24h para cada um processar sozinho antes de discutir juntos.');
+    recs.push(
+      'Autoridades diferentes: antes de decisões importantes, façam uma pausa de 24h para cada um processar sozinho antes de discutir juntos.'
+    );
   }
   if (result.authorityMatch === 'complementary') {
-    recs.push('Autoridades complementares: aproveitem a diversidade — um traz estruturação, outro traz intuição.');
+    recs.push(
+      'Autoridades complementares: aproveitem a diversidade — um traz estruturação, outro traz intuição.'
+    );
   }
 
   const emotionalDim = result.dimensions.find((d) => d.dimension === 'Emocional');
   if (emotionalDim && emotionalDim.score < 60) {
-    recs.push('Conexão emocional em desenvolvimento: check-ins semanais de 10 minutos podem acelerar a intimidade emocional.');
+    recs.push(
+      'Conexão emocional em desenvolvimento: check-ins semanais de 10 minutos podem acelerar a intimidade emocional.'
+    );
   }
 
   const spiritualDim = result.dimensions.find((d) => d.dimension === 'Espiritual');
   if (spiritualDim && spiritualDim.score > 80) {
-    recs.push('Ressonância espiritual rara: considerem práticas compartilhadas (meditação, ritual ou conversas profundas).');
+    recs.push(
+      'Ressonância espiritual rara: considerem práticas compartilhadas (meditação, ritual ou conversas profundas).'
+    );
   }
 
   if (result.oduSync.sharedOdu) {
-    recs.push('Vocês compartilham o mesmo Odu: esse é um indicativo de missão ou propósito compartilhado.');
+    recs.push(
+      'Vocês compartilham o mesmo Odu: esse é um indicativo de missão ou propósito compartilhado.'
+    );
   }
 
   if (recs.length === 0) {
-    recs.push('Continuem investindo na comunicação honesta e na presença mútua. Cada relação tem seu ritmo.');
+    recs.push(
+      'Continuem investindo na comunicação honesta e na presença mútua. Cada relação tem seu ritmo.'
+    );
   }
 
   return recs;

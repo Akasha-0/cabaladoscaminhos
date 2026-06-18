@@ -28,16 +28,15 @@
  * Frequência alvo: 1x/dia às 7h BRT (= 10h UTC, verão) ou 11h UTC (inverno).
  * Cron Vercel: "0 10 * * *" (ajustar com DST manualmente).
  */
-
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/infrastructure/prisma';
 import { buildDailyContent } from '@/lib/application/akasha/daily-engine';
+import { verifyCronSecret } from '@/lib/application/auth/cron-guard';
 import {
   getAllActivePushSubscriptions,
   deletePushSubscription,
 } from '@/lib/application/push/push-subscription-service';
 import { sendPush } from '@/lib/application/push/web-push-server';
-import { verifyCronSecret } from '@/lib/application/auth/cron-guard';
+import { prisma } from '@/lib/infrastructure/prisma';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60; // 60s — Vercel Fluid Compute default
@@ -86,7 +85,13 @@ export async function GET(request: NextRequest) {
   const userIds = Array.from(new Set(subs.map((s) => s.userId)));
   const birthCharts = await prisma.birthChart.findMany({
     where: { userId: { in: userIds } },
-    select: { userId: true, astrologyMap: true, kabalisticMap: true, tantricMap: true, oduBirth: true },
+    select: {
+      userId: true,
+      astrologyMap: true,
+      kabalisticMap: true,
+      tantricMap: true,
+      oduBirth: true,
+    },
   });
   const chartByUser = new Map(birthCharts.map((c) => [c.userId, c]));
 
@@ -136,7 +141,9 @@ export async function GET(request: NextRequest) {
     } catch {
       // SEMPRE redacted: userId + host, nunca `err` (pode conter PII, keys, etc)
       failed++;
-      console.error(`[cron/daily-push] exception userId=${sub.userId} host=${hostOnly(sub.endpoint)}`);
+      console.error(
+        `[cron/daily-push] exception userId=${sub.userId} host=${hostOnly(sub.endpoint)}`
+      );
     }
   }
 

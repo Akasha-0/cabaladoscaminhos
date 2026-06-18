@@ -14,7 +14,19 @@ export interface KinTzolkin {
   eh_portal: boolean;
   portal_nome: string | null;
 }
-export function familias() { return []; }
+export function familias() {
+  return [];
+}
 export function kinDaData(): KinTzolkin {
-  return { numero: 1, posicao_no_ciclo: 1, dias_ate_proximo_ciclo: 260, familia: 'solar', familia_nome: 'Solar', familia_cor: '#2DD4BF', familia_qualidade: 'Ilumina', eh_portal: false, portal_nome: null };
+  return {
+    numero: 1,
+    posicao_no_ciclo: 1,
+    dias_ate_proximo_ciclo: 260,
+    familia: 'solar',
+    familia_nome: 'Solar',
+    familia_cor: '#2DD4BF',
+    familia_qualidade: 'Ilumina',
+    eh_portal: false,
+    portal_nome: null,
+  };
 }

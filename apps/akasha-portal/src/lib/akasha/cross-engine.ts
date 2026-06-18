@@ -35,14 +35,15 @@ export interface CrossResult {
   };
 }
 
-export function crossAnalyze(
-  _astro: CrossInput,
-  _bodies: BodyInput,
-  _odu: OduInput
-): CrossResult {
+export function crossAnalyze(_astro: CrossInput, _bodies: BodyInput, _odu: OduInput): CrossResult {
   return {
     climate: 'Clima de introspecção',
-    ritual: { titulo: 'Ritual de Equilíbrio', instrucao: 'Respire profundamente', cor: 'dourado', elemento: 'terra' },
+    ritual: {
+      titulo: 'Ritual de Equilíbrio',
+      instrucao: 'Respire profundamente',
+      cor: 'dourado',
+      elemento: 'terra',
+    },
     alert: 'Evite decisões impulsivas',
     tensionPoint: { pillar: 'corpo-aurico', theme: 'Tensão astrológica', intensity: 5 },
   };

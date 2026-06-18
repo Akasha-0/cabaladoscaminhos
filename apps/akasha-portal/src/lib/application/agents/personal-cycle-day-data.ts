@@ -2,7 +2,6 @@
 // PERSONAL DAY DATA — lookup tables for personal day energies
 // Extracted from personal-cycle-engine.ts
 // ============================================================
-
 import type { PersonalDay } from './personal-cycle-engine';
 
 export const PERSONAL_DAY_DATA: Record<

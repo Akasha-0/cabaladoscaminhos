@@ -1,4 +1,5 @@
 import type { Aspecto, AspectoTipo, PosicaoPlaneta, AspectoNature } from '../tipos';
+
 const ASPECTOS: { tipo: AspectoTipo; angulo: number; orbMax: number; nature: AspectoNature }[] = [
   { tipo: 'conjunção', angulo: 0, orbMax: 10, nature: 'neutral' },
   { tipo: 'sextil', angulo: 60, orbMax: 6, nature: 'harmony' },

@@ -1,14 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { MandalaAtmosphere } from '@/components/akasha/MandalaAtmosphere';
-import { IchingInfoPanel } from '@/components/akasha/IchingInfoPanel';
 import { AstrologyInfoPanel, type AstrologyAspect } from '@/components/akasha/AstrologyInfoPanel';
+import { IchingInfoPanel } from '@/components/akasha/IchingInfoPanel';
+import { MandalaAtmosphere } from '@/components/akasha/MandalaAtmosphere';
+import { KabalaInfoPanel, TantricBodyInfoPanel } from '@/components/akasha/MandalaInfoPanels';
 import { OduInfoPanel } from '@/components/akasha/OduInfoPanel';
 import { ELEMENT_GUIDANCE, dominantElement } from '@/components/akasha/mandala-elements';
-import { LIFE_PATH_MEANINGS } from '@/components/akasha/mandala-meanings';
-import { useCockpitStore } from '@/stores/cockpit-store';
-import { formatDegreeToZodiac, GLYPHS_BY_PLANET, PLANET_COLORS, longitudeToSvgAngle } from '@/lib/shared/zodiac';
 import {
   describeArc,
   PARTICLES,
@@ -28,7 +26,14 @@ import {
   buildTooltipByLayer,
   buildTrianglePath,
 } from '@/components/akasha/mandala-layers';
-import { KabalaInfoPanel, TantricBodyInfoPanel } from '@/components/akasha/MandalaInfoPanels';
+import { LIFE_PATH_MEANINGS } from '@/components/akasha/mandala-meanings';
+import {
+  formatDegreeToZodiac,
+  GLYPHS_BY_PLANET,
+  PLANET_COLORS,
+  longitudeToSvgAngle,
+} from '@/lib/shared/zodiac';
+import { useCockpitStore } from '@/stores/cockpit-store';
 
 export interface MandalaData {
   incomplete: boolean;
@@ -221,7 +226,10 @@ export default function MandalaChart({ data }: Props) {
       `}</style>
 
       {/* Layer selector — ordered by layer (1..5) */}
-      <div className="flex gap-2 flex-wrap justify-center" aria-label="Camadas da Mandala — selecione para revelar significados">
+      <div
+        className="flex gap-2 flex-wrap justify-center"
+        aria-label="Camadas da Mandala — selecione para revelar significados"
+      >
         {([1, 2, 3, 4, 5] as Layer[]).map((layer) => {
           const color = PILAR_COLORS[layer];
           const label = PILAR_LABEL_BY_LAYER[layer];
@@ -676,14 +684,7 @@ export default function MandalaChart({ data }: Props) {
               className="mandala-pulse"
             />
             <circle cx="200" cy="200" r="7" fill="#F0B429" filter="url(#glow-akasha)" />
-            <text
-              x="200"
-              y="216"
-              textAnchor="middle"
-              fontSize="10"
-              fill="#F0B429"
-              fontWeight="600"
-            >
+            <text x="200" y="216" textAnchor="middle" fontSize="10" fill="#F0B429" fontWeight="600">
               {data.odus.oduName.length > 14
                 ? data.odus.oduName.slice(0, 14) + '…'
                 : data.odus.oduName}
@@ -731,9 +732,7 @@ export default function MandalaChart({ data }: Props) {
         <TantricBodyInfoPanel tantra={data.tantra} inactiveBodies={inactiveBodies} />
       )}
 
-      {activeLayer === 2 && (
-        <KabalaInfoPanel kabala={data.kabala} lpMeaning={lpMeaning} />
-      )}
+      {activeLayer === 2 && <KabalaInfoPanel kabala={data.kabala} lpMeaning={lpMeaning} />}
 
       {activeLayer === 1 && <OduInfoPanel odu={data.odus} />}
 

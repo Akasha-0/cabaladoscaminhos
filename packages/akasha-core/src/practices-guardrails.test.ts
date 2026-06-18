@@ -1,7 +1,6 @@
 /**
  * @akasha/core — Testes para práticas-guardrails
  */
-
 import { describe, it, expect } from 'vitest';
 import {
   isSafePractice,
@@ -133,7 +132,7 @@ describe('practices-guardrails', () => {
 
       const result = validatePractice(practiceWithCaution);
 
-      expect(result.recommendations.some(r => r.includes('gravidez'))).toBe(true);
+      expect(result.recommendations.some((r) => r.includes('gravidez'))).toBe(true);
     });
 
     it('prática insegura retorna isValid false', () => {
@@ -171,7 +170,7 @@ describe('practices-guardrails', () => {
       const result = validatePractice(practiceWithProhibited);
 
       expect(result.isValid).toBe(false);
-      expect(result.warnings.some(w => w.includes('problemática'))).toBe(true);
+      expect(result.warnings.some((w) => w.includes('problemática'))).toBe(true);
     });
   });
 

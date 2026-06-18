@@ -1,10 +1,7 @@
- 
- 
 /* prettier-ignore */
-
-import { getPositions, type PlanetPosition } from './planet-positions';
-import { calculateHouses, type HouseSystem } from './houses';
 import { findAspects } from './aspect-finder';
+import { calculateHouses, type HouseSystem } from './houses';
+import { getPositions, type PlanetPosition } from './planet-positions';
 import type { Aspecto } from './tipos';
 import type { MapaNatal, Planeta, Signo } from './tipos';
 
@@ -51,9 +48,18 @@ function getPlanetInHouse(planetLongitude: number, houseCusps: number[]): number
 function getSignoFromLongitude(longitude: number): Signo {
   const signIndex = Math.floor(longitude / 30);
   const signs: Signo[] = [
-    'aries', 'touro', 'gemeos', 'cancer',
-    'leao', 'virgem', 'libra', 'escorpio',
-    'sagitario', 'capricornio', 'aquario', 'peixes'
+    'aries',
+    'touro',
+    'gemeos',
+    'cancer',
+    'leao',
+    'virgem',
+    'libra',
+    'escorpio',
+    'sagitario',
+    'capricornio',
+    'aquario',
+    'peixes',
   ];
   return signs[signIndex % 12];
 }
@@ -65,7 +71,7 @@ function getGrauNoSigno(longitude: number): number {
 function getPlanetSignAndDegree(planet: PlanetPosition): { sign: Signo; degree: number } {
   return {
     sign: getSignoFromLongitude(planet.longitude),
-    degree: getGrauNoSigno(planet.longitude)
+    degree: getGrauNoSigno(planet.longitude),
   };
 }
 
@@ -82,11 +88,11 @@ function findRegent(sign: Signo, planets: PlanetPosition[]): Planeta | null {
     sagitario: 'jupiter',
     capricornio: 'saturno',
     aquario: 'saturno',
-    peixes: 'jupiter'
+    peixes: 'jupiter',
   };
 
   const ruler = rulers[sign];
-  const rulerInChart = planets.find(p => p.planet === ruler);
+  const rulerInChart = planets.find((p) => p.planet === ruler);
   return rulerInChart ? ruler : null;
 }
 
@@ -99,8 +105,8 @@ export function getBirthChart(input: BirthChartInput): BirthChart {
   const planets = getPositions(birthDate);
   const houses = calculateHouses(birthDate, birthDate, finalLat, finalLon, houseSystem);
 
-  const houseCusps = houses.cusps.map(c => c.longitude);
-  const planetPositions = planets.map(p => {
+  const houseCusps = houses.cusps.map((c) => c.longitude);
+  const planetPositions = planets.map((p) => {
     const { sign, degree } = getPlanetSignAndDegree(p);
     return {
       planeta: p.planet,
@@ -110,7 +116,7 @@ export function getBirthChart(input: BirthChartInput): BirthChart {
       velocidade: p.velocity,
       signo: sign,
       casa: getPlanetInHouse(p.longitude, houseCusps),
-      grauNoSigno: degree
+      grauNoSigno: degree,
     };
   });
 
@@ -120,14 +126,14 @@ export function getBirthChart(input: BirthChartInput): BirthChart {
     const cusp = houses.cusps[i];
     const { sign, degree } = {
       sign: getSignoFromLongitude(cusp.longitude),
-      degree: getGrauNoSigno(cusp.longitude)
+      degree: getGrauNoSigno(cusp.longitude),
     };
     const planetaRegente = findRegent(sign, planets);
     return {
       numero: i + 1,
       signo: sign,
       grauNoSigno: degree,
-      planetaRegente
+      planetaRegente,
     };
   });
 
@@ -159,15 +165,15 @@ export function getBirthChart(input: BirthChartInput): BirthChart {
     nodes: {
       norte: planetMap['node_norte'],
       sul: planetMap['node_sul'],
-    }
+    },
   };
 
   return {
     planets,
-    houses: houses.cusps.map(c => ({ number: c.number, cusp: c.longitude })),
+    houses: houses.cusps.map((c) => ({ number: c.number, cusp: c.longitude })),
     ascendant: houses.asc,
     midheaven: houses.mc,
     aspects,
-    chart
+    chart,
   };
 }

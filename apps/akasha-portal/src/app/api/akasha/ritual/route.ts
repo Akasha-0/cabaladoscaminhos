@@ -1,7 +1,12 @@
+import {
+  calculateCodeOfDay,
+  buildRitual,
+  type RitualConfig,
+  type RitualResponse,
+} from '@akasha/core';
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
-import { calculateCodeOfDay, buildRitual, type RitualConfig, type RitualResponse } from '@akasha/core';
 import { getRitualConfig } from '@/lib/application/akasha/ritual-storage';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 
 function calcularRitualDoDia(config: RitualConfig): RitualResponse {
   const agora = new Date();

@@ -10,7 +10,6 @@
  *   - Gene Keys (Shadow → Gift → Siddhi)
  *   - Human Design (Strategy + Authority)
  */
-
 import type { LifeArea } from '@akasha/types';
 
 export type NumeroLevel = 'shadow' | 'gift' | 'siddhi';

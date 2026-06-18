@@ -11,7 +11,6 @@
 //   20/08 → 20+8=28 → 2+8=10 → Odu 10 (Ofun)
 //   15/03 → 15+3=18 → 1+8=9  → Odu 9 (Ossá)
 //   01/01 → 1+1=2            → Odu 2 (Ejiokô)
-
 import type { OduBirth } from '@akasha/types';
 import { ODUS_IFA } from './odus-ifa-data';
 

@@ -12,7 +12,6 @@
  * elevado à expressão divina — frequências amplificadas que exigem
  * interpretação dedicada.
  */
-
 import type { NumeroContent } from './types';
 
 export const MESTRES_CONTENT: Record<number, NumeroContent> = {
@@ -29,11 +28,16 @@ export const MESTRES_CONTENT: Record<number, NumeroContent> = {
         padrao:
           'Seu padrão em sombra é a ILUSÃO DO VISIONÁRIO. Você vê tão claramente o que poderia ser que não consegue lidar com o que É. A origem: provavelmente uma infância onde você era "maduro demais" para sua idade — onde sua percepção aguçada era usada para cuidar dos adultos em vez de ser cuidada. Adulto, você carrega a crença de que "se eu ver com clareza suficiente, poderei evitar o sofrimento" — e quando não consegue (porque o sofrimento é parte da vida), você se culpa. O resultado: você ou se isola na sua torre de marfimvisionária ou se força a ser "terra" e se perde.',
         aplicacao: {
-          proposito: 'No propósito, você tem uma visão tão clara que se cobra por não estar lá ainda. A tensão entre o que é e o que vê te impede de atuar.',
-          carreira: 'Na carreira, você ou está em algo que não "merece" sua visão (e se frustra) ou não encontra o lugar certo (e se frustra de outro jeito).',
-          relacionamentos: 'No amor, você vê o potencial do parceiro — e depois se cobra quando ele não se torna essa versão. Você ama o que o outro PODE ser, não o que é.',
-          sexualidade: 'Na sexualidade, você pode projetar fantasies ideais e se decepcionar com a realidade. Intimidade se confunde com ilusão.',
-          saude: 'O corpo do 11 em sombra é agotado, ansioso, com sistema nervoso sobrecarregado pela percepção constante.',
+          proposito:
+            'No propósito, você tem uma visão tão clara que se cobra por não estar lá ainda. A tensão entre o que é e o que vê te impede de atuar.',
+          carreira:
+            'Na carreira, você ou está em algo que não "merece" sua visão (e se frustra) ou não encontra o lugar certo (e se frustra de outro jeito).',
+          relacionamentos:
+            'No amor, você vê o potencial do parceiro — e depois se cobra quando ele não se torna essa versão. Você ama o que o outro PODE ser, não o que é.',
+          sexualidade:
+            'Na sexualidade, você pode projetar fantasies ideais e se decepcionar com a realidade. Intimidade se confunde com ilusão.',
+          saude:
+            'O corpo do 11 em sombra é agotado, ansioso, com sistema nervoso sobrecarregado pela percepção constante.',
         },
         acaoPratica: {
           amplificar: [
@@ -49,7 +53,8 @@ export const MESTRES_CONTENT: Record<number, NumeroContent> = {
           ritual:
             'Escreva sua visão para os próximos 12 meses — não como deveria ser, mas como você quer que seja. Feito isso, escolha UMA coisa que você pode fazer esta semana para caminhar em direção a ela.',
         },
-        afirmacao: 'Eu honro minha visão e sei que ela se manifesta um passo de cada vez — começando por hoje.',
+        afirmacao:
+          'Eu honro minha visão e sei que ela se manifesta um passo de cada vez — começando por hoje.',
       },
       gift: {
         tituloPool: 'O Dom de Traduzir o Invisível',
@@ -58,11 +63,16 @@ export const MESTRES_CONTENT: Record<number, NumeroContent> = {
         padrao:
           'Seu dom é a CLAREZA QUE INSPIRA. Você vê o que outros não veem E tem a capacidade de traduzir isso em linguagem que ressoa. Não é teoria — é intuição em ação. A diferença entre o 11 em dom e o 11 em sombra é simples: o dom pousa a visão em ação, o sombra漂浮 sem nunca pousar. O 11 em dom não precisa que o mundo valide a visão antes de agir — mas também não ignora o feedback do mundo.',
         aplicacao: {
-          proposito: 'Seu propósito é ser o catalisador de mudanças que ainda não têm nome — o que o mundo ainda não sabe que precisa.',
-          carreira: 'Na carreira, você brilha em funções de inovação, fundação, visión. Você é o que concebe o que ninguém pediu e depois o mundo não consegue mais viver sem.',
-          relacionamentos: 'No amor, você traz profundidade visionária. Parceiros descrevem você como "a pessoa que me fez ver quem eu poderia ser".',
-          espiritualidade: 'Na espiritualidade, você é o que traduz o que não pode ser dito — e essa tradução muda a forma como outros se relacionam com o invisível.',
-          saude: 'O corpo do 11 em dom é sensível mas energizado — você sente muito mas a energia não se transforma em ansiedade.',
+          proposito:
+            'Seu propósito é ser o catalisador de mudanças que ainda não têm nome — o que o mundo ainda não sabe que precisa.',
+          carreira:
+            'Na carreira, você brilha em funções de inovação, fundação, visión. Você é o que concebe o que ninguém pediu e depois o mundo não consegue mais viver sem.',
+          relacionamentos:
+            'No amor, você traz profundidade visionária. Parceiros descrevem você como "a pessoa que me fez ver quem eu poderia ser".',
+          espiritualidade:
+            'Na espiritualidade, você é o que traduz o que não pode ser dito — e essa tradução muda a forma como outros se relacionam com o invisível.',
+          saude:
+            'O corpo do 11 em dom é sensível mas energizado — você sente muito mas a energia não se transforma em ansiedade.',
         },
         acaoPratica: {
           amplificar: [
@@ -88,9 +98,11 @@ export const MESTRES_CONTENT: Record<number, NumeroContent> = {
         padrao:
           'Em siddhi, o 11 não vê mais. O 11 É a visão. The separation between the seer and the seen dissolves. You become the eye itself — not the one who looks, but the act of looking made visible. This is the frequency of the prophet, the visionary who no longer struggles to see because vision and being have become one.',
         aplicacao: {
-          proposito: 'Your purpose is to BE the vision — not to have it, not to share it, but to be it.',
+          proposito:
+            'Your purpose is to BE the vision — not to have it, not to share it, but to be it.',
           carreira: 'Your work becomes revelation made form.',
-          relacionamentos: 'In love, you are the mirror that shows others their own highest vision of themselves.',
+          relacionamentos:
+            'In love, you are the mirror that shows others their own highest vision of themselves.',
           espiritualidade: 'You are the bridge itself — not the one who crosses, but the crossing.',
           saude: 'The body is luminous, energized by the flow of vision through it.',
         },
@@ -112,10 +124,14 @@ export const MESTRES_CONTENT: Record<number, NumeroContent> = {
         padrao:
           'Seu padrão em sombra é a PARALISIA DO POSSÍVEL. Você carrega uma visão tão grande que qualquer implementation parece inadequada. A origem: provavelmente uma infância onde você era cobrado por perfection e onde "suficientemente bom" nunca era o bastante. Adulto, você ou não começa (porque vai sair errado) ou começa e não termina (porque nunca está bom o suficiente). O resultado: você sabe que pode fazer algo extraordinário — e esse conhecimento pesa mais do que a incapacidade de agir.',
         aplicacao: {
-          proposito: 'No propósito, você tem a capacidade mas não a coragem — a gap entre visão e ação é o seu maior inimigo.',
-          carreira: 'Na carreira, você ou está em algo pequeno (e se frustra) ou não está em nada (porque nada é grand o suficiente).',
-          financas: 'Finanças reflete o padrão: oportunidades são recusadas porque "não são grand o suficiente" — e o seguro é acumulado.',
-          relacionamentos: 'No amor, você pode ter um padrão ideal que ninguém alcana — e acaba sozinho esperando a pessoa perfeita.',
+          proposito:
+            'No propósito, você tem a capacidade mas não a coragem — a gap entre visão e ação é o seu maior inimigo.',
+          carreira:
+            'Na carreira, você ou está em algo pequeno (e se frustra) ou não está em nada (porque nada é grand o suficiente).',
+          financas:
+            'Finanças reflete o padrão: oportunidades são recusadas porque "não são grand o suficiente" — e o seguro é acumulado.',
+          relacionamentos:
+            'No amor, você pode ter um padrão ideal que ninguém alcana — e acaba sozinho esperando a pessoa perfeita.',
           saude: 'O corpo do 22 em sombra é tense, com problemas de agotamiento, stress crónico.',
         },
         acaoPratica: {
@@ -132,7 +148,8 @@ export const MESTRES_CONTENT: Record<number, NumeroContent> = {
           ritual:
             'Defina "pronto" antes de começar — não como "perfeito", mas como "bom o suficiente para ser lançado". E cumpra.',
         },
-        afirmacao: 'Eu construo com excelência e sei que "pronto" é um ponto no caminho, não o fim.',
+        afirmacao:
+          'Eu construo com excelência e sei que "pronto" é um ponto no caminho, não o fim.',
       },
       gift: {
         tituloPool: 'O Dom de Construir em Grande Escala',
@@ -141,11 +158,16 @@ export const MESTRES_CONTENT: Record<number, NumeroContent> = {
         padrao:
           'Seu dom é a ARQUITETURA DO LEGADO. Você consegue olhar para um caos e ver a estrutura que ele pode virar — e depois construir essa estrutura. Isso é raro: a maioria das pessoas ou é estratégica ou é visionária. O 22 em dom é as duas coisas. A diferença é que o 22 em dom sabe que o legado não é o building — é o que as pessoas Fazem com ele depois.',
         aplicacao: {
-          proposito: 'Seu propósito é construir estruturas que duram — não monuments a você, mas fundações para outros.',
-          carreira: 'Na carreira, você é o fundador, o arquiteto, o estrategista. Você olha para o sistema e vê como ele pode ser 10x melhor.',
-          financas: 'Finanças refletem o dom: o 22 em dom constrói riqueza em escala porque não se limita ao que é seguro.',
-          relacionamentos: 'No amor, você é o parceiro que constrói uma vida — não um relacionamento, mas uma VIDA compartilhada.',
-          saude: 'O corpo do 22 em dom é fuerte e resistente — a estrutura física reflete a capacidade de construir.',
+          proposito:
+            'Seu propósito é construir estruturas que duram — não monuments a você, mas fundações para outros.',
+          carreira:
+            'Na carreira, você é o fundador, o arquiteto, o estrategista. Você olha para o sistema e vê como ele pode ser 10x melhor.',
+          financas:
+            'Finanças refletem o dom: o 22 em dom constrói riqueza em escala porque não se limita ao que é seguro.',
+          relacionamentos:
+            'No amor, você é o parceiro que constrói uma vida — não um relacionamento, mas uma VIDA compartilhada.',
+          saude:
+            'O corpo do 22 em dom é fuerte e resistente — a estrutura física reflete a capacidade de construir.',
         },
         acaoPratica: {
           amplificar: [
@@ -170,10 +192,12 @@ export const MESTRES_CONTENT: Record<number, NumeroContent> = {
         padrao:
           'Em siddhi, o 22 não constrói mais. O 22 É a construção. You become the living proof that the impossible is merely a limitation in the mind of the small self. Your very presence demonstrates that great things are built not by force but by alignment — that the master builder is one who has surrendered to the pattern that wants to manifest.',
         aplicacao: {
-          proposito: 'Your purpose is to BE the constructed form through which life expresses its greatness.',
+          proposito:
+            'Your purpose is to BE the constructed form through which life expresses its greatness.',
           carreira: 'Your work becomes a living architecture that serves generations.',
           financas: 'Wealth flows through you as through a perfectly designed system.',
-          relacionamentos: 'In love, you build with — not for — your partner. The relationship itself is the construction.',
+          relacionamentos:
+            'In love, you build with — not for — your partner. The relationship itself is the construction.',
           saude: 'The body becomes a perfect vessel for the work — strong, enduring, radiant.',
         },
         afirmacao: 'Eu sou a construção sagrada — e cada forma que habito é sagrada.',
@@ -194,10 +218,14 @@ export const MESTRES_CONTENT: Record<number, NumeroContent> = {
         padrao:
           'Seu padrão em sombra é a CONFUSÃO ENTRE SERVIÇO E AUTOSSABOTAGEM. Você se cobra por não estar fazendo "o suficiente" — e a distância entre o que você faz e o que você acha que deveria fazer se torna insuportável. A origem: provavelmente uma infância onde você era a "luz da família" — o que sustentava o emocional dos adultos. Adulto, você replicates esse padrão em todo lugar: se cobra por carregar os outros e depois se resentir de carregar os outros. O resultado: você dá demais, se burnout, e depois se culpa por ter se burnout.',
         aplicacao: {
-          proposito: 'No propósito, o 33 em sombra se perde: ou vira guru sem chão ou vira assistente sem fim. Em ambos, o EU se dissolve.',
-          carreira: 'Na carreira, você ou está em uma função de serviço (e se frustra de não ser reconhecido) ou não consegue escolher carreira (porque todas parecem "egoístas demais").',
-          relacionamentos: 'No amor, você é o que dá tudo — e se ressente de quem recebe sem oferecer o mesmo. Mas nunca pediu.',
-          saude: 'O corpo do 33 em sombra é agotado cronicamente, com padrão de burnout recorrente.',
+          proposito:
+            'No propósito, o 33 em sombra se perde: ou vira guru sem chão ou vira assistente sem fim. Em ambos, o EU se dissolve.',
+          carreira:
+            'Na carreira, você ou está em uma função de serviço (e se frustra de não ser reconhecido) ou não consegue escolher carreira (porque todas parecem "egoístas demais").',
+          relacionamentos:
+            'No amor, você é o que dá tudo — e se ressente de quem recebe sem oferecer o mesmo. Mas nunca pediu.',
+          saude:
+            'O corpo do 33 em sombra é agotado cronicamente, com padrão de burnout recorrente.',
         },
         acaoPratica: {
           amplificar: [
@@ -222,10 +250,14 @@ export const MESTRES_CONTENT: Record<number, NumeroContent> = {
         padrao:
           'Seu dom é a TRANSMISSÃO POR IRRADIAÇÃO. Você não precisa estar na frente de uma sala — sua mera presença eleva o padrão de consciência ao seu redor. Isso é raro: a maioria ensina pelo que sabe; o 33 em dom ensina pelo que É. A diferença é que o que o 33 ensina não pode ser desaprendido — porque não foi informação, foi impressão.',
         aplicacao: {
-          proposito: 'Seu propósito é ser o catalisador de transformação — não o agente, mas o catalisador. others change by your presence, not by your instruction.',
-          carreira: 'Na carreira, você brilha em ensino, mentoria, liderança espiritual. Sua presença no ambiente muda a dinâmica de todos.',
-          espiritualidade: 'Na espiritualidade, você é o mestre que não precisa ser seguido — porque seguindo a própria vida, você já ensina.',
-          relacionamentos: 'No amor, você traz uma frequência de elevação — parceiros se tornam mais de si mesmos na sua presença.',
+          proposito:
+            'Seu propósito é ser o catalisador de transformação — não o agente, mas o catalisador. others change by your presence, not by your instruction.',
+          carreira:
+            'Na carreira, você brilha em ensino, mentoria, liderança espiritual. Sua presença no ambiente muda a dinâmica de todos.',
+          espiritualidade:
+            'Na espiritualidade, você é o mestre que não precisa ser seguido — porque seguindo a própria vida, você já ensina.',
+          relacionamentos:
+            'No amor, você traz uma frequência de elevação — parceiros se tornam mais de si mesmos na sua presença.',
           saude: 'O corpo do 33 em dom é luminoso, energizado pela qualidade do que transmite.',
         },
         acaoPratica: {
@@ -242,7 +274,8 @@ export const MESTRES_CONTENT: Record<number, NumeroContent> = {
           ritual:
             'Escolha uma pessoa que você quer elevar — e em vez de dar conselhos, simplesmente esteja presente com ela esta semana.',
         },
-        afirmacao: 'Eu ensino com minha presença e honro o direito dos outros de aprender à sua maneira.',
+        afirmacao:
+          'Eu ensino com minha presença e honro o direito dos outros de aprender à sua maneira.',
       },
       siddhi: {
         tituloPool: 'A Frequência do Amor Incondicional',
@@ -254,10 +287,13 @@ export const MESTRES_CONTENT: Record<number, NumeroContent> = {
           proposito: 'Your purpose is to BE love — not to give it, not to teach it, but to be it.',
           carreira: 'Your work is indistinguishable from prayer.',
           espiritualidade: 'You are the teachings — embodied, not written.',
-          relacionamentos: 'In love, you are the one whose presence allows others to remember who they truly are.',
-          saude: 'The body becomes light — luminous, unburdened, serving as a perfect conduit for the highest frequency.',
+          relacionamentos:
+            'In love, you are the one whose presence allows others to remember who they truly are.',
+          saude:
+            'The body becomes light — luminous, unburdened, serving as a perfect conduit for the highest frequency.',
         },
-        afirmacao: 'Eu sou o amor — e ele flui através de mim sem que eu precise fazer nada além de estar presente.',
+        afirmacao:
+          'Eu sou o amor — e ele flui através de mim sem que eu precise fazer nada além de estar presente.',
       },
     },
   },

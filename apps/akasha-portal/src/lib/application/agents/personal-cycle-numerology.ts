@@ -24,7 +24,9 @@ export function reduce(num: number, keepMaster = true): number {
  * Sums all digits of a number.
  */
 export function sumDigits(num: number): number {
-  return String(num).split('').reduce((sum, d) => sum + parseInt(d, 10), 0);
+  return String(num)
+    .split('')
+    .reduce((sum, d) => sum + parseInt(d, 10), 0);
 }
 
 /**

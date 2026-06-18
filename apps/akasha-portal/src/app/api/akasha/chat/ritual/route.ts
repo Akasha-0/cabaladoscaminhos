@@ -10,7 +10,9 @@ export interface RitualResponse {
   };
 }
 
-export async function POST(req: NextRequest): Promise<NextResponse<RitualResponse | { error: string }>> {
+export async function POST(
+  req: NextRequest
+): Promise<NextResponse<RitualResponse | { error: string }>> {
   const authResult = await requireAkashaApi(req);
   if (authResult instanceof NextResponse) return authResult;
 

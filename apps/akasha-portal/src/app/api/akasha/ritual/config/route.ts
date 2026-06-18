@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
-import { setRitualConfig } from '@/lib/application/akasha/ritual-storage';
 import type { RitualConfig } from '@akasha/core';
+import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';
+import { setRitualConfig } from '@/lib/application/akasha/ritual-storage';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 
 // ─── Esquema Zod ────────────────────────────────────────────────────────────
 

@@ -1,7 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
-import { prisma } from '@/lib/infrastructure/prisma';
+import { NextRequest, NextResponse } from 'next/server';
 import {
   AKASHA_REFRESH_COOKIE,
   verifyAkashaToken,
@@ -12,6 +11,7 @@ import {
   clearAkashaSessionCookie,
   clearAkashaRefreshCookie,
 } from '@/lib/application/auth/akasha-jwt';
+import { prisma } from '@/lib/infrastructure/prisma';
 
 export async function POST(_request: NextRequest) {
   const cookieStore = await cookies();

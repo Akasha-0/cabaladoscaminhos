@@ -1,11 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import type {
-  NumeroLevel,
-  AcaoPratica,
-  NivelContent,
-  NumeroContent,
-} from './types';
 import type { LifeArea } from '@akasha/types';
+import { describe, it, expect } from 'vitest';
+import type { NumeroLevel, AcaoPratica, NivelContent, NumeroContent } from './types';
 
 // ─── Fixtures de teste ────────────────────────────────────────────────────────
 
@@ -29,9 +24,7 @@ const makeNivelContent = (overrides: Partial<NivelContent> = {}): NivelContent =
   ...overrides,
 });
 
-const makeNumeroContent = (
-  overrides: Partial<NumeroContent> = {}
-): NumeroContent => ({
+const makeNumeroContent = (overrides: Partial<NumeroContent> = {}): NumeroContent => ({
   arquetipoAkasha: 'O Visionário',
   mandato: 'Ver para além e aterrar o que vê.',
   levels: {
@@ -129,9 +122,7 @@ describe('NumeroContent', () => {
     expect(numero.levels).toHaveProperty('shadow');
     expect(numero.levels).toHaveProperty('gift');
     expect(numero.levels).toHaveProperty('siddhi');
-    expect(Object.keys(numero.levels).sort()).toEqual(
-      ['gift', 'shadow', 'siddhi']
-    );
+    expect(Object.keys(numero.levels).sort()).toEqual(['gift', 'shadow', 'siddhi']);
   });
 
   it('arquetipoAkasha e mandato são strings não vazias', () => {

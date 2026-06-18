@@ -9,9 +9,8 @@
  * Este é um componente separado do InsightDoDiaPanel original (F-230)
  * porque este é para uso no Dashboard, não na página de Significado.
  */
-
-import { useState } from 'react';
 import { Sparkles, ChevronDown, ChevronUp, Zap, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { useState } from 'react';
 
 interface DailyInsightCardProps {
   /** Mensagem central do dia */

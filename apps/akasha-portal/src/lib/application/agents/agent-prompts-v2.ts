@@ -1,9 +1,8 @@
 // src/lib/agents/agent-prompts-v2.ts
 // V2 prompt builders — incorporate Knowledge Base entries into every prompt.
-
-import type { DailyAgentContext } from './daily-context-builder';
 import type { LifeArea } from '@/lib/life-areas';
 import type { KnowledgeEntry } from '@/lib/swarm';
+import type { DailyAgentContext } from './daily-context-builder';
 
 export const SYSTEM_PROMPT_V2 = `Você é o Cigano Ramiro, conselheiro oracular do sistema Cabala dos Caminhos.
 
@@ -34,7 +33,9 @@ export const SYSTEM_PROMPT_V2 = `Você é o Cigano Ramiro, conselheiro oracular 
 
 function formatKB(entries: KnowledgeEntry[]): string {
   if (!entries.length) return '';
-  const lines = entries.slice(0, 8).map(e => `• [${e.domain}] ${e.key}: ${JSON.stringify(e.data).slice(0, 120)}`);
+  const lines = entries
+    .slice(0, 8)
+    .map((e) => `• [${e.domain}] ${e.key}: ${JSON.stringify(e.data).slice(0, 120)}`);
   return `\n═══ Knowledge Base (${entries.length} entradas) ═══\n${lines.join('\n')}\n`;
 }
 
@@ -58,7 +59,11 @@ Gere uma RECOMENDAÇÃO ESPIRITUAL DO DIA para ${context.user.nome}.
 `;
 }
 
-export function buildAreaPromptV2(context: DailyAgentContext, area: LifeArea, kb: KnowledgeEntry[]): string {
+export function buildAreaPromptV2(
+  context: DailyAgentContext,
+  area: LifeArea,
+  kb: KnowledgeEntry[]
+): string {
   return `${context.formattedContext}
 ${formatKB(kb)}
 ═══════════════════════════════════════════════════════
@@ -77,7 +82,11 @@ Orixás: ${area.orixa.primary.join(', ')} | Planetas: ${area.astrology.planets.j
 `;
 }
 
-export function buildChatPromptV2(context: DailyAgentContext, question: string, kb: KnowledgeEntry[]): string {
+export function buildChatPromptV2(
+  context: DailyAgentContext,
+  question: string,
+  kb: KnowledgeEntry[]
+): string {
   return `${context.formattedContext}
 ${formatKB(kb)}
 ═══════════════════════════════════════════════════════

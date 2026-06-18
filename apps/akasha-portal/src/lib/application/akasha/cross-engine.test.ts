@@ -6,29 +6,50 @@
  *
  * Cobertura: ~0% → ~40% (com este test file).
  */
-
 import { describe, it, expect, vi } from 'vitest';
+import { crossAnalyze } from './cross-engine';
 
 // Mock odu-data to avoid DB dependency
 vi.mock('./odu-data', () => ({
   getOduByName: vi.fn((name: string) => {
     const map: Record<string, unknown> = {
-      Ogbe: { oduName: 'Ogbe', oduNumber: 1, elementalForce: 'Fogo', prohibitions: [], orixas: ['Ogum'], description: 'Clareza' },
-      Oyeku: { oduName: 'Oyeku', oduNumber: 2, elementalForce: 'Terra', prohibitions: [], orixas: ['Iemanjá'], description: 'Mistério' },
+      Ogbe: {
+        oduName: 'Ogbe',
+        oduNumber: 1,
+        elementalForce: 'Fogo',
+        prohibitions: [],
+        orixas: ['Ogum'],
+        description: 'Clareza',
+      },
+      Oyeku: {
+        oduName: 'Oyeku',
+        oduNumber: 2,
+        elementalForce: 'Terra',
+        prohibitions: [],
+        orixas: ['Iemanjá'],
+        description: 'Mistério',
+      },
     };
     return map[name];
   }),
   getSignElement: vi.fn((sign: string) => {
     const map: Record<string, string> = {
-      Escorpião: 'water', Leao: 'fire', Touro: 'earth', Libra: 'air',
-      Cancer: 'water', Aries: 'fire', Capricornio: 'earth', Aquario: 'air',
-      Peixes: 'water', Gemeos: 'air', Sagitario: 'fire', Virgem: 'earth',
+      Escorpião: 'water',
+      Leao: 'fire',
+      Touro: 'earth',
+      Libra: 'air',
+      Cancer: 'water',
+      Aries: 'fire',
+      Capricornio: 'earth',
+      Aquario: 'air',
+      Peixes: 'water',
+      Gemeos: 'air',
+      Sagitario: 'fire',
+      Virgem: 'earth',
     };
     return map[sign] ?? null;
   }),
 }));
-
-import { crossAnalyze } from './cross-engine';
 
 const TODAY = new Date('2026-06-15T12:00:00Z');
 
@@ -107,16 +128,12 @@ describe('crossAnalyze (F-244)', () => {
 
 describe('crossAnalyze — graceful fallback', () => {
   it('nunca throws com inputs vazios', () => {
-    expect(() =>
-      crossAnalyze({}, {}, {}, {}, TODAY)
-    ).not.toThrow();
+    expect(() => crossAnalyze({}, {}, {}, {}, TODAY)).not.toThrow();
   });
 
   it('nunca throws com inputs null', () => {
     expect(() =>
-      crossAnalyze(
-        null as any, null as any, null as any, null as any, TODAY
-      )
+      crossAnalyze(null as any, null as any, null as any, null as any, TODAY)
     ).not.toThrow();
   });
 

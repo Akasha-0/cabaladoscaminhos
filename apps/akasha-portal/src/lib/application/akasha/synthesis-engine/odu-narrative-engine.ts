@@ -261,29 +261,26 @@ function buildAreaGenericFallback(
   oduName: string,
   elementalForce: string,
   lifeLesson: string,
-  orixaRegency: string,
+  orixaRegency: string
 ): string {
   const elem = elementalForce;
   const orixa = orixaRegency;
 
   const fallbacks: Record<string, string> = {
-    vitalidadeEnergia:
-      elem
-        ? ` Energia de ${oduName}: sua vitalidade é regida pela força ${elem.toLowerCase()}. O corpo sente antes da mente — confie nas sensações físicas como indicador.${orixa ? ` A presença de ${orixa} neste Odu sugere que sua energia se renova no contacto com o elemento terra e trabalho manual.` : ''}`
-        : ` A energia de ${oduName} opera em ciclos — há picos de força e momentos de recuo. Não interprete o recuo como falha; é o corpo recalibrando.${orixa ? ` A regência por ${orixa} indica que sua vitalidade se fortalece quando você actua com propósito claro.` : ''}`,
-    conexoesAmor:
-      ` No amor, ${oduName} influencia como você se liga e se desliga.${lifeLesson ? ` A lição deste Odu é: ${lifeLesson.toLowerCase()}.` : ''} Observe: você tende a iniciar ou a receber? A resposta revela muito sobre seu padrão relacional.${orixa ? ` Com ${orixa} como regente, suas conexões são profundas mas poucas — valorize a qualidade sobre a quantidade.` : ''}`,
-    carreiraProsperidade:
-      ` Na carreira, ${oduName} aponta para um estilo de prosperidade.${elem ? ` A energia ${elem.toLowerCase()} indica que abundance vem por meio de acção concreta, não de planificação infinita.` : ''} Você tende a criar riqueza pela força do trabalho ou pela persistência paciente?${orixa ? ` A regência por ${orixa} sugere que sua prosperidade está ligada a uma vocação de serviço — encontre o sentido e o recurso segue.` : ''}`,
-    oriCabecaQuizilas:
-      ` Na mente, ${oduName} traz um estilo de processamento próprio.${elem ? ` A força ${elem.toLowerCase()} indica que você pensa melhor quando há contacto com o elemento terra — caminhe, cozinhe, toque superfícies naturais.` : ''} Os quizilas deste Odu pedem que você observe o que não deve ser dito em voz alta.${lifeLesson ? ` A lição: ${lifeLesson.toLowerCase()}.` : ''}${orixa ? ` A presença de ${orixa} sugere que seu pensamento mais profundo acontece em silêncio, não em conversa.` : ''}`,
-    missaoDestino:
-      ` ${oduName} é parte da sua missão — não um detalhe, o eixo.${lifeLesson ? ` A lição de vida que este Odu carrega é: ${lifeLesson.toLowerCase()}.` : ''} Aceite o Odu não como destino fixo, mas como direcção cardeal.${elem ? ` A energia ${elem.toLowerCase()} colore como você cumpre esta missão — não fighting o estilo, usá-lo.` : ''}${orixa ? ` A regência por ${orixa} indica que sua contribuição passa pelo elemento humano — outros são o campo da sua missão.` : ''}`,
-    desafiosSombras:
-      ` Nos desafios, ${oduName} manifesta-se como um padrão repetitivo.${lifeLesson ? ` A lição de vida pede que você enfrente directamente: ${lifeLesson.toLowerCase()}.` : ' Pergunte: qual é a situação que mais repete na sua vida?'} A armadilha é usar o Odu como desculpa — "é o meu destino" — em vez de como bússola.${orixa ? ` A presença de ${orixa} neste Odu indica que o desafio passa pela relação com o sagrado — recuse o profano como refúgio.` : ''}`,
+    vitalidadeEnergia: elem
+      ? ` Energia de ${oduName}: sua vitalidade é regida pela força ${elem.toLowerCase()}. O corpo sente antes da mente — confie nas sensações físicas como indicador.${orixa ? ` A presença de ${orixa} neste Odu sugere que sua energia se renova no contacto com o elemento terra e trabalho manual.` : ''}`
+      : ` A energia de ${oduName} opera em ciclos — há picos de força e momentos de recuo. Não interprete o recuo como falha; é o corpo recalibrando.${orixa ? ` A regência por ${orixa} indica que sua vitalidade se fortalece quando você actua com propósito claro.` : ''}`,
+    conexoesAmor: ` No amor, ${oduName} influencia como você se liga e se desliga.${lifeLesson ? ` A lição deste Odu é: ${lifeLesson.toLowerCase()}.` : ''} Observe: você tende a iniciar ou a receber? A resposta revela muito sobre seu padrão relacional.${orixa ? ` Com ${orixa} como regente, suas conexões são profundas mas poucas — valorize a qualidade sobre a quantidade.` : ''}`,
+    carreiraProsperidade: ` Na carreira, ${oduName} aponta para um estilo de prosperidade.${elem ? ` A energia ${elem.toLowerCase()} indica que abundance vem por meio de acção concreta, não de planificação infinita.` : ''} Você tende a criar riqueza pela força do trabalho ou pela persistência paciente?${orixa ? ` A regência por ${orixa} sugere que sua prosperidade está ligada a uma vocação de serviço — encontre o sentido e o recurso segue.` : ''}`,
+    oriCabecaQuizilas: ` Na mente, ${oduName} traz um estilo de processamento próprio.${elem ? ` A força ${elem.toLowerCase()} indica que você pensa melhor quando há contacto com o elemento terra — caminhe, cozinhe, toque superfícies naturais.` : ''} Os quizilas deste Odu pedem que você observe o que não deve ser dito em voz alta.${lifeLesson ? ` A lição: ${lifeLesson.toLowerCase()}.` : ''}${orixa ? ` A presença de ${orixa} sugere que seu pensamento mais profundo acontece em silêncio, não em conversa.` : ''}`,
+    missaoDestino: ` ${oduName} é parte da sua missão — não um detalhe, o eixo.${lifeLesson ? ` A lição de vida que este Odu carrega é: ${lifeLesson.toLowerCase()}.` : ''} Aceite o Odu não como destino fixo, mas como direcção cardeal.${elem ? ` A energia ${elem.toLowerCase()} colore como você cumpre esta missão — não fighting o estilo, usá-lo.` : ''}${orixa ? ` A regência por ${orixa} indica que sua contribuição passa pelo elemento humano — outros são o campo da sua missão.` : ''}`,
+    desafiosSombras: ` Nos desafios, ${oduName} manifesta-se como um padrão repetitivo.${lifeLesson ? ` A lição de vida pede que você enfrente directamente: ${lifeLesson.toLowerCase()}.` : ' Pergunte: qual é a situação que mais repete na sua vida?'} A armadilha é usar o Odu como desculpa — "é o meu destino" — em vez de como bússola.${orixa ? ` A presença de ${orixa} neste Odu indica que o desafio passa pela relação com o sagrado — recuse o profano como refúgio.` : ''}`,
   };
 
-  return fallbacks[area] ?? ` Este Odu carrega uma mensagem que se revela com o tempo. Observe as situações que se repetem — elas são o caminho.`;
+  return (
+    fallbacks[area] ??
+    ` Este Odu carrega uma mensagem que se revela com o tempo. Observe as situações que se repetem — elas são o caminho.`
+  );
 }
 
 // ─── Public API ─────────────────────────────────────────────────────────────
@@ -295,10 +292,7 @@ function buildAreaGenericFallback(
  * 1. Return specific per-Odu+area text if found in ODU_AREA_NARRATIVES.
  * 2. Otherwise build a generic per-area fallback using Odu metadata.
  */
-export function buildAncestralidadeOduNarrative(
-  odu: OduBirth | null,
-  area: string,
-): string {
+export function buildAncestralidadeOduNarrative(odu: OduBirth | null, area: string): string {
   if (!odu?.oduName)
     return 'O Odu de nascimento não foi registrado. A ancestralidade fala mesmo em silêncio — ouça o corpo.';
 
@@ -316,5 +310,4 @@ export function buildAncestralidadeOduNarrative(
     `${name}${elemental ? ' (' + elemental + ')' : ''}${orixa ? ' — regido por ' + orixa : ''}. ` +
     `${lesson ? 'Lição de vida: ' + lesson : 'Este Odu guarda uma mensagem que ainda não foi revelada.'} `;
   return generic + buildAreaGenericFallback(area, name, elemental, lesson, orixa);
-
 }

@@ -1,6 +1,6 @@
 /**
  * Odu Data - Tipos para Odus do Ifá
- * 
+ *
  * STUB: Implementação real do Grimório
  */
 

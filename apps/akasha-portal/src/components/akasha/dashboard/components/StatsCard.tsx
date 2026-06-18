@@ -1,11 +1,20 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import { useCountUp } from '../../animations';
-import { motion } from 'framer-motion';
 
 // Safe color validation - only allow valid hex colors
-const SAFE_COLORS = new Set(['#7C5CFF', '#F0B429', '#2DD4BF', '#30D158', '#FF9500', '#FB5781', '#0A84FF', '#BF5AF2']);
+const SAFE_COLORS = new Set([
+  '#7C5CFF',
+  '#F0B429',
+  '#2DD4BF',
+  '#30D158',
+  '#FF9500',
+  '#FB5781',
+  '#0A84FF',
+  '#BF5AF2',
+]);
 function safeColor(color: string, fallback: string): string {
   return SAFE_COLORS.has(color) ? color : fallback;
 }
@@ -19,7 +28,14 @@ interface StatsCardProps {
   accentColor?: string;
 }
 
-export function StatsCard({ title, value, subtitle, icon, suffix, accentColor = '#7C5CFF' }: StatsCardProps) {
+export function StatsCard({
+  title,
+  value,
+  subtitle,
+  icon,
+  suffix,
+  accentColor = '#7C5CFF',
+}: StatsCardProps) {
   const animatedValue = useCountUp(value, 2000);
   const safeAccent = safeColor(accentColor, '#7C5CFF');
 
@@ -66,19 +82,11 @@ export function StatsCard({ title, value, subtitle, icon, suffix, accentColor = 
         >
           {animatedValue}
         </motion.span>
-        {suffix && (
-          <span className="text-lg text-white/50 font-medium">
-            {suffix}
-          </span>
-        )}
+        {suffix && <span className="text-lg text-white/50 font-medium">{suffix}</span>}
       </div>
 
       {/* Subtitle */}
-      {subtitle && (
-        <p className="relative mt-1.5 text-xs text-white/40">
-          {subtitle}
-        </p>
-      )}
+      {subtitle && <p className="relative mt-1.5 text-xs text-white/40">{subtitle}</p>}
 
       {/* Decorative glow */}
       <div

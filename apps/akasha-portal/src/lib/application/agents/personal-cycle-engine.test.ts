@@ -7,7 +7,6 @@
  * - Personal Day energy, keywords, and master-number detection
  * - Edge case: empty fullName still produces a valid snapshot
  */
-
 import { describe, it, expect } from 'vitest';
 import {
   buildCycleSnapshot,
@@ -25,7 +24,7 @@ describe('buildCycleSnapshot — integração completa', () => {
     const snapshot: PersonalCycleSnapshot = buildCycleSnapshot(
       BIRTH,
       11, // lifePath
-      5,  // expression
+      5, // expression
       'Maria Silva',
       NOW
     );
@@ -70,8 +69,16 @@ describe('buildCycleSnapshot — integração completa', () => {
     expect(pd.combined).toBeGreaterThanOrEqual(1);
 
     expect([
-      'leadership', 'diplomacy', 'creativity', 'foundation', 'change',
-      'nurturing', 'introspection', 'power', 'completion', 'spiritual',
+      'leadership',
+      'diplomacy',
+      'creativity',
+      'foundation',
+      'change',
+      'nurturing',
+      'introspection',
+      'power',
+      'completion',
+      'spiritual',
     ]).toContain(pd.energy);
 
     expect(Array.isArray(pd.keywords)).toBe(true);

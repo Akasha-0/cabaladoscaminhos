@@ -1,21 +1,21 @@
-import { defineConfig, globalIgnores } from "eslint/config";
-import nextVitals from "eslint-config-next/core-web-vitals";
-import nextTs from "eslint-config-next/typescript";
-import prettier from "eslint-config-prettier";
+import nextVitals from 'eslint-config-next/core-web-vitals';
+import nextTs from 'eslint-config-next/typescript';
+import prettier from 'eslint-config-prettier';
+import { defineConfig, globalIgnores } from 'eslint/config';
 
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   prettier,
-  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
+  globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
   {
     rules: {
-      "react-hooks/set-state-in-effect": "off",
-      "perfectionist/sort-objects": "off",
-      "perfectionist/mutable-variant": "off",
-      "spellcheck/spell-checker": "off",
-      "@typescript-eslint/ban-ts-comment": "off",
-      "@typescript-eslint/no-explicit-any": "off",
+      'react-hooks/set-state-in-effect': 'off',
+      'perfectionist/sort-objects': 'off',
+      'perfectionist/mutable-variant': 'off',
+      'spellcheck/spell-checker': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
 ]);

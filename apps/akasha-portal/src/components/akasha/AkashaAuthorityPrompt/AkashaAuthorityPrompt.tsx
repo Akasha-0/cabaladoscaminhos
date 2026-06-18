@@ -16,16 +16,15 @@
  * - Badge de estratégia com ícone visual
  * - Transições suaves em todos os elementos
  */
-
-import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { CheckCircle2, XCircle, MinusCircle, Sparkles, Zap, Clock } from 'lucide-react';
+import { useState } from 'react';
 import {
   recomendarAcaoPorEstado,
   praticaAuthorityDiaria,
   type EstadoAkasha,
 } from '@/lib/grimoire/akasha-authority';
 import type { PilaresDados } from '@/lib/grimoire/significados-curados';
-import { CheckCircle2, XCircle, MinusCircle, Sparkles, Zap, Clock } from 'lucide-react';
 
 export interface AkashaAuthorityPromptProps {
   authority: {
@@ -116,7 +115,7 @@ export function AkashaAuthorityPrompt({
     onDecide?.(s, r.acao);
   }
 
-  const selectedOption = ESTADO_OPTIONS.find(o => o.estado === estado);
+  const selectedOption = ESTADO_OPTIONS.find((o) => o.estado === estado);
 
   return (
     <motion.div
@@ -165,7 +164,8 @@ export function AkashaAuthorityPrompt({
             <div
               className="w-10 h-10 rounded-xl flex items-center justify-center text-lg"
               style={{
-                background: 'linear-gradient(135deg, rgba(124,92,255,0.3) 0%, rgba(167,139,250,0.2) 100%)',
+                background:
+                  'linear-gradient(135deg, rgba(124,92,255,0.3) 0%, rgba(167,139,250,0.2) 100%)',
                 border: '1px solid rgba(124,92,255,0.4)',
                 boxShadow: '0 0 20px rgba(124,92,255,0.2)',
               }}
@@ -299,16 +299,18 @@ export function AkashaAuthorityPrompt({
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                     style={{
-                      background: rec.acao === 'aja'
-                        ? 'linear-gradient(135deg, rgba(52,211,153,0.3) 0%, rgba(52,211,153,0.1) 100%)'
-                        : rec.acao === 'espere'
-                        ? 'linear-gradient(135deg, rgba(248,113,113,0.3) 0%, rgba(248,113,113,0.1) 100%)'
-                        : 'linear-gradient(135deg, rgba(148,163,184,0.3) 0%, rgba(148,163,184,0.1) 100%)',
-                      border: rec.acao === 'aja'
-                        ? '1px solid rgba(52,211,153,0.4)'
-                        : rec.acao === 'espere'
-                        ? '1px solid rgba(248,113,113,0.4)'
-                        : '1px solid rgba(148,163,184,0.3)',
+                      background:
+                        rec.acao === 'aja'
+                          ? 'linear-gradient(135deg, rgba(52,211,153,0.3) 0%, rgba(52,211,153,0.1) 100%)'
+                          : rec.acao === 'espere'
+                            ? 'linear-gradient(135deg, rgba(248,113,113,0.3) 0%, rgba(248,113,113,0.1) 100%)'
+                            : 'linear-gradient(135deg, rgba(148,163,184,0.3) 0%, rgba(148,163,184,0.1) 100%)',
+                      border:
+                        rec.acao === 'aja'
+                          ? '1px solid rgba(52,211,153,0.4)'
+                          : rec.acao === 'espere'
+                            ? '1px solid rgba(248,113,113,0.4)'
+                            : '1px solid rgba(148,163,184,0.3)',
                     }}
                   >
                     <span className="text-xl">{rec.icone}</span>
@@ -317,15 +319,26 @@ export function AkashaAuthorityPrompt({
                     <span
                       className="text-sm font-black uppercase tracking-[0.15em]"
                       style={{
-                        color: rec.acao === 'aja' ? '#34D399' : rec.acao === 'espere' ? '#F87171' : '#94A3B8',
+                        color:
+                          rec.acao === 'aja'
+                            ? '#34D399'
+                            : rec.acao === 'espere'
+                              ? '#F87171'
+                              : '#94A3B8',
                       }}
                     >
-                      {rec.acao === 'aja' ? 'Aja Agora' : rec.acao === 'espere' ? 'Aguarde' : 'Observe'}
+                      {rec.acao === 'aja'
+                        ? 'Aja Agora'
+                        : rec.acao === 'espere'
+                          ? 'Aguarde'
+                          : 'Observe'}
                     </span>
                     <p className="text-xs text-white/50 mt-0.5">
-                      {rec.acao === 'aja' ? 'Momento de agir — confiança total' :
-                       rec.acao === 'espere' ? 'Não force — espere o reconhecimento' :
-                       'Analise antes de agir'}
+                      {rec.acao === 'aja'
+                        ? 'Momento de agir — confiança total'
+                        : rec.acao === 'espere'
+                          ? 'Não force — espere o reconhecimento'
+                          : 'Analise antes de agir'}
                     </p>
                   </div>
                 </div>
@@ -350,7 +363,8 @@ export function AkashaAuthorityPrompt({
               <div
                 className="w-5 h-5 rounded-full flex items-center justify-center text-[10px]"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(124,92,255,0.4) 0%, rgba(167,139,250,0.2) 100%)',
+                  background:
+                    'linear-gradient(135deg, rgba(124,92,255,0.4) 0%, rgba(167,139,250,0.2) 100%)',
                   border: '1px solid rgba(124,92,255,0.5)',
                 }}
               >

@@ -1,6 +1,7 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { existsSync, readFileSync } from 'fs';
 import { exec } from 'child_process';
+import { existsSync, readFileSync } from 'fs';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { diagnostico } from './diagnostico';
 
 // Mock modules before importing diagnostico
 vi.mock('fs', () => ({
@@ -11,8 +12,6 @@ vi.mock('fs', () => ({
 vi.mock('child_process', () => ({
   exec: vi.fn(),
 }));
-
-import { diagnostico } from './diagnostico';
 
 const mockedExec = vi.mocked(exec, true);
 const mockedExistsSync = vi.mocked(existsSync, true);
@@ -47,14 +46,29 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-function createExecMock(responses: Array<{ pattern: (cmd: string) => boolean; stdout: string; stderr?: string; error?: Error }>) {
+function createExecMock(
+  responses: Array<{
+    pattern: (cmd: string) => boolean;
+    stdout: string;
+    stderr?: string;
+    error?: Error;
+  }>
+) {
   mockedExec.mockImplementation(
-    (cmd: string, _opts: unknown, cb: ((err: Error | null, stdout: string, stderr: string) => void) | undefined) => {
-      const match = responses.find(r => r.pattern(cmd));
+    (
+      cmd: string,
+      _opts: unknown,
+      cb: ((err: Error | null, stdout: string, stderr: string) => void) | undefined
+    ) => {
+      const match = responses.find((r) => r.pattern(cmd));
       if (match && cb) {
         setImmediate(() => cb(match.error ?? null, match.stdout, match.stderr ?? ''));
       }
-      return { on: vi.fn(), stdout: { on: vi.fn() }, stderr: { on: vi.fn() } } as unknown as ReturnType<typeof exec>;
+      return {
+        on: vi.fn(),
+        stdout: { on: vi.fn() },
+        stderr: { on: vi.fn() },
+      } as unknown as ReturnType<typeof exec>;
     }
   );
 }
@@ -62,8 +76,8 @@ function createExecMock(responses: Array<{ pattern: (cmd: string) => boolean; st
 describe('diagnostico', () => {
   it('should pass when all checks succeed', async () => {
     createExecMock([
-      { pattern: cmd => cmd.startsWith('pnpm'), stdout: '9.0.0\n' },
-      { pattern: cmd => cmd.startsWith('psql'), stdout: 'psql (PostgreSQL) 16.0\n' },
+      { pattern: (cmd) => cmd.startsWith('pnpm'), stdout: '9.0.0\n' },
+      { pattern: (cmd) => cmd.startsWith('psql'), stdout: 'psql (PostgreSQL) 16.0\n' },
     ]);
     mockedExistsSync.mockReturnValue(true);
     mockedReadFileSync.mockReturnValue('DATABASE_URL=postgres://localhost\n');
@@ -83,8 +97,8 @@ describe('diagnostico', () => {
     Object.defineProperty(process, 'version', { value: 'v16.0.0', configurable: true });
 
     createExecMock([
-      { pattern: cmd => cmd.startsWith('pnpm'), stdout: '9.0.0\n' },
-      { pattern: cmd => cmd.startsWith('psql'), stdout: 'psql (PostgreSQL) 16.0\n' },
+      { pattern: (cmd) => cmd.startsWith('pnpm'), stdout: '9.0.0\n' },
+      { pattern: (cmd) => cmd.startsWith('psql'), stdout: 'psql (PostgreSQL) 16.0\n' },
     ]);
     mockedExistsSync.mockReturnValue(true);
     mockedReadFileSync.mockReturnValue('DATABASE_URL=postgres://localhost\n');
@@ -100,8 +114,8 @@ describe('diagnostico', () => {
 
   it('should handle missing .env file gracefully', async () => {
     createExecMock([
-      { pattern: cmd => cmd.startsWith('pnpm'), stdout: '9.0.0\n' },
-      { pattern: cmd => cmd.startsWith('psql'), stdout: 'psql (PostgreSQL) 16.0\n' },
+      { pattern: (cmd) => cmd.startsWith('pnpm'), stdout: '9.0.0\n' },
+      { pattern: (cmd) => cmd.startsWith('psql'), stdout: 'psql (PostgreSQL) 16.0\n' },
     ]);
     mockedExistsSync.mockReturnValue(false);
     mockedReadFileSync.mockImplementation(() => {

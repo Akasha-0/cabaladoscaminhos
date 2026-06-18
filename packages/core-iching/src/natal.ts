@@ -14,17 +14,16 @@
  * trigramas, linhas e numeração King Wen. A tradição oriental possui
  * múltiplas escolas; a Akasha escolhe uma forma simples e auditável.
  */
-
-import type { BuildIchingMapArgs, IChingMap, TrigramId } from './types';
 import { TRIGRAMS, getTrigram } from './bagua';
 import { getHexagram } from './hexagrams';
+import type { BuildIchingMapArgs, IChingMap, TrigramId } from './types';
 
 const ALGO_TAG = 'akasha.v0.0.4.trigramas-mod8';
 
 /** Mapeia um valor 0..N (após mod 8) para TrigramId 1..8 (0→8). */
 function mod8ToTrigramId(n: number): TrigramId {
   const v = ((n % 8) + 8) % 8; // garante 0..7
-  return ((v === 0 ? 8 : v) as TrigramId);
+  return (v === 0 ? 8 : v) as TrigramId;
 }
 
 /**
@@ -95,7 +94,7 @@ export function buildIchingMap(args: BuildIchingMapArgs): IChingMap {
   }
   const year = dt.getUTCFullYear();
   const month = dt.getUTCMonth() + 1; // 1-12
-  const day = dt.getUTCDate();        // 1-31
+  const day = dt.getUTCDate(); // 1-31
 
   const hour = parseBirthHour(args.birthTime ?? null);
   const provisional = hour == null;
@@ -112,13 +111,71 @@ export function buildIchingMap(args: BuildIchingMapArgs): IChingMap {
   // Mapeamento direto upper×lower → 1..64 (cobre todas as 64 combinações).
   // A tabela King Wen é a SEQUÊNCIA; aqui derivamos o número pelo par
   // (upper, lower) — único para cada combinação possível.
-  const hexNumber = ((upperId - 1) * 8 + lowerId) as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
-    | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20
-    | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30
-    | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40
-    | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50
-    | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 | 60
-    | 61 | 62 | 63 | 64;
+  const hexNumber = ((upperId - 1) * 8 + lowerId) as
+    | 1
+    | 2
+    | 3
+    | 4
+    | 5
+    | 6
+    | 7
+    | 8
+    | 9
+    | 10
+    | 11
+    | 12
+    | 13
+    | 14
+    | 15
+    | 16
+    | 17
+    | 18
+    | 19
+    | 20
+    | 21
+    | 22
+    | 23
+    | 24
+    | 25
+    | 26
+    | 27
+    | 28
+    | 29
+    | 30
+    | 31
+    | 32
+    | 33
+    | 34
+    | 35
+    | 36
+    | 37
+    | 38
+    | 39
+    | 40
+    | 41
+    | 42
+    | 43
+    | 44
+    | 45
+    | 46
+    | 47
+    | 48
+    | 49
+    | 50
+    | 51
+    | 52
+    | 53
+    | 54
+    | 55
+    | 56
+    | 57
+    | 58
+    | 59
+    | 60
+    | 61
+    | 62
+    | 63
+    | 64;
   const hex = getHexagram(hexNumber);
 
   const upperTri = getTrigram(upperId);

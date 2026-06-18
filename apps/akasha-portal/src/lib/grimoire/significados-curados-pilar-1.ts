@@ -18,7 +18,6 @@
  * Pilar 1 é o eixo — o número sintetiza todos os outros Pilares
  * (ver `significados-curados-helpers.ts`).
  */
-
 import type { SignificadoCurado } from './significados-curados';
 
 const PILAR_1: SignificadoCurado[] = [

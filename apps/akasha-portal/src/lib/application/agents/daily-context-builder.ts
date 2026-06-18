@@ -12,7 +12,8 @@
 // Este é o "prompt" estruturado que será enviado para a IA
 // gerar recomendações práticas e profundas.
 // ============================================================
-
+import { getBirthChart, type BirthChart } from '@akasha/core-astrology';
+import { calculateNumerology } from '@akasha/core-cabala';
 import {
   buildCycleSnapshot,
   type PersonalCycleSnapshot,
@@ -26,8 +27,6 @@ import {
   type TransitAspect,
   type MoonPhase,
 } from './transit-engine';
-import { getBirthChart, type BirthChart } from '@akasha/core-astrology';
-import { calculateNumerology } from '@akasha/core-cabala';
 
 // ============================================================
 // TYPES
@@ -35,10 +34,10 @@ import { calculateNumerology } from '@akasha/core-cabala';
 
 export interface UserSpiritualProfile {
   nome: string;
-  dataNascimento: string;       // ISO
+  dataNascimento: string; // ISO
   horaNascimento?: string;
   localNascimento?: string;
-  fullName?: string;            // Nome completo (para lições cármicas)
+  fullName?: string; // Nome completo (para lições cármicas)
   // Cached numerology
   caminhoDeVida?: number;
   numeroExpressao?: number;
@@ -55,7 +54,7 @@ export interface UserSpiritualProfile {
 
 export interface DailyAgentContext {
   // Identificação
-  data: string;                 // ISO
+  data: string; // ISO
   user: UserSpiritualProfile;
 
   // Ciclos pessoais
@@ -142,12 +141,7 @@ export async function buildDailyContext(
   const criticalAspects = dailyEnergy.majorAspects.slice(0, 5);
 
   // Formatar contexto para a IA
-  const formattedContext = formatContextForAI(
-    user,
-    cycleSnapshot,
-    dailyEnergy,
-    criticalAspects
-  );
+  const formattedContext = formatContextForAI(user, cycleSnapshot, dailyEnergy, criticalAspects);
 
   return {
     data: currentDate.toISOString().split('T')[0],
@@ -180,7 +174,9 @@ function formatContextForAI(
   const lines: string[] = [];
   lines.push('═══════════════════════════════════════════════════════');
   lines.push('🕐 CONTEXTO ESPIRITUAL DO DIA');
-  lines.push(`Data: ${new Date(cycle.currentDate).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric', weekday: 'long' })}`);
+  lines.push(
+    `Data: ${new Date(cycle.currentDate).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric', weekday: 'long' })}`
+  );
   lines.push('═══════════════════════════════════════════════════════');
   lines.push('');
   formatUserProfile(lines, user, cycle);
@@ -194,7 +190,11 @@ function formatContextForAI(
   lines.push('═══════════════════════════════════════════════════════');
   return lines.join('\n');
 }
-function formatUserProfile(lines: string[], user: UserSpiritualProfile, cycle: PersonalCycleSnapshot): void {
+function formatUserProfile(
+  lines: string[],
+  user: UserSpiritualProfile,
+  cycle: PersonalCycleSnapshot
+): void {
   lines.push('👤 PERFIL ESPIRITUAL');
   lines.push('─────────────────────────────────────────────────────');
   lines.push(`Nome: ${user.nome}`);
@@ -247,7 +247,7 @@ function formatTransits(lines: string[], aspects: TransitAspect[]): void {
   if (aspects.length === 0) return;
   lines.push('🪐 TRÂNSITOS PLANETÁRIOS (Ativos hoje)');
   lines.push('─────────────────────────────────────────────────────');
-  aspects.forEach(a => {
+  aspects.forEach((a) => {
     lines.push(`${a.transitPlanet} ${a.aspect} ${a.natalPlanet} (${a.exactness}% exato)`);
     lines.push(`   ${a.interpretation}`);
     lines.push(`   Energia: ${a.energy} | Áreas: ${a.lifeAreas.join(', ')}`);
@@ -278,7 +278,7 @@ function formatKarmicLessons(lines: string[], cycle: PersonalCycleSnapshot): voi
   if (cycle.karmicLessons.length === 0) return;
   lines.push('⚠️ LIÇÕES CÁRMICAS ATIVAS');
   lines.push('─────────────────────────────────────────────────────');
-  cycle.karmicLessons.slice(0, 3).forEach(l => {
+  cycle.karmicLessons.slice(0, 3).forEach((l) => {
     lines.push(`• Lição do ${l.missing}: ${l.description} (${l.lifeArea})`);
   });
   lines.push('');
@@ -307,7 +307,11 @@ function calculateSimpleLifePath(birthDate: Date): number {
   const sum = (n: number): number => {
     if (n === 11 || n === 22 || n === 33) return n;
     if (n < 10) return n;
-    return sum(String(n).split('').reduce((a, b) => a + parseInt(b, 10), 0));
+    return sum(
+      String(n)
+        .split('')
+        .reduce((a, b) => a + parseInt(b, 10), 0)
+    );
   };
 
   return sum(day + month + year);

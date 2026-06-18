@@ -308,5 +308,3 @@ async function isOllamaAvailable(url: string): Promise<boolean> {
     return false;
   }
 }
-
-

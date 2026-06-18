@@ -323,8 +323,6 @@ export interface IChingMap {
   error?: string;
 }
 
-
-
 // ============================================================================
 // §X Akasha Interpretation Engine — Modelo de Interpretação Profunda
 // Baseado em: Gene Keys (Shadow→Gift→Siddhi) + Human Design (Strategy+Authority)
@@ -347,14 +345,14 @@ export type AkashaLevel = 'shadow' | 'gift' | 'siddhi';
  * até a autorrealização — see AGENTS.md §Visão de produto 3).
  */
 export type LifeArea =
-  | 'proposito'       // Para que você existe
-  | 'destino'         // Para onde você vai
-  | 'dons'            // O que você tem para oferecer
+  | 'proposito' // Para que você existe
+  | 'destino' // Para onde você vai
+  | 'dons' // O que você tem para oferecer
   | 'relacionamentos' // Como você se conecta
-  | 'sexualidade'     // Quais seus padrões e desejos
-  | 'carreira'        // Onde você manifesta
-  | 'financas'        // Como o fluxo opera
-  | 'saude'           // Onde seu corpo pede atenção
+  | 'sexualidade' // Quais seus padrões e desejos
+  | 'carreira' // Onde você manifesta
+  | 'financas' // Como o fluxo opera
+  | 'saude' // Onde seu corpo pede atenção
   | 'espiritualidade'; // Seu caminho de integração
 
 /** Rótulos PT-BR para cada LifeArea. */

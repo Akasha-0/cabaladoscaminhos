@@ -1,7 +1,6 @@
 /**
  * Credits checking and deduction for Mentor API
  */
-
 import { prisma } from '@/lib/infrastructure/prisma';
 
 const MENTOR_CREDIT_COST = 1;

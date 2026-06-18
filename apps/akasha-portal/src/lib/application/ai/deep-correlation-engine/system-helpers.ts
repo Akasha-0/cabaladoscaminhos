@@ -1,17 +1,44 @@
-import type { UserSpiritualData } from '../types';
 import type { SpiritualSource } from '../deep-correlation-engine';
+import type { UserSpiritualData } from '../types';
 
 // ============================================================
 // ENERGY MAPPINGS
 // ============================================================
 
-export const SYSTEM_ENERGIES: Record<SpiritualSource, { primary: string; elements: string[]; qualities: string[] }> = {
-  kabbalah: { primary: 'Divine Light', elements: ['fire', 'water', 'air', 'earth'], qualities: ['wisdom', 'compassion', 'mercy', 'severity'] },
-  ifa: { primary: 'Ikin', elements: ['earth', 'air'], qualities: ['wisdom', 'truth', 'divination'] },
-  candomble: { primary: 'Axé', elements: ['fire', 'water', 'earth', 'air'], qualities: ['vitality', 'ancestor_connection', 'nature_spirits'] },
-  tarot: { primary: 'Elemental Forces', elements: ['fire', 'water', 'air', 'earth'], qualities: ['intuition', 'symbolism', 'fate'] },
-  astrology: { primary: 'Cosmic Energy', elements: ['fire', 'earth', 'air', 'water'], qualities: ['celestial_influence', 'planetary_power'] },
-  numerology: { primary: 'Vibrational Frequency', elements: ['odd', 'even'], qualities: ['essence', 'life_path'] },
+export const SYSTEM_ENERGIES: Record<
+  SpiritualSource,
+  { primary: string; elements: string[]; qualities: string[] }
+> = {
+  kabbalah: {
+    primary: 'Divine Light',
+    elements: ['fire', 'water', 'air', 'earth'],
+    qualities: ['wisdom', 'compassion', 'mercy', 'severity'],
+  },
+  ifa: {
+    primary: 'Ikin',
+    elements: ['earth', 'air'],
+    qualities: ['wisdom', 'truth', 'divination'],
+  },
+  candomble: {
+    primary: 'Axé',
+    elements: ['fire', 'water', 'earth', 'air'],
+    qualities: ['vitality', 'ancestor_connection', 'nature_spirits'],
+  },
+  tarot: {
+    primary: 'Elemental Forces',
+    elements: ['fire', 'water', 'air', 'earth'],
+    qualities: ['intuition', 'symbolism', 'fate'],
+  },
+  astrology: {
+    primary: 'Cosmic Energy',
+    elements: ['fire', 'earth', 'air', 'water'],
+    qualities: ['celestial_influence', 'planetary_power'],
+  },
+  numerology: {
+    primary: 'Vibrational Frequency',
+    elements: ['odd', 'even'],
+    qualities: ['essence', 'life_path'],
+  },
 };
 
 // ============================================================
@@ -21,12 +48,28 @@ export const SYSTEM_ENERGIES: Record<SpiritualSource, { primary: string; element
 /** Major Arcana 0–21 → canonical Portuguese name */
 export function getTarotName(arcanaNum: number): string {
   const tarotNames: Record<number, string> = {
-    0: 'O Louco', 1: 'O Mago', 2: 'A Alta Sacerdotisa', 3: 'A Imperatriz',
-    4: 'O Imperador', 5: 'O Hierofante', 6: 'Os Enamorados', 7: 'O Carro',
-    8: 'A Força', 9: 'O Eremita', 10: 'A Roda da Fortuna', 11: 'A Justiça',
-    12: 'O Enforcado', 13: 'A Morte', 14: 'A Temperança', 15: 'O Diabo',
-    16: 'A Torre', 17: 'A Estrela', 18: 'A Lua', 19: 'O Sol',
-    20: 'O Julgamento', 21: 'O Mundo',
+    0: 'O Louco',
+    1: 'O Mago',
+    2: 'A Alta Sacerdotisa',
+    3: 'A Imperatriz',
+    4: 'O Imperador',
+    5: 'O Hierofante',
+    6: 'Os Enamorados',
+    7: 'O Carro',
+    8: 'A Força',
+    9: 'O Eremita',
+    10: 'A Roda da Fortuna',
+    11: 'A Justiça',
+    12: 'O Enforcado',
+    13: 'A Morte',
+    14: 'A Temperança',
+    15: 'O Diabo',
+    16: 'A Torre',
+    17: 'A Estrela',
+    18: 'A Lua',
+    19: 'O Sol',
+    20: 'O Julgamento',
+    21: 'O Mundo',
   };
   return tarotNames[arcanaNum] || `Arcana ${arcanaNum}`;
 }
@@ -61,7 +104,7 @@ export function getSystemTargets(userData: UserSpiritualData, source: SpiritualS
     case 'candomble':
       return userData.orixaRegente ? [userData.orixaRegente] : [];
     case 'tarot':
-      return userData.arcoMaior?.map(n => `Arcana ${n}`) ?? [];
+      return userData.arcoMaior?.map((n) => `Arcana ${n}`) ?? [];
     case 'astrology': {
       const targets: string[] = [];
       if (userData.sign) targets.push(userData.sign);
@@ -76,7 +119,11 @@ export function getSystemTargets(userData: UserSpiritualData, source: SpiritualS
 }
 
 /** 0..1 multiplier that boosts correlation when the user has more complete system data */
-export function getDataPresenceMultiplier(userData: UserSpiritualData, source: SpiritualSource, _target: string): number {
+export function getDataPresenceMultiplier(
+  userData: UserSpiritualData,
+  source: SpiritualSource,
+  _target: string
+): number {
   let multiplier = 0.5;
 
   if (hasDataForSystem(userData, source)) {
@@ -131,7 +178,10 @@ export function findSharedEnergy(source: SpiritualSource, target: string): strin
 // ============================================================
 
 /** 0..1 harmony score for a single system given the user's data completeness */
-export function calculateSystemHarmony(userData: UserSpiritualData, system: SpiritualSource): number {
+export function calculateSystemHarmony(
+  userData: UserSpiritualData,
+  system: SpiritualSource
+): number {
   if (!hasDataForSystem(userData, system)) return 0;
 
   let harmony = 0.7;
@@ -152,7 +202,11 @@ export function calculateSystemHarmony(userData: UserSpiritualData, system: Spir
 }
 
 /** 0..1 harmony score between two spiritual systems, based on known synergies */
-export function calculatePairHarmony(_userData: UserSpiritualData, s1: SpiritualSource, s2: SpiritualSource): number {
+export function calculatePairHarmony(
+  _userData: UserSpiritualData,
+  s1: SpiritualSource,
+  s2: SpiritualSource
+): number {
   const baseHarmony = 0.5;
 
   const synergies: [SpiritualSource, SpiritualSource, number][] = [

@@ -1,15 +1,9 @@
 import type { Metadata, Viewport } from 'next';
-import {
-  Cinzel,
-  Cormorant_Garamond,
-  Inter,
-  Lora,
-  JetBrains_Mono,
-} from 'next/font/google';
-import './globals.css';
-import { ThemeProvider } from '@/components/akasha/ThemeProvider';
-import { ServiceWorkerRegistrar } from '@/components/akasha/ServiceWorkerRegistrar';
+import { Cinzel, Cormorant_Garamond, Inter, Lora, JetBrains_Mono } from 'next/font/google';
 import { LocaleSwitcher } from '@/components/akasha/LocaleSwitcher';
+import { ServiceWorkerRegistrar } from '@/components/akasha/ServiceWorkerRegistrar';
+import { ThemeProvider } from '@/components/akasha/ThemeProvider';
+import './globals.css';
 
 const cinzel = Cinzel({
   variable: '--font-cinzel',
@@ -226,9 +220,7 @@ export default function RootLayout({
         className={`${cinzel.variable} ${cormorant.variable} ${inter.variable} ${lora.variable} ${jetbrainsMono.variable} min-h-screen antialiased`}
         style={{ background: '#06070F', color: '#F4F5FF' }}
       >
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
         <ServiceWorkerRegistrar />
         <div className="fixed top-4 right-4 z-50">
           <LocaleSwitcher />

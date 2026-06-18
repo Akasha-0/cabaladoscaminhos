@@ -319,7 +319,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         >
           Iniciar Jornada →
         </Link>
-        <div className="mt-6" style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', alignItems: 'center' }}>
+        <div
+          className="mt-6"
+          style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', alignItems: 'center' }}
+        >
           <Link
             href={`/${locale}/login`}
             style={{

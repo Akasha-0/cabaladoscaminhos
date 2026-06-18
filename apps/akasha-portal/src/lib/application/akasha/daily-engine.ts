@@ -1,10 +1,10 @@
 import type { BirthChart } from '@akasha/core-astrology';
+import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/types';
 import { buildDailyEnergy } from '@/lib/application/agents/transit-engine';
+import { aggregateHologram } from '@/lib/domain/mapa/hologram-aggregator';
 import { crossAnalyze } from './cross-engine';
 import { buildOduGlossary, formatGlossarySection } from './glossary';
-import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/types';
 import type { AkashaSynthesis } from './synthesis-engine';
-import { aggregateHologram } from '@/lib/domain/mapa/hologram-aggregator';
 import { buildAkashaSynthesis } from './synthesis-engine';
 
 export interface DailyContent {
@@ -38,7 +38,7 @@ export function buildDailyContent(
   tantricMap: unknown,
   oduBirth: unknown,
   date: Date = new Date(),
-  ichingHex?: number | null,
+  ichingHex?: number | null
 ): DailyContent {
   const birthChart = astrologyMap as BirthChart;
   const dateStr = date.toISOString().split('T')[0];
@@ -67,9 +67,9 @@ export function buildDailyContent(
   let synthesis: AkashaSynthesis | undefined;
   try {
     const astro = astrologyMap as AstrologyMap | null;
-    const kab   = kabalisticMap as KabalisticMap | null;
+    const kab = kabalisticMap as KabalisticMap | null;
     const tantra = tantricMap as TantricMap | null;
-    const odu   = oduBirth as OduBirth | null;
+    const odu = oduBirth as OduBirth | null;
     const hologram = aggregateHologram({
       astrologyMap: astro ?? null,
       kabalisticMap: kab ?? null,

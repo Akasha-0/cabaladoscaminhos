@@ -4,8 +4,8 @@
  * Extraído de AkashaLifeAreasDashboard.tsx para reduzir complexidade do dashboard.
  */
 import { Sparkles } from 'lucide-react';
-import type { AreaNarrativeUI } from './hooks/useAkashaSynthesis';
 import { AREA_CONFIG, FREQUENCY_CONFIG, IntensityDots } from './AkashaLifeAreasDashboard';
+import type { AreaNarrativeUI } from './hooks/useAkashaSynthesis';
 
 type CycleModulationEntry = { alignmentScore: number; suggestedBoost: string; rationale: string };
 
@@ -39,7 +39,7 @@ export function PriorityAreasQuickView({
         <span className="text-[10px] font-semibold text-[#FFD60A]/80 uppercase tracking-wider">
           Prioridades de Hoje
         </span>
-        {Object.values(modulationMap ?? {}).some(m => m.suggestedBoost === 'increase') && (
+        {Object.values(modulationMap ?? {}).some((m) => m.suggestedBoost === 'increase') && (
           <span className="text-[8px] px-1 py-0.5 rounded bg-[#F0B429]/15 text-[#F0B429] border border-[#F0B429]/25 font-mono">
             Ciclo ativo
           </span>

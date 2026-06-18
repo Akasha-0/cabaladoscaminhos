@@ -3,14 +3,16 @@
  * AreaCardSections — Expanded content sections for AkashaLifeAreasDashboard AreaCard
  * Extracted from AkashaLifeAreasDashboard (RitualBadge + SexualidadeSection)
  */
-import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { useState } from 'react';
 import type { SexualidadeUI } from '../hooks/useAkashaSynthesis';
 
 // ─── RitualBadge ─────────────────────────────────────────────────────────────
 
-function RitualBadge({ ritual }: {
-  ritual: { title: string; instruction: string; duration: string; element: string; color: string }
+function RitualBadge({
+  ritual,
+}: {
+  ritual: { title: string; instruction: string; duration: string; element: string; color: string };
 }) {
   return (
     <div
@@ -23,7 +25,9 @@ function RitualBadge({ ritual }: {
       />
       <div className="min-w-0">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold" style={{ color: ritual.color }}>{ritual.title}</span>
+          <span className="text-xs font-semibold" style={{ color: ritual.color }}>
+            {ritual.title}
+          </span>
           <span className="text-xs text-white/40">{ritual.duration}</span>
         </div>
         <p className="text-xs text-white/60 mt-0.5 leading-relaxed">{ritual.instruction}</p>
@@ -38,12 +42,18 @@ function SexualidadeSection({ sexualidade }: { sexualidade: SexualidadeUI }) {
   const [showDetails, setShowDetails] = useState(false);
   return (
     <div className="border-t border-[#FF2D55]/20 pt-2 mt-2">
-      <button
-        onClick={() => setShowDetails(v => !v)}
-        className="flex items-center gap-2 w-full"
-      >
-        <span className="text-xs font-semibold text-[#FF2D55]/90 uppercase tracking-wider">Sexualidade</span>
-        <ChevronDown size={14} className="text-white/30" style={{ transform: showDetails ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
+      <button onClick={() => setShowDetails((v) => !v)} className="flex items-center gap-2 w-full">
+        <span className="text-xs font-semibold text-[#FF2D55]/90 uppercase tracking-wider">
+          Sexualidade
+        </span>
+        <ChevronDown
+          size={14}
+          className="text-white/30"
+          style={{
+            transform: showDetails ? 'rotate(180deg)' : 'rotate(0deg)',
+            transition: 'transform 0.2s',
+          }}
+        />
       </button>
       {showDetails && (
         <div className="mt-2 space-y-2">
@@ -61,7 +71,12 @@ function SexualidadeSection({ sexualidade }: { sexualidade: SexualidadeUI }) {
               <p className="text-xs text-[#34C759]/80 font-medium mb-1">LIGA</p>
               <div className="flex flex-wrap gap-1">
                 {sexualidade.turnOn.map((t, i) => (
-                  <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-[#34C759]/15 text-[#34C759]/80">{t}</span>
+                  <span
+                    key={i}
+                    className="text-xs px-2 py-0.5 rounded-full bg-[#34C759]/15 text-[#34C759]/80"
+                  >
+                    {t}
+                  </span>
                 ))}
               </div>
             </div>
@@ -71,7 +86,12 @@ function SexualidadeSection({ sexualidade }: { sexualidade: SexualidadeUI }) {
               <p className="text-xs text-[#FF2D55]/80 font-medium mb-1">DESLIGA</p>
               <div className="flex flex-wrap gap-1">
                 {sexualidade.turnOff.map((t, i) => (
-                  <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-[#FF2D55]/15 text-[#FF2D55]/80">{t}</span>
+                  <span
+                    key={i}
+                    className="text-xs px-2 py-0.5 rounded-full bg-[#FF2D55]/15 text-[#FF2D55]/80"
+                  >
+                    {t}
+                  </span>
                 ))}
               </div>
             </div>

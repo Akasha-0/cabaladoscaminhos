@@ -1,8 +1,8 @@
 import { cookies, headers } from 'next/headers';
-import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import LoginClient from './LoginClient';
+import { redirect } from 'next/navigation';
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
+import LoginClient from './LoginClient';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -72,7 +72,9 @@ export default async function LoginPage({
 
       <main
         className="flex-1 flex items-center justify-center px-4 py-12"
-        style={{ background: 'radial-gradient(ellipse at top, rgba(124,92,255,0.08), transparent 60%)' }}
+        style={{
+          background: 'radial-gradient(ellipse at top, rgba(124,92,255,0.08), transparent 60%)',
+        }}
       >
         <div style={{ width: '100%', maxWidth: '420px' }}>
           <div className="text-center mb-8">

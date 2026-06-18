@@ -2,10 +2,9 @@
  * Prompt Builder for Mapa Insights AI Generation
  * @module ai/mapa-insights/prompt-builder
  */
-
+import type { PosicaoPlaneta } from '@akasha/core-astrology';
 import type { MapaAlmaCompleto } from '@/lib/domain/engines/types/mapa-alma';
 import type { InsightData } from './types';
-import type { PosicaoPlaneta } from '@akasha/core-astrology';
 
 // ============================================================
 // SYSTEM PROMPT
@@ -102,9 +101,10 @@ ${fmtPlaneta('Plutão', astro.plutao)}`;
   }
 
   function buildTarotSection(tarot: MapaAlmaCompleto['tarot']): string {
-    const adicional = tarot.cartasAdicionais && tarot.cartasAdicionais.length > 0
-      ? `\n**Cartas Adicionais:** ${tarot.cartasAdicionais.map(c => c.name).join(', ')}`
-      : '';
+    const adicional =
+      tarot.cartasAdicionais && tarot.cartasAdicionais.length > 0
+        ? `\n**Cartas Adicionais:** ${tarot.cartasAdicionais.map((c) => c.name).join(', ')}`
+        : '';
     return `## TAROT
 **Carta de Nascimento (Arcano ${tarot.cartaNascimento}):** ${tarot.interpretacao.name}
 **Carta do Ano Pessoal (Arcano ${tarot.cartaAnoPessoal}):** ${tarot.cartaAlma}${adicional}`;
@@ -112,7 +112,8 @@ ${fmtPlaneta('Plutão', astro.plutao)}`;
 
   function buildChakrasSection(chakras: MapaAlmaCompleto['chakras']): string {
     const lines = chakras.chakras.map(
-      c => `  - ${c.nome} (#${c.numero}): ${c.estado} (intensidade ${c.intensidade})${c.cor ? ` | cor: ${c.cor}` : ''}`
+      (c) =>
+        `  - ${c.nome} (#${c.numero}): ${c.estado} (intensidade ${c.intensidade})${c.cor ? ` | cor: ${c.cor}` : ''}`
     );
     return [
       `## CHAKRAS`,
@@ -124,7 +125,7 @@ ${fmtPlaneta('Plutão', astro.plutao)}`;
   }
 
   function buildConvergenciasSection(convergencias: MapaAlmaCompleto['convergencias']): string {
-    const convLines = convergencias.map(c => {
+    const convLines = convergencias.map((c) => {
       const prefix = c.forca === 'forte' ? '🔴' : c.forca === 'medio' ? '🟡' : '⚪';
       return `  ${prefix} [${c.forca.toUpperCase()}] ${c.sistemas.join(' + ')}: ${c.descricao} (${c.energia})`;
     });
@@ -163,22 +164,23 @@ ${fmtPlaneta('Plutão', astro.plutao)}`;
  * Builds the full user prompt for generating Mapa Insights.
  * Includes structured context and response format guidance.
  */
-export function gerarPromptInsight(
-  mapa: MapaAlmaCompleto,
-  contexto?: string
-): string {
+export function gerarPromptInsight(mapa: MapaAlmaCompleto, contexto?: string): string {
   const mapaContext = gerarContextoUsuario(mapa);
 
   const convergenciasPrioridade = buildConvergenciaGuidance(mapa.convergencias);
 
   return `${mapaContext}
 
-${contexto ? `---
+${
+  contexto
+    ? `---
 
 ## CONTEXTO ADICIONAL DO USUÁRIO
 ${contexto}
 
----` : ''}
+---`
+    : ''
+}
 
 ${convergenciasPrioridade}
 
@@ -232,9 +234,9 @@ function buildConvergenciaGuidance(convergencias: MapaAlmaCompleto['convergencia
     return '## CONVERGÊNCIAS\nNenhuma convergência forte detectada. Gere insights únicos para cada sistema.';
   }
 
-  const triplices = convergencias.filter(c => c.sistemas.length >= 3);
-  const duplas = convergencias.filter(c => c.sistemas.length === 2);
-  const simples = convergencias.filter(c => c.sistemas.length === 1);
+  const triplices = convergencias.filter((c) => c.sistemas.length >= 3);
+  const duplas = convergencias.filter((c) => c.sistemas.length === 2);
+  const simples = convergencias.filter((c) => c.sistemas.length === 1);
 
   const lines: string[] = ['## PRIORIDADE DE CONVERGÊNCIAS'];
 
@@ -306,18 +308,22 @@ function getInsightSchema(): Record<string, unknown> {
       affirmation: 'string (opcional)',
     },
     convergencias: {
-      triplices: [{
-        sistemas: ['string'],
-        energia: 'string',
-        forca: 'forte',
-        descricao: 'string',
-      }],
-      duplas: [{
-        sistemas: ['string'],
-        energia: 'string',
-        forca: 'medio',
-        descricao: 'string',
-      }],
+      triplices: [
+        {
+          sistemas: ['string'],
+          energia: 'string',
+          forca: 'forte',
+          descricao: 'string',
+        },
+      ],
+      duplas: [
+        {
+          sistemas: ['string'],
+          energia: 'string',
+          forca: 'medio',
+          descricao: 'string',
+        },
+      ],
     },
     orixasProtegentes: ['string (opcional)'],
     sephirotAlinhadas: ['string (opcional)'],
@@ -342,9 +348,9 @@ Nenhuma convergência forte foi detectada entre os sistemas.
 Cada tradição opera de forma independente neste mapa.`;
   }
 
-  const triplices = convergencias.filter(c => c.sistemas.length >= 3);
-  const duplas = convergencias.filter(c => c.sistemas.length === 2);
-  const simples = convergencias.filter(c => c.sistemas.length === 1);
+  const triplices = convergencias.filter((c) => c.sistemas.length >= 3);
+  const duplas = convergencias.filter((c) => c.sistemas.length === 2);
+  const simples = convergencias.filter((c) => c.sistemas.length === 1);
 
   const lines: string[] = ['## Convergências Espirituais Detectadas'];
 
@@ -352,7 +358,7 @@ Cada tradição opera de forma independente neste mapa.`;
     lines.push('');
     lines.push('### 🔴 Convergências Tríplices — PODER MÁXIMO');
     lines.push('');
-    triplices.forEach(c => {
+    triplices.forEach((c) => {
       lines.push(`**${c.sistemas.join(' ✦ ')}**`);
       lines.push(`  Energia: ${c.energia} | Força: ${c.forca}`);
       lines.push(`  ${c.descricao}`);
@@ -363,7 +369,7 @@ Cada tradição opera de forma independente neste mapa.`;
   if (duplas.length > 0) {
     lines.push('### 🟡 Convergências Duplas — ENERGIA AMPLIADA');
     lines.push('');
-    duplas.forEach(c => {
+    duplas.forEach((c) => {
       lines.push(`**${c.sistemas.join(' ✦ ')}**`);
       lines.push(`  Energia: ${c.energia} | Força: ${c.forca}`);
       lines.push(`  ${c.descricao}`);
@@ -374,7 +380,7 @@ Cada tradição opera de forma independente neste mapa.`;
   if (simples.length > 0) {
     lines.push('### ⚪ Convergências Simples — FOCO ISOLADO');
     lines.push('');
-    simples.forEach(c => {
+    simples.forEach((c) => {
       lines.push(`**${c.sistemas.join(' ✦ ')}**`);
       lines.push(`  Energia: ${c.energia} | Força: ${c.forca}`);
       lines.push(`  ${c.descricao}`);

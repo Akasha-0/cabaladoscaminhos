@@ -10,19 +10,19 @@ export interface DashboardStats {
   totalRituals: number;
   currentStreak: number;
   longestStreak: number;
-  completionRate: number;        // Percentual 0-100
+  completionRate: number; // Percentual 0-100
   lastRitualDate: string | null;
-  weeklyProgress: number[];       // [seg, ter, qua, qui, sex, sáb, dom]
-  monthlyProgress: number[];      // 30 dias
+  weeklyProgress: number[]; // [seg, ter, qua, qui, sex, sáb, dom]
+  monthlyProgress: number[]; // 30 dias
 }
 
 /**
  * Um dia no calendário de streak
  */
 export interface StreakDay {
-  date: string;                  // ISO date string (YYYY-MM-DD)
+  date: string; // ISO date string (YYYY-MM-DD)
   completed: boolean;
-  ritualType?: string;           // Opcional: tipo do ritual completado
+  ritualType?: string; // Opcional: tipo do ritual completado
 }
 
 /**
@@ -30,11 +30,11 @@ export interface StreakDay {
  */
 export interface RitualHistoryItem {
   id: string;
-  date: string;                  // ISO date string
+  date: string; // ISO date string
   ritualName: string;
   ritualLevel: 'shadow' | 'gift' | 'siddhi';
-  completedAt: string;            // ISO datetime string
-  duration?: number;              // segundos
+  completedAt: string; // ISO datetime string
+  duration?: number; // segundos
   grimoireId?: string;
 }
 
@@ -68,5 +68,5 @@ export interface DashboardViewConfig {
   showMonthlyChart: boolean;
   showStreakCalendar: boolean;
   showHistoryList: boolean;
-  historyLimit: number;          // Quantos itens mostrar no histórico
+  historyLimit: number; // Quantos itens mostrar no histórico
 }

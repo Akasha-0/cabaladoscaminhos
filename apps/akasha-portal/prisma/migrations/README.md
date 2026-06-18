@@ -7,10 +7,12 @@ This project uses Prisma with PostgreSQL for database management. All migrations
 ## ⚠️ PROPOSAL-ONLY Policy (lesson N+22)
 
 Some migrations are **proposals** that need human review before applying:
+
 - D-040 (Prisma schema with 5 Pilares) — awaiting human approval
 - F-238, F-239 (idempotency + timezone) — proposals from v0.0.20 spec
 
 **Apply via `prisma migrate deploy` ONLY when:**
+
 1. Migration is approved by human reviewer
 2. Migration has been tested in dev/staging
 3. Migration is in `20260611000000_init_akasha_v3/` or another already-approved location
@@ -18,9 +20,11 @@ Some migrations are **proposals** that need human review before applying:
 ## Current Migrations
 
 ### Approved (can apply)
+
 - `20260611000000_init_akasha_v3/` — initial schema (D-040 v3)
 
 ### Proposals (NEED human approval before deploy)
+
 - `20260615000000_push_last_pushed_at/` — F-238 idempotency (adds column to PushSubscription)
 - `20260615000000_user_timezone/` — F-239 timezone-aware push (adds column to User)
 
@@ -34,9 +38,9 @@ DATABASE_URL=postgresql://user:password@host:5432/database
 
 ### Variables
 
-| Variable       | Description                              | Required |
-|---------------|------------------------------------------|----------|
-| `DATABASE_URL` | PostgreSQL connection string             | Yes      |
+| Variable       | Description                  | Required |
+| -------------- | ---------------------------- | -------- |
+| `DATABASE_URL` | PostgreSQL connection string | Yes      |
 
 ## Commands
 
@@ -53,6 +57,7 @@ npm run db:generate
 ```
 
 Use `prisma migrate dev` when:
+
 - Modifying the schema in development
 - Creating new migration files
 - Working with a local database
@@ -65,6 +70,7 @@ npx prisma migrate deploy
 ```
 
 Use `prisma migrate deploy` when:
+
 - Deploying to production
 - Applying migrations on CI/CD
 - Only applying existing migration files
@@ -78,6 +84,7 @@ npm run db:push
 ```
 
 Use `prisma db push` when:
+
 - Rapid prototyping
 - Working with a test database
 - Not needing migration history
@@ -118,6 +125,7 @@ For this to work, add the following to `package.json`:
 ### Migration fails
 
 Check that:
+
 - `DATABASE_URL` is correctly set
 - Database server is running
 - User has sufficient permissions

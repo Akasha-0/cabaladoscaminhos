@@ -39,18 +39,21 @@ interface CycleSnapshotPayload {
     type: string;
   }>;
   // Area synthesis data (for AreaHistoryEntry derivation)
-  areas: Record<string, {
-    frequency: string;
-    intensity: number;
-    pillarContribution: Record<string, string>;
-    dailyRitual?: {
-      title: string;
-      instruction: string;
-      duration: string;
-      element: string;
-      color: string;
-    };
-  }>;
+  areas: Record<
+    string,
+    {
+      frequency: string;
+      intensity: number;
+      pillarContribution: Record<string, string>;
+      dailyRitual?: {
+        title: string;
+        instruction: string;
+        duration: string;
+        element: string;
+        color: string;
+      };
+    }
+  >;
 }
 
 export async function POST(req: NextRequest) {
@@ -212,10 +215,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (err) {
     console.error('[cycle/snapshot] DB error:', err);
-    return NextResponse.json(
-      { error: 'Failed to persist cycle snapshot' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to persist cycle snapshot' }, { status: 500 });
   }
 }
 

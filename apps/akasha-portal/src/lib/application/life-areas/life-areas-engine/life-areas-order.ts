@@ -3,7 +3,6 @@
 // ============================================================
 // Define a ordem recomendada para exibir as 12 áreas da vida
 // ============================================================
-
 import type { LifeAreaId } from './types';
 
 /**

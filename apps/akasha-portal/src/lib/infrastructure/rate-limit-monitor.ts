@@ -74,12 +74,12 @@ class RateLimitMonitor {
   private checkAlertCondition(identifier: string) {
     const oneMinuteAgo = Date.now() - 60000;
     const recentBlocked = this.events.filter(
-      e => e.identifier === identifier && !e.allowed && e.timestamp > oneMinuteAgo
+      (e) => e.identifier === identifier && !e.allowed && e.timestamp > oneMinuteAgo
     ).length;
 
     // Check cooldown
     const lastAlert = this.alerts
-      .filter(a => a.identifier === identifier)
+      .filter((a) => a.identifier === identifier)
       .sort((a, b) => b.timestamp - a.timestamp)[0];
 
     if (recentBlocked >= this.alertThreshold) {
@@ -90,28 +90,27 @@ class RateLimitMonitor {
           threshold: this.alertThreshold,
           timestamp: Date.now(),
         });
-
       }
     }
   }
 
   private cleanup() {
     const oneHourAgo = Date.now() - 3600000;
-    this.events = this.events.filter(e => e.timestamp > oneHourAgo);
-    this.alerts = this.alerts.filter(a => Date.now() - a.timestamp < 3600000);
+    this.events = this.events.filter((e) => e.timestamp > oneHourAgo);
+    this.alerts = this.alerts.filter((a) => Date.now() - a.timestamp < 3600000);
   }
 
   getStats(timeWindowMs = 3600000): RateLimitStats {
     const cutoff = Date.now() - timeWindowMs;
-    const relevantEvents = this.events.filter(e => e.timestamp > cutoff);
+    const relevantEvents = this.events.filter((e) => e.timestamp > cutoff);
 
-    const allowedRequests = relevantEvents.filter(e => e.allowed).length;
-    const blockedRequests = relevantEvents.filter(e => !e.allowed).length;
-    const uniqueIdentifiers = new Set(relevantEvents.map(e => e.identifier)).size;
+    const allowedRequests = relevantEvents.filter((e) => e.allowed).length;
+    const blockedRequests = relevantEvents.filter((e) => !e.allowed).length;
+    const uniqueIdentifiers = new Set(relevantEvents.map((e) => e.identifier)).size;
 
     // Top identifiers
     const identifierCounts = new Map<string, { allowed: number; blocked: number }>();
-    relevantEvents.forEach(e => {
+    relevantEvents.forEach((e) => {
       const current = identifierCounts.get(e.identifier) || { allowed: 0, blocked: 0 };
       if (e.allowed) {
         current.allowed++;
@@ -122,13 +121,17 @@ class RateLimitMonitor {
     });
 
     const topIdentifiers = Array.from(identifierCounts.entries())
-      .map(([identifier, counts]) => ({ identifier, ...counts, count: counts.allowed + counts.blocked }))
+      .map(([identifier, counts]) => ({
+        identifier,
+        ...counts,
+        count: counts.allowed + counts.blocked,
+      }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 10);
 
     // By endpoint
     const byEndpoint: Record<string, { allowed: number; blocked: number }> = {};
-    relevantEvents.forEach(e => {
+    relevantEvents.forEach((e) => {
       if (e.endpoint) {
         const current = byEndpoint[e.endpoint] || { allowed: 0, blocked: 0 };
         if (e.allowed) {
@@ -146,7 +149,7 @@ class RateLimitMonitor {
       buckets.set(t, { allowed: 0, blocked: 0 });
     }
 
-    relevantEvents.forEach(e => {
+    relevantEvents.forEach((e) => {
       const bucketTime = Math.floor(e.timestamp / 300000) * 300000;
       const bucket = buckets.get(bucketTime);
       if (bucket) {
@@ -175,7 +178,7 @@ class RateLimitMonitor {
 
   getAlerts(since?: number): RateLimitAlert[] {
     if (since) {
-      return this.alerts.filter(a => a.timestamp > since);
+      return this.alerts.filter((a) => a.timestamp > since);
     }
     return [...this.alerts];
   }
@@ -191,9 +194,8 @@ class RateLimitMonitor {
     recentAlerts: number;
   } {
     const stats = this.getStats(60000); // Last minute
-    const blockRate = stats.totalRequests > 0 
-      ? (stats.blockedRequests / stats.totalRequests) * 100 
-      : 0;
+    const blockRate =
+      stats.totalRequests > 0 ? (stats.blockedRequests / stats.totalRequests) * 100 : 0;
     const recentAlerts = this.getAlerts(Date.now() - 60000).length;
 
     let status: 'healthy' | 'degraded' | 'critical';

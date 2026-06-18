@@ -16,7 +16,6 @@
  * - Axioma 8 (PT-BR primeiro): títulos/essência em PT-BR.
  * - R-022 §4.4 (Ética Ifá): Pilar 4 (Odu) carrega `requer_terreiro: true`.
  */
-
 import { describe, it, expect } from 'vitest';
 import {
   significadoPorPilar,
@@ -211,7 +210,10 @@ describe('significados-curados: invariantes editoriais', () => {
           const valor = s[campo];
           expect(valor, `Pilar ${pilar}[${i}].${campo} vazio`).toBeTruthy();
           if (typeof valor === 'string') {
-            expect(valor.trim().length, `Pilar ${pilar}[${i}].${campo} whitespace-only`).toBeGreaterThan(0);
+            expect(
+              valor.trim().length,
+              `Pilar ${pilar}[${i}].${campo} whitespace-only`
+            ).toBeGreaterThan(0);
           }
         });
       });
@@ -240,7 +242,10 @@ describe('significados-curados: invariantes editoriais', () => {
     pilaresSemTerreiro.forEach((pilar) => {
       const lista = significadosDoPilar(pilar);
       lista.forEach((s) => {
-        expect(s.requer_terreiro, `${pilar}[${s.id}] tem requer_terreiro=true indevido`).toBeFalsy();
+        expect(
+          s.requer_terreiro,
+          `${pilar}[${s.id}] tem requer_terreiro=true indevido`
+        ).toBeFalsy();
       });
     });
   });

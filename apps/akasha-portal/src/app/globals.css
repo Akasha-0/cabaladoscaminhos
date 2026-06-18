@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -13,51 +13,51 @@
   --font-dossier: var(--font-lora), Georgia, serif;
 
   /* Colors - Sidebar */
-  --color-sidebar-ring: #7C5CFF;
+  --color-sidebar-ring: #7c5cff;
   --color-sidebar-border: rgba(124, 92, 255, 0.2);
-  --color-sidebar-accent-foreground: #F4F5FF;
-  --color-sidebar-accent: #141A33;
-  --color-sidebar-primary-foreground: #F4F5FF;
-  --color-sidebar-primary: #7C5CFF;
-  --color-sidebar-foreground: #A7AECF;
-  --color-sidebar: #0B0E1C;
+  --color-sidebar-accent-foreground: #f4f5ff;
+  --color-sidebar-accent: #141a33;
+  --color-sidebar-primary-foreground: #f4f5ff;
+  --color-sidebar-primary: #7c5cff;
+  --color-sidebar-foreground: #a7aecf;
+  --color-sidebar: #0b0e1c;
 
   /* Colors - Chart */
-  --color-chart-5: #FB5781;
-  --color-chart-4: #F0B429;
-  --color-chart-3: #2DD4BF;
-  --color-chart-2: #9D86FF;
-  --color-chart-1: #7C5CFF;
+  --color-chart-5: #fb5781;
+  --color-chart-4: #f0b429;
+  --color-chart-3: #2dd4bf;
+  --color-chart-2: #9d86ff;
+  --color-chart-1: #7c5cff;
 
   /* Semantic UI tokens — Akasha palette (Doc 26 §3) */
-  --color-ring: #7C5CFF;
-  --color-input: #26304F;
-  --color-border: #26304F;
-  --color-destructive: #FB5781;
-  --color-accent-foreground: #F4F5FF;
-  --color-accent: #5B3FD6;
-  --color-muted-foreground: #A7AECF;
-  --color-muted: #141A33;
-  --color-secondary-foreground: #F4F5FF;
-  --color-secondary: #2DD4BF;
-  --color-primary-foreground: #F4F5FF;
-  --color-primary: #7C5CFF;
-  --color-popover-foreground: #F4F5FF;
-  --color-popover: #0B0E1C;
-  --color-card-foreground: #F4F5FF;
-  --color-card: #0B0E1C;
-  --color-background: #06070F;
-  --color-foreground: #F4F5FF;
+  --color-ring: #7c5cff;
+  --color-input: #26304f;
+  --color-border: #26304f;
+  --color-destructive: #fb5781;
+  --color-accent-foreground: #f4f5ff;
+  --color-accent: #5b3fd6;
+  --color-muted-foreground: #a7aecf;
+  --color-muted: #141a33;
+  --color-secondary-foreground: #f4f5ff;
+  --color-secondary: #2dd4bf;
+  --color-primary-foreground: #f4f5ff;
+  --color-primary: #7c5cff;
+  --color-popover-foreground: #f4f5ff;
+  --color-popover: #0b0e1c;
+  --color-card-foreground: #f4f5ff;
+  --color-card: #0b0e1c;
+  --color-background: #06070f;
+  --color-foreground: #f4f5ff;
 
   /* Custom Akasha brand colors (Tailwind utilities) */
-  --color-akasha: #7C5CFF;
-  --color-akasha-bright: #9D86FF;
-  --color-akasha-dim: #5B3FD6;
-  --color-aurora: #2DD4BF;
-  --color-aurora-bright: #5EEAD4;
-  --color-aurora-dim: #0D9488;
-  --color-ori: #F0B429;
-  --color-alert: #FB5781;
+  --color-akasha: #7c5cff;
+  --color-akasha-bright: #9d86ff;
+  --color-akasha-dim: #5b3fd6;
+  --color-aurora: #2dd4bf;
+  --color-aurora-bright: #5eead4;
+  --color-aurora-dim: #0d9488;
+  --color-ori: #f0b429;
+  --color-alert: #fb5781;
 
   /* Radius */
   --radius-sm: calc(var(--radius) * 0.6);
@@ -72,53 +72,53 @@
 /* === AKASHA CANONICAL TOKENS — Doc 26 §3 === */
 :root {
   /* Backgrounds — vazio cósmico / espaço profundo */
-  --bg-void:   #06070F;
-  --bg-deep:   #0B0E1C;
-  --bg-nebula: #141A33;
-  --bg-border: #26304F;
+  --bg-void: #06070f;
+  --bg-deep: #0b0e1c;
+  --bg-nebula: #141a33;
+  --bg-border: #26304f;
 
   /* Primária — Violeta Akáshico (o campo, a consciência, o éter) */
-  --accent-akasha:        #7C5CFF;
-  --accent-akasha-bright: #9D86FF;
-  --accent-akasha-dim:    #5B3FD6;
-  --accent-akasha-glow:   rgba(124, 92, 255, 0.20);
+  --accent-akasha: #7c5cff;
+  --accent-akasha-bright: #9d86ff;
+  --accent-akasha-dim: #5b3fd6;
+  --accent-akasha-glow: rgba(124, 92, 255, 0.2);
 
   /* Secundária — Ciano/Aurora (o fluxo toroidal, a energia em movimento) */
-  --accent-aurora:        #2DD4BF;
-  --accent-aurora-bright: #5EEAD4;
-  --accent-aurora-dim:    #0D9488;
-  --accent-aurora-glow:   rgba(45, 212, 191, 0.18);
+  --accent-aurora: #2dd4bf;
+  --accent-aurora-bright: #5eead4;
+  --accent-aurora-dim: #0d9488;
+  --accent-aurora-glow: rgba(45, 212, 191, 0.18);
 
   /* Terciária — Dourado Ori (o núcleo, a centelha ancestral / Odus) */
-  --accent-ori:      #F0B429;
+  --accent-ori: #f0b429;
   --accent-ori-glow: rgba(240, 180, 41, 0.16);
 
   /* Alerta — rosa magenta (sincronicidade de tensão) */
-  --accent-alert: #FB5781;
+  --accent-alert: #fb5781;
 
   /* Texto */
-  --text-primary:   #F4F5FF;
-  --text-secondary: #A7AECF;
-  --text-muted:     #5C6691;
+  --text-primary: #f4f5ff;
+  --text-secondary: #a7aecf;
+  --text-muted: #5c6691;
 
   /* Shadows */
-  --shadow-card:       0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
-  --shadow-modal:      0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   --shadow-glow-akasha: 0 0 24px var(--accent-akasha-glow);
-  --shadow-glow-ori:   0 0 20px var(--accent-ori-glow);
+  --shadow-glow-ori: 0 0 20px var(--accent-ori-glow);
   --shadow-glow-aurora: 0 0 20px var(--accent-aurora-glow);
   --shadow-glow-violet: 0 0 20px rgba(124, 92, 255, 0.4), 0 0 40px rgba(124, 92, 255, 0.2);
-  --shadow-glow-gold:   0 0 20px rgba(240, 180, 41, 0.4), 0 0 40px rgba(240, 180, 41, 0.2);
+  --shadow-glow-gold: 0 0 20px rgba(240, 180, 41, 0.4), 0 0 40px rgba(240, 180, 41, 0.2);
 
   /* Animation */
   --duration-instant: 75ms;
-  --duration-fast:    150ms;
-  --duration-normal:  250ms;
-  --duration-slow:    400ms;
-  --duration-slower:  600ms;
-  --ease-out-expo:    cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --duration-slower: 600ms;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-sine: cubic-bezier(0.37, 0, 0.63, 1);
-  --ease-spring:      cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* Spacing */
   --space-xs: 0.25rem;
@@ -128,53 +128,52 @@
   --space-xl: 2rem;
 
   /* Orixá calendar colors (Afro-Brazilian spiritual calendar — unchanged) */
-  --orixa-sun:          #D4A843;
-  --orixa-sun-light:    #E8C878;
-  --orixa-sun-muted:    rgba(212, 168, 67, 0.15);
-  --orixa-sun-glow:     0 0 20px rgba(212, 168, 67, 0.4);
-  --orixa-moon:         #1E3A5F;
-  --orixa-moon-light:   #2B5282;
-  --orixa-moon-muted:   rgba(30, 58, 95, 0.15);
-  --orixa-moon-glow:    0 0 20px rgba(30, 58, 95, 0.4);
-  --orixa-mars:         #C45C26;
-  --orixa-mars-light:   #E07040;
-  --orixa-mars-muted:   rgba(196, 92, 38, 0.15);
-  --orixa-mars-glow:    0 0 20px rgba(196, 92, 38, 0.4);
-  --orixa-mercury:      #F0B429;
-  --orixa-mercury-light:#F5C75A;
-  --orixa-mercury-muted:rgba(240, 180, 41, 0.15);
+  --orixa-sun: #d4a843;
+  --orixa-sun-light: #e8c878;
+  --orixa-sun-muted: rgba(212, 168, 67, 0.15);
+  --orixa-sun-glow: 0 0 20px rgba(212, 168, 67, 0.4);
+  --orixa-moon: #1e3a5f;
+  --orixa-moon-light: #2b5282;
+  --orixa-moon-muted: rgba(30, 58, 95, 0.15);
+  --orixa-moon-glow: 0 0 20px rgba(30, 58, 95, 0.4);
+  --orixa-mars: #c45c26;
+  --orixa-mars-light: #e07040;
+  --orixa-mars-muted: rgba(196, 92, 38, 0.15);
+  --orixa-mars-glow: 0 0 20px rgba(196, 92, 38, 0.4);
+  --orixa-mercury: #f0b429;
+  --orixa-mercury-light: #f5c75a;
+  --orixa-mercury-muted: rgba(240, 180, 41, 0.15);
   --orixa-mercury-glow: 0 0 20px rgba(240, 180, 41, 0.4);
-  --orixa-jupiter:      #2D6A4F;
-  --orixa-jupiter-light:#3D8A6F;
-  --orixa-jupiter-muted:rgba(45, 106, 79, 0.15);
+  --orixa-jupiter: #2d6a4f;
+  --orixa-jupiter-light: #3d8a6f;
+  --orixa-jupiter-muted: rgba(45, 106, 79, 0.15);
   --orixa-jupiter-glow: 0 0 20px rgba(45, 106, 79, 0.4);
-  --orixa-venus:        #7C6EB3;
-  --orixa-venus-light:  #9A8ED4;
-  --orixa-venus-muted:  rgba(124, 110, 179, 0.15);
-  --orixa-venus-glow:   0 0 20px rgba(124, 110, 179, 0.4);
-  --orixa-saturn:       #D4728C;
-  --orixa-saturn-light: #E894A8;
+  --orixa-venus: #7c6eb3;
+  --orixa-venus-light: #9a8ed4;
+  --orixa-venus-muted: rgba(124, 110, 179, 0.15);
+  --orixa-venus-glow: 0 0 20px rgba(124, 110, 179, 0.4);
+  --orixa-saturn: #d4728c;
+  --orixa-saturn-light: #e894a8;
   --orixa-saturn-muted: rgba(212, 114, 140, 0.15);
-  --orixa-saturn-glow:  0 0 20px rgba(212, 114, 140, 0.4);
+  --orixa-saturn-glow: 0 0 20px rgba(212, 114, 140, 0.4);
 
   /* Chakra colors */
-  --chakra-root:       #EF4444;
-  --chakra-sacral:     #F97316;
-  --chakra-solar:      #EAB308;
-  --chakra-heart:      #22C55E;
-  --chakra-throat:     #38BDF8;
-  --chakra-third-eye:  #6366F1;
-  --chakra-crown:      #A855F7;
+  --chakra-root: #ef4444;
+  --chakra-sacral: #f97316;
+  --chakra-solar: #eab308;
+  --chakra-heart: #22c55e;
+  --chakra-throat: #38bdf8;
+  --chakra-third-eye: #6366f1;
+  --chakra-crown: #a855f7;
 
   /* Card helpers */
   --card-border-subtle: rgba(38, 48, 79, 0.6);
   --card-gradient-from: rgba(124, 92, 255, 0.08);
-  --card-gradient-to:   rgba(20, 26, 51, 0.3);
+  --card-gradient-to: rgba(20, 26, 51, 0.3);
 
   /* Background gradient */
-  --bg-cosmic-gradient: linear-gradient(135deg, #06070F 0%, #141A33 50%, #0B0E1C 100%);
+  --bg-cosmic-gradient: linear-gradient(135deg, #06070f 0%, #141a33 50%, #0b0e1c 100%);
 }
-
 
 @layer base {
   * {
@@ -188,19 +187,26 @@
   html {
     scroll-behavior: smooth;
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-cinzel), serif;
   }
 }
 
 @layer utilities {
   .glow {
-    box-shadow: 0 0 20px rgba(124, 92, 255, 0.5),
+    box-shadow:
+      0 0 20px rgba(124, 92, 255, 0.5),
       0 0 40px rgba(124, 92, 255, 0.3),
       0 0 60px rgba(124, 92, 255, 0.1);
   }
   .glow-hover:hover {
-    box-shadow: 0 0 30px rgba(124, 92, 255, 0.7),
+    box-shadow:
+      0 0 30px rgba(124, 92, 255, 0.7),
       0 0 60px rgba(124, 92, 255, 0.5);
   }
 }
@@ -208,7 +214,6 @@
 .rotate-y-180 {
   transform: rotateY(180deg);
 }
-
 
 /* === SPIRITUAL ANIMATION UTILITIES === */
 
@@ -224,12 +229,17 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes glowPulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
   }
   50% {
@@ -238,13 +248,22 @@
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 
 /* Animation Classes */
@@ -261,12 +280,7 @@
 }
 
 .animate-shimmer {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(212, 175, 55, 0.1) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.1) 50%, transparent 100%);
   background-size: 200% 100%;
   animation: shimmer 2s ease-in-out infinite;
 }
@@ -275,8 +289,15 @@
   animation: float 4s ease-in-out infinite;
 }
 @keyframes twinkle {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.2); }
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
 }
 .animate-twinkle {
   animation: twinkle 2s ease-in-out infinite;
@@ -287,16 +308,36 @@
   opacity: 0;
   animation: fadeInUp var(--duration-slow) var(--ease-out-expo) forwards;
 }
-.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
-.stagger-children > *:nth-child(2) { animation-delay: 75ms; }
-.stagger-children > *:nth-child(3) { animation-delay: 150ms; }
-.stagger-children > *:nth-child(4) { animation-delay: 225ms; }
-.stagger-children > *:nth-child(5) { animation-delay: 300ms; }
-.stagger-children > *:nth-child(6) { animation-delay: 375ms; }
-.stagger-children > *:nth-child(7) { animation-delay: 450ms; }
-.stagger-children > *:nth-child(8) { animation-delay: 525ms; }
-.stagger-children > *:nth-child(9) { animation-delay: 600ms; }
-.stagger-children > *:nth-child(10) { animation-delay: 675ms; }
+.stagger-children > *:nth-child(1) {
+  animation-delay: 0ms;
+}
+.stagger-children > *:nth-child(2) {
+  animation-delay: 75ms;
+}
+.stagger-children > *:nth-child(3) {
+  animation-delay: 150ms;
+}
+.stagger-children > *:nth-child(4) {
+  animation-delay: 225ms;
+}
+.stagger-children > *:nth-child(5) {
+  animation-delay: 300ms;
+}
+.stagger-children > *:nth-child(6) {
+  animation-delay: 375ms;
+}
+.stagger-children > *:nth-child(7) {
+  animation-delay: 450ms;
+}
+.stagger-children > *:nth-child(8) {
+  animation-delay: 525ms;
+}
+.stagger-children > *:nth-child(9) {
+  animation-delay: 600ms;
+}
+.stagger-children > *:nth-child(10) {
+  animation-delay: 675ms;
+}
 /* === GLOW EFFECT STYLES === */
 .glow-wrapper {
   position: relative;
@@ -309,16 +350,25 @@
   z-index: -1;
 }
 .glow-wrapper.glow-gold .glow-orb {
-  box-shadow: 0 0 20px rgba(201, 162, 39, 0.4), 0 0 40px rgba(201, 162, 39, 0.2);
+  box-shadow:
+    0 0 20px rgba(201, 162, 39, 0.4),
+    0 0 40px rgba(201, 162, 39, 0.2);
 }
 .glow-wrapper.glow-purple .glow-orb {
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 40px rgba(139, 92, 246, 0.2);
+  box-shadow:
+    0 0 20px rgba(139, 92, 246, 0.4),
+    0 0 40px rgba(139, 92, 246, 0.2);
 }
 .glow-wrapper.glow-aurora .glow-orb {
-  box-shadow: 0 0 20px rgba(123, 47, 190, 0.3), 0 0 40px rgba(59, 130, 246, 0.2), 0 0 60px rgba(13, 148, 136, 0.1);
+  box-shadow:
+    0 0 20px rgba(123, 47, 190, 0.3),
+    0 0 40px rgba(59, 130, 246, 0.2),
+    0 0 60px rgba(13, 148, 136, 0.1);
 }
 .glow-wrapper.glow-white .glow-orb {
-  box-shadow: 0 0 20px rgba(245, 240, 232, 0.3), 0 0 40px rgba(245, 240, 232, 0.15);
+  box-shadow:
+    0 0 20px rgba(245, 240, 232, 0.3),
+    0 0 40px rgba(245, 240, 232, 0.15);
 }
 .glow-wrapper.glow-intensity-low .glow-orb {
   transform: scale(1);
@@ -338,8 +388,13 @@
   }
 }
 @keyframes glowPulse {
-  0%, 100% { filter: brightness(1); }
-  50% { filter: brightness(1.2); }
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.2);
+  }
 }
 
 /* === DASHBOARD STYLES === */
@@ -370,13 +425,14 @@
 
 .card-hover:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 /* Mystical Gradient Text */
 .mystical-text {
-  background: linear-gradient(135deg, #D4AF37 0%, #8B5CF6 50%, #6366F1 100%);
+  background: linear-gradient(135deg, #d4af37 0%, #8b5cf6 50%, #6366f1 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -384,12 +440,14 @@
 
 /* Glow Effects */
 .glow-gold {
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.4),
+  box-shadow:
+    0 0 20px rgba(212, 175, 55, 0.4),
     0 0 40px rgba(212, 175, 55, 0.2);
 }
 
 .glow-violet {
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.4),
+  box-shadow:
+    0 0 20px rgba(139, 92, 246, 0.4),
     0 0 40px rgba(139, 92, 246, 0.2);
 }
 
@@ -472,7 +530,7 @@
 /* Audio Visualizer */
 .audio-bar {
   width: 4px;
-  background: linear-gradient(to top, #8B5CF6, #A855F7);
+  background: linear-gradient(to top, #8b5cf6, #a855f7);
   border-radius: 2px;
   transition: height 0.1s ease;
 }
@@ -496,7 +554,7 @@
 
 .ritual-day.active {
   background: rgba(139, 92, 246, 0.2);
-  border: 2px solid #8B5CF6;
+  border: 2px solid #8b5cf6;
 }
 
 .ritual-day.has-ritual::after {
@@ -505,7 +563,7 @@
   bottom: 4px;
   width: 6px;
   height: 6px;
-  background: #D4AF37;
+  background: #d4af37;
   border-radius: 50%;
 }
 
@@ -565,7 +623,7 @@
   line-height: 18px;
   color: white;
   text-align: center;
-  background: #EF4444;
+  background: #ef4444;
   border-radius: 9px;
 }
 
@@ -580,23 +638,49 @@
 }
 /* Notification Center Animations */
 @keyframes slideIn {
-  from { opacity: 0; transform: translateY(-10px); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
 }
 @keyframes slideInFromRight {
-  from { opacity: 0; transform: translateX(20px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 @keyframes slideInFromTop {
-  from { opacity: 0; transform: translateY(-10px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 @keyframes pulseSoft {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 @keyframes fadeInScale {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 .animate-slide-in {
   animation: slideIn 0.3s ease-out;
@@ -638,7 +722,9 @@
   position: relative;
   background: linear-gradient(135deg, var(--card-gradient-from), var(--card-gradient-to));
   border: 1px solid var(--card-border-subtle);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 2px 4px -2px rgba(0, 0, 0, 0.2);
 }
 .card-spiritual::before {
   content: '';
@@ -646,19 +732,36 @@
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(212, 168, 67, 0.2), transparent 50%, rgba(139, 92, 246, 0.15));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  background: linear-gradient(
+    135deg,
+    rgba(212, 168, 67, 0.2),
+    transparent 50%,
+    rgba(139, 92, 246, 0.15)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
 }
 /* Loading skeleton for spiritual components */
 @keyframes skeleton-pulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 .skeleton-spiritual {
-  background: linear-gradient(90deg, rgba(139, 92, 246, 0.1) 0%, rgba(212, 168, 67, 0.1) 50%, rgba(139, 92, 246, 0.1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(139, 92, 246, 0.1) 0%,
+    rgba(212, 168, 67, 0.1) 50%,
+    rgba(139, 92, 246, 0.1) 100%
+  );
   background-size: 200% 100%;
   animation: skeleton-pulse 1.5s ease-in-out infinite;
 }
@@ -670,61 +773,86 @@
   opacity: 0.15;
   pointer-events: none;
 }
-.sacred-corner-tl { top: 8px; left: 8px; }
-.sacred-corner-tr { top: 8px; right: 8px; transform: scaleX(-1); }
-.sacred-corner-bl { bottom: 8px; left: 8px; transform: scaleY(-1); }
-.sacred-corner-br { bottom: 8px; right: 8px; transform: scale(-1); }
+.sacred-corner-tl {
+  top: 8px;
+  left: 8px;
+}
+.sacred-corner-tr {
+  top: 8px;
+  right: 8px;
+  transform: scaleX(-1);
+}
+.sacred-corner-bl {
+  bottom: 8px;
+  left: 8px;
+  transform: scaleY(-1);
+}
+.sacred-corner-br {
+  bottom: 8px;
+  right: 8px;
+  transform: scale(-1);
+}
 /* === MOBILE RESPONSIVENESS UTILITIES (320px - iPhone SE) === */
 @media (max-width: 375px) {
   /* Responsive text sizes */
-  .text-responsive-hero { font-size: 1.5rem; }
-  .text-responsive-title { font-size: 1.25rem; }
-  .text-responsive-xl { font-size: 1rem; }
-  
+  .text-responsive-hero {
+    font-size: 1.5rem;
+  }
+  .text-responsive-title {
+    font-size: 1.25rem;
+  }
+  .text-responsive-xl {
+    font-size: 1rem;
+  }
+
   /* Responsive padding */
-  .p-responsive { padding: 0.75rem; }
-  .p-responsive-sm { padding: 0.5rem; }
-  
+  .p-responsive {
+    padding: 0.75rem;
+  }
+  .p-responsive-sm {
+    padding: 0.5rem;
+  }
+
   /* Card adjustments for small screens */
   .card-responsive {
     padding: 0.75rem;
   }
-  
+
   /* Grid adjustments */
   .grid-responsive-2 {
     grid-template-columns: repeat(2, 1fr);
     gap: 0.5rem;
   }
-  
+
   /* Prevent overflow on small screens */
   .overflow-safe {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
-  
+
   /* Sidebar safe spacing */
   .sidebar-safe {
     margin-left: 0;
     margin-right: 0;
   }
-  
+
   /* Font size reduction for numerology cards */
   .numerology-number {
     font-size: 2rem !important;
     line-height: 1.2;
   }
-  
+
   /* Chakra panel adjustments */
   .chakra-item-responsive {
     padding: 0.5rem;
   }
-  
+
   /* Tarot card adjustments */
   .tarot-card-responsive {
     min-height: 280px !important;
     padding: 0.75rem !important;
   }
-  
+
   /* Onboarding form adjustments */
   .onboarding-form-responsive {
     padding: 1rem;
@@ -733,9 +861,15 @@
 
 /* Small screen spacing adjustments */
 @media (max-width: 320px) {
-  .text-responsive-hero { font-size: 1.25rem; }
-  .text-responsive-title { font-size: 1rem; }
-  .text-responsive-xl { font-size: 0.875rem; }
+  .text-responsive-hero {
+    font-size: 1.25rem;
+  }
+  .text-responsive-title {
+    font-size: 1rem;
+  }
+  .text-responsive-xl {
+    font-size: 0.875rem;
+  }
 }
 
 /* Respect prefers-reduced-motion */
@@ -748,23 +882,23 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  
+
   /* Disable all hover transforms on small screens when motion reduced */
   .card-hover:hover {
     transform: none;
   }
-  
+
   /* Disable float animation */
   .animate-float {
     animation: none;
   }
-  
+
   /* Disable shimmer */
   .animate-shimmer {
     animation: none;
     background: transparent;
   }
-  
+
   /* Disable pulse */
   .animate-pulse {
     animation: none;
@@ -776,24 +910,24 @@
   .card-flip {
     perspective: 800px;
   }
-  
+
   .card-flip-inner {
     transform-style: flat;
   }
-  
+
   .card-flip-front,
   .card-flip-back {
     backface-visibility: visible;
   }
-  
+
   .card-flip-back {
     transform: none;
   }
-  
+
   .card-flip-front.rotate-y-180 {
     display: none;
   }
-  
+
   .card-flip-back.rotate-y-180 {
     display: flex;
   }
@@ -847,15 +981,26 @@
 }
 
 /* Staggered animation delay utilities */
-.delay-100 { animation-delay: 100ms; }
-.delay-200 { animation-delay: 200ms; }
-.delay-300 { animation-delay: 300ms; }
-.delay-400 { animation-delay: 400ms; }
-.delay-500 { animation-delay: 500ms; }
+.delay-100 {
+  animation-delay: 100ms;
+}
+.delay-200 {
+  animation-delay: 200ms;
+}
+.delay-300 {
+  animation-delay: 300ms;
+}
+.delay-400 {
+  animation-delay: 400ms;
+}
+.delay-500 {
+  animation-delay: 500ms;
+}
 
 /* Pulse glow animation */
 @keyframes pulseGlow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
   }
   50% {
@@ -879,11 +1024,11 @@
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .dashboard-widget {
     padding: 1rem;
   }
-  
+
   /* Better touch targets */
   .dashboard-touch-target {
     min-height: 44px;
@@ -899,9 +1044,10 @@
 
 /* Skeleton loading states */
 .skeleton {
-  background: linear-gradient(90deg, 
-    rgba(30, 41, 59, 0.4) 0%, 
-    rgba(30, 41, 59, 0.6) 50%, 
+  background: linear-gradient(
+    90deg,
+    rgba(30, 41, 59, 0.4) 0%,
+    rgba(30, 41, 59, 0.6) 50%,
     rgba(30, 41, 59, 0.4) 100%
   );
   background-size: 200% 100%;
@@ -909,13 +1055,18 @@
 }
 
 @keyframes skeleton {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 /* Notification dot animation */
 @keyframes notificationPulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 1;
   }
@@ -1036,7 +1187,7 @@
   .hide-mobile {
     display: block;
   }
-  
+
   .show-mobile {
     display: none;
   }
@@ -1153,11 +1304,11 @@
   .text-responsive-sm {
     font-size: 0.75rem;
   }
-  
+
   .text-responsive-base {
     font-size: 0.875rem;
   }
-  
+
   .text-responsive-lg {
     font-size: 1rem;
   }
@@ -1165,9 +1316,15 @@
 
 /* Chip filter highlight animation */
 @keyframes chipHighlight {
-  0% { box-shadow: 0 0 0 0 rgba(124, 92, 255, 0); }
-  30% { box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.35); }
-  100% { box-shadow: 0 0 0 0 rgba(124, 92, 255, 0); }
+  0% {
+    box-shadow: 0 0 0 0 rgba(124, 92, 255, 0);
+  }
+  30% {
+    box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.35);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(124, 92, 255, 0);
+  }
 }
 
 .chip-highlight {

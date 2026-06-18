@@ -1,6 +1,6 @@
 /**
  * @akasha/core - Núcleo do Akasha OS
- * 
+ *
  * Exporta o Correlation Map, guardrails e tipos fundamentais
  */
 

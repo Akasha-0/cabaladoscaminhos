@@ -4,7 +4,6 @@
  * Dados de práticas integrativas usando cromoterapia (terapia de cores),
  * extraídos de practices-data.ts para organização.
  */
-
 import type { IntegrativePractice } from './types';
 
 export const CROMOTERAPIA_PRACTICES: IntegrativePractice[] = [
@@ -21,7 +20,8 @@ export const CROMOTERAPIA_PRACTICES: IntegrativePractice[] = [
       hexagrams: [14, 26],
     },
     lifeAreas: ['prosperidade', 'abundância', 'confiança', 'otimismo'],
-    howTo: 'Sente-se em ambiente escuro e exponha-se à luz amarela (lâmpada ou filtro) por 15 minutos. Visualize energia dourada entrando.',
+    howTo:
+      'Sente-se em ambiente escuro e exponha-se à luz amarela (lâmpada ou filtro) por 15 minutos. Visualize energia dourada entrando.',
     frequency: 'Manhãs ensolaradas, 3 vezes por semana.',
     isSafe: true,
   },
@@ -39,7 +39,8 @@ export const CROMOTERAPIA_PRACTICES: IntegrativePractice[] = [
       hexagrams: [5, 29],
     },
     lifeAreas: ['calma', 'comunicação', 'verdade', 'paz interior'],
-    howTo: 'Exponha-se à luz azul por 20 minutos em ambiente tranquilo. Ideal ao entardecer quando há transições de energia.',
+    howTo:
+      'Exponha-se à luz azul por 20 minutos em ambiente tranquilo. Ideal ao entardecer quando há transições de energia.',
     frequency: 'Diariamente ao entardecer por 15-20 dias.',
     isSafe: true,
   },
@@ -57,7 +58,8 @@ export const CROMOTERAPIA_PRACTICES: IntegrativePractice[] = [
       hexagrams: [20, 57],
     },
     lifeAreas: ['cura', 'equilíbrio', 'crescimento', 'natureza'],
-    howTo: 'Sente-se na natureza ou exponha-se à luz verde artificial por 15 minutos. Idealmente ao ar livre, próximo a plantas.',
+    howTo:
+      'Sente-se na natureza ou exponha-se à luz verde artificial por 15 minutos. Idealmente ao ar livre, próximo a plantas.',
     frequency: 'Diariamente por 21 dias, preferencialmente manhãs.',
     isSafe: true,
   },
@@ -75,7 +77,8 @@ export const CROMOTERAPIA_PRACTICES: IntegrativePractice[] = [
       hexagrams: [6, 34],
     },
     lifeAreas: ['energia', 'coragem', 'vitalidade', 'força'],
-    howTo: 'Exponha-se à luz vermelha por 10 minutos, preferencialmente pela manhã. Não exceder 15 minutos para evitar hiperestimulação.',
+    howTo:
+      'Exponha-se à luz vermelha por 10 minutos, preferencialmente pela manhã. Não exceder 15 minutos para evitar hiperestimulação.',
     frequency: 'Manhãs, 2-3 vezes por semana.',
     isSafe: true,
   },
@@ -91,7 +94,8 @@ export const CROMOTERAPIA_PRACTICES: IntegrativePractice[] = [
       hexagrams: [1, 30],
     },
     lifeAreas: ['alinhamento', 'intenção', 'manifestação', 'propósito'],
-    howTo: 'Visualize a cor associada à sua intenção enquanto repete sua afirmação 21 vezes. Por exemplo: "Sou próspero" com visualização dourada.',
+    howTo:
+      'Visualize a cor associada à sua intenção enquanto repete sua afirmação 21 vezes. Por exemplo: "Sou próspero" com visualização dourada.',
     frequency: 'Ao acordar e antes de dormir, por 40 dias.',
     isSafe: true,
   },

@@ -9,7 +9,6 @@
  *
  * REGRA CRÍTICA: apenas correlações verificáveis das tradições.
  */
-
 import { getOduByName, type OduData, type OduElement } from './odu-data';
 
 // ─── Tipos de entrada ────────────────────────────────────────────────────────
@@ -33,9 +32,9 @@ interface KabalisticMapInput {
 }
 
 interface TantricMapInput {
-  activeBodies?: number[];   // Corpos ativos: 1-11 (1=Alma, 9=Sutil, etc.)
+  activeBodies?: number[]; // Corpos ativos: 1-11 (1=Alma, 9=Sutil, etc.)
   dominantBody?: number;
-  activeChakras?: number[];  // Chakras ativos: 1-7
+  activeChakras?: number[]; // Chakras ativos: 1-7
   dominantChakra?: number;
 }
 
@@ -51,8 +50,8 @@ interface OduBirthInput {
 export interface TensionPoint {
   pillar: 'astrology' | 'kabala' | 'tantra' | 'odus';
   theme: string;
-  intensity: number;       // 0-100
-  affectedBody?: number;   // corpo tântrico (1-11)
+  intensity: number; // 0-100
+  affectedBody?: number; // corpo tântrico (1-11)
   affectedElement?: string;
 }
 
@@ -102,37 +101,37 @@ function getSignElement(sign?: string): OduElement | null {
 }
 
 const ELEMENT_COLORS: Record<OduElement, string> = {
-  fire:  '#FB5781',
+  fire: '#FB5781',
   water: '#2DD4BF',
   earth: '#F0B429',
-  air:   '#7C5CFF',
+  air: '#7C5CFF',
 };
 
 const ELEMENT_NAMES: Record<OduElement, string> = {
-  fire:  'Fogo',
+  fire: 'Fogo',
   water: 'Água',
   earth: 'Terra',
-  air:   'Ar',
+  air: 'Ar',
 };
 
 const ELEMENT_HERBS: Record<OduElement, string[]> = {
-  fire:  ['alecrim', 'canela', 'cravo'],
+  fire: ['alecrim', 'canela', 'cravo'],
   water: ['arruda', 'manjericão', 'erva-doce', 'camomila'],
   earth: ['hortelã', 'patchouli', 'vetiver'],
-  air:   ['lavanda', 'eucalipto', 'erva-cidreira'],
+  air: ['lavanda', 'eucalipto', 'erva-cidreira'],
 };
 
 /** Nomes canônicos dos corpos tântricos (1-11). */
 const TANTRIC_BODY_NAMES: Record<number, string> = {
-  1:  'Alma (Atma)',
-  2:  'Prânico (Prana)',
-  3:  'Negativo (Pranayama)',
-  4:  'Neutro (Shuniya)',
-  5:  'Físico (Sthula)',
-  6:  'Arcline (Halo)',
-  7:  'Aura (Magnetic Field)',
-  8:  'Radiante (Prabhupati)',
-  9:  'Sutil (Sukshma)',
+  1: 'Alma (Atma)',
+  2: 'Prânico (Prana)',
+  3: 'Negativo (Pranayama)',
+  4: 'Neutro (Shuniya)',
+  5: 'Físico (Sthula)',
+  6: 'Arcline (Halo)',
+  7: 'Aura (Magnetic Field)',
+  8: 'Radiante (Prabhupati)',
+  9: 'Sutil (Sukshma)',
   10: 'Divino (Dasvah Dvar)',
   11: 'Comando (Ajna)',
 };
@@ -146,22 +145,23 @@ export function crossAnalyze(
   oduBirth: unknown,
   date: Date = new Date()
 ): CrossAnalysis {
-  const astro  = (astrologyMap  ?? {}) as AstrologyMapInput;
-  const kab    = (kabalisticMap ?? {}) as KabalisticMapInput;
-  const tantra = (tantricMap    ?? {}) as TantricMapInput;
-  const oduIn  = (oduBirth      ?? {}) as OduBirthInput;
+  const astro = (astrologyMap ?? {}) as AstrologyMapInput;
+  const kab = (kabalisticMap ?? {}) as KabalisticMapInput;
+  const tantra = (tantricMap ?? {}) as TantricMapInput;
+  const oduIn = (oduBirth ?? {}) as OduBirthInput;
 
   // Resolver Odu de nascimento
   const oduName = oduIn.name ?? oduIn.id ?? '';
   const odu: OduData | undefined = getOduByName(oduName) ?? undefined;
 
-  const oduElement: OduElement = (odu?.element ??
+  const oduElement: OduElement =
+    odu?.element ??
     (oduIn.element as OduElement | undefined) ??
     (oduIn.elementalForce as OduElement | undefined) ??
-    'earth');
+    'earth';
 
   const moonSignElement = getSignElement(astro.moonSign);
-  const sunSignElement  = getSignElement(astro.sunSign);
+  const sunSignElement = getSignElement(astro.sunSign);
 
   // ── Detectar Tensão ─────────────────────────────────────────────────────
 
@@ -200,15 +200,15 @@ function detectTension(
   const astroDominant = (astro.dominantElement ?? '').toLowerCase() as OduElement | '';
   if (astroDominant === 'water') {
     const activeBodies = tantra.activeBodies ?? [];
-    const hasAlma   = activeBodies.includes(1);
-    const hasSutil  = activeBodies.includes(9);
+    const hasAlma = activeBodies.includes(1);
+    const hasSutil = activeBodies.includes(9);
     if (!hasAlma || !hasSutil) {
       const missingBody = !hasAlma ? 1 : 9;
       return {
-        pillar:          'tantra',
-        theme:           'Desconexão dos corpos sutis da Água',
-        intensity:       72,
-        affectedBody:    missingBody,
+        pillar: 'tantra',
+        theme: 'Desconexão dos corpos sutis da Água',
+        intensity: 72,
+        affectedBody: missingBody,
         affectedElement: 'water',
       };
     }
@@ -217,9 +217,9 @@ function detectTension(
   // Regra 2: Odu de Fogo + trânsito lunar em signo de Água → tensão nos Odus
   if (oduElement === 'fire' && moonSignElement === 'water') {
     return {
-      pillar:          'odus',
-      theme:           'Tensão Fogo-Água: Odu solar confronta trânsito lunar',
-      intensity:       68,
+      pillar: 'odus',
+      theme: 'Tensão Fogo-Água: Odu solar confronta trânsito lunar',
+      intensity: 68,
       affectedElement: 'fire',
     };
   }
@@ -228,19 +228,19 @@ function detectTension(
   const desafiadores = (astro.majorAspects ?? []).filter((a) => a.energy === 'desafiador');
   if (desafiadores.length >= 2) {
     return {
-      pillar:    'astrology',
-      theme:     desafiadores[0]?.interpretation ?? 'Múltiplos aspectos desafiadores ativos',
+      pillar: 'astrology',
+      theme: desafiadores[0]?.interpretation ?? 'Múltiplos aspectos desafiadores ativos',
       intensity: Math.min(50 + desafiadores.length * 10, 90),
     };
   }
 
   // Regra 4: Chakra dominante ausente dos ativos (desalinhamento tântrico geral)
   const dominantChakra = tantra.dominantChakra;
-  const activeChakras  = tantra.activeChakras ?? [];
+  const activeChakras = tantra.activeChakras ?? [];
   if (dominantChakra && !activeChakras.includes(dominantChakra)) {
     return {
-      pillar:    'tantra',
-      theme:     `Chakra ${dominantChakra} dominante em desequilíbrio`,
+      pillar: 'tantra',
+      theme: `Chakra ${dominantChakra} dominante em desequilíbrio`,
       intensity: 55,
     };
   }
@@ -248,8 +248,8 @@ function detectTension(
   // Padrão: baixa tensão, pilar kabala
   const overallEnergy = astro.overallEnergy ?? 60;
   return {
-    pillar:    'kabala',
-    theme:     'Integração dos caminhos da árvore da vida',
+    pillar: 'kabala',
+    theme: 'Integração dos caminhos da árvore da vida',
     intensity: Math.max(20, 100 - overallEnergy),
   };
 }
@@ -305,18 +305,19 @@ function buildRitual(
   _date: Date
 ): DailyRitual {
   const tensionElement = (tension.affectedElement as OduElement | undefined) ?? oduElement;
-  const herbs          = ELEMENT_HERBS[tensionElement] ?? ELEMENT_HERBS.earth;
-  const cor            = astro.luckyColor ?? ELEMENT_COLORS[tensionElement];
-  const elemento       = ELEMENT_NAMES[tensionElement];
+  const herbs = ELEMENT_HERBS[tensionElement] ?? ELEMENT_HERBS.earth;
+  const cor = astro.luckyColor ?? ELEMENT_COLORS[tensionElement];
+  const elemento = ELEMENT_NAMES[tensionElement];
 
   // Ritual baseado no pilar em tensão
   if (tension.pillar === 'tantra' && tension.affectedBody) {
     const bodyName = TANTRIC_BODY_NAMES[tension.affectedBody] ?? `Corpo ${tension.affectedBody}`;
     return {
-      titulo:    `Ativação do ${bodyName}`,
-      instrucao: `Sente-se em meditação por 11 minutos. Visualize o ${bodyName} brilhando em ${cor}. ` +
-                 `Respire profundamente, retendo o ar por 4 tempos e soltando em 8. ` +
-                 `Use ervas de ${elemento.toLowerCase()} (${herbs.slice(0, 2).join(' ou ')}) no ambiente.`,
+      titulo: `Ativação do ${bodyName}`,
+      instrucao:
+        `Sente-se em meditação por 11 minutos. Visualize o ${bodyName} brilhando em ${cor}. ` +
+        `Respire profundamente, retendo o ar por 4 tempos e soltando em 8. ` +
+        `Use ervas de ${elemento.toLowerCase()} (${herbs.slice(0, 2).join(' ou ')}) no ambiente.`,
       cor,
       elemento,
       herbs,
@@ -327,11 +328,12 @@ function buildRitual(
     const quizila = odu.quizilas[0] ?? 'evitar conflitos';
     const preceit = odu.preceitos[0] ?? 'manter equilíbrio';
     return {
-      titulo:    `Equilíbrio de ${odu.name}: Banho de ${elemento}`,
-      instrucao: `Prepare um banho com ${herbs.join(', ')}. ` +
-                 `Enquanto a água corre, recite: "${preceit}". ` +
-                 `Lembre-se da quizilá do dia: ${quizila}. ` +
-                 `Use roupas de cor ${cor} após o banho.`,
+      titulo: `Equilíbrio de ${odu.name}: Banho de ${elemento}`,
+      instrucao:
+        `Prepare um banho com ${herbs.join(', ')}. ` +
+        `Enquanto a água corre, recite: "${preceit}". ` +
+        `Lembre-se da quizilá do dia: ${quizila}. ` +
+        `Use roupas de cor ${cor} após o banho.`,
       cor,
       elemento,
       herbs,
@@ -340,11 +342,12 @@ function buildRitual(
 
   if (tension.pillar === 'astrology') {
     return {
-      titulo:    'Ancoragem Terrestre — Meditação de Raiz',
-      instrucao: `Os trânsitos do dia pedem equilíbrio. Descalce-se sobre o chão natural por 10 minutos. ` +
-                 `Respire lentamente, visualizando raízes descendo de seus pés até o centro da Terra. ` +
-                 `Cor do dia: ${cor}. Elemento: ${elemento}. ` +
-                 `Ervas sugeridas: ${herbs.join(', ')}.`,
+      titulo: 'Ancoragem Terrestre — Meditação de Raiz',
+      instrucao:
+        `Os trânsitos do dia pedem equilíbrio. Descalce-se sobre o chão natural por 10 minutos. ` +
+        `Respire lentamente, visualizando raízes descendo de seus pés até o centro da Terra. ` +
+        `Cor do dia: ${cor}. Elemento: ${elemento}. ` +
+        `Ervas sugeridas: ${herbs.join(', ')}.`,
       cor,
       elemento,
       herbs,
@@ -353,10 +356,11 @@ function buildRitual(
 
   // Padrão (kabala ou campo neutro)
   return {
-    titulo:    'Harmonização Cabalística — Silêncio Sagrado',
-    instrucao: `Reserve 7 minutos de silêncio absoluto. Foque na intenção de integrar os caminhos da árvore da vida. ` +
-               `Medite com a cor ${cor} à sua frente (vela, tecido ou visualização). ` +
-               `Elemento de suporte: ${elemento}. Ervas: ${herbs.join(', ')}.`,
+    titulo: 'Harmonização Cabalística — Silêncio Sagrado',
+    instrucao:
+      `Reserve 7 minutos de silêncio absoluto. Foque na intenção de integrar os caminhos da árvore da vida. ` +
+      `Medite com a cor ${cor} à sua frente (vela, tecido ou visualização). ` +
+      `Elemento de suporte: ${elemento}. Ervas: ${herbs.join(', ')}.`,
     cor,
     elemento,
     herbs,
@@ -370,23 +374,32 @@ function buildAlert(tension: TensionPoint, astro: AstrologyMapInput): string {
 
   if (tension.pillar === 'tantra' && tension.affectedBody) {
     const bodyName = TANTRIC_BODY_NAMES[tension.affectedBody] ?? `Corpo ${tension.affectedBody}`;
-    return `Atenção ao ${bodyName} — em desequilíbrio hoje. Evite ambientes de alta estimulação sensorial e ` +
-           `prefira ambientes silenciosos. Intensidade: ${tension.intensity}/100.`;
+    return (
+      `Atenção ao ${bodyName} — em desequilíbrio hoje. Evite ambientes de alta estimulação sensorial e ` +
+      `prefira ambientes silenciosos. Intensidade: ${tension.intensity}/100.`
+    );
   }
 
   if (tension.pillar === 'odus') {
-    return `O cruzamento entre seu Odu de nascimento e o trânsito lunar cria tensão de ${tension.theme}. ` +
-           `Evite reações impulsivas e busque equilíbrio entre intuição e razão nas próximas 24h.`;
+    return (
+      `O cruzamento entre seu Odu de nascimento e o trânsito lunar cria tensão de ${tension.theme}. ` +
+      `Evite reações impulsivas e busque equilíbrio entre intuição e razão nas próximas 24h.`
+    );
   }
 
   if (desafiadores.length > 0) {
     const rec = desafiadores[0]?.recommendation;
-    return rec ?? `Campo desafiador detectado (intensidade ${tension.intensity}/100). ` +
-                  `Mantenha-se centrado e evite decisões importantes nas próximas horas.`;
+    return (
+      rec ??
+      `Campo desafiador detectado (intensidade ${tension.intensity}/100). ` +
+        `Mantenha-se centrado e evite decisões importantes nas próximas horas.`
+    );
   }
 
-  return `Campo em equilíbrio moderado. Atenção ao tema: ${tension.theme}. ` +
-         `Intensidade: ${tension.intensity}/100.`;
+  return (
+    `Campo em equilíbrio moderado. Atenção ao tema: ${tension.theme}. ` +
+    `Intensidade: ${tension.intensity}/100.`
+  );
 }
 
 // ─── Construção de clima ──────────────────────────────────────────────────────
@@ -398,9 +411,9 @@ function buildClimate(
   moonSignElement: OduElement | null,
   tension: TensionPoint
 ): string {
-  const moonName     = astro.moonPhase?.name ?? 'Lua';
+  const moonName = astro.moonPhase?.name ?? 'Lua';
   const moonSignDesc = moonSignElement ? `em campo de ${ELEMENT_NAMES[moonSignElement]}` : '';
-  const oduDesc      = odu ? `${odu.name} (${ELEMENT_NAMES[oduElement]})` : ELEMENT_NAMES[oduElement];
+  const oduDesc = odu ? `${odu.name} (${ELEMENT_NAMES[oduElement]})` : ELEMENT_NAMES[oduElement];
 
   let climate = `${moonName}${moonSignDesc ? ' ' + moonSignDesc : ''} — campo em ressonância com ${oduDesc}.`;
 

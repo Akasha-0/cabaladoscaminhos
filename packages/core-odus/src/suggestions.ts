@@ -1,6 +1,5 @@
 // Ritual Suggestions based on Odu - Cabala Dos Caminhos
 // Traditional Ifa practices for each of the 16 Merindilogun Odus
-
 import { Odu, getOduNome } from './draw';
 
 // Ebós (Sacrificial Offerings)
@@ -38,112 +37,128 @@ export interface RitualSuggestion {
 
 // EBÓS (Sacrificial Offerings) for each Odu
 const ebosPorOdu: Record<number, Ebo[]> = {
-  1: [ // Oyeku
+  1: [
+    // Oyeku
     {
       nome: 'Ebo de Ossos de Animais',
       descricao: 'Sacrifício de ossos para proteção contra entidades negativas',
       elementos: ['ossos de galinha', 'fumo de palo', 'akoko leaf', 'dinheiro cobntado'],
     },
   ],
-  2: [ // Iwori
+  2: [
+    // Iwori
     {
       nome: 'Ebo de Áudio',
       descricao: 'Sacrifício para conhecimento ancestral e sabedoria',
       elementos: ['coco fresco', 'mel de abelha', 'farinha de inhame', 'ogbe frasco'],
     },
   ],
-  3: [ // Odi
+  3: [
+    // Odi
     {
       nome: 'Ebo de Olho',
       descricao: 'Proteção contra mau-olhado e inveja',
       elementos: ['gema de ovo cru', 'alcool', 'farinha de milo', 'pedra de proteção'],
     },
   ],
-  4: [ // Ossa
+  4: [
+    // Ossa
     {
       nome: 'Ebo de Fogo',
       descricao: 'Purificação e afastamento de feitiçaria',
       elementos: ['palha seca', 'cabaça queimada', 'cabaça queimada', 'cinzas sagradas'],
     },
   ],
-  5: [ // Iwonrin
+  5: [
+    // Iwonrin
     {
       nome: 'Ebo de Longevidade',
       descricao: 'Sacrifício para saúde e vida longa',
       elementos: ['cabrito branco', 'farinha de arroz', 'coco', 'mel'],
     },
   ],
-  6: [ // Obara
+  6: [
+    // Obara
     {
       nome: 'Ebo de Justice',
       descricao: 'Sacrifício para reparação de injustiças',
       elementos: ['pano branco', 'alcool de palma', 'noz de cola', 'obí'],
     },
   ],
-  7: [ // Okanran
+  7: [
+    // Okanran
     {
       nome: 'Ebo de Prosperidade',
       descricao: 'Sacrifício para abundância material',
       elementos: ['dinheiro novo', 'akara frito', 'ogbe frasco', 'milho'],
     },
   ],
-  8: [ // Ogo
+  8: [
+    // Ogo
     {
       nome: 'Ebo de Visibilidade',
       descricao: 'Sacrifício para ser visto e reconhecido',
       elementos: ['espelho pequeno', 'alcool', 'farinha de mandioca', 'pimenta'],
     },
   ],
-  9: [ // Owonrin
+  9: [
+    // Owonrin
     {
       nome: 'Ebo de Fuga',
       descricao: 'Sacrifício para escapar de problemas e inimigos',
       elementos: ['pano azul', 'cabaça', 'alho', 'vinagre'],
     },
   ],
-  10: [ // Obatala
+  10: [
+    // Obatala
     {
       nome: 'Ebo de Pureza',
       descricao: 'Sacrifício para limpeza espiritual e branca',
       elementos: ['pano branco', 'leite de coco', 'farinha de inhame', 'coco branco'],
     },
   ],
-  11: [ // Ofrenda de Paz
+  11: [
+    // Ofrenda de Paz
     {
       nome: 'Ebo de Harmonia',
       descricao: 'Sacrifício para paz e reconciliación',
       elementos: ['pomba branca', 'farinha branca', 'coco', 'mel'],
     },
   ],
-  12: [ // Iragbe
+  12: [
+    // Iragbe
     {
       nome: 'Ebo de Fertilidad',
       descricao: 'Sacrifício para fertilidade y descendencia',
       elementos: ['cabrito manchado', 'ogbe frasco', 'planta de fertility', 'dinheiro'],
     },
   ],
-  13: [ // Ose
+  13: [
+    // Ose
     {
       nome: 'Ebo de Victoria',
       descricao: 'Sacrifício para vitória em disputas y batallas',
       elementos: ['gallina negra', 'akoko leaf', 'vinagre', 'alho'],
     },
   ],
-  14: [ // Ofun
+  14: [
+    // Ofun
     {
       nome: 'Ebo de Sanación',
       descricao: 'Sacrifício para cura de enfermedades',
       elementos: ['coco fresco', 'hierbas medicinales', 'mel de abelha', 'farinha'],
     },
   ],
-  15: [ // Ologbosere
+  15: [
+    // Ologbosere
     {
       nome: 'Ebo de Fuerza',
       descricao: 'Sacrifício para força y poder',
       elementos: ['bode negro', 'akoko leaf', 'palma oil', 'ogbe frasco'],
     },
   ],
-  16: [ // Oji
+  16: [
+    // Oji
     {
       nome: 'Ebo de Abundancia',
       descricao: 'Sacrifício para prosperidade y buena cosecha',
@@ -354,7 +369,8 @@ const banhosPorOdu: Record<number, Banho[]> = {
     {
       nome: 'Banho de Ossos',
       ingredientes: ['casca de árbol de hueso', 'albahaca santa', 'agua de lluvia', 'sal marina'],
-      modoPreparo: 'Herver todos los ingredientes por 30 minutos, colar y dejar enfriar antes de bañarse',
+      modoPreparo:
+        'Herver todos los ingredientes por 30 minutos, colar y dejar enfriar antes de bañarse',
       frecuencia: '2 veces por semana durante 21 días',
     },
   ],
@@ -362,7 +378,8 @@ const banhosPorOdu: Record<number, Banho[]> = {
     {
       nome: 'Banho de Sabiduria',
       ingredientes: ['hojas de coco', 'agua de coco', 'flores blancas', 'VERBENA'],
-      modoPreparo: 'Machacar las hojas, mezclar con agua de coco, agregar flores y dejar reposar toda la noche',
+      modoPreparo:
+        'Machacar las hojas, mezclar con agua de coco, agregar flores y dejar reposar toda la noche',
       frecuencia: '3 veces por semana durante 14 días',
     },
   ],
@@ -378,7 +395,8 @@ const banhosPorOdu: Record<number, Banho[]> = {
     {
       nome: 'Banho de Fuego',
       ingredientes: ['pimienta de cravo', 'canela', 'agua caliente', 'ceniza sagrada'],
-      modoPreparo: 'Mezclar cravo y canela en agua caliente, agregar ceniza sagrada, bañarse inmediatamente',
+      modoPreparo:
+        'Mezclar cravo y canela en agua caliente, agregar ceniza sagrada, bañarse inmediatamente',
       frecuencia: 'Una vez al día por 3 días',
     },
   ],
@@ -402,7 +420,8 @@ const banhosPorOdu: Record<number, Banho[]> = {
     {
       nome: 'Banho de Prosperidad',
       ingredientes: ['hojas de dinero', 'agua de siete mares', 'ajo', 'cobre'],
-      modoPreparo: 'Herver las hojas de dinero con ajo en agua de siete mares, agregar una moneda de cobre',
+      modoPreparo:
+        'Herver las hojas de dinero con ajo en agua de siete mares, agregar una moneda de cobre',
       frecuencia: 'Cada lunes por 4 semanas',
     },
   ],
@@ -426,7 +445,8 @@ const banhosPorOdu: Record<number, Banho[]> = {
     {
       nome: 'Banho de Pureza',
       ingredientes: ['leche de coco', 'flores blancas', 'VERBENA', 'agua de lluvia'],
-      modoPreparo: 'Mezclar leche de coco con flores blancas machacadas y verbena en agua de lluvia',
+      modoPreparo:
+        'Mezclar leche de coco con flores blancas machacadas y verbena en agua de lluvia',
       frecuencia: '2 veces por semana por 1 mes',
     },
   ],
@@ -485,7 +505,7 @@ const banhosPorOdu: Record<number, Banho[]> = {
  */
 export function getRitualSuggestions(odu: Odu | number): RitualSuggestion {
   const oduNum = typeof odu === 'number' ? odu : odu.numero;
-  
+
   const ebos = ebosPorOdu[oduNum] || [];
   const oraciones = oracionesPorOdu[oduNum] || [];
   const banhos = banhosPorOdu[oduNum] || [];
@@ -529,7 +549,7 @@ function getNotasAdicionales(numero: number): string[] {
  * Get ritual suggestions for multiple Odus
  */
 function getRitualSuggestionsMultiple(odus: (Odu | number)[]): RitualSuggestion[] {
-  return odus.map(odu => getRitualSuggestions(odu));
+  return odus.map((odu) => getRitualSuggestions(odu));
 }
 
 /**
@@ -538,9 +558,12 @@ function getRitualSuggestionsMultiple(odus: (Odu | number)[]): RitualSuggestion[
 export function getRitualTiming(oduNum: number): {
   mejorMomento: string;
   diasFavorables: number[];
- 禁忌: string[];
+  禁忌: string[];
 } {
-  const timingMap: Record<number, { mejorMomento: string; diasFavorables: number[]; 禁忌: string[] }> = {
+  const timingMap: Record<
+    number,
+    { mejorMomento: string; diasFavorables: number[]; 禁忌: string[] }
+  > = {
     1: { mejorMomento: 'Medianoche', diasFavorables: [1, 9, 17], 禁忌: ['Martes'] },
     2: { mejorMomento: 'Amanecer', diasFavorables: [2, 10, 18], 禁忌: ['Domingo'] },
     3: { mejorMomento: 'Mediodia', diasFavorables: [3, 11, 19], 禁忌: ['Jueves'] },

@@ -10,9 +10,8 @@
  * - Termos técnicos como "Ascendente", "Meio do Céu" não são explicados
  * - O usuário vê dados mas não sabe o que FAZER com isso
  */
-
-import { useState } from 'react';
 import { HelpCircle, ChevronDown, Zap, Heart, Brain, Shield } from 'lucide-react';
+import { useState } from 'react';
 
 interface PlainEnglishPlanetProps {
   /** Nome do planeta */
@@ -30,79 +29,82 @@ interface PlainEnglishPlanetProps {
 }
 
 /** Tradução de signos para linguagem prática */
-const SIGN_PRAXIS: Record<string, {
-  energia: string;
-  deve: string;
-  evitar: string;
-  hoje: string;
-}> = {
-  'Escorpião': {
+const SIGN_PRAXIS: Record<
+  string,
+  {
+    energia: string;
+    deve: string;
+    evitar: string;
+    hoje: string;
+  }
+> = {
+  Escorpião: {
     energia: 'intensidade transformadora',
     deve: 'use sua energia para demolir o que não serve',
     evitar: 'manipulação e ciúmes',
     hoje: 'transforme, não lute',
   },
-  'Leão': {
+  Leão: {
     energia: 'criatividade radiante',
     deve: 'expresse-se com confiança natural',
     evitar: 'egocentrismo e necessidade de aprovação',
     hoje: 'brilhe sem esforço',
   },
-  'Áries': {
+  Áries: {
     energia: 'iniciativa audaciosa',
     deve: 'age, mas com consciência',
     evitar: 'impulsividade e agressividade',
     hoje: 'comece algo novo com propósito',
   },
-  'Touro': {
+  Touro: {
     energia: 'estabilidade sensorial',
     deve: 'cultive o que tem valor real',
     evitar: 'preguiça e possessividade',
     hoje: 'conecte-se com seus sentidos',
   },
-  'Gêmeos': {
+  Gêmeos: {
     energia: 'curiosidade mental',
     deve: 'comunique-se com clareza',
     evitar: 'fuga de compromisso e superficialidade',
     hoje: 'use sua mente para conectar pessoas',
   },
-  'Câncer': {
+  Câncer: {
     energia: 'intuição emocional',
     deve: 'cuide de quem você ama',
     evitar: 'manipulação emocional e vitimização',
     hoje: 'honre suas raízes e memórias',
   },
-  'Virgem': {
+  Virgem: {
     energia: 'análise prática',
     deve: 'organize e simplifique',
     evitar: 'perfeccionismo paralisante',
     hoje: 'faça algo útil por alguém hoje',
   },
-  'Libra': {
+  Libra: {
     energia: 'harmonia e relações',
     deve: 'busque equilíbrio com terceiros',
     evitar: 'indecisão e placar externo',
     hoje: 'reveja seus relacionamentos',
   },
-  'Sagitário': {
+  Sagitário: {
     energia: 'expansão e propósito',
     deve: 'busque significado e verdade',
     evitar: 'exagero e dogmatismo',
     hoje: 'saia da zona de conforto',
   },
-  'Capricórnio': {
+  Capricórnio: {
     energia: 'disciplina e ambição',
     deve: 'trabalhe com perseverança',
     evitar: 'frieza e obsessão por status',
     hoje: 'estrutura algo que dura',
   },
-  'Aquário': {
+  Aquário: {
     energia: 'inovação e coletividade',
     deve: 'traga ideias novas para o mundo',
     evitar: 'detachment emocional',
     hoje: 'conecte-se com causas maiores',
   },
-  'Peixes': {
+  Peixes: {
     energia: 'conexão espiritual',
     deve: 'confie na sua intuição',
     evitar: 'ilusão e fuga da realidade',
@@ -128,16 +130,16 @@ const HOUSE_MEANINGS: Record<number, { title: string; practice: string }> = {
 
 /** Significado dos planetas em linguagem simples */
 const PLANET_MEANINGS: Record<string, { forca: string; momento: string }> = {
-  'Sol': { forca: 'sua vontade central', momento: 'agora é hora de brilhar' },
-  'Lua': { forca: 'seu mundo emocional', momento: 'confie seus sentimentos' },
-  'Marte': { forca: 'sua energia de ação', momento: 'age, mas com consciência' },
-  'Mercúrio': { forca: 'sua mente e comunicação', momento: 'comunique-se com clareza' },
-  'Vênus': { forca: 'seu amor e valores', momento: 'cultive o que ama' },
-  'Júpiter': { forca: 'sua expansão', momento: 'busque significado' },
-  'Saturno': { forca: 'sua estrutura', momento: 'trabalhe com disciplina' },
-  'Urano': { forca: 'sua inovação', momento: 'traga algo novo' },
-  'Netuno': { forca: 'sua espiritualidade', momento: 'confie na intuição' },
-  'Plutão': { forca: 'sua transformação', momento: 'mude o que precisa' },
+  Sol: { forca: 'sua vontade central', momento: 'agora é hora de brilhar' },
+  Lua: { forca: 'seu mundo emocional', momento: 'confie seus sentimentos' },
+  Marte: { forca: 'sua energia de ação', momento: 'age, mas com consciência' },
+  Mercúrio: { forca: 'sua mente e comunicação', momento: 'comunique-se com clareza' },
+  Vênus: { forca: 'seu amor e valores', momento: 'cultive o que ama' },
+  Júpiter: { forca: 'sua expansão', momento: 'busque significado' },
+  Saturno: { forca: 'sua estrutura', momento: 'trabalhe com disciplina' },
+  Urano: { forca: 'sua inovação', momento: 'traga algo novo' },
+  Netuno: { forca: 'sua espiritualidade', momento: 'confie na intuição' },
+  Plutão: { forca: 'sua transformação', momento: 'mude o que precisa' },
 };
 
 export function PlainEnglishPlanet({
@@ -177,12 +179,8 @@ export function PlainEnglishPlanet({
         >
           {planet}
         </span>
-        <span style={{ fontSize: '0.8rem', color: '#A7AECF' }}>
-          em {sign}
-        </span>
-        {retrograde && (
-          <span style={{ fontSize: '0.65rem', color: '#FB5781' }}>↺</span>
-        )}
+        <span style={{ fontSize: '0.8rem', color: '#A7AECF' }}>em {sign}</span>
+        {retrograde && <span style={{ fontSize: '0.65rem', color: '#FB5781' }}>↺</span>}
       </div>
     );
   }
@@ -399,7 +397,18 @@ export function PlanetInsightsList({
   }
 
   // Ordenar por importância: Sol, Lua, Ascendente, Mercúrio, Vênus, Marte, Júpiter, Saturno
-  const ORDER = ['Sol', 'Lua', 'Mercúrio', 'Vênus', 'Marte', 'Júpiter', 'Saturno', 'Urano', 'Netuno', 'Plutão'];
+  const ORDER = [
+    'Sol',
+    'Lua',
+    'Mercúrio',
+    'Vênus',
+    'Marte',
+    'Júpiter',
+    'Saturno',
+    'Urano',
+    'Netuno',
+    'Plutão',
+  ];
   const sorted = [...planets].sort((a, b) => {
     const aIdx = ORDER.indexOf(a.name);
     const bIdx = ORDER.indexOf(b.name);

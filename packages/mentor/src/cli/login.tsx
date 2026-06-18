@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
 import { Text, Box } from 'ink';
 import { render } from 'ink';
+import React, { useState, useEffect, useCallback } from 'react';
 
 interface LoginProps {
   supabaseUrl: string;
@@ -19,12 +19,7 @@ interface LoginState {
   isLoading: boolean;
 }
 
-export const Login: React.FC<LoginProps> = ({
-  supabaseUrl,
-  supabaseKey,
-  onSuccess,
-  onError,
-}) => {
+export const Login: React.FC<LoginProps> = ({ supabaseUrl, supabaseKey, onSuccess, onError }) => {
   const [state, setState] = useState<LoginState>({
     step: 'email',
     email: '',
@@ -36,15 +31,15 @@ export const Login: React.FC<LoginProps> = ({
   const handleSubmit = useCallback(async () => {
     if (state.step === 'email') {
       if (!state.email.includes('@')) {
-        setState(prev => ({ ...prev, error: 'Email inválido' }));
+        setState((prev) => ({ ...prev, error: 'Email inválido' }));
         return;
       }
-      setState(prev => ({ ...prev, step: 'password', error: '' }));
+      setState((prev) => ({ ...prev, step: 'password', error: '' }));
       return;
     }
 
     if (state.step === 'password') {
-      setState(prev => ({ ...prev, isLoading: true, step: 'loading' }));
+      setState((prev) => ({ ...prev, isLoading: true, step: 'loading' }));
 
       try {
         // Dynamic import do Supabase para evitar erros em ambiente não-browser
@@ -57,7 +52,7 @@ export const Login: React.FC<LoginProps> = ({
         });
 
         if (error) {
-          setState(prev => ({
+          setState((prev) => ({
             ...prev,
             step: 'error',
             error: error.message,
@@ -68,12 +63,12 @@ export const Login: React.FC<LoginProps> = ({
         }
 
         if (data.user && data.session) {
-          setState(prev => ({ ...prev, step: 'success', isLoading: false }));
+          setState((prev) => ({ ...prev, step: 'success', isLoading: false }));
           onSuccess(data.user.id, data.session.access_token);
         }
       } catch (err) {
         const errorMsg = err instanceof Error ? err.message : 'Erro desconhecido';
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
           step: 'error',
           error: errorMsg,
@@ -84,31 +79,34 @@ export const Login: React.FC<LoginProps> = ({
     }
   }, [state.step, state.email, state.password, supabaseUrl, supabaseKey, onSuccess, onError]);
 
-  const handleKeyPress = useCallback((key: string) => {
-    if (state.isLoading || state.step === 'success') return;
+  const handleKeyPress = useCallback(
+    (key: string) => {
+      if (state.isLoading || state.step === 'success') return;
 
-    if (key === '\r' || key === '\n') {
-      handleSubmit();
-      return;
-    }
-
-    if (key === '\x7f' || key === '\b') {
-      if (state.step === 'email') {
-        setState(prev => ({ ...prev, email: prev.email.slice(0, -1) }));
-      } else if (state.step === 'password') {
-        setState(prev => ({ ...prev, password: prev.password.slice(0, -1) }));
+      if (key === '\r' || key === '\n') {
+        handleSubmit();
+        return;
       }
-      return;
-    }
 
-    if (key.length === 1 && !key.startsWith('\x1b')) {
-      if (state.step === 'email') {
-        setState(prev => ({ ...prev, email: prev.email + key }));
-      } else if (state.step === 'password') {
-        setState(prev => ({ ...prev, password: prev.password + key }));
+      if (key === '\x7f' || key === '\b') {
+        if (state.step === 'email') {
+          setState((prev) => ({ ...prev, email: prev.email.slice(0, -1) }));
+        } else if (state.step === 'password') {
+          setState((prev) => ({ ...prev, password: prev.password.slice(0, -1) }));
+        }
+        return;
       }
-    }
-  }, [state.step, state.isLoading, handleSubmit]);
+
+      if (key.length === 1 && !key.startsWith('\x1b')) {
+        if (state.step === 'email') {
+          setState((prev) => ({ ...prev, email: prev.email + key }));
+        } else if (state.step === 'password') {
+          setState((prev) => ({ ...prev, password: prev.password + key }));
+        }
+      }
+    },
+    [state.step, state.isLoading, handleSubmit]
+  );
 
   // Input handling
   useEffect(() => {
@@ -135,7 +133,9 @@ export const Login: React.FC<LoginProps> = ({
   if (state.step === 'error') {
     return (
       <Box flexDirection="column">
-        <Text color="red" bold>✖ Erro de Autenticação</Text>
+        <Text color="red" bold>
+          ✖ Erro de Autenticação
+        </Text>
         <Text color="red">{state.error}</Text>
         <Text dimColor>Pressione 'r' para tentar novamente ou Ctrl+C para sair...</Text>
       </Box>
@@ -145,7 +145,9 @@ export const Login: React.FC<LoginProps> = ({
   if (state.step === 'success') {
     return (
       <Box flexDirection="column">
-        <Text color="green" bold>✓ Login realizado com sucesso!</Text>
+        <Text color="green" bold>
+          ✓ Login realizado com sucesso!
+        </Text>
         <Text>Redirecionando para o chat...</Text>
       </Box>
     );
@@ -154,7 +156,9 @@ export const Login: React.FC<LoginProps> = ({
   return (
     <Box flexDirection="column" padding={1}>
       <Box borderStyle="round" borderColor="cyan" padding={1} marginBottom={1}>
-        <Text bold color="cyan">🔐 Login Akáshico</Text>
+        <Text bold color="cyan">
+          🔐 Login Akáshico
+        </Text>
       </Box>
 
       <Box marginBottom={1}>
@@ -179,12 +183,8 @@ export const Login: React.FC<LoginProps> = ({
 
       {/* Instructions */}
       <Box marginTop={1}>
-        {state.step === 'email' && (
-          <Text dimColor>Digite seu email e pressione Enter</Text>
-        )}
-        {state.step === 'password' && (
-          <Text dimColor>Digite sua senha e pressione Enter</Text>
-        )}
+        {state.step === 'email' && <Text dimColor>Digite seu email e pressione Enter</Text>}
+        {state.step === 'password' && <Text dimColor>Digite sua senha e pressione Enter</Text>}
       </Box>
 
       {/* Error Display */}

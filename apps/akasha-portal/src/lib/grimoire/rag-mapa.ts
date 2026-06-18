@@ -26,15 +26,10 @@
  *   - O RAG cabe em ~2-3k tokens (não estoura a janela)
  *   - O LLM recebe INSTRUÇÕES ÉTICAS explícitas (CVV 188, R-022)
  */
-
-import {
-  significadosEspecificos,
-  type PilaresDados,
-  type Pilar,
-} from './significados-curados';
-import { traducoesDaArea, AREAS } from './traducao-areas';
-import { gerarInsightDoDia } from './insight-do-dia';
 import { conexoesDe } from './conexoes-pilares';
+import { gerarInsightDoDia } from './insight-do-dia';
+import { significadosEspecificos, type PilaresDados, type Pilar } from './significados-curados';
+import { traducoesDaArea, AREAS } from './traducao-areas';
 
 const PILAR_NOME: Record<Pilar, string> = {
   cabala: 'Cabala',
@@ -76,7 +71,7 @@ export function ragForPilares(pilares: PilaresDados): string {
       '',
       `Prática do dia: ${insight.pratica_do_dia}`,
       `Pilares destacados HOJE: ${insight.pilares_destacados.map((p) => PILAR_NOME[p]).join(', ')}`,
-    ].join('\n'),
+    ].join('\n')
   );
 
   // 2. Significado ESPECÍFICO de cada Pilar
@@ -93,7 +88,7 @@ export function ragForPilares(pilares: PilaresDados): string {
         `Prática: ${s.pratica}`,
         `Conexão com os outros: ${s.conexao}`,
         `Fonte: ${s.fonte}`,
-      ].join('\n'),
+      ].join('\n')
     );
   });
 
@@ -114,9 +109,7 @@ export function ragForPilares(pilares: PilaresDados): string {
     const saindo = conexoesDe(origem);
     saindo.forEach((c) => {
       const aviso = c.requer_terreiro ? ' ⚠' : '';
-      secoes.push(
-        `- ${PILAR_NOME[c.origem]} → ${PILAR_NOME[c.destino]}${aviso}: ${c.frase}`,
-      );
+      secoes.push(`- ${PILAR_NOME[c.origem]} → ${PILAR_NOME[c.destino]}${aviso}: ${c.frase}`);
     });
   });
 
@@ -152,7 +145,8 @@ export function ragForUserMaps(maps: UserMapsLike | null | undefined): string {
       sol_signo: maps.astrology?.sunSign ?? '',
       asc_signo: maps.astrology?.ascendant ?? null,
       lua_signo: '',
-      lua_fase: (maps.astrology?.moonPhase as 'nova' | 'crescente' | 'cheia' | 'minguante') ?? 'nova',
+      lua_fase:
+        (maps.astrology?.moonPhase as 'nova' | 'crescente' | 'cheia' | 'minguante') ?? 'nova',
       trinity: { sombra: 0, dom: 0, graca: 0 },
       trinity_dominante: 'sombra',
       lilith_signo: null,

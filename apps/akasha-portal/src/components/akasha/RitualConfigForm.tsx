@@ -2,17 +2,16 @@
 
 /**
  * @akasha/portal — RitualConfigForm
- * 
+ *
  * Formulário para configurar o ritual diário.
  * Permite definir horário, ativar/desativar e escolher componentes.
  */
-
+import type { RitualConfig, RitualComponentes } from '@akasha/core';
 import { useState, useCallback } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import type { RitualConfig, RitualComponentes } from '@akasha/core';
 
 interface Props {
   initialConfig?: RitualConfig;
@@ -53,9 +52,7 @@ function Toggle({ checked, onChange, label, description, id }: ToggleProps) {
         <Label htmlFor={id} className="cursor-pointer text-sm font-medium text-[#F4F5FF]">
           {label}
         </Label>
-        {description && (
-          <p className="text-xs text-muted-foreground">{description}</p>
-        )}
+        {description && <p className="text-xs text-muted-foreground">{description}</p>}
       </div>
       <button
         id={id}
@@ -105,29 +102,30 @@ export function RitualConfigForm({ initialConfig, onSave }: Props) {
     setComponentes((prev: RitualComponentes) => ({ ...prev, [key]: value }));
   }, []);
 
-  const handleSubmit = useCallback((e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
 
-    // Validação final
-    if (!isValidTime(horario)) {
-      setHorarioError('Horário inválido. Use o formato HH:MM');
-      return;
-    }
+      // Validação final
+      if (!isValidTime(horario)) {
+        setHorarioError('Horário inválido. Use o formato HH:MM');
+        return;
+      }
 
-    onSave({
-      horario,
-      timezone: config.timezone,
-      ativo,
-      componentes,
-    });
-  }, [horario, ativo, componentes, config.timezone, onSave]);
+      onSave({
+        horario,
+        timezone: config.timezone,
+        ativo,
+        componentes,
+      });
+    },
+    [horario, ativo, componentes, config.timezone, onSave]
+  );
 
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle className="text-base font-heading">
-          Configurar Ritual Diário
-        </CardTitle>
+        <CardTitle className="text-base font-heading">Configurar Ritual Diário</CardTitle>
       </CardHeader>
 
       <form onSubmit={handleSubmit}>
@@ -138,9 +136,7 @@ export function RitualConfigForm({ initialConfig, onSave }: Props) {
               <Label htmlFor="ritual-time" className="text-sm font-medium text-[#F4F5FF]">
                 Horário do Ritual
               </Label>
-              <span className="text-xs text-muted-foreground">
-                {horario || '--:--'}
-              </span>
+              <span className="text-xs text-muted-foreground">{horario || '--:--'}</span>
             </div>
             <Input
               id="ritual-time"
@@ -212,11 +208,7 @@ export function RitualConfigForm({ initialConfig, onSave }: Props) {
         </CardContent>
 
         <div className="flex items-center justify-end gap-2 rounded-b-xl border-t bg-muted/50 p-4">
-          <Button
-            type="submit"
-            variant="golden"
-            className="min-w-[100px]"
-          >
+          <Button type="submit" variant="golden" className="min-w-[100px]">
             {ativo ? 'Salvar' : 'Ativar Ritual'}
           </Button>
         </div>

@@ -1,1 +1,2255 @@
-(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,17736,a=>{"use strict";a.s([],7637),a.i(7637);let e=[{numero:1,nome:"Ogbe (Oxé)",significado:"A luz que ilumina o caminho. Vitória, criação, renascimento, autoridade divina.",elementos:"Fogo",orixaRegente:"Oxalá",quizilas:["Cachaça em excesso","Andar na rua ao meio-dia"],preceitos:["Cultivar a paciência","Honrar a criação"],ebos:[]},{numero:2,nome:"Ejiokô",significado:"A dualidade, a parceria, o movimento. Início de jornada, escolha entre caminhos.",elementos:"Ar / Terra",orixaRegente:"Ibeji, Ogum",quizilas:[],preceitos:["Buscar equilíbrio","Honrar as parcerias"],ebos:[]},{numero:3,nome:"Etogundá",significado:"A batalha, a conquista, a abertura de caminhos. Força, vitória, superação.",elementos:"Fogo / Terra",orixaRegente:"Ogum, Ogun",quizilas:[],preceitos:["Enfrentar batalhas com coragem","Abrir caminhos com ética"],ebos:[]},{numero:4,nome:"Irosun",significado:"O aviso, a atenção, o cuidado com traições. Intuição, pressentimento, alerta.",elementos:"Fogo / Terra",orixaRegente:"Oxum, Iemanjá",quizilas:[],preceitos:["Manter vigilância","Confiar na intuição"],ebos:[]},{numero:5,nome:"Oxê (Ogunda)",significado:"A beleza, o amor, a fertilidade, o magnetismo. Conquista, doçura, poder feminino.",elementos:"Água",orixaRegente:"Oxum",quizilas:[],preceitos:["Honrar a beleza interior","Cultivar o amor próprio"],ebos:[]},{numero:6,nome:"Obará",significado:"A riqueza, a glória, a abundância, a fartura. Prosperidade, fartura material e espiritual.",elementos:"Terra",orixaRegente:"Xangô, Oxóssi",quizilas:[],preceitos:["Compartilhar a fartura","Honrar a terra"],ebos:[]},{numero:7,nome:"Odi",significado:"Os segredos, a transformação, a cautela, a limpeza. Mistério, profundidade, renascimento.",elementos:"Terra / Água",orixaRegente:"Exu, Omolu",quizilas:[],preceitos:["Respeitar os mistérios","Cultivar a limpeza interior"],ebos:[]},{numero:8,nome:"Ejionile",significado:"A justiça, a liderança, a força, a vitória. Equilíbrio, retidão, poder legítimo.",elementos:"Fogo / Água",orixaRegente:"Xangô, Oxalá",quizilas:[],preceitos:["Buscar a justiça","Liderar com retidão"],ebos:[]},{numero:9,nome:"Ossá",significado:"A proteção feminina, a sabedoria, a turbulência das águas. Cuidado maternal, proteção.",elementos:"Água",orixaRegente:"Iemanjá, Oyá",quizilas:[],preceitos:["Honrar as águas","Buscar proteção divina"],ebos:[]},{numero:10,nome:"Ofun",significado:"A espiritualidade profunda, o equilíbrio mental, a meditação. Sabedoria ancestral.",elementos:"Ar",orixaRegente:"Oxalufan, Oxalá",quizilas:[],preceitos:["Meditar regularmente","Honrar a ancestralidade"],ebos:[]},{numero:11,nome:"Owarin",significado:"A dinâmica, o perigo, a astúcia, o movimento rápido. Transformação veloz, alerta.",elementos:"Ar / Fogo",orixaRegente:"Exu, Oyá",quizilas:[],preceitos:["Agir com astúcia","Manter-se alerta"],ebos:[]},{numero:12,nome:"Ejilaxebô",significado:"A honra, a proteção, o caminho aberto. Reconhecimento, vitória merecida.",elementos:"Ar",orixaRegente:"Ogum, Oxum",quizilas:[],preceitos:["Honrar o mérito","Proteger os seus"],ebos:[]},{numero:13,nome:"Oturupon",significado:"A cura, a purificação, a ancestralidade. Saúde, limpeza, conexão com os mortos.",elementos:"Terra",orixaRegente:"Omolu, Nanã",quizilas:[],preceitos:["Honrar os ancestrais","Cultivar a cura interior"],ebos:[]},{numero:14,nome:"Oturá",significado:"A paz, a benevolência, a proteção divina. Harmonia, tranquilidade, segurança.",elementos:"Água",orixaRegente:"Oxalá, Iemanjá",quizilas:[],preceitos:["Buscar a paz interior","Confiar na proteção divina"],ebos:[]},{numero:15,nome:"Iká",significado:"O poder, a estratégia, a responsabilidade. Autoridade, comando, decisão.",elementos:"Fogo",orixaRegente:"Xangô, Oxum",quizilas:[],preceitos:["Usar o poder com responsabilidade","Decidir com ética"],ebos:[]},{numero:16,nome:"Ofurufu",significado:"A completude, a totalidade, a bênção universal. Integração, plenitude, fim de jornada.",elementos:"Éter",orixaRegente:"Oxalá, todos os Orixás",quizilas:[],preceitos:["Buscar a totalidade","Integrar todas as lições"],ebos:[]}],o={1:{numero:1,nome:"Okaran",significado:"O começo, a dúvida, a insubordinação. Caminho difícil, mas de grande aprendizado.",elementos:"Terra/Fogo",orixaRegente:"Exu",quizilas:["Carne de porco","Cachaça em excesso","Andar na rua ao meio-dia"],preceitos:["Cultivar a paciência","Não agir por impulso","Cuidar rigorosamente de Exu e dos antepassados"],ebos:["Ebó de Caminho/Limpeza: Despachos em encruzilhadas, moedas, pipoca e panos escuros para abrir caminhos"]},2:{numero:2,nome:"Ejiokô",significado:"A dualidade, os caminhos duplos, união e disputa. Vitória após grandes lutas.",elementos:"Ar/Terra",orixaRegente:"Ibeji",quizilas:["Comer ovos","Rã","Mentir ou trair a confiança dos outros"],preceitos:["Manter a alegria interna","Cuidar da criança interior","Buscar sociedades justas"],ebos:["Ebó de Prosperidade: Doces, frutas para Ibeji, e comidas leves em praças ou jardins"]},3:{numero:3,nome:"Etaogundá",significado:"A revolta, a força física, a criação de ferramentas. O corte e a separação.",elementos:"Fogo/Terra",orixaRegente:"Ogum",quizilas:["Usar facas ou objetos cortantes sem necessidade","Carne de galo","Violência verbal"],preceitos:["Evitar brigas e discussões","Manter o foco no trabalho e na justiça","Não demandar contra os outros"],ebos:["Ebó de Defesa: Inhames assados, paliteiros de Ogum, limpeza com folhas de mariô e limpeza com ferro"]},4:{numero:4,nome:"Irosun",significado:"O aviso, o sangue que corre nas veias, a visão espiritual. Olhar para o futuro.",elementos:"Fogo/Terra",orixaRegente:"Iemanjá",quizilas:["Olhar para buracos vazios","Usar roupas muito vermelhas em momentos de crise","Mentira"],preceitos:["Desenvolver a intuição","Não ignorar avisos e sonhos","Cuidar da saúde do sangue e dos olhos"],ebos:["Ebó de Proteção: Alimentos brancos, canjica na beira-mar para Iemanjá, banhos de folhas frias"]},5:{numero:5,nome:"Oxé",significado:"O ouro, a doçura, a feitiçaria, a vaidade e a lágrima. Sangue menstrual.",elementos:"Água",orixaRegente:"Oxum",quizilas:["Comer ovos","Comidas muito salgadas ou azedas","Chorar miséria ou reclamar da vida"],preceitos:["Cuidar da autoestima","Usar perfumes","Manter a higiene espiritual","Buscar a diplomacia"],ebos:["Ebó de Atração/Ouro: Banhos de mel, caldas de frutas, oferendas com girassóis e moedas douradas em águas doces"]},6:{numero:6,nome:"Obará",significado:"A riqueza, a fartura, a sabedoria e a surpresa. O rei que se veste de mendigo.",elementos:"Ar/Fogo",orixaRegente:"Xangô",quizilas:["Inveja","Contar planos antes de realizá-los","Comer abóbora","Teimosia extrema"],preceitos:["Ser generoso","Estudar","Manter a cabeça erguida","Praticar a gratidão para atrair a riqueza"],ebos:["Ebó de Fartura: Oferecer seis tipos de frutas, amalá para Xangô, dar comida à terra e partilhar banquetes"]},7:{numero:7,nome:"Odi",significado:"A teimosia, o renascimento, as coisas ocultas, o poço profundo.",elementos:"Terra/Água",orixaRegente:"Omolu",quizilas:["Dormir no escuro absoluto se estiver com medo","Comer carne de caça","Persistir no erro"],preceitos:["Praticar o desapego","Aceitar as mudanças da vida","Não cavar o próprio buraco com mágoas"],ebos:["Ebó de Transmutação: Pipoca (Deburu) para Omolu, banhos de lama ou argila, defumações pesadas com resinas"]},8:{numero:8,nome:"EjiOníle",significado:"A cabeça (Ori), a liderança, o topo do mundo, o sangue branco.",elementos:"Ar/Água",orixaRegente:"Oxalá",quizilas:["Usar roupas pretas ou escuras","Comer carne vermelha em dias de preceito"],preceitos:["Cuidar muito bem do próprio Ori (cabeça)","Buscar a paz","Evitar o orgulho e a arrogância"],ebos:["Ebó de Alinhamento (Bori): Oferendas de canjica branca, algodão, banhos de boldo (tapete de Oxalá) e velas brancas"]},9:{numero:9,nome:"Ossá",significado:"O vento, as transformações rápidas, o reino das Iyami (as bruxas ancestrais).",elementos:"Ar/Água",orixaRegente:"Iansã",quizilas:["Espalhar fofocas","Ventanias fortes na praia","Usar roupas rasgadas"],preceitos:["Respeitar o poder feminino","Controlar a impulsividade e as palavras","Fluir com as mudanças"],ebos:["Ebó de Limpeza Astral: Sacudimentos com folhas de fumo ou pinhão roxo, oferendas de acarajé para Iansã no vento"]},10:{numero:10,nome:"Ofun",significado:"O mistério, a velhice, a cura, o sopro divino. O Odú mais velho da criação.",elementos:"Ar/Água",orixaRegente:"Oxalá",quizilas:["Usar roupas pretas","Comer comida amanhecida","Faltar com o respeito aos mais velhos"],preceitos:["Vestir-se de branco","Manter o silêncio e a quietude","Estudar a espiritualidade profunda"],ebos:["Ebó de Alívio/Saúde: Tudo neste Odú pede rezas mansas, frutas brancas, banhos de leite de cabra ou ervas calmas"]},11:{numero:11,nome:"Owarin",significado:"A pressa, a ansiedade, a mudança de rumo rápida. O vento que espalha as folhas.",elementos:"Fogo/Ar",orixaRegente:"Iansã",quizilas:["Guardar objetos quebrados ou velhos em casa","Procrastinar","Roupas muito escuras"],preceitos:["Organizar a mente e a rotina","Canalizar a ansiedade em atividades físicas ou artísticas"],ebos:["Ebó de Movimento: Rodar chaves, acender velas nas esquinas, banhos de ervas quentes (guiné, arruda)"]},12:{numero:12,nome:"Ejilsebora",significado:"A justiça, o fogo purificador, a guerra justa, os terremotos.",elementos:"Fogo",orixaRegente:"Xangô",quizilas:["Praticar a injustiça","Acobertar mentiras","Comer abóbora ou quiabo em excesso nas crises"],preceitos:["Manter a integridade a todo custo","Não julgar os outros sem provas","Equilibrar a razão e a emoção"],ebos:["Ebó de Justiça: Firmezas com pedras de raio, amalá bem quente com folhas de fumo"]},13:{numero:13,nome:"Olobón",significado:"A doença, as transformações físicas, o fim de ciclos. O recolhimento.",elementos:"Terra/Água",orixaRegente:"Nanã",quizilas:["Ambientes sujos ou bagunçados","Comer carne de rã ou tartaruga","Reclamar da velhice"],preceitos:["Respeitar o tempo das coisas","Buscar a sabedoria dos mais velhos","Cuidar da saúde das articulações"],ebos:["Ebó de Evolução: Oferendas na lama ou no mangue para Nanã, ebó com feijão preto, velas lilases"]},14:{numero:14,nome:"Iká",significado:"A traição, a cobra que morde, a sabedoria oculta e a renovação da pele.",elementos:"Água/Terra",orixaRegente:"Oxumaré",quizilas:["Falsidade","Maltratar animais (especialmente répteis)","Revelar segredos confiados"],preceitos:["Manter a discrição absoluta sobre sua vida pessoal","Cultivar a flexibilidade perante os obstáculos"],ebos:["Ebó de Renovação: Banhos com folhas de fortuna e dinheiro-em-penca, amarrar fitas coloridas (7 cores)"]},15:{numero:15,nome:"Ogbogbé",significado:"A feitiçaria, o corte pesado, as disputas por espaço ou poder.",elementos:"Fogo/Terra",orixaRegente:"Obá",quizilas:["Invejar o espaço alheio","Comer comidas muito apimentadas perto de dormir","Brigas domésticas"],preceitos:["Buscar a paz no lar","Proteger a própria energia contra feitiçarias e inveja","Focar no amor próprio"],ebos:["Ebó de Defesa: Oferendas com acarajés recheados, banhos de erva-de-bicho ou espada-de-santa-bárbara"]},16:{numero:16,nome:"Alafia",significado:"A paz absoluta, a luz total, a confirmação dos Deuses. Tudo está bem.",elementos:"Ar/Luz",orixaRegente:"Orunmilá",quizilas:["Dúvidar da própria espiritualidade","Orgulho","Arrogância","Não ouvir conselhos"],preceitos:["Manter as práticas espirituais em dia","Compartilhar a sabedoria com quem precisa","Ser grato"],ebos:["Ebó de Agradecimento: Flores brancas, oferendas de frutas doces e claras, acender lâmpadas ou muitas velas brancas"]}},i=[{id:1,nome:"Ogbe",simbolo:"☰",linhas:[!0,!0,!0],significado:"Caminho aberto, inicio, movimento, prosperidade",natureza:"Yang"},{id:2,nome:"Oyun",simbolo:"☱",linhas:[!0,!0,!1],significado:"Desenvolvimento gradual, fluxo, suavidade",natureza:"Yang"},{id:3,nome:"Oturupon",simbolo:"☲",linhas:[!0,!1,!0],significado:"Desordem, transformacao, crise necessaria",natureza:"Neutro"},{id:4,nome:"Odionran",simbolo:"☳",linhas:[!1,!0,!0],significado:"Despertar, movimento brusco, despertar da consciencia",natureza:"Yang"},{id:5,nome:"Ossa",simbolo:"☴",linhas:[!0,!1,!1],significado:"Vento, comunicacao, mudanca, viagem",natureza:"Neutro"},{id:6,nome:"Obara",simbolo:"☶",linhas:[!1,!0,!1],significado:"Lei, ordem, justica, disciplina",natureza:"Yin"},{id:7,nome:"Owonrin",simbolo:"☷",linhas:[!1,!1,!0],significado:"Montanha, silencio, introspeccao, contencao",natureza:"Yin"},{id:8,nome:"Oka",simbolo:"☸",linhas:[!1,!1,!1],significado:"Camino fechado, fim de ciclo, encerramento, morte",natureza:"Yin"}],r={1:{top:1,bottom:1,elementos:"Terra/Fogo",orixa:"Exu",significado:"O comeco, a duvida, a insubordinacao. Caminho dificil, mas de grande aprendizado."},2:{top:1,bottom:2,elementos:"Ar/Terra",orixa:"Ibeji",significado:"A dualidade, os caminhos duplos, uniao e disputa. Vitoria apos grandes lutas."},3:{top:1,bottom:3,elementos:"Fogo/Terra",orixa:"Ogum",significado:"A revolta, a forca fisica, a criacao de ferramentas. O corte e a separacao."},4:{top:1,bottom:4,elementos:"Fogo/Terra",orixa:"Iemanja",significado:"O aviso, o sangue que corre nas veias, a visao espiritual. Olhar para o futuro."},5:{top:1,bottom:5,elementos:"Agua",orixa:"Oxum",significado:"O ouro, a docura, a feiticararia, a vaidade e a lagrima. Sangue menstrual."},6:{top:1,bottom:6,elementos:"Ar/Fogo",orixa:"Xango",significado:"A riqueza, a fartura, a sabedoria e a surpresa. O rei que se veste de mendigo."},7:{top:1,bottom:7,elementos:"Terra/Agua",orixa:"Omolu",significado:"A teimosia, o renascimento, as coisas ocultas, o poco profundo."},8:{top:1,bottom:8,elementos:"Ar/Agua",orixa:"Oxala",significado:"A cabeca (Ori), a lideranca, o topo do mundo, o sangue branco."},9:{top:2,bottom:1,elementos:"Ar/Agua",orixa:"Iansa",significado:"O vento, as transformacoes rapidas, o reino das Iyami (as bruxas ancestrais)."},10:{top:2,bottom:2,elementos:"Ar/Agua",orixa:"Oxala",significado:"O misterio, a velhice, a cura, o sopro divino. O Odu mais velho da criacao."},11:{top:2,bottom:3,elementos:"Fogo/Ar",orixa:"Iansa",significado:"A pressa, a ansiedade, a mudanca de rumo rapida. O vento que espalha as folhas."},12:{top:2,bottom:4,elementos:"Fogo",orixa:"Xango",significado:"A justica, o fogo purificador, a guerra justa, os terremotos."},13:{top:2,bottom:5,elementos:"Terra/Agua",orixa:"Nana",significado:"A doenca, as transformacoes fisicas, o fim de ciclos. O recolhimento."},14:{top:2,bottom:6,elementos:"Agua/Terra",orixa:"Oxumare",significado:"A traicao, a cobra que morde, a sabedoria oculta e a renovacao da pele."},15:{top:2,bottom:7,elementos:"Fogo/Terra",orixa:"Oba",significado:"A feiticararia, o corte pesado, as disputas por espaco ou poder."},16:{top:2,bottom:8,elementos:"Ar/Luz",orixa:"Orunmila",significado:"A paz absoluta, a luz total, a confirmacao dos Deuses. Tudo esta bem."}};function s(a){return i.find(e=>e.id===a)||i[0]}function n(a){return({1:"Okaran",2:"Ejioko",3:"Etaogunda",4:"Irosun",5:"Oxé",6:"Obara",7:"Odi",8:"EjiOnile",9:"Ossa",10:"Ofun",11:"Owarin",12:"Ejilsebora",13:"Olobon",14:"Ika",15:"Ogbogbe",16:"Alafia"})[a]||"Desconhecido"}function t(a){return a.map(a=>a?"━━━":"━━ ━").join("\n")}function d(a){let e,o=r[e=a?.method==="birth-date"&&a?.dataNascimento?function(a){let e=a.replace(/\D/g,""),o=0;for(let a of e)o+=parseInt(a);for(;o>16;){let a=0;for(let e of o.toString().split(""))a+=parseInt(e);o=a}return o||1}(a.dataNascimento):Math.floor(16*Math.random())+1],i=s(o.top),d=s(o.bottom);return{odu:{numero:e,Caminho:e,nome:n(e),opeCima:i,opeBaixo:d,elementos:o.elementos,orixaRegente:o.orixa,significado:o.significado},opeCima:i,opeBaixo:d,linhasCima:t(i.linhas),linhasBaixo:t(d.linhas),timestamp:new Date}}let c={1:{tipo:"caminho",urgencia:"alta",prazo:"urgent"},2:{tipo:"prosperidade",urgencia:"media",prazo:"semana"},3:{tipo:"defesa",urgencia:"alta",prazo:"hoje"},4:{tipo:"protecao",urgencia:"alta",prazo:"hoje"},5:{tipo:"atração",urgencia:"media",prazo:"semana"},6:{tipo:"prosperidade",urgencia:"media",prazo:"semana"},7:{tipo:"transformacao",urgencia:"media",prazo:"quinzena"},8:{tipo:"alinhamento",urgencia:"alta",prazo:"hoje"},9:{tipo:"limpeza",urgencia:"media",prazo:"semana"},10:{tipo:"saude",urgencia:"alta",prazo:"hoje"},11:{tipo:"movimento",urgencia:"media",prazo:"semana"},12:{tipo:"justica",urgencia:"alta",prazo:"hoje"},13:{tipo:"transformacao",urgencia:"media",prazo:"quinzena"},14:{tipo:"transformacao",urgencia:"media",prazo:"semana"},15:{tipo:"defesa",urgencia:"alta",prazo:"hoje"},16:{tipo:"agradecimento",urgencia:"baixa",prazo:"mes"}},m=[["Caminho","caminho"],["Prosperidade","prosperidade"],["Defesa","defesa"],["Atração","atração"],["Ouro","atração"],["Prote","protecao"],["Transmut","transformacao"],["Alinhamento","alinhamento"],["Saúde","saude"],["Alívio","saude"],["Justiça","justica"],["Renovação","transformacao"],["Agradecimento","agradecimento"],["Movimento","movimento"],["Limpeza","limpeza"]],u=[["despachos","Despachos"],["moedas","Moedas"],["pipoca","Pipoca"],["panos","Panos escuros"],["alimentos brancos","Alimentos brancos"],["canjica","Canjica"],["banhos","Banhos de folhas"],["frutas","Frutas"],["folhas","Folhas"],["velas","Velas"],["inhames","Inhames"],["paliteiros","Paliteiros"],["ferro","Ferro"],["girassóis","Girassóis"],["mel","Mel"],["doces","Doces"],["amala","Amalá"],["pedras","Pedras de raio"],["lama","Lama/argila"],["algodão","Algodão"]],l={caminho:{nome:"Ritual de Caminho",descricao:"Abre caminhos e remove obstáculos, especialmente em encruzilhadas",componentes:["Moedas","Pipoca","Panos escuros","Velas pretas"]},protecao:{nome:"Ritual de Proteção",descricao:"Fortalece a aura e protege contra energias negativas",componentes:["Flores brancas","Água de cheiro","Sal grosso","Alecrim"]},prosperidade:{nome:"Ritual de Prosperidade",descricao:"Atrai abundância e abre portas para novos negócios",componentes:["Frutas douradas","Moedas","Mel","Canela"]},saude:{nome:"Ritual de Saúde",descricao:"Promove cura e bem-estar físico e espiritual",componentes:["Plantas medicinais","Velas verdes","Água mineral","Algodão"]},limpeza:{nome:"Ritual de Limpeza",descricao:"Remove energias densas e purifica o ambiente e a pessoa",componentes:["Ervas de limpeza","Defumadores","Sal grosso","Banho de folha"]},alinhamento:{nome:"Ritual de Alinhamento (Bori)",descricao:"Fortalece o Ori (cabeça) e alinha o espiritual com o material",componentes:["Canjica branca","Algodão","Velas brancas","Folhas de boldo"]},justica:{nome:"Ritual de Justiça",descricao:"Promove ação justa e equilibrio nas situações de conflito",componentes:["Pedras de raio","Amalá","Fumo","Velas vermelhas"]},transformacao:{nome:"Ritual de Transformação",descricao:"Auxilia na mudança de ciclo e renovação espiritual",componentes:["Argila","Pipoca (Deburu)","Resinas","Flores roxas"]},defesa:{nome:"Ritual de Defesa",descricao:"Protege contra feitiçarias, inveja e ataques espirituais",componentes:["Espada de Santa Bárbara","Alho","Pimenta","Erva de bicho"]},agradecimento:{nome:"Ritual de Agradecimento",descricao:"Expressa gratidão aos Orixás e fortalece a espiritualidade",componentes:["Flores brancas","Velas claras","Frutas doces","Incenso"]},atração:{nome:"Ritual de Atração",descricao:"Atrai prosperidade, amor e energias positivas",componentes:["Mel","Frutas douradas","Girassóis","Moedas douradas"]},movimento:{nome:"Ritual de Movimento",descricao:"Ativa energia de mudança e superação de stagnação",componentes:["Chaves","Velas","Guiné","Arruda"]}},p={caminho:{nome:"Ebó de Caminho/Limpeza",elementos:["Despachos","Moedas","Pipoca","Panos escuros"],passos:["Prepare os componentes em local limpo","Faça preces a Exu e ao Orixá regente","Enterre ou deixe em encruzilhada ao amanhecer","Não olhe para trás após o ritual"],observacoes:["Horário preferencial: madrugada","Luar menguante favorece"]},protecao:{nome:"Ebó de Proteção",elementos:["Alimentos brancos","Canjica","Folhas frias","Velas azuis"],passos:["Prepare canjica sem açúcar","Banho de folhas em água filtrada","Acenda velas ao anoitecer","Pequena oferenda na beira-mar (para Iemanjá)"],observacoes:["Evite dias de chuva forte","Sábado é favorável para Iemanjá"]},prosperidade:{nome:"Ebó de Prosperidade",elementos:["Doces","Frutas","Moedas douradas","Mel"],passos:["Escolha 6 tipos de frutas frescas","Disponha em círculo com mel no centro","Faça preces de agradecimento","Distribua parte aos menos favorecidos"],observacoes:["Consulte o Babalawo para dia específico","Fase da lua crescente favorece"]},saude:{nome:"Ebó de Alívio/Saúde",elementos:["Frutas brancas","Ervas calmas","Leite de cabra","Velas verdes"],passos:["Prepare decocto de ervas suaves","Banho de leite diluído em água","Acenda velas verdes pela manhã","Repouse após o ritual"],observacoes:["Combine com rezas mansas","Evite exposição solar intensa"]},limpeza:{nome:"Ebó de Limpeza Astral",elementos:["Fumo","Pinhão roxo","Acarajé","Ervas várias"],passos:["Sacuda as folhas de fumo sobre a cabeça","Prepare sacudimento com pinhão roxo","Ofereça acarajé ao vento (para Iansã)","Banho de ervas imediatamente após"],observacoes:["Horário: ventanias suaves","Evite dias de tempestade"]},alinhamento:{nome:"Ebó de Alinhamento (Bori)",elementos:["Canjica branca","Algodão","Boldo","Velas brancas"],passos:["Jejum parcial antes do ritual","Passe canjica na testa em formato de Ori","Coloque algodão sobre a cabeça","Banho de boldo (tapete de Oxalá)"],observacoes:["Este é ritual sagrado","Realizar com orientação de especialista"]},justica:{nome:"Ebó de Justiça",elementos:["Pedras de raio","Amalá","Folhas de fumo","Velas vermelhas"],passos:["Prepare amalá bem quente","Adicione folhas de fumo na preparação","Acenda velas vermelhas próximas ao local","Faça solicitações claras a Xangô"],observacoes:["Seja sincero em suas solicitações","Xangô valoriza honestidade"]},transformacao:{nome:"Ebó de Transformação/Renovação",elementos:["Pipoca (Deburu)","Lama/argila","Fitas coloridas (7 cores)","Velas roxas"],passos:["Prepare pipoca sem sal para Omolu","Aplique lama sutil nos pés","Amarre fitas em cores variadas","Banho de folhas de fortuna (para Oxumaré)"],observacoes:["Lua cheia favorece renovação","Tempo de reflexão é essencial"]},defesa:{nome:"Ebó de Defesa",elementos:["Espada de Santa Bárbara","Acarajés","Erva de bicho","Pimenta"],passos:["Prepare banhos com erva de bicho","Envolva espada de Santa Bárbara em pano branco","Prepare acarajés bem recheados","Aplique banhos nas solas dos pés"],observacoes:["Realize em dias secos","Proteja a cabeça com pano branco"]},agradecimento:{nome:"Ebó de Agradecimento",elementos:["Flores brancas","Frutas claras","Velas many","Incenso suave"],passos:["Organize flores brancas em vaso limpo","Disponha frutas ao redor das velas","Acenda número ímpar de velas","Exprima gratidão em voz alta"],observacoes:["Este ritual fortalece espiritualidade","Registre seus agradecimentos"]},atração:{nome:"Ebó de Atração/Ouro",elementos:["Mel","Calda de frutas","Girassóis","Moedas douradas"],passos:["Prepare banhos de mel diluído","Use caldas de frutas em águas doces","Disponha girassóis perto de água corrente","Moedas douradas em vasos de plantas"],observacoes:["Combine com banhos de Oxum","Horário da tarde é favorável"]},movimento:{nome:"Ebó de Movimento",elementos:["Chaves","Velas nas esquinas","Guiné","Arruda"],passos:["Gire chaves sobre a cabeça 3 vezes","Acenda velas em 4 esquinas da casa","Banho de guiné e arruda bem quente","Caminhe pelas casas com ramo de arruda"],observacoes:["Combine com atividades físicas","Evite locais muito escuros"]}},g={1:["Exu","Omolu"],2:["Ibeji","Oxum"],3:["Ogum","Xangô"],4:["Iemanjá","Oxum"],5:["Oxum","Iemanjá"],6:["Xangô","Ogum"],7:["Omolu","Nanã"],8:["Oxalá","Iemanjá"],9:["Iansã","Omolu"],10:["Oxalá","Ibeji"],11:["Iansã","Ogum"],12:["Xangô","Oxalá"],13:["Nanã","Omolu"],14:["Oxumaré","Iemanjá"],15:["Obá","Oxum"],16:["Orunmilá","Oxalá"]},v={1:["Cultive a paciência","Não aja por impulso","Cuide de Exu e dos antepassados","Evite discussões desnecessárias"],2:["Mantenha a alegria interna","Cuide da criança interior","Busque sociedades justas","Evite mentiras"],3:["Evite brigas","Mantenha foco no trabalho","Não demande contra outros","Pratique a justiça"],4:["Desenvolva a intuição","Preste atenção aos sonhos","Cuide da saúde dos olhos","Evite ignorar avisos"],5:["Cuide da autoestima","Use perfumes agradáveis","Mantenha higiene espiritual","Busque diplomacia"],6:["Seja generoso","Estude regularmente","Pratique gratidão","Mantenha cabeça erguida"],7:["Pratique desapego","Aceite mudanças","Evite persistir no erro","Cuide do ambiente"],8:["Cuide do Ori (cabeça)","Busque paz interior","Evite orgulho","Pratique humildade"],9:["Respeite o poder feminino","Controle palavras","Flua com mudanças","Evite fofocas"],10:["Vista branco","Mantenha silêncio","Estude espiritualidade","Respeite mais velhos"],11:["Organize mente e rotina","Canalize ansiedade em algo produtivo","Pratique atividades físicas","Evite procrastinação"],12:["Mantenha integridade","Não julgue sem provas","Equilibre razão e emoção","Busque justiça"],13:["Respeite o tempo","Busque sabedoria dos mais velhos","Cuide das articulações","Evite ambientes sujos"],14:["Mantenha discrição","Cultive flexibilidade","Evite falsidade","Respeite segredos"],15:["Busque paz no lar","Proteja sua energia","Foque no amor próprio","Evite brigas domésticas"],16:["Mantenha práticas em dia","Compartilhe sabedoria","Seja grato","Não duvide da espiritualidade"]},b={1:["Não ingira carne de porco em excesso","Evite cachaça em excesso","Não ande na rua ao meio-dia sem necessidade"],2:["Não coma ovos","Evite rã","Jamais minta ou traia confiança"],3:["Evite usar facas sem necessidade","Não coma carne de galo","Não pratique violência verbal"],4:["Não olhe para buracos vazios","Evite roupas muito vermelhas em crises","Nunca minta"],5:["Não coma ovos","Evite comidas muito salgadas","Não reclame da vida"],6:["Evite inveja","Não conte planos antes de realizar","Não coma abóbora em excesso","Evite teimosia extrema"],7:["Não durma no escuro absoluto se tiver medo","Evite carne de caça","Não persista no erro"],8:["Não use roupas pretas","Evite carne vermelha em dias de preceito","Cuide do Ori com reverência"],9:["Não espalhe fofocas","Evite ventanias fortes na praia","Não use roupas rasgadas"],10:["Não use roupas pretas","Evite comida amanhecida","Respeite mais velhos"],11:["Não guarde objetos quebrados","Evite procrastinação","Não use roupas muito escuras"],12:["Não pratique injustiça","Jamais acoberte mentiras","Evite abóbora/quiabo em excesso em crises"],13:["Evite ambientes bagunçados","Não coma rã ou tartaruga","Não reclame da velhice"],14:["Evite falsidade","Não maltrate animais","Nunca revele segredos confiados"],15:["Não inveje espaço alheio","Evite comidas apimentadas perto de dormir","Não brigue em casa"],16:["Não duvide da própria espiritualidade","Evite orgulho e arrogância","Ouça conselhos dos mais velhos"]},f={1:[{nome:"Ebo de Ossos de Animais",descricao:"Sacrifício de ossos para proteção contra entidades negativas",elementos:["ossos de galinha","fumo de palo","akoko leaf","dinheiro cobntado"]}],2:[{nome:"Ebo de Áudio",descricao:"Sacrifício para conhecimento ancestral e sabedoria",elementos:["coco fresco","mel de abelha","farinha de inhame","ogbe frasco"]}],3:[{nome:"Ebo de Olho",descricao:"Proteção contra mau-olhado e inveja",elementos:["gema de ovo cru","alcool","farinha de milo","pedra de proteção"]}],4:[{nome:"Ebo de Fogo",descricao:"Purificação e afastamento de feitiçaria",elementos:["palha seca","cabaça queimada","cabaça queimada","cinzas sagradas"]}],5:[{nome:"Ebo de Longevidade",descricao:"Sacrifício para saúde e vida longa",elementos:["cabrito branco","farinha de arroz","coco","mel"]}],6:[{nome:"Ebo de Justice",descricao:"Sacrifício para reparação de injustiças",elementos:["pano branco","alcool de palma","noz de cola","obí"]}],7:[{nome:"Ebo de Prosperidade",descricao:"Sacrifício para abundância material",elementos:["dinheiro novo","akara frito","ogbe frasco","milho"]}],8:[{nome:"Ebo de Visibilidade",descricao:"Sacrifício para ser visto e reconhecido",elementos:["espelho pequeno","alcool","farinha de mandioca","pimenta"]}],9:[{nome:"Ebo de Fuga",descricao:"Sacrifício para escapar de problemas e inimigos",elementos:["pano azul","cabaça","alho","vinagre"]}],10:[{nome:"Ebo de Pureza",descricao:"Sacrifício para limpeza espiritual e branca",elementos:["pano branco","leite de coco","farinha de inhame","coco branco"]}],11:[{nome:"Ebo de Harmonia",descricao:"Sacrifício para paz e reconciliación",elementos:["pomba branca","farinha branca","coco","mel"]}],12:[{nome:"Ebo de Fertilidad",descricao:"Sacrifício para fertilidade y descendencia",elementos:["cabrito manchado","ogbe frasco","planta de fertility","dinheiro"]}],13:[{nome:"Ebo de Victoria",descricao:"Sacrifício para vitória em disputas y batallas",elementos:["gallina negra","akoko leaf","vinagre","alho"]}],14:[{nome:"Ebo de Sanación",descricao:"Sacrifício para cura de enfermedades",elementos:["coco fresco","hierbas medicinales","mel de abelha","farinha"]}],15:[{nome:"Ebo de Fuerza",descricao:"Sacrifício para força y poder",elementos:["bode negro","akoko leaf","palma oil","ogbe frasco"]}],16:[{nome:"Ebo de Abundancia",descricao:"Sacrifício para prosperidade y buena cosecha",elementos:["dinheiro","granos de maíz","coco","ogbe frasco"]}]},h={1:[{texto:"Oyeku, oyeku, libame das trevas",idioma:"portugues",momento:"durante"},{texto:"Eji Ogbe, open me to the ancestors",idioma:"两者",momento:"antes"}],2:[{texto:"Iwori, dame sabiduria para ver la verdad",idioma:"portugues",momento:"durante"},{texto:"Ori, guide my path",idioma:"两者",momento:"antes"}],3:[{texto:"Odi, protecteme del mal de ojo",idioma:"portugues",momento:"durante"},{texto:"Olodumare, shield your child",idioma:"两者",momento:"antes"}],4:[{texto:"Ossa, purifica mi ser con fuego sagrado",idioma:"portugues",momento:"durante"},{texto:"Ogun, cleanse all negativity",idioma:"两者",momento:"antes"}],5:[{texto:"Iwonrin, dame vida longa y salud",idioma:"portugues",momento:"durante"},{texto:"Olodumare, grant me longevity",idioma:"两者",momento:"antes"}],6:[{texto:"Obara, haz justicia en mi causa",idioma:"portugues",momento:"durante"},{texto:"Ogun, fight for my rights",idioma:"两者",momento:"antes"}],7:[{texto:"Okanran, abre las puertas de la abundancia",idioma:"portugues",momento:"durante"},{texto:"Ogun, provide for your children",idioma:"两者",momento:"antes"}],8:[{texto:"Ogo, hazme visible ante el mundo",idioma:"portugues",momento:"durante"},{texto:"Olodumare, let my light shine",idioma:"两者",momento:"antes"}],9:[{texto:"Owonrin, libame de mis enemigos",idioma:"portugues",momento:"durante"},{texto:"Eshu, protect me from harm",idioma:"两者",momento:"antes"}],10:[{texto:"Obatala, limpia mi alma de toda mancha",idioma:"portugues",momento:"durante"},{texto:"Orunmila, purify my spirit",idioma:"两者",momento:"antes"}],11:[{texto:"Ofrenda, trae paz a mi hogar",idioma:"portugues",momento:"durante"},{texto:"Olodumare, bring peace to my house",idioma:"两者",momento:"antes"}],12:[{texto:"Iragbe, bendice mi descendencia",idioma:"portugues",momento:"durante"},{texto:"Olodumare, bless my lineage",idioma:"两者",momento:"antes"}],13:[{texto:"Ose, dame la victoria en mi batalla",idioma:"portugues",momento:"durante"},{texto:"Ogun, grant me victory",idioma:"两者",momento:"antes"}],14:[{texto:"Ofun, cura mi cuerpo y mi alma",idioma:"portugues",momento:"durante"},{texto:"Olodumare, heal your servant",idioma:"两者",momento:"antes"}],15:[{texto:"Ologbosere, dame fuerza para continuar",idioma:"portugues",momento:"durante"},{texto:"Ogun, give me strength",idioma:"两者",momento:"antes"}],16:[{texto:"Oji, abre los caminos de la prosperidad",idioma:"portugues",momento:"durante"},{texto:"Olodumare, open the paths of abundance",idioma:"两者",momento:"antes"}]},O={1:[{nome:"Banho de Ossos",ingredientes:["casca de árbol de hueso","albahaca santa","agua de lluvia","sal marina"],modoPreparo:"Herver todos los ingredientes por 30 minutos, colar y dejar enfriar antes de bañarse",frecuencia:"2 veces por semana durante 21 días"}],2:[{nome:"Banho de Sabiduria",ingredientes:["hojas de coco","agua de coco","flores blancas","VERBENA"],modoPreparo:"Machacar las hojas, mezclar con agua de coco, agregar flores y dejar reposar toda la noche",frecuencia:"3 veces por semana durante 14 días"}],3:[{nome:"Banho de Proteccion",ingredientes:["aloe vera","ajo machacado","agua de mar","romero"],modoPreparo:"Mezclar aloe vera con ajo machacado en agua de mar, agregar romero y bañarse",frecuencia:"Una vez al día por 7 días"}],4:[{nome:"Banho de Fuego",ingredientes:["pimienta de cravo","canela","agua caliente","ceniza sagrada"],modoPreparo:"Mezclar cravo y canela en agua caliente, agregar ceniza sagrada, bañarse inmediatamente",frecuencia:"Una vez al día por 3 días"}],5:[{nome:"Banho de Longevidad",ingredientes:["hojas de guayaba","jengibre","agua de lluvia","miel"],modoPreparo:"Herver las hojas de guayaba con jengibre, agregar agua de lluvia y miel",frecuencia:"2 veces por semana durante 1 mes"}],6:[{nome:"Banho de Justicia",ingredientes:["agua de rosas","lavanda","sal gruesa","jabon blanco"],modoPreparo:"Mezclar agua de rosas con lavanda y sal gruesa, usar jabon blanco para bañarse",frecuencia:"3 veces por semana hasta resolver el asunto"}],7:[{nome:"Banho de Prosperidad",ingredientes:["hojas de dinero","agua de siete mares","ajo","cobre"],modoPreparo:"Herver las hojas de dinero con ajo en agua de siete mares, agregar una moneda de cobre",frecuencia:"Cada lunes por 4 semanas"}],8:[{nome:"Banho de Visibilidad",ingredientes:["flores amarillas","agua de sol","miel","canela"],modoPreparo:"Dejar flores amarillas en agua al sol por 3 horas, agregar miel y canela",frecuencia:"2 veces por semana por 21 días"}],9:[{nome:"Banho de Fuga",ingredientes:["hierbas de protección","vinagre blanco","ajo","agua de lluvia"],modoPreparo:"Mezclar hierbas con vinagre y ajo en agua de lluvia, bañarse rápidamente",frecuencia:"Una vez al día por 9 días"}],10:[{nome:"Banho de Pureza",ingredientes:["leche de coco","flores blancas","VERBENA","agua de lluvia"],modoPreparo:"Mezclar leche de coco con flores blancas machacadas y verbena en agua de lluvia",frecuencia:"2 veces por semana por 1 mes"}],11:[{nome:"Banho de Paz",ingredientes:["flores de azahar","lavanda","agua de rosas","sal rosa"],modoPreparo:"Infusionar flores de azahar con lavanda en agua de rosas, agregar sal rosa",frecuencia:"Cada fin de semana hasta lograr paz"}],12:[{nome:"Banho de Fertilidad",ingredientes:["hojas de higuera","coco rallado","semillas de sesamo","agua tibia"],modoPreparo:"Herver hojas de higuera con coco rallado, agregar semillas de sesamo",frecuencia:"2 veces por mes durante 3 meses"}],13:[{nome:"Banho de Victoria",ingredientes:["hierbas de Ogun","pimienta","agua de rio","aceite de palma"],modoPreparo:"Mezclar hierbas de Ogun con pimienta en agua de rio, agregar aceite de palma",frecuencia:"Antes de cualquier batalla o competencia"}],14:[{nome:"Banho de Curación",ingredientes:["hojas medicinales","miel","ajo","agua purificada"],modoPreparo:"Herver hojas medicinales con ajo, agregar miel al enfriarse",frecuencia:"2 veces al día hasta recuperación"}],15:[{nome:"Banho de Fuerza",ingredientes:["raiz de ginseng","jengibre","semillas de success","agua caliente"],modoPreparo:"Herver raiz de ginseng con jengibre, agregar semillas y bañarse caliente",frecuencia:"3 veces por semana por 21 días"}],16:[{nome:"Banho de Abundancia",ingredientes:["hojas de prosperity","coco","miel","granos de maiz"],modoPreparo:"Herver hojas con coco rallado, agregar miel y granos de maiz",frecuencia:"Cada Luna Nueva por 3 meses"}]},x={iniciacao:{duracao:7,descricao:"Início do trabalho espiritual"},desenvolvimento:{duracao:21,descricao:"Crescimento e aprendizado"},estabilizacao:{duracao:14,descricao:"Consolidação dos ensinamentos"},transformacao:{duracao:28,descricao:"Mudança e renovação interior"},consolidacao:{duracao:21,descricao:"Integração da experiência"},maturidade:{duracao:40,descricao:"Sabedoria e domínio espiritual"}},z={1:{iniciacao:{praticas:["Rezar a Ogum","Usar ferramentas"],avisos:["Evitar conflitos"]},desenvolvimento:{praticas:["Desbravamento de caminhos","Estudos"],avisos:["Cuidado com armas"]},estabilizacao:{praticas:["Meditar sobre força"],avisos:["Não forçar situações"]},transformacao:{praticas:["Rituais de coragem"],avisos:["Evitar agressividade"]},consolidacao:{praticas:["Agradecimentos"],avisos:[]},maturidade:{praticas:["Compartilhar conhecimento"],avisos:[]}},2:{iniciacao:{praticas:["Rezar a Oya","Acender velas"],avisos:["Respeitar ancestrais"]},desenvolvimento:{praticas:["Culto aos mortos","Sessões"],avisos:["Evitar luto pesado"]},estabilizacao:{praticas:["Orações de paz"],avisos:[]},transformacao:{praticas:["Rituais de passagem"],avisos:["Cuidado com energias"]},consolidacao:{praticas:["Honrar antepassados"],avisos:[]},maturidade:{praticas:["Guia espiritual"],avisos:[]}},3:{iniciacao:{praticas:["Rezar a Oxum","Usar amarelo"],avisos:["Evitar falsidade"]},desenvolvimento:{praticas:["Oferendas de mel","Danças"],avisos:["Não ser vaidoso"]},estabilizacao:{praticas:["Abraços de água"],avisos:[]},transformacao:{praticas:["Rituais de amor"],avisos:["Evitar ciúmes"]},consolidacao:{praticas:["Gratidão"],avisos:[]},maturidade:{praticas:["慈爱"],avisos:[]}},4:{iniciacao:{praticas:["Rezar a Xangô","Carregar mini machado"],avisos:["Controlar raiva"]},desenvolvimento:{praticas:["Estudos de justicia","Fogo"],avisos:["Não usar violencia"]},estabilizacao:{praticas:["Meditar sobre equidade"],avisos:[]},transformacao:{praticas:["Rituais de lei"],avisos:["Evitar vingança"]},consolidacao:{praticas:["Aplicar justiça"],avisos:[]},maturidade:{praticas:["Juiz espiritual"],avisos:[]}},5:{iniciacao:{praticas:["Rezar a Iemanjá","Banho de mar"],avisos:["Respeitar o mar"]},desenvolvimento:{praticas:["Culto maternal","Água"],avisos:["Não ser possessivo"]},estabilizacao:{praticas:["Orações de proteção"],avisos:[]},transformacao:{praticas:["Rituais de fertility"],avisos:["Evitar sufocamento"]},consolidacao:{praticas:["Cuidar da família"],avisos:[]},maturidade:{praticas:["Mãe universal"],avisos:[]}},6:{iniciacao:{praticas:["Rezar a Oxossi","Usar arco"],avisos:["Caçar com ética"]},desenvolvimento:{praticas:["Estudos de sabedoria","Caça"],avisos:["Não acumular demais"]},estabilizacao:{praticas:["Meditar na floresta"],avisos:[]},transformacao:{praticas:["Rituais de conhecimento"],avisos:["Evitar gula"]},consolidacao:{praticas:["Compartilhar caça"],avisos:[]},maturidade:{praticas:["Sábio da floresta"],avisos:[]}},7:{iniciacao:{praticas:["Rezar a Nanã","Culto aos velhos"],avisos:["Respeitar anciãos"]},desenvolvimento:{praticas:["Trabalhar Ancestralidade","Terra"],avisos:["Não temer a morte"]},estabilizacao:{praticas:["Orações de paz"],avisos:[]},transformacao:{praticas:["Rituais de purificação"],avisos:["Evitar orgulho"]},consolidacao:{praticas:["Aceitar finitude"],avisos:[]},maturidade:{praticas:["Portal da existência"],avisos:[]}},8:{iniciacao:{praticas:["Rezar a Ewá","Usar espelho"],avisos:["Evitar vaidade"]},desenvolvimento:{praticas:["Beleza interior","Danças"],avisos:["Não ser superficial"]},estabilizacao:{praticas:["Auto-reflexão"],avisos:[]},transformacao:{praticas:["Rituais de autoconhecimento"],avisos:["Evitar ego"]},consolidacao:{praticas:["Expressão autêntica"],avisos:[]},maturidade:{praticas:["Encantamento"],avisos:[]}},9:{iniciacao:{praticas:["Rezar a Obá","Cozinhar bem"],avisos:["Respeitar alimentos"]},desenvolvimento:{praticas:["Arte culinária","Amor"],avisos:["Não ser ciumento"]},estabilizacao:{praticas:["Alimentar bem"],avisos:[]},transformacao:{praticas:["Rituais de nutrição"],avisos:["Evitar gula"]},consolidacao:{praticas:["Cozinhar para outros"],avisos:[]},maturidade:{praticas:["Nurturing"],avisos:[]}},10:{iniciacao:{praticas:["Rezar a Logun Edé","Duplo culto"],avisos:["Equilibrar gêneros"]},desenvolvimento:{praticas:["Sacrifício","Batalha"],avisos:["Não ser frio"]},estabilizacao:{praticas:["Diplomacia"],avisos:[]},transformacao:{praticas:["Rituais de alinhamento"],avisos:["Evitar frieza emocional"]},consolidacao:{praticas:["Harmonia dual"],avisos:[]},maturidade:{praticas:["União de opostos"],avisos:[]}},11:{iniciacao:{praticas:["Rezar a Ossaim","Estudar ervas"],avisos:["Usar plantas com respeito"]},desenvolvimento:{praticas:["Fitoterapia","Sabedoria verde"],avisos:["Não usar sem conhecimento"]},estabilizacao:{praticas:["Aplicar curas naturais"],avisos:[]},transformacao:{praticas:["Rituais de saúde"],avisos:["Evitar automedicação"]},consolidacao:{praticas:["Compartilhar conhecimento"],avisos:[]},maturidade:{praticas:["Curador verde"],avisos:[]}},12:{iniciacao:{praticas:["Rezar a Inhansã","Veneno"],avisos:["Cuidado com veneno"]},desenvolvimento:{praticas:["Mistérios","Transição"],avisos:["Não usar para mal"]},estabilizacao:{praticas:["Desapego"],avisos:[]},transformacao:{praticas:["Rituais de fim"],avisos:["Aceitar mudanças"]},consolidacao:{praticas:["Libertação"],avisos:[]},maturidade:{praticas:["Portal da transformação"],avisos:[]}},13:{iniciacao:{praticas:["Rezar a Omolu","Evitar olhar"],avisos:["Respeitar isolamento"]},desenvolvimento:{praticas:["Caridade","Sacrifício"],avisos:["Não ter medo de doença"]},estabilizacao:{praticas:["Aceitação"],avisos:[]},transformacao:{praticas:["Rituais de cura"],avisos:["Evitar negação"]},consolidacao:{praticas:["Servir aos necessitados"],avisos:[]},maturidade:{praticas:["Mestre da saúde"],avisos:[]}},14:{iniciacao:{praticas:["Rezar a Oxumaré","Cores do arco-íris"],avisos:["Equilibrar ciclos"]},desenvolvimento:{praticas:["Ciclos de vida","Serpente"],avisos:["Não resistir mudanças"]},estabilizacao:{praticas:["Ritmo natural"],avisos:[]},transformacao:{praticas:["Rituais de renovação"],avisos:["Evitar estagnação"]},consolidacao:{praticas:["Aceitar destino"],avisos:[]},maturidade:{praticas:["Guardião do tempo"],avisos:[]}},15:{iniciacao:{praticas:["Rezar a Obatalá","Usar branco"],avisos:["Pureza de intenção"]},desenvolvimento:{praticas:["Criação","Paz"],avisos:["Não ser passivo demais"]},estabilizacao:{praticas:["Discernimento"],avisos:[]},transformacao:{praticas:["Rituais de luz"],avisos:["Evitar orgulho"]},consolidacao:{praticas:["Criação consciente"],avisos:[]},maturidade:{praticas:["Pai da luz"],avisos:[]}},16:{iniciacao:{praticas:["Rezar a Odoyá","Caminho"],avisos:["Honrar a jornada"]},desenvolvimento:{praticas:["Sorte","Destino"],avisos:["Não ser preguiçoso"]},estabilizacao:{praticas:["Perseverança"],avisos:[]},transformacao:{praticas:["Rituais de destino"],avisos:["Evitar fatalismo"]},consolidacao:{praticas:["Forjar o próprio destino"],avisos:[]},maturidade:{praticas:["Criador de caminhos"],avisos:[]}}};a.s(["ODUS_IFA",0,e,"calcularOduNascimento",0,function(a){let e=a.replace(/\D/g,""),i=0;for(let a of e)i+=parseInt(a);for(;i>16;)i=i.toString().split("").reduce((a,e)=>a+parseInt(e),0);return{principal:o[i]||o[1],secundario:o[(e.split("").reduce((a,e)=>a+2*parseInt(e),0)-1)%16+1]||null}},"calculateBirthOdu",0,function(a){let o=a.match(/^(\d{4})-(\d{2})-(\d{2})/);if(!o)return{oduNumber:1,oduName:"Ogbe (Oxé)",orixaRegency:["Oxalá"],elementalForce:"Luz, criação, autoridade divina",lifeLesson:"Cultivar a paciência e honrar a criação.",provisional:!0};let[,,i,r]=o,s=function(a){let e=a;for(;e>16;)e=String(e).split("").reduce((a,e)=>a+parseInt(e,10),0);return 0===e&&(e=16),e}(parseInt(r,10)+parseInt(i,10)),n=e.find(a=>a.numero===s)??e[0];return{oduNumber:s,oduName:n.nome,orixaRegency:[n.orixaRegente],elementalForce:`${n.elementos} — ${n.significado.split(".")[0]}`,lifeLesson:n.preceitos.join("; "),provisional:!0}},"compareOduNumbers",0,function(a,e){var i,r,s,n,t;let d,c,m,u,l,p,g,v,b,f,h;if(a<1||a>16||e<1||e>16)return{sameOdu:!1,score:0,recommendation:"Odu fora do alcance válido (1-16)."};let O=o[a],x=o[e];if(!O||!x)return{sameOdu:!1,score:0,recommendation:"Odu não encontrado."};let z=(i={odu:O},r={odu:x},c=i.odu.numero===r.odu.numero,m=i.odu.orixaRegente===r.odu.orixaRegente,u=function(a,e){let o=a.split(/[,;\/]/).map(a=>a.trim()).filter(Boolean),i=e.split(/[,;\/]/).map(a=>a.trim()).filter(Boolean),r=[],s=[],n=[],t={fogo:["agua","terra"],agua:["fogo"],terra:["fogo","ar"],ar:["terra"],eku:["oca"],oca:["eku"]};for(let a of o)i.includes(a)?r.push(a):t[a]?.some(a=>i.includes(a))?s.push(a):n.push(a);for(let a of i)r.includes(a)||s.includes(a)||n.includes(a)||(t[a]?.some(a=>o.includes(a))?s.push(a):o.includes(a)||n.push(a));let d=r.length/Math.max(o.length,i.length,1),c=s.length>0?s.length/Math.max(o.length,i.length,1):0;return{matches:r,conflicts:s,neutral:n,score:d-c}}(i.odu.elementos,r.odu.elementos),s=i.odu.orixaRegente,n=r.odu.orixaRegente,h=({Oxum:["Oxumar","Iemanjá","Oxóssi"],Iemanjá:["Oxum","Oxumar","Nanã"],Ogum:["Oxóssi","Xangô","Exu"],Oxóssi:["Ogum","Iansã"],Xangô:["Ogum","Iansã","Obá"],Oxumar:["Oxum","Iemanjá"],Nanã:["Iemanjá","Obá"],Iansã:["Xangô","Oxóssi","Omulu"],Obá:["Xangô","Nanã"],Omulu:["Iansã","Nanã"]})[s]?.includes(n)??!1,l={shared:s===n?[s]:[],uniqueA:s===n?[]:[s],uniqueB:s===n?[]:[n],compatibilityScore:s===n?1:.5*!!h},p=function(a,e){let o=a.filter(a=>e.some(e=>a.toLowerCase()===e.toLowerCase())),i=[...new Set([...a,...e])],r=[];for(let o of[{a:"frutos do mar",b:"peixe"},{a:"vinho",b:"alcool"},{a:"carne bovina",b:"vaca"}])if(i.some(a=>a.toLowerCase().includes(o.a)||a.toLowerCase().includes(o.b))){let s=i.filter(i=>{let r=i.toLowerCase();return(r.includes(o.a)||r.includes(o.b))&&a.some(a=>a.toLowerCase()!==i.toLowerCase()&&e.some(a=>a.toLowerCase()!==i.toLowerCase()))});s.length>1&&r.push(...s.slice(0,2))}let s=r.length<=2;return{sharedConstraints:o,conflictingConstraints:r.slice(0,5),totalConflicts:r.length,manageable:s}}(i.odu.quizilas,r.odu.quizilas),b=(t=v=function(a){let{sameOdu:e,sameOrisha:o,elementalAlignment:i,orixaOverlap:r,quizilaCompatibility:s,eboAlignment:n}=a;return Math.max(0,Math.min(1,.35*!!e+(o?.15:.15*r.compatibilityScore)+.15*Math.max(0,i.score)+.2*Math.max(0,n.alignmentScore)+(s.manageable?.1-.02*s.totalConflicts:0)))}({sameOdu:c,sameOrisha:m,elementalAlignment:u,orixaOverlap:l,quizilaCompatibility:p,eboAlignment:g=function(a,e){let o=[],i=[],r=[];for(let s of a)e.find(a=>s.toLowerCase().includes(a.toLowerCase())||a.toLowerCase().includes(s.toLowerCase()))?o.push(s):e.find(a=>{let e=s.toLowerCase(),o=a.toLowerCase();return e.includes("limpeza")&&o.includes("protecão")||e.includes("protecão")&&o.includes("limpeza")||e.includes("caminho")&&o.includes("abertura")})?i.push(s):r.push(s);let s=Math.max(a.length,e.length,1),n=(o.length+.5*i.length-r.length)/s;return{sharedPractices:o,complementaryPractices:i,incompatiblePractices:r.slice(0,3),alignmentScore:n}}(i.odu.ebos,r.odu.ebos)}))>=.7?"alta":t>=.4?"media":"baixa",f=function(a){let e=[],{readingA:o,readingB:i,sameOdu:r,sameOrisha:s,elementalAlignment:n,orixaOverlap:t,quizilaCompatibility:d,eboAlignment:c}=a;return r?e.push(`${o.odu.nome} aparece em ambas as leituras - influencia kuat kiwa.`):e.push(`${o.odu.nome} (${o.odu.orixaRegente}) e ${i.odu.nome} (${i.odu.orixaRegente}) - caminhos distintos mas relacionados.`),s?e.push(`Ambos sob a reg\xeancia de ${o.odu.orixaRegente} - alinhamento espiritual forte.`):t.compatibilityScore>.3&&e.push(`${o.odu.orixaRegente} e ${i.odu.orixaRegente} s\xe3o complementares na tradi\xe7\xe3o.`),n.matches.length>0&&e.push(`Elementos em comum: ${n.matches.join(", ")}.`),n.conflicts.length>0&&e.push(`Tens\xf5es elementais: ${n.conflicts.join(", ")} - trabalho espiritual adicional necess\xe1rio.`),d.sharedConstraints.length>0&&e.push(`Proibi\xe7\xf5es compat\xedveis: ${d.sharedConstraints.length} restri\xe7\xe3o(\xf5es) em comum.`),d.totalConflicts>0&&e.push(`Aten\xe7\xe3o: ${d.totalConflicts} conflito(s) nos preceitos - consultar babalawo.`),c.sharedPractices.length>0&&e.push(`Eb\xf3s compat\xedveis: ${c.sharedPractices.slice(0,3).join(", ")}.`),c.complementaryPractices.length>0&&e.push("Práticas complementares disponíveis para fortalecer ambas as leituras."),c.incompatiblePractices.length>0&&e.push(`Evitar: ${c.incompatiblePractices.slice(0,2).join(", ")} para n\xe3o criar conflitos.`),e}({readingA:i,readingB:r,sameOdu:c,sameOrisha:m,elementalAlignment:u,orixaOverlap:l,quizilaCompatibility:p,eboAlignment:g}),{id:`odu_cmp_${Date.now()}_${Math.random().toString(36).slice(2,9)}`,readingA:i,readingB:r,timestamp:new Date().toISOString(),sameOdu:c,sameOrisha:m,similarityScore:v,compatibilityLevel:b,elementalAlignment:u,orixaOverlap:l,quizilaCompatibility:p,eboAlignment:g,notes:f});switch(z.compatibilityLevel){case"alta":d=`${O.nome} e ${x.nome} t\xeam alta compatibilidade espiritual.`;break;case"media":d=`${O.nome} e ${x.nome} precisam de harmoniza\xe7\xe3o espiritual.`;break;default:d=`${O.nome} e ${x.nome} podem ter tens\xf5es - buscar orienta\xe7\xe3o especializada.`}return{sameOdu:a===e,score:z.similarityScore,recommendation:d}},"drawMultipleOdu",0,function(a){let e=[];for(let o=0;o<a;o++)e.push(d());return e},"drawOdu",0,d,"getAllOdu",0,function(){return Object.entries(r).map(([a,e])=>({numero:parseInt(a),Caminho:parseInt(a),nome:n(parseInt(a)),opeCima:s(e.top),opeBaixo:s(e.bottom),elementos:e.elementos,orixaRegente:e.orixa,significado:e.significado}))},"getEbósPorOdu",0,function(a){return o[a]?.ebos||[]},"getOduByNumber",0,function(a){if(a<1||a>16)return null;let e=r[a];return{numero:a,Caminho:a,nome:n(a),opeCima:s(e.top),opeBaixo:s(e.bottom),elementos:e.elementos,orixaRegente:e.orixa,significado:e.significado}},"getOduNome",0,n,"getOduPorNumero",0,function(a){return e.find(e=>e.numero===a)},"getOduTimeline",0,function(a){let e="number"==typeof a?a:a.numero,i="number"==typeof a?o[a]:a,r=z[e]||z[1],s=["iniciacao","desenvolvimento","estabilizacao","transformacao","consolidacao","maturidade"],n=s.map(a=>{var i;let s,n=r[a]||{praticas:["Práticas gerais de evolução"],avisos:[]},t=x[a];return{phase:a,title:(i=a,s=o[e],({iniciacao:`${s.nome} - Despertar`,desenvolvimento:`${s.nome} - Crescimento`,estabilizacao:`${s.nome} - Fundamento`,transformacao:`${s.nome} - Mudan\xe7a`,consolidacao:`${s.nome} - Integra\xe7\xe3o`,maturidade:`${s.nome} - Sabedoria`})[i]),description:t.descricao,duration:t.duracao,practices:n.praticas,warnings:n.avisos}}),t=n.reduce((a,e)=>a+e.duration,0);return{odu:i,events:n,totalDays:t,currentPhase:s[0]}},"getOpe",0,s,"getPhaseProgress",0,function(a,e){let o=["iniciacao","desenvolvimento","estabilizacao","transformacao","consolidacao","maturidade"].indexOf(e);return -1===o?0:a.events.slice(0,o).reduce((a,e)=>a+e.duration,0)/a.totalDays*100},"getPreceitosPorOdu",0,function(a){return o[a]?.preceitos||[]},"getQuizilasPorOdu",0,function(a){return o[a]?.quizilas||[]},"getRitualSuggestions",0,function(a){let e="number"==typeof a?a:a.numero,o=f[e]||[],i=h[e]||[],r=O[e]||[];return{odu:e,oduNome:n(e),ebos:o,oraciones:i,banhos:r,notasAdicionales:({1:["Evitar caminar de noche","No consumir alcohol durante 21 días"],2:["Beber agua de coco diariamente","Visitar un río al amanecer"],3:["Usar amuleto de protección","Evitar contacto con personas negativas"],4:["No comer alimentos rojos","Realizar el baño de fuego antes del amanecer"],5:["Dormir temprano","Recitar Orikis antes de dormir"],6:["Hablar siempre la verdad","Evitar mentiras, aunque sean piadosas"],7:["Plantar una semilla","Dar limosna a los necesitados"],8:["Usar ropa de colores claros","Evitar ropa oscura por 30 días"],9:["Huir de conflictos","No responder a provocaciones"],10:["Vestir de blanco","Evitar el alcohol y tabaco"],11:["Reconciliarse con enemigos","Perdonar las ofensas pasadas"],12:["Plantar un árbol frutal","Cuidar de los niños pequeños"],13:["Usar herramientas de hierro","No tener miedo de trabajar"],14:["Guardar ayuno un día a la semana","Beber solo agua hervida"],15:["Usar ropa roja en ceremonias","Tener siempre un cuchillo handy"],16:["Dar primero a los demás","No acumular riqueza"]})[e]||[]}},"getRitualTiming",0,function(a){return({1:{mejorMomento:"Medianoche",diasFavorables:[1,9,17],禁忌:["Martes"]},2:{mejorMomento:"Amanecer",diasFavorables:[2,10,18],禁忌:["Domingo"]},3:{mejorMomento:"Mediodia",diasFavorables:[3,11,19],禁忌:["Jueves"]},4:{mejorMomento:"Antes del amanecer",diasFavorables:[4,12,20],禁忌:["Viernes"]},5:{mejorMomento:"Mediodia",diasFavorables:[5,13,21],禁忌:["Domingo"]},6:{mejorMomento:"Tarde",diasFavorables:[6,14,22],禁忌:["Sabado"]},7:{mejorMomento:"Amanecer",diasFavorables:[7,15,23],禁忌:["Lunes"]},8:{mejorMomento:"Mediodia",diasFavorables:[8,16,24],禁忌:["Miercoles"]},9:{mejorMomento:"Medianoche",diasFavorables:[9,17,25],禁忌:["Domingo"]},10:{mejorMomento:"Mediodia",diasFavorables:[10,18,26],禁忌:["Martes"]},11:{mejorMomento:"Tarde",diasFavorables:[11,19,27],禁忌:["Jueves"]},12:{mejorMomento:"Amanecer",diasFavorables:[12,20,28],禁忌:["Viernes"]},13:{mejorMomento:"Medianoche",diasFavorables:[13,21,29],禁忌:["Domingo"]},14:{mejorMomento:"Mediodia",diasFavorables:[14,22,30],禁忌:["Lunes"]},15:{mejorMomento:"Antes del amanecer",diasFavorables:[15,23,31],禁忌:["Miercoles"]},16:{mejorMomento:"Amanecer",diasFavorables:[16,24],禁忌:["Sabado"]}})[a]||{mejorMomento:"Indeterminado",diasFavorables:[],禁忌:[]}},"matchOduToRitual",0,function(a){let e=function(a){let e=c[a.numero];if(!e)return null;let o=l[e.tipo];return o?{tipo:e.tipo,nome:o.nome,descricao:o.descricao,orixa:a.orixaRegente,urgencia:e.urgencia,prazo:e.prazo,componentes:o.componentes}:null}(a),o=function(a){let e=a.ebos[0]||"";if(!e)return null;let o=function(a){for(let[e,o]of m)if(a.includes(e))return o;return"protecao"}(e),i=function(a){let e=[];for(let[o,i]of u)a.includes(o)&&e.push(i);return e}(e),r=p[o]??p.protecao;return{tipo:o,nome:r.nome,descricao:e,orixa:a.orixaRegente,elementos:i.length>0?i:r.elementos,passos:r.passos,observacoes:r.observacoes}}(a),i=g[a.numero]||[],r=v[a.numero]||[],s=b[a.numero]||[];return{odu:a,rituais:e?[e]:[],ebos:o?[o]:[],orixasRelacionados:[a.orixaRegente,...i],praticasDiarias:r,contraindicacoes:s}},"odusData",0,o],17736)}]);
+(globalThis.TURBOPACK || (globalThis.TURBOPACK = [])).push([
+  'object' == typeof document ? document.currentScript : void 0,
+  17736,
+  (a) => {
+    'use strict';
+    (a.s([], 7637), a.i(7637));
+    let e = [
+        {
+          numero: 1,
+          nome: 'Ogbe (Oxé)',
+          significado:
+            'A luz que ilumina o caminho. Vitória, criação, renascimento, autoridade divina.',
+          elementos: 'Fogo',
+          orixaRegente: 'Oxalá',
+          quizilas: ['Cachaça em excesso', 'Andar na rua ao meio-dia'],
+          preceitos: ['Cultivar a paciência', 'Honrar a criação'],
+          ebos: [],
+        },
+        {
+          numero: 2,
+          nome: 'Ejiokô',
+          significado:
+            'A dualidade, a parceria, o movimento. Início de jornada, escolha entre caminhos.',
+          elementos: 'Ar / Terra',
+          orixaRegente: 'Ibeji, Ogum',
+          quizilas: [],
+          preceitos: ['Buscar equilíbrio', 'Honrar as parcerias'],
+          ebos: [],
+        },
+        {
+          numero: 3,
+          nome: 'Etogundá',
+          significado: 'A batalha, a conquista, a abertura de caminhos. Força, vitória, superação.',
+          elementos: 'Fogo / Terra',
+          orixaRegente: 'Ogum, Ogun',
+          quizilas: [],
+          preceitos: ['Enfrentar batalhas com coragem', 'Abrir caminhos com ética'],
+          ebos: [],
+        },
+        {
+          numero: 4,
+          nome: 'Irosun',
+          significado:
+            'O aviso, a atenção, o cuidado com traições. Intuição, pressentimento, alerta.',
+          elementos: 'Fogo / Terra',
+          orixaRegente: 'Oxum, Iemanjá',
+          quizilas: [],
+          preceitos: ['Manter vigilância', 'Confiar na intuição'],
+          ebos: [],
+        },
+        {
+          numero: 5,
+          nome: 'Oxê (Ogunda)',
+          significado:
+            'A beleza, o amor, a fertilidade, o magnetismo. Conquista, doçura, poder feminino.',
+          elementos: 'Água',
+          orixaRegente: 'Oxum',
+          quizilas: [],
+          preceitos: ['Honrar a beleza interior', 'Cultivar o amor próprio'],
+          ebos: [],
+        },
+        {
+          numero: 6,
+          nome: 'Obará',
+          significado:
+            'A riqueza, a glória, a abundância, a fartura. Prosperidade, fartura material e espiritual.',
+          elementos: 'Terra',
+          orixaRegente: 'Xangô, Oxóssi',
+          quizilas: [],
+          preceitos: ['Compartilhar a fartura', 'Honrar a terra'],
+          ebos: [],
+        },
+        {
+          numero: 7,
+          nome: 'Odi',
+          significado:
+            'Os segredos, a transformação, a cautela, a limpeza. Mistério, profundidade, renascimento.',
+          elementos: 'Terra / Água',
+          orixaRegente: 'Exu, Omolu',
+          quizilas: [],
+          preceitos: ['Respeitar os mistérios', 'Cultivar a limpeza interior'],
+          ebos: [],
+        },
+        {
+          numero: 8,
+          nome: 'Ejionile',
+          significado:
+            'A justiça, a liderança, a força, a vitória. Equilíbrio, retidão, poder legítimo.',
+          elementos: 'Fogo / Água',
+          orixaRegente: 'Xangô, Oxalá',
+          quizilas: [],
+          preceitos: ['Buscar a justiça', 'Liderar com retidão'],
+          ebos: [],
+        },
+        {
+          numero: 9,
+          nome: 'Ossá',
+          significado:
+            'A proteção feminina, a sabedoria, a turbulência das águas. Cuidado maternal, proteção.',
+          elementos: 'Água',
+          orixaRegente: 'Iemanjá, Oyá',
+          quizilas: [],
+          preceitos: ['Honrar as águas', 'Buscar proteção divina'],
+          ebos: [],
+        },
+        {
+          numero: 10,
+          nome: 'Ofun',
+          significado:
+            'A espiritualidade profunda, o equilíbrio mental, a meditação. Sabedoria ancestral.',
+          elementos: 'Ar',
+          orixaRegente: 'Oxalufan, Oxalá',
+          quizilas: [],
+          preceitos: ['Meditar regularmente', 'Honrar a ancestralidade'],
+          ebos: [],
+        },
+        {
+          numero: 11,
+          nome: 'Owarin',
+          significado:
+            'A dinâmica, o perigo, a astúcia, o movimento rápido. Transformação veloz, alerta.',
+          elementos: 'Ar / Fogo',
+          orixaRegente: 'Exu, Oyá',
+          quizilas: [],
+          preceitos: ['Agir com astúcia', 'Manter-se alerta'],
+          ebos: [],
+        },
+        {
+          numero: 12,
+          nome: 'Ejilaxebô',
+          significado: 'A honra, a proteção, o caminho aberto. Reconhecimento, vitória merecida.',
+          elementos: 'Ar',
+          orixaRegente: 'Ogum, Oxum',
+          quizilas: [],
+          preceitos: ['Honrar o mérito', 'Proteger os seus'],
+          ebos: [],
+        },
+        {
+          numero: 13,
+          nome: 'Oturupon',
+          significado:
+            'A cura, a purificação, a ancestralidade. Saúde, limpeza, conexão com os mortos.',
+          elementos: 'Terra',
+          orixaRegente: 'Omolu, Nanã',
+          quizilas: [],
+          preceitos: ['Honrar os ancestrais', 'Cultivar a cura interior'],
+          ebos: [],
+        },
+        {
+          numero: 14,
+          nome: 'Oturá',
+          significado:
+            'A paz, a benevolência, a proteção divina. Harmonia, tranquilidade, segurança.',
+          elementos: 'Água',
+          orixaRegente: 'Oxalá, Iemanjá',
+          quizilas: [],
+          preceitos: ['Buscar a paz interior', 'Confiar na proteção divina'],
+          ebos: [],
+        },
+        {
+          numero: 15,
+          nome: 'Iká',
+          significado: 'O poder, a estratégia, a responsabilidade. Autoridade, comando, decisão.',
+          elementos: 'Fogo',
+          orixaRegente: 'Xangô, Oxum',
+          quizilas: [],
+          preceitos: ['Usar o poder com responsabilidade', 'Decidir com ética'],
+          ebos: [],
+        },
+        {
+          numero: 16,
+          nome: 'Ofurufu',
+          significado:
+            'A completude, a totalidade, a bênção universal. Integração, plenitude, fim de jornada.',
+          elementos: 'Éter',
+          orixaRegente: 'Oxalá, todos os Orixás',
+          quizilas: [],
+          preceitos: ['Buscar a totalidade', 'Integrar todas as lições'],
+          ebos: [],
+        },
+      ],
+      o = {
+        1: {
+          numero: 1,
+          nome: 'Okaran',
+          significado:
+            'O começo, a dúvida, a insubordinação. Caminho difícil, mas de grande aprendizado.',
+          elementos: 'Terra/Fogo',
+          orixaRegente: 'Exu',
+          quizilas: ['Carne de porco', 'Cachaça em excesso', 'Andar na rua ao meio-dia'],
+          preceitos: [
+            'Cultivar a paciência',
+            'Não agir por impulso',
+            'Cuidar rigorosamente de Exu e dos antepassados',
+          ],
+          ebos: [
+            'Ebó de Caminho/Limpeza: Despachos em encruzilhadas, moedas, pipoca e panos escuros para abrir caminhos',
+          ],
+        },
+        2: {
+          numero: 2,
+          nome: 'Ejiokô',
+          significado:
+            'A dualidade, os caminhos duplos, união e disputa. Vitória após grandes lutas.',
+          elementos: 'Ar/Terra',
+          orixaRegente: 'Ibeji',
+          quizilas: ['Comer ovos', 'Rã', 'Mentir ou trair a confiança dos outros'],
+          preceitos: [
+            'Manter a alegria interna',
+            'Cuidar da criança interior',
+            'Buscar sociedades justas',
+          ],
+          ebos: [
+            'Ebó de Prosperidade: Doces, frutas para Ibeji, e comidas leves em praças ou jardins',
+          ],
+        },
+        3: {
+          numero: 3,
+          nome: 'Etaogundá',
+          significado:
+            'A revolta, a força física, a criação de ferramentas. O corte e a separação.',
+          elementos: 'Fogo/Terra',
+          orixaRegente: 'Ogum',
+          quizilas: [
+            'Usar facas ou objetos cortantes sem necessidade',
+            'Carne de galo',
+            'Violência verbal',
+          ],
+          preceitos: [
+            'Evitar brigas e discussões',
+            'Manter o foco no trabalho e na justiça',
+            'Não demandar contra os outros',
+          ],
+          ebos: [
+            'Ebó de Defesa: Inhames assados, paliteiros de Ogum, limpeza com folhas de mariô e limpeza com ferro',
+          ],
+        },
+        4: {
+          numero: 4,
+          nome: 'Irosun',
+          significado:
+            'O aviso, o sangue que corre nas veias, a visão espiritual. Olhar para o futuro.',
+          elementos: 'Fogo/Terra',
+          orixaRegente: 'Iemanjá',
+          quizilas: [
+            'Olhar para buracos vazios',
+            'Usar roupas muito vermelhas em momentos de crise',
+            'Mentira',
+          ],
+          preceitos: [
+            'Desenvolver a intuição',
+            'Não ignorar avisos e sonhos',
+            'Cuidar da saúde do sangue e dos olhos',
+          ],
+          ebos: [
+            'Ebó de Proteção: Alimentos brancos, canjica na beira-mar para Iemanjá, banhos de folhas frias',
+          ],
+        },
+        5: {
+          numero: 5,
+          nome: 'Oxé',
+          significado: 'O ouro, a doçura, a feitiçaria, a vaidade e a lágrima. Sangue menstrual.',
+          elementos: 'Água',
+          orixaRegente: 'Oxum',
+          quizilas: [
+            'Comer ovos',
+            'Comidas muito salgadas ou azedas',
+            'Chorar miséria ou reclamar da vida',
+          ],
+          preceitos: [
+            'Cuidar da autoestima',
+            'Usar perfumes',
+            'Manter a higiene espiritual',
+            'Buscar a diplomacia',
+          ],
+          ebos: [
+            'Ebó de Atração/Ouro: Banhos de mel, caldas de frutas, oferendas com girassóis e moedas douradas em águas doces',
+          ],
+        },
+        6: {
+          numero: 6,
+          nome: 'Obará',
+          significado:
+            'A riqueza, a fartura, a sabedoria e a surpresa. O rei que se veste de mendigo.',
+          elementos: 'Ar/Fogo',
+          orixaRegente: 'Xangô',
+          quizilas: [
+            'Inveja',
+            'Contar planos antes de realizá-los',
+            'Comer abóbora',
+            'Teimosia extrema',
+          ],
+          preceitos: [
+            'Ser generoso',
+            'Estudar',
+            'Manter a cabeça erguida',
+            'Praticar a gratidão para atrair a riqueza',
+          ],
+          ebos: [
+            'Ebó de Fartura: Oferecer seis tipos de frutas, amalá para Xangô, dar comida à terra e partilhar banquetes',
+          ],
+        },
+        7: {
+          numero: 7,
+          nome: 'Odi',
+          significado: 'A teimosia, o renascimento, as coisas ocultas, o poço profundo.',
+          elementos: 'Terra/Água',
+          orixaRegente: 'Omolu',
+          quizilas: [
+            'Dormir no escuro absoluto se estiver com medo',
+            'Comer carne de caça',
+            'Persistir no erro',
+          ],
+          preceitos: [
+            'Praticar o desapego',
+            'Aceitar as mudanças da vida',
+            'Não cavar o próprio buraco com mágoas',
+          ],
+          ebos: [
+            'Ebó de Transmutação: Pipoca (Deburu) para Omolu, banhos de lama ou argila, defumações pesadas com resinas',
+          ],
+        },
+        8: {
+          numero: 8,
+          nome: 'EjiOníle',
+          significado: 'A cabeça (Ori), a liderança, o topo do mundo, o sangue branco.',
+          elementos: 'Ar/Água',
+          orixaRegente: 'Oxalá',
+          quizilas: ['Usar roupas pretas ou escuras', 'Comer carne vermelha em dias de preceito'],
+          preceitos: [
+            'Cuidar muito bem do próprio Ori (cabeça)',
+            'Buscar a paz',
+            'Evitar o orgulho e a arrogância',
+          ],
+          ebos: [
+            'Ebó de Alinhamento (Bori): Oferendas de canjica branca, algodão, banhos de boldo (tapete de Oxalá) e velas brancas',
+          ],
+        },
+        9: {
+          numero: 9,
+          nome: 'Ossá',
+          significado:
+            'O vento, as transformações rápidas, o reino das Iyami (as bruxas ancestrais).',
+          elementos: 'Ar/Água',
+          orixaRegente: 'Iansã',
+          quizilas: ['Espalhar fofocas', 'Ventanias fortes na praia', 'Usar roupas rasgadas'],
+          preceitos: [
+            'Respeitar o poder feminino',
+            'Controlar a impulsividade e as palavras',
+            'Fluir com as mudanças',
+          ],
+          ebos: [
+            'Ebó de Limpeza Astral: Sacudimentos com folhas de fumo ou pinhão roxo, oferendas de acarajé para Iansã no vento',
+          ],
+        },
+        10: {
+          numero: 10,
+          nome: 'Ofun',
+          significado:
+            'O mistério, a velhice, a cura, o sopro divino. O Odú mais velho da criação.',
+          elementos: 'Ar/Água',
+          orixaRegente: 'Oxalá',
+          quizilas: [
+            'Usar roupas pretas',
+            'Comer comida amanhecida',
+            'Faltar com o respeito aos mais velhos',
+          ],
+          preceitos: [
+            'Vestir-se de branco',
+            'Manter o silêncio e a quietude',
+            'Estudar a espiritualidade profunda',
+          ],
+          ebos: [
+            'Ebó de Alívio/Saúde: Tudo neste Odú pede rezas mansas, frutas brancas, banhos de leite de cabra ou ervas calmas',
+          ],
+        },
+        11: {
+          numero: 11,
+          nome: 'Owarin',
+          significado:
+            'A pressa, a ansiedade, a mudança de rumo rápida. O vento que espalha as folhas.',
+          elementos: 'Fogo/Ar',
+          orixaRegente: 'Iansã',
+          quizilas: [
+            'Guardar objetos quebrados ou velhos em casa',
+            'Procrastinar',
+            'Roupas muito escuras',
+          ],
+          preceitos: [
+            'Organizar a mente e a rotina',
+            'Canalizar a ansiedade em atividades físicas ou artísticas',
+          ],
+          ebos: [
+            'Ebó de Movimento: Rodar chaves, acender velas nas esquinas, banhos de ervas quentes (guiné, arruda)',
+          ],
+        },
+        12: {
+          numero: 12,
+          nome: 'Ejilsebora',
+          significado: 'A justiça, o fogo purificador, a guerra justa, os terremotos.',
+          elementos: 'Fogo',
+          orixaRegente: 'Xangô',
+          quizilas: [
+            'Praticar a injustiça',
+            'Acobertar mentiras',
+            'Comer abóbora ou quiabo em excesso nas crises',
+          ],
+          preceitos: [
+            'Manter a integridade a todo custo',
+            'Não julgar os outros sem provas',
+            'Equilibrar a razão e a emoção',
+          ],
+          ebos: [
+            'Ebó de Justiça: Firmezas com pedras de raio, amalá bem quente com folhas de fumo',
+          ],
+        },
+        13: {
+          numero: 13,
+          nome: 'Olobón',
+          significado: 'A doença, as transformações físicas, o fim de ciclos. O recolhimento.',
+          elementos: 'Terra/Água',
+          orixaRegente: 'Nanã',
+          quizilas: [
+            'Ambientes sujos ou bagunçados',
+            'Comer carne de rã ou tartaruga',
+            'Reclamar da velhice',
+          ],
+          preceitos: [
+            'Respeitar o tempo das coisas',
+            'Buscar a sabedoria dos mais velhos',
+            'Cuidar da saúde das articulações',
+          ],
+          ebos: [
+            'Ebó de Evolução: Oferendas na lama ou no mangue para Nanã, ebó com feijão preto, velas lilases',
+          ],
+        },
+        14: {
+          numero: 14,
+          nome: 'Iká',
+          significado: 'A traição, a cobra que morde, a sabedoria oculta e a renovação da pele.',
+          elementos: 'Água/Terra',
+          orixaRegente: 'Oxumaré',
+          quizilas: [
+            'Falsidade',
+            'Maltratar animais (especialmente répteis)',
+            'Revelar segredos confiados',
+          ],
+          preceitos: [
+            'Manter a discrição absoluta sobre sua vida pessoal',
+            'Cultivar a flexibilidade perante os obstáculos',
+          ],
+          ebos: [
+            'Ebó de Renovação: Banhos com folhas de fortuna e dinheiro-em-penca, amarrar fitas coloridas (7 cores)',
+          ],
+        },
+        15: {
+          numero: 15,
+          nome: 'Ogbogbé',
+          significado: 'A feitiçaria, o corte pesado, as disputas por espaço ou poder.',
+          elementos: 'Fogo/Terra',
+          orixaRegente: 'Obá',
+          quizilas: [
+            'Invejar o espaço alheio',
+            'Comer comidas muito apimentadas perto de dormir',
+            'Brigas domésticas',
+          ],
+          preceitos: [
+            'Buscar a paz no lar',
+            'Proteger a própria energia contra feitiçarias e inveja',
+            'Focar no amor próprio',
+          ],
+          ebos: [
+            'Ebó de Defesa: Oferendas com acarajés recheados, banhos de erva-de-bicho ou espada-de-santa-bárbara',
+          ],
+        },
+        16: {
+          numero: 16,
+          nome: 'Alafia',
+          significado: 'A paz absoluta, a luz total, a confirmação dos Deuses. Tudo está bem.',
+          elementos: 'Ar/Luz',
+          orixaRegente: 'Orunmilá',
+          quizilas: [
+            'Dúvidar da própria espiritualidade',
+            'Orgulho',
+            'Arrogância',
+            'Não ouvir conselhos',
+          ],
+          preceitos: [
+            'Manter as práticas espirituais em dia',
+            'Compartilhar a sabedoria com quem precisa',
+            'Ser grato',
+          ],
+          ebos: [
+            'Ebó de Agradecimento: Flores brancas, oferendas de frutas doces e claras, acender lâmpadas ou muitas velas brancas',
+          ],
+        },
+      },
+      i = [
+        {
+          id: 1,
+          nome: 'Ogbe',
+          simbolo: '☰',
+          linhas: [!0, !0, !0],
+          significado: 'Caminho aberto, inicio, movimento, prosperidade',
+          natureza: 'Yang',
+        },
+        {
+          id: 2,
+          nome: 'Oyun',
+          simbolo: '☱',
+          linhas: [!0, !0, !1],
+          significado: 'Desenvolvimento gradual, fluxo, suavidade',
+          natureza: 'Yang',
+        },
+        {
+          id: 3,
+          nome: 'Oturupon',
+          simbolo: '☲',
+          linhas: [!0, !1, !0],
+          significado: 'Desordem, transformacao, crise necessaria',
+          natureza: 'Neutro',
+        },
+        {
+          id: 4,
+          nome: 'Odionran',
+          simbolo: '☳',
+          linhas: [!1, !0, !0],
+          significado: 'Despertar, movimento brusco, despertar da consciencia',
+          natureza: 'Yang',
+        },
+        {
+          id: 5,
+          nome: 'Ossa',
+          simbolo: '☴',
+          linhas: [!0, !1, !1],
+          significado: 'Vento, comunicacao, mudanca, viagem',
+          natureza: 'Neutro',
+        },
+        {
+          id: 6,
+          nome: 'Obara',
+          simbolo: '☶',
+          linhas: [!1, !0, !1],
+          significado: 'Lei, ordem, justica, disciplina',
+          natureza: 'Yin',
+        },
+        {
+          id: 7,
+          nome: 'Owonrin',
+          simbolo: '☷',
+          linhas: [!1, !1, !0],
+          significado: 'Montanha, silencio, introspeccao, contencao',
+          natureza: 'Yin',
+        },
+        {
+          id: 8,
+          nome: 'Oka',
+          simbolo: '☸',
+          linhas: [!1, !1, !1],
+          significado: 'Camino fechado, fim de ciclo, encerramento, morte',
+          natureza: 'Yin',
+        },
+      ],
+      r = {
+        1: {
+          top: 1,
+          bottom: 1,
+          elementos: 'Terra/Fogo',
+          orixa: 'Exu',
+          significado:
+            'O comeco, a duvida, a insubordinacao. Caminho dificil, mas de grande aprendizado.',
+        },
+        2: {
+          top: 1,
+          bottom: 2,
+          elementos: 'Ar/Terra',
+          orixa: 'Ibeji',
+          significado:
+            'A dualidade, os caminhos duplos, uniao e disputa. Vitoria apos grandes lutas.',
+        },
+        3: {
+          top: 1,
+          bottom: 3,
+          elementos: 'Fogo/Terra',
+          orixa: 'Ogum',
+          significado:
+            'A revolta, a forca fisica, a criacao de ferramentas. O corte e a separacao.',
+        },
+        4: {
+          top: 1,
+          bottom: 4,
+          elementos: 'Fogo/Terra',
+          orixa: 'Iemanja',
+          significado:
+            'O aviso, o sangue que corre nas veias, a visao espiritual. Olhar para o futuro.',
+        },
+        5: {
+          top: 1,
+          bottom: 5,
+          elementos: 'Agua',
+          orixa: 'Oxum',
+          significado: 'O ouro, a docura, a feiticararia, a vaidade e a lagrima. Sangue menstrual.',
+        },
+        6: {
+          top: 1,
+          bottom: 6,
+          elementos: 'Ar/Fogo',
+          orixa: 'Xango',
+          significado:
+            'A riqueza, a fartura, a sabedoria e a surpresa. O rei que se veste de mendigo.',
+        },
+        7: {
+          top: 1,
+          bottom: 7,
+          elementos: 'Terra/Agua',
+          orixa: 'Omolu',
+          significado: 'A teimosia, o renascimento, as coisas ocultas, o poco profundo.',
+        },
+        8: {
+          top: 1,
+          bottom: 8,
+          elementos: 'Ar/Agua',
+          orixa: 'Oxala',
+          significado: 'A cabeca (Ori), a lideranca, o topo do mundo, o sangue branco.',
+        },
+        9: {
+          top: 2,
+          bottom: 1,
+          elementos: 'Ar/Agua',
+          orixa: 'Iansa',
+          significado:
+            'O vento, as transformacoes rapidas, o reino das Iyami (as bruxas ancestrais).',
+        },
+        10: {
+          top: 2,
+          bottom: 2,
+          elementos: 'Ar/Agua',
+          orixa: 'Oxala',
+          significado:
+            'O misterio, a velhice, a cura, o sopro divino. O Odu mais velho da criacao.',
+        },
+        11: {
+          top: 2,
+          bottom: 3,
+          elementos: 'Fogo/Ar',
+          orixa: 'Iansa',
+          significado:
+            'A pressa, a ansiedade, a mudanca de rumo rapida. O vento que espalha as folhas.',
+        },
+        12: {
+          top: 2,
+          bottom: 4,
+          elementos: 'Fogo',
+          orixa: 'Xango',
+          significado: 'A justica, o fogo purificador, a guerra justa, os terremotos.',
+        },
+        13: {
+          top: 2,
+          bottom: 5,
+          elementos: 'Terra/Agua',
+          orixa: 'Nana',
+          significado: 'A doenca, as transformacoes fisicas, o fim de ciclos. O recolhimento.',
+        },
+        14: {
+          top: 2,
+          bottom: 6,
+          elementos: 'Agua/Terra',
+          orixa: 'Oxumare',
+          significado: 'A traicao, a cobra que morde, a sabedoria oculta e a renovacao da pele.',
+        },
+        15: {
+          top: 2,
+          bottom: 7,
+          elementos: 'Fogo/Terra',
+          orixa: 'Oba',
+          significado: 'A feiticararia, o corte pesado, as disputas por espaco ou poder.',
+        },
+        16: {
+          top: 2,
+          bottom: 8,
+          elementos: 'Ar/Luz',
+          orixa: 'Orunmila',
+          significado: 'A paz absoluta, a luz total, a confirmacao dos Deuses. Tudo esta bem.',
+        },
+      };
+    function s(a) {
+      return i.find((e) => e.id === a) || i[0];
+    }
+    function n(a) {
+      return (
+        {
+          1: 'Okaran',
+          2: 'Ejioko',
+          3: 'Etaogunda',
+          4: 'Irosun',
+          5: 'Oxé',
+          6: 'Obara',
+          7: 'Odi',
+          8: 'EjiOnile',
+          9: 'Ossa',
+          10: 'Ofun',
+          11: 'Owarin',
+          12: 'Ejilsebora',
+          13: 'Olobon',
+          14: 'Ika',
+          15: 'Ogbogbe',
+          16: 'Alafia',
+        }[a] || 'Desconhecido'
+      );
+    }
+    function t(a) {
+      return a.map((a) => (a ? '━━━' : '━━ ━')).join('\n');
+    }
+    function d(a) {
+      let e,
+        o =
+          r[
+            (e =
+              a?.method === 'birth-date' && a?.dataNascimento
+                ? (function (a) {
+                    let e = a.replace(/\D/g, ''),
+                      o = 0;
+                    for (let a of e) o += parseInt(a);
+                    for (; o > 16; ) {
+                      let a = 0;
+                      for (let e of o.toString().split('')) a += parseInt(e);
+                      o = a;
+                    }
+                    return o || 1;
+                  })(a.dataNascimento)
+                : Math.floor(16 * Math.random()) + 1)
+          ],
+        i = s(o.top),
+        d = s(o.bottom);
+      return {
+        odu: {
+          numero: e,
+          Caminho: e,
+          nome: n(e),
+          opeCima: i,
+          opeBaixo: d,
+          elementos: o.elementos,
+          orixaRegente: o.orixa,
+          significado: o.significado,
+        },
+        opeCima: i,
+        opeBaixo: d,
+        linhasCima: t(i.linhas),
+        linhasBaixo: t(d.linhas),
+        timestamp: new Date(),
+      };
+    }
+    let c = {
+        1: { tipo: 'caminho', urgencia: 'alta', prazo: 'urgent' },
+        2: { tipo: 'prosperidade', urgencia: 'media', prazo: 'semana' },
+        3: { tipo: 'defesa', urgencia: 'alta', prazo: 'hoje' },
+        4: { tipo: 'protecao', urgencia: 'alta', prazo: 'hoje' },
+        5: { tipo: 'atração', urgencia: 'media', prazo: 'semana' },
+        6: { tipo: 'prosperidade', urgencia: 'media', prazo: 'semana' },
+        7: { tipo: 'transformacao', urgencia: 'media', prazo: 'quinzena' },
+        8: { tipo: 'alinhamento', urgencia: 'alta', prazo: 'hoje' },
+        9: { tipo: 'limpeza', urgencia: 'media', prazo: 'semana' },
+        10: { tipo: 'saude', urgencia: 'alta', prazo: 'hoje' },
+        11: { tipo: 'movimento', urgencia: 'media', prazo: 'semana' },
+        12: { tipo: 'justica', urgencia: 'alta', prazo: 'hoje' },
+        13: { tipo: 'transformacao', urgencia: 'media', prazo: 'quinzena' },
+        14: { tipo: 'transformacao', urgencia: 'media', prazo: 'semana' },
+        15: { tipo: 'defesa', urgencia: 'alta', prazo: 'hoje' },
+        16: { tipo: 'agradecimento', urgencia: 'baixa', prazo: 'mes' },
+      },
+      m = [
+        ['Caminho', 'caminho'],
+        ['Prosperidade', 'prosperidade'],
+        ['Defesa', 'defesa'],
+        ['Atração', 'atração'],
+        ['Ouro', 'atração'],
+        ['Prote', 'protecao'],
+        ['Transmut', 'transformacao'],
+        ['Alinhamento', 'alinhamento'],
+        ['Saúde', 'saude'],
+        ['Alívio', 'saude'],
+        ['Justiça', 'justica'],
+        ['Renovação', 'transformacao'],
+        ['Agradecimento', 'agradecimento'],
+        ['Movimento', 'movimento'],
+        ['Limpeza', 'limpeza'],
+      ],
+      u = [
+        ['despachos', 'Despachos'],
+        ['moedas', 'Moedas'],
+        ['pipoca', 'Pipoca'],
+        ['panos', 'Panos escuros'],
+        ['alimentos brancos', 'Alimentos brancos'],
+        ['canjica', 'Canjica'],
+        ['banhos', 'Banhos de folhas'],
+        ['frutas', 'Frutas'],
+        ['folhas', 'Folhas'],
+        ['velas', 'Velas'],
+        ['inhames', 'Inhames'],
+        ['paliteiros', 'Paliteiros'],
+        ['ferro', 'Ferro'],
+        ['girassóis', 'Girassóis'],
+        ['mel', 'Mel'],
+        ['doces', 'Doces'],
+        ['amala', 'Amalá'],
+        ['pedras', 'Pedras de raio'],
+        ['lama', 'Lama/argila'],
+        ['algodão', 'Algodão'],
+      ],
+      l = {
+        caminho: {
+          nome: 'Ritual de Caminho',
+          descricao: 'Abre caminhos e remove obstáculos, especialmente em encruzilhadas',
+          componentes: ['Moedas', 'Pipoca', 'Panos escuros', 'Velas pretas'],
+        },
+        protecao: {
+          nome: 'Ritual de Proteção',
+          descricao: 'Fortalece a aura e protege contra energias negativas',
+          componentes: ['Flores brancas', 'Água de cheiro', 'Sal grosso', 'Alecrim'],
+        },
+        prosperidade: {
+          nome: 'Ritual de Prosperidade',
+          descricao: 'Atrai abundância e abre portas para novos negócios',
+          componentes: ['Frutas douradas', 'Moedas', 'Mel', 'Canela'],
+        },
+        saude: {
+          nome: 'Ritual de Saúde',
+          descricao: 'Promove cura e bem-estar físico e espiritual',
+          componentes: ['Plantas medicinais', 'Velas verdes', 'Água mineral', 'Algodão'],
+        },
+        limpeza: {
+          nome: 'Ritual de Limpeza',
+          descricao: 'Remove energias densas e purifica o ambiente e a pessoa',
+          componentes: ['Ervas de limpeza', 'Defumadores', 'Sal grosso', 'Banho de folha'],
+        },
+        alinhamento: {
+          nome: 'Ritual de Alinhamento (Bori)',
+          descricao: 'Fortalece o Ori (cabeça) e alinha o espiritual com o material',
+          componentes: ['Canjica branca', 'Algodão', 'Velas brancas', 'Folhas de boldo'],
+        },
+        justica: {
+          nome: 'Ritual de Justiça',
+          descricao: 'Promove ação justa e equilibrio nas situações de conflito',
+          componentes: ['Pedras de raio', 'Amalá', 'Fumo', 'Velas vermelhas'],
+        },
+        transformacao: {
+          nome: 'Ritual de Transformação',
+          descricao: 'Auxilia na mudança de ciclo e renovação espiritual',
+          componentes: ['Argila', 'Pipoca (Deburu)', 'Resinas', 'Flores roxas'],
+        },
+        defesa: {
+          nome: 'Ritual de Defesa',
+          descricao: 'Protege contra feitiçarias, inveja e ataques espirituais',
+          componentes: ['Espada de Santa Bárbara', 'Alho', 'Pimenta', 'Erva de bicho'],
+        },
+        agradecimento: {
+          nome: 'Ritual de Agradecimento',
+          descricao: 'Expressa gratidão aos Orixás e fortalece a espiritualidade',
+          componentes: ['Flores brancas', 'Velas claras', 'Frutas doces', 'Incenso'],
+        },
+        atração: {
+          nome: 'Ritual de Atração',
+          descricao: 'Atrai prosperidade, amor e energias positivas',
+          componentes: ['Mel', 'Frutas douradas', 'Girassóis', 'Moedas douradas'],
+        },
+        movimento: {
+          nome: 'Ritual de Movimento',
+          descricao: 'Ativa energia de mudança e superação de stagnação',
+          componentes: ['Chaves', 'Velas', 'Guiné', 'Arruda'],
+        },
+      },
+      p = {
+        caminho: {
+          nome: 'Ebó de Caminho/Limpeza',
+          elementos: ['Despachos', 'Moedas', 'Pipoca', 'Panos escuros'],
+          passos: [
+            'Prepare os componentes em local limpo',
+            'Faça preces a Exu e ao Orixá regente',
+            'Enterre ou deixe em encruzilhada ao amanhecer',
+            'Não olhe para trás após o ritual',
+          ],
+          observacoes: ['Horário preferencial: madrugada', 'Luar menguante favorece'],
+        },
+        protecao: {
+          nome: 'Ebó de Proteção',
+          elementos: ['Alimentos brancos', 'Canjica', 'Folhas frias', 'Velas azuis'],
+          passos: [
+            'Prepare canjica sem açúcar',
+            'Banho de folhas em água filtrada',
+            'Acenda velas ao anoitecer',
+            'Pequena oferenda na beira-mar (para Iemanjá)',
+          ],
+          observacoes: ['Evite dias de chuva forte', 'Sábado é favorável para Iemanjá'],
+        },
+        prosperidade: {
+          nome: 'Ebó de Prosperidade',
+          elementos: ['Doces', 'Frutas', 'Moedas douradas', 'Mel'],
+          passos: [
+            'Escolha 6 tipos de frutas frescas',
+            'Disponha em círculo com mel no centro',
+            'Faça preces de agradecimento',
+            'Distribua parte aos menos favorecidos',
+          ],
+          observacoes: [
+            'Consulte o Babalawo para dia específico',
+            'Fase da lua crescente favorece',
+          ],
+        },
+        saude: {
+          nome: 'Ebó de Alívio/Saúde',
+          elementos: ['Frutas brancas', 'Ervas calmas', 'Leite de cabra', 'Velas verdes'],
+          passos: [
+            'Prepare decocto de ervas suaves',
+            'Banho de leite diluído em água',
+            'Acenda velas verdes pela manhã',
+            'Repouse após o ritual',
+          ],
+          observacoes: ['Combine com rezas mansas', 'Evite exposição solar intensa'],
+        },
+        limpeza: {
+          nome: 'Ebó de Limpeza Astral',
+          elementos: ['Fumo', 'Pinhão roxo', 'Acarajé', 'Ervas várias'],
+          passos: [
+            'Sacuda as folhas de fumo sobre a cabeça',
+            'Prepare sacudimento com pinhão roxo',
+            'Ofereça acarajé ao vento (para Iansã)',
+            'Banho de ervas imediatamente após',
+          ],
+          observacoes: ['Horário: ventanias suaves', 'Evite dias de tempestade'],
+        },
+        alinhamento: {
+          nome: 'Ebó de Alinhamento (Bori)',
+          elementos: ['Canjica branca', 'Algodão', 'Boldo', 'Velas brancas'],
+          passos: [
+            'Jejum parcial antes do ritual',
+            'Passe canjica na testa em formato de Ori',
+            'Coloque algodão sobre a cabeça',
+            'Banho de boldo (tapete de Oxalá)',
+          ],
+          observacoes: ['Este é ritual sagrado', 'Realizar com orientação de especialista'],
+        },
+        justica: {
+          nome: 'Ebó de Justiça',
+          elementos: ['Pedras de raio', 'Amalá', 'Folhas de fumo', 'Velas vermelhas'],
+          passos: [
+            'Prepare amalá bem quente',
+            'Adicione folhas de fumo na preparação',
+            'Acenda velas vermelhas próximas ao local',
+            'Faça solicitações claras a Xangô',
+          ],
+          observacoes: ['Seja sincero em suas solicitações', 'Xangô valoriza honestidade'],
+        },
+        transformacao: {
+          nome: 'Ebó de Transformação/Renovação',
+          elementos: ['Pipoca (Deburu)', 'Lama/argila', 'Fitas coloridas (7 cores)', 'Velas roxas'],
+          passos: [
+            'Prepare pipoca sem sal para Omolu',
+            'Aplique lama sutil nos pés',
+            'Amarre fitas em cores variadas',
+            'Banho de folhas de fortuna (para Oxumaré)',
+          ],
+          observacoes: ['Lua cheia favorece renovação', 'Tempo de reflexão é essencial'],
+        },
+        defesa: {
+          nome: 'Ebó de Defesa',
+          elementos: ['Espada de Santa Bárbara', 'Acarajés', 'Erva de bicho', 'Pimenta'],
+          passos: [
+            'Prepare banhos com erva de bicho',
+            'Envolva espada de Santa Bárbara em pano branco',
+            'Prepare acarajés bem recheados',
+            'Aplique banhos nas solas dos pés',
+          ],
+          observacoes: ['Realize em dias secos', 'Proteja a cabeça com pano branco'],
+        },
+        agradecimento: {
+          nome: 'Ebó de Agradecimento',
+          elementos: ['Flores brancas', 'Frutas claras', 'Velas many', 'Incenso suave'],
+          passos: [
+            'Organize flores brancas em vaso limpo',
+            'Disponha frutas ao redor das velas',
+            'Acenda número ímpar de velas',
+            'Exprima gratidão em voz alta',
+          ],
+          observacoes: ['Este ritual fortalece espiritualidade', 'Registre seus agradecimentos'],
+        },
+        atração: {
+          nome: 'Ebó de Atração/Ouro',
+          elementos: ['Mel', 'Calda de frutas', 'Girassóis', 'Moedas douradas'],
+          passos: [
+            'Prepare banhos de mel diluído',
+            'Use caldas de frutas em águas doces',
+            'Disponha girassóis perto de água corrente',
+            'Moedas douradas em vasos de plantas',
+          ],
+          observacoes: ['Combine com banhos de Oxum', 'Horário da tarde é favorável'],
+        },
+        movimento: {
+          nome: 'Ebó de Movimento',
+          elementos: ['Chaves', 'Velas nas esquinas', 'Guiné', 'Arruda'],
+          passos: [
+            'Gire chaves sobre a cabeça 3 vezes',
+            'Acenda velas em 4 esquinas da casa',
+            'Banho de guiné e arruda bem quente',
+            'Caminhe pelas casas com ramo de arruda',
+          ],
+          observacoes: ['Combine com atividades físicas', 'Evite locais muito escuros'],
+        },
+      },
+      g = {
+        1: ['Exu', 'Omolu'],
+        2: ['Ibeji', 'Oxum'],
+        3: ['Ogum', 'Xangô'],
+        4: ['Iemanjá', 'Oxum'],
+        5: ['Oxum', 'Iemanjá'],
+        6: ['Xangô', 'Ogum'],
+        7: ['Omolu', 'Nanã'],
+        8: ['Oxalá', 'Iemanjá'],
+        9: ['Iansã', 'Omolu'],
+        10: ['Oxalá', 'Ibeji'],
+        11: ['Iansã', 'Ogum'],
+        12: ['Xangô', 'Oxalá'],
+        13: ['Nanã', 'Omolu'],
+        14: ['Oxumaré', 'Iemanjá'],
+        15: ['Obá', 'Oxum'],
+        16: ['Orunmilá', 'Oxalá'],
+      },
+      v = {
+        1: [
+          'Cultive a paciência',
+          'Não aja por impulso',
+          'Cuide de Exu e dos antepassados',
+          'Evite discussões desnecessárias',
+        ],
+        2: [
+          'Mantenha a alegria interna',
+          'Cuide da criança interior',
+          'Busque sociedades justas',
+          'Evite mentiras',
+        ],
+        3: [
+          'Evite brigas',
+          'Mantenha foco no trabalho',
+          'Não demande contra outros',
+          'Pratique a justiça',
+        ],
+        4: [
+          'Desenvolva a intuição',
+          'Preste atenção aos sonhos',
+          'Cuide da saúde dos olhos',
+          'Evite ignorar avisos',
+        ],
+        5: [
+          'Cuide da autoestima',
+          'Use perfumes agradáveis',
+          'Mantenha higiene espiritual',
+          'Busque diplomacia',
+        ],
+        6: ['Seja generoso', 'Estude regularmente', 'Pratique gratidão', 'Mantenha cabeça erguida'],
+        7: ['Pratique desapego', 'Aceite mudanças', 'Evite persistir no erro', 'Cuide do ambiente'],
+        8: ['Cuide do Ori (cabeça)', 'Busque paz interior', 'Evite orgulho', 'Pratique humildade'],
+        9: ['Respeite o poder feminino', 'Controle palavras', 'Flua com mudanças', 'Evite fofocas'],
+        10: ['Vista branco', 'Mantenha silêncio', 'Estude espiritualidade', 'Respeite mais velhos'],
+        11: [
+          'Organize mente e rotina',
+          'Canalize ansiedade em algo produtivo',
+          'Pratique atividades físicas',
+          'Evite procrastinação',
+        ],
+        12: [
+          'Mantenha integridade',
+          'Não julgue sem provas',
+          'Equilibre razão e emoção',
+          'Busque justiça',
+        ],
+        13: [
+          'Respeite o tempo',
+          'Busque sabedoria dos mais velhos',
+          'Cuide das articulações',
+          'Evite ambientes sujos',
+        ],
+        14: ['Mantenha discrição', 'Cultive flexibilidade', 'Evite falsidade', 'Respeite segredos'],
+        15: [
+          'Busque paz no lar',
+          'Proteja sua energia',
+          'Foque no amor próprio',
+          'Evite brigas domésticas',
+        ],
+        16: [
+          'Mantenha práticas em dia',
+          'Compartilhe sabedoria',
+          'Seja grato',
+          'Não duvide da espiritualidade',
+        ],
+      },
+      b = {
+        1: [
+          'Não ingira carne de porco em excesso',
+          'Evite cachaça em excesso',
+          'Não ande na rua ao meio-dia sem necessidade',
+        ],
+        2: ['Não coma ovos', 'Evite rã', 'Jamais minta ou traia confiança'],
+        3: [
+          'Evite usar facas sem necessidade',
+          'Não coma carne de galo',
+          'Não pratique violência verbal',
+        ],
+        4: [
+          'Não olhe para buracos vazios',
+          'Evite roupas muito vermelhas em crises',
+          'Nunca minta',
+        ],
+        5: ['Não coma ovos', 'Evite comidas muito salgadas', 'Não reclame da vida'],
+        6: [
+          'Evite inveja',
+          'Não conte planos antes de realizar',
+          'Não coma abóbora em excesso',
+          'Evite teimosia extrema',
+        ],
+        7: [
+          'Não durma no escuro absoluto se tiver medo',
+          'Evite carne de caça',
+          'Não persista no erro',
+        ],
+        8: [
+          'Não use roupas pretas',
+          'Evite carne vermelha em dias de preceito',
+          'Cuide do Ori com reverência',
+        ],
+        9: ['Não espalhe fofocas', 'Evite ventanias fortes na praia', 'Não use roupas rasgadas'],
+        10: ['Não use roupas pretas', 'Evite comida amanhecida', 'Respeite mais velhos'],
+        11: [
+          'Não guarde objetos quebrados',
+          'Evite procrastinação',
+          'Não use roupas muito escuras',
+        ],
+        12: [
+          'Não pratique injustiça',
+          'Jamais acoberte mentiras',
+          'Evite abóbora/quiabo em excesso em crises',
+        ],
+        13: ['Evite ambientes bagunçados', 'Não coma rã ou tartaruga', 'Não reclame da velhice'],
+        14: ['Evite falsidade', 'Não maltrate animais', 'Nunca revele segredos confiados'],
+        15: [
+          'Não inveje espaço alheio',
+          'Evite comidas apimentadas perto de dormir',
+          'Não brigue em casa',
+        ],
+        16: [
+          'Não duvide da própria espiritualidade',
+          'Evite orgulho e arrogância',
+          'Ouça conselhos dos mais velhos',
+        ],
+      },
+      f = {
+        1: [
+          {
+            nome: 'Ebo de Ossos de Animais',
+            descricao: 'Sacrifício de ossos para proteção contra entidades negativas',
+            elementos: ['ossos de galinha', 'fumo de palo', 'akoko leaf', 'dinheiro cobntado'],
+          },
+        ],
+        2: [
+          {
+            nome: 'Ebo de Áudio',
+            descricao: 'Sacrifício para conhecimento ancestral e sabedoria',
+            elementos: ['coco fresco', 'mel de abelha', 'farinha de inhame', 'ogbe frasco'],
+          },
+        ],
+        3: [
+          {
+            nome: 'Ebo de Olho',
+            descricao: 'Proteção contra mau-olhado e inveja',
+            elementos: ['gema de ovo cru', 'alcool', 'farinha de milo', 'pedra de proteção'],
+          },
+        ],
+        4: [
+          {
+            nome: 'Ebo de Fogo',
+            descricao: 'Purificação e afastamento de feitiçaria',
+            elementos: ['palha seca', 'cabaça queimada', 'cabaça queimada', 'cinzas sagradas'],
+          },
+        ],
+        5: [
+          {
+            nome: 'Ebo de Longevidade',
+            descricao: 'Sacrifício para saúde e vida longa',
+            elementos: ['cabrito branco', 'farinha de arroz', 'coco', 'mel'],
+          },
+        ],
+        6: [
+          {
+            nome: 'Ebo de Justice',
+            descricao: 'Sacrifício para reparação de injustiças',
+            elementos: ['pano branco', 'alcool de palma', 'noz de cola', 'obí'],
+          },
+        ],
+        7: [
+          {
+            nome: 'Ebo de Prosperidade',
+            descricao: 'Sacrifício para abundância material',
+            elementos: ['dinheiro novo', 'akara frito', 'ogbe frasco', 'milho'],
+          },
+        ],
+        8: [
+          {
+            nome: 'Ebo de Visibilidade',
+            descricao: 'Sacrifício para ser visto e reconhecido',
+            elementos: ['espelho pequeno', 'alcool', 'farinha de mandioca', 'pimenta'],
+          },
+        ],
+        9: [
+          {
+            nome: 'Ebo de Fuga',
+            descricao: 'Sacrifício para escapar de problemas e inimigos',
+            elementos: ['pano azul', 'cabaça', 'alho', 'vinagre'],
+          },
+        ],
+        10: [
+          {
+            nome: 'Ebo de Pureza',
+            descricao: 'Sacrifício para limpeza espiritual e branca',
+            elementos: ['pano branco', 'leite de coco', 'farinha de inhame', 'coco branco'],
+          },
+        ],
+        11: [
+          {
+            nome: 'Ebo de Harmonia',
+            descricao: 'Sacrifício para paz e reconciliación',
+            elementos: ['pomba branca', 'farinha branca', 'coco', 'mel'],
+          },
+        ],
+        12: [
+          {
+            nome: 'Ebo de Fertilidad',
+            descricao: 'Sacrifício para fertilidade y descendencia',
+            elementos: ['cabrito manchado', 'ogbe frasco', 'planta de fertility', 'dinheiro'],
+          },
+        ],
+        13: [
+          {
+            nome: 'Ebo de Victoria',
+            descricao: 'Sacrifício para vitória em disputas y batallas',
+            elementos: ['gallina negra', 'akoko leaf', 'vinagre', 'alho'],
+          },
+        ],
+        14: [
+          {
+            nome: 'Ebo de Sanación',
+            descricao: 'Sacrifício para cura de enfermedades',
+            elementos: ['coco fresco', 'hierbas medicinales', 'mel de abelha', 'farinha'],
+          },
+        ],
+        15: [
+          {
+            nome: 'Ebo de Fuerza',
+            descricao: 'Sacrifício para força y poder',
+            elementos: ['bode negro', 'akoko leaf', 'palma oil', 'ogbe frasco'],
+          },
+        ],
+        16: [
+          {
+            nome: 'Ebo de Abundancia',
+            descricao: 'Sacrifício para prosperidade y buena cosecha',
+            elementos: ['dinheiro', 'granos de maíz', 'coco', 'ogbe frasco'],
+          },
+        ],
+      },
+      h = {
+        1: [
+          { texto: 'Oyeku, oyeku, libame das trevas', idioma: 'portugues', momento: 'durante' },
+          { texto: 'Eji Ogbe, open me to the ancestors', idioma: '两者', momento: 'antes' },
+        ],
+        2: [
+          {
+            texto: 'Iwori, dame sabiduria para ver la verdad',
+            idioma: 'portugues',
+            momento: 'durante',
+          },
+          { texto: 'Ori, guide my path', idioma: '两者', momento: 'antes' },
+        ],
+        3: [
+          { texto: 'Odi, protecteme del mal de ojo', idioma: 'portugues', momento: 'durante' },
+          { texto: 'Olodumare, shield your child', idioma: '两者', momento: 'antes' },
+        ],
+        4: [
+          {
+            texto: 'Ossa, purifica mi ser con fuego sagrado',
+            idioma: 'portugues',
+            momento: 'durante',
+          },
+          { texto: 'Ogun, cleanse all negativity', idioma: '两者', momento: 'antes' },
+        ],
+        5: [
+          { texto: 'Iwonrin, dame vida longa y salud', idioma: 'portugues', momento: 'durante' },
+          { texto: 'Olodumare, grant me longevity', idioma: '两者', momento: 'antes' },
+        ],
+        6: [
+          { texto: 'Obara, haz justicia en mi causa', idioma: 'portugues', momento: 'durante' },
+          { texto: 'Ogun, fight for my rights', idioma: '两者', momento: 'antes' },
+        ],
+        7: [
+          {
+            texto: 'Okanran, abre las puertas de la abundancia',
+            idioma: 'portugues',
+            momento: 'durante',
+          },
+          { texto: 'Ogun, provide for your children', idioma: '两者', momento: 'antes' },
+        ],
+        8: [
+          { texto: 'Ogo, hazme visible ante el mundo', idioma: 'portugues', momento: 'durante' },
+          { texto: 'Olodumare, let my light shine', idioma: '两者', momento: 'antes' },
+        ],
+        9: [
+          { texto: 'Owonrin, libame de mis enemigos', idioma: 'portugues', momento: 'durante' },
+          { texto: 'Eshu, protect me from harm', idioma: '两者', momento: 'antes' },
+        ],
+        10: [
+          {
+            texto: 'Obatala, limpia mi alma de toda mancha',
+            idioma: 'portugues',
+            momento: 'durante',
+          },
+          { texto: 'Orunmila, purify my spirit', idioma: '两者', momento: 'antes' },
+        ],
+        11: [
+          { texto: 'Ofrenda, trae paz a mi hogar', idioma: 'portugues', momento: 'durante' },
+          { texto: 'Olodumare, bring peace to my house', idioma: '两者', momento: 'antes' },
+        ],
+        12: [
+          { texto: 'Iragbe, bendice mi descendencia', idioma: 'portugues', momento: 'durante' },
+          { texto: 'Olodumare, bless my lineage', idioma: '两者', momento: 'antes' },
+        ],
+        13: [
+          { texto: 'Ose, dame la victoria en mi batalla', idioma: 'portugues', momento: 'durante' },
+          { texto: 'Ogun, grant me victory', idioma: '两者', momento: 'antes' },
+        ],
+        14: [
+          { texto: 'Ofun, cura mi cuerpo y mi alma', idioma: 'portugues', momento: 'durante' },
+          { texto: 'Olodumare, heal your servant', idioma: '两者', momento: 'antes' },
+        ],
+        15: [
+          {
+            texto: 'Ologbosere, dame fuerza para continuar',
+            idioma: 'portugues',
+            momento: 'durante',
+          },
+          { texto: 'Ogun, give me strength', idioma: '两者', momento: 'antes' },
+        ],
+        16: [
+          {
+            texto: 'Oji, abre los caminos de la prosperidad',
+            idioma: 'portugues',
+            momento: 'durante',
+          },
+          { texto: 'Olodumare, open the paths of abundance', idioma: '两者', momento: 'antes' },
+        ],
+      },
+      O = {
+        1: [
+          {
+            nome: 'Banho de Ossos',
+            ingredientes: [
+              'casca de árbol de hueso',
+              'albahaca santa',
+              'agua de lluvia',
+              'sal marina',
+            ],
+            modoPreparo:
+              'Herver todos los ingredientes por 30 minutos, colar y dejar enfriar antes de bañarse',
+            frecuencia: '2 veces por semana durante 21 días',
+          },
+        ],
+        2: [
+          {
+            nome: 'Banho de Sabiduria',
+            ingredientes: ['hojas de coco', 'agua de coco', 'flores blancas', 'VERBENA'],
+            modoPreparo:
+              'Machacar las hojas, mezclar con agua de coco, agregar flores y dejar reposar toda la noche',
+            frecuencia: '3 veces por semana durante 14 días',
+          },
+        ],
+        3: [
+          {
+            nome: 'Banho de Proteccion',
+            ingredientes: ['aloe vera', 'ajo machacado', 'agua de mar', 'romero'],
+            modoPreparo:
+              'Mezclar aloe vera con ajo machacado en agua de mar, agregar romero y bañarse',
+            frecuencia: 'Una vez al día por 7 días',
+          },
+        ],
+        4: [
+          {
+            nome: 'Banho de Fuego',
+            ingredientes: ['pimienta de cravo', 'canela', 'agua caliente', 'ceniza sagrada'],
+            modoPreparo:
+              'Mezclar cravo y canela en agua caliente, agregar ceniza sagrada, bañarse inmediatamente',
+            frecuencia: 'Una vez al día por 3 días',
+          },
+        ],
+        5: [
+          {
+            nome: 'Banho de Longevidad',
+            ingredientes: ['hojas de guayaba', 'jengibre', 'agua de lluvia', 'miel'],
+            modoPreparo: 'Herver las hojas de guayaba con jengibre, agregar agua de lluvia y miel',
+            frecuencia: '2 veces por semana durante 1 mes',
+          },
+        ],
+        6: [
+          {
+            nome: 'Banho de Justicia',
+            ingredientes: ['agua de rosas', 'lavanda', 'sal gruesa', 'jabon blanco'],
+            modoPreparo:
+              'Mezclar agua de rosas con lavanda y sal gruesa, usar jabon blanco para bañarse',
+            frecuencia: '3 veces por semana hasta resolver el asunto',
+          },
+        ],
+        7: [
+          {
+            nome: 'Banho de Prosperidad',
+            ingredientes: ['hojas de dinero', 'agua de siete mares', 'ajo', 'cobre'],
+            modoPreparo:
+              'Herver las hojas de dinero con ajo en agua de siete mares, agregar una moneda de cobre',
+            frecuencia: 'Cada lunes por 4 semanas',
+          },
+        ],
+        8: [
+          {
+            nome: 'Banho de Visibilidad',
+            ingredientes: ['flores amarillas', 'agua de sol', 'miel', 'canela'],
+            modoPreparo: 'Dejar flores amarillas en agua al sol por 3 horas, agregar miel y canela',
+            frecuencia: '2 veces por semana por 21 días',
+          },
+        ],
+        9: [
+          {
+            nome: 'Banho de Fuga',
+            ingredientes: ['hierbas de protección', 'vinagre blanco', 'ajo', 'agua de lluvia'],
+            modoPreparo: 'Mezclar hierbas con vinagre y ajo en agua de lluvia, bañarse rápidamente',
+            frecuencia: 'Una vez al día por 9 días',
+          },
+        ],
+        10: [
+          {
+            nome: 'Banho de Pureza',
+            ingredientes: ['leche de coco', 'flores blancas', 'VERBENA', 'agua de lluvia'],
+            modoPreparo:
+              'Mezclar leche de coco con flores blancas machacadas y verbena en agua de lluvia',
+            frecuencia: '2 veces por semana por 1 mes',
+          },
+        ],
+        11: [
+          {
+            nome: 'Banho de Paz',
+            ingredientes: ['flores de azahar', 'lavanda', 'agua de rosas', 'sal rosa'],
+            modoPreparo:
+              'Infusionar flores de azahar con lavanda en agua de rosas, agregar sal rosa',
+            frecuencia: 'Cada fin de semana hasta lograr paz',
+          },
+        ],
+        12: [
+          {
+            nome: 'Banho de Fertilidad',
+            ingredientes: ['hojas de higuera', 'coco rallado', 'semillas de sesamo', 'agua tibia'],
+            modoPreparo: 'Herver hojas de higuera con coco rallado, agregar semillas de sesamo',
+            frecuencia: '2 veces por mes durante 3 meses',
+          },
+        ],
+        13: [
+          {
+            nome: 'Banho de Victoria',
+            ingredientes: ['hierbas de Ogun', 'pimienta', 'agua de rio', 'aceite de palma'],
+            modoPreparo:
+              'Mezclar hierbas de Ogun con pimienta en agua de rio, agregar aceite de palma',
+            frecuencia: 'Antes de cualquier batalla o competencia',
+          },
+        ],
+        14: [
+          {
+            nome: 'Banho de Curación',
+            ingredientes: ['hojas medicinales', 'miel', 'ajo', 'agua purificada'],
+            modoPreparo: 'Herver hojas medicinales con ajo, agregar miel al enfriarse',
+            frecuencia: '2 veces al día hasta recuperación',
+          },
+        ],
+        15: [
+          {
+            nome: 'Banho de Fuerza',
+            ingredientes: ['raiz de ginseng', 'jengibre', 'semillas de success', 'agua caliente'],
+            modoPreparo: 'Herver raiz de ginseng con jengibre, agregar semillas y bañarse caliente',
+            frecuencia: '3 veces por semana por 21 días',
+          },
+        ],
+        16: [
+          {
+            nome: 'Banho de Abundancia',
+            ingredientes: ['hojas de prosperity', 'coco', 'miel', 'granos de maiz'],
+            modoPreparo: 'Herver hojas con coco rallado, agregar miel y granos de maiz',
+            frecuencia: 'Cada Luna Nueva por 3 meses',
+          },
+        ],
+      },
+      x = {
+        iniciacao: { duracao: 7, descricao: 'Início do trabalho espiritual' },
+        desenvolvimento: { duracao: 21, descricao: 'Crescimento e aprendizado' },
+        estabilizacao: { duracao: 14, descricao: 'Consolidação dos ensinamentos' },
+        transformacao: { duracao: 28, descricao: 'Mudança e renovação interior' },
+        consolidacao: { duracao: 21, descricao: 'Integração da experiência' },
+        maturidade: { duracao: 40, descricao: 'Sabedoria e domínio espiritual' },
+      },
+      z = {
+        1: {
+          iniciacao: {
+            praticas: ['Rezar a Ogum', 'Usar ferramentas'],
+            avisos: ['Evitar conflitos'],
+          },
+          desenvolvimento: {
+            praticas: ['Desbravamento de caminhos', 'Estudos'],
+            avisos: ['Cuidado com armas'],
+          },
+          estabilizacao: { praticas: ['Meditar sobre força'], avisos: ['Não forçar situações'] },
+          transformacao: { praticas: ['Rituais de coragem'], avisos: ['Evitar agressividade'] },
+          consolidacao: { praticas: ['Agradecimentos'], avisos: [] },
+          maturidade: { praticas: ['Compartilhar conhecimento'], avisos: [] },
+        },
+        2: {
+          iniciacao: {
+            praticas: ['Rezar a Oya', 'Acender velas'],
+            avisos: ['Respeitar ancestrais'],
+          },
+          desenvolvimento: {
+            praticas: ['Culto aos mortos', 'Sessões'],
+            avisos: ['Evitar luto pesado'],
+          },
+          estabilizacao: { praticas: ['Orações de paz'], avisos: [] },
+          transformacao: { praticas: ['Rituais de passagem'], avisos: ['Cuidado com energias'] },
+          consolidacao: { praticas: ['Honrar antepassados'], avisos: [] },
+          maturidade: { praticas: ['Guia espiritual'], avisos: [] },
+        },
+        3: {
+          iniciacao: { praticas: ['Rezar a Oxum', 'Usar amarelo'], avisos: ['Evitar falsidade'] },
+          desenvolvimento: {
+            praticas: ['Oferendas de mel', 'Danças'],
+            avisos: ['Não ser vaidoso'],
+          },
+          estabilizacao: { praticas: ['Abraços de água'], avisos: [] },
+          transformacao: { praticas: ['Rituais de amor'], avisos: ['Evitar ciúmes'] },
+          consolidacao: { praticas: ['Gratidão'], avisos: [] },
+          maturidade: { praticas: ['慈爱'], avisos: [] },
+        },
+        4: {
+          iniciacao: {
+            praticas: ['Rezar a Xangô', 'Carregar mini machado'],
+            avisos: ['Controlar raiva'],
+          },
+          desenvolvimento: {
+            praticas: ['Estudos de justicia', 'Fogo'],
+            avisos: ['Não usar violencia'],
+          },
+          estabilizacao: { praticas: ['Meditar sobre equidade'], avisos: [] },
+          transformacao: { praticas: ['Rituais de lei'], avisos: ['Evitar vingança'] },
+          consolidacao: { praticas: ['Aplicar justiça'], avisos: [] },
+          maturidade: { praticas: ['Juiz espiritual'], avisos: [] },
+        },
+        5: {
+          iniciacao: { praticas: ['Rezar a Iemanjá', 'Banho de mar'], avisos: ['Respeitar o mar'] },
+          desenvolvimento: { praticas: ['Culto maternal', 'Água'], avisos: ['Não ser possessivo'] },
+          estabilizacao: { praticas: ['Orações de proteção'], avisos: [] },
+          transformacao: { praticas: ['Rituais de fertility'], avisos: ['Evitar sufocamento'] },
+          consolidacao: { praticas: ['Cuidar da família'], avisos: [] },
+          maturidade: { praticas: ['Mãe universal'], avisos: [] },
+        },
+        6: {
+          iniciacao: { praticas: ['Rezar a Oxossi', 'Usar arco'], avisos: ['Caçar com ética'] },
+          desenvolvimento: {
+            praticas: ['Estudos de sabedoria', 'Caça'],
+            avisos: ['Não acumular demais'],
+          },
+          estabilizacao: { praticas: ['Meditar na floresta'], avisos: [] },
+          transformacao: { praticas: ['Rituais de conhecimento'], avisos: ['Evitar gula'] },
+          consolidacao: { praticas: ['Compartilhar caça'], avisos: [] },
+          maturidade: { praticas: ['Sábio da floresta'], avisos: [] },
+        },
+        7: {
+          iniciacao: {
+            praticas: ['Rezar a Nanã', 'Culto aos velhos'],
+            avisos: ['Respeitar anciãos'],
+          },
+          desenvolvimento: {
+            praticas: ['Trabalhar Ancestralidade', 'Terra'],
+            avisos: ['Não temer a morte'],
+          },
+          estabilizacao: { praticas: ['Orações de paz'], avisos: [] },
+          transformacao: { praticas: ['Rituais de purificação'], avisos: ['Evitar orgulho'] },
+          consolidacao: { praticas: ['Aceitar finitude'], avisos: [] },
+          maturidade: { praticas: ['Portal da existência'], avisos: [] },
+        },
+        8: {
+          iniciacao: { praticas: ['Rezar a Ewá', 'Usar espelho'], avisos: ['Evitar vaidade'] },
+          desenvolvimento: {
+            praticas: ['Beleza interior', 'Danças'],
+            avisos: ['Não ser superficial'],
+          },
+          estabilizacao: { praticas: ['Auto-reflexão'], avisos: [] },
+          transformacao: { praticas: ['Rituais de autoconhecimento'], avisos: ['Evitar ego'] },
+          consolidacao: { praticas: ['Expressão autêntica'], avisos: [] },
+          maturidade: { praticas: ['Encantamento'], avisos: [] },
+        },
+        9: {
+          iniciacao: { praticas: ['Rezar a Obá', 'Cozinhar bem'], avisos: ['Respeitar alimentos'] },
+          desenvolvimento: { praticas: ['Arte culinária', 'Amor'], avisos: ['Não ser ciumento'] },
+          estabilizacao: { praticas: ['Alimentar bem'], avisos: [] },
+          transformacao: { praticas: ['Rituais de nutrição'], avisos: ['Evitar gula'] },
+          consolidacao: { praticas: ['Cozinhar para outros'], avisos: [] },
+          maturidade: { praticas: ['Nurturing'], avisos: [] },
+        },
+        10: {
+          iniciacao: {
+            praticas: ['Rezar a Logun Edé', 'Duplo culto'],
+            avisos: ['Equilibrar gêneros'],
+          },
+          desenvolvimento: { praticas: ['Sacrifício', 'Batalha'], avisos: ['Não ser frio'] },
+          estabilizacao: { praticas: ['Diplomacia'], avisos: [] },
+          transformacao: {
+            praticas: ['Rituais de alinhamento'],
+            avisos: ['Evitar frieza emocional'],
+          },
+          consolidacao: { praticas: ['Harmonia dual'], avisos: [] },
+          maturidade: { praticas: ['União de opostos'], avisos: [] },
+        },
+        11: {
+          iniciacao: {
+            praticas: ['Rezar a Ossaim', 'Estudar ervas'],
+            avisos: ['Usar plantas com respeito'],
+          },
+          desenvolvimento: {
+            praticas: ['Fitoterapia', 'Sabedoria verde'],
+            avisos: ['Não usar sem conhecimento'],
+          },
+          estabilizacao: { praticas: ['Aplicar curas naturais'], avisos: [] },
+          transformacao: { praticas: ['Rituais de saúde'], avisos: ['Evitar automedicação'] },
+          consolidacao: { praticas: ['Compartilhar conhecimento'], avisos: [] },
+          maturidade: { praticas: ['Curador verde'], avisos: [] },
+        },
+        12: {
+          iniciacao: { praticas: ['Rezar a Inhansã', 'Veneno'], avisos: ['Cuidado com veneno'] },
+          desenvolvimento: { praticas: ['Mistérios', 'Transição'], avisos: ['Não usar para mal'] },
+          estabilizacao: { praticas: ['Desapego'], avisos: [] },
+          transformacao: { praticas: ['Rituais de fim'], avisos: ['Aceitar mudanças'] },
+          consolidacao: { praticas: ['Libertação'], avisos: [] },
+          maturidade: { praticas: ['Portal da transformação'], avisos: [] },
+        },
+        13: {
+          iniciacao: {
+            praticas: ['Rezar a Omolu', 'Evitar olhar'],
+            avisos: ['Respeitar isolamento'],
+          },
+          desenvolvimento: {
+            praticas: ['Caridade', 'Sacrifício'],
+            avisos: ['Não ter medo de doença'],
+          },
+          estabilizacao: { praticas: ['Aceitação'], avisos: [] },
+          transformacao: { praticas: ['Rituais de cura'], avisos: ['Evitar negação'] },
+          consolidacao: { praticas: ['Servir aos necessitados'], avisos: [] },
+          maturidade: { praticas: ['Mestre da saúde'], avisos: [] },
+        },
+        14: {
+          iniciacao: {
+            praticas: ['Rezar a Oxumaré', 'Cores do arco-íris'],
+            avisos: ['Equilibrar ciclos'],
+          },
+          desenvolvimento: {
+            praticas: ['Ciclos de vida', 'Serpente'],
+            avisos: ['Não resistir mudanças'],
+          },
+          estabilizacao: { praticas: ['Ritmo natural'], avisos: [] },
+          transformacao: { praticas: ['Rituais de renovação'], avisos: ['Evitar estagnação'] },
+          consolidacao: { praticas: ['Aceitar destino'], avisos: [] },
+          maturidade: { praticas: ['Guardião do tempo'], avisos: [] },
+        },
+        15: {
+          iniciacao: {
+            praticas: ['Rezar a Obatalá', 'Usar branco'],
+            avisos: ['Pureza de intenção'],
+          },
+          desenvolvimento: { praticas: ['Criação', 'Paz'], avisos: ['Não ser passivo demais'] },
+          estabilizacao: { praticas: ['Discernimento'], avisos: [] },
+          transformacao: { praticas: ['Rituais de luz'], avisos: ['Evitar orgulho'] },
+          consolidacao: { praticas: ['Criação consciente'], avisos: [] },
+          maturidade: { praticas: ['Pai da luz'], avisos: [] },
+        },
+        16: {
+          iniciacao: { praticas: ['Rezar a Odoyá', 'Caminho'], avisos: ['Honrar a jornada'] },
+          desenvolvimento: { praticas: ['Sorte', 'Destino'], avisos: ['Não ser preguiçoso'] },
+          estabilizacao: { praticas: ['Perseverança'], avisos: [] },
+          transformacao: { praticas: ['Rituais de destino'], avisos: ['Evitar fatalismo'] },
+          consolidacao: { praticas: ['Forjar o próprio destino'], avisos: [] },
+          maturidade: { praticas: ['Criador de caminhos'], avisos: [] },
+        },
+      };
+    a.s(
+      [
+        'ODUS_IFA',
+        0,
+        e,
+        'calcularOduNascimento',
+        0,
+        function (a) {
+          let e = a.replace(/\D/g, ''),
+            i = 0;
+          for (let a of e) i += parseInt(a);
+          for (; i > 16; )
+            i = i
+              .toString()
+              .split('')
+              .reduce((a, e) => a + parseInt(e), 0);
+          return {
+            principal: o[i] || o[1],
+            secundario:
+              o[((e.split('').reduce((a, e) => a + 2 * parseInt(e), 0) - 1) % 16) + 1] || null,
+          };
+        },
+        'calculateBirthOdu',
+        0,
+        function (a) {
+          let o = a.match(/^(\d{4})-(\d{2})-(\d{2})/);
+          if (!o)
+            return {
+              oduNumber: 1,
+              oduName: 'Ogbe (Oxé)',
+              orixaRegency: ['Oxalá'],
+              elementalForce: 'Luz, criação, autoridade divina',
+              lifeLesson: 'Cultivar a paciência e honrar a criação.',
+              provisional: !0,
+            };
+          let [, , i, r] = o,
+            s = (function (a) {
+              let e = a;
+              for (; e > 16; )
+                e = String(e)
+                  .split('')
+                  .reduce((a, e) => a + parseInt(e, 10), 0);
+              return (0 === e && (e = 16), e);
+            })(parseInt(r, 10) + parseInt(i, 10)),
+            n = e.find((a) => a.numero === s) ?? e[0];
+          return {
+            oduNumber: s,
+            oduName: n.nome,
+            orixaRegency: [n.orixaRegente],
+            elementalForce: `${n.elementos} — ${n.significado.split('.')[0]}`,
+            lifeLesson: n.preceitos.join('; '),
+            provisional: !0,
+          };
+        },
+        'compareOduNumbers',
+        0,
+        function (a, e) {
+          var i, r, s, n, t;
+          let d, c, m, u, l, p, g, v, b, f, h;
+          if (a < 1 || a > 16 || e < 1 || e > 16)
+            return { sameOdu: !1, score: 0, recommendation: 'Odu fora do alcance válido (1-16).' };
+          let O = o[a],
+            x = o[e];
+          if (!O || !x) return { sameOdu: !1, score: 0, recommendation: 'Odu não encontrado.' };
+          let z =
+            ((i = { odu: O }),
+            (r = { odu: x }),
+            (c = i.odu.numero === r.odu.numero),
+            (m = i.odu.orixaRegente === r.odu.orixaRegente),
+            (u = (function (a, e) {
+              let o = a
+                  .split(/[,;\/]/)
+                  .map((a) => a.trim())
+                  .filter(Boolean),
+                i = e
+                  .split(/[,;\/]/)
+                  .map((a) => a.trim())
+                  .filter(Boolean),
+                r = [],
+                s = [],
+                n = [],
+                t = {
+                  fogo: ['agua', 'terra'],
+                  agua: ['fogo'],
+                  terra: ['fogo', 'ar'],
+                  ar: ['terra'],
+                  eku: ['oca'],
+                  oca: ['eku'],
+                };
+              for (let a of o)
+                i.includes(a)
+                  ? r.push(a)
+                  : t[a]?.some((a) => i.includes(a))
+                    ? s.push(a)
+                    : n.push(a);
+              for (let a of i)
+                r.includes(a) ||
+                  s.includes(a) ||
+                  n.includes(a) ||
+                  (t[a]?.some((a) => o.includes(a)) ? s.push(a) : o.includes(a) || n.push(a));
+              let d = r.length / Math.max(o.length, i.length, 1),
+                c = s.length > 0 ? s.length / Math.max(o.length, i.length, 1) : 0;
+              return { matches: r, conflicts: s, neutral: n, score: d - c };
+            })(i.odu.elementos, r.odu.elementos)),
+            (s = i.odu.orixaRegente),
+            (n = r.odu.orixaRegente),
+            (h =
+              {
+                Oxum: ['Oxumar', 'Iemanjá', 'Oxóssi'],
+                Iemanjá: ['Oxum', 'Oxumar', 'Nanã'],
+                Ogum: ['Oxóssi', 'Xangô', 'Exu'],
+                Oxóssi: ['Ogum', 'Iansã'],
+                Xangô: ['Ogum', 'Iansã', 'Obá'],
+                Oxumar: ['Oxum', 'Iemanjá'],
+                Nanã: ['Iemanjá', 'Obá'],
+                Iansã: ['Xangô', 'Oxóssi', 'Omulu'],
+                Obá: ['Xangô', 'Nanã'],
+                Omulu: ['Iansã', 'Nanã'],
+              }[s]?.includes(n) ?? !1),
+            (l = {
+              shared: s === n ? [s] : [],
+              uniqueA: s === n ? [] : [s],
+              uniqueB: s === n ? [] : [n],
+              compatibilityScore: s === n ? 1 : 0.5 * !!h,
+            }),
+            (p = (function (a, e) {
+              let o = a.filter((a) => e.some((e) => a.toLowerCase() === e.toLowerCase())),
+                i = [...new Set([...a, ...e])],
+                r = [];
+              for (let o of [
+                { a: 'frutos do mar', b: 'peixe' },
+                { a: 'vinho', b: 'alcool' },
+                { a: 'carne bovina', b: 'vaca' },
+              ])
+                if (i.some((a) => a.toLowerCase().includes(o.a) || a.toLowerCase().includes(o.b))) {
+                  let s = i.filter((i) => {
+                    let r = i.toLowerCase();
+                    return (
+                      (r.includes(o.a) || r.includes(o.b)) &&
+                      a.some(
+                        (a) =>
+                          a.toLowerCase() !== i.toLowerCase() &&
+                          e.some((a) => a.toLowerCase() !== i.toLowerCase())
+                      )
+                    );
+                  });
+                  s.length > 1 && r.push(...s.slice(0, 2));
+                }
+              let s = r.length <= 2;
+              return {
+                sharedConstraints: o,
+                conflictingConstraints: r.slice(0, 5),
+                totalConflicts: r.length,
+                manageable: s,
+              };
+            })(i.odu.quizilas, r.odu.quizilas)),
+            (b =
+              (t = v =
+                (function (a) {
+                  let {
+                    sameOdu: e,
+                    sameOrisha: o,
+                    elementalAlignment: i,
+                    orixaOverlap: r,
+                    quizilaCompatibility: s,
+                    eboAlignment: n,
+                  } = a;
+                  return Math.max(
+                    0,
+                    Math.min(
+                      1,
+                      0.35 * !!e +
+                        (o ? 0.15 : 0.15 * r.compatibilityScore) +
+                        0.15 * Math.max(0, i.score) +
+                        0.2 * Math.max(0, n.alignmentScore) +
+                        (s.manageable ? 0.1 - 0.02 * s.totalConflicts : 0)
+                    )
+                  );
+                })({
+                  sameOdu: c,
+                  sameOrisha: m,
+                  elementalAlignment: u,
+                  orixaOverlap: l,
+                  quizilaCompatibility: p,
+                  eboAlignment: (g = (function (a, e) {
+                    let o = [],
+                      i = [],
+                      r = [];
+                    for (let s of a)
+                      e.find(
+                        (a) =>
+                          s.toLowerCase().includes(a.toLowerCase()) ||
+                          a.toLowerCase().includes(s.toLowerCase())
+                      )
+                        ? o.push(s)
+                        : e.find((a) => {
+                              let e = s.toLowerCase(),
+                                o = a.toLowerCase();
+                              return (
+                                (e.includes('limpeza') && o.includes('protecão')) ||
+                                (e.includes('protecão') && o.includes('limpeza')) ||
+                                (e.includes('caminho') && o.includes('abertura'))
+                              );
+                            })
+                          ? i.push(s)
+                          : r.push(s);
+                    let s = Math.max(a.length, e.length, 1),
+                      n = (o.length + 0.5 * i.length - r.length) / s;
+                    return {
+                      sharedPractices: o,
+                      complementaryPractices: i,
+                      incompatiblePractices: r.slice(0, 3),
+                      alignmentScore: n,
+                    };
+                  })(i.odu.ebos, r.odu.ebos)),
+                })) >= 0.7
+                ? 'alta'
+                : t >= 0.4
+                  ? 'media'
+                  : 'baixa'),
+            (f = (function (a) {
+              let e = [],
+                {
+                  readingA: o,
+                  readingB: i,
+                  sameOdu: r,
+                  sameOrisha: s,
+                  elementalAlignment: n,
+                  orixaOverlap: t,
+                  quizilaCompatibility: d,
+                  eboAlignment: c,
+                } = a;
+              return (
+                r
+                  ? e.push(`${o.odu.nome} aparece em ambas as leituras - influencia kuat kiwa.`)
+                  : e.push(
+                      `${o.odu.nome} (${o.odu.orixaRegente}) e ${i.odu.nome} (${i.odu.orixaRegente}) - caminhos distintos mas relacionados.`
+                    ),
+                s
+                  ? e.push(
+                      `Ambos sob a reg\xeancia de ${o.odu.orixaRegente} - alinhamento espiritual forte.`
+                    )
+                  : t.compatibilityScore > 0.3 &&
+                    e.push(
+                      `${o.odu.orixaRegente} e ${i.odu.orixaRegente} s\xe3o complementares na tradi\xe7\xe3o.`
+                    ),
+                n.matches.length > 0 && e.push(`Elementos em comum: ${n.matches.join(', ')}.`),
+                n.conflicts.length > 0 &&
+                  e.push(
+                    `Tens\xf5es elementais: ${n.conflicts.join(', ')} - trabalho espiritual adicional necess\xe1rio.`
+                  ),
+                d.sharedConstraints.length > 0 &&
+                  e.push(
+                    `Proibi\xe7\xf5es compat\xedveis: ${d.sharedConstraints.length} restri\xe7\xe3o(\xf5es) em comum.`
+                  ),
+                d.totalConflicts > 0 &&
+                  e.push(
+                    `Aten\xe7\xe3o: ${d.totalConflicts} conflito(s) nos preceitos - consultar babalawo.`
+                  ),
+                c.sharedPractices.length > 0 &&
+                  e.push(`Eb\xf3s compat\xedveis: ${c.sharedPractices.slice(0, 3).join(', ')}.`),
+                c.complementaryPractices.length > 0 &&
+                  e.push('Práticas complementares disponíveis para fortalecer ambas as leituras.'),
+                c.incompatiblePractices.length > 0 &&
+                  e.push(
+                    `Evitar: ${c.incompatiblePractices.slice(0, 2).join(', ')} para n\xe3o criar conflitos.`
+                  ),
+                e
+              );
+            })({
+              readingA: i,
+              readingB: r,
+              sameOdu: c,
+              sameOrisha: m,
+              elementalAlignment: u,
+              orixaOverlap: l,
+              quizilaCompatibility: p,
+              eboAlignment: g,
+            })),
+            {
+              id: `odu_cmp_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,
+              readingA: i,
+              readingB: r,
+              timestamp: new Date().toISOString(),
+              sameOdu: c,
+              sameOrisha: m,
+              similarityScore: v,
+              compatibilityLevel: b,
+              elementalAlignment: u,
+              orixaOverlap: l,
+              quizilaCompatibility: p,
+              eboAlignment: g,
+              notes: f,
+            });
+          switch (z.compatibilityLevel) {
+            case 'alta':
+              d = `${O.nome} e ${x.nome} t\xeam alta compatibilidade espiritual.`;
+              break;
+            case 'media':
+              d = `${O.nome} e ${x.nome} precisam de harmoniza\xe7\xe3o espiritual.`;
+              break;
+            default:
+              d = `${O.nome} e ${x.nome} podem ter tens\xf5es - buscar orienta\xe7\xe3o especializada.`;
+          }
+          return { sameOdu: a === e, score: z.similarityScore, recommendation: d };
+        },
+        'drawMultipleOdu',
+        0,
+        function (a) {
+          let e = [];
+          for (let o = 0; o < a; o++) e.push(d());
+          return e;
+        },
+        'drawOdu',
+        0,
+        d,
+        'getAllOdu',
+        0,
+        function () {
+          return Object.entries(r).map(([a, e]) => ({
+            numero: parseInt(a),
+            Caminho: parseInt(a),
+            nome: n(parseInt(a)),
+            opeCima: s(e.top),
+            opeBaixo: s(e.bottom),
+            elementos: e.elementos,
+            orixaRegente: e.orixa,
+            significado: e.significado,
+          }));
+        },
+        'getEbósPorOdu',
+        0,
+        function (a) {
+          return o[a]?.ebos || [];
+        },
+        'getOduByNumber',
+        0,
+        function (a) {
+          if (a < 1 || a > 16) return null;
+          let e = r[a];
+          return {
+            numero: a,
+            Caminho: a,
+            nome: n(a),
+            opeCima: s(e.top),
+            opeBaixo: s(e.bottom),
+            elementos: e.elementos,
+            orixaRegente: e.orixa,
+            significado: e.significado,
+          };
+        },
+        'getOduNome',
+        0,
+        n,
+        'getOduPorNumero',
+        0,
+        function (a) {
+          return e.find((e) => e.numero === a);
+        },
+        'getOduTimeline',
+        0,
+        function (a) {
+          let e = 'number' == typeof a ? a : a.numero,
+            i = 'number' == typeof a ? o[a] : a,
+            r = z[e] || z[1],
+            s = [
+              'iniciacao',
+              'desenvolvimento',
+              'estabilizacao',
+              'transformacao',
+              'consolidacao',
+              'maturidade',
+            ],
+            n = s.map((a) => {
+              var i;
+              let s,
+                n = r[a] || { praticas: ['Práticas gerais de evolução'], avisos: [] },
+                t = x[a];
+              return {
+                phase: a,
+                title:
+                  ((i = a),
+                  (s = o[e]),
+                  {
+                    iniciacao: `${s.nome} - Despertar`,
+                    desenvolvimento: `${s.nome} - Crescimento`,
+                    estabilizacao: `${s.nome} - Fundamento`,
+                    transformacao: `${s.nome} - Mudan\xe7a`,
+                    consolidacao: `${s.nome} - Integra\xe7\xe3o`,
+                    maturidade: `${s.nome} - Sabedoria`,
+                  }[i]),
+                description: t.descricao,
+                duration: t.duracao,
+                practices: n.praticas,
+                warnings: n.avisos,
+              };
+            }),
+            t = n.reduce((a, e) => a + e.duration, 0);
+          return { odu: i, events: n, totalDays: t, currentPhase: s[0] };
+        },
+        'getOpe',
+        0,
+        s,
+        'getPhaseProgress',
+        0,
+        function (a, e) {
+          let o = [
+            'iniciacao',
+            'desenvolvimento',
+            'estabilizacao',
+            'transformacao',
+            'consolidacao',
+            'maturidade',
+          ].indexOf(e);
+          return -1 === o
+            ? 0
+            : (a.events.slice(0, o).reduce((a, e) => a + e.duration, 0) / a.totalDays) * 100;
+        },
+        'getPreceitosPorOdu',
+        0,
+        function (a) {
+          return o[a]?.preceitos || [];
+        },
+        'getQuizilasPorOdu',
+        0,
+        function (a) {
+          return o[a]?.quizilas || [];
+        },
+        'getRitualSuggestions',
+        0,
+        function (a) {
+          let e = 'number' == typeof a ? a : a.numero,
+            o = f[e] || [],
+            i = h[e] || [],
+            r = O[e] || [];
+          return {
+            odu: e,
+            oduNome: n(e),
+            ebos: o,
+            oraciones: i,
+            banhos: r,
+            notasAdicionales:
+              {
+                1: ['Evitar caminar de noche', 'No consumir alcohol durante 21 días'],
+                2: ['Beber agua de coco diariamente', 'Visitar un río al amanecer'],
+                3: ['Usar amuleto de protección', 'Evitar contacto con personas negativas'],
+                4: ['No comer alimentos rojos', 'Realizar el baño de fuego antes del amanecer'],
+                5: ['Dormir temprano', 'Recitar Orikis antes de dormir'],
+                6: ['Hablar siempre la verdad', 'Evitar mentiras, aunque sean piadosas'],
+                7: ['Plantar una semilla', 'Dar limosna a los necesitados'],
+                8: ['Usar ropa de colores claros', 'Evitar ropa oscura por 30 días'],
+                9: ['Huir de conflictos', 'No responder a provocaciones'],
+                10: ['Vestir de blanco', 'Evitar el alcohol y tabaco'],
+                11: ['Reconciliarse con enemigos', 'Perdonar las ofensas pasadas'],
+                12: ['Plantar un árbol frutal', 'Cuidar de los niños pequeños'],
+                13: ['Usar herramientas de hierro', 'No tener miedo de trabajar'],
+                14: ['Guardar ayuno un día a la semana', 'Beber solo agua hervida'],
+                15: ['Usar ropa roja en ceremonias', 'Tener siempre un cuchillo handy'],
+                16: ['Dar primero a los demás', 'No acumular riqueza'],
+              }[e] || [],
+          };
+        },
+        'getRitualTiming',
+        0,
+        function (a) {
+          return (
+            {
+              1: { mejorMomento: 'Medianoche', diasFavorables: [1, 9, 17], 禁忌: ['Martes'] },
+              2: { mejorMomento: 'Amanecer', diasFavorables: [2, 10, 18], 禁忌: ['Domingo'] },
+              3: { mejorMomento: 'Mediodia', diasFavorables: [3, 11, 19], 禁忌: ['Jueves'] },
+              4: {
+                mejorMomento: 'Antes del amanecer',
+                diasFavorables: [4, 12, 20],
+                禁忌: ['Viernes'],
+              },
+              5: { mejorMomento: 'Mediodia', diasFavorables: [5, 13, 21], 禁忌: ['Domingo'] },
+              6: { mejorMomento: 'Tarde', diasFavorables: [6, 14, 22], 禁忌: ['Sabado'] },
+              7: { mejorMomento: 'Amanecer', diasFavorables: [7, 15, 23], 禁忌: ['Lunes'] },
+              8: { mejorMomento: 'Mediodia', diasFavorables: [8, 16, 24], 禁忌: ['Miercoles'] },
+              9: { mejorMomento: 'Medianoche', diasFavorables: [9, 17, 25], 禁忌: ['Domingo'] },
+              10: { mejorMomento: 'Mediodia', diasFavorables: [10, 18, 26], 禁忌: ['Martes'] },
+              11: { mejorMomento: 'Tarde', diasFavorables: [11, 19, 27], 禁忌: ['Jueves'] },
+              12: { mejorMomento: 'Amanecer', diasFavorables: [12, 20, 28], 禁忌: ['Viernes'] },
+              13: { mejorMomento: 'Medianoche', diasFavorables: [13, 21, 29], 禁忌: ['Domingo'] },
+              14: { mejorMomento: 'Mediodia', diasFavorables: [14, 22, 30], 禁忌: ['Lunes'] },
+              15: {
+                mejorMomento: 'Antes del amanecer',
+                diasFavorables: [15, 23, 31],
+                禁忌: ['Miercoles'],
+              },
+              16: { mejorMomento: 'Amanecer', diasFavorables: [16, 24], 禁忌: ['Sabado'] },
+            }[a] || { mejorMomento: 'Indeterminado', diasFavorables: [], 禁忌: [] }
+          );
+        },
+        'matchOduToRitual',
+        0,
+        function (a) {
+          let e = (function (a) {
+              let e = c[a.numero];
+              if (!e) return null;
+              let o = l[e.tipo];
+              return o
+                ? {
+                    tipo: e.tipo,
+                    nome: o.nome,
+                    descricao: o.descricao,
+                    orixa: a.orixaRegente,
+                    urgencia: e.urgencia,
+                    prazo: e.prazo,
+                    componentes: o.componentes,
+                  }
+                : null;
+            })(a),
+            o = (function (a) {
+              let e = a.ebos[0] || '';
+              if (!e) return null;
+              let o = (function (a) {
+                  for (let [e, o] of m) if (a.includes(e)) return o;
+                  return 'protecao';
+                })(e),
+                i = (function (a) {
+                  let e = [];
+                  for (let [o, i] of u) a.includes(o) && e.push(i);
+                  return e;
+                })(e),
+                r = p[o] ?? p.protecao;
+              return {
+                tipo: o,
+                nome: r.nome,
+                descricao: e,
+                orixa: a.orixaRegente,
+                elementos: i.length > 0 ? i : r.elementos,
+                passos: r.passos,
+                observacoes: r.observacoes,
+              };
+            })(a),
+            i = g[a.numero] || [],
+            r = v[a.numero] || [],
+            s = b[a.numero] || [];
+          return {
+            odu: a,
+            rituais: e ? [e] : [],
+            ebos: o ? [o] : [],
+            orixasRelacionados: [a.orixaRegente, ...i],
+            praticasDiarias: r,
+            contraindicacoes: s,
+          };
+        },
+        'odusData',
+        0,
+        o,
+      ],
+      17736
+    );
+  },
+]);

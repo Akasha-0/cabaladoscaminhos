@@ -81,7 +81,7 @@ describe('life-areas-engine/index', () => {
 
     it('should return an array with all expected IDs', () => {
       const areas = getAllLifeAreas();
-      const ids = areas.map(a => a.id);
+      const ids = areas.map((a) => a.id);
       expect(ids).toContain('proposito');
       expect(ids).toContain('carreira');
       expect(ids).toContain('financas');
@@ -92,7 +92,7 @@ describe('life-areas-engine/index', () => {
     it('should find areas by planet name', () => {
       const areas = getLifeAreasByPlanet('Sol');
       expect(areas.length).toBeGreaterThan(0);
-      expect(areas.some(a => a.id === 'proposito')).toBe(true);
+      expect(areas.some((a) => a.id === 'proposito')).toBe(true);
     });
 
     it('should be case-insensitive', () => {

@@ -46,9 +46,13 @@ export function OneProfileCard({
           <div className="flex items-center gap-3">
             <span className="text-4xl">{profile.typeIcon}</span>
             <div>
-              <p className="text-xs text-white/40 uppercase tracking-widest font-medium">Seu Tipo Akasha</p>
+              <p className="text-xs text-white/40 uppercase tracking-widest font-medium">
+                Seu Tipo Akasha
+              </p>
               <h2 className="text-xl font-bold text-white leading-tight">{profile.typeName}</h2>
-              <p className="text-sm text-white/60 mt-0.5 italic">&ldquo;{profile.corePattern}&rdquo;</p>
+              <p className="text-sm text-white/60 mt-0.5 italic">
+                &ldquo;{profile.corePattern}&rdquo;
+              </p>
               {/* Confidence badge */}
               {profile.typeConfidence && (
                 <div
@@ -56,16 +60,16 @@ export function OneProfileCard({
                     profile.typeConfidence === 'alta'
                       ? 'bg-[#30D158]/15 border-[#30D158]/30 text-[#30D158]'
                       : profile.typeConfidence === 'media'
-                      ? 'bg-[#FFD60A]/15 border-[#FFD60A]/30 text-[#FFD60A]'
-                      : 'bg-[#FF375F]/15 border-[#FF375F]/30 text-[#FF375F]'
+                        ? 'bg-[#FFD60A]/15 border-[#FFD60A]/30 text-[#FFD60A]'
+                        : 'bg-[#FF375F]/15 border-[#FF375F]/30 text-[#FF375F]'
                   }`}
                 >
                   <span className="inline-block w-1.5 h-1.5 rounded-full bg-current" />
                   {profile.typeConfidence === 'alta'
                     ? 'Alta convergência — perfil bem definido'
                     : profile.typeConfidence === 'media'
-                    ? 'Convergência média — perfil em formação'
-                    : 'Baixa convergência — mais dados fortalecem o perfil'}
+                      ? 'Convergência média — perfil em formação'
+                      : 'Baixa convergência — mais dados fortalecem o perfil'}
                 </div>
               )}
             </div>
@@ -74,9 +78,7 @@ export function OneProfileCard({
 
         {/* One-liner — a frase que o usuário lembra o dia todo */}
         <div className="mt-4 bg-black/20 rounded-xl p-4">
-          <p className="text-base text-white font-semibold leading-snug">
-            {profile.oneLiner}
-          </p>
+          <p className="text-base text-white font-semibold leading-snug">{profile.oneLiner}</p>
         </div>
       </div>
 
@@ -91,13 +93,17 @@ export function OneProfileCard({
           <p className="text-xs text-white/40 uppercase tracking-wider mb-1.5">
             {AUTHORITY_LABELS[profile.authority] ?? 'Autoridade'}
           </p>
-          <p className="text-sm text-white/80 leading-relaxed italic">&ldquo;{profile.authorityPractice}&rdquo;</p>
+          <p className="text-sm text-white/80 leading-relaxed italic">
+            &ldquo;{profile.authorityPractice}&rdquo;
+          </p>
         </div>
       </div>
 
       {/* Daily Directive */}
       <div className="mx-5 mb-4 bg-[#FF9500]/10 border border-[#FF9500]/20 rounded-xl px-4 py-3">
-        <p className="text-xs text-[#FF9500]/80 uppercase tracking-wider font-semibold mb-1">Diretiva de Hoje</p>
+        <p className="text-xs text-[#FF9500]/80 uppercase tracking-wider font-semibold mb-1">
+          Diretiva de Hoje
+        </p>
         <p className="text-sm text-white font-medium leading-snug">{profile.dailyDirective}</p>
       </div>
 
@@ -121,8 +127,12 @@ export function OneProfileCard({
       {/* F-232: Narrativa Central Akáshica — síntese dos 3 primitivos dominantes */}
       {narrativaCentral && (
         <div className="mx-5 mb-4 bg-gradient-to-r from-[#7C5CFF]/10 to-[#2DD4BF]/10 border border-[#7C5CFF]/20 rounded-xl px-4 py-3">
-          <p className="text-xs text-[#7C5CFF]/80 uppercase tracking-wider font-semibold mb-1">Síntese Akáshica</p>
-          <p className="text-sm text-white/80 leading-relaxed italic">&ldquo;{narrativaCentral}&rdquo;</p>
+          <p className="text-xs text-[#7C5CFF]/80 uppercase tracking-wider font-semibold mb-1">
+            Síntese Akáshica
+          </p>
+          <p className="text-sm text-white/80 leading-relaxed italic">
+            &ldquo;{narrativaCentral}&rdquo;
+          </p>
         </div>
       )}
     </div>

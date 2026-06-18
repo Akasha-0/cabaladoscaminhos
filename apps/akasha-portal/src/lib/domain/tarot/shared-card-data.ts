@@ -12,7 +12,9 @@
  */
 export function reduceToSingleDigit(n: number): number {
   while (n > 9) {
-    n = String(n).split('').reduce((sum, d) => sum + parseInt(d, 10), 0);
+    n = String(n)
+      .split('')
+      .reduce((sum, d) => sum + parseInt(d, 10), 0);
   }
   return n;
 }
@@ -30,8 +32,15 @@ export function getMasterNumbers(n: number): number[] {
  */
 export function getNumerologyElement(id: number): string {
   const elementMap: Record<number, string> = {
-    1: 'Fire', 2: 'Water', 3: 'Air', 4: 'Earth',
-    5: 'Fire', 6: 'Water', 7: 'Air', 8: 'Earth', 9: 'Spirit'
+    1: 'Fire',
+    2: 'Water',
+    3: 'Air',
+    4: 'Earth',
+    5: 'Fire',
+    6: 'Water',
+    7: 'Air',
+    8: 'Earth',
+    9: 'Spirit',
   };
   const digit = reduceToSingleDigit(id);
   return elementMap[digit] || 'Spirit';
@@ -54,8 +63,7 @@ export function getElementKeywords(element: string): string[] {
     Water: ['emotion', 'intuition', 'healing', 'purification'],
     Air: ['intellect', 'communication', 'freedom', 'thought'],
     Earth: ['stability', 'practicality', 'growth', 'prosperity'],
-    Spirit: ['transcendence', 'divinity', 'unity', 'enlightenment']
+    Spirit: ['transcendence', 'divinity', 'unity', 'enlightenment'],
   };
   return keywordMap[element] || ['spiritual connection', 'integration'];
 }
-

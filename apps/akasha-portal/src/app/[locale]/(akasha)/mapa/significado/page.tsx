@@ -12,31 +12,22 @@
  * Princípios: VISION §3 axioma 3 (curadoria contínua) + axioma 4 (citação obrigatória).
  * Pilar 4 (Odu) carrega aviso ético R-022 §4.4 (terreiro + consentimento).
  */
-
 import { cookies, headers } from 'next/headers';
-import { redirect } from 'next/navigation';
-import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { AkashaSignificadoCard } from '@/components/akasha/AkashaSignificadoCard';
+import { InsightDoDiaPanel, ConexoesPilaresPanel } from '@/components/akasha/InsightDoDiaPanel';
 import { SignificadoPilar } from '@/components/akasha/SignificadoPilar';
 import { TraducaoAreaPanel } from '@/components/akasha/TraducaoAreaPanel';
-import {
-  InsightDoDiaPanel,
-  ConexoesPilaresPanel,
-} from '@/components/akasha/InsightDoDiaPanel';
-import { gerarInsightDoDia } from '@/lib/grimoire/insight-do-dia';
+import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import { matrizConexoes } from '@/lib/grimoire/conexoes-pilares';
+import { gerarInsightDoDia } from '@/lib/grimoire/insight-do-dia';
 import {
   significadosEspecificos,
   type Pilar,
   type PilaresDados,
 } from '@/lib/grimoire/significados-curados';
-import {
-  AREAS,
-  AREA_LABEL,
-  AREA_ICONE,
-  traducoesDaArea,
-} from '@/lib/grimoire/traducao-areas';
+import { AREAS, AREA_LABEL, AREA_ICONE, traducoesDaArea } from '@/lib/grimoire/traducao-areas';
 
 export const metadata = {
   title: 'Significado do Mapa',
@@ -59,10 +50,25 @@ const C = {
 const ORDEM_PILARES: Pilar[] = ['cabala', 'astrologia', 'tantrica', 'odu', 'iching'];
 
 const PILAR_META: Record<Pilar, { nome: string; subtitulo: string; cor: string; icone: string }> = {
-  cabala: { nome: 'Caminho Cabalístico', subtitulo: 'Sua missão numerológica', cor: C.violeta, icone: '✡' },
-  astrologia: { nome: 'Mapa Astral', subtitulo: 'O céu do seu nascimento', cor: C.aurora, icone: '☉' },
+  cabala: {
+    nome: 'Caminho Cabalístico',
+    subtitulo: 'Sua missão numerológica',
+    cor: C.violeta,
+    icone: '✡',
+  },
+  astrologia: {
+    nome: 'Mapa Astral',
+    subtitulo: 'O céu do seu nascimento',
+    cor: C.aurora,
+    icone: '☉',
+  },
   tantrica: { nome: 'Corpo Tântrico', subtitulo: 'Sua anatomia sutil', cor: C.dourado, icone: '◈' },
-  odu: { nome: 'Odu de Nascimento', subtitulo: 'Sua ancestralidade iorubá', cor: C.magenta, icone: '✺' },
+  odu: {
+    nome: 'Odu de Nascimento',
+    subtitulo: 'Sua ancestralidade iorubá',
+    cor: C.magenta,
+    icone: '✺',
+  },
   iching: { nome: 'Hexagrama do Dia', subtitulo: 'A mutação de hoje', cor: C.ocre, icone: '☯' },
 };
 
@@ -86,11 +92,7 @@ function saudacao(): string {
   return 'Boa noite';
 }
 
-export default async function SignificadoPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+export default async function SignificadoPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const cookieStore = await cookies();
   const authStatus = (await headers()).get('X-Akasha-Auth');
@@ -164,8 +166,8 @@ export default async function SignificadoPage({
             O Significado do seu Mapa
           </h1>
           <p style={{ color: C.txtSec, fontSize: '0.95rem', lineHeight: 1.5, margin: 0 }}>
-            Cinco tradições convergem em você. Cada Pilar abaixo responde uma pergunta diferente —
-            e as cinco, juntas, começam a descrever quem você é.
+            Cinco tradições convergem em você. Cada Pilar abaixo responde uma pergunta diferente — e
+            as cinco, juntas, começam a descrever quem você é.
           </p>
         </header>
 
@@ -173,9 +175,7 @@ export default async function SignificadoPage({
         {insight && <InsightDoDiaPanel insight={insight} />}
 
         {/* Akasha Unificado — FASE 3 Ciclo 2: interpretação profunda do Número de Vida */}
-        {pilares ? (
-          <AkashaSignificadoCard lifePath={pilares.cabala.life_path} />
-        ) : null}
+        {pilares ? <AkashaSignificadoCard lifePath={pilares.cabala.life_path} /> : null}
 
         {/* 5 Pilares em sequência */}
         {pilares ? (
@@ -218,10 +218,12 @@ export default async function SignificadoPage({
             >
               Como os 5 Pilares se falam
             </h2>
-            <p style={{ color: C.txtSec, fontSize: '0.85rem', lineHeight: 1.5, margin: '0 0 18px' }}>
-              A Mandala é UM INTEIRO. Cabala ilumina Astrologia; Astrologia ilumina Tantra;
-              Tantra ancora I Ching. São 20 conexões entre os 5 Pilares (a diagonal,
-              Pilar consigo mesmo, é vazia). Leia em pares e medite.
+            <p
+              style={{ color: C.txtSec, fontSize: '0.85rem', lineHeight: 1.5, margin: '0 0 18px' }}
+            >
+              A Mandala é UM INTEIRO. Cabala ilumina Astrologia; Astrologia ilumina Tantra; Tantra
+              ancora I Ching. São 20 conexões entre os 5 Pilares (a diagonal, Pilar consigo mesmo, é
+              vazia). Leia em pares e medite.
             </p>
             <ConexoesPilaresPanel conexoes={conexoes} />
           </section>
@@ -241,10 +243,12 @@ export default async function SignificadoPage({
             >
               Por área da vida
             </h2>
-            <p style={{ color: C.txtSec, fontSize: '0.85rem', lineHeight: 1.5, margin: '0 0 18px' }}>
+            <p
+              style={{ color: C.txtSec, fontSize: '0.85rem', lineHeight: 1.5, margin: '0 0 18px' }}
+            >
               Você vive em áreas — paz, saúde, relações, dinheiro, trabalho, propósito,
-              criatividade, espiritualidade. Os 5 Pilares dão 5 leituras para cada área.
-              São 40 traduções curadas. Escolha 1 área e medite.
+              criatividade, espiritualidade. Os 5 Pilares dão 5 leituras para cada área. São 40
+              traduções curadas. Escolha 1 área e medite.
             </p>
             {AREAS.map((area) => (
               <div key={area} style={{ marginBottom: 18 }}>

@@ -3,7 +3,6 @@
  *
  * Tracks area reads and detects patterns from history entries.
  */
-
 import type { PersonalCycleSnapshot } from '@/lib/application/agents/personal-cycle-engine';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -29,7 +28,7 @@ export interface CycleModulation {
  */
 export function trackAreaRead(
   entry: AreaHistoryEntry,
-  existingHistory: AreaHistoryEntry[],
+  existingHistory: AreaHistoryEntry[]
 ): AreaHistoryEntry[] {
   // Deduplicate by date — keep only most recent per date
   const byDate = new Map<string, AreaHistoryEntry>();
@@ -48,7 +47,7 @@ export function trackAreaRead(
  * Detecta padrões de área a partir do historial — min 3 entradas para análise.
  */
 export function detectAreaPatterns(
-  history: AreaHistoryEntry[],
+  history: AreaHistoryEntry[]
 ): { persistentShadows: string[]; emergingGifts: string[]; dominantArea: string } | null {
   if (history.length < 3) return null;
 

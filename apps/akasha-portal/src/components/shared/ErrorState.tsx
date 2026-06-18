@@ -1,8 +1,8 @@
-import React from 'react';
-import { cn } from '@/lib/shared/utils';
 import { RefreshCw, AlertTriangle, Star, AlertOctagon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import React from 'react';
 import { Heading } from '@/components/design-system/Typography';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/shared/utils';
 
 interface ErrorStateProps {
   title?: string;
@@ -75,17 +75,11 @@ export function ErrorState({
       </Heading>
 
       {/* Message */}
-      <p className="text-spiritual-text-secondary mb-6 max-w-sm">
-        {message ?? defaultMessage}
-      </p>
+      <p className="text-spiritual-text-secondary mb-6 max-w-sm">{message ?? defaultMessage}</p>
 
       {/* Retry Button */}
       {onRetry && (
-        <Button
-          variant="golden-outline"
-          onClick={onRetry}
-          className="gap-2"
-        >
+        <Button variant="golden-outline" onClick={onRetry} className="gap-2">
           <RefreshCw size={16} />
           <span>Tentar Novamente</span>
           <Star size={16} className="text-[var(--spiritual-gold)]" />
@@ -108,9 +102,7 @@ export class ErrorBoundary extends React.Component<
   render() {
     if (this.state.hasError && this.state.error) {
       const error = this.state.error as Error;
-      return this.props.fallback ?? (
-        <ErrorState message={error.message} />
-      );
+      return this.props.fallback ?? <ErrorState message={error.message} />;
     }
     return this.props.children;
   }

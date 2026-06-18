@@ -9,7 +9,6 @@
  * do core-iching, mas desacoplado do horário de nascimento (que não se
  * aplica a uma tiragem do dia).
  */
-
 import { getHexagram } from '@akasha/core-iching';
 
 export interface DailyHexagram {

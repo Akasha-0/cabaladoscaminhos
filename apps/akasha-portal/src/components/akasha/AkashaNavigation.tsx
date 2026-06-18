@@ -2,20 +2,31 @@
 
 /**
  * AkashaNavigation — Responsive Navigation Layout
- * 
+ *
  * Renders a sticky left sidebar on desktop and a sliding drawer with hamburger menu on mobile.
  * Supports a collapsible desktop sidebar via useCockpitStore.
  * In the bottom-left corner, displays the User profile card with initials avatar and birth info.
  */
-
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Menu,
+  X,
+  LayoutDashboard,
+  Compass,
+  BookOpen,
+  MessageSquare,
+  Calendar,
+  Info,
+  Settings,
+  MapPin,
+  Clock,
+  ChevronsLeft,
+  ChevronsRight,
+  Heart,
+} from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Menu, X, LayoutDashboard, Compass, BookOpen, MessageSquare,
-  Calendar, Info, Settings, MapPin, Clock, ChevronsLeft, ChevronsRight, Heart,
-} from 'lucide-react';
 import { useCockpitStore } from '@/stores/cockpit-store';
 
 interface UserProfile {
@@ -55,7 +66,12 @@ export function AkashaNavigation({ locale, user }: AkashaNavigationProps) {
 
   const getInitials = (nameStr: string) => {
     if (!nameStr) return '✦';
-    return nameStr.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
+    return nameStr
+      .split(' ')
+      .map((n) => n[0])
+      .slice(0, 2)
+      .join('')
+      .toUpperCase();
   };
 
   const formattedDate = user?.birthDate ? formatDate(user.birthDate) : '';
@@ -67,7 +83,7 @@ export function AkashaNavigation({ locale, user }: AkashaNavigationProps) {
       {navLinks.map((link) => {
         const Icon = link.icon;
         const isActive = pathname === link.href || pathname.startsWith(link.href + '/');
-        
+
         if (sidebarCollapsed && !onClick) {
           // Collapsed state link (Desktop only, since onClick is not defined on Desktop Aside call)
           return (
@@ -76,9 +92,7 @@ export function AkashaNavigation({ locale, user }: AkashaNavigationProps) {
               href={link.href}
               title={link.label}
               className={`flex items-center justify-center p-3 rounded-xl text-sm transition-all relative ${
-                isActive 
-                  ? 'text-white' 
-                  : 'text-[#A7AECF]/60 hover:text-white hover:bg-white/5'
+                isActive ? 'text-white' : 'text-[#A7AECF]/60 hover:text-white hover:bg-white/5'
               }`}
             >
               {isActive && (
@@ -100,8 +114,8 @@ export function AkashaNavigation({ locale, user }: AkashaNavigationProps) {
             href={link.href}
             onClick={onClick}
             className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold tracking-wide transition-all relative ${
-              isActive 
-                ? 'text-white font-bold' 
+              isActive
+                ? 'text-white font-bold'
                 : 'text-[#A7AECF]/60 hover:text-white hover:bg-white/5'
             }`}
           >
@@ -125,7 +139,7 @@ export function AkashaNavigation({ locale, user }: AkashaNavigationProps) {
           className={`hidden md:flex items-center rounded-xl text-sm font-semibold tracking-wide text-[#A7AECF]/60 hover:text-white hover:bg-white/5 transition-all mt-auto mb-2 ${
             sidebarCollapsed ? 'justify-center p-3' : 'gap-3 px-4 py-3 w-full'
           }`}
-          title={sidebarCollapsed ? "Expandir menu" : "Recolher menu"}
+          title={sidebarCollapsed ? 'Expandir menu' : 'Recolher menu'}
         >
           {sidebarCollapsed ? <ChevronsRight size={18} /> : <ChevronsLeft size={18} />}
           {!sidebarCollapsed && <span>Recolher Menu</span>}
@@ -179,12 +193,15 @@ export function AkashaNavigation({ locale, user }: AkashaNavigationProps) {
 
           {/* User Birth Details */}
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold text-white truncate group-hover:text-[#9D86FF] transition-colors">{user.name}</p>
-            
+            <p className="text-xs font-bold text-white truncate group-hover:text-[#9D86FF] transition-colors">
+              {user.name}
+            </p>
+
             <div className="flex flex-col mt-0.5 space-y-0.5 text-[9px] text-[#A7AECF]/60">
               {formattedDate && (
                 <span className="flex items-center gap-1">
-                  <Calendar size={8} /> {formattedDate} {user.birthTime ? `· ${user.birthTime}` : ''}
+                  <Calendar size={8} /> {formattedDate}{' '}
+                  {user.birthTime ? `· ${user.birthTime}` : ''}
                 </span>
               )}
               {user.birthCity && (
@@ -197,7 +214,10 @@ export function AkashaNavigation({ locale, user }: AkashaNavigationProps) {
 
           {/* Settings icon */}
           <div className="shrink-0 text-[#A7AECF]/40 group-hover:text-white transition-colors">
-            <Settings size={14} className="group-hover:rotate-45 transition-transform duration-300" />
+            <Settings
+              size={14}
+              className="group-hover:rotate-45 transition-transform duration-300"
+            />
           </div>
         </Link>
       </div>
@@ -207,7 +227,7 @@ export function AkashaNavigation({ locale, user }: AkashaNavigationProps) {
   return (
     <>
       {/* ── Desktop Sidebar ── */}
-      <aside 
+      <aside
         className={`hidden md:flex md:flex-col md:fixed md:inset-y-0 md:left-0 transition-all duration-300 bg-[#0B0E1C]/90 border-r border-[#7C5CFF]/15 backdrop-blur-lg z-30 ${
           sidebarCollapsed ? 'w-16' : 'w-64'
         }`}
@@ -216,7 +236,7 @@ export function AkashaNavigation({ locale, user }: AkashaNavigationProps) {
         {sidebarCollapsed ? (
           <div className="h-16 border-b border-white/5 flex flex-col items-center justify-center gap-1">
             <span className="text-md font-bold text-[#7C5CFF] font-cinzel">✦</span>
-            <button 
+            <button
               onClick={toggleSidebar}
               className="p-1 rounded bg-white/5 hover:bg-white/10 text-[#A7AECF] transition-colors"
               title="Expandir menu"
@@ -232,7 +252,7 @@ export function AkashaNavigation({ locale, user }: AkashaNavigationProps) {
             >
               ✦ AKASHA
             </Link>
-            <button 
+            <button
               onClick={toggleSidebar}
               className="p-1.5 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 hover:text-white text-[#A7AECF]/60 transition-colors"
               title="Recolher menu"
@@ -290,7 +310,9 @@ export function AkashaNavigation({ locale, user }: AkashaNavigationProps) {
               <div>
                 {/* Header */}
                 <div className="h-14 px-4 border-b border-white/5 flex items-center justify-between">
-                  <span className="text-sm font-bold text-white font-cinzel tracking-[0.2em]">✦ AKASHA</span>
+                  <span className="text-sm font-bold text-white font-cinzel tracking-[0.2em]">
+                    ✦ AKASHA
+                  </span>
                   <button
                     onClick={() => setIsOpen(false)}
                     className="p-2 text-[#A7AECF] hover:text-white transition-colors"

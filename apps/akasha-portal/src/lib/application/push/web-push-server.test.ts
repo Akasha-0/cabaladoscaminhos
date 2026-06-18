@@ -6,7 +6,6 @@
 // distinguish expired subscriptions (404/410) from generic failures.
 // This test mocks the `web-push` module entirely — no real network calls,
 // no VAPID keys required.
-
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock the `web-push` library before importing the module under test.

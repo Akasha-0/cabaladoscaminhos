@@ -1,8 +1,8 @@
 import crypto from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/infrastructure/prisma';
 import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { syncGrimoire } from '@/lib/infrastructure/grimoire-sync';
+import { prisma } from '@/lib/infrastructure/prisma';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,8 +13,7 @@ export const dynamic = 'force-dynamic';
 function verifyGitHubHmac(rawBody: string, signatureHeader: string | null): boolean {
   const secret = process.env.GITHUB_WEBHOOK_SECRET;
   if (!secret || !signatureHeader) return false;
-  const expected =
-    'sha256=' + crypto.createHmac('sha256', secret).update(rawBody).digest('hex');
+  const expected = 'sha256=' + crypto.createHmac('sha256', secret).update(rawBody).digest('hex');
   // timingSafeEqual para evitar timing attacks
   const a = Buffer.from(expected, 'utf8');
   const b = Buffer.from(signatureHeader, 'utf8');

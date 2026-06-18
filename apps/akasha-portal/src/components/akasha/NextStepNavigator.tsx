@@ -11,7 +11,6 @@
  * - Falta de CTAs claros após ver dados
  * - Dashboard sobrecarregado
  */
-
 import { CheckCircle2, Circle, ChevronRight } from 'lucide-react';
 
 interface Step {

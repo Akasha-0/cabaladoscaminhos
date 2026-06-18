@@ -351,3 +351,39 @@
 [2026-06-18T00:58:43Z] [SUP]   Cleanup complete.
 [2026-06-18T00:58:43Z] [SUP] 🚀 STARTING DAEMON
 [2026-06-18T00:58:43Z] [SUP] ✅ DAEMON RUNNING PID=1170334
+[2026-06-18T02:40:32Z] [SUP] Cleaning stale state...
+[2026-06-18T02:40:32Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-18T02:40:32Z] [SUP]   Cleanup complete.
+[2026-06-18T02:40:32Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-18T02:40:32Z] [SUP] ✅ DAEMON RUNNING PID=1260926
+[2026-06-18T02:41:48Z] [SUP] Cleaning stale state...
+[2026-06-18T02:41:48Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-18T02:41:48Z] [SUP]   Cleanup complete.
+[2026-06-18T02:41:48Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-18T02:41:48Z] [SUP] ✅ DAEMON RUNNING PID=1261793
+[2026-06-18T02:43:16Z] [SUP] Cleaning stale state...
+[2026-06-18T02:43:16Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-18T02:43:16Z] [SUP]   Cleanup complete.
+[2026-06-18T02:43:16Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-18T02:43:16Z] [SUP] ✅ DAEMON RUNNING PID=1262520
+[2026-06-18T02:45:57Z] [SUP] Cleaning stale state...
+[2026-06-18T02:45:57Z] [SUP]   Removed stale socket: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.sock
+[2026-06-18T02:45:58Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-18T02:45:58Z] [SUP]   Cleanup complete.
+[2026-06-18T02:45:58Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-18T02:45:58Z] [SUP] ✅ DAEMON RUNNING PID=1264513
+[2026-06-18T02:46:32Z] [SUP] Cleaning stale state...
+[2026-06-18T02:46:32Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-18T02:46:32Z] [SUP]   Cleanup complete.
+[2026-06-18T02:46:32Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-18T02:46:32Z] [SUP] ✅ DAEMON RUNNING PID=1264686
+[2026-06-18T02:49:51Z] [SUP] Cleaning stale state...
+[2026-06-18T02:49:51Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-18T02:49:51Z] [SUP]   Cleanup complete.
+[2026-06-18T02:49:51Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-18T02:49:51Z] [SUP] ✅ DAEMON RUNNING PID=1267400
+[2026-06-18T02:50:53Z] [SUP] Cleaning stale state...
+[2026-06-18T02:50:53Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-18T02:50:53Z] [SUP]   Cleanup complete.
+[2026-06-18T02:50:53Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-18T02:50:53Z] [SUP] ✅ DAEMON RUNNING PID=1267793

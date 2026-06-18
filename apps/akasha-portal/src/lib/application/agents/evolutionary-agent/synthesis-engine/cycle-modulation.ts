@@ -2,7 +2,6 @@
  * synthesis-engine/cycle-modulation.ts
  * Derives how each life area aligns with the current personal cycle.
  */
-
 import type { PersonalCycleSnapshot } from '../../personal-cycle-engine';
 import type { CycleModulation } from '../area-history';
 

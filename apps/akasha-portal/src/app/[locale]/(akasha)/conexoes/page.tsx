@@ -1,14 +1,10 @@
 import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import ConexoesClient from '@/components/akasha/ConexoesClient';
-import { prisma } from '@/lib/infrastructure/prisma';
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
+import { prisma } from '@/lib/infrastructure/prisma';
 
-export default async function ConexoesPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+export default async function ConexoesPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const cookieStore = await cookies();
   const authStatus = (await headers()).get('X-Akasha-Auth');
@@ -17,7 +13,9 @@ export default async function ConexoesPage({
   let userId = '';
   if (authStatus === 'refreshed') {
     try {
-      const decoded = JSON.parse(Buffer.from(token?.split('.')[1] ?? '', 'base64').toString('utf8')) as { sub?: string };
+      const decoded = JSON.parse(
+        Buffer.from(token?.split('.')[1] ?? '', 'base64').toString('utf8')
+      ) as { sub?: string };
       userId = decoded?.sub ?? '';
     } catch {
       userId = '';
@@ -77,7 +75,6 @@ export default async function ConexoesPage({
   } catch {
     redirect(`/${locale}/login?return=${encodeURIComponent('/' + locale + '/conexoes')}`);
   }
-
 
   return <ConexoesClient userProfile={userProfile} />;
 }

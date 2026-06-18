@@ -1,5 +1,5 @@
-import type { InsightData } from './types';
 import type { MapaAlmaCompleto } from '@/lib/domain/engines/types/mapa-alma';
+import type { InsightData } from './types';
 
 const REQUIRED_FIELDS = ['resumo', 'proposito', 'dons', 'desafios'] as const;
 
@@ -109,15 +109,17 @@ export function criarInsightFallback(mapa: MapaAlmaCompleto): InsightData {
     convergencias: { triplices: [], duplas: [] },
     dons: [],
     desafios: [],
-    preceitos: [{
-      odu: odu.nome,
-      quizilas: mapa.odu.quizilas,
-      preceitos: mapa.odu.preceitos,
-      ebos: mapa.odu.ebos,
-      orientacao: 'Siga rigorosamente os preceitos do seu Odú para manter o axé alinhado.',
-    }],
+    preceitos: [
+      {
+        odu: odu.nome,
+        quizilas: mapa.odu.quizilas,
+        preceitos: mapa.odu.preceitos,
+        ebos: mapa.odu.ebos,
+        orientacao: 'Siga rigorosamente os preceitos do seu Odú para manter o axé alinhado.',
+      },
+    ],
     praticas: [],
-    orixas: (mapa.orixasDominantes ?? []).map(nome => ({
+    orixas: (mapa.orixasDominantes ?? []).map((nome) => ({
       nome,
       caminho: mapa.odu.caminhoSephirah,
       saudacao: '',
@@ -126,12 +128,14 @@ export function criarInsightFallback(mapa: MapaAlmaCompleto): InsightData {
       pratica: '',
       conexao: '',
     })),
-    ciclos: [{
-      tipo: 'ano',
-      valor: numerologia.anoPessoal,
-      descricao: `Ano pessoal ${numerologia.anoPessoal}`,
-      sephirah: '',
-    }],
+    ciclos: [
+      {
+        tipo: 'ano',
+        valor: numerologia.anoPessoal,
+        descricao: `Ano pessoal ${numerologia.anoPessoal}`,
+        sephirah: '',
+      },
+    ],
     mensagemSemanal: `Você é um ser em evolução contínua. Seu caminho de ${odu.nome} aguarda sua entrega.`,
   } as InsightData;
 }

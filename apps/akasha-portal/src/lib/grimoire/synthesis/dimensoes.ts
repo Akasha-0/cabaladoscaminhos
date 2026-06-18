@@ -5,7 +5,6 @@
  * Unifica 5 Pilares em 9 dimensões de vida.
  * Cada dimensão tem: título, ícone, cor, chakra, síntese prática.
  */
-
 import type { Pilar } from '../significados-curados';
 import type { Area } from '../traducao-areas';
 

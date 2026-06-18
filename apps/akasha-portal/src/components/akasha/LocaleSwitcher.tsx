@@ -4,7 +4,6 @@
 // Persists preference in `NEXT_LOCALE` cookie (client-readable, non-httpOnly)
 // and navigates to the same route under the new locale prefix
 // (e.g. /pt-BR/conta → /en/conta) using Next.js router for a smooth SPA transition.
-
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { defaultLocale, locales, type Locale } from '@/i18n/config';

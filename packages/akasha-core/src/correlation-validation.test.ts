@@ -20,7 +20,6 @@
  *  - R-022b Ethics Charter §2 (Tradição Viva, citação)
  *  - instinto "agents-md-derive-not-invent-correspondences"
  */
-
 import { describe, it, expect } from 'vitest';
 import {
   IFA_ODUS,
@@ -40,9 +39,22 @@ import {
 // Stub de R-030: extract the canonical 16-Odu list from akasha-core.ts
 // (kept in sync manually — divergence IS the test target)
 const STUB_ODUS_16 = [
-  'Ogbe', 'Oyeku', 'Iwori', 'Odi', 'Irosun', 'Owonrin',
-  'Obara', 'Okanran', 'Ogunda', 'Osa', 'Ika', 'Oturupon',
-  'Otura', 'Irete', 'Ofun', 'Ose',
+  'Ogbe',
+  'Oyeku',
+  'Iwori',
+  'Odi',
+  'Irosun',
+  'Owonrin',
+  'Obara',
+  'Okanran',
+  'Ogunda',
+  'Osa',
+  'Ika',
+  'Oturupon',
+  'Otura',
+  'Irete',
+  'Ofun',
+  'Ose',
 ] as const;
 
 describe('D-044 — Ranges canônicos (knowledge base bounds)', () => {

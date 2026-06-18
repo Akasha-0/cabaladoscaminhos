@@ -13,8 +13,11 @@
  *
  * Pilar 4 (Odu) marca `requer_terreiro` em todos os termos (R-022).
  */
-
-import { glossarioPorSistema, coberturaGlossario, type SistemaGlossario } from '@/lib/grimoire/glossario';
+import {
+  glossarioPorSistema,
+  coberturaGlossario,
+  type SistemaGlossario,
+} from '@/lib/grimoire/glossario';
 
 export const metadata = {
   title: 'Glossário — o que cada termo significa',
@@ -51,7 +54,14 @@ const SISTEMA_LABEL: Record<SistemaGlossario, string> = {
   geral: 'Geral',
 };
 
-const SISTEMAS_ORDEM: SistemaGlossario[] = ['cabala', 'astrologia', 'tantrica', 'odu', 'iching', 'geral'];
+const SISTEMAS_ORDEM: SistemaGlossario[] = [
+  'cabala',
+  'astrologia',
+  'tantrica',
+  'odu',
+  'iching',
+  'geral',
+];
 
 export default function GlossarioPage() {
   const cob = coberturaGlossario();
@@ -88,8 +98,8 @@ export default function GlossarioPage() {
           </h1>
           <p style={{ color: C.txtSec, fontSize: '0.95rem', lineHeight: 1.5, margin: 0 }}>
             Você encontra termos como <em>Sefirot</em>, <em>Ori</em>, <em>Hexagrama</em> e{' '}
-            <em>Tríade Sombra/Dom/Graça</em> ao longo do Akasha. Aqui, cada um é traduzido
-            em linguagem direta — sem perder a precisão simbólica.
+            <em>Tríade Sombra/Dom/Graça</em> ao longo do Akasha. Aqui, cada um é traduzido em
+            linguagem direta — sem perder a precisão simbólica.
           </p>
         </header>
 
@@ -161,7 +171,14 @@ export default function GlossarioPage() {
                         <em>Também:</em> {t.sinonimos.join(' · ')}
                       </p>
                     )}
-                    <p style={{ fontSize: '0.65rem', color: C.txtMut, margin: '4px 0 0', fontStyle: 'italic' }}>
+                    <p
+                      style={{
+                        fontSize: '0.65rem',
+                        color: C.txtMut,
+                        margin: '4px 0 0',
+                        fontStyle: 'italic',
+                      }}
+                    >
                       via {t.fonte}
                     </p>
                   </article>
@@ -192,9 +209,9 @@ export default function GlossarioPage() {
             Aviso ético · Pilar 4 (Odu)
           </span>
           <p style={{ color: C.txtSec, fontSize: '0.8rem', lineHeight: 1.5, margin: '6px 0 0' }}>
-            Os termos do Pilar 4 (Ori, Odu, Babalaô, Ebó) são INTRODUÇÕES GERAIS. A
-            interpretação profunda do seu Ori pede babalaô/yaô de sua confiança, com
-            consentimento seu e da tradição (R-022 §4.4).
+            Os termos do Pilar 4 (Ori, Odu, Babalaô, Ebó) são INTRODUÇÕES GERAIS. A interpretação
+            profunda do seu Ori pede babalaô/yaô de sua confiança, com consentimento seu e da
+            tradição (R-022 §4.4).
           </p>
         </section>
       </div>

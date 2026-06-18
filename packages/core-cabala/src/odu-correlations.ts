@@ -158,7 +158,7 @@ export const NUMEROLOGY_ODU_CORRELATIONS: NumerologyOdúCorrelation[] = [
  * Get correlation for a specific number
  */
 function getCorrelationForNumber(numero: number): NumerologyOdúCorrelation | undefined {
-  return NUMEROLOGY_ODU_CORRELATIONS.find(c => c.numeroReduzido === numero);
+  return NUMEROLOGY_ODU_CORRELATIONS.find((c) => c.numeroReduzido === numero);
 }
 
 /**

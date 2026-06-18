@@ -11,12 +11,18 @@
 
 export function getLifePathRhythm(n: number): string {
   const map: Record<number, string> = {
-    1: 'iniciação e depois reflexão', 2: 'parceria e depois solitude',
-    3: 'expressão e depois introspecção', 4: 'construção e depois soltura',
-    5: 'liberdade e depois ancora', 6: 'responsabilidade e depois play',
-    7: 'pesquisa e depois compartilhamento', 8: 'poder e depois serviço',
-    9: 'humanitarismo e depois paz', 11: 'iluminação e depois concretização',
-    22: 'master builder e depois inspiração', 33: 'sacrifício e depois transcendência',
+    1: 'iniciação e depois reflexão',
+    2: 'parceria e depois solitude',
+    3: 'expressão e depois introspecção',
+    4: 'construção e depois soltura',
+    5: 'liberdade e depois ancora',
+    6: 'responsabilidade e depois play',
+    7: 'pesquisa e depois compartilhamento',
+    8: 'poder e depois serviço',
+    9: 'humanitarismo e depois paz',
+    11: 'iluminação e depois concretização',
+    22: 'master builder e depois inspiração',
+    33: 'sacrifício e depois transcendência',
   };
   return map[n] ?? 'crescimento contínuo com momentos de integração';
 }
@@ -38,22 +44,32 @@ export function getKabalisticMotivationRel(n: number): string {
 
 export function getLifePathCareer(n: number): string {
   const map: Record<number, string> = {
-    1: 'liderar, criar e inovar', 2: 'mediar, parcerias e diplomacy',
-    3: 'comunicar, entreter e inspirar', 4: 'construir sistemas duráveis',
-    5: 'ensinar, viajar e expandir horizontes', 6: 'cuidar, servir e educar',
-    7: 'pesquisar, analisar e revelar verdades', 8: 'empreender, gerir recursos e impactar',
-    9: 'curar, aconselhar e transformar', 11: 'inspirar e liderar espiritual',
-    22: 'construir em grande escala com propósito', 33: 'servir a humanidade com sacrifício sagrado',
+    1: 'liderar, criar e inovar',
+    2: 'mediar, parcerias e diplomacy',
+    3: 'comunicar, entreter e inspirar',
+    4: 'construir sistemas duráveis',
+    5: 'ensinar, viajar e expandir horizontes',
+    6: 'cuidar, servir e educar',
+    7: 'pesquisar, analisar e revelar verdades',
+    8: 'empreender, gerir recursos e impactar',
+    9: 'curar, aconselhar e transformar',
+    11: 'inspirar e liderar espiritual',
+    22: 'construir em grande escala com propósito',
+    33: 'servir a humanidade com sacrifício sagrado',
   };
   return map[n] ?? 'expressar sua essência única no mundo';
 }
 
 export function getExpressionCareer(n: number): string {
   const map: Record<number, string> = {
-    1: 'sua voz única e capacidade de liderar', 2: 'sua habilidade de harmonizar e mediar',
-    3: 'sua criatividade e poder de encantar', 4: 'sua praticidade e habilidade de construir',
-    5: 'sua versatile e ability de entreter', 6: 'sua responsabilidade e cuidado com os outros',
-    7: 'sua profundidade intelectual e análise', 8: 'seu senso de abundância e gestão',
+    1: 'sua voz única e capacidade de liderar',
+    2: 'sua habilidade de harmonizar e mediar',
+    3: 'sua criatividade e poder de encantar',
+    4: 'sua praticidade e habilidade de construir',
+    5: 'sua versatile e ability de entreter',
+    6: 'sua responsabilidade e cuidado com os outros',
+    7: 'sua profundidade intelectual e análise',
+    8: 'seu senso de abundância e gestão',
     9: 'sua compaixão e visão humanitária',
   };
   return map[n] ?? 'seu dom de se expressar autênticamente';
@@ -85,10 +101,14 @@ export function getMasterLifePathGift(n: number): string {
 
 export function getLifePathGist(n: number): string {
   const map: Record<number, string> = {
-    1: 'independência e auto-liderança', 2: 'cooperação e equilíbrio',
-    3: 'autenticidade e expressão criativa', 4: 'disciplina e construção de legado',
-    5: 'adaptabilidade e liberdade interior', 6: 'responsabilidade e cuidado',
-    7: 'discernimento e busca da verdade', 8: 'abundância e integridade',
+    1: 'independência e auto-liderança',
+    2: 'cooperação e equilíbrio',
+    3: 'autenticidade e expressão criativa',
+    4: 'disciplina e construção de legado',
+    5: 'adaptabilidade e liberdade interior',
+    6: 'responsabilidade e cuidado',
+    7: 'discernimento e busca da verdade',
+    8: 'abundância e integridade',
     9: 'compaixão e serviço genuíno',
   };
   return map[n] ?? 'seu caminho de crescimento e realização';
@@ -129,12 +149,18 @@ export function getTantricSoulBond(soul: number): string {
 
 export function getTantricDivineGift(n: number): string {
   const map: Record<number, string> = [
-    'compaixão profunda e capacidade de curar', 'visão estratégica e poder de realização',
-    'expressão criativa e comunicação magnética', 'praticidade e habilidade de construir',
-    'liberdade e capacidade de inspirar mudança', 'cuidado e capacidade de nutrir',
-    'sabedoria e capacidade de ensino', 'abundância e capacidade de gerar prosperidade',
-    'transformação e capacidade de renascimento', 'conexão espiritual e cura energética',
-    'liderança carismática e propósito elevado', 'transcendência e iluminação',
+    'compaixão profunda e capacidade de curar',
+    'visão estratégica e poder de realização',
+    'expressão criativa e comunicação magnética',
+    'praticidade e habilidade de construir',
+    'liberdade e capacidade de inspirar mudança',
+    'cuidado e capacidade de nutrir',
+    'sabedoria e capacidade de ensino',
+    'abundância e capacidade de gerar prosperidade',
+    'transformação e capacidade de renascimento',
+    'conexão espiritual e cura energética',
+    'liderança carismática e propósito elevado',
+    'transcendência e iluminação',
   ];
   return map[n - 1] ?? 'um talento único que serve ao mundo';
 }
@@ -178,54 +204,78 @@ export function getElementalMentalMode(element: string): string {
 
 export function getVenusLoveStyle(sign: string): string {
   const map: Record<string, string> = {
-    aries: 'apaixonada e direta', taurus: 'sensual e devota',
-    gemini: 'curiosa e intelectual', cancer: 'emocional e protetora',
-    leo: 'dramática e magnética', virgo: 'prática e cuidadosa',
-    libra: 'harmoniosa e encantadora', scorpio: 'intensa e transformadora',
-    sagittarius: 'avventurosa e livre', capricorn: 'ambiciosa e fiel',
-    aquarius: 'independente e única', pisces: 'romântica e sonhadora',
+    aries: 'apaixonada e direta',
+    taurus: 'sensual e devota',
+    gemini: 'curiosa e intelectual',
+    cancer: 'emocional e protetora',
+    leo: 'dramática e magnética',
+    virgo: 'prática e cuidadosa',
+    libra: 'harmoniosa e encantadora',
+    scorpio: 'intensa e transformadora',
+    sagittarius: 'avventurosa e livre',
+    capricorn: 'ambiciosa e fiel',
+    aquarius: 'independente e única',
+    pisces: 'romântica e sonhadora',
   };
   return map[sign?.toLowerCase()] ?? 'expressiva e única';
 }
 
 export function getVenusNeed(sign: string): string {
   const map: Record<string, string> = {
-    aries: 'precisa sentir que é desejada', taurus: 'precisa de estabilidade e prazer sensory',
-    gemini: 'precisa de estimulação mental', cancer: 'precisa se sentir em casa com o outro',
-    leo: 'precisa ser admirada', virgo: 'precisa de gestos pequenos e concretos',
-    libra: 'precisa de harmonia e beleza', scorpio: 'precisa de profundidade e intimidade total',
-    sagittarius: 'precisa de aventura e liberdade', capricorn: 'precisa de compromisso e segurança',
-    aquarius: 'precisa de amizade e espaço', pisces: 'precisa de conexão espiritual e fantasia',
+    aries: 'precisa sentir que é desejada',
+    taurus: 'precisa de estabilidade e prazer sensory',
+    gemini: 'precisa de estimulação mental',
+    cancer: 'precisa se sentir em casa com o outro',
+    leo: 'precisa ser admirada',
+    virgo: 'precisa de gestos pequenos e concretos',
+    libra: 'precisa de harmonia e beleza',
+    scorpio: 'precisa de profundidade e intimidade total',
+    sagittarius: 'precisa de aventura e liberdade',
+    capricorn: 'precisa de compromisso e segurança',
+    aquarius: 'precisa de amizade e espaço',
+    pisces: 'precisa de conexão espiritual e fantasia',
   };
   return map[sign?.toLowerCase()] ?? 'precisa ser estimada';
 }
 
 export function getVenusRelationalHabit(sign: string): string {
   const map: Record<string, string> = {
-    aries: 'demonstra afeto', taurus: 'valoriza gestos concretos de cuidado',
-    gemini: 'conversa profundamente', cancer: 'cuida antes de ser cuidada',
-    leo: 'celebra publicamente', virgo: 'organiza a vida do outro com amor',
-    libra: 'diplomacy para evitar conflitos', scorpio: 'vai ao fundo das coisas',
-    sagittarius: 'diverte-se e expande horizontes', capricorn: 'construir um futuro juntos',
-    aquarius: 'resgata sua individualidade', pisces: 'se conecta soul-to-soul',
+    aries: 'demonstra afeto',
+    taurus: 'valoriza gestos concretos de cuidado',
+    gemini: 'conversa profundamente',
+    cancer: 'cuida antes de ser cuidada',
+    leo: 'celebra publicamente',
+    virgo: 'organiza a vida do outro com amor',
+    libra: 'diplomacy para evitar conflitos',
+    scorpio: 'vai ao fundo das coisas',
+    sagittarius: 'diverte-se e expande horizontes',
+    capricorn: 'construir um futuro juntos',
+    aquarius: 'resgata sua individualidade',
+    pisces: 'se conecta soul-to-soul',
   };
   return map[sign?.toLowerCase()] ?? 'demonstra apreço de forma única';
 }
 
 export function getMoonEmotionalNeed(sign: string): string {
   const map: Record<string, string> = {
-    cancer: 'segurança emocional e lar', scorpio: 'profundidade e transformação',
-    pisces: 'conexão espiritual e fantasia', taurus: 'estabilidade e prazer',
-    virgo: 'ordem e utilidade', gemini: 'variedade e comunicação',
+    cancer: 'segurança emocional e lar',
+    scorpio: 'profundidade e transformação',
+    pisces: 'conexão espiritual e fantasia',
+    taurus: 'estabilidade e prazer',
+    virgo: 'ordem e utilidade',
+    gemini: 'variedade e comunicação',
   };
   return map[sign?.toLowerCase()] ?? 'compreensão e paciência';
 }
 
 export function getMoonDefensivePattern(sign: string): string {
   const map: Record<string, string> = {
-    cancer: 'superação e afastamento', scorpio: 'controle e vingança',
-    pisces: 'fuga e fantasia', taurus: 'teimosia e possessividade',
-    virgo: 'crítica e análise excessiva', gemini: 'superficialidade e mudança constante',
+    cancer: 'superação e afastamento',
+    scorpio: 'controle e vingança',
+    pisces: 'fuga e fantasia',
+    taurus: 'teimosia e possessividade',
+    virgo: 'crítica e análise excessiva',
+    gemini: 'superficialidade e mudança constante',
   };
   return map[sign?.toLowerCase()] ?? 'proteção e defesa';
 }
@@ -243,24 +293,39 @@ export function getLilithHiddenDesire(sign: string): string {
 
 export function getMidheavenCareer(sign: string): string {
   const map: Record<string, string> = {
-    aries: 'iniciativas de liderança e competição', taurus: 'finanças, propriedades e valores',
-    gemini: 'comunicação, mídia e comércio', cancer: 'cuidado, lar e família',
-    leo: 'arte, entretenimento e children', virgo: 'saúde, serviço e detalhes',
-    libra: 'justice, relationships e estética', scorpio: 'transformação e investigação profunda',
-    sagittarius: 'filosofia, viagem e ensino', capricorn: 'negócios, status e achievement',
-    aquarius: 'inovação social e coletividades', pisces: 'espiritualidade, arte e cura',
+    aries: 'iniciativas de liderança e competição',
+    taurus: 'finanças, propriedades e valores',
+    gemini: 'comunicação, mídia e comércio',
+    cancer: 'cuidado, lar e família',
+    leo: 'arte, entretenimento e children',
+    virgo: 'saúde, serviço e detalhes',
+    libra: 'justice, relationships e estética',
+    scorpio: 'transformação e investigação profunda',
+    sagittarius: 'filosofia, viagem e ensino',
+    capricorn: 'negócios, status e achievement',
+    aquarius: 'inovação social e coletividades',
+    pisces: 'espiritualidade, arte e cura',
   };
-  return map[(typeof sign === 'string' ? sign : String(sign))?.toLowerCase()] ?? 'algo significativo para você';
+  return (
+    map[(typeof sign === 'string' ? sign : String(sign))?.toLowerCase()] ??
+    'algo significativo para você'
+  );
 }
 
 export function getJupiterProsperity(sign: string): string {
   const map: Record<string, string> = {
-    aries: 'atravessa desafios com otimismo', taurus: 'acumula com paciência e prazer',
-    gemini: 'expande através de conexões e ideias', cancer: 'prospera em lar e família',
-    leo: 'generosity traz mais abundância', virgo: 'serve aos outros com excelência',
-    libra: 'cria parcerias abundantes', scorpio: 'transforma crise em oportunidade',
-    sagittarius: 'expand beliefs e horizontes', capricorn: 'construi estrutura com disciplina',
-    aquarius: 'inova para o bem comum', pisces: 'confia no fluxo do universo',
+    aries: 'atravessa desafios com otimismo',
+    taurus: 'acumula com paciência e prazer',
+    gemini: 'expande através de conexões e ideias',
+    cancer: 'prospera em lar e família',
+    leo: 'generosity traz mais abundância',
+    virgo: 'serve aos outros com excelência',
+    libra: 'cria parcerias abundantes',
+    scorpio: 'transforma crise em oportunidade',
+    sagittarius: 'expand beliefs e horizontes',
+    capricorn: 'construi estrutura com disciplina',
+    aquarius: 'inova para o bem comum',
+    pisces: 'confia no fluxo do universo',
   };
   return map[sign?.toLowerCase()] ?? 'abraça a abundância com gratidão';
 }

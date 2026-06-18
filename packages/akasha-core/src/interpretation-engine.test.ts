@@ -10,7 +10,7 @@
  *   - Números fora do catálogo VIDA_CONTENT caem no buildFallback
  *   - interpretarVidaArea devolve um AreaInterpretation válido para área coberta
  */
-
+import type { VidaInterpretation, AreaInterpretation } from '@akasha/types';
 import { describe, it, expect } from 'vitest';
 import {
   interpretarVida,
@@ -18,7 +18,6 @@ import {
   MASTER_NUMBERS,
   VIDA_CONTENT,
 } from './interpretation-engine';
-import type { VidaInterpretation, AreaInterpretation } from '@akasha/types';
 
 // ─── Testes: interpretarVida ───────────────────────────────────────────────
 
@@ -142,7 +141,9 @@ describe('VIDA_CONTENT', () => {
       expect(VIDA_CONTENT[n]).toBeDefined();
     }
     // Exatamente estes e mais nenhum
-    const keys = Object.keys(VIDA_CONTENT).map(Number).sort((a, b) => a - b);
+    const keys = Object.keys(VIDA_CONTENT)
+      .map(Number)
+      .sort((a, b) => a - b);
     expect(keys).toEqual([...EXPECTED_NUMBERS].sort((a, b) => a - b));
   });
 
@@ -181,7 +182,7 @@ describe('VIDA_CONTENT', () => {
         const aplicacao = VIDA_CONTENT[n].levels[nivel].aplicacao;
         expect(
           aplicacao.proposito,
-          `número ${n} nível ${nivel} sem aplicacao.proposito`,
+          `número ${n} nível ${nivel} sem aplicacao.proposito`
         ).toBeDefined();
         expect(typeof aplicacao.proposito).toBe('string');
         expect((aplicacao.proposito as string).length).toBeGreaterThan(0);

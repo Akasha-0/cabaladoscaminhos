@@ -14,13 +14,13 @@
  * redação LLM; o que o F-202 já trata como "esqueleto" será preenchido
  * sem mudanças de UI.
  */
-import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import { cookies, headers } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import { ContinuarButton } from '@/components/akasha/ContinuarButton';
 import { SignificadoPilar } from '@/components/akasha/SignificadoPilar';
 import { TraducaoAreaPanel } from '@/components/akasha/TraducaoAreaPanel';
-import { ContinuarButton } from '@/components/akasha/ContinuarButton';
+import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import {
   significadosEspecificos,
   type Pilar,
@@ -28,7 +28,13 @@ import {
 } from '@/lib/grimoire/significados-curados';
 import { AREAS, traducaoPara } from '@/lib/grimoire/traducao-areas';
 
-const PILARES_VALIDOS: readonly Pilar[] = ['cabala', 'astrologia', 'tantrica', 'odu', 'iching'] as const;
+const PILARES_VALIDOS: readonly Pilar[] = [
+  'cabala',
+  'astrologia',
+  'tantrica',
+  'odu',
+  'iching',
+] as const;
 
 type MandatoEsqueleto = {
   escala: 'D' | 'S' | 'Z' | 'V';
@@ -55,7 +61,12 @@ type PilaresDoMandato = {
     lilith_signo?: string | null;
     casa_8_signo?: string | null;
   };
-  odu: { odu_principal: string; odu_secundario: string | null; fonte: 'Ifá' | 'Candomblé'; aviso: string };
+  odu: {
+    odu_principal: string;
+    odu_secundario: string | null;
+    fonte: 'Ifá' | 'Candomblé';
+    aviso: string;
+  };
   iching: { hexagrama_natal: number; hexagrama_dia: number; level: 'shadow' | 'gift' | 'siddhi' };
 };
 
@@ -320,7 +331,8 @@ export default async function DiarioPage({
   const cookieStore = await cookies();
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
   const authStatus = (await headers()).get('X-Akasha-Auth');
-  if (authStatus !== 'refreshed' && !verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
+  if (authStatus !== 'refreshed' && !verifyAkashaToken(token, 'access'))
+    redirect(`/${locale}/login`);
 
   const qs = intencao?.trim() ? `?intencao=${encodeURIComponent(intencao.trim())}` : '';
 
@@ -342,7 +354,8 @@ export default async function DiarioPage({
             <span style={labelStyle(C.magenta)}>Mandato indisponível</span>
             <p style={bodyStyle}>
               Não conseguimos calcular o Mandato de hoje ({res.status}). Tente novamente em alguns
-              instantes. Se o problema persistir, conclua o onboarding ou atualize sua data de nascimento. Acesse seu perfil para corrigir.
+              instantes. Se o problema persistir, conclua o onboarding ou atualize sua data de
+              nascimento. Acesse seu perfil para corrigir.
             </p>
           </div>
         </div>
@@ -365,7 +378,7 @@ export default async function DiarioPage({
       {/* ── Tela 1: O Mandato (3 frases) ─────────────────────────────────── */}
       <div style={screenStyle} role="region" aria-label="Tela 1 de 5 — Mandato">
         <div style={innerStyle}>
-        <div style={screenNumStyle}>01\u00A0/\u00A005 — Mandato</div>
+          <div style={screenNumStyle}>01\u00A0/\u00A005 — Mandato</div>
 
           {/* Cabeçalho: data + escala + intenção */}
           <div style={cardStyle(pilarInfo.cor)}>
@@ -432,8 +445,22 @@ export default async function DiarioPage({
           ) : (
             <div style={cardStyle(pilarInfo.cor)}>
               <h2 style={{ ...headlineStyle, color: pilarInfo.cor }}>A Voz do Akasha</h2>
-              <span style={{fontSize:'0.68rem', color:C.txtSec, display:'block', marginBottom:6}}>Leia em voz alta. Observe o que mais ressoa.</span>
-              <span style={{fontSize:'0.72rem', color:C.txtMut, fontStyle:'italic', display:'block', marginBottom:8}}>Três frases que condensam a mensagem energética do seu mapa para hoje.</span>
+              <span
+                style={{ fontSize: '0.68rem', color: C.txtSec, display: 'block', marginBottom: 6 }}
+              >
+                Leia em voz alta. Observe o que mais ressoa.
+              </span>
+              <span
+                style={{
+                  fontSize: '0.72rem',
+                  color: C.txtMut,
+                  fontStyle: 'italic',
+                  display: 'block',
+                  marginBottom: 8,
+                }}
+              >
+                Três frases que condensam a mensagem energética do seu mapa para hoje.
+              </span>
               {frases.map((f, i) => (
                 <p
                   key={i}
@@ -461,11 +488,20 @@ export default async function DiarioPage({
                 </div>
               )}
 
-              <div style={{textAlign:'center', marginTop:8}}><span style={{fontSize:'0.7rem', color:C.txtMut}} aria-label='Continue para a pergunta do dia'>Continue para a pergunta do dia ↓</span></div>
+              <div style={{ textAlign: 'center', marginTop: 8 }}>
+                <span
+                  style={{ fontSize: '0.7rem', color: C.txtMut }}
+                  aria-label="Continue para a pergunta do dia"
+                >
+                  Continue para a pergunta do dia ↓
+                </span>
+              </div>
               {/* Fontes citadas — proveniência obrigatória (Ethics §1) */}
               {mandato.cita_fontes.length > 0 && (
                 <details className="mt-2" aria-label="Fontes e referências desta análise">
-                  <summary className="text-xs text-white/30 cursor-pointer hover:text-white/50">Fontes</summary>
+                  <summary className="text-xs text-white/30 cursor-pointer hover:text-white/50">
+                    Fontes
+                  </summary>
                   <div style={fonteStyle}>
                     {mandato.cita_fontes.map((c, i) => (
                       <div key={i}>· {c}</div>
@@ -475,7 +511,6 @@ export default async function DiarioPage({
               )}
             </div>
           )}
-
         </div>
       </div>
 
@@ -484,12 +519,12 @@ export default async function DiarioPage({
         <div style={innerStyle}>
           <div style={screenNumStyle}>02\u00A0/\u00A005 — Pergunta</div>
           <div style={cardStyle(C.violeta)}>
-              <h2 style={{ ...headlineStyle, color: C.violeta, fontSize: '1.35rem' }}>A Pergunta do Dia</h2>
+            <h2 style={{ ...headlineStyle, color: C.violeta, fontSize: '1.35rem' }}>
+              A Pergunta do Dia
+            </h2>
             <div style={dividerStyle} />
             <span style={labelStyle(C.txtMut)}>Por que esta pergunta?</span>
-            <p style={bodyStyle}>
-              Respire. Deixe a resposta emergir antes de buscar palavras.
-            </p>
+            <p style={bodyStyle}>Respire. Deixe a resposta emergir antes de buscar palavras.</p>
             <textarea
               placeholder="Qual é a primeira resposta que vem, antes da mente julgar?"
               style={{
@@ -520,7 +555,7 @@ export default async function DiarioPage({
         <div style={innerStyle}>
           <h2 style={screenNumStyle}>03\u00A0/\u00A005 — Ritual</h2>
           <div style={cardStyle(C.aurora)}>
-              <h3 style={{ ...headlineStyle, color: C.aurora }}>O Micro-Ritual</h3>
+            <h3 style={{ ...headlineStyle, color: C.aurora }}>O Micro-Ritual</h3>
             <p style={bodyStyle}>{ritual.instrucao}</p>
             <div style={{ marginTop: 14 }}>
               <span style={badgeStyle(pilarInfo.cor)}>via {pilarInfo.nome}</span>
@@ -548,9 +583,19 @@ export default async function DiarioPage({
         return (
           <div style={screenStyle} role="region" aria-label="Tela 4 de 5 — Significado dos Pilares">
             <div style={innerStyle}>
-            <h2 style={screenNumStyle}>04\u00A0/\u00A005 — Significado dos Pilares</h2>
-              <h3 style={{ fontSize: '0.8rem', fontWeight: 600, color: C.txtSec, marginBottom: 8, letterSpacing: '0.02em', lineHeight: 1.4 }}>
-                Leia cada Pilar na ordem. Para cada um: note a <em>Sombra</em> primeiro (o que tende a recusar), depois a <em>Prática</em> (o antídoto). Ao final, veja como se conectam.
+              <h2 style={screenNumStyle}>04\u00A0/\u00A005 — Significado dos Pilares</h2>
+              <h3
+                style={{
+                  fontSize: '0.8rem',
+                  fontWeight: 600,
+                  color: C.txtSec,
+                  marginBottom: 8,
+                  letterSpacing: '0.02em',
+                  lineHeight: 1.4,
+                }}
+              >
+                Leia cada Pilar na ordem. Para cada um: note a <em>Sombra</em> primeiro (o que tende
+                a recusar), depois a <em>Prática</em> (o antídoto). Ao final, veja como se conectam.
               </h3>
               {ordem.map((p) => (
                 <div key={p} style={{ marginBottom: 14 }}>
@@ -558,10 +603,24 @@ export default async function DiarioPage({
                     significado={sigs[p]}
                     cor={coresPorPilar[p]}
                     destaque={p === pilarPrincipal}
-                    sexualidade={p === 'astrologia' ? {
-                      lilith_signo: (payload.pilares.astrologia as { lilith_signo?: string | null; casa_8_signo?: string | null }).lilith_signo,
-                      casa_8_signo: (payload.pilares.astrologia as { lilith_signo?: string | null; casa_8_signo?: string | null }).casa_8_signo,
-                    } : undefined}
+                    sexualidade={
+                      p === 'astrologia'
+                        ? {
+                            lilith_signo: (
+                              payload.pilares.astrologia as {
+                                lilith_signo?: string | null;
+                                casa_8_signo?: string | null;
+                              }
+                            ).lilith_signo,
+                            casa_8_signo: (
+                              payload.pilares.astrologia as {
+                                lilith_signo?: string | null;
+                                casa_8_signo?: string | null;
+                              }
+                            ).casa_8_signo,
+                          }
+                        : undefined
+                    }
                   />
                 </div>
               ))}
@@ -595,7 +654,13 @@ export default async function DiarioPage({
               >
                 Leia da esquerda para direita — do profissional ao íntimo.
               </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 10 }}>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+                  gap: 10,
+                }}
+              >
                 {AREAS.map((a) => {
                   const t = traducaoPara(p, a);
                   if (!t) return null;

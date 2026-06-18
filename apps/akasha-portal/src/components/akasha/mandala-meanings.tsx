@@ -20,7 +20,10 @@ export const LIFE_PATH_MEANINGS: Record<number, string> = {
   33: 'Número Mestre 33 — Mestre Cósmico. Serviço incondicional, amor universal, cura e ensino.',
 };
 
-export const TANTRIC_BODY_WISDOM: Record<number, { desc: string; challenge: string; activate: string }> = {
+export const TANTRIC_BODY_WISDOM: Record<
+  number,
+  { desc: string; challenge: string; activate: string }
+> = {
   1: {
     desc: 'Corpo da Alma',
     challenge: 'Encontrar propósito humilde',
@@ -54,7 +57,10 @@ export const TANTRIC_BODY_WISDOM: Record<number, { desc: string; challenge: stri
   },
 };
 
-export function resolveSig(pilar: Pilar, id: string | number | null | undefined): SignificadoCurado {
+export function resolveSig(
+  pilar: Pilar,
+  id: string | number | null | undefined
+): SignificadoCurado {
   if (id == null) return significadoGenericoDoPilar(pilar);
   return significadoPorPilar(pilar, id) ?? significadoGenericoDoPilar(pilar);
 }

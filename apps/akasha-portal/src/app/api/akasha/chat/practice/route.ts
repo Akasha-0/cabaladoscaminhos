@@ -10,7 +10,9 @@ export interface PracticeResponse {
   suggestedPractices: SuggestedPractice[];
 }
 
-export async function POST(req: NextRequest): Promise<NextResponse<PracticeResponse | { error: string }>> {
+export async function POST(
+  req: NextRequest
+): Promise<NextResponse<PracticeResponse | { error: string }>> {
   const authResult = await requireAkashaApi(req);
   if (authResult instanceof NextResponse) return authResult;
 

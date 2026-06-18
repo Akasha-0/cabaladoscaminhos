@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { GLYPHS_BY_PLANET, PLANET_COLORS, formatDegreeToZodiac, longitudeToSvgAngle } from './zodiac';
+import {
+  GLYPHS_BY_PLANET,
+  PLANET_COLORS,
+  formatDegreeToZodiac,
+  longitudeToSvgAngle,
+} from './zodiac';
 
 // Mandala Fase 3 (spec mandala-fase3-zodiac-tantra)
 // Requisito 3.1: longitude absoluta correta na eclíptica

@@ -1,6 +1,5 @@
 // Odu Comparison Tool - Cabala Dos Caminhos
 // Compare two Ifa/Odu readings for similarities and differences
-
 // F-101 cleanup (Jun 2026): Removed `export` from 4 unused types
 // (ElementalAlignment, OrixaOverlap, QuizilaCompatibility, EboAlignment).
 // They are used ONLY as return types of internal helpers within this file
@@ -8,7 +7,6 @@
 // the situation; cleanup was the obvious next step.
 // Lesson N+26: surface don't hide — kept the comments explaining WHY.
 // Public API changes (OduReading, OduComparison) are preserved.
-
 import { OduInfo, odusData } from './calculos';
 
 /**
@@ -85,28 +83,15 @@ export interface OduComparison {
 /**
  * Compare two Odu readings
  */
-function compareOdu(
-  readingA: OduReading,
-  readingB: OduReading
-): OduComparison {
+function compareOdu(readingA: OduReading, readingB: OduReading): OduComparison {
   const sameOdu = readingA.odu.numero === readingB.odu.numero;
-  const sameOrisha =
-    readingA.odu.orixaRegente === readingB.odu.orixaRegente;
+  const sameOrisha = readingA.odu.orixaRegente === readingB.odu.orixaRegente;
 
-  const elementalAlignment = compareElemental(
-    readingA.odu.elementos,
-    readingB.odu.elementos
-  );
+  const elementalAlignment = compareElemental(readingA.odu.elementos, readingB.odu.elementos);
 
-  const orixaOverlap = compareOrixas(
-    readingA.odu.orixaRegente,
-    readingB.odu.orixaRegente
-  );
+  const orixaOverlap = compareOrixas(readingA.odu.orixaRegente, readingB.odu.orixaRegente);
 
-  const quizilaCompatibility = compareQuizilas(
-    readingA.odu.quizilas,
-    readingB.odu.quizilas
-  );
+  const quizilaCompatibility = compareQuizilas(readingA.odu.quizilas, readingB.odu.quizilas);
 
   const eboAlignment = compareEbos(readingA.odu.ebos, readingB.odu.ebos);
 
@@ -116,7 +101,7 @@ function compareOdu(
     elementalAlignment,
     orixaOverlap,
     quizilaCompatibility,
-    eboAlignment
+    eboAlignment,
   });
 
   const compatibilityLevel = getCompatibilityLevel(similarityScore);
@@ -129,7 +114,7 @@ function compareOdu(
     elementalAlignment,
     orixaOverlap,
     quizilaCompatibility,
-    eboAlignment
+    eboAlignment,
   });
 
   return {
@@ -145,37 +130,40 @@ function compareOdu(
     orixaOverlap,
     quizilaCompatibility,
     eboAlignment,
-    notes
+    notes,
   };
 }
 
 /**
  * Compare elemental compositions
  */
-function compareElemental(
-  elemA: string,
-  elemB: string
-): ElementalAlignment {
-  const elemsA = elemA.split(/[,;\/]/).map(e => e.trim()).filter(Boolean);
-  const elemsB = elemB.split(/[,;\/]/).map(e => e.trim()).filter(Boolean);
+function compareElemental(elemA: string, elemB: string): ElementalAlignment {
+  const elemsA = elemA
+    .split(/[,;\/]/)
+    .map((e) => e.trim())
+    .filter(Boolean);
+  const elemsB = elemB
+    .split(/[,;\/]/)
+    .map((e) => e.trim())
+    .filter(Boolean);
 
   const matches: string[] = [];
   const conflicts: string[] = [];
   const neutral: string[] = [];
 
   const elementalOpposites: Record<string, string[]> = {
-    'fogo': ['agua', 'terra'],
-    'agua': ['fogo'],
-    'terra': ['fogo', 'ar'],
-    'ar': ['terra'],
-    'eku': ['oca'],
-    'oca': ['eku']
+    fogo: ['agua', 'terra'],
+    agua: ['fogo'],
+    terra: ['fogo', 'ar'],
+    ar: ['terra'],
+    eku: ['oca'],
+    oca: ['eku'],
   };
 
   for (const elem of elemsA) {
     if (elemsB.includes(elem)) {
       matches.push(elem);
-    } else if (elementalOpposites[elem]?.some(o => elemsB.includes(o))) {
+    } else if (elementalOpposites[elem]?.some((o) => elemsB.includes(o))) {
       conflicts.push(elem);
     } else {
       neutral.push(elem);
@@ -184,7 +172,7 @@ function compareElemental(
 
   for (const elem of elemsB) {
     if (!matches.includes(elem) && !conflicts.includes(elem) && !neutral.includes(elem)) {
-      if (elementalOpposites[elem]?.some(o => elemsA.includes(o))) {
+      if (elementalOpposites[elem]?.some((o) => elemsA.includes(o))) {
         conflicts.push(elem);
       } else if (!elemsA.includes(elem)) {
         neutral.push(elem);
@@ -193,7 +181,8 @@ function compareElemental(
   }
 
   const matchScore = matches.length / Math.max(elemsA.length, elemsB.length, 1);
-  const conflictScore = conflicts.length > 0 ? conflicts.length / Math.max(elemsA.length, elemsB.length, 1) : 0;
+  const conflictScore =
+    conflicts.length > 0 ? conflicts.length / Math.max(elemsA.length, elemsB.length, 1) : 0;
   const score = matchScore - conflictScore;
 
   return { matches, conflicts, neutral, score };
@@ -202,21 +191,18 @@ function compareElemental(
 /**
  * Compare Orixás (simplified for single Orixá each)
  */
-function compareOrixas(
-  orixaA: string,
-  orixaB: string
-): OrixaOverlap {
+function compareOrixas(orixaA: string, orixaB: string): OrixaOverlap {
   const compatibilityMap: Record<string, string[]> = {
-    'Oxum': ['Oxumar', 'Iemanjá', 'Oxóssi'],
-    'Iemanjá': ['Oxum', 'Oxumar', 'Nanã'],
-    'Ogum': ['Oxóssi', 'Xangô', 'Exu'],
-    'Oxóssi': ['Ogum', 'Iansã'],
-    'Xangô': ['Ogum', 'Iansã', 'Obá'],
-    'Oxumar': ['Oxum', 'Iemanjá'],
-    'Nanã': ['Iemanjá', 'Obá'],
-    'Iansã': ['Xangô', 'Oxóssi', 'Omulu'],
-    'Obá': ['Xangô', 'Nanã'],
-    'Omulu': ['Iansã', 'Nanã']
+    Oxum: ['Oxumar', 'Iemanjá', 'Oxóssi'],
+    Iemanjá: ['Oxum', 'Oxumar', 'Nanã'],
+    Ogum: ['Oxóssi', 'Xangô', 'Exu'],
+    Oxóssi: ['Ogum', 'Iansã'],
+    Xangô: ['Ogum', 'Iansã', 'Obá'],
+    Oxumar: ['Oxum', 'Iemanjá'],
+    Nanã: ['Iemanjá', 'Obá'],
+    Iansã: ['Xangô', 'Oxóssi', 'Omulu'],
+    Obá: ['Xangô', 'Nanã'],
+    Omulu: ['Iansã', 'Nanã'],
   };
 
   const shared: string[] = orixaA === orixaB ? [orixaA] : [];
@@ -232,31 +218,34 @@ function compareOrixas(
 /**
  * Compare quizilas (prohibitions/restrictions)
  */
-function compareQuizilas(
-  quizilasA: string[],
-  quizilasB: string[]
-): QuizilaCompatibility {
-  const sharedConstraints = quizilasA.filter(q =>
-    quizilasB.some(qb => q.toLowerCase() === qb.toLowerCase())
+function compareQuizilas(quizilasA: string[], quizilasB: string[]): QuizilaCompatibility {
+  const sharedConstraints = quizilasA.filter((q) =>
+    quizilasB.some((qb) => q.toLowerCase() === qb.toLowerCase())
   );
 
   const allQuizilas = [...new Set([...quizilasA, ...quizilasB])];
   const conflictingPatterns = [
     { a: 'frutos do mar', b: 'peixe' },
     { a: 'vinho', b: 'alcool' },
-    { a: 'carne bovina', b: 'vaca' }
+    { a: 'carne bovina', b: 'vaca' },
   ];
 
   const conflictingConstraints: string[] = [];
   for (const pattern of conflictingPatterns) {
-    const hasA = allQuizilas.some(q =>
-      q.toLowerCase().includes(pattern.a) || q.toLowerCase().includes(pattern.b)
+    const hasA = allQuizilas.some(
+      (q) => q.toLowerCase().includes(pattern.a) || q.toLowerCase().includes(pattern.b)
     );
     if (hasA) {
-      const conflicts = allQuizilas.filter(q => {
+      const conflicts = allQuizilas.filter((q) => {
         const lower = q.toLowerCase();
-        return (lower.includes(pattern.a) || lower.includes(pattern.b)) &&
-          quizilasA.some(qa => qa.toLowerCase() !== q.toLowerCase() && quizilasB.some(qb => qb.toLowerCase() !== q.toLowerCase()));
+        return (
+          (lower.includes(pattern.a) || lower.includes(pattern.b)) &&
+          quizilasA.some(
+            (qa) =>
+              qa.toLowerCase() !== q.toLowerCase() &&
+              quizilasB.some((qb) => qb.toLowerCase() !== q.toLowerCase())
+          )
+        );
       });
       if (conflicts.length > 1) {
         conflictingConstraints.push(...conflicts.slice(0, 2));
@@ -270,36 +259,36 @@ function compareQuizilas(
     sharedConstraints,
     conflictingConstraints: conflictingConstraints.slice(0, 5),
     totalConflicts: conflictingConstraints.length,
-    manageable
+    manageable,
   };
 }
 
 /**
  * Compare ebós (spiritual offerings/practices)
  */
-function compareEbos(
-  ebosA: string[],
-  ebosB: string[]
-): EboAlignment {
+function compareEbos(ebosA: string[], ebosB: string[]): EboAlignment {
   const sharedPractices: string[] = [];
   const complementaryPractices: string[] = [];
   const incompatiblePractices: string[] = [];
 
   for (const eboA of ebosA) {
-    const matchB = ebosB.find(eboB =>
-      eboA.toLowerCase().includes(eboB.toLowerCase()) ||
-      eboB.toLowerCase().includes(eboA.toLowerCase())
+    const matchB = ebosB.find(
+      (eboB) =>
+        eboA.toLowerCase().includes(eboB.toLowerCase()) ||
+        eboB.toLowerCase().includes(eboA.toLowerCase())
     );
 
     if (matchB) {
       sharedPractices.push(eboA);
     } else {
-      const complement = ebosB.find(eboB => {
+      const complement = ebosB.find((eboB) => {
         const a = eboA.toLowerCase();
         const b = eboB.toLowerCase();
-        return (a.includes('limpeza') && b.includes('protecão')) ||
-               (a.includes('protecão') && b.includes('limpeza')) ||
-               (a.includes('caminho') && b.includes('abertura'));
+        return (
+          (a.includes('limpeza') && b.includes('protecão')) ||
+          (a.includes('protecão') && b.includes('limpeza')) ||
+          (a.includes('caminho') && b.includes('abertura'))
+        );
       });
 
       if (complement) {
@@ -311,13 +300,15 @@ function compareEbos(
   }
 
   const total = Math.max(ebosA.length, ebosB.length, 1);
-  const alignmentScore = (sharedPractices.length + complementaryPractices.length * 0.5 - incompatiblePractices.length) / total;
+  const alignmentScore =
+    (sharedPractices.length + complementaryPractices.length * 0.5 - incompatiblePractices.length) /
+    total;
 
   return {
     sharedPractices,
     complementaryPractices,
     incompatiblePractices: incompatiblePractices.slice(0, 3),
-    alignmentScore
+    alignmentScore,
   };
 }
 
@@ -343,16 +334,21 @@ function calculateSimilarityScore(inputs: SimilarityInputs): number {
     elementalAlignment,
     orixaOverlap,
     quizilaCompatibility,
-    eboAlignment
+    eboAlignment,
   } = inputs;
 
   const oduScore = sameOdu ? 0.35 : 0;
   const orishaScore = sameOrisha ? 0.15 : orixaOverlap.compatibilityScore * 0.15;
   const elementalScore = Math.max(0, elementalAlignment.score) * 0.15;
-  const eboScore = Math.max(0, eboAlignment.alignmentScore) * 0.20;
-  const quizilaScore = quizilaCompatibility.manageable ? 0.10 - (quizilaCompatibility.totalConflicts * 0.02) : 0;
+  const eboScore = Math.max(0, eboAlignment.alignmentScore) * 0.2;
+  const quizilaScore = quizilaCompatibility.manageable
+    ? 0.1 - quizilaCompatibility.totalConflicts * 0.02
+    : 0;
 
-  return Math.max(0, Math.min(1, oduScore + orishaScore + elementalScore + eboScore + quizilaScore));
+  return Math.max(
+    0,
+    Math.min(1, oduScore + orishaScore + elementalScore + eboScore + quizilaScore)
+  );
 }
 
 /**
@@ -378,18 +374,33 @@ function generateComparisonNotes(params: {
   eboAlignment: EboAlignment;
 }): string[] {
   const notes: string[] = [];
-  const { readingA, readingB, sameOdu, sameOrisha, elementalAlignment, orixaOverlap, quizilaCompatibility, eboAlignment } = params;
+  const {
+    readingA,
+    readingB,
+    sameOdu,
+    sameOrisha,
+    elementalAlignment,
+    orixaOverlap,
+    quizilaCompatibility,
+    eboAlignment,
+  } = params;
 
   if (sameOdu) {
     notes.push(`${readingA.odu.nome} aparece em ambas as leituras - influencia kuat kiwa.`);
   } else {
-    notes.push(`${readingA.odu.nome} (${readingA.odu.orixaRegente}) e ${readingB.odu.nome} (${readingB.odu.orixaRegente}) - caminhos distintos mas relacionados.`);
+    notes.push(
+      `${readingA.odu.nome} (${readingA.odu.orixaRegente}) e ${readingB.odu.nome} (${readingB.odu.orixaRegente}) - caminhos distintos mas relacionados.`
+    );
   }
 
   if (sameOrisha) {
-    notes.push(`Ambos sob a regência de ${readingA.odu.orixaRegente} - alinhamento espiritual forte.`);
+    notes.push(
+      `Ambos sob a regência de ${readingA.odu.orixaRegente} - alinhamento espiritual forte.`
+    );
   } else if (orixaOverlap.compatibilityScore > 0.3) {
-    notes.push(`${readingA.odu.orixaRegente} e ${readingB.odu.orixaRegente} são complementares na tradição.`);
+    notes.push(
+      `${readingA.odu.orixaRegente} e ${readingB.odu.orixaRegente} são complementares na tradição.`
+    );
   }
 
   if (elementalAlignment.matches.length > 0) {
@@ -397,15 +408,21 @@ function generateComparisonNotes(params: {
   }
 
   if (elementalAlignment.conflicts.length > 0) {
-    notes.push(`Tensões elementais: ${elementalAlignment.conflicts.join(', ')} - trabalho espiritual adicional necessário.`);
+    notes.push(
+      `Tensões elementais: ${elementalAlignment.conflicts.join(', ')} - trabalho espiritual adicional necessário.`
+    );
   }
 
   if (quizilaCompatibility.sharedConstraints.length > 0) {
-    notes.push(`Proibições compatíveis: ${quizilaCompatibility.sharedConstraints.length} restrição(ões) em comum.`);
+    notes.push(
+      `Proibições compatíveis: ${quizilaCompatibility.sharedConstraints.length} restrição(ões) em comum.`
+    );
   }
 
   if (quizilaCompatibility.totalConflicts > 0) {
-    notes.push(`Atenção: ${quizilaCompatibility.totalConflicts} conflito(s) nos preceitos - consultar babalawo.`);
+    notes.push(
+      `Atenção: ${quizilaCompatibility.totalConflicts} conflito(s) nos preceitos - consultar babalawo.`
+    );
   }
 
   if (eboAlignment.sharedPractices.length > 0) {
@@ -417,7 +434,9 @@ function generateComparisonNotes(params: {
   }
 
   if (eboAlignment.incompatiblePractices.length > 0) {
-    notes.push(`Evitar: ${eboAlignment.incompatiblePractices.slice(0, 2).join(', ')} para não criar conflitos.`);
+    notes.push(
+      `Evitar: ${eboAlignment.incompatiblePractices.slice(0, 2).join(', ')} para não criar conflitos.`
+    );
   }
 
   return notes;
@@ -448,10 +467,7 @@ export function compareOduNumbers(
     return { sameOdu: false, score: 0, recommendation: 'Odu não encontrado.' };
   }
 
-  const comparison = compareOdu(
-    { odu: oduA },
-    { odu: oduB }
-  );
+  const comparison = compareOdu({ odu: oduA }, { odu: oduB });
 
   let recommendation: string;
   switch (comparison.compatibilityLevel) {
@@ -468,6 +484,6 @@ export function compareOduNumbers(
   return {
     sameOdu: numeroA === numeroB,
     score: comparison.similarityScore,
-    recommendation
+    recommendation,
   };
 }

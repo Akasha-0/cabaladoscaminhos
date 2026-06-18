@@ -17,7 +17,7 @@ describe('F-212: Ayanamsa (R-018 D1)', () => {
   });
 
   it('Raman ~22.40°', () => {
-    expect(AYANAMSA_OFFSETS.raman).toBeCloseTo(22.40, 1);
+    expect(AYANAMSA_OFFSETS.raman).toBeCloseTo(22.4, 1);
   });
 
   it('Krishnamurti ~23.82°', () => {

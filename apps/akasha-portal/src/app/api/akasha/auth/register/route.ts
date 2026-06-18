@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
 import bcrypt from 'bcryptjs';
+import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/infrastructure/prisma';
 
 const registerSchema = z.object({
@@ -42,10 +42,7 @@ export async function POST(request: NextRequest) {
   });
   if (existing) {
     // Mensagem genérica — anti-enumeração de emails.
-    return NextResponse.json(
-      { message: 'Conta criada. Verifique seu e-mail.' },
-      { status: 201 }
-    );
+    return NextResponse.json({ message: 'Conta criada. Verifique seu e-mail.' }, { status: 201 });
   }
 
   const passwordHash = await bcrypt.hash(body.password, 12);
@@ -66,8 +63,5 @@ export async function POST(request: NextRequest) {
     },
   });
 
-  return NextResponse.json(
-    { message: 'Conta criada. Verifique seu e-mail.' },
-    { status: 201 }
-  );
+  return NextResponse.json({ message: 'Conta criada. Verifique seu e-mail.' }, { status: 201 });
 }

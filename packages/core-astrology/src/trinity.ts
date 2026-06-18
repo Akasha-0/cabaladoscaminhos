@@ -21,7 +21,6 @@
  *
  * @see .autonomous/research/synthesis/gk-reverse-engineering.md §2.1 §6.3
  */
-
 import type { Aspecto, AspectoTipo } from './tipos';
 
 /**
@@ -56,8 +55,10 @@ export function classifyAspect(aspect: Aspecto): TrinityLevel {
   if (
     aspect.tipo === 'conjunção' &&
     aspect.orb < 1.0 &&
-    (aspect.planeta1 === 'sol' || aspect.planeta1 === 'lua' ||
-     aspect.planeta2 === 'sol' || aspect.planeta2 === 'lua')
+    (aspect.planeta1 === 'sol' ||
+      aspect.planeta1 === 'lua' ||
+      aspect.planeta2 === 'sol' ||
+      aspect.planeta2 === 'lua')
   ) {
     return 'graca';
   }

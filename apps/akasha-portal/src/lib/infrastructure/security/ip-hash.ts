@@ -52,17 +52,19 @@ function hashRaw(input: string): IpHash {
   const secret = process.env.JWT_SECRET;
 
   if (!secret && process.env.NODE_ENV === 'production') {
-    throw new Error(
-      'JWT_SECRET must be set in production to hash IPs safely (LGPD compliance)',
-    );
+    throw new Error('JWT_SECRET must be set in production to hash IPs safely (LGPD compliance)');
   }
 
   if (!secret) {
     // Dev/test fallback: SHA-256 sem salt. NÃO usar em produção.
-    return createHmac('sha256', 'dev-only-no-secret').update(HASH_PREFIX + input).digest('hex');
+    return createHmac('sha256', 'dev-only-no-secret')
+      .update(HASH_PREFIX + input)
+      .digest('hex');
   }
 
-  return createHmac('sha256', secret).update(HASH_PREFIX + input).digest('hex');
+  return createHmac('sha256', secret)
+    .update(HASH_PREFIX + input)
+    .digest('hex');
 }
 
 /**
@@ -70,9 +72,14 @@ function hashRaw(input: string): IpHash {
  * (para persistência). Em produção, NUNCA retornar o IP puro em logs
  * — use apenas o hash.
  */
-export function getClientIpInfo(request: {
-  headers: { get(name: string): string | null };
-} | null | undefined): { ip: string; hash: IpHash } {
+export function getClientIpInfo(
+  request:
+    | {
+        headers: { get(name: string): string | null };
+      }
+    | null
+    | undefined
+): { ip: string; hash: IpHash } {
   const ip = getClientIp(request);
   return { ip, hash: hashIp(ip) };
 }
@@ -81,9 +88,14 @@ export function getClientIpInfo(request: {
  * Extração de IP do request. Suporta x-forwarded-for, x-real-ip,
  * com fallback 'unknown' quando o header está ausente.
  */
-function getClientIp(request: {
-  headers: { get(name: string): string | null };
-} | null | undefined): string {
+function getClientIp(
+  request:
+    | {
+        headers: { get(name: string): string | null };
+      }
+    | null
+    | undefined
+): string {
   if (!request || !request.headers) {
     return 'unknown';
   }

@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest';
+import type { UserSpiritualData } from '../types';
 import {
   detectRecurringNumberPatterns,
   detectElementalImbalance,
   detectKarmicThemes,
   detectSpiritualBlocks,
 } from './pattern-detectors';
-import type { UserSpiritualData } from '../types';
 
 const BASE_USER: UserSpiritualData = {
   id: 'test-id',
@@ -41,11 +41,18 @@ describe('pattern-detectors', () => {
     it('detects repeating digits in personal number', () => {
       // 11 has repeating '1'
       const patterns = detectRecurringNumberPatterns(BASE_USER);
-      expect(patterns.some(p => p.patternType === 'recurring_number' && p.systems.includes('numerology'))).toBe(true);
+      expect(
+        patterns.some(
+          (p) => p.patternType === 'recurring_number' && p.systems.includes('numerology')
+        )
+      ).toBe(true);
     });
 
     it('returns empty array when numeroPessoal is missing', () => {
-      const noNumber: UserSpiritualData = { ...BASE_USER, numeroPessoal: undefined as unknown as number };
+      const noNumber: UserSpiritualData = {
+        ...BASE_USER,
+        numeroPessoal: undefined as unknown as number,
+      };
       const patterns = detectRecurringNumberPatterns(noNumber);
       expect(patterns).toHaveLength(0);
     });
@@ -108,11 +115,11 @@ describe('pattern-detectors', () => {
     it('returns empty array when no karmic indicators are present', () => {
       const noKarmic: UserSpiritualData = {
         ...BASE_USER,
-        numeroPessoal: 5,        // not 9 or 11
-        arcoMaior: [3, 4],       // no 10 or 21
-        odu: 'Ogbe',             // not Ofun or Meji
-        sign: 'Taurus',          // not Scorpio
-        rashi: 'Vrishabha',      // not Vrischika
+        numeroPessoal: 5, // not 9 or 11
+        arcoMaior: [3, 4], // no 10 or 21
+        odu: 'Ogbe', // not Ofun or Meji
+        sign: 'Taurus', // not Scorpio
+        rashi: 'Vrishabha', // not Vrischika
       };
       const patterns = detectKarmicThemes(noKarmic);
       expect(patterns).toHaveLength(0);
@@ -121,11 +128,11 @@ describe('pattern-detectors', () => {
     it('edge case: exactly one system indicator returns empty', () => {
       const oneSystem: UserSpiritualData = {
         ...BASE_USER,
-        numeroPessoal: 9,         // karmic in numerology
-        arcoMaior: [1, 2],       // no karmic
-        odu: 'Ogbe',             // no karmic
-        sign: 'Taurus',          // no karmic
-        rashi: 'Meshona',        // no karmic
+        numeroPessoal: 9, // karmic in numerology
+        arcoMaior: [1, 2], // no karmic
+        odu: 'Ogbe', // no karmic
+        sign: 'Taurus', // no karmic
+        rashi: 'Meshona', // no karmic
       };
       const patterns = detectKarmicThemes(oneSystem);
       // Only 1 system (numerology) → should be empty per logic "systems.length >= 2"
@@ -144,7 +151,7 @@ describe('pattern-detectors', () => {
       const twoBlocks: UserSpiritualData = {
         ...BASE_USER,
         arcoMaior: undefined as unknown as number[], // triggers tarot block
-        odu: undefined as unknown as string,         // triggers ifa block
+        odu: undefined as unknown as string, // triggers ifa block
       };
       const patterns = detectSpiritualBlocks(twoBlocks);
       expect(patterns).toHaveLength(1);
@@ -156,9 +163,9 @@ describe('pattern-detectors', () => {
       const complete: UserSpiritualData = {
         ...BASE_USER,
         sefirotDominante: ['Keter', 'Chokhmah'], // not single
-        arcoMaior: [0, 1, 21],                   // present
-        orixaRegente: 'Ogum',                    // present
-        odu: 'Ogbe',                             // present
+        arcoMaior: [0, 1, 21], // present
+        orixaRegente: 'Ogum', // present
+        odu: 'Ogbe', // present
       };
       const patterns = detectSpiritualBlocks(complete);
       expect(patterns).toHaveLength(0);
@@ -168,9 +175,9 @@ describe('pattern-detectors', () => {
       const oneBlock: UserSpiritualData = {
         ...BASE_USER,
         sefirotDominante: ['Keter'], // single → kabbalah block
-        arcoMaior: [0, 1, 21],       // present → no tarot block
-        orixaRegente: 'Ogum',        // present → no ifa block
-        odu: 'Ogbe',                 // present → no ifa block
+        arcoMaior: [0, 1, 21], // present → no tarot block
+        orixaRegente: 'Ogum', // present → no ifa block
+        odu: 'Ogbe', // present → no ifa block
       };
       const patterns = detectSpiritualBlocks(oneBlock);
       // Only 1 block → should be empty per logic "blocks.length >= 2"

@@ -21,7 +21,6 @@
  *
  * @see .autonomous/research/synthesis/jyotish-reverse-engineering.md §4
  */
-
 import { calcularPosicao } from './swiss-ephemeris';
 
 export interface NodosLunares {
@@ -51,7 +50,7 @@ export function calcularRahuLongitude(data: Date): number {
   // Movimento retrógrado: -0.0529539°/dia (aproximação linear)
   const j2000 = new Date('2000-01-01T12:00:00Z').getTime();
   const daysSinceJ2000 = (data.getTime() - j2000) / (24 * 60 * 60 * 1000);
-  const meanLongitude = 125.0445550 - 0.0529539 * daysSinceJ2000;
+  const meanLongitude = 125.044555 - 0.0529539 * daysSinceJ2000;
   return ((meanLongitude % 360) + 360) % 360;
 }
 
@@ -59,7 +58,7 @@ export function calcularRahuLongitude(data: Date): number {
  * Calcula longitude de Ketu (sempre 180° oposto a Rahu).
  */
 export function calcularKetuLongitude(rahuLongitude: number): number {
-  return ((rahuLongitude + 180) % 360 + 360) % 360;
+  return (((rahuLongitude + 180) % 360) + 360) % 360;
 }
 
 /**

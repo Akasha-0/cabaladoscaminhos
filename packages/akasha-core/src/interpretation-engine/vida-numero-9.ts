@@ -10,7 +10,6 @@
  *
  * Referenciado em VIDA_CONTENT[9] no arquivo principal.
  */
-
 import type { NumeroContent } from './types';
 
 export const VIDA_NUMERO_9: NumeroContent = {
@@ -93,19 +92,15 @@ export const VIDA_NUMERO_9: NumeroContent = {
       padrao:
         'Em siddhi, o 9 não serve mais. O 9 É o serviço. A separação entre quem serve e quem é servido se dissolve. Você se torna a compaixão em si — não quem dá compaixão, mas quem É compaixão. Esta é a frequência do ser desperto que percebeu que servir ao outro É a auto-realização, e a auto-realização É servir ao outro. Não há mais um "eu" para salvar e outros para servir — apenas vida fluindo através de uma forma particular.',
       aplicacao: {
-        proposito:
-          'Your purpose is indistinguishable from your being — you are the service.',
-        carreira:
-          'Work becomes worship. Every action is an act of love.',
+        proposito: 'Your purpose is indistinguishable from your being — you are the service.',
+        carreira: 'Work becomes worship. Every action is an act of love.',
         relacionamentos:
           'In love, you are the one who loves without any trace of attachment or expectation.',
         financas:
           'Resources flow through you perfectly because there is no longer a self that holds or releases.',
-        saude:
-          'The body is luminous, unburdened, and serves as a perfect vehicle for compassion.',
+        saude: 'The body is luminous, unburdened, and serves as a perfect vehicle for compassion.',
       },
-      afirmacao:
-        'Eu sou a compaixão — e ela flui através de mim sem que eu precise segurá-la.',
+      afirmacao: 'Eu sou a compaixão — e ela flui através de mim sem que eu precise segurá-la.',
     },
   },
 };

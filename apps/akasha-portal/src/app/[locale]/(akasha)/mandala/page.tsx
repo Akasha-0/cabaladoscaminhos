@@ -1,10 +1,10 @@
-import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import { cookies, headers } from 'next/headers';
-import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import MandalaChart from '@/components/akasha/MandalaChart';
-import { formatDegreeToZodiac } from '@/lib/shared/zodiac';
 import { MandalaNarrativeLoader } from '@/components/akasha/MandalaNarrativeLoader';
+import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
+import { formatDegreeToZodiac } from '@/lib/shared/zodiac';
 
 export const metadata = {
   title: 'Minha Mandala',
@@ -23,7 +23,8 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
   const cookieStore = await cookies();
   const authStatus = (await headers()).get('X-Akasha-Auth');
   const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
-  if (authStatus !== 'refreshed' && !verifyAkashaToken(token, 'access')) redirect(`/${locale}/login`);
+  if (authStatus !== 'refreshed' && !verifyAkashaToken(token, 'access'))
+    redirect(`/${locale}/login`);
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandala`,
@@ -101,7 +102,8 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
             letterSpacing: '0.03em',
           }}
         >
-          <span aria-hidden="true">⚠</span> Dados incompletos — complete seu perfil para desbloquear a Mandala completa →
+          <span aria-hidden="true">⚠</span> Dados incompletos — complete seu perfil para desbloquear
+          a Mandala completa →
         </a>
       )}
 
@@ -166,7 +168,8 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
             .mandala-grid { grid-template-columns: 1fr !important; }
           }
         `}</style>
-        <div className="mandala-grid"
+        <div
+          className="mandala-grid"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
@@ -375,7 +378,8 @@ function MandatoCard({ data, saudacao }: { data: MandatoData; saudacao: string }
   }
 
   const citacoes: string[] = [];
-  if (hex) citacoes.push(`via Camada 5 (I Ching) — hexagrama ${hex}${hexName ? ' ' + hexName : ''}`);
+  if (hex)
+    citacoes.push(`via Camada 5 (I Ching) — hexagrama ${hex}${hexName ? ' ' + hexName : ''}`);
   if (asc) citacoes.push(`via Camada 4 (Astrologia) — Ascendente ${asc}`);
   if (lp != null) citacoes.push(`via Camada 2 (Cabala) — Life Path ${lp}`);
   if (odu) citacoes.push(`via Camada 1 (Odus) — ${odu}`);

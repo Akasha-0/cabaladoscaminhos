@@ -8,9 +8,13 @@
  * deduct their credits. Now uses requireAkashaApi to enforce authentication and
  * ignores userId from body — uses only the authenticated user's identity.
  */
-
-import { NextRequest, NextResponse } from 'next/server';
+import { loadUserMaps } from '@akasha/mentor/maps';
+import type { MentorMessage } from '@akasha/mentor/types';
 import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
+import { checkCredits, deductCredit, noCreditsMessage } from '@/lib/application/mentor/credits';
+import { streamMentorResponse } from '@/lib/application/mentor/llm-router';
 import { prisma } from '@/lib/infrastructure/prisma';
 import {
   MENTOR_RATE_LIMIT_CONFIG,
@@ -18,19 +22,18 @@ import {
   checkRedisRateLimit,
   formatMentorRateLimitError,
 } from '@/lib/infrastructure/rate-limit';
-import { checkCredits, deductCredit, noCreditsMessage } from '@/lib/application/mentor/credits';
-import { streamMentorResponse } from '@/lib/application/mentor/llm-router';
-import { loadUserMaps } from '@akasha/mentor/maps';
-import type { MentorMessage } from '@akasha/mentor/types';
-import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 
 const bodySchema = z.object({
   question: z.string().min(1).max(2000),
   // userId intentionally removed from body schema — must use authenticated user ID
-  sessionHistory: z.array(z.object({
-    role: z.enum(['user', 'mentor']),
-    content: z.string(),
-  })).optional(),
+  sessionHistory: z
+    .array(
+      z.object({
+        role: z.enum(['user', 'mentor']),
+        content: z.string(),
+      })
+    )
+    .optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -46,10 +49,7 @@ export async function POST(request: NextRequest) {
       const raw = await request.json();
       parsed = bodySchema.parse(raw);
     } catch {
-      return NextResponse.json(
-        { error: 'question is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'question is required' }, { status: 400 });
     }
 
     const { question, sessionHistory = [] } = parsed;
@@ -61,19 +61,13 @@ export async function POST(request: NextRequest) {
       Math.ceil(MENTOR_RATE_LIMIT_CONFIG.windowMs / 1000)
     );
     if (!rateLimit.allowed) {
-      return NextResponse.json(
-        { error: formatMentorRateLimitError() },
-        { status: 429 }
-      );
+      return NextResponse.json({ error: formatMentorRateLimitError() }, { status: 429 });
     }
 
     // 3. Credits check — uses authenticated userId
     const credits = await checkCredits(userId);
     if (!credits.hasCredits) {
-      return NextResponse.json(
-        { error: noCreditsMessage() },
-        { status: 402 }
-      );
+      return NextResponse.json({ error: noCreditsMessage() }, { status: 402 });
     }
 
     // 4. Load user maps — uses authenticated userId
@@ -128,15 +122,12 @@ export async function POST(request: NextRequest) {
       headers: {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
+        Connection: 'keep-alive',
         'X-Accel-Buffering': 'no',
       },
     });
   } catch (error) {
     console.error('Mentor ask error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

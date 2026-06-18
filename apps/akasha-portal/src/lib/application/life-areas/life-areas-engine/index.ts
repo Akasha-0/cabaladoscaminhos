@@ -7,13 +7,21 @@
 // - Odu de Ifá
 // - Orixás
 // ============================================================
-
 import type { LifeAreaId, LifeArea } from './types';
 
 // ============================================================
 // TYPES (re-exported from ./types)
 // ============================================================
-export type { LifeAreaId, LifeArea, AstrologicalMapping, NumerologyMapping, OduMapping, OrixaMapping, ChakraMapping, ElementMapping } from './types';
+export type {
+  LifeAreaId,
+  LifeArea,
+  AstrologicalMapping,
+  NumerologyMapping,
+  OduMapping,
+  OrixaMapping,
+  ChakraMapping,
+  ElementMapping,
+} from './types';
 
 // ============================================================
 // LIFE AREAS DATA (re-exported from data file)
@@ -24,7 +32,12 @@ export { LIFE_AREAS } from './life-areas-data';
 // RE-EXPORTS from queries helper
 // ============================================================
 export { getLifeArea, getAllLifeAreas } from './queries';
-export { getLifeAreasByPlanet, getLifeAreasByHouse, getLifeAreasByOdu, getLifeAreasByOrixa } from './queries';
+export {
+  getLifeAreasByPlanet,
+  getLifeAreasByHouse,
+  getLifeAreasByOdu,
+  getLifeAreasByOrixa,
+} from './queries';
 
 // ============================================================
 // RE-EXPORTS from order helper

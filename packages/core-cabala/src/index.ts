@@ -8,9 +8,7 @@
  */
 
 // Numerologia Cabalística — motor principal
-export {
-  buildKabalisticMap,
-} from './numerology-kabalah';
+export { buildKabalisticMap } from './numerology-kabalah';
 
 // Generator — API de alto nível para o portal
 export type { NumerologyResult, NumerologyReport } from './generator';

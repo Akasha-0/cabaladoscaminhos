@@ -7,7 +7,6 @@
  *
  * Subscrições são persistidas no modelo `pushSubscription` (Doc 25 §6).
  */
-
 import webpush from 'web-push';
 
 let configured = false;
@@ -81,9 +80,7 @@ export function generateVapidKeys(): { publicKey: string; privateKey: string } {
 export function getPublicVapidKey(): string {
   const publicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
   if (!publicKey) {
-    throw new Error(
-      '[web-push] NEXT_PUBLIC_VAPID_PUBLIC_KEY não configurada no ambiente.'
-    );
+    throw new Error('[web-push] NEXT_PUBLIC_VAPID_PUBLIC_KEY não configurada no ambiente.');
   }
   return publicKey;
 }

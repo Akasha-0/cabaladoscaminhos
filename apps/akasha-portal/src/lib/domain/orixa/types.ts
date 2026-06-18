@@ -2,44 +2,65 @@
  * ════════════════════════════════════════════════════════════════════════════
  * UNIFIED ORIXÁ TYPE SYSTEM — Cabala dos Caminhos
  * ════════════════════════════════════════════════════════════════════════════
- * 
+ *
  * Centralized type definitions for all Orixás in the system.
  * Provides Zod validation, cross-tradition correlations, and unified data access.
- * 
+ *
  * Data Sources:
  * - Candomblé Ketu tradition
- * - Umbanda cosmology  
+ * - Umbanda cosmology
  * - Ifá/Odu system
  * - Cross-tradition correlations (IDEIA.md)
- * 
+ *
  * Version: 1.0.0
  * Last Updated: 2026-05-30
  */
-
 // ════════════════════════════════════════════════════════════════════════════
 // CORE TYPES
 // ════════════════════════════════════════════════════════════════════════════
-
 import { z } from 'zod';
 
 // ─── Base Enums ─────────────────────────────────────────────────────────────
 
 const ORIXAS_PRINCIPAIS = [
-  'Oxalá', 'Iemanjá', 'Ogum', 'Xangô', 'Oxum', 'Iansã',
-  'Obatalá', 'Nanã', 'Ibeji', 'Omolu', 'Oxóssi', 'Logunedé',
-  'Ewa', 'Oba', 'Ori', 'Osain', 'Oxumar', 'Olokun',
-  'Exu', 'Pomba Gira', 'Yemanjá', 'Obaluwaiê', 'Xapanã', 'Aroeira'
+  'Oxalá',
+  'Iemanjá',
+  'Ogum',
+  'Xangô',
+  'Oxum',
+  'Iansã',
+  'Obatalá',
+  'Nanã',
+  'Ibeji',
+  'Omolu',
+  'Oxóssi',
+  'Logunedé',
+  'Ewa',
+  'Oba',
+  'Ori',
+  'Osain',
+  'Oxumar',
+  'Olokun',
+  'Exu',
+  'Pomba Gira',
+  'Yemanjá',
+  'Obaluwaiê',
+  'Xapanã',
+  'Aroeira',
 ] as const;
 
 const ELEMENTOS = ['Fogo', 'Água', 'Terra', 'Ar', 'Éter'] as const;
 
-const PLANETAS_ORIXAS = [
-  'Sol', 'Lua', 'Marte', 'Mercúrio', 'Júpiter', 'Vênus', 'Saturno'
-] as const;
+const PLANETAS_ORIXAS = ['Sol', 'Lua', 'Marte', 'Mercúrio', 'Júpiter', 'Vênus', 'Saturno'] as const;
 
 const DIAS_SEMANA = [
-  'Segunda-feira', 'Terça-feira', 'Quarta-feira', 
-  'Quinta-feira', 'Sexta-feira', 'Sábado', 'Domingo'
+  'Segunda-feira',
+  'Terça-feira',
+  'Quarta-feira',
+  'Quinta-feira',
+  'Sexta-feira',
+  'Sábado',
+  'Domingo',
 ] as const;
 
 // ─── Zod Schemas ────────────────────────────────────────────────────────────
@@ -114,7 +135,7 @@ export interface OrixaAstrologia {
 // ════════════════════════════════════════════════════════════════════════════
 
 export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
-  'oxala': {
+  oxala: {
     id: 'oxala',
     nome: 'Oxalá',
     nomeYoruba: 'Olodumarê / Orisháala',
@@ -129,7 +150,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Inação excessiva',
     archetype: 'O Criador Ancestral',
   },
-  'iemanja': {
+  iemanja: {
     id: 'iemanja',
     nome: 'Iemanjá',
     nomeYoruba: 'Yemoja',
@@ -144,7 +165,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Vulnerabilidade emocional',
     archetype: 'A Mãe do Mundo',
   },
-  'ogum': {
+  ogum: {
     id: 'ogum',
     nome: 'Ogum',
     nomeYoruba: 'Ogou',
@@ -159,7 +180,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Agressividade',
     archetype: 'O Guerreiro Civilizador',
   },
-  'xango': {
+  xango: {
     id: 'xango',
     nome: 'Xangô',
     nomeYoruba: 'Shango',
@@ -174,7 +195,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Impulsividade',
     archetype: 'O Deus do Trovão',
   },
-  'oxum': {
+  oxum: {
     id: 'oxum',
     nome: 'Oxum',
     nomeYoruba: 'Oshun',
@@ -189,7 +210,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Vaidade',
     archetype: 'A Deusa do Amor e das Águas Doces',
   },
-  'obatala': {
+  obatala: {
     id: 'obatala',
     nome: 'Obatalá',
     nomeYoruba: 'Obatalá',
@@ -204,7 +225,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Rigidez moral',
     archetype: 'O Ancião de Caminhos Brancos',
   },
-  'nana': {
+  nana: {
     id: 'nana',
     nome: 'Nanã',
     nomeYoruba: 'Nanã Buruku',
@@ -219,7 +240,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Melancolia',
     archetype: 'A Anciã do Tempo',
   },
-  'ibeji': {
+  ibeji: {
     id: 'ibeji',
     nome: 'Ibeji',
     nomeYoruba: 'Ibeji',
@@ -234,7 +255,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Perda e luto',
     archetype: 'Os Gêmeos Sagrados',
   },
-  'omolu': {
+  omolu: {
     id: 'omolu',
     nome: 'Omolu',
     nomeYoruba: 'Obaluaye',
@@ -249,7 +270,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Medo da morte',
     archetype: 'O Senhor das Doenças e da Cura',
   },
-  'oxossi': {
+  oxossi: {
     id: 'oxossi',
     nome: 'Oxóssi',
     nomeYoruba: 'Ogun',
@@ -264,7 +285,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Inveja',
     archetype: 'O Caçador da Floresta',
   },
-  'logunedé': {
+  logunedé: {
     id: 'logunedé',
     nome: 'Logunedé',
     nomeYoruba: 'Ogun',
@@ -279,7 +300,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Confusão de identidade',
     archetype: 'O Caçador das Águas',
   },
-  'ewa': {
+  ewa: {
     id: 'ewa',
     nome: 'Ewa',
     nomeYoruba: 'Eshu',
@@ -294,7 +315,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Ciúmes',
     archetype: 'A Deusa da Beleza',
   },
-  'oba': {
+  oba: {
     id: 'oba',
     nome: 'Oba',
     nomeYoruba: 'Oba',
@@ -309,7 +330,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Orgulho',
     archetype: 'A Rainha Guerreira',
   },
-  'ori': {
+  ori: {
     id: 'ori',
     nome: 'Ori',
     nomeYoruba: 'Ori',
@@ -324,7 +345,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Obstinação',
     archetype: 'O Senhor da Cabeça e do Destino',
   },
-  'osain': {
+  osain: {
     id: 'osain',
     nome: 'Osain',
     nomeYoruba: 'Osain',
@@ -339,7 +360,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Segredos perigosos',
     archetype: 'O Senhor das Ervas',
   },
-  'oxumar': {
+  oxumar: {
     id: 'oxumar',
     nome: 'Oxumar',
     nomeYoruba: 'Oxumar',
@@ -354,7 +375,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Instabilidade',
     archetype: 'O Deus do Arco-íris e do Jogo',
   },
-  'olokun': {
+  olokun: {
     id: 'olokun',
     nome: 'Olokun',
     nomeYoruba: 'Olokun',
@@ -369,7 +390,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Avidez material',
     archetype: 'O Senhor das Profundezas',
   },
-  'exu': {
+  exu: {
     id: 'exu',
     nome: 'Exu',
     nomeYoruba: 'Eshu',
@@ -384,7 +405,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Manipulação',
     archetype: 'O Mensageiro dos Orixás',
   },
-  'iansan': {
+  iansan: {
     id: 'iansan',
     nome: 'Iansã',
     nomeYoruba: 'Yansã',
@@ -399,7 +420,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Impaciência',
     archetype: 'A Senhora das Tempestades',
   },
-  'yemoja': {
+  yemoja: {
     id: 'yemoja',
     nome: 'Yemanjá',
     nomeYoruba: 'Yemoja',
@@ -414,7 +435,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Dependência emocional',
     archetype: 'A Mãe das Águas',
   },
-  'obaluaiê': {
+  obaluaiê: {
     id: 'obaluaiê',
     nome: 'Obaluwaiê',
     nomeYoruba: 'Obaluwaiê',
@@ -429,7 +450,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Medo da morte',
     archetype: 'O Senhor das Doenças e da Cura',
   },
-  'xapanã': {
+  xapanã: {
     id: 'xapanã',
     nome: 'Xapanã',
     nomeYoruba: 'Sopona',
@@ -444,7 +465,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Preconceito',
     archetype: 'O Senhor das Epidemias',
   },
-  'ejiokô': {
+  ejiokô: {
     id: 'ejiokô',
     nome: 'Ejiokô',
     nomeYoruba: 'Ejioko',
@@ -459,7 +480,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Indecisão',
     archetype: 'O Odu da Dualidade',
   },
-  'pombagira': {
+  pombagira: {
     id: 'pombagira',
     nome: 'Pomba Gira',
     nomeYoruba: 'Eshu Elegbara',
@@ -474,7 +495,7 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Obsessão',
     archetype: 'A Rainha do Amor e da Magia',
   },
-  'aroeira': {
+  aroeira: {
     id: 'aroeira',
     nome: 'Aroeira',
     nomeYoruba: 'Aroeira',
@@ -514,7 +535,10 @@ interface OrixaCore {
  * Get Orixá by name (case-insensitive)
  */
 export function getOrixa(nome: string): OrixaCore | undefined {
-  const normalized = nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const normalized = nome
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
   return ORIXAS_UNIFIED[normalized];
 }
 
@@ -529,28 +553,28 @@ export function getAllOrixas(): OrixaCore[] {
  * Get Orixás by element
  */
 function getOrixasByElement(elemento: string): OrixaCore[] {
-  return getAllOrixas().filter(o => o.elemento.toLowerCase() === elemento.toLowerCase());
+  return getAllOrixas().filter((o) => o.elemento.toLowerCase() === elemento.toLowerCase());
 }
 
 /**
  * Get Orixás by day of week
  */
 function getOrixasByDay(dia: string): OrixaCore[] {
-  return getAllOrixas().filter(o => o.diaSemana.toLowerCase() === dia.toLowerCase());
+  return getAllOrixas().filter((o) => o.diaSemana.toLowerCase() === dia.toLowerCase());
 }
 
 /**
  * Get Orixás by planet
  */
 function getOrixasByPlanet(planeta: string): OrixaCore[] {
-  return getAllOrixas().filter(o => o.planeta.toLowerCase() === planeta.toLowerCase());
+  return getAllOrixas().filter((o) => o.planeta.toLowerCase() === planeta.toLowerCase());
 }
 
 /**
  * Get Orixás by chakra
  */
 function getOrixasByChakra(chakraNum: number): OrixaCore[] {
-  return getAllOrixas().filter(o => o.chakraPrincipal === chakraNum);
+  return getAllOrixas().filter((o) => o.chakraPrincipal === chakraNum);
 }
 
 /**
@@ -571,7 +595,10 @@ export function getOrixaNumeros(nome: string): number[] {
  * Normalize Orixá name for lookup
  */
 export function normalizeOrixaKey(nome: string): string {
-  return nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  return nome
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
 }
 
 /**
@@ -604,14 +631,14 @@ export function getOrixaChakra(nome: string): number | null {
  */
 export function getOrixaTarot(orixa: string): { arcano: number; nome: string } | null {
   const map: Record<string, { arcano: number; nome: string }> = {
-    'oxala': { arcano: 0, nome: 'O Louco' },
-    'iemanja': { arcano: 17, nome: 'A Estrela' },
-    'ogum': { arcano: 6, nome: 'Os Enamorados' },
-    'xango': { arcano: 11, nome: 'A Justiça' },
-    'oxum': { arcano: 3, nome: 'A Imperatriz' },
-    'obatala': { arcano: 21, nome: 'O Mundo' },
-    'nana': { arcano: 13, nome: 'A Morte' },
-    'oxossi': { arcano: 5, nome: 'O Papa' },
+    oxala: { arcano: 0, nome: 'O Louco' },
+    iemanja: { arcano: 17, nome: 'A Estrela' },
+    ogum: { arcano: 6, nome: 'Os Enamorados' },
+    xango: { arcano: 11, nome: 'A Justiça' },
+    oxum: { arcano: 3, nome: 'A Imperatriz' },
+    obatala: { arcano: 21, nome: 'O Mundo' },
+    nana: { arcano: 13, nome: 'A Morte' },
+    oxossi: { arcano: 5, nome: 'O Papa' },
   };
   return map[normalizeOrixaKey(orixa)] ?? null;
 }
@@ -621,14 +648,14 @@ export function getOrixaTarot(orixa: string): { arcano: number; nome: string } |
  */
 export function getOrixaSephirah(orixa: string): { sephirah: number; nome: string } | null {
   const map: Record<string, { sephirah: number; nome: string }> = {
-    'oxala': { sephirah: 1, nome: 'Kether (Coroa)' },
-    'iemanja': { sephirah: 2, nome: 'Chokmah (Sabedoria)' },
-    'ogum': { sephirah: 4, nome: 'Chesed (Misericórdia)' },
-    'xango': { sephirah: 8, nome: 'Hod (Glória)' },
-    'oxum': { sephirah: 6, nome: 'Tiphereth (Beleza)' },
-    'obatala': { sephirah: 3, nome: 'Binah (Entendimento)' },
-    'nana': { sephirah: 7, nome: 'Netzach (Vitória)' },
-    'oxossi': { sephirah: 5, nome: 'Geburah (Severidade)' },
+    oxala: { sephirah: 1, nome: 'Kether (Coroa)' },
+    iemanja: { sephirah: 2, nome: 'Chokmah (Sabedoria)' },
+    ogum: { sephirah: 4, nome: 'Chesed (Misericórdia)' },
+    xango: { sephirah: 8, nome: 'Hod (Glória)' },
+    oxum: { sephirah: 6, nome: 'Tiphereth (Beleza)' },
+    obatala: { sephirah: 3, nome: 'Binah (Entendimento)' },
+    nana: { sephirah: 7, nome: 'Netzach (Vitória)' },
+    oxossi: { sephirah: 5, nome: 'Geburah (Severidade)' },
   };
   return map[normalizeOrixaKey(orixa)] ?? null;
 }
@@ -638,14 +665,14 @@ export function getOrixaSephirah(orixa: string): { sephirah: number; nome: strin
  */
 function getOrixaSigno(orixa: string): { signo: string; elemento: string } | null {
   const map: Record<string, { signo: string; elemento: string }> = {
-    'oxala': { signo: 'Libra', elemento: 'Ar' },
-    'iemanja': { signo: 'Câncer', elemento: 'Água' },
-    'ogum': { signo: 'Áries', elemento: 'Fogo' },
-    'xango': { signo: 'Sagitário', elemento: 'Fogo' },
-    'oxum': { signo: 'Touro', elemento: 'Terra' },
-    'obatala': { signo: 'Capricórnio', elemento: 'Terra' },
-    'nana': { signo: 'Escorpião', elemento: 'Água' },
-    'oxossi': { signo: 'Sagitário', elemento: 'Fogo' },
+    oxala: { signo: 'Libra', elemento: 'Ar' },
+    iemanja: { signo: 'Câncer', elemento: 'Água' },
+    ogum: { signo: 'Áries', elemento: 'Fogo' },
+    xango: { signo: 'Sagitário', elemento: 'Fogo' },
+    oxum: { signo: 'Touro', elemento: 'Terra' },
+    obatala: { signo: 'Capricórnio', elemento: 'Terra' },
+    nana: { signo: 'Escorpião', elemento: 'Água' },
+    oxossi: { signo: 'Sagitário', elemento: 'Fogo' },
   };
   return map[normalizeOrixaKey(orixa)] ?? null;
 }
@@ -655,11 +682,11 @@ function getOrixaSigno(orixa: string): { signo: string; elemento: string } | nul
  */
 function getOrixaOdu(orixa: string): { odu: number; nome: string }[] {
   const map: Record<string, { odu: number; nome: string }[]> = {
-    'oxala': [{ odu: 1, nome: 'Ogbe' }],
-    'iemanja': [{ odu: 2, nome: 'Oyeku' }],
-    'ogum': [{ odu: 3, nome: 'Iwori' }],
-    'xango': [{ odu: 11, nome: 'Otura' }],
-    'oxum': [{ odu: 12, nome: 'Irosun' }],
+    oxala: [{ odu: 1, nome: 'Ogbe' }],
+    iemanja: [{ odu: 2, nome: 'Oyeku' }],
+    ogum: [{ odu: 3, nome: 'Iwori' }],
+    xango: [{ odu: 11, nome: 'Otura' }],
+    oxum: [{ odu: 12, nome: 'Irosun' }],
   };
   return map[normalizeOrixaKey(orixa)] ?? [];
 }
@@ -677,7 +704,7 @@ function validateOrixaInput(input: unknown): { valid: boolean; errors?: string[]
     const result = OrixaSchema.safeParse(input);
     return {
       valid: result.success,
-      errors: result.success ? undefined : result.error.errors.map(e => e.message),
+      errors: result.success ? undefined : result.error.errors.map((e) => e.message),
     };
   } catch {
     return { valid: false, errors: ['Invalid input type'] };

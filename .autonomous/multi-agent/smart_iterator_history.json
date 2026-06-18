@@ -164,6 +164,72 @@
       "lines_changed": 0,
       "files_changed": 0,
       "quality_delta": 0.0
+    },
+    {
+      "area": "unknown",
+      "type": "tech_debt",
+      "outcome": "planned",
+      "timestamp": 1781750726.097637,
+      "iso": "2026-06-18T02:45:26.097639+00:00",
+      "version": "",
+      "lines_changed": 0,
+      "files_changed": 0,
+      "quality_delta": 0.0
+    },
+    {
+      "area": "unknown",
+      "type": "large_file",
+      "outcome": "planned",
+      "timestamp": 1781750726.098099,
+      "iso": "2026-06-18T02:45:26.098102+00:00",
+      "version": "",
+      "lines_changed": 0,
+      "files_changed": 0,
+      "quality_delta": 0.0
+    },
+    {
+      "area": "unknown",
+      "type": "tech_debt",
+      "outcome": "planned",
+      "timestamp": 1781750808.115448,
+      "iso": "2026-06-18T02:46:48.115450+00:00",
+      "version": "",
+      "lines_changed": 0,
+      "files_changed": 0,
+      "quality_delta": 0.0
+    },
+    {
+      "area": "unknown",
+      "type": "large_file",
+      "outcome": "planned",
+      "timestamp": 1781750808.11589,
+      "iso": "2026-06-18T02:46:48.115893+00:00",
+      "version": "",
+      "lines_changed": 0,
+      "files_changed": 0,
+      "quality_delta": 0.0
+    },
+    {
+      "area": "unknown",
+      "type": "tech_debt",
+      "outcome": "planned",
+      "timestamp": 1781751144.732619,
+      "iso": "2026-06-18T02:52:24.732622+00:00",
+      "version": "",
+      "lines_changed": 0,
+      "files_changed": 0,
+      "quality_delta": 0.0
+    },
+    {
+      "area": "unknown",
+      "type": "large_file",
+      "outcome": "planned",
+      "timestamp": 1781751144.733197,
+      "iso": "2026-06-18T02:52:24.733201+00:00",
+      "version": "",
+      "lines_changed": 0,
+      "files_changed": 0,
+      "quality_delta": 0.0
     }
   ]
 }

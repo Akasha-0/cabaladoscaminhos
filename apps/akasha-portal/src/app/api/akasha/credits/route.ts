@@ -24,7 +24,10 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json().catch(() => null);
   if (!body || typeof body.userId !== 'string' || typeof body.amount !== 'number') {
-    return NextResponse.json({ error: 'userId (string) e amount (number) são obrigatórios' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'userId (string) e amount (number) são obrigatórios' },
+      { status: 400 }
+    );
   }
 
   const user = await prisma.user.findUnique({ where: { id: body.userId } });

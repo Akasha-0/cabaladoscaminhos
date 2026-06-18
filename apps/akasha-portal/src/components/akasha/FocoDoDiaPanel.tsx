@@ -10,7 +10,6 @@
  *
  * Visual: card grande com glow, mesma paleta dos Pilares.
  */
-
 import { type FocoDoDia } from '@/lib/grimoire/foco-area';
 import { AREA_LABEL, AREA_ICONE } from '@/lib/grimoire/traducao-areas';
 
@@ -175,22 +174,23 @@ export function FocoDoDiaPanel({ foco }: { foco: FocoDoDia }) {
           >
             Conexões entre Pilares
           </span>
-            {foco.conexoes.map((c) => (
-              <p
-                key={`${c.origem}-${c.destino}`}
-                style={{
-                  color: '#A7AECF',
-                  fontSize: '0.78rem',
-                  lineHeight: 1.5,
-                  margin: 0,
-                }}
-              >
-                <span style={{ color: CORES_DIMENSAO[c.origem] }}>{DIMENSAO_NOME[c.origem]}</span>
-                <span style={{ margin: '0 6px' }}>→</span>
-                <span style={{ color: CORES_DIMENSAO[c.destino] }}>{DIMENSAO_NOME[c.destino]}</span>
-                : {c.frase}
-              </p>
-            ))}
+          {foco.conexoes.map((c) => (
+            <p
+              key={`${c.origem}-${c.destino}`}
+              style={{
+                color: '#A7AECF',
+                fontSize: '0.78rem',
+                lineHeight: 1.5,
+                margin: 0,
+              }}
+            >
+              <span style={{ color: CORES_DIMENSAO[c.origem] }}>{DIMENSAO_NOME[c.origem]}</span>
+              <span style={{ margin: '0 6px' }}>→</span>
+              <span style={{ color: CORES_DIMENSAO[c.destino] }}>
+                {DIMENSAO_NOME[c.destino]}
+              </span>: {c.frase}
+            </p>
+          ))}
         </section>
       )}
 

@@ -178,7 +178,16 @@ export interface ProcedenciaEntry {
 let _weightsOverride: Record<Tradicao, Record<Dominio, number>> | null = null;
 
 const ALL_TRADICOES: Tradicao[] = ['iching', 'cabala', 'astrologia', 'tantra', 'odu'];
-const ALL_DOMINIOS: Dominio[] = ['identidade', 'talentos', 'desafios', 'missao', 'evolucao', 'relacoes', 'prosperidade', 'espiritualidade'];
+const ALL_DOMINIOS: Dominio[] = [
+  'identidade',
+  'talentos',
+  'desafios',
+  'missao',
+  'evolucao',
+  'relacoes',
+  'prosperidade',
+  'espiritualidade',
+];
 
 function isValidWeights(w: unknown): w is Record<Tradicao, Record<Dominio, number>> {
   if (!w || typeof w !== 'object') return false;
@@ -211,9 +220,7 @@ export function getTradicaoWeights(): Record<Tradicao, Record<Dominio, number>> 
  * process lifetime only. For production tuning, set the env var
  * AKASHA_TRADICAO_WEIGHTS on startup or implement DB-backed weight storage.
  */
-export function setTradicaoWeights(
-  weights: unknown,
-): boolean {
+export function setTradicaoWeights(weights: unknown): boolean {
   if (!isValidWeights(weights)) {
     return false;
   }

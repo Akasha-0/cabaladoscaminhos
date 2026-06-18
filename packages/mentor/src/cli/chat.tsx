@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
 import { render } from 'ink';
+import React, { useState, useEffect } from 'react';
 import { MentorCLI } from './MentorCLI';
 
 export interface ChatOptions {
@@ -32,46 +32,46 @@ const ChatWithInput: React.FC<{ apiUrl: string; userId?: string }> = ({ apiUrl, 
 
     const handleInput = (chunk: Buffer) => {
       const key = chunk.toString();
-      
+
       // Handle Ctrl+C
       if (key === '\x03') {
         cleanupRawMode();
         process.exit(0);
         return;
       }
-      
+
       // Handle Enter
       if (key === '\r' || key === '\n') {
         const command = inputBuffer.trim();
         setInputBuffer('');
-        
+
         if (command.toLowerCase() === 'sair') {
           cleanupRawMode();
           process.exit(0);
           return;
         }
-        
+
         // Emit custom event for input submission
         if (command) {
           window.dispatchEvent(new CustomEvent('cli-input', { detail: command }));
         }
         return;
       }
-      
+
       // Handle Backspace
       if (key === '\x7f' || key === '\b') {
-        setInputBuffer(prev => prev.slice(0, -1));
+        setInputBuffer((prev) => prev.slice(0, -1));
         return;
       }
-      
+
       // Handle regular characters
       if (key.length === 1 && !key.startsWith('\x1b')) {
-        setInputBuffer(prev => prev + key);
+        setInputBuffer((prev) => prev + key);
       }
     };
 
     process.stdin.on('data', handleInput);
-    
+
     return () => {
       process.stdin.removeListener('data', handleInput);
       cleanupRawMode();
@@ -82,18 +82,12 @@ const ChatWithInput: React.FC<{ apiUrl: string; userId?: string }> = ({ apiUrl, 
 };
 
 export async function runChat(options: ChatOptions = {}) {
-  const {
-    apiUrl = 'http://localhost:3000/api/mentor',
-    userId,
-  } = options;
+  const { apiUrl = 'http://localhost:3000/api/mentor', userId } = options;
 
   try {
-    const instance = render(
-      React.createElement(ChatWithInput, { apiUrl, userId })
-    );
+    const instance = render(React.createElement(ChatWithInput, { apiUrl, userId }));
 
     await instance.waitUntilExit();
-    
   } catch (err) {
     cleanupRawMode();
     console.error('Erro ao iniciar chat:', err);

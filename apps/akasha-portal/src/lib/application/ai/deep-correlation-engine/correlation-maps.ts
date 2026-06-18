@@ -47,22 +47,22 @@ export const TAROT_ORIXA_MAP: Record<number, string[]> = {
 
 // Odú to Kabbalah Sephirot paths — canonical names from constants/odus.ts
 export const ODU_SEPHIROT_MAP: Record<string, string[]> = {
-  'Ogbe': ['Keter', 'Chokhmah'],
-  'Ejiokô': ['Binah', 'Daat'],
-  'Etogundá': ['Chokhmah', 'Keter'],
-  'Irosun': ['Gevurah', 'Chesed'],
-  'Oxê': ['Netzach', 'Hod'],
-  'Obará': ['Chesed', 'Gevurah'],
-  'Odi': ['Malkuth', 'Yesod'],
-  'Ejionile': ['Netzach', 'Hod'],
-  'Ossá': ['Hod', 'Yesod'],
-  'Ofun': ['Tipheret', 'Malkuth'],
-  'Owarin': ['Din', 'Gevurah'],
-  'Ejilaxebô': ['Tipheret', 'Yesod'],
-  'Oturupon': ['Malkuth', 'Yesod'],
-  'Oturá': ['Netzach', 'Hod'],
-  'Iká': ['Malkuth'],
-  'Ofurufu': ['Keter', 'Tipheret'],
+  Ogbe: ['Keter', 'Chokhmah'],
+  Ejiokô: ['Binah', 'Daat'],
+  Etogundá: ['Chokhmah', 'Keter'],
+  Irosun: ['Gevurah', 'Chesed'],
+  Oxê: ['Netzach', 'Hod'],
+  Obará: ['Chesed', 'Gevurah'],
+  Odi: ['Malkuth', 'Yesod'],
+  Ejionile: ['Netzach', 'Hod'],
+  Ossá: ['Hod', 'Yesod'],
+  Ofun: ['Tipheret', 'Malkuth'],
+  Owarin: ['Din', 'Gevurah'],
+  Ejilaxebô: ['Tipheret', 'Yesod'],
+  Oturupon: ['Malkuth', 'Yesod'],
+  Oturá: ['Netzach', 'Hod'],
+  Iká: ['Malkuth'],
+  Ofurufu: ['Keter', 'Tipheret'],
 };
 
 // Odú to Orixá mapping (Candomblé)
@@ -118,80 +118,118 @@ export const TAROT_CHAKRA_MAP: Record<number, string> = {
 
 // Chakra to 5 Elements mapping
 export const CHAKRA_ELEMENT_MAP: Record<string, string> = {
-  'Muladhara': 'Terra',
-  'Svadhisthana': 'Água',
-  'Manipura': 'Fogo',
-  'Anahata': 'Ar',
-  'Vishuddha': 'Éter',
-  'Ajna': 'Luz',
-  'Sahasrara': 'Vazio',
+  Muladhara: 'Terra',
+  Svadhisthana: 'Água',
+  Manipura: 'Fogo',
+  Anahata: 'Ar',
+  Vishuddha: 'Éter',
+  Ajna: 'Luz',
+  Sahasrara: 'Vazio',
 };
 
 // Planet to Orixá regents mapping
 export const PLANET_ORIXA_MAP: Record<string, string> = {
-  'Sol': 'Oxum',
-  'Lua': 'Iemanjá',
-  'Mercúrio': 'Oxossi',
-  'Vênus': 'Oxum',
-  'Marte': 'Ogum',
-  'Júpiter': 'Olodumare',
-  'Saturno': 'Omulu',
-  'Urano': 'Oxumar',
-  'Netuno': 'Iemanjá',
-  'Plutão': 'Ogun',
+  Sol: 'Oxum',
+  Lua: 'Iemanjá',
+  Mercúrio: 'Oxossi',
+  Vênus: 'Oxum',
+  Marte: 'Ogum',
+  Júpiter: 'Olodumare',
+  Saturno: 'Omulu',
+  Urano: 'Oxumar',
+  Netuno: 'Iemanjá',
+  Plutão: 'Ogun',
 };
 
 // Day of week to spiritual energy mapping
-export const DAY_ENERGY_MAP: Record<string, { energy: string; orixa: string; element: string; practice: string }> = {
-  'Domingo': { energy: 'Solar', orixa: 'Oxum', element: 'Fogo', practice: 'Oração solar, banhos de luz' },
-  'Segunda-feira': { energy: 'Lunar', orixa: 'Iemanjá', element: 'Água', practice: 'Meditação aquática, oferendas de água' },
-  'Terça-feira': { energy: 'Marcial', orixa: 'Ogum', element: 'Fogo', practice: 'Trabalho com ferro, proteção' },
-  'Quarta-feira': { energy: 'Mercurial', orixa: 'Oxossi', element: 'Ar', practice: 'Caça espiritual, busca de conhecimento' },
-  'Quinta-feira': { energy: 'Joviana', orixa: 'Olodumare', element: 'Éter', practice: 'Orações de bênção, gratidão' },
-  'Sexta-feira': { energy: 'Vênus', orixa: 'Oxum', element: 'Terra', practice: 'Rituais de amor, autoconhecimento' },
-  'Sábado': { energy: 'Saturniana', orixa: 'Omulu', element: 'Terra', practice: 'Trabalho de cura, limpeza espiritual' },
+export const DAY_ENERGY_MAP: Record<
+  string,
+  { energy: string; orixa: string; element: string; practice: string }
+> = {
+  Domingo: {
+    energy: 'Solar',
+    orixa: 'Oxum',
+    element: 'Fogo',
+    practice: 'Oração solar, banhos de luz',
+  },
+  'Segunda-feira': {
+    energy: 'Lunar',
+    orixa: 'Iemanjá',
+    element: 'Água',
+    practice: 'Meditação aquática, oferendas de água',
+  },
+  'Terça-feira': {
+    energy: 'Marcial',
+    orixa: 'Ogum',
+    element: 'Fogo',
+    practice: 'Trabalho com ferro, proteção',
+  },
+  'Quarta-feira': {
+    energy: 'Mercurial',
+    orixa: 'Oxossi',
+    element: 'Ar',
+    practice: 'Caça espiritual, busca de conhecimento',
+  },
+  'Quinta-feira': {
+    energy: 'Joviana',
+    orixa: 'Olodumare',
+    element: 'Éter',
+    practice: 'Orações de bênção, gratidão',
+  },
+  'Sexta-feira': {
+    energy: 'Vênus',
+    orixa: 'Oxum',
+    element: 'Terra',
+    practice: 'Rituais de amor, autoconhecimento',
+  },
+  Sábado: {
+    energy: 'Saturniana',
+    orixa: 'Omulu',
+    element: 'Terra',
+    practice: 'Trabalho de cura, limpeza espiritual',
+  },
 };
 
 // Sephirot to Planet mapping
 export const SEPHIROT_PLANET_MAP: Record<string, string> = {
-  'Keter': 'Sem planeta',
-  'Chokhmah': 'Sem planeta',
-  'Binah': 'Saturno',
-  'Chesed': 'Júpiter',
-  'Gevurah': 'Marte',
-  'Tipheret': 'Sol',
-  'Netzach': 'Vênus',
-  'Hod': 'Mercúrio',
-  'Yesod': 'Lua',
-  'Malkuth': 'Terra',
+  Keter: 'Sem planeta',
+  Chokhmah: 'Sem planeta',
+  Binah: 'Saturno',
+  Chesed: 'Júpiter',
+  Gevurah: 'Marte',
+  Tipheret: 'Sol',
+  Netzach: 'Vênus',
+  Hod: 'Mercúrio',
+  Yesod: 'Lua',
+  Malkuth: 'Terra',
 };
 
 // Sephirot to Astrology Sign mapping
 export const SEPHIROT_SIGN_MAP: Record<string, string> = {
-  'Keter': 'Nenhum',
-  'Chokhmah': 'Aries',
-  'Binah': 'Capricornio',
-  'Chesed': 'Sagitário',
-  'Gevurah': 'Escorpião',
-  'Tipheret': 'Leão',
-  'Netzach': 'Touro',
-  'Hod': 'Gêmeos',
-  'Yesod': 'Câncer',
-  'Malkuth': 'Virgem',
+  Keter: 'Nenhum',
+  Chokhmah: 'Aries',
+  Binah: 'Capricornio',
+  Chesed: 'Sagitário',
+  Gevurah: 'Escorpião',
+  Tipheret: 'Leão',
+  Netzach: 'Touro',
+  Hod: 'Gêmeos',
+  Yesod: 'Câncer',
+  Malkuth: 'Virgem',
 };
 
 // Sephirot to Orixá mapping
 export const SEPHIROT_ORIXA_MAP: Record<string, string> = {
-  'Keter': 'Olodumare',
-  'Chokhmah': 'Oxossi',
-  'Binah': 'Omulu',
-  'Chesed': 'Obatalá',
-  'Gevurah': 'Ogum',
-  'Tipheret': 'Oxum',
-  'Netzach': 'Oxum',
-  'Hod': 'Oxossi',
-  'Yesod': 'Iemanjá',
-  'Malkuth': 'Obatalá',
+  Keter: 'Olodumare',
+  Chokhmah: 'Oxossi',
+  Binah: 'Omulu',
+  Chesed: 'Obatalá',
+  Gevurah: 'Ogum',
+  Tipheret: 'Oxum',
+  Netzach: 'Oxum',
+  Hod: 'Oxossi',
+  Yesod: 'Iemanjá',
+  Malkuth: 'Obatalá',
 };
 
 // ============================================================

@@ -1,6 +1,5 @@
 // Odu Timeline Generator - Cabala Dos Caminhos
 // Generates temporal progression for Odu readings and spiritual development
-
 import { OduInfo, odusData } from './calculos';
 
 /**
@@ -45,20 +44,26 @@ const phaseDefinitions: Record<TimelinePhase, { duracao: number; descricao: stri
   estabilizacao: { duracao: 14, descricao: 'Consolidação dos ensinamentos' },
   transformacao: { duracao: 28, descricao: 'Mudança e renovação interior' },
   consolidacao: { duracao: 21, descricao: 'Integração da experiência' },
-  maturidade: { duracao: 40, descricao: 'Sabedoria e domínio espiritual' }
+  maturidade: { duracao: 40, descricao: 'Sabedoria e domínio espiritual' },
 };
 
 /**
  * Activities by Odu type and phase
  */
-const phaseActivities: Record<number, Record<TimelinePhase, { praticas: string[]; avisos: string[] }>> = {
+const phaseActivities: Record<
+  number,
+  Record<TimelinePhase, { praticas: string[]; avisos: string[] }>
+> = {
   1: {
     iniciacao: { praticas: ['Rezar a Ogum', 'Usar ferramentas'], avisos: ['Evitar conflitos'] },
-    desenvolvimento: { praticas: ['Desbravamento de caminhos', 'Estudos'], avisos: ['Cuidado com armas'] },
+    desenvolvimento: {
+      praticas: ['Desbravamento de caminhos', 'Estudos'],
+      avisos: ['Cuidado com armas'],
+    },
     estabilizacao: { praticas: ['Meditar sobre força'], avisos: ['Não forçar situações'] },
     transformacao: { praticas: ['Rituais de coragem'], avisos: ['Evitar agressividade'] },
     consolidacao: { praticas: ['Agradecimentos'], avisos: [] },
-    maturidade: { praticas: ['Compartilhar conhecimento'], avisos: [] }
+    maturidade: { praticas: ['Compartilhar conhecimento'], avisos: [] },
   },
   2: {
     iniciacao: { praticas: ['Rezar a Oya', 'Acender velas'], avisos: ['Respeitar ancestrais'] },
@@ -66,7 +71,7 @@ const phaseActivities: Record<number, Record<TimelinePhase, { praticas: string[]
     estabilizacao: { praticas: ['Orações de paz'], avisos: [] },
     transformacao: { praticas: ['Rituais de passagem'], avisos: ['Cuidado com energias'] },
     consolidacao: { praticas: ['Honrar antepassados'], avisos: [] },
-    maturidade: { praticas: ['Guia espiritual'], avisos: [] }
+    maturidade: { praticas: ['Guia espiritual'], avisos: [] },
   },
   3: {
     iniciacao: { praticas: ['Rezar a Oxum', 'Usar amarelo'], avisos: ['Evitar falsidade'] },
@@ -74,15 +79,18 @@ const phaseActivities: Record<number, Record<TimelinePhase, { praticas: string[]
     estabilizacao: { praticas: ['Abraços de água'], avisos: [] },
     transformacao: { praticas: ['Rituais de amor'], avisos: ['Evitar ciúmes'] },
     consolidacao: { praticas: ['Gratidão'], avisos: [] },
-    maturidade: { praticas: ['慈爱'], avisos: [] }
+    maturidade: { praticas: ['慈爱'], avisos: [] },
   },
   4: {
-    iniciacao: { praticas: ['Rezar a Xangô', 'Carregar mini machado'], avisos: ['Controlar raiva'] },
+    iniciacao: {
+      praticas: ['Rezar a Xangô', 'Carregar mini machado'],
+      avisos: ['Controlar raiva'],
+    },
     desenvolvimento: { praticas: ['Estudos de justicia', 'Fogo'], avisos: ['Não usar violencia'] },
     estabilizacao: { praticas: ['Meditar sobre equidade'], avisos: [] },
     transformacao: { praticas: ['Rituais de lei'], avisos: ['Evitar vingança'] },
     consolidacao: { praticas: ['Aplicar justiça'], avisos: [] },
-    maturidade: { praticas: ['Juiz espiritual'], avisos: [] }
+    maturidade: { praticas: ['Juiz espiritual'], avisos: [] },
   },
   5: {
     iniciacao: { praticas: ['Rezar a Iemanjá', 'Banho de mar'], avisos: ['Respeitar o mar'] },
@@ -90,23 +98,29 @@ const phaseActivities: Record<number, Record<TimelinePhase, { praticas: string[]
     estabilizacao: { praticas: ['Orações de proteção'], avisos: [] },
     transformacao: { praticas: ['Rituais de fertility'], avisos: ['Evitar sufocamento'] },
     consolidacao: { praticas: ['Cuidar da família'], avisos: [] },
-    maturidade: { praticas: ['Mãe universal'], avisos: [] }
+    maturidade: { praticas: ['Mãe universal'], avisos: [] },
   },
   6: {
     iniciacao: { praticas: ['Rezar a Oxossi', 'Usar arco'], avisos: ['Caçar com ética'] },
-    desenvolvimento: { praticas: ['Estudos de sabedoria', 'Caça'], avisos: ['Não acumular demais'] },
+    desenvolvimento: {
+      praticas: ['Estudos de sabedoria', 'Caça'],
+      avisos: ['Não acumular demais'],
+    },
     estabilizacao: { praticas: ['Meditar na floresta'], avisos: [] },
     transformacao: { praticas: ['Rituais de conhecimento'], avisos: ['Evitar gula'] },
     consolidacao: { praticas: ['Compartilhar caça'], avisos: [] },
-    maturidade: { praticas: ['Sábio da floresta'], avisos: [] }
+    maturidade: { praticas: ['Sábio da floresta'], avisos: [] },
   },
   7: {
     iniciacao: { praticas: ['Rezar a Nanã', 'Culto aos velhos'], avisos: ['Respeitar anciãos'] },
-    desenvolvimento: { praticas: ['Trabalhar Ancestralidade', 'Terra'], avisos: ['Não temer a morte'] },
+    desenvolvimento: {
+      praticas: ['Trabalhar Ancestralidade', 'Terra'],
+      avisos: ['Não temer a morte'],
+    },
     estabilizacao: { praticas: ['Orações de paz'], avisos: [] },
     transformacao: { praticas: ['Rituais de purificação'], avisos: ['Evitar orgulho'] },
     consolidacao: { praticas: ['Aceitar finitude'], avisos: [] },
-    maturidade: { praticas: ['Portal da existência'], avisos: [] }
+    maturidade: { praticas: ['Portal da existência'], avisos: [] },
   },
   8: {
     iniciacao: { praticas: ['Rezar a Ewá', 'Usar espelho'], avisos: ['Evitar vaidade'] },
@@ -114,7 +128,7 @@ const phaseActivities: Record<number, Record<TimelinePhase, { praticas: string[]
     estabilizacao: { praticas: ['Auto-reflexão'], avisos: [] },
     transformacao: { praticas: ['Rituais de autoconhecimento'], avisos: ['Evitar ego'] },
     consolidacao: { praticas: ['Expressão autêntica'], avisos: [] },
-    maturidade: { praticas: ['Encantamento'], avisos: [] }
+    maturidade: { praticas: ['Encantamento'], avisos: [] },
   },
   9: {
     iniciacao: { praticas: ['Rezar a Obá', 'Cozinhar bem'], avisos: ['Respeitar alimentos'] },
@@ -122,7 +136,7 @@ const phaseActivities: Record<number, Record<TimelinePhase, { praticas: string[]
     estabilizacao: { praticas: ['Alimentar bem'], avisos: [] },
     transformacao: { praticas: ['Rituais de nutrição'], avisos: ['Evitar gula'] },
     consolidacao: { praticas: ['Cozinhar para outros'], avisos: [] },
-    maturidade: { praticas: ['Nurturing'], avisos: [] }
+    maturidade: { praticas: ['Nurturing'], avisos: [] },
   },
   10: {
     iniciacao: { praticas: ['Rezar a Logun Edé', 'Duplo culto'], avisos: ['Equilibrar gêneros'] },
@@ -130,15 +144,21 @@ const phaseActivities: Record<number, Record<TimelinePhase, { praticas: string[]
     estabilizacao: { praticas: ['Diplomacia'], avisos: [] },
     transformacao: { praticas: ['Rituais de alinhamento'], avisos: ['Evitar frieza emocional'] },
     consolidacao: { praticas: ['Harmonia dual'], avisos: [] },
-    maturidade: { praticas: ['União de opostos'], avisos: [] }
+    maturidade: { praticas: ['União de opostos'], avisos: [] },
   },
   11: {
-    iniciacao: { praticas: ['Rezar a Ossaim', 'Estudar ervas'], avisos: ['Usar plantas com respeito'] },
-    desenvolvimento: { praticas: ['Fitoterapia', 'Sabedoria verde'], avisos: ['Não usar sem conhecimento'] },
+    iniciacao: {
+      praticas: ['Rezar a Ossaim', 'Estudar ervas'],
+      avisos: ['Usar plantas com respeito'],
+    },
+    desenvolvimento: {
+      praticas: ['Fitoterapia', 'Sabedoria verde'],
+      avisos: ['Não usar sem conhecimento'],
+    },
     estabilizacao: { praticas: ['Aplicar curas naturais'], avisos: [] },
     transformacao: { praticas: ['Rituais de saúde'], avisos: ['Evitar automedicação'] },
     consolidacao: { praticas: ['Compartilhar conhecimento'], avisos: [] },
-    maturidade: { praticas: ['Curador verde'], avisos: [] }
+    maturidade: { praticas: ['Curador verde'], avisos: [] },
   },
   12: {
     iniciacao: { praticas: ['Rezar a Inhansã', 'Veneno'], avisos: ['Cuidado com veneno'] },
@@ -146,7 +166,7 @@ const phaseActivities: Record<number, Record<TimelinePhase, { praticas: string[]
     estabilizacao: { praticas: ['Desapego'], avisos: [] },
     transformacao: { praticas: ['Rituais de fim'], avisos: ['Aceitar mudanças'] },
     consolidacao: { praticas: ['Libertação'], avisos: [] },
-    maturidade: { praticas: ['Portal da transformação'], avisos: [] }
+    maturidade: { praticas: ['Portal da transformação'], avisos: [] },
   },
   13: {
     iniciacao: { praticas: ['Rezar a Omolu', 'Evitar olhar'], avisos: ['Respeitar isolamento'] },
@@ -154,15 +174,21 @@ const phaseActivities: Record<number, Record<TimelinePhase, { praticas: string[]
     estabilizacao: { praticas: ['Aceitação'], avisos: [] },
     transformacao: { praticas: ['Rituais de cura'], avisos: ['Evitar negação'] },
     consolidacao: { praticas: ['Servir aos necessitados'], avisos: [] },
-    maturidade: { praticas: ['Mestre da saúde'], avisos: [] }
+    maturidade: { praticas: ['Mestre da saúde'], avisos: [] },
   },
   14: {
-    iniciacao: { praticas: ['Rezar a Oxumaré', 'Cores do arco-íris'], avisos: ['Equilibrar ciclos'] },
-    desenvolvimento: { praticas: ['Ciclos de vida', 'Serpente'], avisos: ['Não resistir mudanças'] },
+    iniciacao: {
+      praticas: ['Rezar a Oxumaré', 'Cores do arco-íris'],
+      avisos: ['Equilibrar ciclos'],
+    },
+    desenvolvimento: {
+      praticas: ['Ciclos de vida', 'Serpente'],
+      avisos: ['Não resistir mudanças'],
+    },
     estabilizacao: { praticas: ['Ritmo natural'], avisos: [] },
     transformacao: { praticas: ['Rituais de renovação'], avisos: ['Evitar estagnação'] },
     consolidacao: { praticas: ['Aceitar destino'], avisos: [] },
-    maturidade: { praticas: ['Guardião do tempo'], avisos: [] }
+    maturidade: { praticas: ['Guardião do tempo'], avisos: [] },
   },
   15: {
     iniciacao: { praticas: ['Rezar a Obatalá', 'Usar branco'], avisos: ['Pureza de intenção'] },
@@ -170,7 +196,7 @@ const phaseActivities: Record<number, Record<TimelinePhase, { praticas: string[]
     estabilizacao: { praticas: ['Discernimento'], avisos: [] },
     transformacao: { praticas: ['Rituais de luz'], avisos: ['Evitar orgulho'] },
     consolidacao: { praticas: ['Criação consciente'], avisos: [] },
-    maturidade: { praticas: ['Pai da luz'], avisos: [] }
+    maturidade: { praticas: ['Pai da luz'], avisos: [] },
   },
   16: {
     iniciacao: { praticas: ['Rezar a Odoyá', 'Caminho'], avisos: ['Honrar a jornada'] },
@@ -178,8 +204,8 @@ const phaseActivities: Record<number, Record<TimelinePhase, { praticas: string[]
     estabilizacao: { praticas: ['Perseverança'], avisos: [] },
     transformacao: { praticas: ['Rituais de destino'], avisos: ['Evitar fatalismo'] },
     consolidacao: { praticas: ['Forjar o próprio destino'], avisos: [] },
-    maturidade: { praticas: ['Criador de caminhos'], avisos: [] }
-  }
+    maturidade: { praticas: ['Criador de caminhos'], avisos: [] },
+  },
 };
 
 /**
@@ -196,13 +222,13 @@ export function getOduTimeline(odu: OduInfo | number): OduTimeline {
     'estabilizacao',
     'transformacao',
     'consolidacao',
-    'maturidade'
+    'maturidade',
   ];
 
   const events: TimelineEvent[] = phases.map((phase) => {
     const phaseData = activities[phase] || {
       praticas: ['Práticas gerais de evolução'],
-      avisos: []
+      avisos: [],
     };
     const phaseInfo = phaseDefinitions[phase];
 
@@ -212,7 +238,7 @@ export function getOduTimeline(odu: OduInfo | number): OduTimeline {
       description: phaseInfo.descricao,
       duration: phaseInfo.duracao,
       practices: phaseData.praticas,
-      warnings: phaseData.avisos
+      warnings: phaseData.avisos,
     };
   });
 
@@ -222,7 +248,7 @@ export function getOduTimeline(odu: OduInfo | number): OduTimeline {
     odu: oduInfo,
     events,
     totalDays,
-    currentPhase: phases[0]
+    currentPhase: phases[0],
   };
 }
 
@@ -237,7 +263,7 @@ function getPhaseTitle(phase: TimelinePhase, oduNum: number): string {
     estabilizacao: `${oduInfo.nome} - Fundamento`,
     transformacao: `${oduInfo.nome} - Mudança`,
     consolidacao: `${oduInfo.nome} - Integração`,
-    maturidade: `${oduInfo.nome} - Sabedoria`
+    maturidade: `${oduInfo.nome} - Sabedoria`,
   };
   return titles[phase];
 }
@@ -246,7 +272,7 @@ function getPhaseTitle(phase: TimelinePhase, oduNum: number): string {
  * Get timeline for multiple Odus (combined reading)
  */
 function getCombinedTimeline(odus: (OduInfo | number)[]): OduTimeline[] {
-  return odus.map(odu => getOduTimeline(odu));
+  return odus.map((odu) => getOduTimeline(odu));
 }
 
 /**
@@ -259,7 +285,7 @@ export function getPhaseProgress(timeline: OduTimeline, phase: TimelinePhase): n
     'estabilizacao',
     'transformacao',
     'consolidacao',
-    'maturidade'
+    'maturidade',
   ];
   const phaseIndex = phases.indexOf(phase);
   if (phaseIndex === -1) return 0;
@@ -281,7 +307,7 @@ function getNextPhase(currentPhase: TimelinePhase): TimelinePhase | null {
     'estabilizacao',
     'transformacao',
     'consolidacao',
-    'maturidade'
+    'maturidade',
   ];
   const currentIndex = phases.indexOf(currentPhase);
   if (currentIndex === -1 || currentIndex === phases.length - 1) return null;
@@ -302,7 +328,7 @@ function getTimelineMilestones(timeline: OduTimeline): {
     return {
       day: cumulative,
       event,
-      label: `Dia ${cumulative} - ${event.title}`
+      label: `Dia ${cumulative} - ${event.title}`,
     };
   });
 }

@@ -13,7 +13,6 @@
  * - Cada `essencia` ≤22 palavras. Cada `pratica` 1 linha de UI.
  * - Citação obrigatória (Axioma 4).
  */
-
 import type { SignificadoCurado } from './significados-curados';
 
 export const PILAR_5_HEXAGRAMAS_33_64: SignificadoCurado[] = [

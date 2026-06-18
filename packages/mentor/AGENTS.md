@@ -36,9 +36,9 @@ Mentor AI com correlação entre sistemas oraculares. CLI + API + RAG.
 
 - **PT-BR primeiro** (i18n config do portal). Respostas do mentor sempre
   em português brasileiro (regra do system-prompt — `grimoire/mentor/
-  system-prompt.md`).
+system-prompt.md`).
 - **Pilar 4 (Odu) ethics invariant**: aviso `requer consentimento +
-  terreiro` quando o user toca em temas de Odu. Implementado em
+terreiro` quando o user toca em temas de Odu. Implementado em
   `intent-detector.ts` + RAG context.
 - **LGPD by design**: mínimo PII em logs de sessão. `memory.ts` tem TTL
   configurável; sessões sensíveis (com `crise_detectada=true`) devem ser

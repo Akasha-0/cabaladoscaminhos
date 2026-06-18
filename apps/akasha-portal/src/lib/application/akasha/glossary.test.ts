@@ -13,7 +13,6 @@
  *
  *   DO NOT mark this file as "complete" — it's a behavior lock for the stub.
  */
-
 import { describe, it, expect } from 'vitest';
 import { buildOduGlossary, formatGlossarySection } from './glossary';
 
@@ -72,7 +71,12 @@ describe('formatGlossarySection', () => {
   });
 
   it('formata com header ## GLOSSÁRIO DO ODU + 3 bullet points', () => {
-    const section = { oduName: 'Ogbe', essencia: 'Clareza', quizila: 'Não mentir', conselho: 'Buscar luz' };
+    const section = {
+      oduName: 'Ogbe',
+      essencia: 'Clareza',
+      quizila: 'Não mentir',
+      conselho: 'Buscar luz',
+    };
     const result = formatGlossarySection(section);
     expect(result).toContain('## GLOSSÁRIO DO ODU');
     expect(result).toContain('- odu_essencia: Clareza');

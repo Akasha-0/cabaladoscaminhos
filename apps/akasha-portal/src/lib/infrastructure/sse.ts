@@ -63,7 +63,9 @@ export function createSSEStream(
       abortController.abort();
       try {
         controller.enqueue(
-          encoder.encode(`event: error\ndata: ${JSON.stringify({ message: 'Timeout: resposta do oráculo excedeu o limite de tempo' })}\n\n`)
+          encoder.encode(
+            `event: error\ndata: ${JSON.stringify({ message: 'Timeout: resposta do oráculo excedeu o limite de tempo' })}\n\n`
+          )
         );
       } catch {
         /* stream already closed */

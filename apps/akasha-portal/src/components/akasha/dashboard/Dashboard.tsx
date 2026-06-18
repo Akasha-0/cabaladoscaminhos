@@ -8,31 +8,55 @@
  * 2. Áreas da Vida (6 life areas - permanent map)
  * 3. Evolução (Streak, Completed rituals, stats, history)
  */
-
-import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Sparkles, Moon, Sun, Cloud, Loader, Calendar,
-  RefreshCw, TrendingUp, Award, UserCheck, X, Info, 
-  Clock, Wind, CheckCircle, Heart, Zap, ChevronUp, ChevronDown
+import {
+  Sparkles,
+  Moon,
+  Sun,
+  Cloud,
+  Loader,
+  Calendar,
+  RefreshCw,
+  TrendingUp,
+  Award,
+  UserCheck,
+  X,
+  Info,
+  Clock,
+  Wind,
+  CheckCircle,
+  Heart,
+  Zap,
+  ChevronUp,
+  ChevronDown,
 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import type { PilaresDados } from '@/lib/grimoire/significados-curados';
+import { sintetizarMapa } from '@/lib/grimoire/synthesis/synthesizer';
+import type { CaixaSintese, DimensaoSintese } from '@/lib/grimoire/synthesis/synthesizer';
+import { AREA_ICONE, AREA_LABEL } from '@/lib/grimoire/traducao-areas';
+import { DailyInsightCard } from '../DailyInsightCard';
 import { ThemeToggle } from '../ThemeToggle';
-import { DashboardStats } from './components/DashboardStats';
-import { StreakCalendar } from './StreakCalendar';
+import { AkashaLifeAreasDashboard } from './AkashaLifeAreasDashboard';
+import { EvolutionPatterns } from './EvolutionPatterns';
+import { MeuCiclo } from './MeuCiclo';
 import { ProgressChart } from './ProgressChart';
 import { RitualHistory } from './RitualHistory';
-import { EvolutionPatterns } from './EvolutionPatterns';
-import { useDashboardData } from './hooks/useDashboardData';
+import { StreakCalendar } from './StreakCalendar';
+import { DashboardStats } from './components/DashboardStats';
+import {
+  ESTRATEGIA_BG,
+  ESTRATEGIA_BORDER,
+  ESTRATEGIA_COLOR,
+  ESTRATEGIA_LABEL,
+  getGreeting,
+  getFormattedDate,
+  renderNarrative,
+} from './dashboard-text';
 import { useAkashaSynthesis } from './hooks/useAkashaSynthesis';
 import { useCyclePersistence } from './hooks/useCyclePersistence';
 import type { CycleHistoryData } from './hooks/useCyclePersistence';
-import { AkashaLifeAreasDashboard } from './AkashaLifeAreasDashboard';
-import { MeuCiclo } from './MeuCiclo';
-import { sintetizarMapa } from '@/lib/grimoire/synthesis/synthesizer';
-import type { CaixaSintese, DimensaoSintese } from '@/lib/grimoire/synthesis/synthesizer';
-import type { PilaresDados } from '@/lib/grimoire/significados-curados';
-import { AREA_ICONE, AREA_LABEL } from '@/lib/grimoire/traducao-areas';
-import { DailyInsightCard } from '../DailyInsightCard';
+import { useDashboardData } from './hooks/useDashboardData';
 
 interface DashboardProps {
   userId: string;
@@ -43,23 +67,18 @@ interface DashboardProps {
 
 type TabType = 'daily' | 'profile' | 'progress';
 
-import {
-  ESTRATEGIA_BG,
-  ESTRATEGIA_BORDER,
-  ESTRATEGIA_COLOR,
-  ESTRATEGIA_LABEL,
-  getGreeting,
-  getFormattedDate,
-  renderNarrative,
-} from './dashboard-text';
-
-export function Dashboard({ userId, userName = 'Viajante', initialPilares, locale }: DashboardProps) {
+export function Dashboard({
+  userId,
+  userName = 'Viajante',
+  initialPilares,
+  locale,
+}: DashboardProps) {
   const [activeTab, setActiveTab] = useState<TabType>('daily');
   const [completing, setCompleting] = useState(false);
   const [completedToday, setCompletedToday] = useState(false);
   const [streakToast, setStreakToast] = useState<string | null>(null); // e.g. "🔥 3 dias"
   const [activeFilterChip, setActiveFilterChip] = useState<string | null>(null); // filters compass
-  
+
   // Deterministic synthesis state (calculated from mandato-do-dia)
   const [detSintese, setDetSintese] = useState<CaixaSintese | null>(() => {
     if (initialPilares) {
@@ -78,8 +97,17 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
   const [cycleHistory, setCycleHistory] = useState<CycleHistoryData | null>(null);
   const [cycleHistoryLoading, setCycleHistoryLoading] = useState(false);
 
-  const { data: statsData, loading: statsLoading, refetch: refetchStats } = useDashboardData({ userId });
-  const { data: dailyData, synthesis, loading: synthesisLoading, refetch: refetchSynthesis } = useAkashaSynthesis({ userId });
+  const {
+    data: statsData,
+    loading: statsLoading,
+    refetch: refetchStats,
+  } = useDashboardData({ userId });
+  const {
+    data: dailyData,
+    synthesis,
+    loading: synthesisLoading,
+    refetch: refetchSynthesis,
+  } = useAkashaSynthesis({ userId });
   const { persistCycle, getCycleHistory } = useCyclePersistence({ userId });
 
   // Fetch /api/akasha/mandato-do-dia and run local synthesis
@@ -132,7 +160,7 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
   useEffect(() => {
     if (statsData?.history && dailyData?.ritual) {
       const todayStr = new Date().toISOString().split('T')[0];
-      const done = statsData.history.some(item => {
+      const done = statsData.history.some((item) => {
         const itemDate = new Date(item.date).toISOString().split('T')[0];
         return itemDate === todayStr && item.ritualName === dailyData.ritual.titulo;
       });
@@ -206,7 +234,9 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
               <Sparkles size={28} className="text-white/30" />
             </div>
             <div className="text-center space-y-3 max-w-xs">
-              <p className="text-base font-semibold text-white">Não foi possível carregar seu alinhamento de hoje.</p>
+              <p className="text-base font-semibold text-white">
+                Não foi possível carregar seu alinhamento de hoje.
+              </p>
               <button
                 onClick={handleRetryAll}
                 className="px-5 py-2.5 rounded-full bg-[#7C5CFF]/20 border border-[#7C5CFF]/40 text-[#9D86FF] text-sm font-semibold hover:bg-[#7C5CFF]/30 transition-all"
@@ -235,8 +265,12 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
           </div>
         </div>
         <div className="mt-8 text-center space-y-2 relative z-10">
-          <p className="text-lg font-bold font-cinzel text-white tracking-wider"><Sparkles size={18} className="inline mr-1 text-[#9D86FF]" /> AKASHA</p>
-          <p className="text-sm text-[#A7AECF] font-cinzel tracking-widest animate-pulse">Carregando seu alinhamento…</p>
+          <p className="text-lg font-bold font-cinzel text-white tracking-wider">
+            <Sparkles size={18} className="inline mr-1 text-[#9D86FF]" /> AKASHA
+          </p>
+          <p className="text-sm text-[#A7AECF] font-cinzel tracking-widest animate-pulse">
+            Carregando seu alinhamento…
+          </p>
         </div>
         {/* Orbiting dots */}
         <div className="absolute w-64 h-64">
@@ -261,25 +295,33 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
       espiritualidade: 'espiritualidade',
     };
     const targetDimId = areaMap[detSintese.autoridade.areaFoco] || 'trabalho';
-    dimFoco = detSintese.dimensoes.find(d => d.dimensoesId === targetDimId) || detSintese.dimensoes[0];
+    dimFoco =
+      detSintese.dimensoes.find((d) => d.dimensoesId === targetDimId) || detSintese.dimensoes[0];
   }
 
   return (
     <div className="min-h-screen bg-[#06070F] text-[#F4F5FF]">
       {/* Background glow effects */}
-      <div aria-hidden className="fixed inset-0 z-0 pointer-events-none" style={{
-        background: 'radial-gradient(ellipse at 50% 0%, rgba(124, 92, 255, 0.08) 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(45, 212, 191, 0.04) 0%, transparent 50%)',
-      }} />
+      <div
+        aria-hidden
+        className="fixed inset-0 z-0 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(ellipse at 50% 0%, rgba(124, 92, 255, 0.08) 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(45, 212, 191, 0.04) 0%, transparent 50%)',
+        }}
+      />
 
       {/* Localized dashboard header */}
       <header className="sticky top-0 z-40 bg-[#06070F]/80 backdrop-blur-md border-b border-[#7C5CFF]/15 px-4 py-3 md:px-6">
         <div className="flex items-center justify-between max-w-4xl mx-auto">
           <div className="flex flex-col">
-            <span className="text-[10px] text-[#A7AECF] uppercase tracking-widest font-mono">{getFormattedDate()}</span>
+            <span className="text-[10px] text-[#A7AECF] uppercase tracking-widest font-mono">
+              {getFormattedDate()}
+            </span>
             <h1 className="text-lg font-bold font-cinzel text-white tracking-wider">AKASHA OS</h1>
           </div>
           <div className="flex items-center gap-3">
-            <button 
+            <button
               onClick={handleRetryAll}
               className="p-2 text-[#A7AECF] hover:text-[#7C5CFF] rounded-lg transition-colors bg-white/5 border border-white/5"
               title="Sincronizar"
@@ -294,7 +336,10 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
 
       {/* Tab Segmented Control */}
       <div className="px-4 pt-6 max-w-2xl mx-auto relative z-10">
-        <div role="tablist" className="bg-[#0B0E1C]/80 border border-white/10 rounded-full p-1 flex items-center justify-between backdrop-blur-md">
+        <div
+          role="tablist"
+          className="bg-[#0B0E1C]/80 border border-white/10 rounded-full p-1 flex items-center justify-between backdrop-blur-md"
+        >
           {[
             { id: 'daily', label: 'Meu Dia', icon: Sparkles },
             { id: 'profile', label: 'Áreas da Vida', icon: Award },
@@ -344,13 +389,16 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
             >
               {/* Daily greeting and header */}
               <div className="space-y-1">
-                <p className="text-xs text-[#A7AECF] uppercase tracking-wider font-medium">{getFormattedDate()}</p>
+                <p className="text-xs text-[#A7AECF] uppercase tracking-wider font-medium">
+                  {getFormattedDate()}
+                </p>
                 <h2 className="text-2xl font-bold font-cinzel text-white">
                   {getGreeting()}, <span className="text-[#9D86FF]">{userName}</span>
                 </h2>
                 {detSintese?.caminhoDeVida && (
                   <p className="text-xs text-[#A7AECF] font-medium tracking-wide">
-                    <Sparkles size={12} className="inline mr-1 text-[#9D86FF]" />{detSintese.caminhoDeVida}
+                    <Sparkles size={12} className="inline mr-1 text-[#9D86FF]" />
+                    {detSintese.caminhoDeVida}
                   </p>
                 )}
               </div>
@@ -359,7 +407,8 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                 <DailyInsightCard
                   insight={
                     detSintese?.perfilGeral
-                      ? detSintese.perfilGeral.substring(0, 120) + (detSintese.perfilGeral.length > 120 ? '...' : '')
+                      ? detSintese.perfilGeral.substring(0, 120) +
+                        (detSintese.perfilGeral.length > 120 ? '...' : '')
                       : `Hoje é um dia de ${dailyData.overallTheme ?? 'transformação'}.`
                   }
                   action={
@@ -367,23 +416,23 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       ? `Pratique: ${dailyData.ritual.titulo}`
                       : 'Respire e observe seus pensamentos'
                   }
-                  why={
-                    detSintese?.caminhoDeVida
-                      ? detSintese.caminhoDeVida
-                      : undefined
+                  why={detSintese?.caminhoDeVida ? detSintese.caminhoDeVida : undefined}
+                  category={
+                    dailyData.overallTheme === 'Ação'
+                      ? 'acao'
+                      : dailyData.overallTheme === 'Reflexão'
+                        ? 'reflexao'
+                        : 'transformacao'
                   }
-                  category={dailyData.overallTheme === 'Ação' ? 'acao' : dailyData.overallTheme === 'Reflexão' ? 'reflexao' : 'transformacao'}
                   isPrimary={true}
                 />
               )}
-
 
               {/* Cosmic Vibe Grid — selectable chips that filter/highlight sections */}
               <p className="text-[10px] text-[#A7AECF]/40 text-center tracking-wide">
                 Toque para filtrar · cada bloco destaca sua dimensão abaixo
               </p>
               <div id="daily-vibe" className="grid grid-cols-3 gap-2.5">
-
                 {/* Clima Chip */}
                 <button
                   onClick={() => setActiveFilterChip(activeFilterChip === 'clima' ? null : 'clima')}
@@ -398,8 +447,12 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       <Cloud size={16} className="text-[#2DD4BF]" />
                     </div>
                   </div>
-                  <p className="text-[11px] text-[#2DD4BF] uppercase tracking-widest font-mono font-semibold">Clima</p>
-                  <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.climate ?? 'Estável'}</p>
+                  <p className="text-[11px] text-[#2DD4BF] uppercase tracking-widest font-mono font-semibold">
+                    Clima
+                  </p>
+                  <p className="text-xs font-bold mt-1 text-white truncate">
+                    {dailyData?.climate ?? 'Estável'}
+                  </p>
                   {activeFilterChip === 'clima' && (
                     <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#2DD4BF] flex items-center justify-center">
                       <CheckCircle size={10} className="text-[#06070F]" />
@@ -421,8 +474,12 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       <Moon size={16} className="text-[#F0B429]" />
                     </div>
                   </div>
-                  <p className="text-[11px] text-[#F0B429] uppercase tracking-widest font-mono font-semibold">Fase Lunar</p>
-                  <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.moonPhase ?? 'Calculando'}</p>
+                  <p className="text-[11px] text-[#F0B429] uppercase tracking-widest font-mono font-semibold">
+                    Fase Lunar
+                  </p>
+                  <p className="text-xs font-bold mt-1 text-white truncate">
+                    {dailyData?.moonPhase ?? 'Calculando'}
+                  </p>
                   {activeFilterChip === 'lua' && (
                     <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#F0B429] flex items-center justify-center">
                       <CheckCircle size={10} className="text-[#06070F]" />
@@ -444,8 +501,12 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       <Sun size={16} className="text-[#7C5CFF]" />
                     </div>
                   </div>
-                  <p className="text-[11px] text-[#7C5CFF] uppercase tracking-widest font-mono font-semibold">Tema</p>
-                  <p className="text-xs font-bold mt-1 text-white truncate">{dailyData?.overallTheme ?? 'Foco'}</p>
+                  <p className="text-[11px] text-[#7C5CFF] uppercase tracking-widest font-mono font-semibold">
+                    Tema
+                  </p>
+                  <p className="text-xs font-bold mt-1 text-white truncate">
+                    {dailyData?.overallTheme ?? 'Foco'}
+                  </p>
                   {activeFilterChip === 'tema' && (
                     <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#7C5CFF] flex items-center justify-center">
                       <CheckCircle size={10} className="text-white" />
@@ -459,15 +520,12 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                 <div className="rounded-2xl border border-white/10 bg-[#0B0E1C]/60 p-5 space-y-3">
                   <div className="flex items-center gap-1.5 border-b border-white/5 pb-2">
                     <Sparkles size={14} className="text-[#9D86FF]" />
-                    <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono">Perfil de Hoje</h3>
+                    <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono">
+                      Perfil de Hoje
+                    </h3>
                   </div>
-                  <div
-                    className="relative"
-                    style={{ maxHeight: '4.5em', overflow: 'hidden' }}
-                  >
-                    <div className="space-y-1">
-                      {renderNarrative(detSintese.perfilGeral)}
-                    </div>
+                  <div className="relative" style={{ maxHeight: '4.5em', overflow: 'hidden' }}>
+                    <div className="space-y-1">{renderNarrative(detSintese.perfilGeral)}</div>
                     <div
                       aria-hidden
                       style={{
@@ -489,24 +547,30 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                 <div
                   id="daily-authority"
                   className="rounded-2xl border p-5 space-y-4 transition-all duration-500"
-                  style={{ 
-                    backgroundColor: ESTRATEGIA_BG[detSintese.autoridade.estrategia] || 'rgba(255,255,255,0.02)',
-                    borderColor: ESTRATEGIA_BORDER[detSintese.autoridade.estrategia] || 'rgba(255,255,255,0.1)'
+                  style={{
+                    backgroundColor:
+                      ESTRATEGIA_BG[detSintese.autoridade.estrategia] || 'rgba(255,255,255,0.02)',
+                    borderColor:
+                      ESTRATEGIA_BORDER[detSintese.autoridade.estrategia] ||
+                      'rgba(255,255,255,0.1)',
                   }}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Info size={16} className="text-white/80" />
-                      <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono">Diretriz de Decisão (Autoridade)</h3>
+                      <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono">
+                        Diretriz de Decisão (Autoridade)
+                      </h3>
                     </div>
-                    <span 
+                    <span
                       className="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider"
-                      style={{ 
+                      style={{
                         backgroundColor: `${ESTRATEGIA_COLOR[detSintese.autoridade.estrategia]}22`,
-                        color: ESTRATEGIA_COLOR[detSintese.autoridade.estrategia]
+                        color: ESTRATEGIA_COLOR[detSintese.autoridade.estrategia],
                       }}
                     >
-                      {ESTRATEGIA_LABEL[detSintese.autoridade.estrategia] || detSintese.autoridade.estrategia}
+                      {ESTRATEGIA_LABEL[detSintese.autoridade.estrategia] ||
+                        detSintese.autoridade.estrategia}
                     </span>
                   </div>
 
@@ -519,18 +583,22 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                   </p>
 
                   <div className="bg-black/25 rounded-xl p-3.5 space-y-2.5">
-                    <p 
+                    <p
                       className="text-[11px] uppercase tracking-wider font-mono font-semibold"
                       style={{ color: ESTRATEGIA_COLOR[detSintese.autoridade.estrategia] }}
                     >
                       Regra Prática de Alinhamento
                     </p>
                     <div className="grid grid-cols-[auto_1fr] gap-x-2 gap-y-1.5 items-start">
-                      <span className="text-[10px] text-white/70 uppercase tracking-wider font-mono mt-px">Antes de agir:</span>
+                      <span className="text-[10px] text-white/70 uppercase tracking-wider font-mono mt-px">
+                        Antes de agir:
+                      </span>
                       <p className="text-xs text-white/85 leading-relaxed">
                         {detSintese.autoridade.regra.condicao}
                       </p>
-                      <span className="text-[10px] text-[#7C5CFF] uppercase tracking-wider font-mono mt-px">Faça isto:</span>
+                      <span className="text-[10px] text-[#7C5CFF] uppercase tracking-wider font-mono mt-px">
+                        Faça isto:
+                      </span>
                       <p className="text-xs text-[#9D86FF] leading-relaxed font-medium">
                         {detSintese.autoridade.regra.accao}
                       </p>
@@ -539,21 +607,40 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
 
                   <div className="grid grid-cols-2 gap-3 text-xs pt-1 border-t border-white/5">
                     <div className="space-y-2">
-                      <p className="text-[11px] text-[#2DD4BF] uppercase tracking-wider font-mono font-semibold">Melhor Timing — janelas de decisão</p>
-                      <p className="text-white/85 leading-relaxed">{detSintese.autoridade.timing.melhor}</p>
+                      <p className="text-[11px] text-[#2DD4BF] uppercase tracking-wider font-mono font-semibold">
+                        Melhor Timing — janelas de decisão
+                      </p>
+                      <p className="text-white/85 leading-relaxed">
+                        {detSintese.autoridade.timing.melhor}
+                      </p>
                     </div>
                     <div className="space-y-2">
-                      <p className="text-[11px] text-[#E04879] uppercase tracking-wider font-mono font-semibold">Evitar Decidir</p>
-                      <p className="text-sm text-[#C4C9E2] mt-0.5 leading-relaxed">{detSintese.autoridade.timing.pior}</p>
+                      <p className="text-[11px] text-[#E04879] uppercase tracking-wider font-mono font-semibold">
+                        Evitar Decidir
+                      </p>
+                      <p className="text-sm text-[#C4C9E2] mt-0.5 leading-relaxed">
+                        {detSintese.autoridade.timing.pior}
+                      </p>
                     </div>
                   </div>
 
                   <div className="pt-2 border-t border-white/5 text-[11px] text-[#A7AECF]/90 flex items-center justify-between">
                     <span>
-                      Autoridade: <strong className="text-white capitalize" title="Sua energia de comando hoje — como você exerce autoridade">{detSintese.autoridade.autoridade}</strong>
+                      Autoridade:{' '}
+                      <strong
+                        className="text-white capitalize"
+                        title="Sua energia de comando hoje — como você exerce autoridade"
+                      >
+                        {detSintese.autoridade.autoridade}
+                      </strong>
                     </span>
                     <span>
-                      Área Foco: <strong className="text-white capitalize">{AREA_ICONE[detSintese.autoridade.areaFoco] || '◈'} {AREA_LABEL[detSintese.autoridade.areaFoco] || detSintese.autoridade.areaFoco}</strong>
+                      Área Foco:{' '}
+                      <strong className="text-white capitalize">
+                        {AREA_ICONE[detSintese.autoridade.areaFoco] || '◈'}{' '}
+                        {AREA_LABEL[detSintese.autoridade.areaFoco] ||
+                          detSintese.autoridade.areaFoco}
+                      </strong>
                     </span>
                   </div>
                 </div>
@@ -567,9 +654,15 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       <Sparkles size={20} className="text-[#9D86FF]" />
                     </div>
                     <div>
-                      <p className="text-[10px] text-[#F0B429] font-bold uppercase tracking-wider font-mono">Foco Prioritário de Hoje</p>
-                      <p className="text-base font-bold font-cinzel text-white leading-none mt-1">{dimFoco?.titulo}</p>
-                      <p className="text-[10px] text-[#A7AECF]/50 mt-0.5">A energia de hoje favorece fortemente esta dimensão — aproveite o momento</p>
+                      <p className="text-[10px] text-[#F0B429] font-bold uppercase tracking-wider font-mono">
+                        Foco Prioritário de Hoje
+                      </p>
+                      <p className="text-base font-bold font-cinzel text-white leading-none mt-1">
+                        {dimFoco?.titulo}
+                      </p>
+                      <p className="text-[10px] text-[#A7AECF]/50 mt-0.5">
+                        A energia de hoje favorece fortemente esta dimensão — aproveite o momento
+                      </p>
                     </div>
                   </div>
                   <span className="shrink-0 px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#F0B429] text-[#06070F] shadow-[0_0_8px_rgba(240,180,41,0.4)]">
@@ -577,10 +670,13 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                   </span>
                 </div>
 
-                <div id="foco-prioritario-content" aria-live="polite" className="relative" style={{ maxHeight: dimFocoExpanded ? 'none' : '4.5em', overflow: 'hidden' }}>
-                  <div className="space-y-1">
-                    {renderNarrative(dimFoco?.synthes ?? '')}
-                  </div>
+                <div
+                  id="foco-prioritario-content"
+                  aria-live="polite"
+                  className="relative"
+                  style={{ maxHeight: dimFocoExpanded ? 'none' : '4.5em', overflow: 'hidden' }}
+                >
+                  <div className="space-y-1">{renderNarrative(dimFoco?.synthes ?? '')}</div>
                   {!dimFocoExpanded && (
                     <div
                       aria-hidden
@@ -602,31 +698,44 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                   aria-controls="foco-prioritario-content"
                   className="text-xs text-[#7C5CFF]/90 hover:text-[#7C5CFF] transition-colors px-3 py-2 min-h-11 rounded-lg"
                 >
-                  {dimFocoExpanded ? <><ChevronUp size={12} className="inline" /> Mostrar menos</> : <><ChevronDown size={12} className="inline" /> Ler mais sobre {dimFoco?.titulo}</>}
+                  {dimFocoExpanded ? (
+                    <>
+                      <ChevronUp size={12} className="inline" /> Mostrar menos
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown size={12} className="inline" /> Ler mais sobre {dimFoco?.titulo}
+                    </>
+                  )}
                 </button>
                 {/* aria-controls target is the div above */}
 
                 {dimFoco?.praktika && (
                   <div className="bg-[#2DD4BF]/5 border border-[#2DD4BF]/15 rounded-xl p-3.5 space-y-1">
-                    <p className="text-[11px] text-[#2DD4BF] uppercase tracking-wider font-mono font-semibold">Prática do Dia</p>
+                    <p className="text-[11px] text-[#2DD4BF] uppercase tracking-wider font-mono font-semibold">
+                      Prática do Dia
+                    </p>
                     <p className="text-xs text-white/90 leading-relaxed">{dimFoco.praktika}</p>
                   </div>
                 )}
 
                 {dimFoco?.alerta && (
                   <div className="bg-[#FB5781]/5 border border-[#FB5781]/15 rounded-xl p-3.5 space-y-1">
-                    <p className="text-[11px] text-[#FB5781] uppercase tracking-wider font-mono font-semibold">O que Evitar</p>
+                    <p className="text-[11px] text-[#FB5781] uppercase tracking-wider font-mono font-semibold">
+                      O que Evitar
+                    </p>
                     <p className="text-sm text-[#C4C9E2] leading-relaxed">{dimFoco.alerta}</p>
                   </div>
                 )}
               </div>
-              <a href={`/${locale}/akasha`} className="block text-center text-[11px] text-[#7C5CFF]/60 hover:text-[#7C5CFF] transition-colors py-3 min-h-11 border-t border-white/5">
+              <a
+                href={`/${locale}/akasha`}
+                className="block text-center text-[11px] text-[#7C5CFF]/60 hover:text-[#7C5CFF] transition-colors py-3 min-h-11 border-t border-white/5"
+              >
                 Ver análise completa do seu mandato →
               </a>
               {/* §P4: Meu Ciclo — Ciclo Pessoal (camada 7) */}
-              {dailyData?.cycle && (
-                <MeuCiclo cycle={dailyData.cycle} />
-              )}
+              {dailyData?.cycle && <MeuCiclo cycle={dailyData.cycle} />}
               {/* 4. Daily Ritual Card - Premium Cosmic Design */}
               {dailyData?.ritual && (
                 <div className="relative group">
@@ -643,20 +752,28 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7C5CFF]/20 to-[#2DD4BF]/10 border border-[#7C5CFF]/20 flex items-center justify-center">
                             <Sparkles size={18} className="text-[#9D86FF]" />
                           </div>
-                          <h3 className="text-[10px] text-[#9D86FF] font-semibold uppercase tracking-widest font-mono">Ritual do Dia</h3>
+                          <h3 className="text-[10px] text-[#9D86FF] font-semibold uppercase tracking-widest font-mono">
+                            Ritual do Dia
+                          </h3>
                         </div>
-                        <h3 className="text-xl font-bold font-cinzel text-white leading-tight">{dailyData.ritual.titulo}</h3>
+                        <h3 className="text-xl font-bold font-cinzel text-white leading-tight">
+                          {dailyData.ritual.titulo}
+                        </h3>
                         <div className="flex items-center gap-3 text-xs text-[#A7AECF]/70">
                           {dailyData.ritual.elemento ? (
                             <span className="flex items-center gap-1">
                               <Wind size={12} className="text-[#2DD4BF]" />
                               <span className="text-[10px] text-[#A7AECF]/50 mr-1">elemento</span>
-                              <span className="text-xs text-white">{dailyData.ritual.elemento}</span>
+                              <span className="text-xs text-white">
+                                {dailyData.ritual.elemento}
+                              </span>
                             </span>
                           ) : (
                             <span className="flex items-center gap-1">
                               <span className="text-[10px] text-[#A7AECF]/50">cor</span>
-                              <span className="text-xs text-white">{dailyData.ritual.cor || '15 min'}</span>
+                              <span className="text-xs text-white">
+                                {dailyData.ritual.cor || '15 min'}
+                              </span>
                             </span>
                           )}
                         </div>
@@ -667,7 +784,10 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                     </div>
 
                     {/* Instruction with truncation */}
-                    <div className="relative" style={{ maxHeight: ritualExpanded ? 'none' : '7.5em', overflow: 'hidden' }}>
+                    <div
+                      className="relative"
+                      style={{ maxHeight: ritualExpanded ? 'none' : '7.5em', overflow: 'hidden' }}
+                    >
                       <div className="bg-[#0B0E1C]/80 rounded-xl p-4 mb-2 border border-white/5">
                         <p className="text-sm text-[#A7AECF] leading-relaxed">
                           {dailyData.ritual.instrucao}
@@ -692,7 +812,15 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                       onClick={() => setRitualExpanded(!ritualExpanded)}
                       className="text-xs text-[#7C5CFF]/90 hover:text-[#7C5CFF] transition-colors px-3 py-2 min-h-11 rounded-lg"
                     >
-                    {ritualExpanded ? <><ChevronUp size={12} className="inline" /> Mostrar menos</> : <><ChevronDown size={12} className="inline" /> Ver instrução completa</>}
+                      {ritualExpanded ? (
+                        <>
+                          <ChevronUp size={12} className="inline" /> Mostrar menos
+                        </>
+                      ) : (
+                        <>
+                          <ChevronDown size={12} className="inline" /> Ver instrução completa
+                        </>
+                      )}
                     </button>
 
                     {/* Completion Button - Enhanced Design */}
@@ -704,11 +832,14 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                             <motion.div
                               initial={{ scale: 0 }}
                               animate={{ scale: 1 }}
-                              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                             >
                               <CheckCircle size={20} className="text-[#2DD4BF]" />
                             </motion.div>
-                            <span>Ritual Concluído! <Sparkles size={14} className="inline ml-1 text-[#2DD4BF]" /></span>
+                            <span>
+                              Ritual Concluído!{' '}
+                              <Sparkles size={14} className="inline ml-1 text-[#2DD4BF]" />
+                            </span>
                           </div>
                         </div>
                       ) : (
@@ -744,7 +875,9 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                 <div className="space-y-4">
                   <div className="flex items-center gap-2">
                     <div className="h-px flex-1 bg-white/10" />
-                    <h3 className="text-xs text-white/30 uppercase tracking-widest font-mono">Sua Bússola Existencial ({detSintese?.dimensoes?.length ?? 0} Dimensões)</h3>
+                    <h3 className="text-xs text-white/30 uppercase tracking-widest font-mono">
+                      Sua Bússola Existencial ({detSintese?.dimensoes?.length ?? 0} Dimensões)
+                    </h3>
                     <div className="h-px flex-1 bg-white/10" />
                   </div>
 
@@ -768,13 +901,19 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                             </span>
                           )}
                           <span className="text-lg text-[#9D86FF] group-hover:scale-110 transition-transform duration-300">
-                            {dim.icone ? dim.icone : <Sparkles size={18} className="text-[#9D86FF]" />}
+                            {dim.icone ? (
+                              dim.icone
+                            ) : (
+                              <Sparkles size={18} className="text-[#9D86FF]" />
+                            )}
                           </span>
                           <span className="text-[11px] font-bold text-white leading-tight">
                             {dim.titulo.split(' & ')[0]}
                           </span>
                           {dim.descricao && (
-                            <span className="text-[10px] text-white/30 leading-tight px-1">{dim.descricao.split('.')[0]}.</span>
+                            <span className="text-[10px] text-white/30 leading-tight px-1">
+                              {dim.descricao.split('.')[0]}.
+                            </span>
                           )}
                           <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-[#7C5CFF]/10 border border-[#7C5CFF]/20 text-[10px] text-[#9D86FF] group-hover:bg-[#7C5CFF]/20 group-hover:border-[#7C5CFF]/40 transition-all">
                             Explorar <span>→</span>
@@ -819,7 +958,9 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
               className="space-y-6"
             >
               <div className="space-y-1">
-                <p className="text-xs text-[#A7AECF] uppercase tracking-wider font-medium">Histórico e Evolução</p>
+                <p className="text-xs text-[#A7AECF] uppercase tracking-wider font-medium">
+                  Histórico e Evolução
+                </p>
                 <h2 className="text-2xl font-bold font-cinzel text-white">Sua Jornada</h2>
               </div>
 
@@ -833,7 +974,9 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
 
               {/* Progress Chart */}
               <div className="bg-[#0B0E1C]/40 rounded-2xl p-5 border border-white/5">
-                <h3 className="text-sm font-semibold font-cinzel mb-4 text-[#A7AECF]">Intensidade das Práticas</h3>
+                <h3 className="text-sm font-semibold font-cinzel mb-4 text-[#A7AECF]">
+                  Intensidade das Práticas
+                </h3>
                 <ProgressChart userId={userId} />
               </div>
 
@@ -885,8 +1028,12 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
               transition={{ type: 'spring', duration: 0.3 }}
               className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
             >
-              <div role="dialog" aria-modal="true" aria-labelledby="modal-title" className="bg-[#0B0E1C] border border-[#7C5CFF]/30 rounded-3xl w-full max-w-lg overflow-y-auto max-h-[85vh] p-6 relative pointer-events-auto shadow-[0_0_50px_rgba(124,92,255,0.15)] space-y-4">
-                
+              <div
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="modal-title"
+                className="bg-[#0B0E1C] border border-[#7C5CFF]/30 rounded-3xl w-full max-w-lg overflow-y-auto max-h-[85vh] p-6 relative pointer-events-auto shadow-[0_0_50px_rgba(124,92,255,0.15)] space-y-4"
+              >
                 {/* Close Button */}
                 <button
                   onClick={() => setSelectedDimension(null)}
@@ -898,18 +1045,23 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
 
                 {/* Header */}
                 <div className="flex items-center gap-3 border-b border-white/5 pb-3">
-                  <div 
+                  <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold"
-                    style={{ 
-                      backgroundColor: `${selectedDimension.chakraCor}15`, 
+                    style={{
+                      backgroundColor: `${selectedDimension.chakraCor}15`,
                       color: selectedDimension.chakraCor,
-                      border: `1px solid ${selectedDimension.chakraCor}30` 
+                      border: `1px solid ${selectedDimension.chakraCor}30`,
                     }}
                   >
                     <Sparkles size={20} className="text-[#9D86FF]" />
                   </div>
                   <div>
-                    <h3 id="modal-title" className="text-lg font-bold font-cinzel text-white leading-none">{selectedDimension.titulo}</h3>
+                    <h3
+                      id="modal-title"
+                      className="text-lg font-bold font-cinzel text-white leading-none"
+                    >
+                      {selectedDimension.titulo}
+                    </h3>
                     <p className="text-xs text-[#C4C9E2] mt-1">{selectedDimension.descricao}</p>
                   </div>
                 </div>
@@ -923,14 +1075,22 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                 <div className="grid grid-cols-1 gap-2.5 pt-2">
                   {selectedDimension.praktika && (
                     <div className="bg-[#2DD4BF]/5 border border-[#2DD4BF]/15 rounded-xl p-3.5 space-y-1">
-                      <p className="text-[11px] text-[#2DD4BF] uppercase tracking-wider font-mono font-semibold">Prática Sugerida</p>
-                      <p className="text-xs text-white/95 leading-relaxed">{selectedDimension.praktika}</p>
+                      <p className="text-[11px] text-[#2DD4BF] uppercase tracking-wider font-mono font-semibold">
+                        Prática Sugerida
+                      </p>
+                      <p className="text-xs text-white/95 leading-relaxed">
+                        {selectedDimension.praktika}
+                      </p>
                     </div>
                   )}
                   {selectedDimension.alerta && (
                     <div className="bg-[#FB5781]/5 border border-[#FB5781]/15 rounded-xl p-3.5 space-y-1">
-                      <p className="text-[11px] text-[#FB5781] uppercase tracking-wider font-mono font-semibold">Evitar Padrão</p>
-                      <p className="text-xs text-white/95 leading-relaxed">{selectedDimension.alerta}</p>
+                      <p className="text-[11px] text-[#FB5781] uppercase tracking-wider font-mono font-semibold">
+                        Evitar Padrão
+                      </p>
+                      <p className="text-xs text-white/95 leading-relaxed">
+                        {selectedDimension.alerta}
+                      </p>
                     </div>
                   )}
                 </div>
@@ -938,10 +1098,15 @@ export function Dashboard({ userId, userName = 'Viajante', initialPilares, local
                 {/* Pilar contributions mapping */}
                 {selectedDimension.contribuicoes && selectedDimension.contribuicoes.length > 0 && (
                   <div className="bg-black/25 rounded-2xl p-4 border border-white/5 space-y-2">
-                    <p className="text-[11px] text-[#7C5CFF] uppercase tracking-wider font-mono font-semibold">Cruzamento de Influências</p>
+                    <p className="text-[11px] text-[#7C5CFF] uppercase tracking-wider font-mono font-semibold">
+                      Cruzamento de Influências
+                    </p>
                     <div className="space-y-2 max-h-[160px] overflow-y-auto pr-1">
                       {selectedDimension.contribuicoes.map((c, idx) => (
-                        <div key={idx} className="text-xs text-[#A7AECF]/80 leading-relaxed border-b border-white/5 pb-2 last:border-0 last:pb-0">
+                        <div
+                          key={idx}
+                          className="text-xs text-[#A7AECF]/80 leading-relaxed border-b border-white/5 pb-2 last:border-0 last:pb-0"
+                        >
                           <span className="text-white font-medium capitalize font-mono text-[10px] bg-white/5 px-1.5 py-0.5 rounded mr-1">
                             {c.pilar}
                           </span>

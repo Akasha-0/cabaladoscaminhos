@@ -4,13 +4,13 @@
 // Core search endpoint for spiritual content discovery
 // Searches across: Odús, Orixás, rituals, tarot, affirmations
 // ============================================================
-
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/domain/types/spiritual-filters';
+import { NextRequest, NextResponse } from 'next/server';
 import { orixas, odus } from '@/lib/domain/data/spiritual-data';
 import { TAROT_DECK } from '@/lib/domain/tarot/cards';
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/domain/types/spiritual-filters';
 import { searchParamsToObject } from '@/lib/shared/query-params';
+
 // ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 
 const SearchQuerySchema = z.object({
@@ -23,14 +23,17 @@ const SearchQuerySchema = z.object({
 });
 
 // ─── Spiritual Correlations for Search Results ──────────────────────────────────────────
-const TYPE_SPIRITUAL_CORRELATIONS: Record<string, {
-  sefirot: string[];
-  chakra: number;
-  element: string;
-  orixa: string;
-  affirmation: string;
-  frequency: string;
-}> = {
+const TYPE_SPIRITUAL_CORRELATIONS: Record<
+  string,
+  {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  }
+> = {
   odu: {
     sefirot: ['Binah', 'Chokhmah'],
     chakra: 6,
@@ -104,14 +107,17 @@ export interface SearchResponse {
     orixas: string[];
   };
   timestamp: string;
-  spiritualCorrelations: Record<string, {
-    sefirot: string[];
-    chakra: number;
-    element: string;
-    orixa: string;
-    affirmation: string;
-    frequency: string;
-  }>;
+  spiritualCorrelations: Record<
+    string,
+    {
+      sefirot: string[];
+      chakra: number;
+      element: string;
+      orixa: string;
+      affirmation: string;
+      frequency: string;
+    }
+  >;
   spiritualStats: {
     byType: Record<string, number>;
     bySefirot: Record<string, number>;
@@ -197,10 +203,13 @@ const ritualsData = [
 // HELPER FUNCTIONS
 // ============================================================
 
-function searchRituals(query: string, filters: { element?: string; orixa?: string }): SearchResult[] {
+function searchRituals(
+  query: string,
+  filters: { element?: string; orixa?: string }
+): SearchResult[] {
   const q = query.toLowerCase();
   return ritualsData
-    .filter(r => {
+    .filter((r) => {
       if (q && !r.title.toLowerCase().includes(q) && !r.descricao.toLowerCase().includes(q)) {
         return false;
       }
@@ -212,7 +221,7 @@ function searchRituals(query: string, filters: { element?: string; orixa?: strin
       }
       return true;
     })
-    .map(r => ({
+    .map((r) => ({
       type: 'ritual' as const,
       id: r.id,
       title: r.title,
@@ -231,8 +240,10 @@ function searchRituals(query: string, filters: { element?: string; orixa?: strin
 function searchOrixas(query: string): SearchResult[] {
   const q = query.toLowerCase();
   return orixas
-    .filter(o => q === '' || o.nome.toLowerCase().includes(q) || o.misterio.toLowerCase().includes(q))
-    .map(o => ({
+    .filter(
+      (o) => q === '' || o.nome.toLowerCase().includes(q) || o.misterio.toLowerCase().includes(q)
+    )
+    .map((o) => ({
       type: 'orixa' as const,
       id: o.id || o.nome,
       title: o.nome,
@@ -251,8 +262,10 @@ function searchOrixas(query: string): SearchResult[] {
 function searchOdus(query: string): SearchResult[] {
   const q = query.toLowerCase();
   return odus
-    .filter(o => q === '' || o.nome.toLowerCase().includes(q) || o.significado.toLowerCase().includes(q))
-    .map(o => ({
+    .filter(
+      (o) => q === '' || o.nome.toLowerCase().includes(q) || o.significado.toLowerCase().includes(q)
+    )
+    .map((o) => ({
       type: 'odu' as const,
       id: String(o.numero) || o.nome,
       title: o.nome,
@@ -271,7 +284,12 @@ function searchOdus(query: string): SearchResult[] {
 function searchTarot(query: string): SearchResult[] {
   const q = query.toLowerCase();
   return TAROT_DECK.cards
-    .filter((c) => q === '' || c.name.toLowerCase().includes(q) || (c as any).significado?.toLowerCase().includes(q))
+    .filter(
+      (c) =>
+        q === '' ||
+        c.name.toLowerCase().includes(q) ||
+        (c as any).significado?.toLowerCase().includes(q)
+    )
     .map((c) => ({
       type: 'tarot' as const,
       id: String(c.id),
@@ -301,11 +319,14 @@ export async function GET(request: NextRequest) {
     );
 
     if (!parseResult.success) {
-      return NextResponse.json({
-        success: false,
-        error: 'Parâmetros inválidos',
-        details: parseResult.error.flatten().fieldErrors,
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Parâmetros inválidos',
+          details: parseResult.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      );
     }
 
     const { q, type, element, sefirot, chakra, orixa } = parseResult.data;
@@ -331,16 +352,16 @@ export async function GET(request: NextRequest) {
 
     // Filter by spiritual dimensions
     if (sefirot) {
-      results = results.filter(r => r.spiritualCorrelations.sefirot.includes(sefirot));
+      results = results.filter((r) => r.spiritualCorrelations.sefirot.includes(sefirot));
     }
     if (chakra) {
-      results = results.filter(r => r.spiritualCorrelations.chakra === chakra);
+      results = results.filter((r) => r.spiritualCorrelations.chakra === chakra);
     }
     if (element) {
-      results = results.filter(r => r.spiritualCorrelations.element === element);
+      results = results.filter((r) => r.spiritualCorrelations.element === element);
     }
     if (orixa) {
-      results = results.filter(r => r.spiritualCorrelations.orixa === orixa);
+      results = results.filter((r) => r.spiritualCorrelations.orixa === orixa);
     }
 
     // Sort by relevance
@@ -348,38 +369,53 @@ export async function GET(request: NextRequest) {
 
     // Calculate spiritual stats
     const spiritualStats = {
-      byType: results.reduce((acc, r) => {
-        acc[r.type] = (acc[r.type] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      bySefirot: results.reduce((acc, r) => {
-        r.spiritualCorrelations.sefirot.forEach(s => {
-          acc[s] = (acc[s] || 0) + 1;
-        });
-        return acc;
-      }, {} as Record<string, number>),
-      byChakra: results.reduce((acc, r) => {
-        const c = r.spiritualCorrelations.chakra;
-        if (c) acc[c] = (acc[c] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      byElement: results.reduce((acc, r) => {
-        const e = r.spiritualCorrelations.element;
-        if (e) acc[e] = (acc[e] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      byOrixa: results.reduce((acc, r) => {
-        const o = r.spiritualCorrelations.orixa;
-        if (o) acc[o] = (acc[o] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
+      byType: results.reduce(
+        (acc, r) => {
+          acc[r.type] = (acc[r.type] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      bySefirot: results.reduce(
+        (acc, r) => {
+          r.spiritualCorrelations.sefirot.forEach((s) => {
+            acc[s] = (acc[s] || 0) + 1;
+          });
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      byChakra: results.reduce(
+        (acc, r) => {
+          const c = r.spiritualCorrelations.chakra;
+          if (c) acc[c] = (acc[c] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      byElement: results.reduce(
+        (acc, r) => {
+          const e = r.spiritualCorrelations.element;
+          if (e) acc[e] = (acc[e] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      byOrixa: results.reduce(
+        (acc, r) => {
+          const o = r.spiritualCorrelations.orixa;
+          if (o) acc[o] = (acc[o] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
     };
 
     // Extract unique filters
     const filters = {
-      categories: [...new Set(results.map(r => r.type))],
-      elements: [...new Set(results.map(r => r.spiritualCorrelations.element).filter(Boolean))],
-      orixas: [...new Set(results.map(r => r.spiritualCorrelations.orixa).filter(Boolean))],
+      categories: [...new Set(results.map((r) => r.type))],
+      elements: [...new Set(results.map((r) => r.spiritualCorrelations.element).filter(Boolean))],
+      orixas: [...new Set(results.map((r) => r.spiritualCorrelations.orixa).filter(Boolean))],
     };
 
     return NextResponse.json({
@@ -392,9 +428,12 @@ export async function GET(request: NextRequest) {
       spiritualStats,
     });
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Search failed',
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : 'Search failed',
+      },
+      { status: 500 }
+    );
   }
 }

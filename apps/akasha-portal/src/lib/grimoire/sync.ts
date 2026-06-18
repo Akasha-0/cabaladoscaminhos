@@ -1,6 +1,6 @@
 import fs from 'fs';
-import path from 'path';
 import matter from 'gray-matter';
+import path from 'path';
 import { prisma } from '@/lib/infrastructure/prisma';
 
 /** Return type matching test expectations */
@@ -57,36 +57,39 @@ export async function syncGrimoire(_options?: object): Promise<SyncResult> {
           body: JSON.stringify({ model: embeddingModel, prompt: content.slice(0, 2000) }),
         });
         if (res.ok) {
-          const json = await res.json() as { embedding?: number[] };
+          const json = (await res.json()) as { embedding?: number[] };
           embedding = json.embedding ?? null;
         }
       } catch {
         // Ollama offline — continue without embedding
       }
 
-      const slug = (frontmatter.slug as string)
-        ?? (frontmatter.id as string)
-        ?? relativePath.replace(/\.md$/, '').replace(/\//g, '-');
+      const slug =
+        (frontmatter.slug as string) ??
+        (frontmatter.id as string) ??
+        relativePath.replace(/\.md$/, '').replace(/\//g, '-');
 
       // gray-matter parses YAML `category:` as frontmatter.category
-      const categoria = (frontmatter.category as string)
-        ?? (frontmatter.categoria as string)
-        ?? 'general';
+      const categoria =
+        (frontmatter.category as string) ?? (frontmatter.categoria as string) ?? 'general';
 
       // biblioteca: explicit field first, then derive from category/categoria
-      const biblioteca = (frontmatter.biblioteca as string)
-        ?? (frontmatter.library as string)
-        ?? (frontmatter.category as string)
-        ?? (frontmatter.categoria as string)
-        ?? 'general';
+      const biblioteca =
+        (frontmatter.biblioteca as string) ??
+        (frontmatter.library as string) ??
+        (frontmatter.category as string) ??
+        (frontmatter.categoria as string) ??
+        'general';
 
-      await (prisma.grimoireEntry as unknown as {
-        upsert: (args: {
-          where: { slug: string };
-          create: Record<string, unknown>;
-          update: Record<string, unknown>;
-        }) => Promise<unknown>;
-      }).upsert({
+      await (
+        prisma.grimoireEntry as unknown as {
+          upsert: (args: {
+            where: { slug: string };
+            create: Record<string, unknown>;
+            update: Record<string, unknown>;
+          }) => Promise<unknown>;
+        }
+      ).upsert({
         where: { slug },
         create: {
           slug,

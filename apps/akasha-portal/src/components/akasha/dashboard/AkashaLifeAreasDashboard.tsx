@@ -21,14 +21,36 @@
  * Decisão diária (Strategy + Authority) no topo.
  * Síntese geral em 2ª pessoa abaixo.
  */
-import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Zap, Heart, TrendingUp, Brain, Sparkles, AlertTriangle,
-  ChevronDown, ChevronUp, CheckCircle2, XCircle, Star,
-  ArrowRight, Lightbulb, RefreshCw, GitBranch,
+  Zap,
+  Heart,
+  TrendingUp,
+  Brain,
+  Sparkles,
+  AlertTriangle,
+  ChevronDown,
+  ChevronUp,
+  CheckCircle2,
+  XCircle,
+  Star,
+  ArrowRight,
+  Lightbulb,
+  RefreshCw,
+  GitBranch,
   type LucideIcon,
 } from 'lucide-react';
+import { useState } from 'react';
+import type { FrequencyLevel } from '@/lib/application/akasha/synthesis-engine/synthesis-types';
+import { AkashaSignificadoCard } from '../AkashaSignificadoCard';
+import { PriorityAreasQuickView } from './PriorityAreasQuickView';
+import {
+  cleanTraditionName,
+  AREA_CONFIG,
+  FREQUENCY_CONFIG,
+  FrequencyBadge,
+  IntensityDots,
+} from './dashboard-utils';
 import type {
   AkashaSynthesisUI,
   AkashaTypeProfileUI,
@@ -37,17 +59,8 @@ import type {
   DailyDecisionUI,
   SexualidadeUI,
 } from './hooks/useAkashaSynthesis';
-import type { FrequencyLevel } from '@/lib/application/akasha/synthesis-engine/synthesis-types';
-import {
-  FrequencyPathExplorer,
-} from './frequency-display';
-import {
-  cleanTraditionName,
-  AREA_CONFIG,
-  FREQUENCY_CONFIG,
-  FrequencyBadge,
-  IntensityDots,
-} from './dashboard-utils';
+
+export { AREA_CONFIG, FREQUENCY_CONFIG, IntensityDots };
 
 // ─── F-235: Frequency Path Explorer — Siddhi journey visualization ──────────────
 
@@ -94,14 +107,14 @@ function FrequencyPathExplorer({
   transformationStage: 'surface' | 'deepening' | 'embodying';
 }) {
   const [expanded, setExpanded] = useState(false);
-  const currentIndex = PATH_STAGES.findIndex(s => s.id === dominantFrequency);
+  const currentIndex = PATH_STAGES.findIndex((s) => s.id === dominantFrequency);
 
   return (
     <div className="rounded-2xl border border-white/10 bg-[#1C1C1E] overflow-hidden">
       {/* Header — always visible */}
       <button
         className="w-full flex items-center justify-between px-5 py-4 hover:bg-white/5 transition-colors"
-        onClick={() => setExpanded(e => !e)}
+        onClick={() => setExpanded((e) => !e)}
       >
         <div className="flex items-center gap-3">
           <GitBranch size={16} className="text-white/40" />
@@ -110,9 +123,17 @@ function FrequencyPathExplorer({
         </div>
         <div className="flex items-center gap-3">
           <span className="text-xs text-white/40">
-            {overallFrequencyScore < 40 ? 'Superficial' : overallFrequencyScore < 70 ? 'Aprofundando' : 'Incorporando'}
+            {overallFrequencyScore < 40
+              ? 'Superficial'
+              : overallFrequencyScore < 70
+                ? 'Aprofundando'
+                : 'Incorporando'}
           </span>
-          {expanded ? <ChevronUp size={14} className="text-white/40" /> : <ChevronDown size={14} className="text-white/40" />}
+          {expanded ? (
+            <ChevronUp size={14} className="text-white/40" />
+          ) : (
+            <ChevronDown size={14} className="text-white/40" />
+          )}
         </div>
       </button>
 
@@ -129,7 +150,11 @@ function FrequencyPathExplorer({
                 <div
                   className="w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all"
                   style={{
-                    backgroundColor: isActive ? stage.color : isPast ? `${stage.color}44` : 'transparent',
+                    backgroundColor: isActive
+                      ? stage.color
+                      : isPast
+                        ? `${stage.color}44`
+                        : 'transparent',
                     borderColor: isActive ? stage.color : isPast ? stage.color : '#3A3A3C',
                     opacity: isFuture ? 0.3 : 1,
                   }}
@@ -181,12 +206,19 @@ function FrequencyPathExplorer({
 
               {/* Next stage teaser */}
               {currentIndex < 2 && (
-                <div className="p-3 rounded-xl" style={{ backgroundColor: `${PATH_STAGES[currentIndex + 1].color}11` }}>
+                <div
+                  className="p-3 rounded-xl"
+                  style={{ backgroundColor: `${PATH_STAGES[currentIndex + 1].color}11` }}
+                >
                   <p className="text-xs text-white/40 uppercase tracking-widest mb-1">
                     O próximo passo
                   </p>
                   <div className="flex items-start gap-2">
-                    <ArrowRight size={14} className="mt-0.5 shrink-0" style={{ color: PATH_STAGES[currentIndex + 1].color }} />
+                    <ArrowRight
+                      size={14}
+                      className="mt-0.5 shrink-0"
+                      style={{ color: PATH_STAGES[currentIndex + 1].color }}
+                    />
                     <p className="text-sm text-white/80 leading-relaxed">
                       {PATH_STAGES[currentIndex + 1].description}
                     </p>
@@ -196,17 +228,22 @@ function FrequencyPathExplorer({
 
               {/* Siddhi achieved message */}
               {currentIndex === 2 && (
-                <div className="p-3 rounded-xl" style={{ backgroundColor: `${PATH_STAGES[2].color}11` }}>
+                <div
+                  className="p-3 rounded-xl"
+                  style={{ backgroundColor: `${PATH_STAGES[2].color}11` }}
+                >
                   <p className="text-sm text-white/90 leading-relaxed italic">
-                    ✦ Você opera na frequência da Realização. Sua presença é o ensinamento.
-                    O próximo passo não é "subir" — é aprofundar e compartilhar.
+                    ✦ Você opera na frequência da Realização. Sua presença é o ensinamento. O
+                    próximo passo não é "subir" — é aprofundar e compartilhar.
                   </p>
                 </div>
               )}
 
               {/* Current stage practice */}
               <div>
-                <p className="text-xs text-white/40 uppercase tracking-widest mb-1.5">Prática de Hoje</p>
+                <p className="text-xs text-white/40 uppercase tracking-widest mb-1.5">
+                  Prática de Hoje
+                </p>
                 <div className="flex items-start gap-2">
                   <Sparkles size={14} className="mt-0.5 shrink-0 text-[#FF9500]" />
                   <p className="text-sm text-white/80 leading-relaxed">
@@ -225,21 +262,21 @@ function FrequencyPathExplorer({
                       transformationStage === 'surface'
                         ? '#FF950022'
                         : transformationStage === 'deepening'
-                        ? '#34C75922'
-                        : '#AF52DE22',
+                          ? '#34C75922'
+                          : '#AF52DE22',
                     color:
                       transformationStage === 'surface'
                         ? '#FF9500'
                         : transformationStage === 'deepening'
-                        ? '#34C759'
-                        : '#AF52DE',
+                          ? '#34C759'
+                          : '#AF52DE',
                   }}
                 >
                   {transformationStage === 'surface'
                     ? ' superficial'
                     : transformationStage === 'deepening'
-                    ? ' aprofundando'
-                    : ' incorporando'}
+                      ? ' aprofundando'
+                      : ' incorporando'}
                 </span>
               </div>
             </div>
@@ -278,9 +315,7 @@ export function DailyDecisionCard({ decision }: { decision: DailyDecisionUI }) {
         <StrategyBadge strategy={decision.strategy} />
       </div>
 
-      <p className="text-sm text-white/70 leading-relaxed">
-        {decision.strategyExplanation}
-      </p>
+      <p className="text-sm text-white/70 leading-relaxed">{decision.strategyExplanation}</p>
 
       <div className="bg-white/5 rounded-xl p-3 space-y-2">
         <p className="text-xs text-white/50 font-medium uppercase tracking-wider">Autoridade</p>
@@ -303,7 +338,6 @@ export function DailyDecisionCard({ decision }: { decision: DailyDecisionUI }) {
 
 // ─── F-227: ONE Akasha Profile Card ───────────────────────────────────────────
 
-
 const AUTHORITY_LABELS: Record<string, string> = {
   emotional: 'Autoridade Emocional',
   sacral: 'Autoridade Sacral',
@@ -311,7 +345,13 @@ const AUTHORITY_LABELS: Record<string, string> = {
   mental: 'Autoridade Mental',
 };
 
-export function OneProfileCard({ profile, narrativaCentral }: { profile: AkashaTypeProfileUI; narrativaCentral?: string | null }) {
+export function OneProfileCard({
+  profile,
+  narrativaCentral,
+}: {
+  profile: AkashaTypeProfileUI;
+  narrativaCentral?: string | null;
+}) {
   const iconMap: Record<string, string> = {
     catalisador: '#FF6B35',
     receptor: '#0A84FF',
@@ -336,9 +376,13 @@ export function OneProfileCard({ profile, narrativaCentral }: { profile: AkashaT
           <div className="flex items-center gap-3">
             <span className="text-4xl">{profile.typeIcon}</span>
             <div>
-              <p className="text-xs text-white/40 uppercase tracking-widest font-medium">Seu Tipo Akasha</p>
+              <p className="text-xs text-white/40 uppercase tracking-widest font-medium">
+                Seu Tipo Akasha
+              </p>
               <h2 className="text-xl font-bold text-white leading-tight">{profile.typeName}</h2>
-              <p className="text-sm text-white/60 mt-0.5 italic">&ldquo;{profile.corePattern}&rdquo;</p>
+              <p className="text-sm text-white/60 mt-0.5 italic">
+                &ldquo;{profile.corePattern}&rdquo;
+              </p>
               {/* Confidence badge */}
               {profile.typeConfidence && (
                 <div
@@ -346,16 +390,16 @@ export function OneProfileCard({ profile, narrativaCentral }: { profile: AkashaT
                     profile.typeConfidence === 'alta'
                       ? 'bg-[#30D158]/15 border-[#30D158]/30 text-[#30D158]'
                       : profile.typeConfidence === 'media'
-                      ? 'bg-[#FFD60A]/15 border-[#FFD60A]/30 text-[#FFD60A]'
-                      : 'bg-[#FF375F]/15 border-[#FF375F]/30 text-[#FF375F]'
+                        ? 'bg-[#FFD60A]/15 border-[#FFD60A]/30 text-[#FFD60A]'
+                        : 'bg-[#FF375F]/15 border-[#FF375F]/30 text-[#FF375F]'
                   }`}
                 >
                   <span className="inline-block w-1.5 h-1.5 rounded-full bg-current" />
                   {profile.typeConfidence === 'alta'
                     ? 'Alta convergência — perfil bem definido'
                     : profile.typeConfidence === 'media'
-                    ? 'Convergência média — perfil em formação'
-                    : 'Baixa convergência — mais dados fortalecem o perfil'}
+                      ? 'Convergência média — perfil em formação'
+                      : 'Baixa convergência — mais dados fortalecem o perfil'}
                 </div>
               )}
             </div>
@@ -364,9 +408,7 @@ export function OneProfileCard({ profile, narrativaCentral }: { profile: AkashaT
 
         {/* One-liner — a frase que o usuário lembra o dia todo */}
         <div className="mt-4 bg-black/20 rounded-xl p-4">
-          <p className="text-base text-white font-semibold leading-snug">
-            {profile.oneLiner}
-          </p>
+          <p className="text-base text-white font-semibold leading-snug">{profile.oneLiner}</p>
         </div>
       </div>
 
@@ -381,13 +423,17 @@ export function OneProfileCard({ profile, narrativaCentral }: { profile: AkashaT
           <p className="text-xs text-white/40 uppercase tracking-wider mb-1.5">
             {AUTHORITY_LABELS[profile.authority] ?? 'Autoridade'}
           </p>
-          <p className="text-sm text-white/80 leading-relaxed italic">&ldquo;{profile.authorityPractice}&rdquo;</p>
+          <p className="text-sm text-white/80 leading-relaxed italic">
+            &ldquo;{profile.authorityPractice}&rdquo;
+          </p>
         </div>
       </div>
 
       {/* Daily Directive */}
       <div className="mx-5 mb-4 bg-[#FF9500]/10 border border-[#FF9500]/20 rounded-xl px-4 py-3">
-        <p className="text-xs text-[#FF9500]/80 uppercase tracking-wider font-semibold mb-1">Diretiva de Hoje</p>
+        <p className="text-xs text-[#FF9500]/80 uppercase tracking-wider font-semibold mb-1">
+          Diretiva de Hoje
+        </p>
         <p className="text-sm text-white font-medium leading-snug">{profile.dailyDirective}</p>
       </div>
 
@@ -411,16 +457,22 @@ export function OneProfileCard({ profile, narrativaCentral }: { profile: AkashaT
       {/* F-232: Narrativa Central Akáshica — síntese dos 3 primitivos dominantes */}
       {narrativaCentral && (
         <div className="mx-5 mb-4 bg-gradient-to-r from-[#7C5CFF]/10 to-[#2DD4BF]/10 border border-[#7C5CFF]/20 rounded-xl px-4 py-3">
-          <p className="text-xs text-[#7C5CFF]/80 uppercase tracking-wider font-semibold mb-1">Síntese Akáshica</p>
-          <p className="text-sm text-white/80 leading-relaxed italic">&ldquo;{narrativaCentral}&rdquo;</p>
+          <p className="text-xs text-[#7C5CFF]/80 uppercase tracking-wider font-semibold mb-1">
+            Síntese Akáshica
+          </p>
+          <p className="text-sm text-white/80 leading-relaxed italic">
+            &ldquo;{narrativaCentral}&rdquo;
+          </p>
         </div>
       )}
     </div>
   );
 }
 
-function RitualBadge({ ritual }: {
-  ritual: { title: string; instruction: string; duration: string; element: string; color: string }
+function RitualBadge({
+  ritual,
+}: {
+  ritual: { title: string; instruction: string; duration: string; element: string; color: string };
 }) {
   return (
     <div
@@ -433,7 +485,9 @@ function RitualBadge({ ritual }: {
       />
       <div className="min-w-0">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold" style={{ color: ritual.color }}>{ritual.title}</span>
+          <span className="text-xs font-semibold" style={{ color: ritual.color }}>
+            {ritual.title}
+          </span>
           <span className="text-xs text-white/40">{ritual.duration}</span>
         </div>
         <p className="text-xs text-white/60 mt-0.5 leading-relaxed">{ritual.instruction}</p>
@@ -446,12 +500,18 @@ function SexualidadeSection({ sexualidade }: { sexualidade: SexualidadeUI }) {
   const [showDetails, setShowDetails] = useState(false);
   return (
     <div className="border-t border-[#FF2D55]/20 pt-2 mt-2">
-      <button
-        onClick={() => setShowDetails(v => !v)}
-        className="flex items-center gap-2 w-full"
-      >
-        <span className="text-xs font-semibold text-[#FF2D55]/90 uppercase tracking-wider">Sexualidade</span>
-        <ChevronDown size={14} className="text-white/30" style={{ transform: showDetails ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
+      <button onClick={() => setShowDetails((v) => !v)} className="flex items-center gap-2 w-full">
+        <span className="text-xs font-semibold text-[#FF2D55]/90 uppercase tracking-wider">
+          Sexualidade
+        </span>
+        <ChevronDown
+          size={14}
+          className="text-white/30"
+          style={{
+            transform: showDetails ? 'rotate(180deg)' : 'rotate(0deg)',
+            transition: 'transform 0.2s',
+          }}
+        />
       </button>
       {showDetails && (
         <div className="mt-2 space-y-2">
@@ -469,7 +529,12 @@ function SexualidadeSection({ sexualidade }: { sexualidade: SexualidadeUI }) {
               <p className="text-xs text-[#34C759]/80 font-medium mb-1">LIGA</p>
               <div className="flex flex-wrap gap-1">
                 {sexualidade.turnOn.map((t, i) => (
-                  <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-[#34C759]/15 text-[#34C759]/80">{t}</span>
+                  <span
+                    key={i}
+                    className="text-xs px-2 py-0.5 rounded-full bg-[#34C759]/15 text-[#34C759]/80"
+                  >
+                    {t}
+                  </span>
                 ))}
               </div>
             </div>
@@ -479,7 +544,12 @@ function SexualidadeSection({ sexualidade }: { sexualidade: SexualidadeUI }) {
               <p className="text-xs text-[#FF2D55]/80 font-medium mb-1">DESLIGA</p>
               <div className="flex flex-wrap gap-1">
                 {sexualidade.turnOff.map((t, i) => (
-                  <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-[#FF2D55]/15 text-[#FF2D55]/80">{t}</span>
+                  <span
+                    key={i}
+                    className="text-xs px-2 py-0.5 rounded-full bg-[#FF2D55]/15 text-[#FF2D55]/80"
+                  >
+                    {t}
+                  </span>
                 ))}
               </div>
             </div>
@@ -508,7 +578,11 @@ function SexualidadeSection({ sexualidade }: { sexualidade: SexualidadeUI }) {
 }
 
 // ─── AreaCard ──────────────────────────────────────────────────────────────────
-function AreaCard({ areaKey, narrative, modulation }: {
+function AreaCard({
+  areaKey,
+  narrative,
+  modulation,
+}: {
   areaKey: string;
   narrative: AreaNarrativeUI;
   modulation?: CycleModulationEntry;
@@ -523,18 +597,21 @@ function AreaCard({ areaKey, narrative, modulation }: {
   return (
     <motion.div
       layout
-      className={"rounded-2xl border overflow-hidden transition-all duration-300 " + (
-        isDimmed ? "border-white/4 opacity-60" :
-        isBoosted ? "border-[#F0B429]/50 shadow-[0_0_12px_rgba(240,180,41,0.18)]" :
-        "border-white/8"
-      )}
+      className={
+        'rounded-2xl border overflow-hidden transition-all duration-300 ' +
+        (isDimmed
+          ? 'border-white/4 opacity-60'
+          : isBoosted
+            ? 'border-[#F0B429]/50 shadow-[0_0_12px_rgba(240,180,41,0.18)]'
+            : 'border-white/8')
+      }
       style={{ backgroundColor: cfg.bgColor }}
     >
       {/* Header — sempre visível */}
       <button
         aria-expanded={expanded}
         aria-controls={`area-content-${areaKey}`}
-        onClick={() => setExpanded(v => !v)}
+        onClick={() => setExpanded((v) => !v)}
         className="w-full flex items-center gap-3 p-4 text-left"
       >
         <div
@@ -580,18 +657,22 @@ function AreaCard({ areaKey, narrative, modulation }: {
             className="overflow-hidden"
           >
             <div className="px-4 pb-4 space-y-4">
-
               {/* Shadow pattern */}
               <div className="space-y-1.5">
                 <div className="flex items-center gap-1.5">
                   <XCircle size={12} className="text-[#FF2D55]" />
-                  <span className="text-xs font-semibold text-[#FF2D55]/80 uppercase tracking-wider">Padrão de Sombra</span>
+                  <span className="text-xs font-semibold text-[#FF2D55]/80 uppercase tracking-wider">
+                    Padrão de Sombra
+                  </span>
                 </div>
                 <p className="text-sm text-white/75 leading-relaxed">{narrative.shadowPattern}</p>
                 {narrative.shadowSymptoms.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-1">
                     {narrative.shadowSymptoms.map((s, i) => (
-                      <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-[#FF2D55]/15 text-[#FF2D55]/80">
+                      <span
+                        key={i}
+                        className="text-xs px-2 py-0.5 rounded-full bg-[#FF2D55]/15 text-[#FF2D55]/80"
+                      >
                         {s}
                       </span>
                     ))}
@@ -603,26 +684,32 @@ function AreaCard({ areaKey, narrative, modulation }: {
               <div className="space-y-1.5">
                 <div className="flex items-center gap-1.5">
                   <CheckCircle2 size={12} className="text-[#34C759]" />
-                  <span className="text-xs font-semibold text-[#34C759]/80 uppercase tracking-wider">Seu Dom</span>
+                  <span className="text-xs font-semibold text-[#34C759]/80 uppercase tracking-wider">
+                    Seu Dom
+                  </span>
                 </div>
                 <p className="text-sm text-white/75 leading-relaxed">{narrative.giftPattern}</p>
                 {narrative.giftStrengths.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-1">
                     {narrative.giftStrengths.map((s, i) => (
-                      <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-[#34C759]/15 text-[#34C759]/80">
+                      <span
+                        key={i}
+                        className="text-xs px-2 py-0.5 rounded-full bg-[#34C759]/15 text-[#34C759]/80"
+                      >
                         {s}
                       </span>
                     ))}
                   </div>
                 )}
               </div>
-              
 
-{narrative.chainOfReasoning && narrative.chainOfReasoning.length > 0 && (
+              {narrative.chainOfReasoning && narrative.chainOfReasoning.length > 0 && (
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-1.5">
                     <GitBranch size={12} className="text-[#64D2FF]" />
-                    <span className="text-xs font-semibold text-[#64D2FF]/90 uppercase tracking-wider">Como chegamos aqui</span>
+                    <span className="text-xs font-semibold text-[#64D2FF]/90 uppercase tracking-wider">
+                      Como chegamos aqui
+                    </span>
                   </div>
                   <div className="space-y-1">
                     {narrative.chainOfReasoning.map((step, i) => {
@@ -632,12 +719,16 @@ function AreaCard({ areaKey, narrative, modulation }: {
                           <span className="text-xs text-[#64D2FF]/60 shrink-0 mt-px">{i + 1}.</span>
                           <div className="flex-1 min-w-0">
                             {factor && (
-                              <span className="text-xs text-white/60">{cleanTraditionName(factor.trim())}</span>
+                              <span className="text-xs text-white/60">
+                                {cleanTraditionName(factor.trim())}
+                              </span>
                             )}
                             {conclusion && (
                               <div className="flex items-start gap-1 mt-0.5">
                                 <ArrowRight size={10} className="text-[#64D2FF] mt-0.5 shrink-0" />
-                                <span className="text-xs text-[#64D2FF]/90 font-medium leading-relaxed">{cleanTraditionName(conclusion.trim())}</span>
+                                <span className="text-xs text-[#64D2FF]/90 font-medium leading-relaxed">
+                                  {cleanTraditionName(conclusion.trim())}
+                                </span>
                               </div>
                             )}
                           </div>
@@ -652,7 +743,9 @@ function AreaCard({ areaKey, narrative, modulation }: {
                 <div className="bg-gradient-to-br from-[#AF52DE]/10 to-[#64D2FF]/10 border border-[#AF52DE]/20 rounded-xl p-3 space-y-2">
                   <div className="flex items-center gap-1.5">
                     <Star size={12} className="text-[#AF52DE]" />
-                    <span className="text-xs font-semibold text-[#AF52DE]/90 uppercase tracking-wider">Núcleo Akasha</span>
+                    <span className="text-xs font-semibold text-[#AF52DE]/90 uppercase tracking-wider">
+                      Núcleo Akasha
+                    </span>
                   </div>
                   <p className="text-xs text-white/80 leading-relaxed italic">
                     {narrative.expandedNarrative.integratedNarrative}
@@ -660,7 +753,9 @@ function AreaCard({ areaKey, narrative, modulation }: {
                   {narrative.expandedNarrative.practicalExample && (
                     <div className="flex items-start gap-1.5 mt-1">
                       <Lightbulb size={10} className="text-[#FFD60A] mt-0.5 shrink-0" />
-                      <p className="text-xs text-[#FFD60A]/80 leading-relaxed">{narrative.expandedNarrative.practicalExample}</p>
+                      <p className="text-xs text-[#FFD60A]/80 leading-relaxed">
+                        {narrative.expandedNarrative.practicalExample}
+                      </p>
                     </div>
                   )}
                   {/* Sexualidade (F-225) — só na área Vitalidade */}
@@ -673,17 +768,33 @@ function AreaCard({ areaKey, narrative, modulation }: {
               {(narrative as any).procedencia && (narrative as any).procedencia.length > 0 && (
                 <div className="flex flex-wrap items-center gap-1 px-1">
                   <span className="text-[9px] text-white/20 uppercase tracking-wider">De:</span>
-                  {((narrative as any).procedencia as Array<{tradicao:string; simbolo:string; intensidade:number}>).slice(0, 4).map((p: any, i: number) => {
-                    const colors: Record<string, string> = {
-                      cabala: '#7C5CFF', astrologia: '#2DD4BF', iching: '#A0763A', odu: '#FB5781', tantra: '#F0B429',
-                    };
-                    const color = colors[p.tradicao] ?? '#888';
-                    return (
-                      <span key={i} className="text-[10px] font-medium" style={{ color: `${color}cc` }}>
-                        {p.simbolo}
-                      </span>
-                    );
-                  })}
+                  {(
+                    (narrative as any).procedencia as Array<{
+                      tradicao: string;
+                      simbolo: string;
+                      intensidade: number;
+                    }>
+                  )
+                    .slice(0, 4)
+                    .map((p: any, i: number) => {
+                      const colors: Record<string, string> = {
+                        cabala: '#7C5CFF',
+                        astrologia: '#2DD4BF',
+                        iching: '#A0763A',
+                        odu: '#FB5781',
+                        tantra: '#F0B429',
+                      };
+                      const color = colors[p.tradicao] ?? '#888';
+                      return (
+                        <span
+                          key={i}
+                          className="text-[10px] font-medium"
+                          style={{ color: `${color}cc` }}
+                        >
+                          {p.simbolo}
+                        </span>
+                      );
+                    })}
                 </div>
               )}
 
@@ -692,12 +803,19 @@ function AreaCard({ areaKey, narrative, modulation }: {
               {narrative.dailyTransit && (
                 <div
                   className="rounded-xl p-3 flex items-start gap-2.5"
-                  style={{ background: 'linear-gradient(135deg, #64D2FF08 0%, #AF52DE08 100%)', border: '1px solid #64D2FF25' }}
+                  style={{
+                    background: 'linear-gradient(135deg, #64D2FF08 0%, #AF52DE08 100%)',
+                    border: '1px solid #64D2FF25',
+                  }}
                 >
                   <Sparkles size={12} className="text-[#64D2FF] mt-0.5 shrink-0" />
                   <div className="min-w-0">
-                    <p className="text-[10px] font-semibold text-[#64D2FF]/70 uppercase tracking-wider mb-0.5">Trânsito de Hoje</p>
-                    <p className="text-xs text-white/75 leading-relaxed">{narrative.dailyTransit.todayPhrase}</p>
+                    <p className="text-[10px] font-semibold text-[#64D2FF]/70 uppercase tracking-wider mb-0.5">
+                      Trânsito de Hoje
+                    </p>
+                    <p className="text-xs text-white/75 leading-relaxed">
+                      {narrative.dailyTransit.todayPhrase}
+                    </p>
                   </div>
                 </div>
               )}
@@ -706,7 +824,9 @@ function AreaCard({ areaKey, narrative, modulation }: {
               <div className="bg-[#FF9500]/10 border border-[#FF9500]/20 rounded-xl p-3 space-y-1.5">
                 <div className="flex items-center gap-1.5">
                   <ArrowRight size={12} className="text-[#FF9500]" />
-                  <span className="text-xs font-semibold text-[#FF9500] uppercase tracking-wider">Prática de Hoje</span>
+                  <span className="text-xs font-semibold text-[#FF9500] uppercase tracking-wider">
+                    Prática de Hoje
+                  </span>
                 </div>
                 <p className="text-sm text-white/80 leading-relaxed">{narrative.practicalAdvice}</p>
               </div>
@@ -718,11 +838,14 @@ function AreaCard({ areaKey, narrative, modulation }: {
               <div className="bg-[#5856D6]/10 border border-[#5856D6]/20 rounded-xl p-3">
                 <div className="flex items-center gap-1.5 mb-1.5">
                   <Sparkles size={12} className="text-[#5856D6]" />
-                  <span className="text-xs font-semibold text-[#5856D6]/80 uppercase tracking-wider">Pergunta de Transformação</span>
+                  <span className="text-xs font-semibold text-[#5856D6]/80 uppercase tracking-wider">
+                    Pergunta de Transformação
+                  </span>
                 </div>
-                <p className="text-sm text-white/70 italic leading-relaxed">&ldquo;{narrative.transformationPrompt}&rdquo;</p>
+                <p className="text-sm text-white/70 italic leading-relaxed">
+                  &ldquo;{narrative.transformationPrompt}&rdquo;
+                </p>
               </div>
-
             </div>
           </motion.div>
         )}
@@ -774,7 +897,10 @@ export function AkashaLifeAreasDashboard({
     return (
       <div className="space-y-4">
         {areaKeys.map((key) => (
-          <div key={key} className="rounded-2xl border border-white/8 bg-[#1C1C1E] p-4 animate-pulse">
+          <div
+            key={key}
+            className="rounded-2xl border border-white/8 bg-[#1C1C1E] p-4 animate-pulse"
+          >
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-white/10" />
               <div className="space-y-2 flex-1">
@@ -801,7 +927,6 @@ export function AkashaLifeAreasDashboard({
 
   return (
     <div className="space-y-5">
-
       {/* F-227: ONE Akasha Profile Card — tipo unificado visível primeiro */}
       {oneProfile && <OneProfileCard profile={oneProfile} narrativaCentral={narrativaCentral} />}
       {/* Perfil unificado — síntese geral */}
@@ -817,19 +942,26 @@ export function AkashaLifeAreasDashboard({
             </span>
             <FrequencyBadge frequency={akashaProfile.dominantFrequency} />
             {onRefetch && (
-              <button onClick={onRefetch} className="text-white/30 hover:text-white/60 transition-colors">
+              <button
+                onClick={onRefetch}
+                className="text-white/30 hover:text-white/60 transition-colors"
+              >
                 <RefreshCw size={14} />
               </button>
             )}
           </div>
         </div>
-        <p className="text-sm text-white/80 leading-relaxed italic">&ldquo;{synthesisParagraph}&rdquo;</p>
+        <p className="text-sm text-white/80 leading-relaxed italic">
+          &ldquo;{synthesisParagraph}&rdquo;
+        </p>
         <div className="flex items-center gap-3 mt-3">
           <span className="text-xs text-white/40">
-            Estágio: <span className="text-white/60 capitalize">{akashaProfile.transformationStage}</span>
+            Estágio:{' '}
+            <span className="text-white/60 capitalize">{akashaProfile.transformationStage}</span>
           </span>
           <span className="text-xs text-white/40">
-            Sequência ativa: <span className="text-white/60 capitalize">{akashaProfile.activeSequence}</span>
+            Sequência ativa:{' '}
+            <span className="text-white/60 capitalize">{akashaProfile.activeSequence}</span>
           </span>
         </div>
         {/* §5 Procedência: top-N proveniência — raiz de cada afirmação */}
@@ -839,20 +971,36 @@ export function AkashaLifeAreasDashboard({
               Fundamento Akáshico
             </summary>
             <div className="flex flex-wrap gap-1 mt-2">
-              {((synthesis as any).procedenciaTop as Array<{tradicao:string; simbolo:string; intensidade:number}>).slice(0, 6).map((p: any, i: number) => {
-                const colors: Record<string, string> = {
-                  cabala: '#7C5CFF', astrologia: '#2DD4BF', iching: '#A0763A', odu: '#FB5781', tantra: '#F0B429',
-                };
-                const color = colors[p.tradicao] ?? '#888';
-                return (
-                  <div key={i} className="inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-[10px]" style={{ borderColor: `${color}44`, color: `${color}bb` }}>
-                    <span>{p.simbolo}</span>
-                    <span style={{ color: `${color}88` }}>
-                      {'●'.repeat(Math.min(3, Math.ceil((p.intensidade ?? 5) / 3)))}
-                    </span>
-                  </div>
-                );
-              })}
+              {(
+                (synthesis as any).procedenciaTop as Array<{
+                  tradicao: string;
+                  simbolo: string;
+                  intensidade: number;
+                }>
+              )
+                .slice(0, 6)
+                .map((p: any, i: number) => {
+                  const colors: Record<string, string> = {
+                    cabala: '#7C5CFF',
+                    astrologia: '#2DD4BF',
+                    iching: '#A0763A',
+                    odu: '#FB5781',
+                    tantra: '#F0B429',
+                  };
+                  const color = colors[p.tradicao] ?? '#888';
+                  return (
+                    <div
+                      key={i}
+                      className="inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-[10px]"
+                      style={{ borderColor: `${color}44`, color: `${color}bb` }}
+                    >
+                      <span>{p.simbolo}</span>
+                      <span style={{ color: `${color}88` }}>
+                        {'●'.repeat(Math.min(3, Math.ceil((p.intensidade ?? 5) / 3)))}
+                      </span>
+                    </div>
+                  );
+                })}
             </div>
           </details>
         )}
@@ -866,7 +1014,10 @@ export function AkashaLifeAreasDashboard({
 
       {/* P3 — Interpretação profunda: AkashaSignificadoCard */}
       {synthesis.lifePath > 0 && (
-        <AkashaSignificadoCard lifePath={synthesis.lifePath} defaultNivel={akashaProfile.dominantFrequency} />
+        <AkashaSignificadoCard
+          lifePath={synthesis.lifePath}
+          defaultNivel={akashaProfile.dominantFrequency}
+        />
       )}
 
       {/* Decisão diária */}
@@ -888,12 +1039,16 @@ export function AkashaLifeAreasDashboard({
             const narrative = areas[key];
             if (!narrative) return null;
             return (
-              <AreaCard key={key} areaKey={key} narrative={narrative} modulation={modulationMap[key]} />
+              <AreaCard
+                key={key}
+                areaKey={key}
+                narrative={narrative}
+                modulation={modulationMap[key]}
+              />
             );
           })}
         </div>
       </div>
-
     </div>
   );
 }

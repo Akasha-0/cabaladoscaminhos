@@ -101,9 +101,7 @@ export class OutputRenderer {
     };
 
     // Determinar prefixo baseado no role
-    const prefix = role === 'user'
-      ? `${chalk.green('>')} Você: `
-      : `${chalk.cyan('◆')} Akasha: `;
+    const prefix = role === 'user' ? `${chalk.green('>')} Você: ` : `${chalk.cyan('◆')} Akasha: `;
 
     // Primeira linha com prefixo
     this.log.add(prefix);

@@ -50,10 +50,7 @@ function buildResult(
   };
 }
 
-export function checkMemoryRateLimit(
-  identifier: string,
-  config: RateLimitConfig
-): RateLimitResult {
+export function checkMemoryRateLimit(identifier: string, config: RateLimitConfig): RateLimitResult {
   const now = Date.now();
   const entry = memoryStore.get(identifier);
 

@@ -1,7 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
-import { prisma } from '@/lib/infrastructure/prisma';
+import { NextRequest, NextResponse } from 'next/server';
 import {
   AKASHA_PRODUCTS,
   AkashaProductKey,
@@ -9,6 +7,8 @@ import {
   getOrCreateStripeCustomer,
   getPriceId,
 } from '@/lib/application/akasha/stripe-akasha';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
+import { prisma } from '@/lib/infrastructure/prisma';
 
 const BodySchema = z.object({
   type: z.enum(['manifesto', 'pro', 'credits_10', 'credits_30', 'credits_60']),
@@ -23,7 +23,10 @@ export async function POST(request: NextRequest) {
   const body = await request.json().catch(() => null);
   const parsed = BodySchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: 'Parâmetros inválidos', details: parsed.error.flatten() }, { status: 400 });
+    return NextResponse.json(
+      { error: 'Parâmetros inválidos', details: parsed.error.flatten() },
+      { status: 400 }
+    );
   }
 
   const { type, successUrl, cancelUrl } = parsed.data;

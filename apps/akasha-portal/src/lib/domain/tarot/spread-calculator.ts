@@ -8,8 +8,8 @@
 // Pattern: Tarot routes with spread calculation
 // Files: divine/connection, tarot/consulta, tarot/reading routes
 // ============================================================
-
 import type { SpiritualCorrelations } from '@/lib/domain/types/spiritual-correlations';
+
 interface SpreadPosition {
   index: number;
   name: string;
@@ -59,7 +59,9 @@ export interface TarotReadingResult {
 /**
  * Generate spiritual stats from drawn cards
  */
-export function calculateSpreadSpiritualStats(cards: DrawnCard[]): TarotReadingResult['spiritualStats'] {
+export function calculateSpreadSpiritualStats(
+  cards: DrawnCard[]
+): TarotReadingResult['spiritualStats'] {
   const spiritualStats = {
     bySefirot: {} as Record<string, number>,
     byChakra: {} as Record<string, number>,
@@ -70,7 +72,8 @@ export function calculateSpreadSpiritualStats(cards: DrawnCard[]): TarotReadingR
     const corr = card.spiritualCorrelations;
     accumulateCorrelation(spiritualStats.bySefirot, corr.sefirot);
     if (corr.chakra != null) {
-      spiritualStats.byChakra[String(corr.chakra)] = (spiritualStats.byChakra[String(corr.chakra)] || 0) + 1;
+      spiritualStats.byChakra[String(corr.chakra)] =
+        (spiritualStats.byChakra[String(corr.chakra)] || 0) + 1;
     }
     accumulateCorrelation(spiritualStats.byElement, corr.element ? [corr.element] : []);
     accumulateCorrelation(spiritualStats.byOrixa, corr.orixa ? [corr.orixa] : []);
@@ -80,10 +83,7 @@ export function calculateSpreadSpiritualStats(cards: DrawnCard[]): TarotReadingR
 /**
  * Accumulate counts for array-based correlations (sefirot, elements, orixas)
  */
-function accumulateCorrelation(
-  stats: Record<string, number>,
-  values: string[] | undefined
-): void {
+function accumulateCorrelation(stats: Record<string, number>, values: string[] | undefined): void {
   if (!values) return;
   for (const value of values) {
     stats[value] = (stats[value] || 0) + 1;

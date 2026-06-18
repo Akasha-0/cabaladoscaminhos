@@ -19,9 +19,8 @@
  * importante. Não substitui o `DailyDecisionCard` (que é mais narrativo) —
  * é o cartão COMPACTO que pergunta: "Paz ou ansiedade?".
  */
-
-import { deriveAkashaAuthority } from './synthesis/synthesizer';
 import type { PilaresDados } from './significados-curados';
+import { deriveAkashaAuthority } from './synthesis/synthesizer';
 
 /** Estado emocional do momento — entrada do prompt. */
 export type EstadoAkasha = 'paz' | 'ansiedade' | 'neutro';
@@ -50,13 +49,15 @@ export function recomendarAcaoPorEstado(estado: EstadoAkasha): {
     case 'paz':
       return {
         acao: 'aja',
-        justificativa: 'Corpo 3 ativo — mente em paz. Aja nos próximos 30 minutos antes que a dúvida chegue.',
+        justificativa:
+          'Corpo 3 ativo — mente em paz. Aja nos próximos 30 minutos antes que a dúvida chegue.',
         icone: '✦',
       };
     case 'ansiedade':
       return {
         acao: 'espere',
-        justificativa: 'Corpo 4 ativo — mente em ansiedade. Espere até sentir paz emocional. Não force.',
+        justificativa:
+          'Corpo 4 ativo — mente em ansiedade. Espere até sentir paz emocional. Não force.',
         icone: '◌',
       };
     case 'neutro':

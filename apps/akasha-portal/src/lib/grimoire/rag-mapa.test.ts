@@ -6,7 +6,6 @@
  *
  * Cobertura: 0% → ~50% (com este test file).
  */
-
 import { describe, it, expect } from 'vitest';
 import { ragForPilares, ragForUserMaps } from './rag-mapa';
 import type { PilaresDados } from './significados-curados';

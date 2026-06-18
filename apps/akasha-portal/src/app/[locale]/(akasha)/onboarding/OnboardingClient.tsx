@@ -53,7 +53,11 @@ const QUIZ1_OPTIONS = [
   { value: 'proposito', label: 'Propósito', desc: 'Encontrar minha missão de vida' },
   { value: 'cura', label: 'Cura emocional', desc: 'Transmutar padrões e feridas' },
   { value: 'alinhamento', label: 'Alinhamento material', desc: 'Abundância e manifestação' },
-  { value: 'despertar', label: 'Despertar ancestral', desc: 'Conectar com minhas raízes espirituais' },
+  {
+    value: 'despertar',
+    label: 'Despertar ancestral',
+    desc: 'Conectar com minhas raízes espirituais',
+  },
 ];
 
 const QUIZ2_OPTIONS = [
@@ -96,7 +100,7 @@ interface OnboardingClientProps {
 
 export function OnboardingClient({ locale, returnTo }: OnboardingClientProps) {
   const router = useRouter();
-      const [step, setStep] = useState(0);
+  const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormData>(INITIAL);
   const [error, setError] = useState('');
   const [phraseIdx, setPhraseIdx] = useState(0);
@@ -193,7 +197,9 @@ export function OnboardingClient({ locale, returnTo }: OnboardingClientProps) {
           const msg =
             body?.error ??
             body?.message ??
-            (typeof body?.details?.formErrors?.[0] === 'string' ? body.details.formErrors[0] : null) ??
+            (typeof body?.details?.formErrors?.[0] === 'string'
+              ? body.details.formErrors[0]
+              : null) ??
             'Erro ao criar conta.';
           throw new Error(msg);
         }
@@ -339,7 +345,9 @@ export function OnboardingClient({ locale, returnTo }: OnboardingClientProps) {
 
           {step === 1 && (
             <div className="flex flex-col gap-4">
-              <p style={{ color: 'rgba(45,212,191,0.8)', fontSize: '0.8125rem', lineHeight: '1.5' }}>
+              <p
+                style={{ color: 'rgba(45,212,191,0.8)', fontSize: '0.8125rem', lineHeight: '1.5' }}
+              >
                 Em qual instante sua jornada neste plano começou?
               </p>
               <div>
@@ -365,7 +373,9 @@ export function OnboardingClient({ locale, returnTo }: OnboardingClientProps) {
 
           {step === 2 && (
             <div className="flex flex-col gap-4">
-              <p style={{ color: 'rgba(45,212,191,0.8)', fontSize: '0.8125rem', lineHeight: '1.5' }}>
+              <p
+                style={{ color: 'rgba(45,212,191,0.8)', fontSize: '0.8125rem', lineHeight: '1.5' }}
+              >
                 Onde você aterrissou? Usaremos sua cidade para o mapa astrológico.
               </p>
               <div>
@@ -379,7 +389,13 @@ export function OnboardingClient({ locale, returnTo }: OnboardingClientProps) {
                   onBlur={handleCityBlur}
                 />
                 {geocoding && (
-                  <p style={{ color: 'rgba(167,174,207,0.5)', fontSize: '0.75rem', marginTop: '4px' }}>
+                  <p
+                    style={{
+                      color: 'rgba(167,174,207,0.5)',
+                      fontSize: '0.75rem',
+                      marginTop: '4px',
+                    }}
+                  >
                     Localizando coordenadas…
                   </p>
                 )}
@@ -414,18 +430,26 @@ export function OnboardingClient({ locale, returnTo }: OnboardingClientProps) {
                       onClick={() => set('quiz1', opt.value)}
                       className="text-left p-3 rounded-xl transition-all duration-200"
                       style={{
-                        background: form.quiz1 === opt.value
-                          ? 'rgba(124,92,255,0.25)'
-                          : 'rgba(255,255,255,0.03)',
-                        border: form.quiz1 === opt.value
-                          ? '1px solid rgba(124,92,255,0.7)'
-                          : '1px solid rgba(124,92,255,0.15)',
+                        background:
+                          form.quiz1 === opt.value
+                            ? 'rgba(124,92,255,0.25)'
+                            : 'rgba(255,255,255,0.03)',
+                        border:
+                          form.quiz1 === opt.value
+                            ? '1px solid rgba(124,92,255,0.7)'
+                            : '1px solid rgba(124,92,255,0.15)',
                       }}
                     >
-                      <span className="block text-xs font-semibold mb-0.5" style={{ color: '#F4F5FF' }}>
+                      <span
+                        className="block text-xs font-semibold mb-0.5"
+                        style={{ color: '#F4F5FF' }}
+                      >
                         {opt.label}
                       </span>
-                      <span className="block text-xs leading-snug" style={{ color: 'rgba(167,174,207,0.7)' }}>
+                      <span
+                        className="block text-xs leading-snug"
+                        style={{ color: 'rgba(167,174,207,0.7)' }}
+                      >
                         {opt.desc}
                       </span>
                     </button>
@@ -448,18 +472,26 @@ export function OnboardingClient({ locale, returnTo }: OnboardingClientProps) {
                       onClick={() => set('quiz2', opt.value)}
                       className="text-left p-3 rounded-xl transition-all duration-200"
                       style={{
-                        background: form.quiz2 === opt.value
-                          ? 'rgba(45,212,191,0.2)'
-                          : 'rgba(255,255,255,0.03)',
-                        border: form.quiz2 === opt.value
-                          ? '1px solid rgba(45,212,191,0.6)'
-                          : '1px solid rgba(45,212,191,0.1)',
+                        background:
+                          form.quiz2 === opt.value
+                            ? 'rgba(45,212,191,0.2)'
+                            : 'rgba(255,255,255,0.03)',
+                        border:
+                          form.quiz2 === opt.value
+                            ? '1px solid rgba(45,212,191,0.6)'
+                            : '1px solid rgba(45,212,191,0.1)',
                       }}
                     >
-                      <span className="block text-xs font-semibold mb-0.5" style={{ color: '#F4F5FF' }}>
+                      <span
+                        className="block text-xs font-semibold mb-0.5"
+                        style={{ color: '#F4F5FF' }}
+                      >
                         {opt.label}
                       </span>
-                      <span className="block text-xs leading-snug" style={{ color: 'rgba(167,174,207,0.7)' }}>
+                      <span
+                        className="block text-xs leading-snug"
+                        style={{ color: 'rgba(167,174,207,0.7)' }}
+                      >
                         {opt.desc}
                       </span>
                     </button>
@@ -475,7 +507,10 @@ export function OnboardingClient({ locale, returnTo }: OnboardingClientProps) {
                   className="mt-0.5"
                   style={{ width: '16px', height: '16px', flexShrink: 0, accentColor: '#7C5CFF' }}
                 />
-                <span className="text-xs leading-relaxed" style={{ color: 'rgba(167,174,207,0.65)' }}>
+                <span
+                  className="text-xs leading-relaxed"
+                  style={{ color: 'rgba(167,174,207,0.65)' }}
+                >
                   Consinto com o processamento dos meus dados para geração do mapa natal.
                 </span>
               </label>

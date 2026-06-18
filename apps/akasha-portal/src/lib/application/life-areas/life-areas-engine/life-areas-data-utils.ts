@@ -4,9 +4,8 @@
 // Funções utilitárias para operar sobre LIFE_AREAS.
 // SGBD/correlation helper — validação, lookup, agregação.
 // ============================================================
-
-import type { LifeAreaId, LifeArea } from './types';
 import { LIFE_AREAS } from './life-areas-data';
+import type { LifeAreaId, LifeArea } from './types';
 
 // ============================================================
 // LOOKUP UTILITIES
@@ -66,18 +65,14 @@ export function getAllAstrologyHouses(): number[] {
 /** Busca áreas que têm um planeta específico. */
 export function getLifeAreasByPlanet(planet: string): LifeArea[] {
   return getAllLifeAreas().filter((area) =>
-    area.astrology.planets.some(
-      (p) => p.toLowerCase() === planet.toLowerCase(),
-    ),
+    area.astrology.planets.some((p) => p.toLowerCase() === planet.toLowerCase())
   );
 }
 
 /** Busca áreas que têm um signo específico. */
 export function getLifeAreasBySign(sign: string): LifeArea[] {
   return getAllLifeAreas().filter((area) =>
-    area.astrology.signs.some(
-      (s) => s.toLowerCase() === sign.toLowerCase(),
-    ),
+    area.astrology.signs.some((s) => s.toLowerCase() === sign.toLowerCase())
   );
 }
 
@@ -105,9 +100,7 @@ export function getAllMasterNumbers(): number[] {
 
 /** Busca áreas por número de Life Path. */
 export function getLifeAreasByLifePath(lifePath: number): LifeArea[] {
-  return getAllLifeAreas().filter((area) =>
-    area.numerology.lifePath.includes(lifePath),
-  );
+  return getAllLifeAreas().filter((area) => area.numerology.lifePath.includes(lifePath));
 }
 
 // ============================================================
@@ -126,9 +119,7 @@ export function getAllPrimaryOdus(): string[] {
 /** Busca áreas que têm um Odu específico como primário. */
 export function getLifeAreasByPrimaryOdu(odu: string): LifeArea[] {
   return getAllLifeAreas().filter((area) =>
-    area.odu.primaryOdus.some(
-      (o) => o.toLowerCase() === odu.toLowerCase(),
-    ),
+    area.odu.primaryOdus.some((o) => o.toLowerCase() === odu.toLowerCase())
   );
 }
 
@@ -175,9 +166,7 @@ export function getAllOrixaDays(): string[] {
 /** Busca áreas associadas a um Orixá primário. */
 export function getLifeAreasByOrixa(orixa: string): LifeArea[] {
   return getAllLifeAreas().filter((area) =>
-    area.orixa.primary.some(
-      (o) => o.toLowerCase() === orixa.toLowerCase(),
-    ),
+    area.orixa.primary.some((o) => o.toLowerCase() === orixa.toLowerCase())
   );
 }
 
@@ -197,9 +186,7 @@ export function getAllPrimaryChakras(): string[] {
 /** Busca áreas por chakra primário. */
 export function getLifeAreasByChakra(chakra: string): LifeArea[] {
   return getAllLifeAreas().filter((area) =>
-    area.chakra.primary.some(
-      (c) => c.toLowerCase() === chakra.toLowerCase(),
-    ),
+    area.chakra.primary.some((c) => c.toLowerCase() === chakra.toLowerCase())
   );
 }
 
@@ -230,9 +217,7 @@ export function getLifeAreasByElement(element: string): LifeArea[] {
   return getAllLifeAreas().filter(
     (area) =>
       area.element.primary.toLowerCase() === element.toLowerCase() ||
-      area.element.secondary.some(
-        (e) => e.toLowerCase() === element.toLowerCase(),
-      ),
+      area.element.secondary.some((e) => e.toLowerCase() === element.toLowerCase())
   );
 }
 
@@ -261,18 +246,14 @@ export function getAllCrystals(): string[] {
 /** Busca áreas que recomendam uma prática específica. */
 export function getLifeAreasByPractice(practice: string): LifeArea[] {
   return getAllLifeAreas().filter((area) =>
-    area.practices.some(
-      (p) => p.toLowerCase() === practice.toLowerCase(),
-    ),
+    area.practices.some((p) => p.toLowerCase() === practice.toLowerCase())
   );
 }
 
 /** Busca áreas que usam um cristal específico. */
 export function getLifeAreasByCrystal(crystal: string): LifeArea[] {
   return getAllLifeAreas().filter((area) =>
-    area.crystals.some(
-      (c) => c.toLowerCase() === crystal.toLowerCase(),
-    ),
+    area.crystals.some((c) => c.toLowerCase() === crystal.toLowerCase())
   );
 }
 
@@ -284,18 +265,11 @@ export function getLifeAreasByCrystal(crystal: string): LifeArea[] {
  * Dado um planeta e um signo, retorna as áreas da vida que
  * são ativadas por ambos — útil para o correlation engine.
  */
-export function getLifeAreasByPlanetAndSign(
-  planet: string,
-  sign: string,
-): LifeArea[] {
+export function getLifeAreasByPlanetAndSign(planet: string, sign: string): LifeArea[] {
   return getAllLifeAreas().filter(
     (area) =>
-      area.astrology.planets.some(
-        (p) => p.toLowerCase() === planet.toLowerCase(),
-      ) &&
-      area.astrology.signs.some(
-        (s) => s.toLowerCase() === sign.toLowerCase(),
-      ),
+      area.astrology.planets.some((p) => p.toLowerCase() === planet.toLowerCase()) &&
+      area.astrology.signs.some((s) => s.toLowerCase() === sign.toLowerCase())
   );
 }
 
@@ -303,23 +277,12 @@ export function getLifeAreasByPlanetAndSign(
  * Dado um Odu e um Orixá, retorna as áreas da vida que
  * são ativadas por ambos.
  */
-export function getLifeAreasByOduAndOrixa(
-  odu: string,
-  orixa: string,
-): LifeArea[] {
+export function getLifeAreasByOduAndOrixa(odu: string, orixa: string): LifeArea[] {
   return getAllLifeAreas().filter(
     (area) =>
-      (area.odu.primaryOdus.some(
-        (o) => o.toLowerCase() === odu.toLowerCase(),
-      ) ||
-        area.odu.favorableOdus.some(
-          (o) => o.toLowerCase() === odu.toLowerCase(),
-        )) &&
-      (area.orixa.primary.some(
-        (o) => o.toLowerCase() === orixa.toLowerCase(),
-      ) ||
-        area.orixa.secondary.some(
-          (o) => o.toLowerCase() === orixa.toLowerCase(),
-        )),
+      (area.odu.primaryOdus.some((o) => o.toLowerCase() === odu.toLowerCase()) ||
+        area.odu.favorableOdus.some((o) => o.toLowerCase() === odu.toLowerCase())) &&
+      (area.orixa.primary.some((o) => o.toLowerCase() === orixa.toLowerCase()) ||
+        area.orixa.secondary.some((o) => o.toLowerCase() === orixa.toLowerCase()))
   );
 }

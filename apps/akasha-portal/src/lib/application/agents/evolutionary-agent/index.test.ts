@@ -6,16 +6,15 @@
  * - deriveLunarExercises: lunar exercise derivation and shape
  * - deriveExercisesFromSnapshot: full exercise set generation
  */
-
 import { describe, it, expect } from 'vitest';
+import { buildCycleSnapshot } from '@/lib/application/agents/personal-cycle-engine';
+import type { PersonalCycleSnapshot } from '@/lib/application/agents/personal-cycle-engine';
 import {
   normalizePhase,
   deriveLunarExercises,
   deriveExercisesFromSnapshot,
   LUNAR_EXERCISES,
 } from './index';
-import { buildCycleSnapshot } from '@/lib/application/agents/personal-cycle-engine';
-import type { PersonalCycleSnapshot } from '@/lib/application/agents/personal-cycle-engine';
 
 // ─── Fixture ────────────────────────────────────────────────────────────────────
 

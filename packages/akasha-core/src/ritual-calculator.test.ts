@@ -51,7 +51,15 @@ describe('RitualCalculator - calculateCodeOfDay', () => {
     const date = new Date('2024-01-15T10:00:00Z');
     const result = calculateCodeOfDay(date);
 
-    const validAreas = ['saude', 'financas', 'relacionamentos', 'carreira', 'espiritualidade', 'familia', 'criatividade'];
+    const validAreas = [
+      'saude',
+      'financas',
+      'relacionamentos',
+      'carreira',
+      'espiritualidade',
+      'familia',
+      'criatividade',
+    ];
     expect(validAreas).toContain(result.code.lifeArea);
   });
 
@@ -316,7 +324,7 @@ describe('RitualCalculator - Integração', () => {
   it('fluxo completo: calculateCodeOfDay + buildRitual', () => {
     const date = new Date('2024-06-15T07:00:00Z');
     const { code } = calculateCodeOfDay(date);
-    
+
     const ritual = buildRitual(defaultConfig, code);
 
     expect(ritual.codigo.hexagrama.number).toBe(code.hexagram);
@@ -351,7 +359,7 @@ describe('RitualCalculator - Integração', () => {
       },
     };
     const code: AkashaCode = { hexagram: 42, level: 'gift', lifeArea: 'financas' };
-    
+
     const ritual = buildRitual(configMinimal, code);
 
     expect(ritual.afirmacao).toBeDefined();
@@ -378,7 +386,7 @@ describe('RitualCalculator - Edge Cases', () => {
 
   it('todos os níveis de código funcionam', () => {
     const levels = ['shadow', 'gift', 'siddhi'] as const;
-    
+
     for (const level of levels) {
       const code: AkashaCode = { hexagram: 1, level, lifeArea: 'espiritualidade' };
       const result = buildRitual(defaultConfig, code);
@@ -388,8 +396,16 @@ describe('RitualCalculator - Edge Cases', () => {
   });
 
   it('todas as áreas de vida funcionam', () => {
-    const areas = ['saude', 'financas', 'relacionamentos', 'carreira', 'espiritualidade', 'familia', 'criatividade'] as const;
-    
+    const areas = [
+      'saude',
+      'financas',
+      'relacionamentos',
+      'carreira',
+      'espiritualidade',
+      'familia',
+      'criatividade',
+    ] as const;
+
     for (const area of areas) {
       const code: AkashaCode = { hexagram: 1, level: 'gift', lifeArea: area };
       const { code: resultCode } = calculateCodeOfDay(new Date('2024-01-01'));

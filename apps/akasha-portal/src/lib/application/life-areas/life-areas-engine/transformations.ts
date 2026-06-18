@@ -4,7 +4,6 @@
 // Helpers para transformar/agregar dados das áreas da vida.
 // Extraídos do index.ts principal para manter arquivo focado.
 // ============================================================
-
 import type { LifeArea, LifeAreaId } from './index';
 import { LIFE_AREAS } from './index';
 
@@ -18,20 +17,20 @@ import { LIFE_AREAS } from './index';
 export function getAllKeywords(areaId: LifeAreaId): string[] {
   const area = LIFE_AREAS[areaId];
   const keywords = new Set<string>();
-  
+
   // Astrology keywords
-  area.astrology.keywords.forEach(k => keywords.add(k));
-  
+  area.astrology.keywords.forEach((k) => keywords.add(k));
+
   // Numerology keywords
   if (area.numerology) {
-    area.numerology.keywords.forEach(k => keywords.add(k));
+    area.numerology.keywords.forEach((k) => keywords.add(k));
   }
-  
+
   // Odu keywords
   if (area.odu) {
-    area.odu.keywords.forEach(k => keywords.add(k));
+    area.odu.keywords.forEach((k) => keywords.add(k));
   }
-  
+
   return Array.from(keywords);
 }
 
@@ -40,8 +39,8 @@ export function getAllKeywords(areaId: LifeAreaId): string[] {
  */
 export function getKeywordsUnion(areaIds: LifeAreaId[]): string[] {
   const keywords = new Set<string>();
-  areaIds.forEach(id => {
-    getAllKeywords(id).forEach(k => keywords.add(k));
+  areaIds.forEach((id) => {
+    getAllKeywords(id).forEach((k) => keywords.add(k));
   });
   return Array.from(keywords);
 }
@@ -87,8 +86,8 @@ export function getCrystals(areaId: LifeAreaId): string[] {
  */
 export function getAllPractices(areaIds: LifeAreaId[]): string[] {
   const practices = new Set<string>();
-  areaIds.forEach(id => {
-    LIFE_AREAS[id].practices.forEach(p => practices.add(p));
+  areaIds.forEach((id) => {
+    LIFE_AREAS[id].practices.forEach((p) => practices.add(p));
   });
   return Array.from(practices);
 }
@@ -98,8 +97,8 @@ export function getAllPractices(areaIds: LifeAreaId[]): string[] {
  */
 export function getAllAffirmations(areaIds: LifeAreaId[]): string[] {
   const affirmations = new Set<string>();
-  areaIds.forEach(id => {
-    LIFE_AREAS[id].affirmations.forEach(a => affirmations.add(a));
+  areaIds.forEach((id) => {
+    LIFE_AREAS[id].affirmations.forEach((a) => affirmations.add(a));
   });
   return Array.from(affirmations);
 }
@@ -109,8 +108,8 @@ export function getAllAffirmations(areaIds: LifeAreaId[]): string[] {
  */
 export function getAllCrystals(areaIds: LifeAreaId[]): string[] {
   const crystals = new Set<string>();
-  areaIds.forEach(id => {
-    LIFE_AREAS[id].crystals.forEach(c => crystals.add(c));
+  areaIds.forEach((id) => {
+    LIFE_AREAS[id].crystals.forEach((c) => crystals.add(c));
   });
   return Array.from(crystals);
 }
@@ -118,8 +117,13 @@ export function getAllCrystals(areaIds: LifeAreaId[]): string[] {
 /**
  * Gets a combined summary of all life areas
  */
-export function getLifeAreasSummary(): { id: LifeAreaId; name: string; keywords: number; practices: number }[] {
-  return Object.keys(LIFE_AREAS).map(id => {
+export function getLifeAreasSummary(): {
+  id: LifeAreaId;
+  name: string;
+  keywords: number;
+  practices: number;
+}[] {
+  return Object.keys(LIFE_AREAS).map((id) => {
     const area = LIFE_AREAS[id as LifeAreaId];
     return {
       id: id as LifeAreaId,
@@ -154,7 +158,7 @@ export function isComplete(areaId: LifeAreaId): boolean {
 export function getMissingFields(areaId: LifeAreaId): string[] {
   const area = LIFE_AREAS[areaId];
   const missing: string[] = [];
-  
+
   if (area.questions.length === 0) missing.push('questions');
   if (area.practices.length === 0) missing.push('practices');
   if (area.crystals.length === 0) missing.push('crystals');
@@ -163,7 +167,7 @@ export function getMissingFields(areaId: LifeAreaId): string[] {
   if (area.numerology && area.numerology.lifePath.length === 0) missing.push('numerology.lifePath');
   if (area.odu && area.odu.primaryOdus.length === 0) missing.push('odu.primaryOdus');
   if (area.orixa && area.orixa.primary.length === 0) missing.push('orixa.primary');
-  
+
   return missing;
 }
 
@@ -171,7 +175,7 @@ export function getMissingFields(areaId: LifeAreaId): string[] {
  * Gets all incomplete life areas
  */
 export function getIncompleteAreas(): LifeAreaId[] {
-  return Object.keys(LIFE_AREAS).filter(id => !isComplete(id as LifeAreaId)) as LifeAreaId[];
+  return Object.keys(LIFE_AREAS).filter((id) => !isComplete(id as LifeAreaId)) as LifeAreaId[];
 }
 
 // ============================================================
@@ -181,31 +185,33 @@ export function getIncompleteAreas(): LifeAreaId[] {
 /**
  * Searches for a term in questions, practices, and affirmations
  */
-export function searchContent(term: string): { areaId: LifeAreaId; field: string; content: string }[] {
+export function searchContent(
+  term: string
+): { areaId: LifeAreaId; field: string; content: string }[] {
   const results: { areaId: LifeAreaId; field: string; content: string }[] = [];
   const lowerTerm = term.toLowerCase();
-  
-  Object.keys(LIFE_AREAS).forEach(id => {
+
+  Object.keys(LIFE_AREAS).forEach((id) => {
     const area = LIFE_AREAS[id as LifeAreaId];
-    
-    area.questions.forEach(q => {
+
+    area.questions.forEach((q) => {
       if (q.toLowerCase().includes(lowerTerm)) {
         results.push({ areaId: id as LifeAreaId, field: 'questions', content: q });
       }
     });
-    
-    area.practices.forEach(p => {
+
+    area.practices.forEach((p) => {
       if (p.toLowerCase().includes(lowerTerm)) {
         results.push({ areaId: id as LifeAreaId, field: 'practices', content: p });
       }
     });
-    
-    area.affirmations.forEach(a => {
+
+    area.affirmations.forEach((a) => {
       if (a.toLowerCase().includes(lowerTerm)) {
         results.push({ areaId: id as LifeAreaId, field: 'affirmations', content: a });
       }
     });
   });
-  
+
   return results;
 }

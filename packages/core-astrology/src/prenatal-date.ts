@@ -21,7 +21,6 @@
  * @see .autonomous/research/synthesis/hd-reverse-engineering.md §2.7
  * @see .autonomous/research/synthesis/gk-reverse-engineering.md §3.3
  */
-
 import { calcularPosicao } from './swiss-ephemeris';
 
 /**
@@ -48,7 +47,7 @@ const DAY_MS = 24 * 60 * 60 * 1000;
  * Positivo = target está a leste de source. Usado pelo bisection.
  */
 function angularDifference(source: number, target: number): number {
-  return (target - source + 540) % 360 - 180;
+  return ((target - source + 540) % 360) - 180;
 }
 
 /**
@@ -69,7 +68,7 @@ function angularDifference(source: number, target: number): number {
  * @returns Momento Pré-natal Akasha (Date)
  */
 export function findPrenatalMoment(birthDate: Date): Date {
-  const sunAtBirth = (((calcularPosicao('sol', birthDate).longitude) % 360) + 360) % 360;
+  const sunAtBirth = ((calcularPosicao('sol', birthDate).longitude % 360) + 360) % 360;
   const targetLongitude = (((sunAtBirth - SOLAR_ARC_DEGREES) % 360) + 360) % 360;
 
   let loMs = birthDate.getTime() - SEARCH_WINDOW_BEFORE_DAYS * DAY_MS;
@@ -78,7 +77,7 @@ export function findPrenatalMoment(birthDate: Date): Date {
 
   for (let i = 0; i < 50; i++) {
     const midMs = (loMs + hiMs) / 2;
-    const sunAtMid = (((calcularPosicao('sol', new Date(midMs)).longitude) % 360) + 360) % 360;
+    const sunAtMid = ((calcularPosicao('sol', new Date(midMs)).longitude % 360) + 360) % 360;
     const diff = angularDifference(sunAtMid, targetLongitude);
 
     if (Math.abs(diff) < BISECTION_TOLERANCE_DEG) {

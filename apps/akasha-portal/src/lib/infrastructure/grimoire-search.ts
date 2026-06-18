@@ -22,16 +22,16 @@
 //
 // Re-export abaixo é retrocompat com consult/route.ts. Não remover
 // sem migrar consult/route.ts também (N+20 lesson pattern).
-
 import { prisma } from '@/lib/infrastructure/prisma';
-// Re-export para retrocompat com consult/route.ts
-export type { ChartContext, GrimoireContext } from './types';
 import type {
   ChartContext,
   GrimoireContext,
   GrimoireSearchQuery,
   GrimoireSearchResult,
 } from './types';
+
+// Re-export para retrocompat com consult/route.ts
+export type { ChartContext, GrimoireContext } from './types';
 
 // ---------------------------------------------------------------------------
 // Contexto legado (Camada 3) — retrocompatível com consult/route.ts
@@ -182,9 +182,7 @@ async function getEmbeddingForQuery(text: string): Promise<number[] | null> {
     clearTimeout(timeoutId);
     if (!res.ok) return null;
     const data = (await res.json()) as { embedding?: number[] };
-    return Array.isArray(data.embedding) && data.embedding.length === 768
-      ? data.embedding
-      : null;
+    return Array.isArray(data.embedding) && data.embedding.length === 768 ? data.embedding : null;
   } catch {
     return null;
   }
@@ -218,7 +216,9 @@ export async function searchGrimoireHybrid(
   const limit = q.limit ?? 10;
   const tagsObj: Record<string, string | number | boolean | (string | number)[]> = {};
   if (q.tags) {
-    q.tags.forEach(tag => { tagsObj[tag] = true; });
+    q.tags.forEach((tag) => {
+      tagsObj[tag] = true;
+    });
   }
   const jsonbTags = buildJsonbTags(tagsObj);
 
@@ -256,13 +256,15 @@ export async function searchGrimoireHybrid(
       },
     });
     return byBiblioteca.map((row) => ({
-      entries: [{
-        id: row.id,
-        title: row.slug,
-        content: row.conteudo,
-        category: row.categoria,
-        tags: [],
-      }],
+      entries: [
+        {
+          id: row.id,
+          title: row.slug,
+          content: row.conteudo,
+          category: row.categoria,
+          tags: [],
+        },
+      ],
       context: {
         library: row.biblioteca,
         entries: [],
@@ -301,13 +303,15 @@ async function runHybridQuery(
       LIMIT ${limit}
     `;
     return rows.map((r) => ({
-      entries: [{
-        id: r.id,
-        title: r.slug,
-        content: r.conteudo,
-        category: r.categoria,
-        tags: [],
-      }],
+      entries: [
+        {
+          id: r.id,
+          title: r.slug,
+          content: r.conteudo,
+          category: r.categoria,
+          tags: [],
+        },
+      ],
       context: {
         library: r.biblioteca,
         entries: [],
@@ -333,13 +337,15 @@ async function runHybridQuery(
     LIMIT ${limit}
   `;
   return rows.map((r) => ({
-    entries: [{
-      id: r.id,
-      title: r.slug,
-      content: r.conteudo,
-      category: r.categoria,
-      tags: [],
-    }],
+    entries: [
+      {
+        id: r.id,
+        title: r.slug,
+        content: r.conteudo,
+        category: r.categoria,
+        tags: [],
+      },
+    ],
     context: {
       library: r.biblioteca,
       entries: [],

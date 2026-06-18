@@ -13,7 +13,7 @@ const SECURITY_HEADERS = {
   'X-XSS-Protection': '1; mode=block',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
   'Permissions-Policy': 'accelerometer=(), camera=(), microphone=(), geolocation=()',
-  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload'
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
 } as const;
 
 // Headers that indicate client security context
@@ -22,7 +22,7 @@ const CLIENT_HEADERS = [
   'x-real-ip',
   'x-user-id',
   'x-session-id',
-  'authorization'
+  'authorization',
 ] as const;
 
 interface SecurityHeaderInfo {
@@ -51,18 +51,18 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       name,
       value,
       required: true,
-      description: getHeaderDescription(name)
+      description: getHeaderDescription(name),
     })
   );
 
   const clientHeaders: ClientHeaderInfo[] = CLIENT_HEADERS.map((name) => {
     const headerValue = request.headers.get(name);
     const isAuthHeader = name === 'authorization';
-    
+
     return {
       name,
       present: headerValue !== null,
-      masked: headerValue !== null && isAuthHeader
+      masked: headerValue !== null && isAuthHeader,
     };
   });
 
@@ -70,15 +70,15 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     configuredHeaders,
     clientHeaders,
     protocol: 'HTTPS',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   };
 
   return NextResponse.json(response, {
     headers: {
       ...SECURITY_HEADERS,
       'Cache-Control': 'no-store, no-cache, must-revalidate',
-      'Content-Security-Policy': "default-src 'self'"
-    }
+      'Content-Security-Policy': "default-src 'self'",
+    },
   });
 }
 
@@ -89,7 +89,7 @@ function getHeaderDescription(headerName: string): string {
     'X-XSS-Protection': 'Legacy XSS filter (deprecated but still useful)',
     'Referrer-Policy': 'Controls referrer information sent with requests',
     'Permissions-Policy': 'Restricts access to browser features',
-    'Strict-Transport-Security': 'Forces HTTPS connections'
+    'Strict-Transport-Security': 'Forces HTTPS connections',
   };
   return descriptions[headerName] || 'Security header';
 }

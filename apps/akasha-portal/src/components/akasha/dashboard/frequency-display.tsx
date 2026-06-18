@@ -3,13 +3,19 @@
  * Frequency display components — F-235 Frequency Path Explorer
  * Extracted from AkashaLifeAreasDashboard.tsx
  */
-import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  XCircle, CheckCircle2, Star, GitBranch,
-  ChevronDown, ChevronUp, ArrowRight, Sparkles,
+  XCircle,
+  CheckCircle2,
+  Star,
+  GitBranch,
+  ChevronDown,
+  ChevronUp,
+  ArrowRight,
+  Sparkles,
   type LucideIcon,
 } from 'lucide-react';
+import { useState } from 'react';
 import type { FrequencyLevel } from '@/lib/application/akasha/synthesis-engine/synthesis-types';
 
 // ─── Shared config ─────────────────────────────────────────────────────────────
@@ -118,14 +124,14 @@ export function FrequencyPathExplorer({
   transformationStage: 'surface' | 'deepening' | 'embodying';
 }) {
   const [expanded, setExpanded] = useState(false);
-  const currentIndex = PATH_STAGES.findIndex(s => s.id === dominantFrequency);
+  const currentIndex = PATH_STAGES.findIndex((s) => s.id === dominantFrequency);
 
   return (
     <div className="rounded-2xl border border-white/10 bg-[#1C1C1E] overflow-hidden">
       {/* Header — always visible */}
       <button
         className="w-full flex items-center justify-between px-5 py-4 hover:bg-white/5 transition-colors"
-        onClick={() => setExpanded(e => !e)}
+        onClick={() => setExpanded((e) => !e)}
       >
         <div className="flex items-center gap-3">
           <GitBranch size={16} className="text-white/40" />
@@ -134,9 +140,17 @@ export function FrequencyPathExplorer({
         </div>
         <div className="flex items-center gap-3">
           <span className="text-xs text-white/40">
-            {overallFrequencyScore < 40 ? 'Superficial' : overallFrequencyScore < 70 ? 'Aprofundando' : 'Incorporando'}
+            {overallFrequencyScore < 40
+              ? 'Superficial'
+              : overallFrequencyScore < 70
+                ? 'Aprofundando'
+                : 'Incorporando'}
           </span>
-          {expanded ? <ChevronUp size={14} className="text-white/40" /> : <ChevronDown size={14} className="text-white/40" />}
+          {expanded ? (
+            <ChevronUp size={14} className="text-white/40" />
+          ) : (
+            <ChevronDown size={14} className="text-white/40" />
+          )}
         </div>
       </button>
 
@@ -153,7 +167,11 @@ export function FrequencyPathExplorer({
                 <div
                   className="w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all"
                   style={{
-                    backgroundColor: isActive ? stage.color : isPast ? `${stage.color}44` : 'transparent',
+                    backgroundColor: isActive
+                      ? stage.color
+                      : isPast
+                        ? `${stage.color}44`
+                        : 'transparent',
                     borderColor: isActive ? stage.color : isPast ? stage.color : '#3A3A3C',
                     opacity: isFuture ? 0.3 : 1,
                   }}
@@ -205,12 +223,19 @@ export function FrequencyPathExplorer({
 
               {/* Next stage teaser */}
               {currentIndex < 2 && (
-                <div className="p-3 rounded-xl" style={{ backgroundColor: `${PATH_STAGES[currentIndex + 1].color}11` }}>
+                <div
+                  className="p-3 rounded-xl"
+                  style={{ backgroundColor: `${PATH_STAGES[currentIndex + 1].color}11` }}
+                >
                   <p className="text-xs text-white/40 uppercase tracking-widest mb-1">
                     O próximo passo
                   </p>
                   <div className="flex items-start gap-2">
-                    <ArrowRight size={14} className="mt-0.5 shrink-0" style={{ color: PATH_STAGES[currentIndex + 1].color }} />
+                    <ArrowRight
+                      size={14}
+                      className="mt-0.5 shrink-0"
+                      style={{ color: PATH_STAGES[currentIndex + 1].color }}
+                    />
                     <p className="text-sm text-white/80 leading-relaxed">
                       {PATH_STAGES[currentIndex + 1].description}
                     </p>
@@ -220,17 +245,22 @@ export function FrequencyPathExplorer({
 
               {/* Siddhi achieved message */}
               {currentIndex === 2 && (
-                <div className="p-3 rounded-xl" style={{ backgroundColor: `${PATH_STAGES[2].color}11` }}>
+                <div
+                  className="p-3 rounded-xl"
+                  style={{ backgroundColor: `${PATH_STAGES[2].color}11` }}
+                >
                   <p className="text-sm text-white/90 leading-relaxed italic">
-                    ✦ Você opera na frequência da Realização. Sua presença é o ensinamento.
-                    O próximo passo não é "subir" — é aprofundar e compartilhar.
+                    ✦ Você opera na frequência da Realização. Sua presença é o ensinamento. O
+                    próximo passo não é "subir" — é aprofundar e compartilhar.
                   </p>
                 </div>
               )}
 
               {/* Current stage practice */}
               <div>
-                <p className="text-xs text-white/40 uppercase tracking-widest mb-1.5">Prática de Hoje</p>
+                <p className="text-xs text-white/40 uppercase tracking-widest mb-1.5">
+                  Prática de Hoje
+                </p>
                 <div className="flex items-start gap-2">
                   <Sparkles size={14} className="mt-0.5 shrink-0 text-[#FF9500]" />
                   <p className="text-sm text-white/80 leading-relaxed">
@@ -249,21 +279,21 @@ export function FrequencyPathExplorer({
                       transformationStage === 'surface'
                         ? '#FF950022'
                         : transformationStage === 'deepening'
-                        ? '#34C75922'
-                        : '#AF52DE22',
+                          ? '#34C75922'
+                          : '#AF52DE22',
                     color:
                       transformationStage === 'surface'
                         ? '#FF9500'
                         : transformationStage === 'deepening'
-                        ? '#34C759'
-                        : '#AF52DE',
+                          ? '#34C759'
+                          : '#AF52DE',
                   }}
                 >
                   {transformationStage === 'surface'
                     ? ' superficial'
                     : transformationStage === 'deepening'
-                    ? ' aprofundando'
-                    : ' incorporando'}
+                      ? ' aprofundando'
+                      : ' incorporando'}
                 </span>
               </div>
             </div>

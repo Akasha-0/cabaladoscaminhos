@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
-import { prisma } from '@/lib/infrastructure/prisma';
 import { renderToBuffer } from '@react-pdf/renderer';
 import React from 'react';
+import { NextRequest, NextResponse } from 'next/server';
 import ManifestoPDF from '@/components/akasha/ManifestoPDF';
 import type { ManifestoContent } from '@/components/akasha/ManifestoPDF';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
+import { prisma } from '@/lib/infrastructure/prisma';
 
 export async function GET(request: NextRequest) {
   const auth = await requireAkashaApi(request);
@@ -23,7 +23,6 @@ export async function GET(request: NextRequest) {
 
   const content = manifesto.content as unknown as ManifestoContent;
 
-   
   const element = React.createElement(ManifestoPDF, { content }) as any;
   const buffer = await renderToBuffer(element);
 

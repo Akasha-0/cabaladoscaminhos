@@ -58,25 +58,17 @@ function Particles({ count = 80 }: { count?: number }) {
   return (
     <points ref={ref}>
       <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[positions, 3]}
-        />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
       <pointsMaterial color={COLORS.auroraCyan} size={0.05} sizeAttenuation />
     </points>
   );
 }
 
-export function MandalaAtmosphere({
-  intensity = 'medium',
-}: {
-  intensity?: AtmosphereIntensity;
-}) {
+export function MandalaAtmosphere({ intensity = 'medium' }: { intensity?: AtmosphereIntensity }) {
   const particleCount = intensity === 'low' ? 50 : intensity === 'high' ? 100 : 80;
   const reduced =
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   return (
     <div

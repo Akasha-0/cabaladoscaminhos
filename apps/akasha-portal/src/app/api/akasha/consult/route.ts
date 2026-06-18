@@ -1,13 +1,17 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
-import { prisma } from '@/lib/infrastructure/prisma';
-import { streamCompletion } from '@/lib/application/ai/llm-router';
-import { createSSEStream } from '@/lib/infrastructure/sse';
-import { searchGrimoire, type ChartContext, type GrimoireContext } from '@/lib/infrastructure/grimoire-search';
-import { buildOduGlossary, formatGlossarySection } from '@/lib/domain/glossary';
 import type { IChingMap } from '@akasha/core-iching';
+import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';
 import { formatIchingSection } from '@/lib/application/ai/iching-prompt';
+import { streamCompletion } from '@/lib/application/ai/llm-router';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
+import { buildOduGlossary, formatGlossarySection } from '@/lib/domain/glossary';
+import {
+  searchGrimoire,
+  type ChartContext,
+  type GrimoireContext,
+} from '@/lib/infrastructure/grimoire-search';
+import { prisma } from '@/lib/infrastructure/prisma';
+import { createSSEStream } from '@/lib/infrastructure/sse';
 
 const bodySchema = z.object({
   question: z.string().min(3).max(1000),
@@ -15,7 +19,7 @@ const bodySchema = z.object({
 });
 
 export function getDominantElement(astro: Record<string, unknown>): string {
-  const balance = astro?.elementalChart as Record<string, number> | undefined ?? {};
+  const balance = (astro?.elementalChart as Record<string, number> | undefined) ?? {};
   const entries = Object.entries(balance);
   if (entries.length === 0) return 'Água';
   return entries.sort((a, b) => b[1] - a[1])[0][0];
@@ -31,14 +35,15 @@ export function buildConsultSystemPrompt(
   ctx: GrimoireContext,
   ichingMap?: IChingMap | null
 ): string {
-  const oduBirth = chart?.oduBirth as Record<string, unknown> | null ?? {};
-  const kab = chart?.kabalisticMap as Record<string, unknown> | null ?? {};
+  const oduBirth = (chart?.oduBirth as Record<string, unknown> | null) ?? {};
+  const kab = (chart?.kabalisticMap as Record<string, unknown> | null) ?? {};
 
-  const grimoireSection = ctx.entries.length > 0
-    ? `\n\n## BIBLIOTECA AKASHA (use APENAS estas fontes)\n\n${ctx.entries
-        .map((e) => `### ${e.titulo} [${e.categoria}]\n${e.conteudo}`)
-        .join('\n\n---\n\n')}`
-    : '';
+  const grimoireSection =
+    ctx.entries.length > 0
+      ? `\n\n## BIBLIOTECA AKASHA (use APENAS estas fontes)\n\n${ctx.entries
+          .map((e) => `### ${e.titulo} [${e.categoria}]\n${e.conteudo}`)
+          .join('\n\n---\n\n')}`
+      : '';
 
   // AD-T5-F (AD-20.2): injeção do glossário do Odu (verdade-base).
   const glossarySection = formatGlossarySection(buildOduGlossary(chart?.oduBirth));
@@ -99,7 +104,10 @@ export async function POST(request: NextRequest) {
   const creditCost = question.length > 200 ? 3 : 1;
 
   if (balance < creditCost) {
-    return NextResponse.json({ error: 'Créditos insuficientes para esta consulta' }, { status: 402 });
+    return NextResponse.json(
+      { error: 'Créditos insuficientes para esta consulta' },
+      { status: 402 }
+    );
   }
 
   // 5. Create or fetch consultation
@@ -183,7 +191,11 @@ export async function POST(request: NextRequest) {
           { role: 'user' as const, content: question },
         ];
 
-        for await (const chunk of streamCompletion({ messages, temperature: 0.85, max_tokens: 1200 })) {
+        for await (const chunk of streamCompletion({
+          messages,
+          temperature: 0.85,
+          max_tokens: 1200,
+        })) {
           if (chunk.error) {
             sseController.send({ event: 'error', data: { message: chunk.error } });
             sseController.close();
@@ -199,7 +211,9 @@ export async function POST(request: NextRequest) {
         }
 
         // 11. Persist oracle response and debit credits
-        const grimoireRefs = grimoireCtx.entries.map((e) => e.titulo ?? e.title).filter(Boolean) as string[];
+        const grimoireRefs = grimoireCtx.entries
+          .map((e) => e.titulo ?? e.title)
+          .filter(Boolean) as string[];
 
         await prisma.chatMessage.create({
           data: {

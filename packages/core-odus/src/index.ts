@@ -11,7 +11,13 @@ export { ODUS_IFA, getOduPorNumero } from './odus-ifa-data';
 export type { OduInfo } from './calculos';
 
 // Cálculos de Odu
-export { odusData, calcularOduNascimento, getQuizilasPorOdu, getPreceitosPorOdu, getEbósPorOdu } from './calculos';
+export {
+  odusData,
+  calcularOduNascimento,
+  getQuizilasPorOdu,
+  getPreceitosPorOdu,
+  getEbósPorOdu,
+} from './calculos';
 
 // Odu de Nascimento
 export { calculateBirthOdu } from './odu-birth';

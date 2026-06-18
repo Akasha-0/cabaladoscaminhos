@@ -50,7 +50,7 @@ diretamente ao Postgres para leituras.
   do CLI sempre em PT-BR.
 - **Pilar 4 (Odu) ethics invariant**: comandos que tocam em Odu
   (ex: `akasha diagnostico odu`) devem avisar `requer consentimento +
-  terreiro`.
+terreiro`.
 - **LGPD by design**: `setup` coleta PII mínimo (só o necessário para
   birth chart). Logs não devem persistir PII em claro.
 - **TUI testing**: blessed é difícil de testar unitariamente. Smoke

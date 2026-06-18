@@ -1,5 +1,5 @@
 {
-  "ts": "2026-06-18T02:07:21.152564+00:00",
+  "ts": "2026-06-18T02:51:57.312554+00:00",
   "params": {
     "pacing_multiplier": {
       "name": "pacing_multiplier",
@@ -55,7 +55,35 @@
       "cpu_percent": 0.0,
       "memory_mb": 0.0,
       "success": false
+    },
+    {
+      "iteration": 34,
+      "ts": "2026-06-18T02:09:57.632705+00:00",
+      "duration_s": 0.0,
+      "loop_quality": 0.0,
+      "phase_durations": {},
+      "phase_quality": {},
+      "parallel_agents": 1,
+      "cpu_percent": 0.0,
+      "memory_mb": 0.0,
+      "success": true,
+      "quality": 0.0,
+      "improvements": 2,
+      "commit_ok": true
     }
   ],
-  "cached_recommendations": []
+  "cached_recommendations": [
+    {
+      "parameter": "pacing_multiplier",
+      "current_value": 1.0,
+      "recommended_value": 0.9,
+      "reason": "Quality degrading (degrading) — pacing reduction to improve outcomes."
+    },
+    {
+      "parameter": "quality_threshold",
+      "current_value": 0.8,
+      "recommended_value": 0.776,
+      "reason": "Quality trend slope=-0.2500 — tightening threshold to enforce higher minimum quality bar."
+    }
+  ]
 }

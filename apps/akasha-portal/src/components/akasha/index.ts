@@ -1,6 +1,6 @@
 /**
  * @akasha/portal — Componentes Akasha
- * 
+ *
  * Exports dos componentes de ritual e utilitários.
  */
 

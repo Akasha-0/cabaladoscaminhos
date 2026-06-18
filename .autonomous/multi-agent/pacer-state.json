@@ -1,11 +1,19 @@
 {
   "state": "SLOW",
   "quality_ema": 85.0,
-  "failure_rate": 0.0,
-  "outcome_count": 0,
-  "outcome_history": [],
-  "forced": false,
-  "force_reason": "",
+  "failure_rate": 0.7142857142857143,
+  "outcome_count": 7,
+  "outcome_history": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true
+  ],
+  "forced": true,
+  "force_reason": "quality regression",
   "transition_log": [
     {
       "ts": "2026-06-18T00:58:44.658440+00:00",
@@ -14,6 +22,62 @@
       "reason": "quality_ema crossed lower threshold",
       "quality": 85.0,
       "failure": 0.0
+    },
+    {
+      "ts": "2026-06-18T01:18:54.760844+00:00",
+      "from": "SLOW",
+      "to": "SLOW",
+      "reason": "LoopOptimizer: quality or speed concern",
+      "quality": 85.0,
+      "failure": 0.0
+    },
+    {
+      "ts": "2026-06-18T02:23:36.488441+00:00",
+      "from": "SLOW",
+      "to": "SLOW",
+      "reason": "quality regression: Quality EMA ≈0.50, slope -0.038. Predicted next quality ≈0.49.",
+      "quality": 85.0,
+      "failure": 0.0
+    },
+    {
+      "ts": "2026-06-18T02:27:59.324609+00:00",
+      "from": "SLOW",
+      "to": "SLOW",
+      "reason": "quality regression: Quality EMA ≈0.50, slope -0.038. Predicted next quality ≈0.49.",
+      "quality": 85.0,
+      "failure": 0.0
+    },
+    {
+      "ts": "2026-06-18T02:33:50.974429+00:00",
+      "from": "SLOW",
+      "to": "SLOW",
+      "reason": "quality regression",
+      "quality": 85.0,
+      "failure": 0.0
+    },
+    {
+      "ts": "2026-06-18T02:45:01.896813+00:00",
+      "from": "SLOW",
+      "to": "SLOW",
+      "reason": "quality regression",
+      "quality": 85.0,
+      "failure": 0.5
+    },
+    {
+      "ts": "2026-06-18T02:46:47.478583+00:00",
+      "from": "SLOW",
+      "to": "SLOW",
+      "reason": "quality regression",
+      "quality": 85.0,
+      "failure": 0.5
+    },
+    {
+      "ts": "2026-06-18T02:52:00.126265+00:00",
+      "from": "SLOW",
+      "to": "SLOW",
+      "reason": "quality regression",
+      "quality": 85.0,
+      "failure": 0.5
     }
   ]
 }

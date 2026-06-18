@@ -1,7 +1,7 @@
 import { cookies, headers } from 'next/headers';
+import { AkashaLayoutClient } from '@/components/akasha/AkashaLayoutClient';
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import { prisma } from '@/lib/infrastructure/prisma';
-import { AkashaLayoutClient } from '@/components/akasha/AkashaLayoutClient';
 
 /**
  * (akasha) group layout inside the [locale] segment.

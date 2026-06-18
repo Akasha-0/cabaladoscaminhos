@@ -8,20 +8,14 @@
  * component focused on rendering concerns and to allow unit-testing
  * the derivations in isolation.
  */
-
-import {
-  ZODIAC_NAMES,
-  ZODIAC_SIGNS,
-  toXY,
-  type Layer,
-} from '@/components/akasha/mandala-geometry';
+import { ZODIAC_NAMES, ZODIAC_SIGNS, toXY, type Layer } from '@/components/akasha/mandala-geometry';
+import { resolveSig, TANTRIC_BODY_WISDOM } from '@/components/akasha/mandala-meanings';
 import {
   formatDegreeToZodiac,
   GLYPHS_BY_PLANET,
   longitudeToSvgAngle,
   PLANET_COLORS,
 } from '@/lib/shared/zodiac';
-import { resolveSig, TANTRIC_BODY_WISDOM } from '@/components/akasha/mandala-meanings';
 
 // ---------- Minimal types (mirror of MandalaData fields consumed here) ----------
 

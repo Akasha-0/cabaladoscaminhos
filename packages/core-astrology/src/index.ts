@@ -7,14 +7,7 @@
 
 // Tipos públicos
 export type { BirthChart } from './birth-chart';
-export type {
-  MapaNatal,
-  Planeta,
-  Signo,
-  Aspecto,
-  Casa,
-  PosicaoPlaneta,
-} from './tipos';
+export type { MapaNatal, Planeta, Signo, Aspecto, Casa, PosicaoPlaneta } from './tipos';
 
 // Mapa natal e trânsitos
 export { getBirthChart } from './birth-chart';

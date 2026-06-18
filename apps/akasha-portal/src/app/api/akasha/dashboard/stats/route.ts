@@ -2,10 +2,10 @@
  * GET /api/akasha/dashboard/stats
  * Retorna estatísticas do dashboard do usuário
  */
+import { DashboardService } from '@akasha/core';
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { prisma } from '@/lib/infrastructure/prisma';
-import { DashboardService } from '@akasha/core';
 
 export async function GET(request: NextRequest) {
   // 1. Autenticar
@@ -20,7 +20,10 @@ export async function GET(request: NextRequest) {
   } catch (err) {
     console.error('[dashboard/stats] Erro:', err);
     return NextResponse.json(
-      { error: 'Erro ao buscar estatísticas', details: err instanceof Error ? err.message : 'Unknown' },
+      {
+        error: 'Erro ao buscar estatísticas',
+        details: err instanceof Error ? err.message : 'Unknown',
+      },
       { status: 500 }
     );
   }

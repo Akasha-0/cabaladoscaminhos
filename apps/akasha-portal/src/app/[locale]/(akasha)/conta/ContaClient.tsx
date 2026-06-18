@@ -15,8 +15,8 @@ type Props = {
   user: {
     name: string;
     email: string;
-    birthDate?: string | null;  // ISO date string 'YYYY-MM-DD'
-    birthTime?: string | null;  // 'HH:mm'
+    birthDate?: string | null; // ISO date string 'YYYY-MM-DD'
+    birthTime?: string | null; // 'HH:mm'
     birthCity?: string | null;
   };
   balance: number;
@@ -34,12 +34,35 @@ const glassCard: React.CSSProperties = {
 };
 
 const CREDIT_PACKS = [
-  { type: 'credits_10', label: '10 Créditos', price: 'R$9,90', description: '10 consultas simples' },
-  { type: 'credits_30', label: '30 Créditos', price: 'R$24,90', description: '30 consultas simples', highlight: true },
-  { type: 'credits_60', label: '60 Créditos', price: 'R$44,90', description: '60 consultas simples' },
+  {
+    type: 'credits_10',
+    label: '10 Créditos',
+    price: 'R$9,90',
+    description: '10 consultas simples',
+  },
+  {
+    type: 'credits_30',
+    label: '30 Créditos',
+    price: 'R$24,90',
+    description: '30 consultas simples',
+    highlight: true,
+  },
+  {
+    type: 'credits_60',
+    label: '60 Créditos',
+    price: 'R$44,90',
+    description: '60 consultas simples',
+  },
 ];
 
-export default function ContaClient({ user, balance, subscription, subscriptionError, checkoutStatus, pushEnabled = false }: Props) {
+export default function ContaClient({
+  user,
+  balance,
+  subscription,
+  subscriptionError,
+  checkoutStatus,
+  pushEnabled = false,
+}: Props) {
   const [loading, setLoading] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [pushOn, setPushOn] = useState(pushEnabled);
@@ -166,7 +189,11 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
         });
         if (!res.ok) throw new Error('Falha ao desativar notificações');
         setPushOn(false);
-        setPushMsg(sub ? 'Notificações desativadas.' : 'Notificações desativadas (já não havia subscrição ativa).');
+        setPushMsg(
+          sub
+            ? 'Notificações desativadas.'
+            : 'Notificações desativadas (já não havia subscrição ativa).'
+        );
       } else {
         // opt-in
         const subscription = await subscribeToPush();
@@ -181,7 +208,9 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
         });
         if (!res.ok) throw new Error('Falha ao ativar notificações');
         setPushOn(true);
-        setPushMsg('Notificações ativadas. Você receberá um aviso por dia quando o ritual estiver pronto.');
+        setPushMsg(
+          'Notificações ativadas. Você receberá um aviso por dia quando o ritual estiver pronto.'
+        );
       }
     } catch (e: unknown) {
       setPushMsg(e instanceof Error ? e.message : 'Erro ao alterar notificações');
@@ -190,26 +219,28 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
     }
   }
 
-  {chartLoading && (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <div className="bg-[#1a1b2e] border border-[#7C5CFF]/40 rounded-2xl p-8 text-center max-w-sm">
-        <div className="animate-spin w-8 h-8 border-2 border-[#7C5CFF] border-t-transparent rounded-full mx-auto mb-4" />
-        <p className="text-white font-semibold">Recalculando seu mapa…</p>
-        <p className="text-white/50 text-sm mt-1">Aguarde um momento</p>
+  {
+    chartLoading && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div className="bg-[#1a1b2e] border border-[#7C5CFF]/40 rounded-2xl p-8 text-center max-w-sm">
+          <div className="animate-spin w-8 h-8 border-2 border-[#7C5CFF] border-t-transparent rounded-full mx-auto mb-4" />
+          <p className="text-white font-semibold">Recalculando seu mapa…</p>
+          <p className="text-white/50 text-sm mt-1">Aguarde um momento</p>
+        </div>
       </div>
-    </div>
-  )}
+    );
+  }
   return (
-    <div
-      className="min-h-[calc(100vh-56px)] px-4 py-12"
-      style={{ background: '#030711' }}
-    >
+    <div className="min-h-[calc(100vh-56px)] px-4 py-12" style={{ background: '#030711' }}>
       <div className="max-w-2xl mx-auto flex flex-col gap-6">
-
         {checkoutStatus === 'success' && (
           <div
             className="px-4 py-3 rounded-xl text-sm"
-            style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)', color: '#34D399' }}
+            style={{
+              background: 'rgba(16,185,129,0.1)',
+              border: '1px solid rgba(16,185,129,0.3)',
+              color: '#34D399',
+            }}
           >
             Pagamento confirmado! Seus créditos foram adicionados.
           </div>
@@ -217,7 +248,11 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
         {checkoutStatus === 'cancel' && (
           <div
             className="px-4 py-3 rounded-xl text-sm"
-            style={{ background: 'rgba(244,63,94,0.1)', border: '1px solid rgba(244,63,94,0.3)', color: '#f87171' }}
+            style={{
+              background: 'rgba(244,63,94,0.1)',
+              border: '1px solid rgba(244,63,94,0.3)',
+              color: '#f87171',
+            }}
           >
             Checkout cancelado. Nenhuma cobrança foi realizada.
           </div>
@@ -225,7 +260,11 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
         {error && (
           <div
             className="px-4 py-3 rounded-xl text-sm"
-            style={{ background: 'rgba(244,63,94,0.1)', border: '1px solid rgba(244,63,94,0.3)', color: '#f87171' }}
+            style={{
+              background: 'rgba(244,63,94,0.1)',
+              border: '1px solid rgba(244,63,94,0.3)',
+              color: '#f87171',
+            }}
           >
             {error}
           </div>
@@ -240,7 +279,8 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
               color: '#F59E0B',
             }}
           >
-            Não foi possível carregar os dados da sua assinatura. O restante da conta continua disponível.
+            Não foi possível carregar os dados da sua assinatura. O restante da conta continua
+            disponível.
           </div>
         )}
 
@@ -252,7 +292,9 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
           >
             {user.name}
           </h1>
-          <p className="text-sm" style={{ color: 'rgba(226,232,240,0.5)' }}>{user.email}</p>
+          <p className="text-sm" style={{ color: 'rgba(226,232,240,0.5)' }}>
+            {user.email}
+          </p>
         </div>
 
         {/* Birth Data Edit */}
@@ -310,7 +352,7 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
                 <input
                   type="text"
                   value={profileForm.name}
-                  onChange={e => setProfileForm(f => ({ ...f, name: e.target.value }))}
+                  onChange={(e) => setProfileForm((f) => ({ ...f, name: e.target.value }))}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/20 focus:outline-none focus:border-[#7C5CFF]"
                   placeholder="Seu nome completo"
                 />
@@ -323,7 +365,7 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
                   <input
                     type="date"
                     value={profileForm.birthDate}
-                    onChange={e => setProfileForm(f => ({ ...f, birthDate: e.target.value }))}
+                    onChange={(e) => setProfileForm((f) => ({ ...f, birthDate: e.target.value }))}
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#7C5CFF]"
                   />
                 </div>
@@ -334,7 +376,7 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
                   <input
                     type="time"
                     value={profileForm.birthTime}
-                    onChange={e => setProfileForm(f => ({ ...f, birthTime: e.target.value }))}
+                    onChange={(e) => setProfileForm((f) => ({ ...f, birthTime: e.target.value }))}
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#7C5CFF]"
                   />
                 </div>
@@ -345,9 +387,9 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
                 </label>
                 <CityAutocomplete
                   value={profileForm.birthCity}
-                  onChange={val => setProfileForm(f => ({ ...f, birthCity: val }))}
+                  onChange={(val) => setProfileForm((f) => ({ ...f, birthCity: val }))}
                   onSelect={(city: CityResult) => {
-                    setProfileForm(f => ({ ...f, birthCity: city.name }));
+                    setProfileForm((f) => ({ ...f, birthCity: city.name }));
                     setProfileCoords({
                       latitude: parseFloat(city.latitude),
                       longitude: parseFloat(city.longitude),
@@ -358,14 +400,21 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
                 />
               </div>
               {profileError && (
-                <p className="text-xs" style={{ color: '#f87171' }}>{profileError}</p>
+                <p className="text-xs" style={{ color: '#f87171' }}>
+                  {profileError}
+                </p>
               )}
               {profileSuccess && (
-                <p className="text-xs" style={{ color: '#34D399' }}>{profileSuccess}</p>
+                <p className="text-xs" style={{ color: '#34D399' }}>
+                  {profileSuccess}
+                </p>
               )}
               <div className="flex gap-2">
                 <button
-                  onClick={() => { setEditingProfile(false); setProfileError(''); }}
+                  onClick={() => {
+                    setEditingProfile(false);
+                    setProfileError('');
+                  }}
                   className="flex-1 py-2.5 rounded-xl border border-white/10 text-sm text-white/60 hover:bg-white/5 transition-colors"
                 >
                   Cancelar
@@ -390,7 +439,8 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
                 Notificações
               </h2>
               <p className="text-sm" style={{ color: 'rgba(226,232,240,0.65)' }}>
-                Receba uma notificação por dia quando seu ritual estiver pronto. Você pode desativar a qualquer momento.
+                Receba uma notificação por dia quando seu ritual estiver pronto. Você pode desativar
+                a qualquer momento.
               </p>
               <p className="text-xs mt-1" style={{ color: 'rgba(226,232,240,0.4)' }}>
                 A notificação é genérica — o conteúdo do ritual só é aberto no app.
@@ -411,7 +461,9 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
               className="px-5 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap disabled:opacity-50"
               style={{
                 background: pushOn ? 'rgba(16,185,129,0.15)' : 'rgba(124,58,237,0.15)',
-                border: pushOn ? '1px solid rgba(16,185,129,0.4)' : '1px solid rgba(124,58,237,0.4)',
+                border: pushOn
+                  ? '1px solid rgba(16,185,129,0.4)'
+                  : '1px solid rgba(124,58,237,0.4)',
                 color: pushOn ? '#34D399' : '#A78BFA',
               }}
             >
@@ -423,7 +475,12 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
         {/* Plan + Credits */}
         <div className="grid grid-cols-2 gap-4">
           <div style={glassCard} className="p-5 flex flex-col gap-2">
-            <p className="text-xs uppercase tracking-widest" style={{ color: 'rgba(226,232,240,0.4)' }}>Plano</p>
+            <p
+              className="text-xs uppercase tracking-widest"
+              style={{ color: 'rgba(226,232,240,0.4)' }}
+            >
+              Plano
+            </p>
             <div className="flex items-center gap-2">
               <span
                 className="text-lg font-semibold"
@@ -448,7 +505,12 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
           </div>
 
           <div style={glassCard} className="p-5 flex flex-col gap-2">
-            <p className="text-xs uppercase tracking-widest" style={{ color: 'rgba(226,232,240,0.4)' }}>Créditos</p>
+            <p
+              className="text-xs uppercase tracking-widest"
+              style={{ color: 'rgba(226,232,240,0.4)' }}
+            >
+              Créditos
+            </p>
             <span
               className="text-3xl font-bold"
               style={{ color: '#F59E0B', fontFamily: 'var(--font-cinzel), serif' }}
@@ -479,7 +541,10 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
                 <p className="text-sm mb-1" style={{ color: 'rgba(226,232,240,0.65)' }}>
                   R$39,90/mês
                 </p>
-                <ul className="text-sm flex flex-col gap-1 mt-2" style={{ color: 'rgba(226,232,240,0.55)' }}>
+                <ul
+                  className="text-sm flex flex-col gap-1 mt-2"
+                  style={{ color: 'rgba(226,232,240,0.55)' }}
+                >
                   <li>✦ Dashboard Diário ilimitado</li>
                   <li>✦ 30 créditos/mês para o Oráculo</li>
                   <li>✦ Cancele quando quiser</li>
@@ -515,7 +580,11 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
               onClick={() => handleCheckout('manifesto')}
               disabled={loading === 'manifesto'}
               className="px-5 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap disabled:opacity-50"
-              style={{ background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.4)', color: '#F59E0B' }}
+              style={{
+                background: 'rgba(245,158,11,0.15)',
+                border: '1px solid rgba(245,158,11,0.4)',
+                color: '#F59E0B',
+              }}
             >
               {loading === 'manifesto' ? 'Aguarde...' : 'Comprar'}
             </button>
@@ -539,7 +608,9 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
                 className="rounded-xl p-4 text-left transition-colors disabled:opacity-50"
                 style={{
                   background: pack.highlight ? 'rgba(124,58,237,0.12)' : 'rgba(124,58,237,0.05)',
-                  border: pack.highlight ? '1px solid rgba(124,58,237,0.4)' : '1px solid rgba(124,58,237,0.15)',
+                  border: pack.highlight
+                    ? '1px solid rgba(124,58,237,0.4)'
+                    : '1px solid rgba(124,58,237,0.15)',
                 }}
               >
                 <p className="text-base font-bold mb-0.5" style={{ color: '#E2E8F0' }}>
@@ -552,13 +623,14 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
                   {pack.description}
                 </p>
                 {loading === pack.type && (
-                  <p className="text-xs mt-1" style={{ color: '#A78BFA' }}>Aguarde...</p>
+                  <p className="text-xs mt-1" style={{ color: '#A78BFA' }}>
+                    Aguarde...
+                  </p>
                 )}
               </button>
             ))}
           </div>
         </div>
-
       </div>
     </div>
   );

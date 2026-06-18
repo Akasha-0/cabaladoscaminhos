@@ -1,9 +1,9 @@
+import { AkashaInputSchema, calcular } from '@akasha/core';
 import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { Dashboard } from '@/components/akasha/dashboard/Dashboard';
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import { prisma } from '@/lib/infrastructure/prisma';
-import { AkashaInputSchema, calcular } from '@akasha/core';
 
 export const metadata = {
   title: 'Dashboard | Akasha OS',
@@ -38,7 +38,10 @@ export default async function LocalizedDashboardPage({ params }: DashboardPagePr
     // Using email prefix for greeting fallback when user.name is null in DB.
     try {
       // atob() is available in Edge Runtime; Buffer is Node.js-only.
-      const decoded = JSON.parse(atob(token?.split('.')[1] ?? '')) as { sub?: string; email?: string };
+      const decoded = JSON.parse(atob(token?.split('.')[1] ?? '')) as {
+        sub?: string;
+        email?: string;
+      };
       payload = decoded?.sub ? { sub: decoded.sub, email: decoded.email } : null;
     } catch {
       payload = null;

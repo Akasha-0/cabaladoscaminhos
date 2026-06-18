@@ -15,7 +15,8 @@ export function buildManifestoContent(
 
   const oduName: string =
     (odu?.oduName as string) ??
-    ((odu?.birthOdu as Array<{ meaning: string }>)?.[0]?.meaning ?? 'Ori');
+    (odu?.birthOdu as Array<{ meaning: string }>)?.[0]?.meaning ??
+    'Ori';
 
   const elementalForce: string | null = (odu?.elementalForce as string) ?? null;
   const orixas: string[] = (odu?.orixaRegency as string[]) ?? [];
@@ -93,7 +94,9 @@ function buildSynthesis(
   const oduPart = oduName ? `regido pelo Odu ${oduName}` : 'de raízes ancestrais profundas';
   const lifePathPart = lifePath ? `o Caminho de Vida ${lifePath}` : 'um propósito singular';
   const ascendantPart = ascendant ? `o Ascendente em ${ascendant}` : 'uma expressão cósmica única';
-  const tantricPart = tantricPath ? `o Caminho Tântrico ${tantricPath}` : 'uma anatomia sutil refinada';
+  const tantricPart = tantricPath
+    ? `o Caminho Tântrico ${tantricPath}`
+    : 'uma anatomia sutil refinada';
 
   return (
     `O cruzamento dos seus 4 mapas revela um ser ${oduPart}, portador de ${lifePathPart} como missão central. ` +
@@ -117,10 +120,8 @@ function buildOduDescription(
     );
   }
   const parts: string[] = [];
-  const keyword = elementalForce ?? (orixas[0] ?? 'criação');
-  parts.push(
-    `Seu Ori é regido por ${oduName}, portador da energia de ${keyword}.`
-  );
+  const keyword = elementalForce ?? orixas[0] ?? 'criação';
+  parts.push(`Seu Ori é regido por ${oduName}, portador da energia de ${keyword}.`);
   if (odu.lifeLesson) {
     parts.push(
       `Isso significa que sua força vital encontra expressão através de ${String(odu.lifeLesson)}.`
@@ -130,7 +131,8 @@ function buildOduDescription(
       `Isso significa que sua força vital encontra expressão através da força elemental ${elementalForce}.`
     );
   }
-  const theme = (odu.lifeTheme as string) ?? (odu.theme as string) ?? 'crescimento, superação e expansão';
+  const theme =
+    (odu.lifeTheme as string) ?? (odu.theme as string) ?? 'crescimento, superação e expansão';
   parts.push(`Sua jornada é marcada por ${theme}.`);
   return parts.join(' ');
 }
@@ -160,9 +162,13 @@ function buildKabalaDescription(
     );
   }
   if (personalYear !== null) {
-    parts.push(`Este é um ano ${personalYear} em seu ciclo pessoal — um tempo de ${personalYearMeaning(personalYear)}.`);
+    parts.push(
+      `Este é um ano ${personalYear} em seu ciclo pessoal — um tempo de ${personalYearMeaning(personalYear)}.`
+    );
   }
-  return parts.join(' ') || 'Seus números cabalísticos revelam o propósito oculto desta encarnação.';
+  return (
+    parts.join(' ') || 'Seus números cabalísticos revelam o propósito oculto desta encarnação.'
+  );
 }
 
 function personalYearMeaning(year: number): string {
@@ -196,7 +202,7 @@ function buildTantraDescription(
   if (tantricPath !== null) {
     parts.push(
       `Sua numerologia tântrica revela ${tantricPath} como seu Caminho Tântrico, ` +
-      `indicando uma jornada de integração espiritual e aprofundamento dos corpos sutis.`
+        `indicando uma jornada de integração espiritual e aprofundamento dos corpos sutis.`
     );
   }
   const bodies = tantra.bodies as Array<{ name: string; active: boolean }> | undefined;
@@ -211,10 +217,17 @@ function buildTantraDescription(
     }
   } else {
     if (tantra.soul) parts.push(`Corpo da Alma ${tantra.soul}: a frequência do seu Eu eterno.`);
-    if (tantra.karma) parts.push(`Karma ${tantra.karma}: o padrão ancestral que você veio transmutar.`);
-    if (tantra.divineGift) parts.push(`Dom Divino ${tantra.divineGift}: sua habilidade natural de elevar o campo ao redor.`);
+    if (tantra.karma)
+      parts.push(`Karma ${tantra.karma}: o padrão ancestral que você veio transmutar.`);
+    if (tantra.divineGift)
+      parts.push(
+        `Dom Divino ${tantra.divineGift}: sua habilidade natural de elevar o campo ao redor.`
+      );
   }
-  return parts.join(' ') || 'Os 11 Corpos revelam onde sua energia está em fluxo e onde precisa de alinhamento.';
+  return (
+    parts.join(' ') ||
+    'Os 11 Corpos revelam onde sua energia está em fluxo e onde precisa de alinhamento.'
+  );
 }
 
 function buildAstroDescription(

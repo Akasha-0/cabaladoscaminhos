@@ -69,11 +69,6 @@ export interface Aspecto {
   nature: AspectoNature;
 }
 
-export type AspectoTipo =
-  | 'conjunção'
-  | 'oposição'
-  | 'quadratura'
-  | 'trino'
-  | 'sextil';
+export type AspectoTipo = 'conjunção' | 'oposição' | 'quadratura' | 'trino' | 'sextil';
 // AD-23.1: nature field for aspect classification (correlation system uses harmony/tension)
 export type AspectoNature = 'harmony' | 'tension' | 'neutral';

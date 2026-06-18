@@ -1,9 +1,9 @@
+import { z } from 'zod';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { z } from 'zod';
 import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
-import { prisma } from '@/lib/infrastructure/prisma';
 import { geocodeCity } from '@/lib/infrastructure/geocoding/nominatim';
+import { prisma } from '@/lib/infrastructure/prisma';
 
 const updateSchema = z.object({
   name: z.string().min(1).max(200).optional(),
@@ -49,7 +49,8 @@ export async function PATCH(request: NextRequest): Promise<NextResponse> {
         data.birthLatitude = geo.latitude;
         data.birthLongitude = geo.longitude;
         // Use explicit timezone if provided, otherwise from geocoding
-        data.birthTimezone = parsed.birthTimezone ?? (geo as { timezone?: string }).timezone ?? null;
+        data.birthTimezone =
+          parsed.birthTimezone ?? (geo as { timezone?: string }).timezone ?? null;
       }
     }
   } else if (parsed.birthTimezone !== undefined) {

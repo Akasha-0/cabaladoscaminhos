@@ -8,9 +8,8 @@
  * 3. Exposes refetch() to invalidate
  * 4. Skips network when disabled=true
  */
-
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, waitFor, act } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { useAkashaSynthesis } from './useAkashaSynthesis';
 
 // ─── fetch mock ───────────────────────────────────────────────────────
@@ -75,9 +74,7 @@ describe('useAkashaSynthesis — initial state', () => {
       json: async () => makeDailyContent(),
     });
 
-    const { result } = renderHook(() =>
-      useAkashaSynthesis({ userId: 'user-1' }),
-    );
+    const { result } = renderHook(() => useAkashaSynthesis({ userId: 'user-1' }));
 
     expect(result.current.loading).toBe(true);
     expect(result.current.data).toBeNull();
@@ -99,9 +96,7 @@ describe('useAkashaSynthesis — initial state', () => {
       json: async () => makeDailyContent(),
     });
 
-    const { result } = renderHook(() =>
-      useAkashaSynthesis({ userId: 'user-2' }),
-    );
+    const { result } = renderHook(() => useAkashaSynthesis({ userId: 'user-2' }));
 
     await waitFor(() => expect(result.current.loading).toBe(false));
 
@@ -120,9 +115,7 @@ describe('useAkashaSynthesis — error handling', () => {
       json: async () => ({}),
     });
 
-    const { result } = renderHook(() =>
-      useAkashaSynthesis({ userId: 'user-3' }),
-    );
+    const { result } = renderHook(() => useAkashaSynthesis({ userId: 'user-3' }));
 
     await waitFor(() => expect(result.current.loading).toBe(false));
 
@@ -135,9 +128,7 @@ describe('useAkashaSynthesis — error handling', () => {
   it('captures network failure (fetch throws)', async () => {
     mockFetch.mockRejectedValueOnce(new Error('Network down'));
 
-    const { result } = renderHook(() =>
-      useAkashaSynthesis({ userId: 'user-4' }),
-    );
+    const { result } = renderHook(() => useAkashaSynthesis({ userId: 'user-4' }));
 
     await waitFor(() => expect(result.current.loading).toBe(false));
 
@@ -150,9 +141,7 @@ describe('useAkashaSynthesis — error handling', () => {
 
 describe('useAkashaSynthesis — disabled flag', () => {
   it('skips fetch and resolves loading=false when enabled=false (edge case)', async () => {
-    const { result } = renderHook(() =>
-      useAkashaSynthesis({ userId: 'user-5', enabled: false }),
-    );
+    const { result } = renderHook(() => useAkashaSynthesis({ userId: 'user-5', enabled: false }));
 
     // No fetch should have been issued
     expect(mockFetch).not.toHaveBeenCalled();
@@ -180,9 +169,7 @@ describe('useAkashaSynthesis — refetch', () => {
         json: async () => ({ ...makeDailyContent(), date: '2026-06-17' }),
       });
 
-    const { result } = renderHook(() =>
-      useAkashaSynthesis({ userId: 'user-6' }),
-    );
+    const { result } = renderHook(() => useAkashaSynthesis({ userId: 'user-6' }));
 
     await waitFor(() => expect(result.current.loading).toBe(false));
     expect(result.current.data?.date).toBe('2026-06-16');

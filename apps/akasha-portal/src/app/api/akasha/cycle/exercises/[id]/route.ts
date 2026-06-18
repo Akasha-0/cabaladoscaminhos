@@ -2,10 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { prisma } from '@/lib/infrastructure/prisma';
 
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const authResult = await requireAkashaApi(req);
   if (authResult instanceof NextResponse) return authResult;
   const user = authResult;
@@ -35,18 +32,12 @@ export async function PATCH(
     return NextResponse.json({ success: true, id, completed: true });
   } catch (err) {
     console.error('[cycle/exercises PATCH] error:', err);
-    return NextResponse.json(
-      { error: 'Failed to mark exercise complete' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to mark exercise complete' }, { status: 500 });
   }
 }
 
 // GET: retrieve completions for a user (optionally filtered by area / date)
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const authResult = await requireAkashaApi(req);
   if (authResult instanceof NextResponse) return authResult;
   const user = authResult;

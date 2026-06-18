@@ -1,10 +1,10 @@
 import { createHash } from 'crypto';
-import type { MapaAlmaCompleto } from '@/lib/domain/engines/types/mapa-alma';
 import { createChatCompletion } from '@/lib/application/ai/openai';
 import type { ChatMessage } from '@/lib/application/ai/types';
+import type { MapaAlmaCompleto } from '@/lib/domain/engines/types/mapa-alma';
 import { getRedisClient } from '@/lib/infrastructure/redis';
-import { gerarSystemPrompt, gerarPromptInsight } from './prompt-builder';
 import { parseInsightResponse, criarInsightFallback } from './parser';
+import { gerarSystemPrompt, gerarPromptInsight } from './prompt-builder';
 import type { InsightData, GenerateInsightsOptions, GenerateInsightsResult } from './types';
 
 /**
@@ -46,14 +46,9 @@ async function setCache(key: string, value: unknown, ttlSeconds: number): Promis
 
 export async function generateMapaInsights(
   mapa: MapaAlmaCompleto,
-  options: GenerateInsightsOptions = {},
+  options: GenerateInsightsOptions = {}
 ): Promise<GenerateInsightsResult> {
-  const {
-    usarCache = true,
-    temperatura = 0.7,
-    maxTokens = 2000,
-    forcar = false,
-  } = options;
+  const { usarCache = true, temperatura = 0.7, maxTokens = 2000, forcar = false } = options;
 
   const cacheKey = gerarCacheKey(mapa);
 

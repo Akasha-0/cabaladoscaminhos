@@ -2,10 +2,10 @@
  * GET /api/akasha/dashboard/streak
  * Retorna dias de streak para o calendário
  */
+import { DashboardService } from '@akasha/core';
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { prisma } from '@/lib/infrastructure/prisma';
-import { DashboardService } from '@akasha/core';
 
 export async function GET(request: NextRequest) {
   const authResult = await requireAkashaApi(request);

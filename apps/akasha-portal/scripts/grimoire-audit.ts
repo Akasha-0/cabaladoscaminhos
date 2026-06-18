@@ -8,7 +8,6 @@
  *   npm run grimoire:audit          # via apps/akasha-portal/
  *   pnpm grimoire:audit            # via raiz do monorepo
  */
-
 import { execSync } from 'child_process';
 import { existsSync } from 'fs';
 import path from 'path';
@@ -26,14 +25,11 @@ const GRIMOIRE_ROOT = path.resolve(process.cwd(), '../../grimoire');
 
 function runVitest(testPath: string): { passed: boolean; output: string } {
   try {
-    const output = execSync(
-      `pnpm vitest run "${testPath}" --reporter=verbose 2>&1`,
-      {
-        cwd: process.cwd(),
-        stdio: 'pipe',
-        encoding: 'utf-8',
-      }
-    );
+    const output = execSync(`pnpm vitest run "${testPath}" --reporter=verbose 2>&1`, {
+      cwd: process.cwd(),
+      stdio: 'pipe',
+      encoding: 'utf-8',
+    });
     return { passed: true, output };
   } catch (e: unknown) {
     const error = e as { stdout?: string; stderr?: string; message?: string };

@@ -10,13 +10,15 @@
 // Master numbers preserved without reduction
 function reduzirNumero(num: number): number {
   while (num > 9 && ![11, 22, 33].includes(num)) {
-    num = String(num).split('').reduce((a, b) => a + Number(b), 0)
+    num = String(num)
+      .split('')
+      .reduce((a, b) => a + Number(b), 0);
   }
-  return num
+  return num;
 }
 
 export function calcularCaminhoVida(dataNascimento: string): number {
-  const [dia, mes, ano] = dataNascimento.split('/')
-  const soma = Number(dia) + Number(mes) + Number(ano)
-  return reduzirNumero(soma)
+  const [dia, mes, ano] = dataNascimento.split('/');
+  const soma = Number(dia) + Number(mes) + Number(ano);
+  return reduzirNumero(soma);
 }

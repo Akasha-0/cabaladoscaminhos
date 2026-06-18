@@ -1,16 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
-import { prisma } from '@/lib/infrastructure/prisma';
-import type { Prisma } from '@prisma/client';
-import { geocodeCity } from '@/lib/infrastructure/geocoding/nominatim';
 import type { ConexaoMap, ConexaoResult, AkashaAuthorityInput } from '@akasha/core';
 import { compareAkashaMaps } from '@akasha/core';
-import { buildKabalisticMap } from '@akasha/core-cabala';
-import { buildTantricMap } from '@akasha/core-tantra';
-import { calculateBirthOdu } from '@akasha/core-odus';
 import { getBirthChart } from '@akasha/core-astrology';
+import { buildKabalisticMap } from '@akasha/core-cabala';
+import { calculateBirthOdu } from '@akasha/core-odus';
+import { buildTantricMap } from '@akasha/core-tantra';
 import type { KabalisticMap, TantricMap, OduBirth, AstrologyMap } from '@akasha/types';
+import type { Prisma } from '@prisma/client';
+import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
+import { geocodeCity } from '@/lib/infrastructure/geocoding/nominatim';
+import { prisma } from '@/lib/infrastructure/prisma';
 
 // ─── Validation schema ────────────────────────────────────────────────────────
 
@@ -49,7 +49,7 @@ function buildConexaoMap(
   astrologyMap: AstrologyMap,
   tantricMap: TantricMap,
   oduBirth: OduBirth,
-  authority: AkashaAuthorityInput,
+  authority: AkashaAuthorityInput
 ): ConexaoMap {
   return {
     name,
@@ -102,15 +102,20 @@ export async function POST(request: NextRequest) {
     body = CreateConexaoSchema.parse(await request.json());
   } catch (err) {
     if (err instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: 'Dados inválidos', issues: err.issues },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: 'Dados inválidos', issues: err.issues }, { status: 400 });
     }
     return NextResponse.json({ error: 'Body inválido' }, { status: 400 });
   }
 
-  const { otherName, otherBirthDate, otherBirthTime, otherBirthCity, otherBirthLatitude, otherBirthLongitude, otherBirthTimezone } = body;
+  const {
+    otherName,
+    otherBirthDate,
+    otherBirthTime,
+    otherBirthCity,
+    otherBirthLatitude,
+    otherBirthLongitude,
+    otherBirthTimezone,
+  } = body;
 
   // 2. Load user's BirthChart from DB
   const birthChart = await prisma.birthChart.findUnique({
@@ -119,7 +124,7 @@ export async function POST(request: NextRequest) {
   if (!birthChart) {
     return NextResponse.json(
       { error: 'Mapa natal não encontrado. Calcule seu mapa primeiro.' },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
@@ -128,10 +133,7 @@ export async function POST(request: NextRequest) {
     select: { name: true, birthDate: true },
   });
   if (!user || !user.birthDate) {
-    return NextResponse.json(
-      { error: 'Dados do usuário incompletos.' },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: 'Dados do usuário incompletos.' }, { status: 400 });
   }
 
   const userBirthDateStr = user.birthDate.toISOString().split('T')[0];
@@ -160,7 +162,7 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     return NextResponse.json(
       { error: 'Falha no cálculo cabalístico do parceiro.', detail: String(err) },
-      { status: 422 },
+      { status: 422 }
     );
   }
 
@@ -169,7 +171,7 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     return NextResponse.json(
       { error: 'Falha no cálculo tântrico do parceiro.', detail: String(err) },
-      { status: 422 },
+      { status: 422 }
     );
   }
 
@@ -178,7 +180,7 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     return NextResponse.json(
       { error: 'Falha no cálculo de Odu do parceiro.', detail: String(err) },
-      { status: 422 },
+      { status: 422 }
     );
   }
 
@@ -197,11 +199,13 @@ export async function POST(request: NextRequest) {
 
   if (partnerLat !== null && partnerLng !== null) {
     try {
-      partnerAstrology = birthChartToAstrologyMap(getBirthChart({
-        birthDate: new Date(otherBirthDate),
-        latitude: partnerLat,
-        longitude: partnerLng,
-      }));
+      partnerAstrology = birthChartToAstrologyMap(
+        getBirthChart({
+          birthDate: new Date(otherBirthDate),
+          latitude: partnerLat,
+          longitude: partnerLng,
+        })
+      );
     } catch {
       partnerAstrology = buildStubAstrologyMap();
     }
@@ -217,7 +221,7 @@ export async function POST(request: NextRequest) {
     userAstrology,
     userTantra,
     userOdu,
-    userAuthority,
+    userAuthority
   );
 
   const partnerMap = buildConexaoMap(
@@ -227,7 +231,7 @@ export async function POST(request: NextRequest) {
     partnerAstrology,
     partnerTantra,
     partnerOdu,
-    DEFAULT_AUTHORITY,
+    DEFAULT_AUTHORITY
   );
 
   // 5. Compare
@@ -237,7 +241,7 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     return NextResponse.json(
       { error: 'Falha na comparação dos mapas.', detail: String(err) },
-      { status: 422 },
+      { status: 422 }
     );
   }
 
@@ -274,7 +278,7 @@ export async function POST(request: NextRequest) {
         createdAt: connection.createdAt,
       },
     },
-    { status: 201 },
+    { status: 201 }
   );
 }
 
@@ -287,8 +291,13 @@ function birthChartToAstrologyMap(bc: Awaited<ReturnType<typeof getBirthChart>>)
   // Lunar phase from Sol/Lua longitude difference
   const lua = bc.planets.find((p) => String(p.planet).toLowerCase() === 'lua');
   const sol = bc.planets.find((p) => String(p.planet).toLowerCase() === 'sol');
-  const diff = ((lua?.longitude ?? 0) - (sol?.longitude ?? 0) + 360) % 360 / 90;
-  const fases: Array<'nova' | 'crescente' | 'cheia' | 'minguante'> = ['nova', 'crescente', 'cheia', 'minguante'];
+  const diff = (((lua?.longitude ?? 0) - (sol?.longitude ?? 0) + 360) % 360) / 90;
+  const fases: Array<'nova' | 'crescente' | 'cheia' | 'minguante'> = [
+    'nova',
+    'crescente',
+    'cheia',
+    'minguante',
+  ];
   const lunarPhase = fases[Math.floor(diff)] ?? 'nova';
 
   // Build house-number → sign map from chart.casas
@@ -310,10 +319,12 @@ function birthChartToAstrologyMap(bc: Awaited<ReturnType<typeof getBirthChart>>)
       const next = sortedCusps[(i + 1) % 12];
       const cusp = sortedCusps[i].cusp;
       const nextCusp = next.cusp;
-      const inBetween = nextCusp > cusp
-        ? lon >= cusp && lon < nextCusp
-        : lon >= cusp || lon < nextCusp; // wraps 360°
-      if (inBetween) { assigned = sortedCusps[i].number; break; }
+      const inBetween =
+        nextCusp > cusp ? lon >= cusp && lon < nextCusp : lon >= cusp || lon < nextCusp; // wraps 360°
+      if (inBetween) {
+        assigned = sortedCusps[i].number;
+        break;
+      }
     }
     planetHouse[String(p.planet).toLowerCase()] = assigned;
   }
@@ -330,8 +341,10 @@ function birthChartToAstrologyMap(bc: Awaited<ReturnType<typeof getBirthChart>>)
       sign: houseSignMap[h.number] ?? '',
       degree: h.cusp,
     })),
-    ascendant: bc.chart?.ascendente != null ? capitalize(signFromLongitude(bc.chart.ascendente)) : '—',
-    midheaven: bc.chart?.mediumCoeli != null ? capitalize(signFromLongitude(bc.chart.mediumCoeli)) : '—',
+    ascendant:
+      bc.chart?.ascendente != null ? capitalize(signFromLongitude(bc.chart.ascendente)) : '—',
+    midheaven:
+      bc.chart?.mediumCoeli != null ? capitalize(signFromLongitude(bc.chart.mediumCoeli)) : '—',
     lunarPhase,
     elementalChart: { fire: 0, earth: 0, air: 0, water: 0 },
     modality: { cardinal: 0, fixed: 0, mutable: 0 },
@@ -344,8 +357,21 @@ function birthChartToAstrologyMap(bc: Awaited<ReturnType<typeof getBirthChart>>)
 
 /** Converts zodiac longitude degrees to sign name. */
 function signFromLongitude(lon: number): string {
-  const signs = ['aries', 'touro', 'gemeos', 'cancer', 'leao', 'virgem', 'libra', 'escorpio', 'sagitario', 'capricornio', 'aquario', 'peixes'];
-  return signs[Math.floor(((lon % 360) + 360) % 360 / 30) % 12] ?? 'aries';
+  const signs = [
+    'aries',
+    'touro',
+    'gemeos',
+    'cancer',
+    'leao',
+    'virgem',
+    'libra',
+    'escorpio',
+    'sagitario',
+    'capricornio',
+    'aquario',
+    'peixes',
+  ];
+  return signs[Math.floor((((lon % 360) + 360) % 360) / 30) % 12] ?? 'aries';
 }
 
 /** Capitalizes the first letter of a string. */
@@ -360,12 +386,8 @@ function buildStubAstrologyMap(): AstrologyMap {
   // Stub that satisfies AstrologyMap shape; getLuaSigno/getCasaOitoSigno
   // helpers extract lua_signo from planets and casa_8_signo from houses.
   return {
-    planets: [
-      { planet: 'Lua', sign: '—', degree: 0, house: 0 },
-    ],
-    houses: [
-      { house: 8, sign: '', degree: 0 },
-    ],
+    planets: [{ planet: 'Lua', sign: '—', degree: 0, house: 0 }],
+    houses: [{ house: 8, sign: '', degree: 0 }],
     ascendant: '—',
     midheaven: '—',
     lunarPhase: 'nova',

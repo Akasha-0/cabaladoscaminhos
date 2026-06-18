@@ -1,4 +1,3 @@
-
 /**
  * Chakra V4 Data - Traditional Hindu/Spiritual Chakras
  *
@@ -24,7 +23,8 @@ const DATA: ChakraV4Data[] = [
     color: '#DC2626', // vermelho
     frequency: 396,
     element: 'terra',
-    meaning: 'Raiz, sobrevivência, segurança, estabilidade. Conexão com a terra e os instintos básicos.',
+    meaning:
+      'Raiz, sobrevivência, segurança, estabilidade. Conexão com a terra e os instintos básicos.',
     location: 'Base da coluna vertebral, entre o cóccix e o sacro',
   },
   {

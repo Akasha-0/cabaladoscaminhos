@@ -6,12 +6,9 @@
  *
  * Split de synthesis-engine.ts para isolar peças de composição narrativa.
  */
-
+import type { SynthesizedProfile } from '@akasha/core';
 import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/types';
 import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
-import type { AreaNarrative } from './synthesis-types';
-import type { SynthesizedProfile } from '@akasha/core';
-
 import {
   shadowPrimtivoFrase,
   SHADOW_BY_KARMIC_DEBT,
@@ -20,6 +17,7 @@ import {
   SHADOW_BY_PLUTO_SIGN,
   SHADOW_BY_ODU_PROHIBITION,
 } from '@/lib/grimoire/mapeamentos/shadow-sintomas';
+import type { AreaNarrative } from './synthesis-types';
 
 // ─── Shadow ────────────────────────────────────────────────────────────────
 
@@ -36,7 +34,7 @@ export function buildShadowSymptoms(
   // Top-2 sombra primitivos com tradução curada (mapeamentos/)
   if (_synthesizedProfile?.primitivos) {
     const sombras = _synthesizedProfile.primitivos
-      .filter(p => p.polaridade === 'sombra')
+      .filter((p) => p.polaridade === 'sombra')
       .sort((a, b) => b.magnitude - a.magnitude)
       .slice(0, 2);
     for (const s of sombras) {
@@ -59,14 +57,14 @@ export function buildShadowSymptoms(
   }
 
   // Saturno por signo — tradução curada
-  const saturn = astro?.planets?.find(p => p.planet === 'Saturn' || p.planet === 'Saturno');
+  const saturn = astro?.planets?.find((p) => p.planet === 'Saturn' || p.planet === 'Saturno');
   if (saturn) {
     const frase = SHADOW_BY_SATURNO_SIGN[saturn.sign];
     if (frase) symptoms.push(frase);
   }
 
   // Plutão por signo — tradução curada
-  const pluto = astro?.planets?.find(p => p.planet === 'Pluto' || p.planet === 'Plutão');
+  const pluto = astro?.planets?.find((p) => p.planet === 'Pluto' || p.planet === 'Plutão');
   if (pluto) {
     const frase = SHADOW_BY_PLUTO_SIGN[pluto.sign];
     if (frase) symptoms.push(frase);
@@ -80,7 +78,9 @@ export function buildShadowSymptoms(
     }
   }
 
-  return symptoms.length > 0 ? symptoms : ['Padrão de sombra não identificado — mantenha autocompaixão'];
+  return symptoms.length > 0
+    ? symptoms
+    : ['Padrão de sombra não identificado — mantenha autocompaixão'];
 }
 
 export function buildShadowPattern(
@@ -120,7 +120,7 @@ export function buildGiftStrengths(
   // Enrichment: top-2 luz primitives from synthesizePrimitives
   if (_synthesizedProfile?.primitivos) {
     const luzes = _synthesizedProfile.primitivos
-      .filter(p => p.polaridade === 'luz')
+      .filter((p) => p.polaridade === 'luz')
       .sort((a, b) => b.magnitude - a.magnitude)
       .slice(0, 2);
     for (const l of luzes) {
@@ -135,15 +135,19 @@ export function buildGiftStrengths(
     strengths.push('Alma em número 1 — você é um gerador de vida e energia');
   }
   if (kab?.expression && kab.expression > 5) {
-    strengths.push(`Número de expressão ${kab.expression} — sua comunicação é particularmente impactante`);
+    strengths.push(
+      `Número de expressão ${kab.expression} — sua comunicação é particularmente impactante`
+    );
   }
   if (odu?.oduName) {
     strengths.push(`Odu ${odu.oduName} — você tem proteção e sabedoria ancestral`);
   }
 
-  const jupiter = astro?.planets?.find(p => p.planet === 'Jupiter' || p.planet === 'Júpiter');
+  const jupiter = astro?.planets?.find((p) => p.planet === 'Jupiter' || p.planet === 'Júpiter');
   if (jupiter) {
-    strengths.push(`Júpiter em ${jupiter.sign} — você tem capacidade natural de expandir o que toca`);
+    strengths.push(
+      `Júpiter em ${jupiter.sign} — você tem capacidade natural de expandir o que toca`
+    );
   }
 
   return strengths.length > 0
@@ -208,18 +212,46 @@ export function buildAreaRitual(
   holo: AkashicHologram
 ): AreaNarrative['dailyRitual'] {
   const elementMap: Record<string, { color: string; element: string; instruction: string }> = {
-    muladhara: { color: '#FF3B30', element: 'terra', instruction: 'Fique descalço na terra por 5 minutos' },
-    svadhisthana: { color: '#FF9500', element: 'agua', instruction: 'Beba um copo de água olhando para a lua' },
-    manipura: { color: '#FFCC00', element: 'fogo', instruction: 'Acenda uma vela e olhe para a chama por 3 minutos' },
+    muladhara: {
+      color: '#FF3B30',
+      element: 'terra',
+      instruction: 'Fique descalço na terra por 5 minutos',
+    },
+    svadhisthana: {
+      color: '#FF9500',
+      element: 'agua',
+      instruction: 'Beba um copo de água olhando para a lua',
+    },
+    manipura: {
+      color: '#FFCC00',
+      element: 'fogo',
+      instruction: 'Acenda uma vela e olhe para a chama por 3 minutos',
+    },
     anahata: { color: '#34C759', element: 'ar', instruction: 'Respire fundo 5x antes de dormir' },
     vishuddha: { color: '#007AFF', element: 'éter', instruction: 'Cante ou humme por 3 minutos' },
-    ajna: { color: '#5856D6', element: 'luz', instruction: 'Feche os olhos e visualize uma luz branca sobre seu terceiro olho' },
-    sahasrara: { color: '#AF52DE', element: 'consciência', instruction: 'Sente em silêncio e observe seus pensamentos sem interagir' },
+    ajna: {
+      color: '#5856D6',
+      element: 'luz',
+      instruction: 'Feche os olhos e visualize uma luz branca sobre seu terceiro olho',
+    },
+    sahasrara: {
+      color: '#AF52DE',
+      element: 'consciência',
+      instruction: 'Sente em silêncio e observe seus pensamentos sem interagir',
+    },
   };
 
   const chakraName = holo.vitalidadeEnergia?.chakra ?? '';
-  const chakraKey = chakraName.toLowerCase().replace(/[0-9º°]/g, '').replace(/\s*\(/g, '').trim();
-  const ritual = elementMap[chakraKey] ?? { color: '#5856D6', element: 'silêncio', instruction: 'Sente em silêncio por 5 minutos' };
+  const chakraKey = chakraName
+    .toLowerCase()
+    .replace(/[0-9º°]/g, '')
+    .replace(/\s*\(/g, '')
+    .trim();
+  const ritual = elementMap[chakraKey] ?? {
+    color: '#5856D6',
+    element: 'silêncio',
+    instruction: 'Sente em silêncio por 5 minutos',
+  };
 
   return {
     title: `Ritual de ${ritual.element.charAt(0).toUpperCase() + ritual.element.slice(1)}`,

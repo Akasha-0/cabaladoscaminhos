@@ -367,9 +367,8 @@ class AgentOrchestrator:
             )
         except ValueError:
             cfg = _AGENT_CONFIGS[AgentType.RESEARCHER]
-            agent_type_str = "researcher"
-
-        result_file = MA / f"result-{agent_id}.json"
+        AGENT_RESULTS_DIR = MA / "agent-results"
+        result_file = AGENT_RESULTS_DIR / f"result-{agent_id}.json"
         log_file = LOGS_DIR / f"agent-{agent_id}-{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S')}.log"
 
         if result_file.exists():

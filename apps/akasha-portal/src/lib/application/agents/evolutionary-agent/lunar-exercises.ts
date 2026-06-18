@@ -4,7 +4,6 @@
  * Lunar exercise library — static data + derivation for the evolutionary agent.
  * Extracted from evolutionary-agent/index.ts to reduce file size.
  */
-
 import type { PersonalCycleSnapshot } from '@/lib/application/agents/personal-cycle-engine';
 import type { EvolutionaryExercise } from './index';
 
@@ -212,26 +211,26 @@ const AREA_BY_LUNAR_TYPE: Record<LunarExerciseType, string> = {
  */
 export function deriveLunarExercises(
   moonPhase: string,
-  snapshot: PersonalCycleSnapshot,
+  snapshot: PersonalCycleSnapshot
 ): EvolutionaryExercise[] {
   const phase = normalizePhase(moonPhase);
   const lunar = LUNAR_EXERCISES[phase];
 
-  return (
-    Object.entries(lunar.exercises) as [LunarExerciseType, LunarExerciseEntry][]
-  ).map(([type, ex]) => {
-    const area = AREA_BY_LUNAR_TYPE[type] ?? 'missaoDestino';
-    const id = `${area}-${type}-${Date.now()}-lunar`;
-    return {
-      id,
-      area,
-      title: ex.title,
-      instruction: ex.instruction,
-      duration: ex.duration,
-      difficulty: ex.difficulty,
-      type,
-      cycleAnchor: { lunar: true } as EvolutionaryExercise['cycleAnchor'],
-      rationale: `${lunar.theme}. Este exercício lunar activa a fase de ${lunar.theme.toLowerCase()}, canalizando a energia da lua ${phase} para a área de ${area}.`,
-    };
-  });
+  return (Object.entries(lunar.exercises) as [LunarExerciseType, LunarExerciseEntry][]).map(
+    ([type, ex]) => {
+      const area = AREA_BY_LUNAR_TYPE[type] ?? 'missaoDestino';
+      const id = `${area}-${type}-${Date.now()}-lunar`;
+      return {
+        id,
+        area,
+        title: ex.title,
+        instruction: ex.instruction,
+        duration: ex.duration,
+        difficulty: ex.difficulty,
+        type,
+        cycleAnchor: { lunar: true } as EvolutionaryExercise['cycleAnchor'],
+        rationale: `${lunar.theme}. Este exercício lunar activa a fase de ${lunar.theme.toLowerCase()}, canalizando a energia da lua ${phase} para a área de ${area}.`,
+      };
+    }
+  );
 }

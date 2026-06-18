@@ -11,13 +11,18 @@
  * - Perguntas genéricas não dão insights úteis
  * - Falta de CTAs claros na página do Oráculo
  */
-
 import { Sparkles, MessageCircle, Heart, Zap, Target } from 'lucide-react';
 
 interface SuggestedQuestionsProps {
   /** Perfil básico do usuário para gerar perguntas relevantes */
   sunSign?: string;
-  lifeArea?: 'relacionamentos' | 'trabalho' | 'saude' | 'proposito' | 'financas' | 'espiritualidade';
+  lifeArea?:
+    | 'relacionamentos'
+    | 'trabalho'
+    | 'saude'
+    | 'proposito'
+    | 'financas'
+    | 'espiritualidade';
   onSelectQuestion: (question: string) => void;
   /** Número de sugestões a mostrar (default 3) */
   maxQuestions?: number;
@@ -29,10 +34,13 @@ interface SuggestedQuestionsProps {
  * Template de perguntas por área de vida + signo
  *这些问题是基于用户的星座和当前需求生成的
  */
-const QUESTION_TEMPLATES: Record<string, {
-  prefix: string;
-  questions: string[];
-}> = {
+const QUESTION_TEMPLATES: Record<
+  string,
+  {
+    prefix: string;
+    questions: string[];
+  }
+> = {
   relacionamentos: {
     prefix: 'Amor & Conexões',
     questions: [
@@ -150,7 +158,7 @@ export function SuggestedQuestions({
           flexDirection: 'column',
           gap: '8px',
         }}
-        >
+      >
         {isLoading ? (
           [0, 1, 2].map((i) => (
             <div
@@ -166,58 +174,74 @@ export function SuggestedQuestions({
                 animation: 'pulse 1.5s ease-in-out infinite',
               }}
             >
-              <div style={{ width: 20, height: 12, borderRadius: 4, background: 'rgba(124, 92, 255, 0.2)' }} />
-              <div style={{ flex: 1, height: 12, borderRadius: 4, background: 'rgba(124, 92, 255, 0.15)' }} />
+              <div
+                style={{
+                  width: 20,
+                  height: 12,
+                  borderRadius: 4,
+                  background: 'rgba(124, 92, 255, 0.2)',
+                }}
+              />
+              <div
+                style={{
+                  flex: 1,
+                  height: 12,
+                  borderRadius: 4,
+                  background: 'rgba(124, 92, 255, 0.15)',
+                }}
+              />
             </div>
           ))
         ) : (
-        {questions.map((question, index) => (
-          <button
-            key={index}
-            onClick={() => onSelectQuestion(question)}
-            style={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: '10px',
-              padding: '12px 14px',
-              background: 'rgba(124, 92, 255, 0.08)',
-              border: '1px solid rgba(124, 92, 255, 0.2)',
-              borderRadius: '10px',
-              cursor: 'pointer',
-              textAlign: 'left',
-              transition: 'all 0.2s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(124, 92, 255, 0.15)';
-              e.currentTarget.style.borderColor = 'rgba(124, 92, 255, 0.4)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(124, 92, 255, 0.08)';
-              e.currentTarget.style.borderColor = 'rgba(124, 92, 255, 0.2)';
-            }}
-          >
-            <span
-              style={{
-                fontSize: '0.75rem',
-                color: '#7C5CFF',
-                fontWeight: 600,
-                minWidth: '20px',
-              }}
-            >
-              {index + 1}.
-            </span>
-            <span
-              style={{
-                fontSize: '0.875rem',
-                color: '#E8E0FF',
-                lineHeight: 1.4,
-                fontFamily: 'var(--font-lora, serif)',
-              }}
-            >
-              {question}
-            </span>
-          </button>
-        ))
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {questions.map((question, index) => (
+              <button
+                key={index}
+                onClick={() => onSelectQuestion(question)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '10px',
+                  padding: '12px 14px',
+                  background: 'rgba(124, 92, 255, 0.08)',
+                  border: '1px solid rgba(124, 92, 255, 0.2)',
+                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(124, 92, 255, 0.15)';
+                  e.currentTarget.style.borderColor = 'rgba(124, 92, 255, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(124, 92, 255, 0.08)';
+                  e.currentTarget.style.borderColor = 'rgba(124, 92, 255, 0.2)';
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: '0.75rem',
+                    color: '#7C5CFF',
+                    fontWeight: 600,
+                    minWidth: '20px',
+                  }}
+                >
+                  {index + 1}.
+                </span>
+                <span
+                  style={{
+                    fontSize: '0.875rem',
+                    color: '#E8E0FF',
+                    lineHeight: 1.4,
+                    fontFamily: 'var(--font-lora, serif)',
+                  }}
+                >
+                  {question}
+                </span>
+              </button>
+            ))}
+          </div>
         )}
       </div>
 

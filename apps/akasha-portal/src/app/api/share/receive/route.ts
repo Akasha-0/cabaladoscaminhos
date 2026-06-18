@@ -18,9 +18,8 @@
  * - Rejeita URL com javascript: scheme
  * - Auth obrigatório (não é endpoint público)
  */
-
-import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import { prisma } from '@/lib/infrastructure/prisma';
 
@@ -55,7 +54,10 @@ export async function POST(request: NextRequest) {
     const url = new URL(request.url);
     const locale = 'pt-BR';
     return NextResponse.redirect(
-      new URL(`/${locale}/login?return=${encodeURIComponent('/' + locale + '/compartilhar/receber')}`, url.origin),
+      new URL(
+        `/${locale}/login?return=${encodeURIComponent('/' + locale + '/compartilhar/receber')}`,
+        url.origin
+      ),
       303
     );
   }

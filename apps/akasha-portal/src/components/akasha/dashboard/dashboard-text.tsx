@@ -3,7 +3,6 @@
  * Extracted from Dashboard.tsx (lines 46–109)
  * Provides: strategy color system, greeting, date formatting, narrative renderer
  */
-
 import React from 'react';
 
 // ─── Akasha Strategy Styling (Doc 26) ───────────────────────────────────────
@@ -59,10 +58,7 @@ export function getFormattedDate(): string {
  * Simple markdown renderer — splits on double-newlines for paragraphs,
  * then on `**bold**` markers for inline emphasis.
  */
-export function renderNarrative(
-  text: string,
-  fontSize = '0.9rem',
-): React.ReactNode[] {
+export function renderNarrative(text: string, fontSize = '0.9rem'): React.ReactNode[] {
   if (!text) return [];
   const paragraphs = text.split('\n\n').filter(Boolean);
   return paragraphs.map((para, i) => {
@@ -76,7 +72,7 @@ export function renderNarrative(
             </strong>
           ) : (
             <span key={j}>{part}</span>
-          ),
+          )
         )}
       </p>
     );

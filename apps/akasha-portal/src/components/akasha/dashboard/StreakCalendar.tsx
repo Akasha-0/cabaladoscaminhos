@@ -1,9 +1,9 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { FadeInUp, pulse } from '../animations';
 import { CalendarDay } from './CalendarDay';
 import type { StreakDay } from './index';
-import { motion } from 'framer-motion';
 
 interface StreakCalendarProps {
   streak: StreakDay[];
@@ -38,10 +38,7 @@ function SkeletonCalendar() {
       {Array.from({ length: 7 }).map((_, i) => (
         <div key={i} className="flex flex-col items-center gap-1">
           <div className="w-6 h-3 bg-[#0B0E1C]/60 rounded animate-pulse" />
-          <motion.div
-            animate={pulse}
-            className="w-10 h-10 bg-[#0B0E1C]/60 rounded-full"
-          />
+          <motion.div animate={pulse} className="w-10 h-10 bg-[#0B0E1C]/60 rounded-full" />
         </div>
       ))}
     </div>
@@ -53,9 +50,7 @@ export function StreakCalendar({ streak, loading }: StreakCalendarProps) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const todayIndex = weekDays.findIndex(
-    (d) => d.getTime() === today.getTime()
-  );
+  const todayIndex = weekDays.findIndex((d) => d.getTime() === today.getTime());
 
   const streakMap = new Map(streak.map((s) => [s.date, s]));
 

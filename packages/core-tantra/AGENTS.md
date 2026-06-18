@@ -55,7 +55,7 @@ de framework.
   "Pranico", "Sutil", "Radiante", "Mente Divina").
 - **Deterministic test pollution check** (lesson N+18): rodar
   `pnpm test:run` (suite) E `pnpm test:run
-  src/temperaments.test.ts` (isolado) antes de commit.
+src/temperaments.test.ts` (isolado) antes de commit.
 - **Naming Akasha vs Tradição** (lesson N+3 do coding_prompt):
   - 7 chakras hindus (NÃO 9 centers HD) — IP clean
   - Sombra/Dom/Graça (NÃO Shadow/Gift/Siddhi) — PT-BR

@@ -11,9 +11,8 @@
  * - Usuário quer saber rapidamente o ponto principal
  * - Detalhes disponíveis para quem quiser se aprofundar
  */
-
-import { useState } from 'react';
 import { ChevronDown, ChevronUp, BookOpen } from 'lucide-react';
+import { useState } from 'react';
 
 interface QuickReadCardProps {
   /** Título do card */

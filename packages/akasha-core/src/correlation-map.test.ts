@@ -1,25 +1,24 @@
 import { describe, it, expect } from 'vitest';
-import { 
-  findCorrelations, 
-  getIchingsByIfa, 
+import {
+  findCorrelations,
+  getIchingsByIfa,
   getIfasByIching,
   getSefirotByTrigram,
   getFullCorrelation,
   IFA_ODUS,
   ifaToIchingMap,
   ichingToIfaMap,
-  ICHING_NAMES
+  ICHING_NAMES,
 } from './correlation-map';
 
 describe('Correlation Map - Validação de Consistência', () => {
-  
   // ============================================
   // TESTES: Hexagramas têm pelo menos uma correlação
   // ============================================
   it('hexagramas mapeados em ichingToIfaMap têm correlações', () => {
     const mappedHexagrams = Array.from(ichingToIfaMap.keys());
     expect(mappedHexagrams.length).toBeGreaterThan(0);
-    
+
     // Verificar que cada hexagrama mapeado tem Ifás
     for (const hex of mappedHexagrams) {
       const ifas = getIfasByIching(hex);
@@ -43,14 +42,14 @@ describe('Correlation Map - Validação de Consistência', () => {
   // ============================================
   it('cada Odú de Ifá tem pelo menos um hexagrama correlacionado', () => {
     const orphanOdus: string[] = [];
-    
+
     for (const odu of IFA_ODUS) {
       const hexagrams = getIchingsByIfa(odu);
       if (hexagrams.length === 0) {
         orphanOdus.push(odu);
       }
     }
-    
+
     expect(orphanOdus).toEqual([]);
   });
 
@@ -125,7 +124,7 @@ describe('Correlation Map - Validação de Consistência', () => {
 
   it('getFullCorrelation retorna estrutura completa válida', () => {
     const result = getFullCorrelation(1);
-    
+
     expect(result).toHaveProperty('hexagram');
     expect(result).toHaveProperty('iching');
     expect(result).toHaveProperty('iching.name');
@@ -138,7 +137,7 @@ describe('Correlation Map - Validação de Consistência', () => {
 
   it('getFullCorrelation com hexagrama inválido retorna valores padrão', () => {
     const result = getFullCorrelation(0);
-    
+
     expect(result.hexagram).toBe(0);
     expect(result.ifas).toEqual([]);
     expect(result.strength).toBe('weak');
@@ -146,14 +145,14 @@ describe('Correlation Map - Validação de Consistência', () => {
 
   it('getFullCorrelation para hexagrama 65 retorna valores padrão', () => {
     const result = getFullCorrelation(65);
-    
+
     expect(result.ifas).toEqual([]);
     expect(result.strength).toBe('weak');
   });
 
   it('getFullCorrelation calcula Sefirot corretamente a partir dos Ifás', () => {
     const result = getFullCorrelation(11); // Tài (Paz) - correlaciona com Oyekun e Osa
-    
+
     expect(result.sefirot.length).toBeGreaterThan(0);
     // Oyekun tem [1, 10] e Osa tem [1, 10]
     expect(result.sefirot).toContain(1); // Keter

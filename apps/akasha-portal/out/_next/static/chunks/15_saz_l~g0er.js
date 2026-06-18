@@ -1,1 +1,932 @@
-(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,69203,e=>{"use strict";e.s([],13680),e.i(13680);let t=Math.PI/180,a=180/Math.PI;function o(e){let t=e.getUTCFullYear(),a=e.getUTCMonth()+1,o=e.getUTCDate(),n=e.getUTCHours()+e.getUTCMinutes()/60+e.getUTCSeconds()/3600,r=Math.floor((14-a)/12),u=t+4800-r;return o+Math.floor((153*(a+12*r-3)+2)/5)+365*u+Math.floor(u/4)-Math.floor(u/100)+Math.floor(u/400)-32045+n/24}function n(e){let t=e%360;return t<0&&(t+=360),Object.is(t,-0)&&(t=0),t}function r(e){return["aries","touro","gemeos","cancer","leao","virgem","libra","escorpio","sagitario","capricornio","aquario","peixes"][Math.floor(e/30)%12]}function u(e){return e%30}function i(e){let a=o(e)-2451545,r=218.3165+481267.8813*a/1440,u=134.9634+477198.8675*a/1440;return{longitude:n(r+6.29*Math.sin(u*t)-1.27*Math.sin((u-2*r)*t)+.66*Math.sin(2*r*t)),velocidade:13.1764}}let l={mercurio:{L0:252.2509,L1:149472.6746,Omega:48.3313},venus:{L0:181.9798,L1:58517.8157,Omega:76.6799},marte:{L0:355.433,L1:19140.2993,Omega:49.5574},jupiter:{L0:34.3515,L1:3034.9057,Omega:100.4644},saturno:{L0:50.0774,L1:1222.1138,Omega:113.6637},urano:{L0:314.055,L1:428.4669,Omega:74.0005},netuno:{L0:304.3487,L1:218.4822,Omega:131.7846},plutao:{L0:238.929,L1:145.1839,Omega:110.2991}},s={sol:1,lua:.00257,mercurio:.387,venus:.723,marte:1.524,jupiter:5.203,saturno:9.537,urano:19.191,netuno:30.069,plutao:39.482,quiron:13.7,chiron:13.7,lilith:.00257};function c(e,a){let c,d,g;switch(e){case"sol":let p,m;({longitude:c,velocidade:d}=(m=357.52911+.98560028*(p=o(a)-2451545),{longitude:n(280.46646+.9856474*p+1.915*Math.sin(m*t)+.02*Math.sin(2*m*t)),velocidade:.9856})),g=1;break;case"lua":({longitude:c,velocidade:d}=i(a)),g=.00257;break;case"mercurio":case"venus":case"marte":case"jupiter":case"saturno":case"urano":case"netuno":case"plutao":var f;let h,M,v;({longitude:c,velocidade:d}=(f=l[e],h=o(a),v=(M=f.L0+f.L1*(h-2451545))-f.Omega,{longitude:n(M+(1.9148*Math.sin(v*t)+.02*Math.sin(2*v*t))),velocidade:f.L1/36525})),g=s[e]??1;break;case"node_norte":case"node_sul":{let t=i(a).longitude;c="node_norte"===e?t:n(t+180),d=0,g=.00257;break}case"quiron":case"chiron":let b,x;({longitude:c,velocidade:d}=(x=n(49.2+.05295*(b=o(a)-2415020)),{longitude:n(x+5.4*Math.sin((.05295*b+2.1)*t)),velocidade:.05295})),g=s.chiron??13.7;break;case"lilith":let D,T;({longitude:c,velocidade:d}=(T=n(120+.054*(D=o(a)-2415020)),{longitude:n(T+13.4*Math.sin((.054*D+4.7)*t)),velocidade:.054})),g=s.lilith??.00257;break;default:c=0,d=0,g=0}return{planeta:e,longitude:c=n(c),latitude:0,distancia:g,velocidade:d,signo:r(c),casa:0,grauNoSigno:u(c)}}function d(e,i,l){let s=280.46061837+360.98564736629*(o(e)-2451545),c=Math.atan2(Math.sin(((s=n(s))+l)*t),Math.cos(i*t)*Math.cos((s+l)*t))*a;c=n(c+180);let d=Math.atan2(-Math.sin(i*t),Math.cos((s+l)*t))*a;d=n(d);let g=[];for(let e=0;e<12;e++){let t=n(function(e,t,a){let[o,n]=function(e,t,a){switch(e){case 0:default:return[t,a];case 1:return[a,t+180];case 2:return[t+180,a+180];case 3:return[a+180,t]}}(Math.floor(e/3),t,a),r=n-o;return r<0&&(r+=360),o+(e%3+1)/3*r}(e,c,d));g.push({numero:e+1,signo:r(t),grauNoSigno:u(t),planetaRegente:null})}return{casas:g,ascendente:c,mediumCoeli:d}}let g={tropical:0,lahiri:23.85,raman:22.4,krishnamurti:23.82};function p(e){let t=new Date("2000-01-01T12:00:00Z").getTime();return((125.044555-.0529539*((e.getTime()-t)/864e5))%360+360)%360}function m(e){return((e+180)%360+360)%360}function f(e){return"conjunção"===e.tipo&&e.orb<1&&("sol"===e.planeta1||"lua"===e.planeta1||"sol"===e.planeta2||"lua"===e.planeta2)?"graca":["quadratura","oposição"].includes(e.tipo)?"sombra":"dom"}let h={sol:6,lua:10,marte:7,rahu:18,jupiter:16,saturno:19,mercurio:17,ketu:7,venus:20},M=["sol","lua","marte","rahu","jupiter","saturno","mercurio","ketu","venus"],v=["ketu","venus","sol","lua","marte","rahu","jupiter","saturno","mercurio","ketu","venus","sol","lua","marte","rahu","jupiter","saturno","mercurio","ketu","venus","sol","lua","marte","rahu","jupiter","saturno","mercurio"],b=360/27;function x(e){return Math.min(26,Math.round((e%360+360)%360/b))}function D(e){return v[x(e)]}function T(e){return 365.25*e*864e5}function A(e,t){for(let a of e)if(t>=a.startDate&&t<a.endDate)return a;return null}let S=["sol","lua","mercurio","venus","marte","jupiter","saturno","urano","netuno","plutao","node_norte","chiron","lilith"],_={mercurio:.15,venus:.15,marte:.15,jupiter:.1,saturno:.1,urano:.1,netuno:.1,plutao:.1};function j(e){return S.map(t=>{let a=c(t,e);return{planet:t,longitude:a.longitude,sign:a.signo,degree:a.grauNoSigno,latitude:a.latitude,distance:a.distancia,velocity:a.velocidade,retrograde:function(e,t){if("sol"===e||"lua"===e||"node_norte"===e||"node_sul"===e||"chiron"===e||"lilith"===e)return!1;let a=_[e]??.15,o=c(e,t),n=c(e,new Date(t.getTime()+864e5)),r=c(e,new Date(t.getTime()-864e5)),u=(o.longitude-n.longitude+360)%360;return(r.longitude-o.longitude+360)%360-u<-a&&u<.5}(t,e)}})}let L=["sol","lua","mercurio","venus","marte","jupiter","saturno"],w={mercurio:.15,venus:.15,marte:.15,jupiter:.1,saturno:.1},O=["sol","lua","mercurio","venus","marte","jupiter","saturno","urano","netuno","plutao"],C=Math.PI/180,N=180/Math.PI;function P(e){return(e%=360)<0?e+360:e}function $(e,t,a){let o=280.46061837+360.98564736629*(e-2451545),n=Math.atan2(Math.sin(((o=P(o))+a)*C),Math.cos(t*C)*Math.cos((o+a)*C))*N;n=P(n+180);let r=Math.atan2(-Math.sin(t*C),Math.cos((o+a)*C))*N;r=P(r);let u=Array(12);u[0]=n,u[9]=r;for(let e=0;e<12;e++){let t;if(0!==e&&9!==e){if(e<9){let a=r-n;a<0&&(a+=360),t=n+e/9*a}else{let a=n+360-r;a<0&&(a+=360),t=r+(e-9)/3*a}u[e]=P(t)}}return{houses:u,asc:n,mc:r}}function k(e,t,a,o,n="placidus"){let r,u,i,l,s,c,d,g=(u=t.getUTCFullYear(),i=t.getUTCMonth()+1,l=t.getUTCDate(),s=t.getUTCHours()+t.getUTCMinutes()/60+t.getUTCSeconds()/3600,d=u+4800-(c=Math.floor((14-i)/12)),l+Math.floor((153*(i+12*c-3)+2)/5)+365*d+Math.floor(d/4)-Math.floor(d/100)+Math.floor(d/400)-32045+s/24);if("whole_sign"===n){let{asc:e,mc:t}=$(g,a,o);(r=function(e){let t=[];for(let a=0;a<12;a++)t.push((e+30*a)%360);return{houses:t,asc:e,mc:(e+270)%360}}(e)).mc=t}else r=$(g,a,o);let p=r.asc,m=r.mc;return{cusps:r.houses.map((e,t)=>({number:t+1,longitude:e})),asc:p,dsc:(p+180)%360,mc:m,ic:(m+180)%360}}let y=[{tipo:"conjunção",angulo:0,orbMax:10,nature:"neutral"},{tipo:"sextil",angulo:60,orbMax:6,nature:"harmony"},{tipo:"quadratura",angulo:90,orbMax:8,nature:"tension"},{tipo:"trino",angulo:120,orbMax:8,nature:"harmony"},{tipo:"oposição",angulo:180,orbMax:10,nature:"tension"}];function U(e){let t=[];for(let a=0;a<e.length;a++)for(let o=a+1;o<e.length;o++){let n=e[a],r=e[o];for(let e of y){let a=Math.abs(Math.abs((n.longitude-r.longitude+180)%360-180)-e.angulo);a<=e.orbMax&&t.push({planeta1:n.planeta,planeta2:r.planeta,tipo:e.tipo,orb:a,aplicativo:n.velocidade>r.velocidade,nature:e.nature})}}return t}let R=[{tipo:"conjunção",angulo:0,orbMax:10,nature:"neutral"},{tipo:"sextil",angulo:60,orbMax:6,nature:"harmony"},{tipo:"quadratura",angulo:90,orbMax:8,nature:"tension"},{tipo:"trino",angulo:120,orbMax:8,nature:"harmony"},{tipo:"oposição",angulo:180,orbMax:10,nature:"tension"}];function I(e){return["aries","touro","gemeos","cancer","leao","virgem","libra","escorpio","sagitario","capricornio","aquario","peixes"][Math.floor(e/30)%12]}function Y(e){return Math.floor(e%30)+1}let H=new Map,q=[{nome:"conjunto",angulo:0,impacto:"alto"},{nome:"oposto",angulo:180,impacto:"alto"},{nome:"quadrado",angulo:90,impacto:"medio"},{nome:"trino",angulo:120,impacto:"medio"},{nome:"sextil",angulo:60,impacto:"baixo"}],E=["marte","jupiter","saturno","urano","netuno","plutao"];e.s(["AYANAMSA_NOMES_PT",0,{tropical:"Tropical (Ocidental)",lahiri:"Lahiri (Jyotish oficial)",raman:"Raman",krishnamurti:"Krishnamurti"},"AYANAMSA_OFFSETS",0,g,"DASHA_ORDER",0,M,"MAHADASHA_DURATIONS",0,h,"NAKSHATRA_LORDS",0,v,"NAKSHATRA_SPAN",0,b,"NODAL_CYCLE_DAYS",0,6798,"TOTAL_DASHA_YEARS",0,120,"calcularAspectos",0,function(e){let t=[];for(let a=0;a<e.length;a++)for(let o=a+1;o<e.length;o++){let n=e[a],r=e[o];for(let e of R){let a=Math.abs(Math.abs((n.longitude-r.longitude+180)%360-180)-e.angulo);a<=e.orbMax&&t.push({planeta1:n.planeta,planeta2:r.planeta,tipo:e.tipo,orb:a,aplicativo:n.velocidade>r.velocidade,nature:e.nature})}}return t},"calcularCasas",0,d,"calcularKetuLongitude",0,m,"calcularMapaNatal",0,function(e,t,a,o){let[r,u]=t.split(":").map(Number),i=new Date(e);i.setHours(r,u,0,0);let{casas:l,ascendente:s,mediumCoeli:g}=d(i,a,o),p={};for(let e of O){let t=c(e,i);t.casa=function(e,t){for(let a=0;a<12;a++){let o=t[a].grauNoSigno,n=t[(a+1)%12].grauNoSigno;if(n>o){if(e>=o&&e<n)return a+1}else if(e>=o||e<n)return a+1}return 1}(t.longitude,l),p[e]=t}let m=p.lua;if(!m)throw Error("Lua position not calculated");let f=c("node_norte",i);f.planeta="node_norte",f.longitude=m.longitude;let h=c("node_sul",i);h.planeta="node_sul",h.longitude=n(f.longitude+180);let M={sol:p.sol,lua:p.lua,mercurio:p.mercurio,venus:p.venus,marte:p.marte,jupiter:p.jupiter,saturno:p.saturno,urano:p.urano,netuno:p.netuno,plutao:p.plutao};return{usuarioId:"",dataCalculo:new Date,planeta:M,casas:l,ascendente:s,mediumCoeli:g,nodes:{norte:f,sul:h}}},"calcularNodosLunares",0,function(e){let t=p(e),a=m(t);return{rahuLongitude:t,ketuLongitude:a,calculatedAt:e}},"calcularPosicao",0,c,"calcularRahuLongitude",0,p,"calcularTrânsitosAtivos",0,function(e,t=new Date){var a,o;let n,r,u,i=(a=e,o=t,n=Object.entries(a.planeta).map(([e,t])=>`${e}:${t.longitude}`).join("|"),r=o.toISOString().split("T")[0],`${r}:${n}`),l=(u=H.get(i))&&Date.now()<u.expiresAt?u.data:null;if(l)return l;let s=[];for(let a of E){let o=c(a,t);for(let[n,r]of Object.entries(e.planeta))for(let e of q)5>Math.abs(Math.abs((o.longitude-r.longitude+180)%360-180)-e.angulo)&&s.push({planeta:a,aspecto:e.nome,planetaNatal:n,progresso:o.velocidade>0?"aplicativo":"separativo",inicio:t,fim:null,impacto:e.impacto,descricao:function(e,t,a){let o=`${e}_${t}`;return({saturno_oposto:`Per\xedodo de desafios e amadurecimento em \xe1rea relacionada a ${a}.`,jupiter_trino:`Oportunidade de crescimento e expans\xe3o em \xe1rea de ${a}.`,marte_conjunto:`Energia intensificada em \xe1rea de ${a}. A\xe7\xe3o decisiva necess\xe1ria.`,netuno_trino:`Per\xedodo de inspira\xe7\xe3o e intui\xe7\xe3o em \xe1rea de ${a}.`,plutao_oposto:`Transforma\xe7\xe3o profunda em \xe1rea de ${a}.`})[o]||`Tr\xe2nsito de ${e} em ${t} com ${a}.`}(a,e.nome,n)})}let d=s.sort((e,t)=>{let a={alto:0,medio:1,baixo:2};return a[e.impacto]-a[t.impacto]});return H.set(i,{data:d,expiresAt:Date.now()+36e5}),d},"calcularVimshottari",0,function(e,t,a=new Date){let o,n=D(t),r=x(t),u=(o=(t%360+360)%360-x(t)*b,(b-o)/b*h[n]),i=function(e,t,a){let o=[],n=M.indexOf(t),r=new Date(e),u=new Date(e.getTime()+T(a));o.push({graha:t,startDate:r,endDate:u,durationYears:a,level:"mahadasha"});let i=new Date(u);for(let e=1;e<9;e++){let t=M[(n+e)%9],a=h[t],r=new Date(i.getTime()+T(a));o.push({graha:t,startDate:i,endDate:r,durationYears:a,level:"mahadasha"}),i=r}return o}(e,n,u),l=A(i,a);if(!l)throw Error(`Reference date ${a.toISOString()} is outside the 120-year Vimshottari cycle starting at ${e.toISOString()}`);let s=function(e){let t=[],a=new Date(e.startDate);for(let o of M){let n=e.durationYears*h[o]/120,r=new Date(a.getTime()+T(n));t.push({graha:o,startDate:a,endDate:r,durationYears:n,level:"antardasha"}),a=r}return t}(l),c=A(s,a);if(!c)throw Error(`No antardasha found for ${a.toISOString()}`);return{moonLongitude:t,birthNakshatra:r,startingGraha:n,currentMahadasha:l,currentAntardasha:c,fullLifeMahadashas:i,currentMahadashaAntardashas:s}},"calculateHouses",0,k,"classifyAspect",0,f,"countTrinity",0,function(e){let t={sombra:0,dom:0,graca:0};for(let a of e){let e=f(a);t[e]++}return t},"dominantTrinity",0,function(e){return e.graca>e.dom&&e.graca>e.sombra?"graca":e.dom>=e.sombra?"dom":"sombra"},"findAspects",0,U,"findPrenatalMoment",0,function(e){let t=(((c("sol",e).longitude%360+360)%360-88)%360+360)%360,a=e.getTime()-8208e6,o=e.getTime()-6912e6,n=new Date((a+o)/2);for(let e=0;e<50;e++){let e=(a+o)/2,r=(t-(c("sol",new Date(e)).longitude%360+360)%360+540)%360-180;if(1e-6>Math.abs(r)){n=new Date(e);break}r>0?a=e:o=e,n=new Date(e)}return n},"getBirthChart",0,function(e){let{birthDate:t,latitude:a,longitude:o,lat:n,lon:r,houseSystem:u="placidus"}=e,i=j(t),l=k(t,t,a??n??0,o??r??0,u),s=l.cusps.map(e=>e.longitude),c=i.map(e=>{let{sign:t,degree:a}={sign:I(e.longitude),degree:Y(e.longitude)};return{planeta:e.planet,longitude:e.longitude,latitude:e.latitude,distancia:e.distance,velocidade:e.velocity,signo:t,casa:function(e,t){for(let a=0;a<12;a++){let o=t[a],n=t[(a+1)%12],r=(e%360+360)%360,u=(o%360+360)%360,i=(n%360+360)%360;if(i>u){if(r>=u&&r<i)return a+1}else if(r>=u||r<i)return a+1}return 1}(e.longitude,s),grauNoSigno:a}}),d=U(c),g=Array.from({length:12},(e,t)=>{let a,o=l.cusps[t],{sign:n,degree:r}={sign:I(o.longitude),degree:Y(o.longitude)},u=(a=({aries:"marte",touro:"venus",gemeos:"mercurio",cancer:"lua",leao:"sol",virgem:"mercurio",libra:"venus",escorpio:"marte",sagitario:"jupiter",capricornio:"saturno",aquario:"saturno",peixes:"jupiter"})[n],i.find(e=>e.planet===a)?a:null);return{numero:t+1,signo:n,grauNoSigno:r,planetaRegente:u}}),p={};for(let e of c)p[e.planeta]=e;let m={usuarioId:"",dataCalculo:new Date,planeta:{sol:p.sol,lua:p.lua,mercurio:p.mercurio,venus:p.venus,marte:p.marte,jupiter:p.jupiter,saturno:p.saturno,urano:p.urano,netuno:p.netuno,plutao:p.plutao,chiron:p.chiron,lilith:p.lilith},casas:g,ascendente:l.asc,mediumCoeli:l.mc,nodes:{norte:p.node_norte,sul:p.node_sul}};return{planets:i,houses:l.cusps.map(e=>({number:e.number,cusp:e.longitude})),ascendant:l.asc,midheaven:l.mc,aspects:d,chart:m}},"getGrauNoSigno",0,u,"getNakshatra",0,x,"getNakshatraLord",0,D,"getPlanetaryPositions",0,function(e){let t=[];for(let a of L){let n=c(a,e);t.push({planet:a,sign:r(n.longitude),degree:u(n.longitude)+1,retrograde:function(e,t){if("sol"===e||"lua"===e||"node_norte"===e)return!1;let a=w[e]??.15,n=o(t),r=[1,0,-1].map(e=>n+e).map(t=>c(e,new Date((t-2440587.5)*864e5))),u=r[1].longitude,i=r[2].longitude;return!!((r[0].longitude-u+360)%360-(u-i+360)%360<-a)&&!!((u-i+360)%360<.5)}(a,e)})}let a=c("lua",e);return t.push({planet:"node_norte",sign:r(a.longitude),degree:u(a.longitude)+1,retrograde:!1}),t},"getPositions",0,j,"getSigno",0,r,"longitudeToCasa",0,function(e,t){let a=(e%360+360)%360;for(let e=0;e<12;e++){let o=(t[e]%360+360)%360,n=(t[(e+1)%12]%360+360)%360;if(n>o){if(a>=o&&a<n)return e+1}else if(a>=o||a<n)return e+1}return 1},"normalizeDegrees",0,n,"sideralParaTropical",0,function(e,t){return((e+g[t])%360+360)%360},"toJulianDate",0,o,"tropicalParaSideral",0,function(e,t){return((e-g[t])%360+360)%360}],69203)}]);
+(globalThis.TURBOPACK || (globalThis.TURBOPACK = [])).push([
+  'object' == typeof document ? document.currentScript : void 0,
+  69203,
+  (e) => {
+    'use strict';
+    (e.s([], 13680), e.i(13680));
+    let t = Math.PI / 180,
+      a = 180 / Math.PI;
+    function o(e) {
+      let t = e.getUTCFullYear(),
+        a = e.getUTCMonth() + 1,
+        o = e.getUTCDate(),
+        n = e.getUTCHours() + e.getUTCMinutes() / 60 + e.getUTCSeconds() / 3600,
+        r = Math.floor((14 - a) / 12),
+        u = t + 4800 - r;
+      return (
+        o +
+        Math.floor((153 * (a + 12 * r - 3) + 2) / 5) +
+        365 * u +
+        Math.floor(u / 4) -
+        Math.floor(u / 100) +
+        Math.floor(u / 400) -
+        32045 +
+        n / 24
+      );
+    }
+    function n(e) {
+      let t = e % 360;
+      return (t < 0 && (t += 360), Object.is(t, -0) && (t = 0), t);
+    }
+    function r(e) {
+      return [
+        'aries',
+        'touro',
+        'gemeos',
+        'cancer',
+        'leao',
+        'virgem',
+        'libra',
+        'escorpio',
+        'sagitario',
+        'capricornio',
+        'aquario',
+        'peixes',
+      ][Math.floor(e / 30) % 12];
+    }
+    function u(e) {
+      return e % 30;
+    }
+    function i(e) {
+      let a = o(e) - 2451545,
+        r = 218.3165 + (481267.8813 * a) / 1440,
+        u = 134.9634 + (477198.8675 * a) / 1440;
+      return {
+        longitude: n(
+          r + 6.29 * Math.sin(u * t) - 1.27 * Math.sin((u - 2 * r) * t) + 0.66 * Math.sin(2 * r * t)
+        ),
+        velocidade: 13.1764,
+      };
+    }
+    let l = {
+        mercurio: { L0: 252.2509, L1: 149472.6746, Omega: 48.3313 },
+        venus: { L0: 181.9798, L1: 58517.8157, Omega: 76.6799 },
+        marte: { L0: 355.433, L1: 19140.2993, Omega: 49.5574 },
+        jupiter: { L0: 34.3515, L1: 3034.9057, Omega: 100.4644 },
+        saturno: { L0: 50.0774, L1: 1222.1138, Omega: 113.6637 },
+        urano: { L0: 314.055, L1: 428.4669, Omega: 74.0005 },
+        netuno: { L0: 304.3487, L1: 218.4822, Omega: 131.7846 },
+        plutao: { L0: 238.929, L1: 145.1839, Omega: 110.2991 },
+      },
+      s = {
+        sol: 1,
+        lua: 0.00257,
+        mercurio: 0.387,
+        venus: 0.723,
+        marte: 1.524,
+        jupiter: 5.203,
+        saturno: 9.537,
+        urano: 19.191,
+        netuno: 30.069,
+        plutao: 39.482,
+        quiron: 13.7,
+        chiron: 13.7,
+        lilith: 0.00257,
+      };
+    function c(e, a) {
+      let c, d, g;
+      switch (e) {
+        case 'sol':
+          let p, m;
+          (({ longitude: c, velocidade: d } =
+            ((m = 357.52911 + 0.98560028 * (p = o(a) - 2451545)),
+            {
+              longitude: n(
+                280.46646 + 0.9856474 * p + 1.915 * Math.sin(m * t) + 0.02 * Math.sin(2 * m * t)
+              ),
+              velocidade: 0.9856,
+            })),
+            (g = 1));
+          break;
+        case 'lua':
+          (({ longitude: c, velocidade: d } = i(a)), (g = 0.00257));
+          break;
+        case 'mercurio':
+        case 'venus':
+        case 'marte':
+        case 'jupiter':
+        case 'saturno':
+        case 'urano':
+        case 'netuno':
+        case 'plutao':
+          var f;
+          let h, M, v;
+          (({ longitude: c, velocidade: d } =
+            ((f = l[e]),
+            (h = o(a)),
+            (v = (M = f.L0 + f.L1 * (h - 2451545)) - f.Omega),
+            {
+              longitude: n(M + (1.9148 * Math.sin(v * t) + 0.02 * Math.sin(2 * v * t))),
+              velocidade: f.L1 / 36525,
+            })),
+            (g = s[e] ?? 1));
+          break;
+        case 'node_norte':
+        case 'node_sul': {
+          let t = i(a).longitude;
+          ((c = 'node_norte' === e ? t : n(t + 180)), (d = 0), (g = 0.00257));
+          break;
+        }
+        case 'quiron':
+        case 'chiron':
+          let b, x;
+          (({ longitude: c, velocidade: d } =
+            ((x = n(49.2 + 0.05295 * (b = o(a) - 2415020))),
+            { longitude: n(x + 5.4 * Math.sin((0.05295 * b + 2.1) * t)), velocidade: 0.05295 })),
+            (g = s.chiron ?? 13.7));
+          break;
+        case 'lilith':
+          let D, T;
+          (({ longitude: c, velocidade: d } =
+            ((T = n(120 + 0.054 * (D = o(a) - 2415020))),
+            { longitude: n(T + 13.4 * Math.sin((0.054 * D + 4.7) * t)), velocidade: 0.054 })),
+            (g = s.lilith ?? 0.00257));
+          break;
+        default:
+          ((c = 0), (d = 0), (g = 0));
+      }
+      return {
+        planeta: e,
+        longitude: (c = n(c)),
+        latitude: 0,
+        distancia: g,
+        velocidade: d,
+        signo: r(c),
+        casa: 0,
+        grauNoSigno: u(c),
+      };
+    }
+    function d(e, i, l) {
+      let s = 280.46061837 + 360.98564736629 * (o(e) - 2451545),
+        c = Math.atan2(Math.sin(((s = n(s)) + l) * t), Math.cos(i * t) * Math.cos((s + l) * t)) * a;
+      c = n(c + 180);
+      let d = Math.atan2(-Math.sin(i * t), Math.cos((s + l) * t)) * a;
+      d = n(d);
+      let g = [];
+      for (let e = 0; e < 12; e++) {
+        let t = n(
+          (function (e, t, a) {
+            let [o, n] = (function (e, t, a) {
+                switch (e) {
+                  case 0:
+                  default:
+                    return [t, a];
+                  case 1:
+                    return [a, t + 180];
+                  case 2:
+                    return [t + 180, a + 180];
+                  case 3:
+                    return [a + 180, t];
+                }
+              })(Math.floor(e / 3), t, a),
+              r = n - o;
+            return (r < 0 && (r += 360), o + (((e % 3) + 1) / 3) * r);
+          })(e, c, d)
+        );
+        g.push({ numero: e + 1, signo: r(t), grauNoSigno: u(t), planetaRegente: null });
+      }
+      return { casas: g, ascendente: c, mediumCoeli: d };
+    }
+    let g = { tropical: 0, lahiri: 23.85, raman: 22.4, krishnamurti: 23.82 };
+    function p(e) {
+      let t = new Date('2000-01-01T12:00:00Z').getTime();
+      return (((125.044555 - 0.0529539 * ((e.getTime() - t) / 864e5)) % 360) + 360) % 360;
+    }
+    function m(e) {
+      return (((e + 180) % 360) + 360) % 360;
+    }
+    function f(e) {
+      return 'conjunção' === e.tipo &&
+        e.orb < 1 &&
+        ('sol' === e.planeta1 ||
+          'lua' === e.planeta1 ||
+          'sol' === e.planeta2 ||
+          'lua' === e.planeta2)
+        ? 'graca'
+        : ['quadratura', 'oposição'].includes(e.tipo)
+          ? 'sombra'
+          : 'dom';
+    }
+    let h = {
+        sol: 6,
+        lua: 10,
+        marte: 7,
+        rahu: 18,
+        jupiter: 16,
+        saturno: 19,
+        mercurio: 17,
+        ketu: 7,
+        venus: 20,
+      },
+      M = ['sol', 'lua', 'marte', 'rahu', 'jupiter', 'saturno', 'mercurio', 'ketu', 'venus'],
+      v = [
+        'ketu',
+        'venus',
+        'sol',
+        'lua',
+        'marte',
+        'rahu',
+        'jupiter',
+        'saturno',
+        'mercurio',
+        'ketu',
+        'venus',
+        'sol',
+        'lua',
+        'marte',
+        'rahu',
+        'jupiter',
+        'saturno',
+        'mercurio',
+        'ketu',
+        'venus',
+        'sol',
+        'lua',
+        'marte',
+        'rahu',
+        'jupiter',
+        'saturno',
+        'mercurio',
+      ],
+      b = 360 / 27;
+    function x(e) {
+      return Math.min(26, Math.round((((e % 360) + 360) % 360) / b));
+    }
+    function D(e) {
+      return v[x(e)];
+    }
+    function T(e) {
+      return 365.25 * e * 864e5;
+    }
+    function A(e, t) {
+      for (let a of e) if (t >= a.startDate && t < a.endDate) return a;
+      return null;
+    }
+    let S = [
+        'sol',
+        'lua',
+        'mercurio',
+        'venus',
+        'marte',
+        'jupiter',
+        'saturno',
+        'urano',
+        'netuno',
+        'plutao',
+        'node_norte',
+        'chiron',
+        'lilith',
+      ],
+      _ = {
+        mercurio: 0.15,
+        venus: 0.15,
+        marte: 0.15,
+        jupiter: 0.1,
+        saturno: 0.1,
+        urano: 0.1,
+        netuno: 0.1,
+        plutao: 0.1,
+      };
+    function j(e) {
+      return S.map((t) => {
+        let a = c(t, e);
+        return {
+          planet: t,
+          longitude: a.longitude,
+          sign: a.signo,
+          degree: a.grauNoSigno,
+          latitude: a.latitude,
+          distance: a.distancia,
+          velocity: a.velocidade,
+          retrograde: (function (e, t) {
+            if (
+              'sol' === e ||
+              'lua' === e ||
+              'node_norte' === e ||
+              'node_sul' === e ||
+              'chiron' === e ||
+              'lilith' === e
+            )
+              return !1;
+            let a = _[e] ?? 0.15,
+              o = c(e, t),
+              n = c(e, new Date(t.getTime() + 864e5)),
+              r = c(e, new Date(t.getTime() - 864e5)),
+              u = (o.longitude - n.longitude + 360) % 360;
+            return ((r.longitude - o.longitude + 360) % 360) - u < -a && u < 0.5;
+          })(t, e),
+        };
+      });
+    }
+    let L = ['sol', 'lua', 'mercurio', 'venus', 'marte', 'jupiter', 'saturno'],
+      w = { mercurio: 0.15, venus: 0.15, marte: 0.15, jupiter: 0.1, saturno: 0.1 },
+      O = [
+        'sol',
+        'lua',
+        'mercurio',
+        'venus',
+        'marte',
+        'jupiter',
+        'saturno',
+        'urano',
+        'netuno',
+        'plutao',
+      ],
+      C = Math.PI / 180,
+      N = 180 / Math.PI;
+    function P(e) {
+      return (e %= 360) < 0 ? e + 360 : e;
+    }
+    function $(e, t, a) {
+      let o = 280.46061837 + 360.98564736629 * (e - 2451545),
+        n = Math.atan2(Math.sin(((o = P(o)) + a) * C), Math.cos(t * C) * Math.cos((o + a) * C)) * N;
+      n = P(n + 180);
+      let r = Math.atan2(-Math.sin(t * C), Math.cos((o + a) * C)) * N;
+      r = P(r);
+      let u = Array(12);
+      ((u[0] = n), (u[9] = r));
+      for (let e = 0; e < 12; e++) {
+        let t;
+        if (0 !== e && 9 !== e) {
+          if (e < 9) {
+            let a = r - n;
+            (a < 0 && (a += 360), (t = n + (e / 9) * a));
+          } else {
+            let a = n + 360 - r;
+            (a < 0 && (a += 360), (t = r + ((e - 9) / 3) * a));
+          }
+          u[e] = P(t);
+        }
+      }
+      return { houses: u, asc: n, mc: r };
+    }
+    function k(e, t, a, o, n = 'placidus') {
+      let r,
+        u,
+        i,
+        l,
+        s,
+        c,
+        d,
+        g =
+          ((u = t.getUTCFullYear()),
+          (i = t.getUTCMonth() + 1),
+          (l = t.getUTCDate()),
+          (s = t.getUTCHours() + t.getUTCMinutes() / 60 + t.getUTCSeconds() / 3600),
+          (d = u + 4800 - (c = Math.floor((14 - i) / 12))),
+          l +
+            Math.floor((153 * (i + 12 * c - 3) + 2) / 5) +
+            365 * d +
+            Math.floor(d / 4) -
+            Math.floor(d / 100) +
+            Math.floor(d / 400) -
+            32045 +
+            s / 24);
+      if ('whole_sign' === n) {
+        let { asc: e, mc: t } = $(g, a, o);
+        (r = (function (e) {
+          let t = [];
+          for (let a = 0; a < 12; a++) t.push((e + 30 * a) % 360);
+          return { houses: t, asc: e, mc: (e + 270) % 360 };
+        })(e)).mc = t;
+      } else r = $(g, a, o);
+      let p = r.asc,
+        m = r.mc;
+      return {
+        cusps: r.houses.map((e, t) => ({ number: t + 1, longitude: e })),
+        asc: p,
+        dsc: (p + 180) % 360,
+        mc: m,
+        ic: (m + 180) % 360,
+      };
+    }
+    let y = [
+      { tipo: 'conjunção', angulo: 0, orbMax: 10, nature: 'neutral' },
+      { tipo: 'sextil', angulo: 60, orbMax: 6, nature: 'harmony' },
+      { tipo: 'quadratura', angulo: 90, orbMax: 8, nature: 'tension' },
+      { tipo: 'trino', angulo: 120, orbMax: 8, nature: 'harmony' },
+      { tipo: 'oposição', angulo: 180, orbMax: 10, nature: 'tension' },
+    ];
+    function U(e) {
+      let t = [];
+      for (let a = 0; a < e.length; a++)
+        for (let o = a + 1; o < e.length; o++) {
+          let n = e[a],
+            r = e[o];
+          for (let e of y) {
+            let a = Math.abs(Math.abs(((n.longitude - r.longitude + 180) % 360) - 180) - e.angulo);
+            a <= e.orbMax &&
+              t.push({
+                planeta1: n.planeta,
+                planeta2: r.planeta,
+                tipo: e.tipo,
+                orb: a,
+                aplicativo: n.velocidade > r.velocidade,
+                nature: e.nature,
+              });
+          }
+        }
+      return t;
+    }
+    let R = [
+      { tipo: 'conjunção', angulo: 0, orbMax: 10, nature: 'neutral' },
+      { tipo: 'sextil', angulo: 60, orbMax: 6, nature: 'harmony' },
+      { tipo: 'quadratura', angulo: 90, orbMax: 8, nature: 'tension' },
+      { tipo: 'trino', angulo: 120, orbMax: 8, nature: 'harmony' },
+      { tipo: 'oposição', angulo: 180, orbMax: 10, nature: 'tension' },
+    ];
+    function I(e) {
+      return [
+        'aries',
+        'touro',
+        'gemeos',
+        'cancer',
+        'leao',
+        'virgem',
+        'libra',
+        'escorpio',
+        'sagitario',
+        'capricornio',
+        'aquario',
+        'peixes',
+      ][Math.floor(e / 30) % 12];
+    }
+    function Y(e) {
+      return Math.floor(e % 30) + 1;
+    }
+    let H = new Map(),
+      q = [
+        { nome: 'conjunto', angulo: 0, impacto: 'alto' },
+        { nome: 'oposto', angulo: 180, impacto: 'alto' },
+        { nome: 'quadrado', angulo: 90, impacto: 'medio' },
+        { nome: 'trino', angulo: 120, impacto: 'medio' },
+        { nome: 'sextil', angulo: 60, impacto: 'baixo' },
+      ],
+      E = ['marte', 'jupiter', 'saturno', 'urano', 'netuno', 'plutao'];
+    e.s(
+      [
+        'AYANAMSA_NOMES_PT',
+        0,
+        {
+          tropical: 'Tropical (Ocidental)',
+          lahiri: 'Lahiri (Jyotish oficial)',
+          raman: 'Raman',
+          krishnamurti: 'Krishnamurti',
+        },
+        'AYANAMSA_OFFSETS',
+        0,
+        g,
+        'DASHA_ORDER',
+        0,
+        M,
+        'MAHADASHA_DURATIONS',
+        0,
+        h,
+        'NAKSHATRA_LORDS',
+        0,
+        v,
+        'NAKSHATRA_SPAN',
+        0,
+        b,
+        'NODAL_CYCLE_DAYS',
+        0,
+        6798,
+        'TOTAL_DASHA_YEARS',
+        0,
+        120,
+        'calcularAspectos',
+        0,
+        function (e) {
+          let t = [];
+          for (let a = 0; a < e.length; a++)
+            for (let o = a + 1; o < e.length; o++) {
+              let n = e[a],
+                r = e[o];
+              for (let e of R) {
+                let a = Math.abs(
+                  Math.abs(((n.longitude - r.longitude + 180) % 360) - 180) - e.angulo
+                );
+                a <= e.orbMax &&
+                  t.push({
+                    planeta1: n.planeta,
+                    planeta2: r.planeta,
+                    tipo: e.tipo,
+                    orb: a,
+                    aplicativo: n.velocidade > r.velocidade,
+                    nature: e.nature,
+                  });
+              }
+            }
+          return t;
+        },
+        'calcularCasas',
+        0,
+        d,
+        'calcularKetuLongitude',
+        0,
+        m,
+        'calcularMapaNatal',
+        0,
+        function (e, t, a, o) {
+          let [r, u] = t.split(':').map(Number),
+            i = new Date(e);
+          i.setHours(r, u, 0, 0);
+          let { casas: l, ascendente: s, mediumCoeli: g } = d(i, a, o),
+            p = {};
+          for (let e of O) {
+            let t = c(e, i);
+            ((t.casa = (function (e, t) {
+              for (let a = 0; a < 12; a++) {
+                let o = t[a].grauNoSigno,
+                  n = t[(a + 1) % 12].grauNoSigno;
+                if (n > o) {
+                  if (e >= o && e < n) return a + 1;
+                } else if (e >= o || e < n) return a + 1;
+              }
+              return 1;
+            })(t.longitude, l)),
+              (p[e] = t));
+          }
+          let m = p.lua;
+          if (!m) throw Error('Lua position not calculated');
+          let f = c('node_norte', i);
+          ((f.planeta = 'node_norte'), (f.longitude = m.longitude));
+          let h = c('node_sul', i);
+          ((h.planeta = 'node_sul'), (h.longitude = n(f.longitude + 180)));
+          let M = {
+            sol: p.sol,
+            lua: p.lua,
+            mercurio: p.mercurio,
+            venus: p.venus,
+            marte: p.marte,
+            jupiter: p.jupiter,
+            saturno: p.saturno,
+            urano: p.urano,
+            netuno: p.netuno,
+            plutao: p.plutao,
+          };
+          return {
+            usuarioId: '',
+            dataCalculo: new Date(),
+            planeta: M,
+            casas: l,
+            ascendente: s,
+            mediumCoeli: g,
+            nodes: { norte: f, sul: h },
+          };
+        },
+        'calcularNodosLunares',
+        0,
+        function (e) {
+          let t = p(e),
+            a = m(t);
+          return { rahuLongitude: t, ketuLongitude: a, calculatedAt: e };
+        },
+        'calcularPosicao',
+        0,
+        c,
+        'calcularRahuLongitude',
+        0,
+        p,
+        'calcularTrânsitosAtivos',
+        0,
+        function (e, t = new Date()) {
+          var a, o;
+          let n,
+            r,
+            u,
+            i =
+              ((a = e),
+              (o = t),
+              (n = Object.entries(a.planeta)
+                .map(([e, t]) => `${e}:${t.longitude}`)
+                .join('|')),
+              (r = o.toISOString().split('T')[0]),
+              `${r}:${n}`),
+            l = (u = H.get(i)) && Date.now() < u.expiresAt ? u.data : null;
+          if (l) return l;
+          let s = [];
+          for (let a of E) {
+            let o = c(a, t);
+            for (let [n, r] of Object.entries(e.planeta))
+              for (let e of q)
+                5 >
+                  Math.abs(Math.abs(((o.longitude - r.longitude + 180) % 360) - 180) - e.angulo) &&
+                  s.push({
+                    planeta: a,
+                    aspecto: e.nome,
+                    planetaNatal: n,
+                    progresso: o.velocidade > 0 ? 'aplicativo' : 'separativo',
+                    inicio: t,
+                    fim: null,
+                    impacto: e.impacto,
+                    descricao: (function (e, t, a) {
+                      let o = `${e}_${t}`;
+                      return (
+                        {
+                          saturno_oposto: `Per\xedodo de desafios e amadurecimento em \xe1rea relacionada a ${a}.`,
+                          jupiter_trino: `Oportunidade de crescimento e expans\xe3o em \xe1rea de ${a}.`,
+                          marte_conjunto: `Energia intensificada em \xe1rea de ${a}. A\xe7\xe3o decisiva necess\xe1ria.`,
+                          netuno_trino: `Per\xedodo de inspira\xe7\xe3o e intui\xe7\xe3o em \xe1rea de ${a}.`,
+                          plutao_oposto: `Transforma\xe7\xe3o profunda em \xe1rea de ${a}.`,
+                        }[o] || `Tr\xe2nsito de ${e} em ${t} com ${a}.`
+                      );
+                    })(a, e.nome, n),
+                  });
+          }
+          let d = s.sort((e, t) => {
+            let a = { alto: 0, medio: 1, baixo: 2 };
+            return a[e.impacto] - a[t.impacto];
+          });
+          return (H.set(i, { data: d, expiresAt: Date.now() + 36e5 }), d);
+        },
+        'calcularVimshottari',
+        0,
+        function (e, t, a = new Date()) {
+          let o,
+            n = D(t),
+            r = x(t),
+            u = ((o = (((t % 360) + 360) % 360) - x(t) * b), ((b - o) / b) * h[n]),
+            i = (function (e, t, a) {
+              let o = [],
+                n = M.indexOf(t),
+                r = new Date(e),
+                u = new Date(e.getTime() + T(a));
+              o.push({ graha: t, startDate: r, endDate: u, durationYears: a, level: 'mahadasha' });
+              let i = new Date(u);
+              for (let e = 1; e < 9; e++) {
+                let t = M[(n + e) % 9],
+                  a = h[t],
+                  r = new Date(i.getTime() + T(a));
+                (o.push({
+                  graha: t,
+                  startDate: i,
+                  endDate: r,
+                  durationYears: a,
+                  level: 'mahadasha',
+                }),
+                  (i = r));
+              }
+              return o;
+            })(e, n, u),
+            l = A(i, a);
+          if (!l)
+            throw Error(
+              `Reference date ${a.toISOString()} is outside the 120-year Vimshottari cycle starting at ${e.toISOString()}`
+            );
+          let s = (function (e) {
+              let t = [],
+                a = new Date(e.startDate);
+              for (let o of M) {
+                let n = (e.durationYears * h[o]) / 120,
+                  r = new Date(a.getTime() + T(n));
+                (t.push({
+                  graha: o,
+                  startDate: a,
+                  endDate: r,
+                  durationYears: n,
+                  level: 'antardasha',
+                }),
+                  (a = r));
+              }
+              return t;
+            })(l),
+            c = A(s, a);
+          if (!c) throw Error(`No antardasha found for ${a.toISOString()}`);
+          return {
+            moonLongitude: t,
+            birthNakshatra: r,
+            startingGraha: n,
+            currentMahadasha: l,
+            currentAntardasha: c,
+            fullLifeMahadashas: i,
+            currentMahadashaAntardashas: s,
+          };
+        },
+        'calculateHouses',
+        0,
+        k,
+        'classifyAspect',
+        0,
+        f,
+        'countTrinity',
+        0,
+        function (e) {
+          let t = { sombra: 0, dom: 0, graca: 0 };
+          for (let a of e) {
+            let e = f(a);
+            t[e]++;
+          }
+          return t;
+        },
+        'dominantTrinity',
+        0,
+        function (e) {
+          return e.graca > e.dom && e.graca > e.sombra
+            ? 'graca'
+            : e.dom >= e.sombra
+              ? 'dom'
+              : 'sombra';
+        },
+        'findAspects',
+        0,
+        U,
+        'findPrenatalMoment',
+        0,
+        function (e) {
+          let t = ((((((c('sol', e).longitude % 360) + 360) % 360) - 88) % 360) + 360) % 360,
+            a = e.getTime() - 8208e6,
+            o = e.getTime() - 6912e6,
+            n = new Date((a + o) / 2);
+          for (let e = 0; e < 50; e++) {
+            let e = (a + o) / 2,
+              r = ((t - (((c('sol', new Date(e)).longitude % 360) + 360) % 360) + 540) % 360) - 180;
+            if (1e-6 > Math.abs(r)) {
+              n = new Date(e);
+              break;
+            }
+            (r > 0 ? (a = e) : (o = e), (n = new Date(e)));
+          }
+          return n;
+        },
+        'getBirthChart',
+        0,
+        function (e) {
+          let {
+              birthDate: t,
+              latitude: a,
+              longitude: o,
+              lat: n,
+              lon: r,
+              houseSystem: u = 'placidus',
+            } = e,
+            i = j(t),
+            l = k(t, t, a ?? n ?? 0, o ?? r ?? 0, u),
+            s = l.cusps.map((e) => e.longitude),
+            c = i.map((e) => {
+              let { sign: t, degree: a } = { sign: I(e.longitude), degree: Y(e.longitude) };
+              return {
+                planeta: e.planet,
+                longitude: e.longitude,
+                latitude: e.latitude,
+                distancia: e.distance,
+                velocidade: e.velocity,
+                signo: t,
+                casa: (function (e, t) {
+                  for (let a = 0; a < 12; a++) {
+                    let o = t[a],
+                      n = t[(a + 1) % 12],
+                      r = ((e % 360) + 360) % 360,
+                      u = ((o % 360) + 360) % 360,
+                      i = ((n % 360) + 360) % 360;
+                    if (i > u) {
+                      if (r >= u && r < i) return a + 1;
+                    } else if (r >= u || r < i) return a + 1;
+                  }
+                  return 1;
+                })(e.longitude, s),
+                grauNoSigno: a,
+              };
+            }),
+            d = U(c),
+            g = Array.from({ length: 12 }, (e, t) => {
+              let a,
+                o = l.cusps[t],
+                { sign: n, degree: r } = { sign: I(o.longitude), degree: Y(o.longitude) },
+                u =
+                  ((a = {
+                    aries: 'marte',
+                    touro: 'venus',
+                    gemeos: 'mercurio',
+                    cancer: 'lua',
+                    leao: 'sol',
+                    virgem: 'mercurio',
+                    libra: 'venus',
+                    escorpio: 'marte',
+                    sagitario: 'jupiter',
+                    capricornio: 'saturno',
+                    aquario: 'saturno',
+                    peixes: 'jupiter',
+                  }[n]),
+                  i.find((e) => e.planet === a) ? a : null);
+              return { numero: t + 1, signo: n, grauNoSigno: r, planetaRegente: u };
+            }),
+            p = {};
+          for (let e of c) p[e.planeta] = e;
+          let m = {
+            usuarioId: '',
+            dataCalculo: new Date(),
+            planeta: {
+              sol: p.sol,
+              lua: p.lua,
+              mercurio: p.mercurio,
+              venus: p.venus,
+              marte: p.marte,
+              jupiter: p.jupiter,
+              saturno: p.saturno,
+              urano: p.urano,
+              netuno: p.netuno,
+              plutao: p.plutao,
+              chiron: p.chiron,
+              lilith: p.lilith,
+            },
+            casas: g,
+            ascendente: l.asc,
+            mediumCoeli: l.mc,
+            nodes: { norte: p.node_norte, sul: p.node_sul },
+          };
+          return {
+            planets: i,
+            houses: l.cusps.map((e) => ({ number: e.number, cusp: e.longitude })),
+            ascendant: l.asc,
+            midheaven: l.mc,
+            aspects: d,
+            chart: m,
+          };
+        },
+        'getGrauNoSigno',
+        0,
+        u,
+        'getNakshatra',
+        0,
+        x,
+        'getNakshatraLord',
+        0,
+        D,
+        'getPlanetaryPositions',
+        0,
+        function (e) {
+          let t = [];
+          for (let a of L) {
+            let n = c(a, e);
+            t.push({
+              planet: a,
+              sign: r(n.longitude),
+              degree: u(n.longitude) + 1,
+              retrograde: (function (e, t) {
+                if ('sol' === e || 'lua' === e || 'node_norte' === e) return !1;
+                let a = w[e] ?? 0.15,
+                  n = o(t),
+                  r = [1, 0, -1]
+                    .map((e) => n + e)
+                    .map((t) => c(e, new Date((t - 2440587.5) * 864e5))),
+                  u = r[1].longitude,
+                  i = r[2].longitude;
+                return (
+                  !!(((r[0].longitude - u + 360) % 360) - ((u - i + 360) % 360) < -a) &&
+                  !!((u - i + 360) % 360 < 0.5)
+                );
+              })(a, e),
+            });
+          }
+          let a = c('lua', e);
+          return (
+            t.push({
+              planet: 'node_norte',
+              sign: r(a.longitude),
+              degree: u(a.longitude) + 1,
+              retrograde: !1,
+            }),
+            t
+          );
+        },
+        'getPositions',
+        0,
+        j,
+        'getSigno',
+        0,
+        r,
+        'longitudeToCasa',
+        0,
+        function (e, t) {
+          let a = ((e % 360) + 360) % 360;
+          for (let e = 0; e < 12; e++) {
+            let o = ((t[e] % 360) + 360) % 360,
+              n = ((t[(e + 1) % 12] % 360) + 360) % 360;
+            if (n > o) {
+              if (a >= o && a < n) return e + 1;
+            } else if (a >= o || a < n) return e + 1;
+          }
+          return 1;
+        },
+        'normalizeDegrees',
+        0,
+        n,
+        'sideralParaTropical',
+        0,
+        function (e, t) {
+          return (((e + g[t]) % 360) + 360) % 360;
+        },
+        'toJulianDate',
+        0,
+        o,
+        'tropicalParaSideral',
+        0,
+        function (e, t) {
+          return (((e - g[t]) % 360) + 360) % 360;
+        },
+      ],
+      69203
+    );
+  },
+]);

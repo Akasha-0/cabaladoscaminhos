@@ -61,7 +61,10 @@ export function Row({
 }) {
   if (value === null || value === undefined) return null;
   return (
-    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'baseline' }} aria-label={`${label}: ${String(value)}`}>
+    <div
+      style={{ display: 'flex', gap: '0.5rem', alignItems: 'baseline' }}
+      aria-label={`${label}: ${String(value)}`}
+    >
       <span style={{ fontSize: '0.75rem', color: '#5C6691', minWidth: '120px', flexShrink: 0 }}>
         {label}
       </span>

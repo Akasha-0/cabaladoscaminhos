@@ -29,10 +29,7 @@ export async function DELETE(
 
   return NextResponse.json({ ok: true });
 }
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const authResult = await requireAkashaApi(request);
   if (authResult instanceof NextResponse) return authResult;
 

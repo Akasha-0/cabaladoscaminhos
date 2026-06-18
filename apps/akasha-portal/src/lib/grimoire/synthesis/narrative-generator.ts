@@ -16,10 +16,15 @@
  *  - DIM_AREA_MAP expandido para carregar todos os pilares
  *  - gerPerfilGeral com os 5 pilares
  */
-
 import type { PilaresDados, SignificadoCurado } from '../significados-curados';
 import { significadoPorPilar, significadosEspecificos } from '../significados-curados';
-import { traducaoPara, traducoesDaArea, traducaoDetalhadaPara, traducoesDetalhadasDaArea, type Area } from '../traducao-areas';
+import {
+  traducaoPara,
+  traducoesDaArea,
+  traducaoDetalhadaPara,
+  traducoesDetalhadasDaArea,
+  type Area,
+} from '../traducao-areas';
 import type { DimensaoId } from './dimensoes';
 
 // ─── Lookup dos significados por Pilar ──────────────────────────────────────
@@ -67,10 +72,7 @@ const DIM_AREA_MAP: Record<DimensaoId, Area[]> = {
  *  3. Síntese Akasha — onde convergem + onde tensionam
  *  4. Missão + Prática (todos os 5 pilares)
  */
-export function gerarNarrativaDimensao(
-  dimId: DimensaoId,
-  pilares: PilaresDados
-): string {
+export function gerarNarrativaDimensao(dimId: DimensaoId, pilares: PilaresDados): string {
   const sigs = significadosEspecificos(pilares);
 
   const areas = DIM_AREA_MAP[dimId] ?? [];
@@ -83,9 +85,7 @@ export function gerarNarrativaDimensao(
   const synthesis = buildSynthesisV3(dimId, traducs, traducsDetalhadas, sigs, pilares);
   const missaoPratica = buildMissaoPraticaV3(dimId, traducs, sigs);
 
-  return [identidade, perspectivas, synthesis, missaoPratica]
-    .filter(Boolean)
-    .join('\n\n');
+  return [identidade, perspectivas, synthesis, missaoPratica].filter(Boolean).join('\n\n');
 }
 
 // ─── Sub-builders v3 — usando os 5 pilares ─────────────────────────────────
@@ -101,7 +101,13 @@ function buildIdentidadeV3(
     iching: SignificadoCurado;
   }
 ): string | null {
-  const { cabala: sCabala, astrologia: sAstro, tantrica: sTantra, odu: sOdu, iching: sIChing } = sigs;
+  const {
+    cabala: sCabala,
+    astrologia: sAstro,
+    tantrica: sTantra,
+    odu: sOdu,
+    iching: sIChing,
+  } = sigs;
   const lp = pilares.cabala?.life_path;
   const solSigno = pilares.astrologia?.sol_signo;
   const corpo = pilares.tantrica?.corpo_predominante;
@@ -111,29 +117,32 @@ function buildIdentidadeV3(
       if (sTantra && sCabala) {
         return `Você é ${sCabala.titulo} — ${sCabala.essencia} No corpo, isso manifesta-se como ${sTantra.essencia} Seu instrumento físico pede atenção: cuide do corpo como sagrado.`;
       }
-      if (sTantra) return `${sTantra.essencia} Seu corpo energético #${corpo} é o ponto de partida para qualquer cura.`;
+      if (sTantra)
+        return `${sTantra.essencia} Seu corpo energético #${corpo} é o ponto de partida para qualquer cura.`;
       return null;
 
     case 'trabalho':
       if (sCabala && sAstro) {
         return `Você é ${sCabala.titulo} (Caminho ${lp}) — ${sCabala.essencia ?? sCabala.missao} O ${solSigno} adiciona: ${sAstro.essencia} Seu trabalho ideal precisa satisfazer os dois.`;
       }
-      if (sCabala) return `Seu caminho de vida ${lp} é ${sCabala.titulo.toLowerCase()} — ${sCabala.missao}`;
+      if (sCabala)
+        return `Seu caminho de vida ${lp} é ${sCabala.titulo.toLowerCase()} — ${sCabala.missao}`;
       return null;
-
 
     case 'amor':
       if (sAstro && sCabala) {
         return `Você ama a partir do ${solSigno} — ${sAstro.essencia} No relacionamento, isso manifesta-se como ${sAstro.missao} Seu caminho de vida ${lp} adiciona: ${sCabala.essencia}`;
       }
-      if (sCabala) return `${sCabala.titulo} descreve como você se conecta — ${sCabala.essencia} ${sCabala.missao}`;
+      if (sCabala)
+        return `${sCabala.titulo} descreve como você se conecta — ${sCabala.essencia} ${sCabala.missao}`;
       return null;
 
     case 'criacao':
       if (sCabala && sAstro) {
         return `Sua expressão criativa nasce de ${sCabala.titulo} com ${solSigno} — ${sCabala.essencia} ${sAstro.essencia} Sua criação é ${sAstro.missao}`;
       }
-      if (sCabala) return `Você é ${sCabala.titulo} — ${sCabala.essencia} Sua criação reflete isso.`;
+      if (sCabala)
+        return `Você é ${sCabala.titulo} — ${sCabala.essencia} Sua criação reflete isso.`;
       return null;
 
     case 'proposito':
@@ -147,7 +156,8 @@ function buildIdentidadeV3(
       if (oduP) {
         return `Ancestralidade: Odu ${oduP} — ${sOdu.essencia} ${sOdu.missao} Você carrega ${sOdu.sombra} como gift herdado. Hexagrama natal ${pilares.iching?.hexagrama_natal}: ${sIChing.essencia}`;
       }
-      if (sIChing) return `Família é o fluxo descrito pelo hexagrama natal ${pilares.iching?.hexagrama_natal} — ${sIChing.essencia}`;
+      if (sIChing)
+        return `Família é o fluxo descrito pelo hexagrama natal ${pilares.iching?.hexagrama_natal} — ${sIChing.essencia}`;
       return null;
     }
 
@@ -155,14 +165,16 @@ function buildIdentidadeV3(
       if (sCabala && sTantra) {
         return `Espiritualidade na interseção de ${sCabala.titulo} e ${sTantra.titulo} — ${sCabala.essencia ?? sCabala.missao} ${sTantra.essencia} Odu ${pilares.odu?.odu_principal}: ${sOdu.missao} I Ching ${pilares.iching?.hexagrama_dia}: ${sIChing.pratica ?? sIChing.essencia}`;
       }
-      if (sTantra) return `${sTantra.essencia} Sua espiritualidade passa pelo corpo. Prática: ${sTantra.pratica}`;
+      if (sTantra)
+        return `${sTantra.essencia} Sua espiritualidade passa pelo corpo. Prática: ${sTantra.pratica}`;
       return null;
 
     case 'superacao':
       if (sCabala && sAstro) {
         return `${sCabala.sombra} é seu desafio central. ${sAstro.sombra ?? ''} ${sCabala.missao} A transformação vem quando você para de evitar e começa a atravessar. I Ching ${pilares.iching?.hexagrama_dia} diz: ${sIChing.pratica ?? sIChing.essencia}`;
       }
-      if (sCabala) return `${sCabala.sombra} é sua sombra. Atravessá-la é a missão. Odu ${pilares.odu?.odu_secundario ?? pilares.odu?.odu_principal}: ${sOdu.pratica ?? sOdu.missao}`;
+      if (sCabala)
+        return `${sCabala.sombra} é sua sombra. Atravessá-la é a missão. Odu ${pilares.odu?.odu_secundario ?? pilares.odu?.odu_principal}: ${sOdu.pratica ?? sOdu.missao}`;
       return null;
 
     default:
@@ -173,7 +185,15 @@ function buildIdentidadeV3(
 function buildPerspectivasV3(
   dimId: DimensaoId,
   traducs: { pilar: string; frase: string }[],
-  traducsDetalhadas: { pilar: string; frase: string; explicacao: string; convergencia: string; tensao: string; evitar: string; pratica: string }[],
+  traducsDetalhadas: {
+    pilar: string;
+    frase: string;
+    explicacao: string;
+    convergencia: string;
+    tensao: string;
+    evitar: string;
+    pratica: string;
+  }[],
   sigs: {
     cabala: SignificadoCurado;
     astrologia: SignificadoCurado;
@@ -185,7 +205,13 @@ function buildPerspectivasV3(
 ): string {
   if (traducs.length === 0) return '';
 
-  const { cabala: sCabala, astrologia: sAstro, tantrica: sTantra, odu: sOdu, iching: sIChing } = sigs;
+  const {
+    cabala: sCabala,
+    astrologia: sAstro,
+    tantrica: sTantra,
+    odu: sOdu,
+    iching: sIChing,
+  } = sigs;
 
   // Look up detailed content per pillar for this dimension's areas
   const tCabala = traducsDetalhadas.find((t) => t.pilar === 'cabala');
@@ -199,7 +225,9 @@ function buildPerspectivasV3(
 
   // Cabala
   if (sCabala) {
-    lines.push(`· Cabala (Caminho ${pilares.cabala?.life_path}): ${tCabala?.explicacao ?? sCabala.essencia}`);
+    lines.push(
+      `· Cabala (Caminho ${pilares.cabala?.life_path}): ${tCabala?.explicacao ?? sCabala.essencia}`
+    );
     if (tCabala?.convergencia) lines.push(`  Convergência: ${tCabala.convergencia}`);
     if (tCabala?.tensao) lines.push(`  Tensão: ${tCabala.tensao}`);
     if (tCabala?.evitar) lines.push(`  Evitar: ${tCabala.evitar}`);
@@ -208,7 +236,9 @@ function buildPerspectivasV3(
 
   // Astrologia
   if (sAstro) {
-    lines.push(`· Astrologia (Sol em ${pilares.astrologia?.sol_signo}): ${tAstro?.explicacao ?? sAstro.essencia}`);
+    lines.push(
+      `· Astrologia (Sol em ${pilares.astrologia?.sol_signo}): ${tAstro?.explicacao ?? sAstro.essencia}`
+    );
     if (tAstro?.convergencia) lines.push(`  Convergência: ${tAstro.convergencia}`);
     if (tAstro?.tensao) lines.push(`  Tensão: ${tAstro.tensao}`);
     if (tAstro?.evitar) lines.push(`  Evitar: ${tAstro.evitar}`);
@@ -217,7 +247,9 @@ function buildPerspectivasV3(
 
   // Tantra
   if (sTantra) {
-    lines.push(`· Tântrica (Corpo ${pilares.tantrica?.corpo_predominante}): ${tTantra?.explicacao ?? sTantra.essencia}`);
+    lines.push(
+      `· Tântrica (Corpo ${pilares.tantrica?.corpo_predominante}): ${tTantra?.explicacao ?? sTantra.essencia}`
+    );
     if (tTantra?.convergencia) lines.push(`  Convergência: ${tTantra.convergencia}`);
     if (tTantra?.tensao) lines.push(`  Tensão: ${tTantra.tensao}`);
     if (tTantra?.evitar) lines.push(`  Evitar: ${tTantra.evitar}`);
@@ -249,7 +281,15 @@ function buildPerspectivasV3(
 function buildSynthesisV3(
   dimId: DimensaoId,
   traducs: { pilar: string; frase: string }[],
-  traducsDetalhadas: { pilar: string; frase: string; explicacao: string; convergencia: string; tensao: string; evitar: string; pratica: string }[],
+  traducsDetalhadas: {
+    pilar: string;
+    frase: string;
+    explicacao: string;
+    convergencia: string;
+    tensao: string;
+    evitar: string;
+    pratica: string;
+  }[],
   sigs: {
     cabala: SignificadoCurado;
     astrologia: SignificadoCurado;
@@ -261,27 +301,32 @@ function buildSynthesisV3(
 ): string {
   if (traducs.length === 0) return '';
 
-  const { cabala: sCabala, astrologia: sAstro, tantrica: sTantra, odu: sOdu, iching: sIChing } = sigs;
+  const {
+    cabala: sCabala,
+    astrologia: sAstro,
+    tantrica: sTantra,
+    odu: sOdu,
+    iching: sIChing,
+  } = sigs;
 
   // Detectar convergência: pilares que falam a mesma frequência
   const pilarCount = [sCabala, sAstro, sTantra, sOdu, sIChing].filter(Boolean).length;
 
   // Detectar tensão: sombras que apontam para direções opostas
-  const sombras = [sCabala?.sombra, sAstro?.sombra, sTantra?.sombra, sOdu?.sombra]
-    .filter(Boolean) as string[];
+  const sombras = [sCabala?.sombra, sAstro?.sombra, sTantra?.sombra, sOdu?.sombra].filter(
+    Boolean
+  ) as string[];
 
   // Collect convergencia/tensao from detailed content across all pillars
-  const convergencias = traducsDetalhadas
-    .map((t) => t.convergencia)
-    .filter(Boolean) as string[];
-  const tensoes = traducsDetalhadas
-    .map((t) => t.tensao)
-    .filter(Boolean) as string[];
+  const convergencias = traducsDetalhadas.map((t) => t.convergencia).filter(Boolean) as string[];
+  const tensoes = traducsDetalhadas.map((t) => t.tensao).filter(Boolean) as string[];
 
   const lines: string[] = [];
   lines.push('**Akasha Synthesis — visão unificada:**');
 
-  lines.push(`Os seus ${pilarCount} mapas convergem: ${sCabala?.titulo ?? 'uma assinatura única'}. ${sCabala?.missao ?? sCabala?.essencia ?? ''}`);
+  lines.push(
+    `Os seus ${pilarCount} mapas convergem: ${sCabala?.titulo ?? 'uma assinatura única'}. ${sCabala?.missao ?? sCabala?.essencia ?? ''}`
+  );
 
   // Usar convergencia do conteúdo detalhado quando disponível
   if (convergencias.length > 0) {
@@ -290,7 +335,9 @@ function buildSynthesisV3(
 
   // Aviso de tensão quando há sombras relevantes
   if (sombras.length > 1) {
-    lines.push(`Tensão detectada: ${sombras[0]}. Isso não é conflito — é o campo de transformação. Atravesse, não evite.`);
+    lines.push(
+      `Tensão detectada: ${sombras[0]}. Isso não é conflito — é o campo de transformação. Atravesse, não evite.`
+    );
   }
 
   // Usar tensao do conteúdo detalhado quando disponível
@@ -318,7 +365,13 @@ function buildMissaoPraticaV3(
     iching: SignificadoCurado;
   }
 ): string {
-  const { cabala: sCabala, astrologia: sAstro, tantrica: sTantra, odu: sOdu, iching: sIChing } = sigs;
+  const {
+    cabala: sCabala,
+    astrologia: sAstro,
+    tantrica: sTantra,
+    odu: sOdu,
+    iching: sIChing,
+  } = sigs;
 
   const lines: string[] = [];
   lines.push('**O que fazer agora — ação por dimensão:**');
@@ -385,7 +438,9 @@ export function gerarNarrativaSexualidade(pilares: PilaresDados): string {
 
   // Marcador 3: Casa 8
   if (astro?.casa_8_signo) {
-    lines.push(`**Casa 8 em ${astro.casa_8_signo} — como você deseja e o que te faz perder o controle**`);
+    lines.push(
+      `**Casa 8 em ${astro.casa_8_signo} — como você deseja e o que te faz perder o controle**`
+    );
     if (sCasa8) {
       lines.push(sCasa8.essencia);
       lines.push(sCasa8.missao);
@@ -396,7 +451,6 @@ export function gerarNarrativaSexualidade(pilares: PilaresDados): string {
     }
     lines.push('');
   }
-
 
   // Odu: consentimento e ritual
   if (odu?.odu_principal && sOdu) {
@@ -417,10 +471,18 @@ export function gerarNarrativaSexualidade(pilares: PilaresDados): string {
   // Síntese Akasha
   lines.push('**Akasha: o que isso significa na prática**');
   if (sTantra) lines.push(`Corpo energético ${sTantra.titulo}: ${sTantra.essencia}`);
-  if (astro?.lilith_signo) lines.push(`Desejo secreto: Lilith em ${astro.lilith_signo} — ${sLilith?.missao ?? 'intensidade e taboo'}`);
-  if (astro?.casa_8_signo) lines.push(`Intimidade: Casa 8 em ${astro.casa_8_signo} — ${sCasa8?.essencia ?? 'transformação pelo controle solto'}`);
+  if (astro?.lilith_signo)
+    lines.push(
+      `Desejo secreto: Lilith em ${astro.lilith_signo} — ${sLilith?.missao ?? 'intensidade e taboo'}`
+    );
+  if (astro?.casa_8_signo)
+    lines.push(
+      `Intimidade: Casa 8 em ${astro.casa_8_signo} — ${sCasa8?.essencia ?? 'transformação pelo controle solto'}`
+    );
   lines.push('');
-  lines.push('**Akasha Authority:** Se há tensão no corpo emocional, ESPERE o momento certo. Se há paz no corpo e desejo genuíno, AJA com presença. Sexualidade sagrada é presença — não performance.');
+  lines.push(
+    '**Akasha Authority:** Se há tensão no corpo emocional, ESPERE o momento certo. Se há paz no corpo e desejo genuíno, AJA com presença. Sexualidade sagrada é presença — não performance.'
+  );
 
   return lines.join('\n');
 }
@@ -454,24 +516,34 @@ export function gerarPerfilGeral(pilares: PilaresDados): string {
   }
 
   if (sAstro) {
-    parts.push(`Sol em ${solSigno} — ${sAstro.essencia}. Isso se manifesta quando você age com ${sAstro.missao ?? 'coragem autêntica'}.`);
+    parts.push(
+      `Sol em ${solSigno} — ${sAstro.essencia}. Isso se manifesta quando você age com ${sAstro.missao ?? 'coragem autêntica'}.`
+    );
   }
 
   if (luaSigno) {
-    parts.push(`Lua em ${luaSigno}: necessidade emocional de ${sAstro?.sombra ? 'rotina e presença' : 'segurança e consistência'} — Cultive hábitos regulares para nutrir este aspecto.`);
+    parts.push(
+      `Lua em ${luaSigno}: necessidade emocional de ${sAstro?.sombra ? 'rotina e presença' : 'segurança e consistência'} — Cultive hábitos regulares para nutrir este aspecto.`
+    );
   }
 
   if (sTantra) {
-    parts.push(`Corpo energético #${corpo} (${sTantra.titulo}): ${sTantra.essencia}. Para viver bem este corpo: ${sTantra.missao ?? 'autenticidade e presença'}.`);
+    parts.push(
+      `Corpo energético #${corpo} (${sTantra.titulo}): ${sTantra.essencia}. Para viver bem este corpo: ${sTantra.missao ?? 'autenticidade e presença'}.`
+    );
     if (sTantra.pratica) parts.push(`Prática: ${sTantra.pratica}`);
   }
 
   if (sOdu) {
-    parts.push(`Odu ${oduPrinc}: ${sOdu.essencia}. Missão: ${sOdu.missao ?? 'autorreflexão e ação consciente'}. Este odu convida você a ${sOdu.missao ? 'agir com sua missão' : 'cultivar presença e escolha consciente'} no dia a dia.`);
+    parts.push(
+      `Odu ${oduPrinc}: ${sOdu.essencia}. Missão: ${sOdu.missao ?? 'autorreflexão e ação consciente'}. Este odu convida você a ${sOdu.missao ? 'agir com sua missão' : 'cultivar presença e escolha consciente'} no dia a dia.`
+    );
   }
 
   if (sIChing) {
-    parts.push(`Hexagrama natal ${hexNatal} (${sIChing.titulo}): ${sIChing.essencia}. Como aplicar esta sabedoria: ${sIChing.pratica ?? 'observe antes de agir e honor o momento presente'}.`);
+    parts.push(
+      `Hexagrama natal ${hexNatal} (${sIChing.titulo}): ${sIChing.essencia}. Como aplicar esta sabedoria: ${sIChing.pratica ?? 'observe antes de agir e honor o momento presente'}.`
+    );
     if (sIChing.pratica) parts.push(`Prática: ${sIChing.pratica}`);
   }
 

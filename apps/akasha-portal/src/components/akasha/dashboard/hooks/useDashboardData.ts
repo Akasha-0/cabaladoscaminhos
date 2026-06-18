@@ -1,13 +1,13 @@
 /**
  * @akasha/portal — Dashboard Hook
- * 
+ *
  * Hook para buscar dados do dashboard do usuário.
  */
 
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
 import type { DashboardStats, StreakDay, RitualHistoryItem } from '@akasha/core';
+import { useState, useEffect, useCallback } from 'react';
 import { mockStats, mockStreak, mockHistory } from '../mocks';
 
 interface DashboardData {
@@ -91,7 +91,6 @@ export function useDashboardData({
     return () => {
       cancelled = true;
     };
-     
   }, [userId, enabled, refreshKey]);
 
   return {

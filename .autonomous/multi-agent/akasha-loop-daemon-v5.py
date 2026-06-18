@@ -76,6 +76,7 @@ import importlib.util
 def _load(name: str, path: Path):
     spec = importlib.util.spec_from_file_location(name, str(path))
     mod = importlib.util.module_from_spec(spec)
+    sys.modules[name] = mod
     mod.ROOT = ROOT; mod.MA = MA
     mod.load_json = load_json; mod.save_json = save_json
     old = sys.path[:]
@@ -563,9 +564,9 @@ def phase_implementation(state, memory):
         )
         prompt_file.write_text(prompt)
         proc = _sub.Popen(
-            ["timeout", "600", "claude", "-p", "--model", "MiniMax-M2.7-highspeed", prompt],
+            ["timeout", "600", "claude", "-p", "--model", "minimax/MiniMax-M2.7", prompt],
             cwd=str(ROOT), stdout=_sub.DEVNULL, stderr=_sub.DEVNULL,
-            env={**os.environ, "ANTHROPIC_MODEL": "MiniMax-M2.7-highspeed"},
+            env={**os.environ, "ANTHROPIC_MODEL": "minimax/MiniMax-M2.7"},
             preexec_fn=lambda: os.setpriority(os.PRIO_PROCESS, 0, 10),
         )
         with open(AGENT_PIDS_FILE, "a") as pf:
@@ -1028,7 +1029,7 @@ def main():
 
     last_ph = None
     while load_state().get("running", False):
-        events = poll_obj.poll(timeout=1000)
+        events = poll_obj.poll(1000)
         for fd, event in events:
             if fd == sock.fileno() and event & select.POLLIN:
                 try:

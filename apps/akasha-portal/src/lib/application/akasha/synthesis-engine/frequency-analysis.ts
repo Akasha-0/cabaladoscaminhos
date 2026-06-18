@@ -4,7 +4,6 @@
  * Avaliação de frequência (Shadow / Gift / Siddhi) por área + cálculo do
  * perfil dominante e sequência ativa. Split de synthesis-engine.ts.
  */
-
 import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/types';
 import type { AreaNarrative, FrequencyLevel } from './synthesis-types';
 
@@ -26,10 +25,10 @@ export function assessAreaFrequency(
   if (kab?.challenges?.first) shadowScore += 1;
   if (kab?.challenges?.second) shadowScore += 1;
 
-  const pluto = astro?.planets?.find(p => p.planet === 'Pluto' || p.planet === 'Plutão');
+  const pluto = astro?.planets?.find((p) => p.planet === 'Pluto' || p.planet === 'Plutão');
   if (pluto) shadowScore += 1;
 
-  const saturn = astro?.planets?.find(p => p.planet === 'Saturn' || p.planet === 'Saturno');
+  const saturn = astro?.planets?.find((p) => p.planet === 'Saturn' || p.planet === 'Saturno');
   if (saturn) shadowScore += 1;
 
   if (kab?.lifePathMaster) giftScore += 2;
@@ -74,15 +73,14 @@ export function deriveDominantFrequency(
   d: AreaNarrative
 ): FrequencyLevel {
   const areas = [v, c, car, o, m, d];
-  const shadows = areas.filter(a => a.frequency === 'shadow').length;
-  const gifts = areas.filter(a => a.frequency === 'gift').length;
-  const siddhis = areas.filter(a => a.frequency === 'siddhi').length;
+  const shadows = areas.filter((a) => a.frequency === 'shadow').length;
+  const gifts = areas.filter((a) => a.frequency === 'gift').length;
+  const siddhis = areas.filter((a) => a.frequency === 'siddhi').length;
   // Siddhi wins if 3+ areas are at siddhi frequency
   if (siddhis >= 3) return 'siddhi';
   if (gifts > shadows) return 'gift';
   return 'shadow';
 }
-
 
 export function computeOverallScore(
   v: AreaNarrative,
@@ -94,7 +92,7 @@ export function computeOverallScore(
 ): number {
   const areas = [v, c, car, o, m, d];
   let giftCount = 0;
-  areas.forEach(a => {
+  areas.forEach((a) => {
     if (a.frequency === 'siddhi') {
       giftCount += 1.5 + (a.intensity - 1) * 0.3;
     } else if (a.frequency === 'gift') {

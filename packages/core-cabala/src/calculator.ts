@@ -1,6 +1,5 @@
 // @ts-nocheck
 // Numerology calculator - multiple methods
-
 import {
   calcularPitagorica,
   calcularCaldeia,
@@ -38,7 +37,9 @@ export interface NumerologyResult {
 
 function reduceToDigits(num: number): number {
   while (num > 9 && ![11, 22, 33].includes(num)) {
-    num = String(num).split('').reduce((sum, d) => sum + parseInt(d, 10), 0);
+    num = String(num)
+      .split('')
+      .reduce((sum, d) => sum + parseInt(d, 10), 0);
   }
   return num;
 }
@@ -74,4 +75,3 @@ const methods = {
   motivacao: (name: string): number => reduceToDigits(calculateSoulUrge(name)),
   impressao: (name: string): number => reduceToDigits(calculatePersonality(name)),
 };
-

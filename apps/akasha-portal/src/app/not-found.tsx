@@ -1,18 +1,18 @@
 'use client';
 
-import Link from 'next/link';
-import { CosmicBackground } from '@/components/design-system/CosmicBackground';
-import { MysticButton } from '@/components/shared/MysticButton';
-import { MysticDivider } from '@/components/shared/MysticDivider';
-import { Heading } from '@/components/design-system/Typography';
 import { Sparkles, Home, ArrowLeft, Compass } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { CosmicBackground } from '@/components/design-system/CosmicBackground';
+import { Heading } from '@/components/design-system/Typography';
+import { MysticButton } from '@/components/shared/MysticButton';
+import { MysticDivider } from '@/components/shared/MysticDivider';
 
 const mysticalQuotes = [
-  "O caminho que procuras já existe dentro de ti.",
-  "Quando um caminho se fecha, outro se abre no cosmos.",
-  "A jornada de mil léguas começa com um único passo.",
-  "O universo conspira a favor da tua transformação.",
+  'O caminho que procuras já existe dentro de ti.',
+  'Quando um caminho se fecha, outro se abre no cosmos.',
+  'A jornada de mil léguas começa com um único passo.',
+  'O universo conspira a favor da tua transformação.',
 ];
 
 export default function NotFound() {
@@ -30,13 +30,25 @@ export default function NotFound() {
         {/* Background stars */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
           <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-amber-400 rounded-full animate-twinkle opacity-60" />
-          <div className="absolute top-1/3 right-1/4 w-1.5 h-1.5 bg-amber-300 rounded-full animate-twinkle opacity-40" style={{ animationDelay: '0.5s' }} />
-          <div className="absolute top-1/2 left-1/6 w-1 h-1 bg-yellow-300 rounded-full animate-twinkle opacity-50" style={{ animationDelay: '1s' }} />
-          <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-yellow-200 rounded-full animate-twinkle opacity-30" style={{ animationDelay: '0.3s' }} />
+          <div
+            className="absolute top-1/3 right-1/4 w-1.5 h-1.5 bg-amber-300 rounded-full animate-twinkle opacity-40"
+            style={{ animationDelay: '0.5s' }}
+          />
+          <div
+            className="absolute top-1/2 left-1/6 w-1 h-1 bg-yellow-300 rounded-full animate-twinkle opacity-50"
+            style={{ animationDelay: '1s' }}
+          />
+          <div
+            className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-yellow-200 rounded-full animate-twinkle opacity-30"
+            style={{ animationDelay: '0.3s' }}
+          />
         </div>
 
         {/* Gradient orb */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-500/5 rounded-full blur-3xl" aria-hidden="true" />
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-500/5 rounded-full blur-3xl"
+          aria-hidden="true"
+        />
 
         <div
           className={`text-center max-w-2xl mx-auto transition-all duration-1000 ${
@@ -69,15 +81,13 @@ export default function NotFound() {
 
           {/* Description */}
           <p className="text-lg text-slate-400 mb-8 font-raleway leading-relaxed">
-            A página que você busca não existe nesta dimensão do existir.
-            O universo guarda mistérios que ainda não foram revelados.
+            A página que você busca não existe nesta dimensão do existir. O universo guarda
+            mistérios que ainda não foram revelados.
           </p>
 
           {/* Mystical quote */}
           <div className="mb-12 p-6 rounded-2xl bg-white/5 border border-amber-500/20">
-            <p className="text-amber-300/80 font-cormorant italic text-lg">
-              &ldquo;{quote}&rdquo;
-            </p>
+            <p className="text-amber-300/80 font-cormorant italic text-lg">&ldquo;{quote}&rdquo;</p>
           </div>
 
           {/* Mystic divider */}
@@ -104,9 +114,7 @@ export default function NotFound() {
 
           {/* Additional links */}
           <div className="mt-12 pt-8 border-t border-amber-500/10">
-            <p className="text-slate-500 text-sm font-raleway mb-4">
-              Explore outros caminhos:
-            </p>
+            <p className="text-slate-500 text-sm font-raleway mb-4">Explore outros caminhos:</p>
             <div className="flex flex-wrap items-center justify-center gap-6">
               <Link
                 href="/onboarding"

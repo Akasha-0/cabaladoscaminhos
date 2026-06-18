@@ -1,8 +1,7 @@
 // Correlation wrapper for DeepCorrelationEngine
-
+import { DeepCorrelationEngine } from '@/lib/application/ai/deep-correlation-engine';
 import type { UserSpiritualData } from '@/lib/application/ai/types';
 import type { UserMaps, CorrelationResult } from './types';
-import { DeepCorrelationEngine } from '@/lib/application/ai/deep-correlation-engine';
 
 export interface CorrelationOptions {
   maxCorrelations?: number;
@@ -85,7 +84,5 @@ export function formatCorrelations(correlations: CorrelationResult[]): string {
  * Convert correlations to context string for AI prompts
  */
 export function correlationsToContext(correlations: CorrelationResult[]): string {
-  return correlations
-    .map(c => `${c.primary} e ${c.secondary}: ${c.insight}`)
-    .join(' | ');
+  return correlations.map((c) => `${c.primary} e ${c.secondary}: ${c.insight}`).join(' | ');
 }

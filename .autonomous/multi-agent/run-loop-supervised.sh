@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 #
 # run-loop-supervised.sh
-# Supervisor that keeps akasha-loop-daemon-v5.py alive with process supervision.
+# Supervisor that keeps akasha-loop-daemon-v6.py alive with process supervision.
 # - Starts daemon via setsid (new session, immune to terminal signals)
 # - Writes PID to loop-daemon.pid
 # - Monitors daemon PID file, restarts with backoff if it dies
 # - Logs all restarts to loop-supervisor.log
 # - Cleans stale state (socket, pids, zombie agents) on start
-# - Uses akasha-loop-daemon-v5.py (fully integrated: 8 subsystems + 6 v2 modules)
+# - Uses akasha-loop-daemon-v6.py (lazy loading + all fixes applied)
 #
 set -uo pipefail
 
 ROOT="/home/skynet/cabala-dos-caminhos"
 MA="$ROOT/.autonomous/multi-agent"
-DAEMON="$MA/akasha-loop-daemon-v5.py"
+DAEMON="$MA/akasha-loop-daemon-v6.py"
 SOCK="$MA/loop-daemon.sock"
 PID_FILE="$MA/loop-daemon.pid"
 LOG_FILE="$MA/loop-supervisor.log"

@@ -7,7 +7,6 @@
  * Separado de interpretation-engine.ts para reduzir o tamanho do
  * motor de interpretação e isolar a lógica de construção.
  */
-
 import type { AreaInterpretation, AkashaLevel } from '@akasha/types';
 import type { NumeroContent } from './types';
 
@@ -18,7 +17,7 @@ import type { NumeroContent } from './types';
 export function baseInterpretation(
   n: number,
   isMaster: boolean,
-  nivel: AkashaLevel,
+  nivel: AkashaLevel
 ): Pick<AreaInterpretation, 'nivel' | 'codigo' | 'dado'> {
   const suffix = isMaster ? ` (Master ${n})` : '';
   return {
@@ -36,7 +35,7 @@ export function buildInterpretation(
   n: number,
   isMaster: boolean,
   content: NumeroContent,
-  nivel: AkashaLevel,
+  nivel: AkashaLevel
 ): AreaInterpretation {
   const nivelContent = content.levels[nivel];
   return {

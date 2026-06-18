@@ -18,10 +18,9 @@
  *
  * Pilar 4 (Odu) marca `requer_terreiro: true` (R-022 §4.4).
  */
-
-import { traducaoPara, type Area } from './traducao-areas';
 import { conexoesDe, type ConexaoPilar } from './conexoes-pilares';
 import { significadoGenericoDoPilar, type Pilar } from './significados-curados';
+import { traducaoPara, type Area } from './traducao-areas';
 
 export interface FocoDoDia {
   area: Area;
@@ -53,12 +52,18 @@ const ACOLHIMENTOS: ReadonlyArray<string> = [
 const PRATICAS_FOCO: Record<Area, string> = {
   paz: 'Sente 5 min em silêncio. Coloque a mão no coração. Apenas sinta. Sem objetivo. Apenas presença.',
   saude: 'Ande 15 min sem tela, sem fone. Apenas ande. Termine com 3 respirações longas.',
-  relacoes: 'Escolha 1 pessoa e diga 1 coisa que você NORMALMENTE não diria. Verdade simples. Sem cálculo.',
-  dinheiro: 'Escreva em 1 frase: "O que minha vida pede AGORA em troca de meu tempo?" Releia em 3 dias.',
-  trabalho: 'Liste 3 tarefas que você ama. Coloque 1 delas como prioridade do dia. As outras esperam.',
-  proposito: 'Escreva 1 frase: "O que eu faria HOJE se soubesse que ninguém vai julgar?" Aja como se a resposta fosse SIM.',
-  criatividade: 'Crie 1 coisa em 5 min — sem editar, sem mostrar, sem julgar. A criação pede movimento, não perfeição.',
-  espiritualidade: 'Sente 10 min em silêncio TOTAL. Sem música, sem mantra, sem intenção. Apenas esteja.',
+  relacoes:
+    'Escolha 1 pessoa e diga 1 coisa que você NORMALMENTE não diria. Verdade simples. Sem cálculo.',
+  dinheiro:
+    'Escreva em 1 frase: "O que minha vida pede AGORA em troca de meu tempo?" Releia em 3 dias.',
+  trabalho:
+    'Liste 3 tarefas que você ama. Coloque 1 delas como prioridade do dia. As outras esperam.',
+  proposito:
+    'Escreva 1 frase: "O que eu faria HOJE se soubesse que ninguém vai julgar?" Aja como se a resposta fosse SIM.',
+  criatividade:
+    'Crie 1 coisa em 5 min — sem editar, sem mostrar, sem julgar. A criação pede movimento, não perfeição.',
+  espiritualidade:
+    'Sente 10 min em silêncio TOTAL. Sem música, sem mantra, sem intenção. Apenas esteja.',
 };
 
 const SOMBRAS_FOCO: Record<Area, string> = {
@@ -73,8 +78,14 @@ const SOMBRAS_FOCO: Record<Area, string> = {
 };
 
 const EMOJI: Record<Area, string> = {
-  paz: '☮', saude: '♥', relacoes: '◉', dinheiro: '◆',
-  trabalho: '⚒', proposito: '✶', criatividade: '✎', espiritualidade: '✦',
+  paz: '☮',
+  saude: '♥',
+  relacoes: '◉',
+  dinheiro: '◆',
+  trabalho: '⚒',
+  proposito: '✶',
+  criatividade: '✎',
+  espiritualidade: '✦',
 };
 
 /** Gera o Foco do Dia dado Pilar principal + Área escolhida. */
@@ -89,8 +100,9 @@ export function gerarFocoDoDia(pilar: Pilar, area: Area): FocoDoDia {
   });
 
   // Ecos dos outros 4 Pilares para esta Área
-  const outrosPilares: Pilar[] = (['cabala', 'astrologia', 'tantrica', 'odu', 'iching'] as Pilar[])
-    .filter((p) => p !== pilar);
+  const outrosPilares: Pilar[] = (
+    ['cabala', 'astrologia', 'tantrica', 'odu', 'iching'] as Pilar[]
+  ).filter((p) => p !== pilar);
   const ecos_dos_pilares = outrosPilares
     .map((p) => traducaoPara(p, area))
     .filter((t): t is NonNullable<typeof t> => t !== undefined)
