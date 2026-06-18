@@ -10,8 +10,7 @@
  *
  * Versão: akasha-v0.0.4-pwa-v1. Incrementar invalida caches antigos.
  */
-
-const CACHE_VERSION = 'akasha-v0.0.4-pwa-v1';
+const CACHE_VERSION = 'akasha-v0.0.4-pwa-v2';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const API_CACHE = `${CACHE_VERSION}-api`;
 
@@ -114,6 +113,23 @@ self.addEventListener('fetch', (event) => {
     );
     return;
   }
+  // 5. Stale-while-revalidate para Mandala (cachea dados astrológicos do usuário)
+  if (url.pathname.startsWith('/api/akasha/mandala')) {
+    event.respondWith(
+      (async () => {
+        const cache = await caches.open(API_CACHE);
+        const cached = await cache.match(request);
+        const networkPromise = fetch(request)
+          .then((response) => {
+            if (response.ok) cache.put(request, response.clone());
+            return response;
+          })
+          .catch(() => cached);
+        return cached ?? await networkPromise;
+      })()
+    );
+    return;
+  }
 
   // 5. Stale-while-revalidate para navegação HTML
   if (request.mode === 'navigate' || request.headers.get('accept')?.includes('text/html')) {
@@ -127,7 +143,7 @@ self.addEventListener('fetch', (event) => {
             return response;
           })
           .catch(() => cached);
-        return cached || networkPromise;
+        return cached ?? await networkPromise;
       })()
     );
     return;

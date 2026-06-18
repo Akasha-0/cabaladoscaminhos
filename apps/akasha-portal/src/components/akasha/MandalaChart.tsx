@@ -243,7 +243,9 @@ const MandalaChart = memo(function MandalaChart({ data }: Props) {
               aria-pressed={activeLayer === layer}
               style={{
                 fontSize: '0.75rem',
-                padding: '4px 12px',
+                padding: '8px 16px',
+                minHeight: '44px',
+                minWidth: '88px',
                 borderRadius: '100px',
                 border: `1px solid ${activeLayer === layer ? color : 'rgba(38,48,79,0.8)'}`,
                 background: activeLayer === layer ? `${color}22` : 'rgba(11,14,28,0.5)',
@@ -481,7 +483,7 @@ const MandalaChart = memo(function MandalaChart({ data }: Props) {
             })}
             {tantricNodes.map(({ pos, active, label }, i) => (
               <g key={i}>
-                {!active && <circle cx={pos.x} cy={pos.y} r="10" fill="rgba(251,87,129,0.12)" />}
+                {!active && <circle cx={pos.x} cy={pos.y} r="10" fill="rgba(251,87,129,0.35)" />}
                 <circle
                   cx={pos.x}
                   cy={pos.y}
@@ -557,6 +559,7 @@ const MandalaChart = memo(function MandalaChart({ data }: Props) {
                 fontSize="10"
                 fill="#A0763A"
                 letterSpacing="1.5"
+                style={{ textShadow: '0 0 8px #A0763A' }}
               >
                 MUTAÇÃO DO CAMINHO
               </text>
@@ -685,13 +688,13 @@ const MandalaChart = memo(function MandalaChart({ data }: Props) {
               className="mandala-pulse"
             />
             <circle cx="200" cy="200" r="7" fill="#F0B429" filter="url(#glow-akasha)" />
-            <text x="200" y="216" textAnchor="middle" fontSize="10" fill="#F0B429" fontWeight="600">
+             <text x="200" y="216" textAnchor="middle" fontSize="10" fill="#F0B429" fontWeight="600" style={{ textShadow: '0 0 8px #F0B429' }}>
               {data.odus.oduName.length > 14
                 ? data.odus.oduName.slice(0, 14) + '…'
                 : data.odus.oduName}
             </text>
             {data.odus.orixaRegency[0] && (
-              <text x="200" y="226" textAnchor="middle" fontSize="10" fill="#F0B429">
+              <text x="200" y="226" textAnchor="middle" fontSize="10" fill="#F0B429" style={{ textShadow: '0 0 8px #F0B429' }}>
                 {data.odus.orixaRegency[0]}
               </text>
             )}

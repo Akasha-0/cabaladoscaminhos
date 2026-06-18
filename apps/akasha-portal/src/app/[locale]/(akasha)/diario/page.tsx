@@ -43,13 +43,6 @@ export const metadata = {
   },
 };
 
-type SignificadosPorPilar = {
-  cabala: SignificadoCurado;
-  astrologia: SignificadoCurado;
-  tantrica: SignificadoCurado;
-  odu: SignificadoCurado;
-  iching: SignificadoCurado;
-};
 
 export default async function DiarioPage({
   params,
