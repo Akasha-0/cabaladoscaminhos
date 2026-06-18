@@ -1009,6 +1009,48 @@ def phase_planning(state):
     log(f"=== PLANNING v9 (iter {iteration}) ===")
     task_data = _load_json(TASK_FILE, {})
     improvements = task_data.get("improvements", [])
+
+    # ── Run specialist agents ─────────────────────────────────────────────────
+    try:
+        import importlib.util, sys
+        spec = importlib.util.spec_from_file_location(
+            "specialist_agents", MA / "specialist_agents.py")
+        if spec and spec.loader:
+            sa = importlib.util.module_from_spec(spec)
+            sys.modules["specialist_agents"] = sa
+            spec.loader.exec_module(sa)
+
+            all_findings = sa.run_all_audits()
+            specialist_improvements = sa.generate_all_improvements(all_findings)
+
+            # Deduplicate against existing improvements by title
+            existing_titles = {imp.get("title", "") for imp in improvements}
+            newimps = [
+                imp for imp in specialist_improvements
+                if imp.title not in existing_titles
+            ]
+            for imp in newimps:
+                improvements.append({
+                    "type": imp.type,
+                    "area": imp.area,
+                    "title": imp.title,
+                    "description": imp.description,
+                    "files": imp.files,
+                    "priority": imp.priority,
+                    "effort": imp.effort,
+                    "quality_delta": imp.quality_impact,
+                    "source": "specialist",
+                    "agent": imp.agent,
+                })
+            task_data["improvements"] = improvements
+            _save_json(TASK_FILE, task_data)
+            log(f"  Specialist agents: {len(newimps)} new improvements added "
+                f"(total {len(improvements)})")
+            for imp in newimps:
+                log(f"    [{imp.priority}] {imp.title}")
+    except Exception as e:
+        log_warn(f"  Specialist agents error: {e}")
+
     plans_md = ROOT / "Plans.md"
     lines = []
     for i, imp in enumerate(improvements):
