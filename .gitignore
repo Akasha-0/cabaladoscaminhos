@@ -118,6 +118,7 @@ quality-report*.json
 quality-evolution*.json
 .fallowrc.json.bak
 .fallowrc.json.orig
+.fallow/
 
 # Capacitor build output
 apps/akasha-portal/capacitor/
@@ -204,3 +205,9 @@ fallow-reports/
 
 # Archived harness daemons (Constitution §10)
 .autonomous/archive/
+.autonomous/multi-agent/reasoning_cache/
+.autonomous/multi-agent/memory-cold/
+.autonomous/multi-agent/confidence_history/
+.autonomous/multi-agent/tuning.json
+.autonomous/multi-agent/PROGRESS-24-7-*.md
+.autonomous/multi-agent/DECISIONS-24-7.md
