@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-18T00:55:10.193516+00:00",
-  "version": "0.85.0",
+  "generated_at": "2026-06-18T00:55:44.661796+00:00",
+  "version": "0.86.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-UI/UX-001** — ralph_loop_ui_improvements | 0.13.2",
@@ -1128,16 +1128,18 @@
       "- [~] **PLN-028[2]** -- large_file | 37 oversized files",
       "- [~] **PLN-029[1]** -- tech_debt | 2 files with XXX",
       "- [~] **PLN-029[2]** -- large_file | 37 oversized files",
+      "- [~] **PLN-030[1]** -- tech_debt | 2 files with XXX",
+      "- [~] **PLN-030[2]** -- large_file | 37 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2",
       "- [~] **PLN-AE-003** — Ralph-loop continuous | QA cycling (v0.12.1)"
     ],
-    "pending_count": 1128
+    "pending_count": 1130
   },
   "git": {
     "untracked": 2,
-    "modified": 13,
-    "total": 15,
+    "modified": 10,
+    "total": 12,
     "has_changes": true
   },
   "triad": {
@@ -1218,7 +1220,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "6cb8962591dcd4bd60d9dc9aebc56f644386552f",
+  "git_head": "34ee2d14922307f43abfb9c8e6b4f0c67c766eca",
   "decision_factors": {
     "has_pending_features": true
   }
