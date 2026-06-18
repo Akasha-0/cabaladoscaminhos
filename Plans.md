@@ -1314,6 +1314,10 @@
 - [~] **PLN-002[2]** -- [general] large_file | 46 oversized files
 - [~] **PLN-003[1]** -- [general] tech_debt | 2 files with XXX
 - [~] **PLN-003[2]** -- [general] large_file | 46 oversized files
+- [~] **PLN-004[1]** -- [general] tech_debt | 2 files with XXX
+- [~] **PLN-004[2]** -- [general] large_file | 46 oversized files
+- [~] **PLN-004[1]** -- [general] tech_debt | 2 files with XXX
+- [~] **PLN-004[2]** -- [general] large_file | 46 oversized files
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)

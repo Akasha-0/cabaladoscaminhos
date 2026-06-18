@@ -13,7 +13,7 @@ start akasha-evolution
 ### Pre-flight Check
 1. Source `scripts/sacred-protocol-check.sh` (validates CodeGraph + Headroom)
 2. Check system resources (CPU, memory, disk)
-3. Verify all 21 v8 modules exist
+3. Verify all 27 v8 modules exist
 4. Check git status — warn if uncommitted changes
 
 ### Startup
@@ -48,10 +48,12 @@ The supervisor starts daemon v7 (akasha-loop-daemon-v8.py) which integrates all 
 - **Stale detection**: 60s no-progress timeout in wait loop
 - **v7 fixes preserved**: Zombie detection, QA fail-fast, partial results handling
 
-### v8 New Modules (4)
+### v8 New Modules (6)
 - **memory_manager_v2.py** (992L): Exponential learning memory — patterns strengthen/weakens with repetition, hot/warm/cold tiers, evidence store, bounded 50MB
 - **skill_discoverer_v2.py** (632L): Semantic pattern matching with TF-IDF Jaccard similarity, success rate prediction, anti-pattern warnings
 - **reasoning_chain_v2.py** (1388L): Causal reasoning engine — root cause analysis, counterfactual reasoning, hypothesis testing, confidence calibration, memoisation
+- **context_engine_v2.py** (669L): Ultra-fast bounded context builder — char/4 token estimation, file relevance scoring, TTL cache, smart truncation
+- **prompt_engine_v2.py** (410L): Area-specific prompt templates pre-loaded at init, learning injection, self-improvement tracking via outcome recording
 - **akasha-loop-daemon-v8.py** (1441L): Fast polling daemon with intensity auto-scaling and quality tracking
 
 ### Performance Optimizations

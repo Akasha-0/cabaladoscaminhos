@@ -178,10 +178,12 @@ def _load_subsystems():
             log_warn(f"TelemetryCollector: {e}")
 
 # ── v2 Modules — lazy load on first use ─────────────────────────────────────
-_project_map = None; _reasoning_chain = None; _context_engine = None
-_evolver = None; _prompt_engine = None; _agent_orchestrator = None
 _smart_iterator = None; _loop_optimizer = None; _memory_compressor = None
 _v2_loaded = False
+# v2 module refs (lazy-loaded)
+_context_engine_v2 = None; _prompt_engine_v2 = None
+_reasoning_chain_v2 = None; _memory_manager_v2 = None
+_skill_discoverer_v2 = None
 
 def _load_v2_modules():
     global _project_map, _reasoning_chain, _context_engine, _evolver
@@ -265,6 +267,50 @@ def _load_v2_modules():
             log("MemoryCompressor loaded")
         except Exception as e:
             log_warn(f"MemoryCompressor: {e}")
+    global _context_engine_v2, _prompt_engine_v2, _reasoning_chain_v2
+    global _memory_manager_v2, _skill_discoverer_v2
+
+    if _context_engine_v2 is None:
+        try:
+            from context_engine_v2 import ContextEngineV2
+            _context_engine_v2 = ContextEngineV2(MA)
+            log("ContextEngineV2 loaded")
+        except Exception as e:
+            log_warn(f"ContextEngineV2: {e}")
+
+    if _prompt_engine_v2 is None:
+        try:
+            from prompt_engine_v2 import PromptEngineV2
+            _prompt_engine_v2 = PromptEngineV2(MA)
+            log("PromptEngineV2 loaded")
+        except Exception as e:
+            log_warn(f"PromptEngineV2: {e}")
+
+    if _reasoning_chain_v2 is None:
+        try:
+            from reasoning_chain_v2 import ReasoningChain
+            _reasoning_chain_v2 = ReasoningChain()
+            log("ReasoningChainV2 loaded")
+        except Exception as e:
+            log_warn(f"ReasoningChainV2: {e}")
+
+    if _memory_manager_v2 is None:
+        try:
+            from memory_manager_v2 import MemoryManagerV2
+            _memory_manager_v2 = MemoryManagerV2(MA)
+            log("MemoryManagerV2 loaded")
+        except Exception as e:
+            log_warn(f"MemoryManagerV2: {e}")
+
+    if _skill_discoverer_v2 is None:
+        try:
+            from skill_discoverer_v2 import SkillDiscovererV2
+            _skill_discoverer_v2 = SkillDiscovererV2(MA)
+            log("SkillDiscovererV2 loaded")
+        except Exception as e:
+            log_warn(f"SkillDiscovererV2: {e}")
+
+    log("  v2 modules: ContextEngineV2, PromptEngineV2, ReasoningChainV2, MemoryManagerV2, SkillDiscovererV2")
 
 # ── State helpers ─────────────────────────────────────────────────────────────
 def load_state(force=False):
@@ -522,6 +568,7 @@ def _update_quality_trend(state):
 # ── ENHANCED RESEARCH — guided by ProjectMap + SmartIterator + ReasoningChain ─
 def phase_research(state, memory):
     iteration = state.get("iteration", 0)
+    intensity = state.get("intensity", 5)
     log(f"=== RESEARCH v8 (iter {iteration}, intensity={intensity}) ===")
 
     # Load v2 modules lazily on first RESEARCH phase
@@ -564,6 +611,17 @@ def phase_research(state, memory):
             )
         except Exception as e:
             log_warn(f"ContextEngine: {e}")
+    # Also use v2 for ultra-fast context
+    if _context_engine_v2:
+        try:
+            ctx_v2 = _context_engine_v2.build(
+                goal=f"research_{research_focus.get('area', 'general')}",
+                context={"area": research_focus.get('area', 'general')}
+            )
+            if ctx_v2:
+                log(f"  ContextEngineV2: {len(ctx_v2)} chars")
+        except Exception as e:
+            log_warn(f"ContextEngineV2 build: {e}")
 
     # Find candidates
     snap = _bootstrap(use_cache=True)
@@ -664,6 +722,16 @@ def phase_planning(state):
             content += "".join(lines)
         plans_md.write_text(content)
     log(f"  Plans.md updated ({len(improvements)} items)")
+    # Use v2 ReasoningChain for smarter planning
+    if _reasoning_chain_v2:
+        try:
+            for imp in improvements[:3]:
+                goal = f"Plan implementation of {imp.get('type')}: {imp.get('description', '')[:80]}"
+                result = _reasoning_chain_v2.think(goal, {"area": imp.get("area")}, mode="PLAN")
+                imp["chain_confidence"] = result.get("confidence", 0.5)
+                log(f"  ReasoningChainV2: {imp.get('type')} confidence={result.get('confidence', 0):.2f}")
+        except Exception as e:
+            log_warn(f"ReasoningChainV2: {e}")
     state["phase"] = "IMPLEMENTATION"
     save_state(state)
     _tracker.record_planning(len(improvements), plans_detail_level=50.0,
@@ -672,6 +740,7 @@ def phase_planning(state):
 
 # ── IMPLEMENTATION (AgentOrchestrator if available) ──────────────────────────
 def phase_implementation(state, memory):
+    iteration = state.get("iteration", 0)
     log(f"=== IMPLEMENTATION v8 (iter {iteration}) ===")
     task_data = _load_json(TASK_FILE, {})
     improvements = task_data.get("improvements", [])
@@ -709,6 +778,16 @@ def phase_implementation(state, memory):
                 prompt = _prompt_engine.inject_context(prompt, full_ctx)
             except Exception:
                 pass
+        # Use v2 PromptEngine if available
+        if _prompt_engine_v2:
+            try:
+                imp_type = imp.get("type", "general")
+                area = imp.get("area", "general")
+                prompt_v2 = _prompt_engine_v2.build_improvement_prompt(imp_type, area)
+                if prompt_v2:
+                    log(f"  PromptEngineV2: {len(prompt_v2)} chars for {imp_type}")
+            except Exception as e:
+                log_warn(f"PromptEngineV2: {e}")
 
         result_file = str(AGENT_RESULTS_DIR / f"result-{agent_id}.json")
         prompt = prompt.replace(
@@ -1392,7 +1471,9 @@ def main():
             elif ph == "IMPLEMENTATION":
                 last_ph = "IMPLEMENTATION"
                 phase_implementation(st, mem)
-
+                st = load_state()
+                if st.get("phase") == "IMPLEMENTATION_WAIT":
+                    last_ph = None
             elif ph == "IMPLEMENTATION_WAIT":
                 done = wait_implementation(st, mem)
                 if done:

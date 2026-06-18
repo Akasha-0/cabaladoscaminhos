@@ -998,6 +998,28 @@
       "details": {
         "files_changed": 0
       }
+    },
+    {
+      "ts": "2026-06-18T10:49:50.098495+00:00",
+      "agent": "daemon",
+      "phase": "RELEASE",
+      "feature_id": "tech_debt",
+      "outcome": "implemented",
+      "summary": "2 files with XXX",
+      "details": {
+        "files_changed": 0
+      }
+    },
+    {
+      "ts": "2026-06-18T10:49:50.098512+00:00",
+      "agent": "daemon",
+      "phase": "RELEASE",
+      "feature_id": "large_file",
+      "outcome": "implemented",
+      "summary": "46 oversized files",
+      "details": {
+        "files_changed": 0
+      }
     }
   ],
   "iteration": 101

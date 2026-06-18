@@ -10,9 +10,9 @@
  * Usar getIChingContribution() (iching-contribution.ts) para versões
  * ajustadas por nível shadow|gift|siddhi.
  */
+import type { HexagramaBase } from '../iching-base';
 import type { Polaridade } from '../types';
 import type { PrimitiveContribution } from '../types';
-import type { HexagramaBase } from '../iching-base';
 
 type HexagramaBaseMap = Record<number, HexagramaBase>;
 
@@ -25,7 +25,7 @@ type HexagramaBaseMap = Record<number, HexagramaBase>;
  * @returns Record<numero_hexagrama, PrimitiveContribution[]>
  */
 export function compileIChingPrimitives(
-  base: HexagramaBaseMap,
+  base: HexagramaBaseMap
 ): Record<number, PrimitiveContribution[]> {
   return Object.fromEntries(
     Object.entries(base).map(([num, data]) => [
@@ -36,6 +36,6 @@ export function compileIChingPrimitives(
         polaridade: polaridade as Polaridade,
         fonte,
       })),
-    ]),
+    ])
   ) as Record<number, PrimitiveContribution[]>;
 }

@@ -1,26 +1,27 @@
 {
   "state": "SLOW",
   "quality_ema": 85.0,
-  "failure_rate": 0.42105263157894735,
-  "outcome_count": 19,
+  "failure_rate": 0.65,
+  "outcome_count": 33,
   "outcome_history": [
     true,
+    true,
+    true,
+    true,
+    false,
+    true,
+    true,
     false,
     false,
     false,
     false,
     false,
-    true,
-    true,
     false,
     false,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
+    false,
+    false,
+    false,
+    false,
     false,
     true
   ],
@@ -138,6 +139,22 @@
       "reason": "quality regression",
       "quality": 85.0,
       "failure": 0.4375
+    },
+    {
+      "ts": "2026-06-18T10:57:27.304515+00:00",
+      "from": "SLOW",
+      "to": "SLOW",
+      "reason": "quality regression",
+      "quality": 85.0,
+      "failure": 0.45
+    },
+    {
+      "ts": "2026-06-18T11:09:55.780920+00:00",
+      "from": "SLOW",
+      "to": "SLOW",
+      "reason": "quality regression",
+      "quality": 85.0,
+      "failure": 0.6
     }
   ]
 }
