@@ -1,0 +1,83 @@
+{
+  "id": "researcher-0612d57d",
+  "timestamp": "2026-06-18T01:35:00Z",
+  "improvement": {
+    "id": "?",
+    "title": "2 changed files lack tests",
+    "area": "general",
+    "priority": 6,
+    "description": "2 changed files lack tests"
+  },
+  "commit": {
+    "sha": "0af2b6a3",
+    "message": "refactor: extract cycle-modulation helper from evolutionary-agent/index.ts",
+    "changed_files": 2
+  },
+  "findings": {
+    "changed_files": [
+      {
+        "path": "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/index.ts",
+        "type": "source",
+        "size_kb": 40.6,
+        "change": "Removed 53 lines (extracted into cycle-modulation.ts); now re-exports deriveCycleModulation from the new helper",
+        "public_apis": [
+          "deriveExercisesFromSnapshot(snapshot: PersonalCycleSnapshot, moonPhase?: string): CycleExerciseSet",
+          "trackAreaRead, detectAreaPatterns (from area-history)",
+          "LUNAR_EXERCISES, normalizePhase, deriveLunarExercises (from lunar-exercises)"
+        ],
+        "has_test": false,
+        "test_path": null,
+        "notes": "Large agent file; no existing test infrastructure in tests/lib/application/agents/"
+      },
+      {
+        "path": "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/synthesis-engine/cycle-modulation.ts",
+        "type": "source",
+        "size_kb": 3.1,
+        "change": "NEW file — 61 lines extracted from index.ts",
+        "public_apis": [
+          "deriveCycleModulation(snapshot: PersonalCycleSnapshot): CycleModulation[]"
+        ],
+        "has_test": false,
+        "test_path": null,
+        "notes": "Pure function with clear input/output; ideal first candidate for unit testing"
+      }
+    ],
+    "test_gap_analysis": {
+      "existing_tests_for_agent_dir": false,
+      "existing_tests_dir": null,
+      "test_dir_exists_at": "tests/lib/",
+      "convention": "*.test.ts using Vitest (describe/it/expect from 'vitest')",
+      "similar_test_pattern": "tests/lib/engines/predictive-synthesis.test.ts",
+      "no_test_coverage_confirmed": true
+    },
+    "test_candidates": [
+      {
+        "file": "cycle-modulation.ts",
+        "testability": "high",
+        "reason": "Pure function, no side effects; input PersonalCycleSnapshot mockable; output CycleModulation[] directly assertable",
+        "suggested_test_cases": [
+          "Year 1 personal cycle aligns missaoDestino, oriCabecaQuizilas, carreiraProsperidade with score 80; others get 40",
+          "Year 2 aligns conexoesAmor, vitalidadeEnergia with score 80",
+          "Year 11 maps to missaoDestino, oriCabecaQuizilas",
+          "Unknown year number falls back to no alignment (all areas score 40)",
+          "suggestedBoost correctly derives 'increase' for score 80, 'decrease' for score 40, 'maintain' for mid-range"
+        ]
+      },
+      {
+        "file": "index.ts",
+        "testability": "medium",
+        "reason": "deriveExercisesFromSnapshot is testable with mocked PersonalCycleSnapshot; other exports re-exported from other modules",
+        "suggested_test_cases": [
+          "deriveExercisesFromSnapshot returns CycleExerciseSet with all exercise categories populated",
+          "Lunar exercises fall back to 'nova' when moonPhase not provided",
+          "normalizePhase normalizes various phase string inputs to LUNAR_EXERCISES keys"
+        ]
+      }
+    ],
+    "related_imports_to_mock": [
+      "PersonalCycleSnapshot (from @/lib/application/agents/personal-cycle-engine)",
+      "CycleModulation, AreaHistoryEntry (local from ./area-history)"
+    ]
+  },
+  "recommendation": "Write tests for both changed files. cycle-modulation.ts is the higher priority (pure function, trivial to test). index.ts should have integration-level tests for deriveExercisesFromSnapshot. Place tests in tests/lib/application/agents/evolutionary-agent/ following the Vitest convention used in tests/lib/engines/."
+}

@@ -1,0 +1,15 @@
+{
+  "running": false,
+  "iteration": 2,
+  "intensity": 5,
+  "last_optimization": 0.0,
+  "emergency_reason": null,
+  "quality_ema": 0.095,
+  "quality_history": [
+    0.5,
+    0.5
+  ],
+  "stall_count": 0,
+  "total_duration_s": 0.0,
+  "last_iteration_at": 1781745520.2700753
+}
