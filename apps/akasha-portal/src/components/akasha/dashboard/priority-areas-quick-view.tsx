@@ -6,7 +6,7 @@
  */
 import { Sparkles } from 'lucide-react';
 import type { AreaNarrativeUI } from './hooks/useAkashaSynthesis';
-import { AREA_CONFIG, FREQUENCY_CONFIG, FrequencyBadge, IntensityDots } from './AkashaLifeAreasDashboard';
+import { AREA_CONFIG, FREQUENCY_CONFIG, FrequencyBadge, IntensityDots } from './dashboard-utils';
 
 type CycleModulationEntry = { alignmentScore: number; suggestedBoost: string; rationale: string };
 
