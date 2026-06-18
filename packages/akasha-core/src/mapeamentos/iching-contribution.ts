@@ -7,10 +7,10 @@
  * Exported:
  *   getIChingContribution(hexagrama, level) → PrimitiveContribution[]
  *
- * A tabela raiz ICHING_PRIMITIVES vive em iching.ts (dados versionados).
+ * A tabela raiz ICHING_PRIMITIVES vive em iching-base.ts (dados versionados).
  */
 import type { Polaridade, PrimitiveContribution } from './types';
-import { ICHING_PRIMITIVES } from './iching';
+import { ICHING_PRIMITIVES } from './iching-base';
 
 // ─── Helper de ajuste por nível ─────────────────────────────────────────────
 
