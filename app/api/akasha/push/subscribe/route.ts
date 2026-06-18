@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
-import { upsertPushSubscription, deletePushSubscription, getUserPushSubscriptions, type PushSubscription } from '@/lib/push/push-subscription-service';
-
+import {
+  upsertPushSubscription,
+  deletePushSubscription,
+  getUserPushSubscriptions,
+} from '@/lib/application/push/push-subscription-service';
 export interface PushSubscriptionPayload {
   endpoint: string;
   keys: { p256dh: string; auth: string };
@@ -51,7 +54,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<SubscribeResp
   const sub = body.subscription;
   await upsertPushSubscription(
     user.id,
-    { endpoint: sub.endpoint, keys: { p256dh: sub.keys.p256dh, auth: sub.keys.auth } } as PushSubscription,
+    { endpoint: sub.endpoint, keys: { p256dh: sub.keys.p256dh, auth: sub.keys.auth } },
     req.headers.get('user-agent') ?? undefined,
   );
   await prisma.user.update({
