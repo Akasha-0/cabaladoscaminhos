@@ -25,7 +25,24 @@
   },
   "onboarding": {
     "welcome": "Welcome to Akasha",
-    "start": "Start"
+    "start": "Start",
+    "brand": "Akasha OS",
+    "step1": {
+      "title": "Welcome to Akasha OS",
+      "description": "Your integrated spiritual self-knowledge system. Explore the four pillars: Kabbalah, Astrology, Ifá, and Tantra."
+    },
+    "step2": {
+      "title": "Set Up Your Ritual",
+      "description": "Choose time and components for your personalized daily ritual."
+    },
+    "step3": {
+      "title": "Track Your Progress",
+      "description": "View statistics, streaks, and history on your personal Dashboard."
+    },
+    "step4": {
+      "title": "Begin Your Journey",
+      "description": "Do your first recommended practice based on your personal code."
+    }
   },
   "mandala": {
     "houses": {

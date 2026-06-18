@@ -1,7 +1,12 @@
-import { describe, it, expect } from 'vitest';
+import { beforeAll, afterEach, afterAll, describe, it, expect } from 'vitest';
+import { server } from '../../mocks/server';
+
+beforeAll(() => server.listen({ onUnhandledRequest: 'bypass' }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 describe('GET /api/correlation/ritual', () => {
- it.skip('should generate today ritual plan', async () => {
+  it('should generate today ritual plan', async () => {
     const res = await fetch('http://localhost:3000/api/correlation/ritual');
     const json = await res.json();
     expect(res.status).toBe(200);
@@ -15,7 +20,7 @@ describe('GET /api/correlation/ritual', () => {
     expect(json.data).toHaveProperty('affirmations');
   });
 
- it.skip('should generate weekly ritual schedule', async () => {
+  it('should generate weekly ritual schedule', async () => {
     const res = await fetch('http://localhost:3000/api/correlation/ritual?type=week');
     const json = await res.json();
     expect(res.status).toBe(200);

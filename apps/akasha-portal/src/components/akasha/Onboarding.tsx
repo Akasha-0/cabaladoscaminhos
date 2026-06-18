@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronRight, ChevronLeft, Check, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { getTranslations } from '@/lib/i18n';
 
 const STORAGE_KEY = 'akasha-onboarding-complete';
 
@@ -31,26 +32,27 @@ export function Onboarding({ onComplete }: OnboardingProps) {
     handleComplete();
   };
 
+  const t = getTranslations('pt-BR', 'onboarding');
+
   const steps = [
     {
-      title: 'Bem-vindo ao Akasha OS',
-      description:
-        'Seu sistema de autoconhecimento espiritual integrado. Explore os quatro pilares: Cabala, Astrologia, Ifá e Tantra.',
+      title: t('step1.title'),
+      description: t('step1.description'),
       icon: Sparkles,
     },
     {
-      title: 'Configure seu Ritual',
-      description: 'Escolha horário e componentes para seu ritual diário personalizado.',
+      title: t('step2.title'),
+      description: t('step2.description'),
       icon: Check,
     },
     {
-      title: 'Acompanhe seu Progresso',
-      description: 'Visualize estatísticas, streaks e histórico no seu Dashboard pessoal.',
+      title: t('step3.title'),
+      description: t('step3.description'),
       icon: Sparkles,
     },
     {
-      title: 'Comece sua Jornada',
-      description: 'Faça sua primeira prática recomendada baseada no seu código pessoal.',
+      title: t('step4.title'),
+      description: t('step4.description'),
       icon: Sparkles,
     },
   ];
@@ -70,8 +72,8 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
               <Sparkles className="w-4 h-4 text-primary" />
+              <span className="font-semibold">{t('brand')}</span>
             </div>
-            <span className="font-semibold">Akasha OS</span>
           </div>
           <button onClick={handleSkip} className="p-2 hover:bg-muted rounded-lg transition-colors">
             <X className="w-4 h-4" />
@@ -136,7 +138,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 onClick={handleComplete}
                 className="px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
               >
-                Começar
+                {t('start')}
               </button>
             ) : (
               <button
