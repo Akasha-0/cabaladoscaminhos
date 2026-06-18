@@ -12,6 +12,7 @@ import {
   normalizePhase,
   deriveLunarExercises,
   deriveExercisesFromSnapshot,
+  LUNAR_EXERCISES,
 } from './index';
 import { buildCycleSnapshot } from '@/lib/application/agents/personal-cycle-engine';
 import type { PersonalCycleSnapshot } from '@/lib/application/agents/personal-cycle-engine';
@@ -137,5 +138,38 @@ describe('deriveExercisesFromSnapshot', () => {
     expect(withDefault.lunar.length).toBe(withNova.lunar.length);
     // lunar category should not be empty
     expect(withDefault.lunar.length).toBeGreaterThan(0);
+  });
+});
+// ─── LUNAR_EXERCISES constant ───────────────────────────────────────────────────
+
+describe('LUNAR_EXERCISES', () => {
+  it('exports all four lunar phases with required exercise types', () => {
+    const phases = ['nova', 'crescente', 'cheia', 'minguante'] as const;
+
+    for (const phase of phases) {
+      const entry = LUNAR_EXERCISES[phase];
+      expect(entry).toBeDefined();
+      expect(typeof entry.theme).toBe('string');
+      expect(entry.theme.length).toBeGreaterThan(0);
+      expect(typeof entry.exercises).toBe('object');
+
+      const types = Object.keys(entry.exercises) as Array<keyof typeof entry.exercises>;
+      expect(types.length).toBeGreaterThan(0);
+      for (const type of types) {
+        const ex = entry.exercises[type];
+        expect(typeof ex.title).toBe('string');
+        expect(typeof ex.instruction).toBe('string');
+        expect(typeof ex.duration).toBe('string');
+        expect(['light', 'moderate', 'deep']).toContain(ex.difficulty);
+      }
+    }
+  });
+
+  it('each phase has at least 5 exercise types', () => {
+    for (const phase of ['nova', 'crescente', 'cheia', 'minguante'] as const) {
+      const entry = LUNAR_EXERCISES[phase];
+      const typeCount = Object.keys(entry.exercises).length;
+      expect(typeCount).toBeGreaterThanOrEqual(5);
+    }
   });
 });

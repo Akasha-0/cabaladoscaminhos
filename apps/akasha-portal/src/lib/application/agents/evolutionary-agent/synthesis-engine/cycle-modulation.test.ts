@@ -93,4 +93,29 @@ describe('deriveCycleModulation', () => {
       expect(areas).toEqual(expected);
     }
   });
+
+  it('year 11 (master number): missaoDestino and oriCabecaQuizilas aligned, rest not', () => {
+    const result = deriveCycleModulation(makeSnapshot(11));
+
+    expect(result).toHaveLength(6);
+
+    const areaMap = Object.fromEntries(result.map((r) => [r.area, r]));
+
+    // Year 11 aligned: missaoDestino, oriCabecaQuizilas
+    expect(areaMap['missaoDestino'].alignmentScore).toBe(80);
+    expect(areaMap['missaoDestino'].suggestedBoost).toBe('increase');
+    expect(areaMap['oriCabecaQuizilas'].alignmentScore).toBe(80);
+    expect(areaMap['oriCabecaQuizilas'].suggestedBoost).toBe('increase');
+
+    // Non-aligned: 40, decrease
+    expect(areaMap['vitalidadeEnergia'].alignmentScore).toBe(40);
+    expect(areaMap['conexoesAmor'].alignmentScore).toBe(40);
+    expect(areaMap['carreiraProsperidade'].alignmentScore).toBe(40);
+    expect(areaMap['desafiosSombras'].alignmentScore).toBe(40);
+
+    // rationale for aligned contains "favorece"
+    expect(areaMap['missaoDestino'].rationale).toContain('favorece');
+    // rationale for non-aligned contains "outras áreas"
+    expect(areaMap['vitalidadeEnergia'].rationale).toContain('outras áreas');
+  });
 });
