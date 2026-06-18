@@ -229,7 +229,6 @@ export function AkashaAuthorityPrompt({
                     : 'rgba(255,255,255,0.03)',
                   borderColor: isSelected ? opt.cor : 'rgba(255,255,255,0.08)',
                   border: '1px solid',
-                  ringColor: opt.cor,
                   boxShadow: isSelected
                     ? `0 0 30px -8px ${opt.corGlow}, inset 0 1px 0 rgba(255,255,255,0.05)`
                     : 'inset 0 1px 0 rgba(255,255,255,0.03)',

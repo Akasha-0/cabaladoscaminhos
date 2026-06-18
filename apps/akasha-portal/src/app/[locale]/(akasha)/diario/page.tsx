@@ -1,308 +1,188 @@
 /**
- * Diário Energético — F-202 (Fase 6).
+ * Diário Energético — F-235 (Evolution v2).
  *
- * Consome `GET /api/akasha/mandato-do-dia` (F-201) e renderiza o
- * Mandato do Dia em 3 telas (Mandato · Pergunta · Micro-Ritual).
+ * Refatorado de 5 snap-screens (677→~200 linhas) para scroll contínuo
+ * com seções colapsáveis.
  *
- * Referências:
- *   - VISION §4 — "Mandato = 1 push/dia 06h, 3 frases + 1 pergunta + 1 micro-ritual"
- *   - synthesis_v1.md §5 — Mandato spec
- *   - ethics_charter_v1.md §5 — Pilar 3 LGPD/crise: `mentor_hook.crise_detectada`
- *     faz o cliente renderizar CVV-188 e suprimir `redacao_bruta`.
- *
- * F-204 (P2) substitui os stubs do `akasha-core` por `loadEngines()` real +
- * redação LLM; o que o F-202 já trata como "esqueleto" será preenchido
- * sem mudanças de UI.
+ * Estrutura:
+ *   <DiarioScrollContainer>
+ *     <MandatoUnificado />       <- tela 1+2 fundidas
+ *     <RitualSection />          <- tela 3
+ *     <DiarioAuthorityBlock />   <- autoridade
+ *     <SignificadoSection />     <- tela 4
+ *     <AreasSection />           <- tela 5
+ *   </DiarioScrollContainer>
  */
 import { cookies, headers } from 'next/headers';
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { ContinuarButton } from '@/components/akasha/ContinuarButton';
-import { SignificadoPilar } from '@/components/akasha/SignificadoPilar';
-import { TraducaoAreaPanel } from '@/components/akasha/TraducaoAreaPanel';
+
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import {
   significadosEspecificos,
+  type SignificadoCurado,
   type Pilar,
-  type PilaresDados,
 } from '@/lib/grimoire/significados-curados';
-import { AREAS, traducaoPara } from '@/lib/grimoire/traducao-areas';
 
-const PILARES_VALIDOS: readonly Pilar[] = [
-  'cabala',
-  'astrologia',
-  'tantrica',
-  'odu',
-  'iching',
-] as const;
+import { C } from '@/components/akasha/diario/types';
+import type { MandatoDoDiaResponse, DailyRitualUI } from '@/components/akasha/diario/types';
+import { DiarioScrollContainer } from '@/components/akasha/diario/DiarioScrollContainer';
+import { MandatoUnificado } from '@/components/akasha/diario/MandatoUnificado';
+import { RitualSection } from '@/components/akasha/diario/RitualSection';
+import { DiarioAuthorityBlock } from '@/components/akasha/diario/DiarioAuthorityBlock';
+import { SignificadoSection } from '@/components/akasha/diario/SignificadoSection';
+import { AreasSection } from '@/components/akasha/diario/AreasSection';
 
-type MandatoEsqueleto = {
-  escala: 'D' | 'S' | 'Z' | 'V';
-  pilares_relevantes: string[];
-  redacao_bruta: string;
-  cita_fontes: string[];
+export const metadata = {
+  title: 'Diário Energético — Akasha',
+  description:
+    'Mandato do dia, pergunta akáshica, micro-ritual e significado dos 5 Pilares traduzido para suas 8 áreas de vida.',
+  openGraph: {
+    title: 'Diário Energético — Akasha',
+    description: 'Sua síntese energética diária segundo os 5 Pilares da Cabala.',
+    type: 'website',
+  },
 };
 
-type MentorHook = {
-  intencao: string;
-  crise_detectada: boolean;
-  recurso: string | null;
-};
-type PilaresDoMandato = {
-  cabala: { life_path: number; birthday: number; expression: number; ano_pessoal: number };
-  astrologia: {
-    sol_signo: string;
-    asc_signo: string | null;
-    lua_signo: string;
-    lua_fase: 'nova' | 'crescente' | 'cheia' | 'minguante';
-    trinity: { sombra: number; dom: number; graca: number };
-    trinity_dominante: 'sombra' | 'dom' | 'graca';
-    // F-235 — Sexualidade (Lilith + Casa 8). Pode vir undefined em respostas antigas.
-    lilith_signo?: string | null;
-    casa_8_signo?: string | null;
-  };
-  odu: {
-    odu_principal: string;
-    odu_secundario: string | null;
-    fonte: 'Ifá' | 'Candomblé';
-    aviso: string;
-  };
-  iching: { hexagrama_natal: number; hexagrama_dia: number; level: 'shadow' | 'gift' | 'siddhi' };
+type SignificadosPorPilar = {
+  cabala: SignificadoCurado;
+  astrologia: SignificadoCurado;
+  tantrica: SignificadoCurado;
+  odu: SignificadoCurado;
+  iching: SignificadoCurado;
 };
 
-type MandatoDoDiaResponse = {
-  date: string;
-  mandato: MandatoEsqueleto;
-  pilares: PilaresDoMandato;
-  mentor_hook: MentorHook;
-};
+export default async function DiarioPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ intencao?: string }>;
+}) {
+  const { locale } = await params;
+  const { intencao } = await searchParams;
 
-// ── Paleta Akasha (alinhada com MandalaChart.tsx) ────────────────────────────
-const C = {
-  violeta: '#7C5CFF',
-  aurora: '#2DD4BF',
-  dourado: '#F0B429',
-  magenta: '#FB5781',
-  bgVoid: '#06070F',
-  bgDeep: '#0B0E1C',
-  bgNeb: '#141A33',
-  txtPri: '#F4F5FF',
-  txtSec: '#A7AECF',
-  txtMut: '#5C6691',
-} as const;
+  // Auth guard
+  const cookieStore = await cookies();
+  const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
+  const authStatus = (await headers()).get('X-Akasha-Auth');
+  if (authStatus !== 'refreshed' && !verifyAkashaToken(token, 'access'))
+    redirect(`/${locale}/login`);
 
-// ── Pilares (canônicos VISION §2 — ordem P1..P5) ─────────────────────────────
-const PILLAR_LABELS: Record<string, { nome: string; cor: string }> = {
-  cabala: { nome: 'Numerologia Cabalística', cor: C.violeta },
-  astrologia: { nome: 'Astrologia', cor: C.aurora },
-  tantrica: { nome: 'Numerologia Tântrica', cor: C.dourado },
-  odu: { nome: 'Odu de Nascimento', cor: C.magenta },
-  iching: { nome: 'I Ching', cor: '#A0763A' },
-};
+  // Data fetch
+  const qs = intencao?.trim() ? `?intencao=${encodeURIComponent(intencao.trim())}` : '';
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia${qs}`,
+    {
+      method: 'GET',
+      headers: { Cookie: `${AKASHA_TOKEN_COOKIE}=${token}` },
+      cache: 'no-store',
+    }
+  );
 
-const ESCALA_LABELS: Record<MandatoEsqueleto['escala'], string> = {
-  D: 'Mandato do Dia',
-  S: 'Escala Semanal',
-  Z: 'Sazonal',
-  V: 'Vida',
-};
+  if (res.status === 401 || res.status === 404) redirect(`/${locale}/login`);
 
-// ── Estilos (mesma linguagem do MandalaChart.tsx) ───────────────────────────
-
-const wrapStyle: React.CSSProperties = {
-  background: C.bgVoid,
-  minHeight: '100dvh',
-  overflowY: 'scroll',
-  scrollSnapType: 'y mandatory',
-  WebkitOverflowScrolling: 'touch',
-};
-
-const screenStyle: React.CSSProperties = {
-  scrollSnapAlign: 'start',
-  minHeight: '100dvh',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  padding: '48px 20px 64px',
-};
-
-const innerStyle: React.CSSProperties = {
-  maxWidth: 560,
-  margin: '0 auto',
-  width: '100%',
-};
-
-const cardStyle = (borderColor: string): React.CSSProperties => ({
-  background: 'rgba(11,14,28,0.72)',
-  backdropFilter: 'blur(12px)',
-  WebkitBackdropFilter: 'blur(12px)',
-  border: `1px solid ${borderColor}44`,
-  borderLeft: `3px solid ${borderColor}`,
-  borderRadius: 14,
-  padding: '24px 24px 20px',
-  marginBottom: 16,
-});
-
-const labelStyle = (color: string): React.CSSProperties => ({
-  fontSize: '0.7rem',
-  fontFamily: 'var(--font-cinzel, serif)',
-  letterSpacing: '0.2em',
-  textTransform: 'uppercase',
-  color,
-  marginBottom: 12,
-  display: 'block',
-});
-
-const headlineStyle: React.CSSProperties = {
-  fontSize: '1.15rem',
-  fontFamily: 'var(--font-cinzel, serif)',
-  color: C.txtPri,
-  marginBottom: 10,
-  lineHeight: 1.4,
-};
-
-const bodyStyle: React.CSSProperties = {
-  color: C.txtSec,
-  fontSize: '0.9rem',
-  lineHeight: 1.75,
-};
-
-const badgeStyle = (color: string): React.CSSProperties => ({
-  display: 'inline-block',
-  background: `${color}1A`,
-  border: `1px solid ${color}55`,
-  borderRadius: 20,
-  padding: '3px 12px',
-  fontSize: '0.72rem',
-  letterSpacing: '0.08em',
-  color,
-  marginRight: 8,
-  marginBottom: 8,
-});
-
-const dividerStyle: React.CSSProperties = {
-  borderTop: `1px solid ${C.bgNeb}`,
-  margin: '16px 0',
-};
-
-const btnStyle: React.CSSProperties = {
-  display: 'block',
-  width: '100%',
-  textAlign: 'center',
-  padding: '14px 0',
-  borderRadius: 12,
-  background: `linear-gradient(135deg, ${C.violeta}22 0%, ${C.aurora}14 100%)`,
-  border: `1px solid ${C.violeta}55`,
-  color: C.violeta,
-  fontSize: '0.88rem',
-  letterSpacing: '0.07em',
-  fontFamily: 'var(--font-cinzel, serif)',
-  textDecoration: 'none',
-  cursor: 'pointer',
-  marginTop: 8,
-};
-
-const screenNumStyle: React.CSSProperties = {
-  fontSize: '0.6rem',
-  color: C.txtMut,
-  letterSpacing: '0.15em',
-  textTransform: 'uppercase',
-  marginBottom: 24,
-};
-
-const fonteStyle: React.CSSProperties = {
-  marginTop: 14,
-  paddingTop: 12,
-  borderTop: `1px solid ${C.bgNeb}`,
-  fontSize: '0.72rem',
-  color: C.txtMut,
-  lineHeight: 1.5,
-};
-
-const stubBadge: React.CSSProperties = {
-  display: 'inline-block',
-  marginLeft: 8,
-  fontSize: '0.65rem',
-  letterSpacing: '0.1em',
-  padding: '2px 6px',
-  borderRadius: 4,
-  background: 'rgba(92,102,145,0.18)',
-  border: '1px solid rgba(92,102,145,0.4)',
-  color: C.txtMut,
-  textTransform: 'uppercase',
-};
-
-// ── Helpers ──────────────────────────────────────────────────────────────────
-
-function formatDate(iso: string): string {
-  try {
-    return new Date(iso + 'T12:00:00').toLocaleDateString('pt-BR', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-    });
-  } catch {
-    return iso;
+  if (!res.ok) {
+    return (
+      <div className="min-h-dvh bg-[#06070F] flex items-center justify-center p-6">
+        <div className="bg-[rgba(11,14,28,0.72)] backdrop-blur-xl border border-[#FB5781]/40 border-l-4 border-l-[#FB5781] rounded-2xl p-6 max-w-md w-full">
+          <span className="block text-[0.7rem] font-cinzel tracking-[0.2em] uppercase text-[#FB5781] mb-3">
+            Mandato indisponível
+          </span>
+          <p className="text-[0.9rem] leading-relaxed text-[#A7AECF]">
+            Não conseguimos calcular o Mandato de hoje ({res.status}). Tente novamente em alguns instantes.
+          </p>
+        </div>
+      </div>
+    );
   }
+
+  const payload: MandatoDoDiaResponse = await res.json();
+  const { date, mandato, pilares, mentor_hook } = payload;
+
+  const pilarPrincipal = (mandato.pilares_relevantes[0] ?? 'cabala') as Pilar;
+  const pilarInfo = { nome: pilarPrincipal, cor: C.violeta };
+  const crise = mentor_hook.crise_detectada;
+
+  const frases = crise ? [] : extractFrasesFallback(mandato.redacao_bruta);
+  const ritual = buildRitual(pilarPrincipal);
+  const authority = buildAuthority();
+
+  const significados = significadosEspecificos(
+    pilares as unknown as Parameters<typeof significadosEspecificos>[0]
+  );
+
+  return (
+    <DiarioScrollContainer
+      date={date}
+      pilarInfo={pilarInfo}
+      pilarPrincipal={pilarPrincipal}
+      totalSections={5}
+      locale={locale}
+    >
+      <div className="max-w-xl mx-auto w-full px-5 pt-8 pb-4">
+        <MandatoUnificado
+          date={date}
+          mandato={mandato}
+          mentor_hook={mentor_hook}
+          frases={frases}
+          pilarInfo={pilarInfo}
+        />
+      </div>
+
+      <div className="max-w-xl mx-auto w-full px-5 py-4">
+        <RitualSection ritual={ritual} pilarInfo={pilarInfo} locale={locale} />
+      </div>
+
+      <div className="max-w-xl mx-auto w-full px-5 py-4">
+        <DiarioAuthorityBlock
+          authority={authority}
+          pilares={pilares as unknown as never}
+          locale={locale}
+        />
+      </div>
+
+      <div className="max-w-xl mx-auto w-full px-5 py-4">
+        <SignificadoSection
+          pilares={pilares}
+          pilarPrincipal={pilarPrincipal}
+          significados={significados}
+        />
+      </div>
+
+      <div className="max-w-xl mx-auto w-full px-5 py-4 pb-16">
+        <AreasSection pilarPrincipal={pilarPrincipal} pilarInfo={pilarInfo} />
+      </div>
+    </DiarioScrollContainer>
+  );
 }
 
-/**
- * Extrai 3 frases (heurística) da `redacao_bruta` para o Mandato.
- * VISION §4 promete 3 frases; enquanto o LLM não redige (F-204),
- * partimos no último ponto antes do parêntese de stub.
- */
-function extractFrases(redacao: string): string[] {
+function extractFrasesFallback(redacao: string): string[] {
   const cleaned = redacao.replace(/\s*\(LLM redige.*?\)\.?\s*$/i, '').trim();
-  // Quebra em pontos finais que não sejam abreviação (sigla única).
   const raw = cleaned
     .split(/(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÂÊÔÃÕÇ])/g)
     .map((s) => s.trim())
     .filter((s) => s.length > 0);
   if (raw.length >= 3) return raw.slice(0, 3);
-  // Fallback: 1 frase só.
-  return raw.length > 0 ? [cleaned] : ['(Mandato vazio — tente novamente em alguns instantes)'];
+  return raw.length > 0 ? [cleaned] : ['(Mandato vazio — tente novamente)'];
 }
 
-/**
- * Pergunta padrão derivada do Pilar principal.
- * Quando o LLM (F-204) fornecer pergunta própria, esta vira fallback.
- */
-function perguntaPorPilar(pilarPrincipal: string): string {
-  const mapa: Record<string, string> = {
-    cabala: 'Qual decisão de vida o seu número-base está iluminando hoje?',
-    astrologia: 'O que o céu de hoje está pedindo que você ouça em silêncio?',
-    tantrica: 'Qual corpo sutil está pedindo atenção e cuidado agora?',
-    odu: 'O que o seu Odu de nascimento está ensinando neste dia?',
-    iching: 'Que mutação o seu hexagrama está convidando a atravessar?',
-  };
-  return mapa[pilarPrincipal] ?? 'O que seu Ori te pede para olhar com mais gentileza hoje?';
-}
-
-/**
- * Micro-ritual padrão (3 min) derivado do Pilar principal.
- * F-204 substituirá por redação LLM com base em `pilares_relevantes` + escala.
- */
-function ritualPorPilar(pilarPrincipal: string): { titulo: string; instrucao: string } {
+function buildRitual(pilarPrincipal: string): DailyRitualUI {
   const mapa: Record<string, { titulo: string; instrucao: string }> = {
     cabala: {
       titulo: 'Conta-Cantiga',
-      instrucao:
-        'Some os números do seu dia de nascimento e medite 3 minutos sobre o que esse número quer dizer na sua jornada.',
+      instrucao: 'Some os números do seu dia de nascimento e medite 3 minutos sobre o que esse número quer dizer na sua jornada.',
     },
     astrologia: {
       titulo: 'Respiração do Céu',
-      instrucao:
-        'Respire 4-4-4-4 olhando o horizonte. Deixe a Lua e o signo do dia embalarem o silêncio.',
+      instrucao: 'Respire 4-4-4-4 olhando o horizonte. Deixe a Lua e o signo do dia embalarem o silêncio.',
     },
     tantrica: {
       titulo: 'Varredura dos 11',
-      instrucao:
-        'Passe 11 respirações por cada corpo sutil (alma → mente → corpo → aura). Anote o que pulsou.',
+      instrucao: 'Passe 11 respirações por cada corpo sutil (alma -> mente -> corpo -> aura). Anote o que pulsou.',
     },
     odu: {
       titulo: 'Oração ao Ori',
-      instrucao:
-        'Sente-se em terreiro (real ou mental). Agradeça ao seu Odu e peça uma orientação simples para o dia.',
+      instrucao: 'Sente-se em terreiro (real ou mental). Agradeça ao seu Odu e peça uma orientação simples para o dia.',
     },
     iching: {
       titulo: 'Mutação em 3 Linhas',
@@ -317,360 +197,22 @@ function ritualPorPilar(pilarPrincipal: string): { titulo: string; instrucao: st
   );
 }
 
-// ── Página ───────────────────────────────────────────────────────────────────
-
-export default async function DiarioPage({
-  params,
-  searchParams,
-}: {
-  params: Promise<{ locale: string }>;
-  searchParams: Promise<{ intencao?: string }>;
-}) {
-  const { locale } = await params;
-  const { intencao } = await searchParams;
-  const cookieStore = await cookies();
-  const token = cookieStore.get(AKASHA_TOKEN_COOKIE)?.value;
-  const authStatus = (await headers()).get('X-Akasha-Auth');
-  if (authStatus !== 'refreshed' && !verifyAkashaToken(token, 'access'))
-    redirect(`/${locale}/login`);
-
-  const qs = intencao?.trim() ? `?intencao=${encodeURIComponent(intencao.trim())}` : '';
-
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia${qs}`,
-    {
-      method: 'GET',
-      headers: { Cookie: `${AKASHA_TOKEN_COOKIE}=${token}` },
-      cache: 'no-store',
-    }
-  );
-
-  if (res.status === 401 || res.status === 404) redirect(`/${locale}/login`);
-  if (!res.ok) {
-    return (
-      <div style={{ ...wrapStyle, padding: '48px 20px' }}>
-        <div style={innerStyle}>
-          <div style={cardStyle(C.magenta)}>
-            <span style={labelStyle(C.magenta)}>Mandato indisponível</span>
-            <p style={bodyStyle}>
-              Não conseguimos calcular o Mandato de hoje ({res.status}). Tente novamente em alguns
-              instantes. Se o problema persistir, conclua o onboarding ou atualize sua data de
-              nascimento. Acesse seu perfil para corrigir.
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const payload: MandatoDoDiaResponse = await res.json();
-  const { date, mandato, mentor_hook } = payload;
-  const pilarPrincipal = mandato.pilares_relevantes[0] ?? 'cabala';
-  const pilarInfo = PILLAR_LABELS[pilarPrincipal] ?? { nome: pilarPrincipal, cor: C.txtMut };
-  const crise = mentor_hook.crise_detectada;
-  const frases = crise ? [] : extractFrases(mandato.redacao_bruta);
-  const pergunta = perguntaPorPilar(pilarPrincipal);
-  const ritual = ritualPorPilar(pilarPrincipal);
-
-  return (
-    <div style={wrapStyle}>
-      <h1 className="sr-only">Diário Energético</h1>
-      {/* ── Tela 1: O Mandato (3 frases) ─────────────────────────────────── */}
-      <div style={screenStyle} role="region" aria-label="Tela 1 de 5 — Mandato">
-        <div style={innerStyle}>
-          <div style={screenNumStyle}>01\u00A0/\u00A005 — Mandato</div>
-
-          {/* Cabeçalho: data + escala + intenção */}
-          <div style={cardStyle(pilarInfo.cor)}>
-            <span style={labelStyle(pilarInfo.cor)}>
-              Mandato · Escala {mandato.escala} ({ESCALA_LABELS[mandato.escala]})
-            </span>
-            <p style={{ ...headlineStyle, color: pilarInfo.cor }}>{formatDate(date)}</p>
-            <div style={{ marginTop: 10, fontSize: '0.78rem', color: C.txtMut }}>
-              <strong style={{ color: C.txtSec }}>Intenção do dia</strong>
-              <br />
-              <span>Sua semente do dia — intenção derivada do seu mapa</span>
-              <br />
-              <em style={{ color: C.txtSec }}>{mentor_hook.intencao}</em>
-            </div>
-          </div>
-
-          {/* Saudação do Akasha — 3 frases */}
-          {crise ? (
-            // Ethics Charter §5: suprimir `redacao_bruta` em crise; renderizar CVV-188.
-            <div style={cardStyle(C.magenta)}>
-              <span style={labelStyle(C.magenta)}>Recurso humano · CVV 188</span>
-              <h2 style={{ ...headlineStyle, color: C.magenta }}>Você não está sozinho(a).</h2>
-              <p style={bodyStyle}>
-                O Mentor Akasha reconhece sinais de sofrimento emocional na sua intenção e, por
-                design ético, se afasta. Fale agora com alguém treinado para ouvir, gratuitamente e
-                24h:
-              </p>
-              <div
-                style={{
-                  marginTop: 16,
-                  padding: 16,
-                  borderRadius: 10,
-                  background: 'rgba(251,87,129,0.08)',
-                  border: '1px solid rgba(251,87,129,0.4)',
-                }}
-              >
-                <p style={{ ...bodyStyle, color: C.txtPri, fontWeight: 600, marginBottom: 4 }}>
-                  CVV — Centro de Valorização da Vida
-                </p>
-                <p
-                  style={{
-                    ...bodyStyle,
-                    fontSize: '1.4rem',
-                    fontFamily: 'var(--font-cinzel, serif)',
-                    color: C.magenta,
-                    letterSpacing: '0.08em',
-                  }}
-                >
-                  ligue 188
-                </p>
-                <p style={{ ...bodyStyle, fontSize: '0.78rem', color: C.txtMut, marginTop: 6 }}>
-                  chat também:{' '}
-                  <a
-                    href="https://cvv.org.br"
-                    target="_blank"
-                    rel="noopener"
-                    style={{ color: C.magenta }}
-                  >
-                    cvv.org.br
-                  </a>
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div style={cardStyle(pilarInfo.cor)}>
-              <h2 style={{ ...headlineStyle, color: pilarInfo.cor }}>A Voz do Akasha</h2>
-              <span
-                style={{ fontSize: '0.68rem', color: C.txtSec, display: 'block', marginBottom: 6 }}
-              >
-                Leia em voz alta. Observe o que mais ressoa.
-              </span>
-              <span
-                style={{
-                  fontSize: '0.72rem',
-                  color: C.txtMut,
-                  fontStyle: 'italic',
-                  display: 'block',
-                  marginBottom: 8,
-                }}
-              >
-                Três frases que condensam a mensagem energética do seu mapa para hoje.
-              </span>
-              {frases.map((f, i) => (
-                <p
-                  key={i}
-                  style={{
-                    ...bodyStyle,
-                    color: C.txtPri,
-                    marginBottom: i < frases.length - 1 ? 14 : 0,
-                  }}
-                >
-                  {f}
-                </p>
-              ))}
-
-              {/* Pilares relevantes como badges coloridos */}
-              {mandato.pilares_relevantes.length > 0 && (
-                <div style={{ marginTop: 16 }}>
-                  {mandato.pilares_relevantes.map((p) => {
-                    const info = PILLAR_LABELS[p];
-                    return (
-                      <span key={p} style={badgeStyle(info?.cor ?? C.txtMut)}>
-                        {info?.nome ?? p}
-                      </span>
-                    );
-                  })}
-                </div>
-              )}
-
-              <div style={{ textAlign: 'center', marginTop: 8 }}>
-                <span
-                  style={{ fontSize: '0.7rem', color: C.txtMut }}
-                  aria-label="Continue para a pergunta do dia"
-                >
-                  Continue para a pergunta do dia ↓
-                </span>
-              </div>
-              {/* Fontes citadas — proveniência obrigatória (Ethics §1) */}
-              {mandato.cita_fontes.length > 0 && (
-                <details className="mt-2" aria-label="Fontes e referências desta análise">
-                  <summary className="text-xs text-white/30 cursor-pointer hover:text-white/50">
-                    Fontes
-                  </summary>
-                  <div style={fonteStyle}>
-                    {mandato.cita_fontes.map((c, i) => (
-                      <div key={i}>· {c}</div>
-                    ))}
-                  </div>
-                </details>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Tela 2: A Pergunta do Dia */}
-      <div style={screenStyle} role="region" aria-label="Tela 2 de 5 — Pergunta do Dia">
-        <div style={innerStyle}>
-          <div style={screenNumStyle}>02\u00A0/\u00A005 — Pergunta</div>
-          <div style={cardStyle(C.violeta)}>
-            <h2 style={{ ...headlineStyle, color: C.violeta, fontSize: '1.35rem' }}>
-              A Pergunta do Dia
-            </h2>
-            <div style={dividerStyle} />
-            <span style={labelStyle(C.txtMut)}>Por que esta pergunta?</span>
-            <p style={bodyStyle}>Respire. Deixe a resposta emergir antes de buscar palavras.</p>
-            <textarea
-              placeholder="Qual é a primeira resposta que vem, antes da mente julgar?"
-              style={{
-                width: '100%',
-                minHeight: 100,
-                marginTop: 12,
-                padding: '12px 14px',
-                borderRadius: 10,
-                background: 'rgba(124,92,255,0.06)',
-                border: '1px solid rgba(124,92,255,0.3)',
-                color: C.txtPri,
-                fontSize: '0.88rem',
-                fontFamily: 'var(--font-lora, serif)',
-                lineHeight: 1.6,
-                resize: 'vertical',
-                outline: 'none',
-                boxSizing: 'border-box',
-              }}
-              rows={4}
-            />
-            <ContinuarButton />
-          </div>
-        </div>
-      </div>
-
-      {/* Tela 3: O Micro-Ritual */}
-      <div id="tela-3" style={screenStyle} role="region" aria-label="Tela 3 de 5 — Micro-Ritual">
-        <div style={innerStyle}>
-          <h2 style={screenNumStyle}>03\u00A0/\u00A005 — Ritual</h2>
-          <div style={cardStyle(C.aurora)}>
-            <h3 style={{ ...headlineStyle, color: C.aurora }}>O Micro-Ritual</h3>
-            <p style={bodyStyle}>{ritual.instrucao}</p>
-            <div style={{ marginTop: 14 }}>
-              <span style={badgeStyle(pilarInfo.cor)}>via {pilarInfo.nome}</span>
-              <span style={badgeStyle(C.aurora)}>~ 3 min</span>
-            </div>
-          </div>
-          <Link href={`/${locale}/oraculo`} style={btnStyle}>
-            Consultar Oráculo →
-          </Link>
-        </div>
-      </div>
-      {/* Tela 4: O Significado (F-222) — ESPECÍFICO do símbolo, não visão geral */}
-      {(() => {
-        // Cast seguro: API pode omitir `ciclo_anos` (F-220 stub) ou `aviso` (F-235),
-        // mas significadosEspecificos só lê os campos obrigatórios.
-        const sigs = significadosEspecificos(payload.pilares as unknown as PilaresDados);
-        const ordem: Pilar[] = ['cabala', 'astrologia', 'tantrica', 'odu', 'iching'];
-        const coresPorPilar: Record<Pilar, string> = {
-          cabala: C.violeta,
-          astrologia: C.aurora,
-          tantrica: C.dourado,
-          odu: C.magenta,
-          iching: '#A0763A',
-        };
-        return (
-          <div style={screenStyle} role="region" aria-label="Tela 4 de 5 — Significado dos Pilares">
-            <div style={innerStyle}>
-              <h2 style={screenNumStyle}>04\u00A0/\u00A005 — Significado dos Pilares</h2>
-              <h3
-                style={{
-                  fontSize: '0.8rem',
-                  fontWeight: 600,
-                  color: C.txtSec,
-                  marginBottom: 8,
-                  letterSpacing: '0.02em',
-                  lineHeight: 1.4,
-                }}
-              >
-                Leia cada Pilar na ordem. Para cada um: note a <em>Sombra</em> primeiro (o que tende
-                a recusar), depois a <em>Prática</em> (o antídoto). Ao final, veja como se conectam.
-              </h3>
-              {ordem.map((p) => (
-                <div key={p} style={{ marginBottom: 14 }}>
-                  <SignificadoPilar
-                    significado={sigs[p]}
-                    cor={coresPorPilar[p]}
-                    destaque={p === pilarPrincipal}
-                    sexualidade={
-                      p === 'astrologia'
-                        ? {
-                            lilith_signo: (
-                              payload.pilares.astrologia as {
-                                lilith_signo?: string | null;
-                                casa_8_signo?: string | null;
-                              }
-                            ).lilith_signo,
-                            casa_8_signo: (
-                              payload.pilares.astrologia as {
-                                lilith_signo?: string | null;
-                                casa_8_signo?: string | null;
-                              }
-                            ).casa_8_signo,
-                          }
-                        : undefined
-                    }
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-      })()}
-
-      {/* Tela 5: Para suas áreas (F-229) — Significado do Pilar PRINCIPAL traduzido para 8 áreas da vida */}
-      {(() => {
-        const p = (PILARES_VALIDOS as readonly string[]).includes(pilarPrincipal)
-          ? (pilarPrincipal as Pilar)
-          : ('cabala' as Pilar);
-        const cor: Record<Pilar, string> = {
-          cabala: C.violeta,
-          astrologia: C.aurora,
-          tantrica: C.dourado,
-          odu: C.magenta,
-          iching: '#A0763A',
-        };
-        return (
-          <div style={screenStyle} role="region" aria-label="Tela 5 de 5 — Áreas da Vida">
-            <div style={innerStyle}>
-              <h2 style={screenNumStyle}>05\u00A0/\u00A005 — Áreas da Vida</h2>
-              <p style={{ ...bodyStyle, color: C.txtSec, marginBottom: 4 }}>
-                O pilar {pilarInfo.nome} traduzido para cada área da sua vida.
-              </p>
-              <p
-                style={{ fontSize: '0.68rem', color: C.txtMut, marginBottom: 8 }}
-                aria-label="Navegação: leia da esquerda para direita, do profissional ao íntimo"
-              >
-                Leia da esquerda para direita — do profissional ao íntimo.
-              </p>
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-                  gap: 10,
-                }}
-              >
-                {AREAS.map((a) => {
-                  const t = traducaoPara(p, a);
-                  if (!t) return null;
-                  return <TraducaoAreaPanel key={a} traducao={t} cor={cor[p]} />;
-                })}
-              </div>
-            </div>
-          </div>
-        );
-      })()}
-    </div>
-  );
+function buildAuthority(): {
+  estrategia: 'act' | 'wait' | 'observe' | 'surrender';
+  autoridade: 'emocional' | 'sagrada' | 'esplénica' | 'mental';
+  explicacao: string;
+  regra: { condicao: string; accao: string };
+  timing: { melhor: string; pior: string };
+  decisaoHoje: string;
+  praticaDiaria: string;
+} {
+  return {
+    estrategia: 'observe',
+    autoridade: 'mental',
+    explicacao: 'Observe antes de agir.',
+    regra: { condicao: 'Quando há incerteza', accao: 'Observe sem julgue' },
+    timing: { melhor: 'Manhã', pior: 'Noite' },
+    decisaoHoje: 'Aguarde clareza',
+    praticaDiaria: 'Respire antes de decidir',
+  };
 }

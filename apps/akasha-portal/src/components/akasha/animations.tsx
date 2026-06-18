@@ -57,7 +57,7 @@ export function useCountUp(end: number, duration: number = 2000) {
 // Pulse animation for streak calendar
 export const pulse = {
   scale: [1, 1.05, 1],
-  transition: { duration: 1, repeat: Infinity, ease: 'easeInOut' },
+  transition: { duration: 1, repeat: Infinity, ease: 'easeInOut' as const },
 };
 
 export const PulseDiv = ({

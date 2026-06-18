@@ -55,6 +55,7 @@ export default defineConfig({
             '../../tests/lib/quality/run-quality-eval-guard.test.ts',
             // v0.0.6 T4 — arquitetura-guardião
             '../../tests/architecture/**',
+            '../../tests/lib/akasha/**',
           ],
           exclude: [
             '../../tests/lib/divination/divination-methods.test.ts',
