@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
-import { searchParamsToObject } from '@/lib/interface/api/query-params';
+import { searchParamsToObject } from '@/lib/shared/query-params';
 import type { SpiritualCorrelations } from '@/lib/domain/types/spiritual-correlations';
-import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/interface/api/spiritual-filters';
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/domain/types/spiritual-filters';
 
 // ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 
