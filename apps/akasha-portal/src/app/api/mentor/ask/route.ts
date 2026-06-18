@@ -93,6 +93,7 @@ export async function POST(request: NextRequest) {
       id: `session-${i}`,
       role: m.role === 'user' ? 'user' : 'mentor',
       content: m.content,
+      createdAt: new Date(),
     }));
     // 6. Stream response — uses authenticated userId
     const encoder = new TextEncoder();

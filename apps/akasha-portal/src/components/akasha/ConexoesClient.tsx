@@ -6,6 +6,7 @@
  */
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Heart, ArrowLeft, Loader, Bookmark, Info, Edit3, X } from 'lucide-react';
 import { CityAutocomplete } from '@/components/ui/city-autocomplete';
 import type { CityResult } from '@/components/ui/city-autocomplete';
@@ -147,6 +148,7 @@ interface Props {
 }
 
 export default function ConexoesClient({ userProfile }: Props) {
+  const router = useRouter();
   const [stage, setStage] = useState<Stage>('selection');
   const [rawData, setRawData] = useState<RawBirthData>({ name: '', birthDate: '', birthTime: '', birthCity: '' });
   const [loading, setLoading] = useState(false);
@@ -366,7 +368,7 @@ export default function ConexoesClient({ userProfile }: Props) {
             birthTime={userProfile.birthTime}
             birthCity={userProfile.birthCity ?? ''}
             editable
-            onEdit={() => {/* TODO: navigate to profile edit */}}
+            onEdit={() => router.push('/perfil')}
           />
 
           <div className="rounded-2xl border border-white/10 bg-white/5 p-5 space-y-4">
@@ -827,7 +829,7 @@ export default function ConexoesClient({ userProfile }: Props) {
                     )}
                   </button>
                   <div className="flex items-center justify-between">
-                    <p className="font-bold text-white truncate max-w-[60%]">{conn.otherName}</p>
+                    <p title={conn.otherName} className="font-bold text-white truncate max-w-[60%]">{conn.otherName}</p>
                     <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                       conn.dominantType === 'romantic' ? 'bg-[#f87171]/20 text-[#f87171]' :
                       conn.dominantType === 'partnership' ? 'bg-[#fbbf24]/20 text-[#fbbf24]' :
