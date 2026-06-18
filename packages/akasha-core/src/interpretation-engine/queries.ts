@@ -9,13 +9,11 @@
  * do catálogo de dados (que domina o tamanho do arquivo principal).
  *
  * Dependências:
- *  - `../interpretation-engine`: VIDA_CONTENT (catálogo) + MASTER_NUMBERS
- *    (apenas leitura em runtime — circular mas seguro porque os valores
- *    só são consumidos dentro dos corpos das funções).
+ *  - `./interpretation-engine.vida-data`: VIDA_CONTENT + MASTER_NUMBERS
  *  - `./builders`: monta AreaInterpretation a partir de NumeroContent.
  */
 import type { AreaInterpretation, VidaInterpretation, AkashaLevel, LifeArea } from '@akasha/types';
-import { MASTER_NUMBERS, VIDA_CONTENT } from '../interpretation-engine';
+import { MASTER_NUMBERS, VIDA_CONTENT } from './interpretation-engine.vida-data';
 import { buildInterpretation, buildFallback } from './builders';
 
 /**
