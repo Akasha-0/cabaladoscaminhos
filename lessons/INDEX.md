@@ -14,3 +14,9 @@ Each lesson: `{filename}.md`
 ## Index
 
 *(empty — lessons added as they are earned)*
+## Entries
+
+| Lesson | Title | Status |
+|---|---|---|
+| `001-auth-refresh-bug.md` | Auth token expires silently after 15min | OPEN |
+| `002-harness-audit-found-work-done.md` | Audit found high-leverage work already done | CLOSED |
