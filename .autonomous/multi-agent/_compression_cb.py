@@ -26,6 +26,7 @@ import hashlib
 from pathlib import Path
 from typing import Tuple
 
+ROOT = Path(__file__).resolve().parent.parent if '__file__' in globals() else Path.cwd()
 # ── Constants ────────────────────────────────────────────────────────────────
 
 MAX_RETRIES    = 3          # consecutive failures before breaker trips

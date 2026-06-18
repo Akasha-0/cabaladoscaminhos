@@ -109,8 +109,6 @@ When the user requests a durable behavior change, record it here or in the relev
   Performance: select.poll() (zero CPU idle), adaptive polling 1s→10s,
     in-memory state cache (TTL 2s), parallel QA via ThreadPoolExecutor.
   Skill: `.autonomous/multi-agent/skills/akasha-evolution/SKILL.md`.
-**Ralph-loop** (legacy/fallback): Single-agent 6-phase loop.
-  Scripts: `.autonomous/ralph-loop/akasha-ralph-loop.py`.
 **Headroom proxy**: Running on port 8787. All large tool outputs (>5k tokens) use Headroom compression.
 **CodeGraph**: Primary exploration tool — `codegraph_explore` before Read/Grep/Glob.
 **24/7 Operations**:
@@ -147,7 +145,6 @@ When the user requests a durable behavior change, record it here or in the relev
   - `multi-agent/run-24-7.sh` — 24/7 operational commands (start/stop/health/validate)
   - `multi-agent/AUTONOMOUS-EVOLUTION-BLUEPRINT.md` — architecture blueprint
   - `skills/akasha-evolution/` — OMP skill: start akasha-evolution
-  - `ralph-loop/` — Ralph-style 6-phase loop (legacy/fallback, per constitution §3)
 - `apps/` — aplicações do produto
 - `packages/` — workspaces compartilhados e engines
 - `docs/` — documentação canônica

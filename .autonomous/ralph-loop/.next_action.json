@@ -1,7 +1,0 @@
-{
-  "action": "implement",
-  "iteration": 0,
-  "plan_id": "PLN-000",
-  "phase": "IMPLEMENTATION",
-  "instructions": "Execute Plans.md item PLN-000. Use CodeGraph for architecture. Use Headroom for large outputs. Run triad (typecheck + tests + lint) after changes. Commit with conventional commit prefix."
-}

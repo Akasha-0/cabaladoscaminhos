@@ -11,6 +11,7 @@ import json
 import time
 import threading
 from pathlib import Path
+ROOT = Path(__file__).resolve().parent.parent if '__file__' in globals() else Path.cwd()
 
 __all__ = ["PromptEngineV2"]
 
