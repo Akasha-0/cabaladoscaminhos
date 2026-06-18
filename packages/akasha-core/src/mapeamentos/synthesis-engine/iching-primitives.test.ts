@@ -3,13 +3,15 @@
  * Covers: compileIChingPrimitives
  */
 import { describe, it, expect } from 'vitest';
-import { compileIChingPrimitives } from './iching-primitives';
 import type { HexagramaBase } from './iching-base-data';
+import { compileIChingPrimitives } from './iching-primitives';
 
 // ─── Fixtures ─────────────────────────────────────────────────────────────────
 
 /** Minimal HexagramaBase used in tests */
-const hex = (overrides: Partial<HexagramaBase['primitivos'][0]> = {}): HexagramaBase['primitivos'][0] => ({
+const hex = (
+  overrides: Partial<HexagramaBase['primitivos'][0]> = {}
+): HexagramaBase['primitivos'][0] => ({
   primitivo: 'Poder',
   intensidade: 8,
   polaridade: 'luz',
@@ -39,7 +41,12 @@ describe('compileIChingPrimitives', () => {
       42: {
         primitivos: [
           hex({ primitivo: 'Expansao', intensidade: 9, polaridade: 'luz', fonte: 'Wilhelm 42' }),
-          hex({ primitivo: 'Movimento', intensidade: 7, polaridade: 'ambas', fonte: 'Wilhelm 42b' }),
+          hex({
+            primitivo: 'Movimento',
+            intensidade: 7,
+            polaridade: 'ambas',
+            fonte: 'Wilhelm 42b',
+          }),
         ],
       },
     };
@@ -69,7 +76,7 @@ describe('compileIChingPrimitives', () => {
 
     expect(Object.keys(result)).toContain('7');
     // A key deve ser o número 7 (não string "7")
-    expect(result).toHaveProperty(7);
+    expect(result).toHaveProperty('7');
     expect(result[7][0].primitivo).toBe('Ordem');
   });
 

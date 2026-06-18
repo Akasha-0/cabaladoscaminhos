@@ -10,11 +10,12 @@
  *
  * Usar getIChingContribution() para PrimitiveContributions ajustadas.
  */
-import type { PrimitiveContribution } from './types';
+import { BASE } from './synthesis-engine/iching-base-data';
 import { compileIChingPrimitives } from './synthesis-engine/iching-primitives';
+import type { PrimitiveContribution } from './types';
+
 export type { HexagramaBase } from './synthesis-engine/iching-base-data';
 export { BASE } from './synthesis-engine/iching-base-data';
-import { BASE } from './synthesis-engine/iching-base-data';
 
 // ─── Tabela compilada: ICHING_PRIMITIVES ────────────────────────────────────
 /**
