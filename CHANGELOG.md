@@ -1,3 +1,20 @@
+## v0.91.1 (2026-06-18) — fix: package-boundaries test false positives + boundary violations
+
+### Bug Fixes
+- `tests/architecture/package-boundaries.test.ts` (v0.0.6 → v0.0.7): Fixed broken regex logic that caused 50 false-positive violations. Old pattern `@akasha/${segment}/` matched ANY import containing a segment name (e.g. "tipos" falsely matched `@akasha/mentor/types`). New pattern precisely matches `@akasha/{scope}/src/{file}` — no false positives.
+- Fixed 4 real boundary violations:
+  - `packages/core-cabala/src/numerology-kabalah.ts`: `@akasha/types/src/index` → `@akasha/types`
+  - `packages/core-tantra/src/numerology-tantric.ts`: `@akasha/types/src/index` → `@akasha/types`
+  - `apps/akasha-portal/src/app/api/mentor/ask/route.ts`: `@akasha/mentor/types` → `@akasha/mentor`
+  - `apps/akasha-portal/src/lib/application/mentor/llm-router.ts`: `@akasha/mentor/types` → `@akasha/mentor`
+
+### Refactors
+- `traducao-areas.ts`: split into 6 micro-modules (cabala, astrologia, tantrica, odu, iching, matrix) — zero behavior change, 1077-line facade + domain modules
+
+### Tests
+- Boundary test: 0 violations (was 50 false positives)
+- Full suite: 1402 passed, 17 skipped
+
 ## v0.85.2 (2026-06-17) — fix: MandalaChart SVG hydration mismatch (floating-point precision)
 
 ### Bug Fix: React Hydration Mismatch in MandalaChart

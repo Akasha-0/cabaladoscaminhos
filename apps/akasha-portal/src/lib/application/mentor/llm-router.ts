@@ -16,7 +16,7 @@
  */
 import { getCorrelations, correlationsToContext } from '@akasha/mentor/correlation';
 import { mapsToPromptContext } from '@akasha/mentor/maps';
-import type { UserMaps, MentorMessage } from '@akasha/mentor/types';
+import type { UserMaps, MentorMessage } from '@akasha/mentor';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 import { ragForUserMaps, type UserMapsLike } from '@/lib/grimoire/rag-mapa';

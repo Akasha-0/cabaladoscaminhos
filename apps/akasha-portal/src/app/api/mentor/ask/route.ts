@@ -9,7 +9,7 @@
  * ignores userId from body — uses only the authenticated user's identity.
  */
 import { loadUserMaps } from '@akasha/mentor/maps';
-import type { MentorMessage } from '@akasha/mentor/types';
+import type { MentorMessage } from '@akasha/mentor';
 import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
