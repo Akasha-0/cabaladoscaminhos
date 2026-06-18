@@ -1,0 +1,78 @@
+# AKASHA — Oh My Pi native settings
+# Based on AKASHA_HARNESS_CONSTITUTION.md §4
+# Monorepo: cabala-dos-caminhos (Next.js 16 + Vitest + Prisma)
+# ─────────────────────────────────────────────────────────────
+#
+# task.isolation: each sub-agent runs in its own git worktree.
+#   merge=branch integrates via branch (preferred over patch for
+#   most changes).  Prevents cross-contamination of working trees.
+#
+# async.maxJobs: start conservative (CPU/RAM bound on this host).
+#   Raise only after measuring with `omp stats`.  Build-heavy work
+#   (typecheck + test + lint) is serialised inside the `qa` agent
+#   so it never runs in parallel with itself.
+#
+# modelRoles: all roles point at minimax/MiniMax-M2.7-highspeed.
+#   The model is the same across roles; differentiation comes from
+#   `defaultThinkingLevel` and per-task verification rigour.
+#   smol = fast/exploratory  (researcher)
+#   slow = deep reasoning    (architect, plan synthesis)
+#   default = implementation (coder, qa, validator, designer)
+#   commit = atomic commit  (integrator)
+#
+# compaction: replaces the old custom context_engine/snapshot logic.
+#   reserveTokens leaves headroom for the next tool-call round-trip.
+#   keepRecentTokens preserves the most recent context window.
+#   autoContinue resumes after compaction without manual intervention.
+#
+# skills: domain-specific skills live in .omp/skills/<name>/SKILL.md
+#   and are discovered automatically when enabled.
+# ─────────────────────────────────────────────────────────────
+
+task:
+  # eager: false — agents wait for explicit Task tool dispatch;
+  # no speculative pre-launch.  Keeps concurrency predictable.
+  eager: false
+  isolation:
+    # worktree: each sub-agent gets a dedicated git worktree.
+    #   The orchestrator stays on main; agents branch/merge cleanly.
+    mode: worktree
+    # branch: integrate via git branch + merge (preferred).
+    #   Use 'patch' only for tiny, self-contained one-file changes.
+    merge: branch
+
+# Concurrency guard — protects CPU/RAM on this host.
+# Start at 4; measure before raising.
+async:
+  enabled: true
+  maxJobs: 4
+
+# Model assignments by role.
+# All use MiniMax-M2.7-highspeed; thinking level differentiates.
+modelRoles:
+  default: minimax/MiniMax-M2.7-highspeed   # coder, qa, validator, designer
+  smol:    minimax/MiniMax-M2.7-highspeed   # researcher (fast exploratory reads)
+  slow:    minimax/MiniMax-M2.7-highspeed   # architect (deep reasoning + codegraph)
+  plan:    minimax/MiniMax-M2.7-highspeed   # /plan mode synthesis
+  commit:  minimax/MiniMax-M2.7-highspeed   # atomic split-commit via omp commit
+
+# Global default thinking budget for the orchestrator.
+# 'high' gives the model room to reason before committing.
+# Override per-call with explicit thinking level if needed.
+defaultThinkingLevel: high
+
+# Native context compaction — replaces memory_manager_v2 / context_engine.
+# Keeps the session context fresh without manual snapshot commits.
+compaction:
+  enabled: true
+  # Reserve tokens for the next tool-call round-trip (avoids OOM on long turns).
+  reserveTokens: 16384
+  # Keep this many of the most recent tokens always in context.
+  keepRecentTokens: 20000
+  # Automatically resume after compaction fires — no manual /continue needed.
+  autoContinue: true
+
+# Domain skills (.omp/skills/<name>/SKILL.md) — discovery + execution.
+# Disable here only if you need a bare-minimum harness with no domain logic.
+skills:
+  enabled: true

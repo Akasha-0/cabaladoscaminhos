@@ -199,3 +199,6 @@ fallow-reports/
 .autonomous/multi-agent/intelligence_v2/
 .autonomous/multi-agent/project_scanner_v2/
 .autonomous/multi-agent/circuit-breaker-v2.json
+
+# Archived harness daemons (Constitution §10)
+.autonomous/archive/
