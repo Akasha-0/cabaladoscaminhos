@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * PlainEnglishPlanet — F-XXX
+ * PlainEnglishPlanet — F-248
  *
  * Transforma dados astrológicos técnicos em linguagem prática e compreensível.
  *
