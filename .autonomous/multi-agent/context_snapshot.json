@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-18T10:16:49.463713+00:00",
+  "generated_at": "2026-06-18T10:25:26.045134+00:00",
   "version": "0.91.0",
   "features": {
     "pending_features": [
@@ -1144,16 +1144,18 @@
       "- [~] **PLN-000[2]** -- [general] large_file | 37 oversized files",
       "- [~] **PLN-000[1]** -- [general] tech_debt | 2 files with XXX",
       "- [~] **PLN-000[2]** -- [general] large_file | 37 oversized files",
+      "- [~] **PLN-001[1]** -- [general] tech_debt | 2 files with XXX",
+      "- [~] **PLN-001[2]** -- [general] large_file | 46 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2",
       "- [~] **PLN-AE-003** — Ralph-loop continuous | QA cycling (v0.12.1)"
     ],
-    "pending_count": 1144
+    "pending_count": 1146
   },
   "git": {
     "untracked": 0,
-    "modified": 12,
-    "total": 12,
+    "modified": 10,
+    "total": 10,
     "has_changes": true
   },
   "triad": {
@@ -1202,7 +1204,7 @@
       "files": [
         {
           "file": "packages/akasha-core/src/mapeamentos/iching-base.ts",
-          "lines": 1517
+          "lines": 1511
         },
         {
           "file": "packages/akasha-core/src/mapeamentos/index.ts",
@@ -1222,7 +1224,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "f6407bfea4d7f8153aca277c717b0a928810df01",
+  "git_head": "dcee73ae7fae60d2edbe5898b3763b9c8310507e",
   "decision_factors": {
     "has_pending_features": true
   }

@@ -1,0 +1,40 @@
+{
+  "ping_pattern": {
+    "id": "ping_pattern",
+    "actions": [],
+    "success_count": 1,
+    "failure_count": 0,
+    "avg_duration_seconds": 5.0,
+    "total_duration_seconds": 5.0,
+    "contexts": [
+      {
+        "area": "test"
+      }
+    ],
+    "first_seen": "2026-06-18T10:28:00.724364+00:00",
+    "last_used": "2026-06-18T10:28:00.724381+00:00",
+    "last_used_ts": 1781778480.724393,
+    "tags": [],
+    "anti_pattern": false,
+    "desc": ""
+  },
+  "fix_typescript_errors": {
+    "id": "fix_typescript_errors",
+    "actions": [],
+    "success_count": 1,
+    "failure_count": 0,
+    "avg_duration_seconds": 10.0,
+    "total_duration_seconds": 10.0,
+    "contexts": [
+      {
+        "area": "typecheck"
+      }
+    ],
+    "first_seen": "2026-06-18T10:28:10.605388+00:00",
+    "last_used": "2026-06-18T10:28:10.605406+00:00",
+    "last_used_ts": 1781778490.60541,
+    "tags": [],
+    "anti_pattern": false,
+    "desc": ""
+  }
+}

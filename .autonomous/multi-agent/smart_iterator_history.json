@@ -351,6 +351,28 @@
       "lines_changed": 0,
       "files_changed": 0,
       "quality_delta": 0.0
+    },
+    {
+      "area": "unknown",
+      "type": "tech_debt",
+      "outcome": "planned",
+      "timestamp": 1781778373.626273,
+      "iso": "2026-06-18T10:26:13.626277+00:00",
+      "version": "",
+      "lines_changed": 0,
+      "files_changed": 0,
+      "quality_delta": 0.0
+    },
+    {
+      "area": "unknown",
+      "type": "large_file",
+      "outcome": "planned",
+      "timestamp": 1781778373.627391,
+      "iso": "2026-06-18T10:26:13.627395+00:00",
+      "version": "",
+      "lines_changed": 0,
+      "files_changed": 0,
+      "quality_delta": 0.0
     }
   ]
 }

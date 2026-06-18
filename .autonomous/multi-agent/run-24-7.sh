@@ -21,13 +21,13 @@
 #   ./run-24-7.sh validate    — Run validation suite
 #
 # Flow:
-#   run-24-7.sh → run-loop-supervised.sh → akasha-loop-daemon-v6.py
+#   run-24-7.sh → run-loop-supervised.sh → akasha-loop-daemon-v8.py
 #
 set -euo pipefail
 
 ROOT="/home/skynet/cabala-dos-caminhos"
 MA="$ROOT/.autonomous/multi-agent"
-DAEMON_V6="$MA/akasha-loop-daemon-v6.py"
+DAEMON_V8="$MA/akasha-loop-daemon-v8.py"
 SUPERVISOR="$MA/run-loop-supervised.sh"
 PID_FILE="$MA/loop-daemon.pid"
 STATE_FILE="$MA/state.json"
@@ -46,7 +46,7 @@ log_err(){ echo -e "[$(date +%H:%M:%S)]$RED ERR $1$NC"; }
 
 preflight(){
     log "Pre-flight checks..."
-    if [[ ! -f "$DAEMON_V6" ]]; then log_err "v6 daemon not found"; exit 1; fi
+    if [[ ! -f "$DAEMON_V8" ]]; then log_err "v6 daemon not found"; exit 1; fi
     local missing=()
     for mod in adaptive_pacer self_healer predictive_engine skill_discoverer \
                continuity_manager memory_manager guardian telemetry \

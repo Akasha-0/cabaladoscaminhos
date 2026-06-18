@@ -1,6 +1,6 @@
 {
-  "scanned_at": 1781777863.8487413,
-  "scanned_at_iso": "2026-06-18T10:17:43.848746+00:00",
+  "scanned_at": 1781778373.6214147,
+  "scanned_at_iso": "2026-06-18T10:26:13.621418+00:00",
   "areas": {
     "UI/Design": {
       "description": "User interface components and design system",
@@ -188,12 +188,12 @@
     "API/Logic": {
       "description": "Business logic, API routes, and core library code",
       "files": [
+        "packages/akasha-core/src/mapeamentos/iching-contribution.ts",
+        "packages/akasha-core/src/mapeamentos/iching-base.ts",
         "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/index.ts",
         "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/synthesis-engine/exercise-derivers.ts",
         "packages/akasha-core/src/mapeamentos/types.ts",
-        "packages/akasha-core/src/mapeamentos/iching-contribution.ts",
         "packages/akasha-core/src/mapeamentos/iching.ts",
-        "packages/akasha-core/src/mapeamentos/iching-base.ts",
         "packages/types/src/index.ts",
         "packages/mentor/src/types.ts",
         "packages/mentor/src/rag/rag-service.ts",
@@ -524,12 +524,12 @@
         "packages/core-cabala/src/sefirot-meanings.ts"
       ],
       "file_count": 334,
-      "last_modified": 1781777766.8271947,
-      "last_modified_iso": "2026-06-18T10:16:06.827195+00:00",
+      "last_modified": 1781777993.4703934,
+      "last_modified_iso": "2026-06-18T10:19:53.470393+00:00",
       "quality_score": 72.6,
       "activity_level": "hot",
       "improvement_potential": 40.7,
-      "total_lines": 20329,
+      "total_lines": 20323,
       "coverage_estimate": 0.23247232472324722
     },
     "Database/Prisma": {
@@ -2015,12 +2015,12 @@
         "CONTRIBUTING.md"
       ],
       "file_count": 81,
-      "last_modified": 1781777740.792153,
-      "last_modified_iso": "2026-06-18T10:15:40.792153+00:00",
+      "last_modified": 1781778258.3609593,
+      "last_modified_iso": "2026-06-18T10:24:18.360959+00:00",
       "quality_score": 83.5,
       "activity_level": "hot",
       "improvement_potential": 9.3,
-      "total_lines": 15843,
+      "total_lines": 15846,
       "coverage_estimate": 1.0
     },
     "Grimoire": {
@@ -2145,11 +2145,12 @@
     "Autonomous loop": {
       "description": "Self-evolution, autonomous agents, and loop infrastructure",
       "files": [
+        ".autonomous/multi-agent/akasha-loop-daemon-v8.py",
+        ".autonomous/multi-agent/skill_discoverer_v2.py",
         ".autonomous/multi-agent/context_snapshot.json",
         ".autonomous/multi-agent/triad-cache.json",
         ".autonomous/multi-agent/pacer-state.json",
         ".autonomous/multi-agent/project_map.json",
-        ".autonomous/multi-agent/skills/akasha-evolution/SKILL.md",
         ".autonomous/multi-agent/state-checkpoint.json",
         ".autonomous/multi-agent/memory-warm.json",
         ".autonomous/multi-agent/.git-head-tracked.json",
@@ -2159,10 +2160,11 @@
         ".autonomous/multi-agent/state.json",
         ".autonomous/multi-agent/metrics.json",
         ".autonomous/multi-agent/omp-agent-results.json",
-        ".autonomous/multi-agent/agent-results/result-ta-1781776980-2.json",
-        ".autonomous/multi-agent/agent-results/result-ta-1781777425-0.json",
+        ".autonomous/multi-agent/agent-results/result-ta-1781777925-0.json",
+        ".autonomous/multi-agent/agent-results/result-ta-1781777925-1.json",
         ".autonomous/multi-agent/task-implementation.json",
         ".autonomous/multi-agent/smart_iterator_history.json",
+        ".autonomous/multi-agent/skills/akasha-evolution/SKILL.md",
         ".autonomous/multi-agent/run-loop-supervised.sh",
         ".autonomous/multi-agent/run-24-7.sh",
         ".autonomous/multi-agent/akasha-loop-daemon-v7.py",
@@ -2348,13 +2350,13 @@
         ".autonomous/coding_prompt.md",
         ".autonomous/bootstrap-prompt.json"
       ],
-      "file_count": 202,
-      "last_modified": 1781777856.9874406,
-      "last_modified_iso": "2026-06-18T10:17:36.987441+00:00",
+      "file_count": 204,
+      "last_modified": 1781778372.8224883,
+      "last_modified_iso": "2026-06-18T10:26:12.822488+00:00",
       "quality_score": 60.7,
       "activity_level": "hot",
       "improvement_potential": 44.5,
-      "total_lines": 51096,
+      "total_lines": 52896,
       "coverage_estimate": 0.0
     }
   }

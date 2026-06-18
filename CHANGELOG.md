@@ -887,3 +887,5 @@ Todas as mudanças significativas são documentadas aqui — reverts e regressõ
 - AkashaSignificadoCard + 5 areas de vida + APK build
 
 ## v0.86.0+ (iter 0) — tech_debt, large_file
+
+## v0.86.0+ (iter 1) — tech_debt, large_file
