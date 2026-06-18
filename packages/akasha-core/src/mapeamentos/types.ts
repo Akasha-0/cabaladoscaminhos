@@ -215,10 +215,8 @@ export function setTradicaoWeights(
   weights: unknown,
 ): boolean {
   if (!isValidWeights(weights)) {
-    console.warn('[mapeamentos] setTradicaoWeights: invalid weights — must be Record<Tradicao, Record<Dominio, number>> with values in 0–2 range. Override NOT applied.');
     return false;
   }
   _weightsOverride = weights as Record<Tradicao, Record<Dominio, number>>;
-  console.info('[mapeamentos] Tradicao weights overridden at runtime.');
   return true;
 }
