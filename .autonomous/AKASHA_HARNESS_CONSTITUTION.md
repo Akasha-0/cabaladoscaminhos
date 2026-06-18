@@ -63,8 +63,8 @@ skills de domínio, hooks/TTSR de guardrail, e a memória durável curada (`less
             └───────────────┬──────────────────────────────┘
         Task tool (isolation: worktree, merge: branch) | async maxJobs limitado
    ┌──────────┬──────────┬──────────┬──────────┬──────────┬──────────┐
-researcher  architect   coder      qa       validator  designer
- (smol)      (slow)    (default)  (default)  (default)  (default)
+ researcher  architect   coder      qa       validator  designer
+ (smol)      (slow)    (default)  (default)  (slow)    (default)
    └── cada um em worktree isolado → resultado volta em streaming ──┘
 ```
 
