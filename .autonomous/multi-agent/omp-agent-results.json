@@ -1,20 +1,20 @@
 {
   "results": [
     {
-      "success": false,
-      "message": "Skipped: apps/akasha-portal/src/lib/application/agents/evolutionary-agent/index.ts has unstaged modifications",
-      "type": "large_file"
+      "success": true,
+      "message": "Fixed 0 tech_debt comments in 0 files (target files contain F-XXX docblocks, not tech_debt)",
+      "type": "tech_debt"
     },
     {
       "success": true,
-      "message": "Fixed 0 tech_debt comments in 0 files - no tech_debt comments found in target files",
-      "type": "tech_debt"
+      "message": "Extracted helper from packages/akasha-core/src/mapeamentos/iching.ts",
+      "type": "large_file"
     }
   ],
   "summary": {
-    "success": 1,
+    "success": 2,
     "total": 2,
-    "rate": 0.5,
+    "rate": 1.0,
     "files_changed": 0
   }
 }

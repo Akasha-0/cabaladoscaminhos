@@ -3,11 +3,13 @@
   "iteration": 0,
   "running": true,
   "current_features": [
+    "missing_tests",
     "tech_debt",
     "large_file"
   ],
   "retry_count": 0,
   "intensity": 5,
-  "daemon_pid": 1267793,
-  "quality_snapshot": 0.28
+  "daemon_pid": 1327284,
+  "qa_failures": 0,
+  "quality_snapshot": 0.412
 }

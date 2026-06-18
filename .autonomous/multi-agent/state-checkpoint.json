@@ -1,12 +1,13 @@
 {
-  "ts": "2026-06-18T09:37:33.202030+00:00",
+  "ts": "2026-06-18T10:14:39.471984+00:00",
   "phase": "RELEASE",
   "iteration": 0,
-  "quality_snapshot": 0.28,
+  "quality_snapshot": 0.412,
   "current_features": [
+    "missing_tests",
     "tech_debt",
     "large_file"
   ],
-  "daemon_pid": 1267793,
+  "daemon_pid": 1327284,
   "reason": "post-validation"
 }
