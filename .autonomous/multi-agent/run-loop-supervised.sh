@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 #
 # run-loop-supervised.sh
-# Uses akasha-loop-daemon-v9.py (phase timeout protection, crash-resilient, v2 module integration)
+# Uses akasha-loop-daemon.py (phase timeout protection, crash-resilient, v2 module integration)
 #
 set -uo pipefail
 
 ROOT="/home/skynet/cabala-dos-caminhos"
 MA="$ROOT/.autonomous/multi-agent"
-DAEMON="$MA/akasha-loop-daemon-v9.py"
+DAEMON="$MA/akasha-loop-daemon.py"
 SOCK="$MA/loop-daemon.sock"
 PID_FILE="$MA/loop-daemon.pid"
 LOG_FILE="$MA/loop-supervisor.log"
