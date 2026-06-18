@@ -54,6 +54,7 @@ export default defineConfig({
             './tests/scripts/**',
             './tests/lib/quality/run-quality-eval-guard.test.ts',
             './tests/architecture/**',
+            './packages/akasha-core/src/mapeamentos/**/*.test.ts',
           ],
           exclude: [
             './tests/lib/divination/divination-methods.test.ts',
