@@ -124,3 +124,70 @@ apps/akasha-portal/capacitor/
 .headroom-venv/
 .headroom-venv/proxy.log
 *.compressed.md
+
+# Agent session logs (runtime state, never commit)
+# Python bytecode (never commit)
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Autonomous harness runtime state (never commit)
+.autonomous/claude-progress.txt
+.autonomous/launch.sh
+.autonomous/orchestrator.sh
+.autonomous/multi-agent/HARNESS-CONSTITUTION.md
+.autonomous/multi-agent/sessions/
+.autonomous/multi-agent/.agent-prompts-*.txt
+.autonomous/multi-agent/.git-head-tracked.json
+.autonomous/multi-agent/agent-results/
+# ================================
+# AKASHA Harness Runtime (Constitution §4 — Camada efêmera: nunca versionar)
+# ================================
+.autonomous/multi-agent/__pycache__/
+.autonomous/multi-agent/loop-daemon.pid
+.autonomous/multi-agent/*.pid
+.autonomous/multi-agent/state*.json
+.autonomous/multi-agent/triad-cache.json
+.autonomous/multi-agent/loop-tuning.json
+.autonomous/multi-agent/omp-agent-results.json
+.autonomous/multi-agent/task-implementation.json
+.autonomous/multi-agent/smart_iterator_history.json
+.autonomous/multi-agent/autonomous-evolution-state.json
+.autonomous/multi-agent/evolver-state.json
+.autonomous/multi-agent/bootstrap_cache.json
+.autonomous/multi-agent/behavior_history.json
+.autonomous/multi-agent/skills.json
+.autonomous/multi-agent/version.json
+.autonomous/multi-agent/sessions/
+.autonomous/multi-agent/logs/
+.autonomous/multi-agent/project_scanner_v2/cache.json
+.autonomous/multi-agent/.agent-prompts-*.txt
+.autonomous/multi-agent/loop-daemon.sock
+.autonomous/multi-agent/loop-fifo-in
+.autonomous/multi-agent/loop-fifo-out
+
+# Ralph loop runtime
+.autonomous/ralph-loop/__pycache__/
+.autonomous/ralph-loop/.continuous.pid
+.autonomous/ralph-loop/continuous.log
+.autonomous/ralph-loop/headroom-proxy.log
+.autonomous/ralph-loop/ralph-*.log
+.autonomous/ralph-loop/state.json
+.autonomous/ralph-loop/sessions/
+
+# Session logs & state
+.autonomous/sessions/
+.autonomous/claude-progress.txt
+.autonomous/state/
+
+# Codegraph index (rebuilt from source, not versioned)
+.codegraph/
+
+# Build artifacts
+*.tsbuildinfo
+playwright-report/
+
+# Fallow reports
+fallow-reports/
