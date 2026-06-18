@@ -13,7 +13,7 @@ start akasha-evolution
 ### Pre-flight Check
 1. Source `scripts/sacred-protocol-check.sh` (validates CodeGraph + Headroom)
 2. Check system resources (CPU, memory, disk)
-3. Verify all 20 v8 modules exist
+3. Verify all 21 v8 modules exist
 4. Check git status — warn if uncommitted changes
 
 ### Startup
