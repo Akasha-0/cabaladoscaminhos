@@ -81,8 +81,8 @@ const F_ODU: PilarOdu = {
 };
 
 describe('PRIMITIVOS', () => {
-  it('tem exactamente 12 primitivos', () => {
-    expect(PRIMITIVOS).toHaveLength(12);
+  it('tem exactamente 36 primitivos', () => {
+    expect(PRIMITIVOS).toHaveLength(36);
   });
 
   it('cada primitivo é uma string não-vazia', () => {
@@ -111,6 +111,30 @@ describe('PRIMITIVOS', () => {
       'Materializacao',
       'Intuicao',
       'Conexao',
+      'Abundancia',
+      'Adaptacao',
+      'Discernimento',
+      'Beleza',
+      'Renovacao',
+      'Pureza',
+      'Disciplina',
+      'Nutricao',
+      'Abismo',
+      'Clareza',
+      'Persistencia',
+      'Liberacao',
+      'Sacrificio',
+      'Decisao',
+      'Ascensao',
+      'Resiliencia',
+      'Integracao',
+      'Progresso',
+      'Exploracao',
+      'Penetracao',
+      'Alegria',
+      'Dissolucao',
+      'Quietude',
+      'Shock',
     ]);
     for (const p of PRIMITIVOS) {
       expect(esperados.has(p)).toBe(true);
@@ -471,7 +495,7 @@ describe('synthesizePrimitives — tensão', () => {
       tantrica: F_TANTRICA,
       odu: F_ODU,
     });
-    expect(result.primitivos.length).toBe(12);
+    expect(result.primitivos.length).toBe(36);
     expect(result.dominioPredominante).toBeTruthy();
   });
 });
