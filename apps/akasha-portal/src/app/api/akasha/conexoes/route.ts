@@ -65,221 +65,231 @@ function buildConexaoMap(
 // ─── GET /api/akasha/conexoes ────────────────────────────────────────────────
 
 export async function GET(request: NextRequest) {
-  const authResult = await requireAkashaApi(request);
-  if (authResult instanceof NextResponse) return authResult;
+  try {
+    const authResult = await requireAkashaApi(request);
+    if (authResult instanceof NextResponse) return authResult;
 
-  const { id: userId } = authResult;
+    const { id: userId } = authResult;
 
-  const connections = await prisma.connection.findMany({
-    where: { userId },
-    orderBy: { createdAt: 'desc' },
-    select: {
-      id: true,
-      otherName: true,
-      otherBirthDate: true,
-      romanticScore: true,
-      partnershipScore: true,
-      dominantType: true,
-      authorityMatch: true,
-      createdAt: true,
-    },
-  });
+    const connections = await prisma.connection.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        otherName: true,
+        otherBirthDate: true,
+        romanticScore: true,
+        partnershipScore: true,
+        dominantType: true,
+        authorityMatch: true,
+        createdAt: true,
+      },
+    });
 
-  return NextResponse.json({ connections });
+    return NextResponse.json({ connections });
+  } catch (err) {
+    console.error('[GET /api/akasha/conexoes]', err);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
 }
 
 // ─── POST /api/akasha/conexoes ───────────────────────────────────────────────
 
 export async function POST(request: NextRequest) {
-  const authResult = await requireAkashaApi(request);
-  if (authResult instanceof NextResponse) return authResult;
-
-  const { id: userId } = authResult;
-
-  // 1. Parse & validate body
-  let body: z.infer<typeof CreateConexaoSchema>;
   try {
-    body = CreateConexaoSchema.parse(await request.json());
-  } catch (err) {
-    if (err instanceof z.ZodError) {
-      return NextResponse.json({ error: 'Dados inválidos', issues: err.issues }, { status: 400 });
-    }
-    return NextResponse.json({ error: 'Body inválido' }, { status: 400 });
-  }
+    const authResult = await requireAkashaApi(request);
+    if (authResult instanceof NextResponse) return authResult;
 
-  const {
-    otherName,
-    otherBirthDate,
-    otherBirthTime,
-    otherBirthCity,
-    otherBirthLatitude,
-    otherBirthLongitude,
-    otherBirthTimezone,
-  } = body;
+    const { id: userId } = authResult;
 
-  // 2. Load user's BirthChart from DB
-  const birthChart = await prisma.birthChart.findUnique({
-    where: { userId },
-  });
-  if (!birthChart) {
-    return NextResponse.json(
-      { error: 'Mapa natal não encontrado. Calcule seu mapa primeiro.' },
-      { status: 400 }
-    );
-  }
-
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { name: true, birthDate: true },
-  });
-  if (!user || !user.birthDate) {
-    return NextResponse.json({ error: 'Dados do usuário incompletos.' }, { status: 400 });
-  }
-
-  const userBirthDateStr = user.birthDate.toISOString().split('T')[0];
-
-  // Cast stored JSON maps to engine types
-  // Cast stored JSON maps to engine types (unknown intermediary needed for Prisma Json → specific type)
-  const userKabala = birthChart.kabalisticMap as unknown as KabalisticMap;
-  const userAstrology = birthChart.astrologyMap as unknown as AstrologyMap;
-  const userTantra = birthChart.tantricMap as unknown as TantricMap;
-  const userOdu = birthChart.oduBirth as unknown as OduBirth;
-
-  // Derive user's authority from astrology (ascendente → strategy, lua → emotional authority)
-  // Fall back to defaults when not available
-  const userAuthority: AkashaAuthorityInput = DEFAULT_AUTHORITY;
-
-  // 3. Build partner's maps
-  let partnerKabala: KabalisticMap;
-  let partnerAstrology: AstrologyMap;
-  let partnerTantra: TantricMap;
-  let partnerOdu: OduBirth;
-  let partnerLat: number | null = otherBirthLatitude ?? null;
-  let partnerLng: number | null = otherBirthLongitude ?? null;
-
-  try {
-    partnerKabala = buildKabalisticMap(otherName, otherBirthDate);
-  } catch (err) {
-    return NextResponse.json(
-      { error: 'Falha no cálculo cabalístico do parceiro.', detail: String(err) },
-      { status: 422 }
-    );
-  }
-
-  try {
-    partnerTantra = buildTantricMap(otherBirthDate);
-  } catch (err) {
-    return NextResponse.json(
-      { error: 'Falha no cálculo tântrico do parceiro.', detail: String(err) },
-      { status: 422 }
-    );
-  }
-
-  try {
-    partnerOdu = calculateBirthOdu(otherBirthDate);
-  } catch (err) {
-    return NextResponse.json(
-      { error: 'Falha no cálculo de Odu do parceiro.', detail: String(err) },
-      { status: 422 }
-    );
-  }
-
-  // Geocode partner's city only if coordinates were not already provided via CityAutocomplete
-  if (otherBirthCity && partnerLat === null && partnerLng === null) {
+    // 1. Parse & validate body
+    let body: z.infer<typeof CreateConexaoSchema>;
     try {
-      const geo = await geocodeCity(otherBirthCity, { countryCodes: 'br' });
-      if (geo) {
-        partnerLat = geo.latitude;
-        partnerLng = geo.longitude;
+      body = CreateConexaoSchema.parse(await request.json());
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return NextResponse.json({ error: 'Dados inválidos', issues: err.issues }, { status: 400 });
       }
-    } catch {
-      // Geocoding failure is non-fatal — use defaults
+      return NextResponse.json({ error: 'Body inválido' }, { status: 400 });
     }
-  }
 
-  if (partnerLat !== null && partnerLng !== null) {
-    try {
-      partnerAstrology = birthChartToAstrologyMap(
-        getBirthChart({
-          birthDate: new Date(otherBirthDate),
-          latitude: partnerLat,
-          longitude: partnerLng,
-        })
-      );
-    } catch {
-      partnerAstrology = buildStubAstrologyMap();
-    }
-  } else {
-    partnerAstrology = buildStubAstrologyMap();
-  }
-
-  // 4. Build both ConexaoMap objects
-  const userMap = buildConexaoMap(
-    user.name,
-    userBirthDateStr,
-    userKabala,
-    userAstrology,
-    userTantra,
-    userOdu,
-    userAuthority
-  );
-
-  const partnerMap = buildConexaoMap(
-    otherName,
-    otherBirthDate,
-    partnerKabala,
-    partnerAstrology,
-    partnerTantra,
-    partnerOdu,
-    DEFAULT_AUTHORITY
-  );
-
-  // 5. Compare
-  let result: ConexaoResult;
-  try {
-    result = compareAkashaMaps(userMap, partnerMap);
-  } catch (err) {
-    return NextResponse.json(
-      { error: 'Falha na comparação dos mapas.', detail: String(err) },
-      { status: 422 }
-    );
-  }
-
-  // 6. Persist
-  const connection = await prisma.connection.create({
-    data: {
-      userId,
+    const {
       otherName,
-      otherBirthDate: new Date(otherBirthDate),
+      otherBirthDate,
       otherBirthTime,
       otherBirthCity,
-      otherBirthLatitude: partnerLat,
-      otherBirthLongitude: partnerLng,
-      otherBirthTimezone: otherBirthTimezone,
-      romanticScore: result.romantic,
-      partnershipScore: result.partnership,
-      dominantType: result.dominantType,
-      authorityMatch: result.authorityMatch,
-      resultData: result as unknown as Prisma.InputJsonValue,
-    },
-  });
+      otherBirthLatitude,
+      otherBirthLongitude,
+      otherBirthTimezone,
+    } = body;
 
-  return NextResponse.json(
-    {
-      connection: {
-        id: connection.id,
-        otherName: connection.otherName,
-        otherBirthDate: connection.otherBirthDate.toISOString().split('T')[0],
-        romanticScore: connection.romanticScore,
-        partnershipScore: connection.partnershipScore,
-        dominantType: connection.dominantType,
-        authorityMatch: connection.authorityMatch,
-        resultData: connection.resultData,
-        createdAt: connection.createdAt,
+    // 2. Load user's BirthChart from DB
+    const birthChart = await prisma.birthChart.findUnique({
+      where: { userId },
+    });
+    if (!birthChart) {
+      return NextResponse.json(
+        { error: 'Mapa natal não encontrado. Calcule seu mapa primeiro.' },
+        { status: 400 }
+      );
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { name: true, birthDate: true },
+    });
+    if (!user || !user.birthDate) {
+      return NextResponse.json({ error: 'Dados do usuário incompletos.' }, { status: 400 });
+    }
+
+    const userBirthDateStr = user.birthDate.toISOString().split('T')[0];
+
+    // Cast stored JSON maps to engine types
+    // Cast stored JSON maps to engine types (unknown intermediary needed for Prisma Json → specific type)
+    const userKabala = birthChart.kabalisticMap as unknown as KabalisticMap;
+    const userAstrology = birthChart.astrologyMap as unknown as AstrologyMap;
+    const userTantra = birthChart.tantricMap as unknown as TantricMap;
+    const userOdu = birthChart.oduBirth as unknown as OduBirth;
+
+    // Derive user's authority from astrology (ascendente → strategy, lua → emotional authority)
+    // Fall back to defaults when not available
+    const userAuthority: AkashaAuthorityInput = DEFAULT_AUTHORITY;
+
+    // 3. Build partner's maps
+    let partnerKabala: KabalisticMap;
+    let partnerAstrology: AstrologyMap;
+    let partnerTantra: TantricMap;
+    let partnerOdu: OduBirth;
+    let partnerLat: number | null = otherBirthLatitude ?? null;
+    let partnerLng: number | null = otherBirthLongitude ?? null;
+
+    try {
+      partnerKabala = buildKabalisticMap(otherName, otherBirthDate);
+    } catch (err) {
+      return NextResponse.json(
+        { error: 'Falha no cálculo cabalístico do parceiro.', detail: String(err) },
+        { status: 422 }
+      );
+    }
+
+    try {
+      partnerTantra = buildTantricMap(otherBirthDate);
+    } catch (err) {
+      return NextResponse.json(
+        { error: 'Falha no cálculo tântrico do parceiro.', detail: String(err) },
+        { status: 422 }
+      );
+    }
+
+    try {
+      partnerOdu = calculateBirthOdu(otherBirthDate);
+    } catch (err) {
+      return NextResponse.json(
+        { error: 'Falha no cálculo de Odu do parceiro.', detail: String(err) },
+        { status: 422 }
+      );
+    }
+
+    // Geocode partner's city only if coordinates were not already provided via CityAutocomplete
+    if (otherBirthCity && partnerLat === null && partnerLng === null) {
+      try {
+        const geo = await geocodeCity(otherBirthCity, { countryCodes: 'br' });
+        if (geo) {
+          partnerLat = geo.latitude;
+          partnerLng = geo.longitude;
+        }
+      } catch {
+        // Geocoding failure is non-fatal — use defaults
+      }
+    }
+
+    if (partnerLat !== null && partnerLng !== null) {
+      try {
+        partnerAstrology = birthChartToAstrologyMap(
+          getBirthChart({
+            birthDate: new Date(otherBirthDate),
+            latitude: partnerLat,
+            longitude: partnerLng,
+          })
+        );
+      } catch {
+        partnerAstrology = buildStubAstrologyMap();
+      }
+    } else {
+      partnerAstrology = buildStubAstrologyMap();
+    }
+
+    // 4. Build both ConexaoMap objects
+    const userMap = buildConexaoMap(
+      user.name,
+      userBirthDateStr,
+      userKabala,
+      userAstrology,
+      userTantra,
+      userOdu,
+      userAuthority
+    );
+
+    const partnerMap = buildConexaoMap(
+      otherName,
+      otherBirthDate,
+      partnerKabala,
+      partnerAstrology,
+      partnerTantra,
+      partnerOdu,
+      DEFAULT_AUTHORITY
+    );
+
+    // 5. Compare
+    let result: ConexaoResult;
+    try {
+      result = compareAkashaMaps(userMap, partnerMap);
+    } catch (err) {
+      return NextResponse.json(
+        { error: 'Falha na comparação dos mapas.', detail: String(err) },
+        { status: 422 }
+      );
+    }
+
+    // 6. Persist
+    const connection = await prisma.connection.create({
+      data: {
+        userId,
+        otherName,
+        otherBirthDate: new Date(otherBirthDate),
+        otherBirthTime,
+        otherBirthCity,
+        otherBirthLatitude: partnerLat,
+        otherBirthLongitude: partnerLng,
+        otherBirthTimezone: otherBirthTimezone,
+        romanticScore: result.romantic,
+        partnershipScore: result.partnership,
+        dominantType: result.dominantType,
+        authorityMatch: result.authorityMatch,
+        resultData: result as unknown as Prisma.InputJsonValue,
       },
-    },
-    { status: 201 }
-  );
+    });
+
+    return NextResponse.json(
+      {
+        connection: {
+          id: connection.id,
+          otherName: connection.otherName,
+          otherBirthDate: connection.otherBirthDate.toISOString().split('T')[0],
+          romanticScore: connection.romanticScore,
+          partnershipScore: connection.partnershipScore,
+          dominantType: connection.dominantType,
+          authorityMatch: connection.authorityMatch,
+          resultData: connection.resultData,
+          createdAt: connection.createdAt,
+        },
+      },
+      { status: 201 }
+    );
+  } catch (err) {
+    console.error('[POST /api/akasha/conexoes]', err);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
 }
 
 /**

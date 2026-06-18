@@ -41,151 +41,156 @@ const TANTRIC_BODY_NAMES = [
 ];
 
 export async function GET(request: NextRequest) {
-  const auth = await requireAkashaApi(request);
-  if (auth instanceof NextResponse) return auth;
+  try {
+    const auth = await requireAkashaApi(request);
+    if (auth instanceof NextResponse) return auth;
 
-  const [chart, user] = await Promise.all([
-    prisma.birthChart.findUnique({ where: { userId: auth.id } }),
-    prisma.user.findUnique({
-      where: { id: auth.id },
-      select: { ichingMap: true, birthDate: true, birthTime: true },
-    }),
-  ]);
+    const [chart, user] = await Promise.all([
+      prisma.birthChart.findUnique({ where: { userId: auth.id } }),
+      prisma.user.findUnique({
+        where: { id: auth.id },
+        select: { ichingMap: true, birthDate: true, birthTime: true },
+      }),
+    ]);
 
-  // Se não tem chart, retornar 404 para redirecionar ao onboarding
-  if (!chart) {
-    return NextResponse.json({ error: 'Mapa natal não calculado' }, { status: 404 });
+    // Se não tem chart, retornar 404 para redirecionar ao onboarding
+    if (!chart) {
+      return NextResponse.json({ error: 'Mapa natal não calculado' }, { status: 404 });
+    }
+
+    // Formatar dados para o componente SVG
+    // Os campos são JSON armazenados — fazemos cast
+    const astrologyMap = chart.astrologyMap as any;
+    const kabalisticMap = chart.kabalisticMap as any;
+    const tantricMap = chart.tantricMap as any;
+    const oduBirth = chart.oduBirth as any;
+    const ichingMap = (chart?.ichingMap ?? null) as any;
+    const userBirthDate = user?.birthDate ?? null;
+    const userBirthTime = user?.birthTime ?? null;
+
+    // Preparar dados astrológicos para cálculo de aspectos
+    const rawPlanets: Record<string, any> = astrologyMap?.planeta ?? {};
+    const planetPositions = Object.values(rawPlanets);
+
+    // Calcular aspectos astrológicos
+    const allAspects = findAspects(planetPositions);
+    const mainAspects = allAspects
+      .filter((a) => MAIN_ASPECT_TYPES.includes(a.tipo))
+      .slice(0, 5)
+      .map((a) => ({
+        planet1: a.planeta1,
+        planet2: a.planeta2,
+        aspect: a.tipo,
+        orb: Math.round(a.orb * 100) / 100,
+        interpretation: interpretAspect(a),
+      }));
+
+    // Retornar estrutura MandalaData
+    const data = {
+      incomplete: chart.incomplete,
+
+      // Núcleo — Odus (Layer 1)
+      odus: {
+        oduName: oduBirth?.oduName ?? oduBirth?.birthOdu?.[0]?.meaning ?? 'Ori',
+        oduNumber: oduBirth?.oduNumber ?? null,
+        orixaRegency: oduBirth?.orixaRegency ?? [],
+        elementalForce: oduBirth?.elementalForce ?? null,
+        provisional: oduBirth?.provisional ?? true,
+        preceitos: oduBirth?.preceitos ?? [],
+        quizilas: oduBirth?.quizilas ?? [],
+      },
+
+      // Kabala (Layer 2)
+      kabala: {
+        lifePath: kabalisticMap?.lifePath ?? null,
+        lifePathMaster: kabalisticMap?.lifePathMaster ?? false,
+        expression: kabalisticMap?.expression ?? null,
+        expressionMaster: kabalisticMap?.expressionMaster ?? false,
+        motivation: kabalisticMap?.motivation ?? null,
+        impression: kabalisticMap?.impression ?? null,
+        mission: kabalisticMap?.mission ?? null,
+        personalYear: kabalisticMap?.personalCycles?.personalYear ?? null,
+        personalMonth: kabalisticMap?.personalCycles?.personalMonth ?? null,
+        personalDay: kabalisticMap?.personalCycles?.personalDay ?? null,
+        sefira: kabalisticMap?.sefirotPath ?? null,
+        hebrewLetter: kabalisticMap?.hebrewLetter ?? null,
+        tarotCard: kabalisticMap?.rulingArcana?.lifePath ?? null,
+        challenges: kabalisticMap?.challenges ?? null,
+        pinnacles: kabalisticMap?.pinnacles ?? null,
+        lifeCycles: kabalisticMap?.lifeCycles ?? null,
+      },
+
+      // Tântrica (Layer 3) — 11 Corpos
+      tantra: {
+        soul: tantricMap?.soul ?? null,
+        karma: tantricMap?.karma ?? null,
+        divineGift: tantricMap?.divineGift ?? null,
+        destiny: tantricMap?.destiny ?? null,
+        tantricPath: tantricMap?.tantricPath ?? null,
+        // Se tantricBodies existir, usar; senão gerar placeholders
+        bodies: tantricMap?.tantricBodies
+          ? Object.entries(tantricMap.tantricBodies).map(([k, v]: [string, any]) => ({
+              index: parseInt(k) || 0,
+              name: v?.name ?? `Corpo ${k}`,
+              active: v?.active !== false,
+            }))
+          : Array.from({ length: 11 }, (_, i) => ({
+              index: i + 1,
+              name: TANTRIC_BODY_NAMES[i] ?? `Corpo ${i + 1}`,
+              active: true,
+            })),
+      },
+
+      // Astrologia (Layer 4)
+      astrology: {
+        ascendant: astrologyMap?.ascendant ?? null,
+        midheaven: astrologyMap?.midheaven ?? null,
+        dominantPlanet: astrologyMap?.dominantPlanet ?? null,
+        // Todos os planetas disponíveis (sem limite artificial)
+        planets: Object.values(rawPlanets).map((p: any) => ({
+          name: p.planeta ?? p.name,
+          sign: p.signo ?? p.sign,
+          degree: p.grauNoSigno ?? p.degree ?? 0,
+          // Mandala Fase 3 (spec mandala-fase3-zodiac-tantra): passar longitude absoluta
+          // (0-360°) para que o MandalaChart posicione os planetas na eclíptica correta.
+          // Antes desta mudança, o MandalaChart usava `degree` (0-30° = grau dentro do
+          // signo), clusterizando todos os planetas no arco 0-30°.
+          absoluteLongitude: typeof p.longitude === 'number' ? p.longitude : null,
+          retrograde: Boolean(p.retrograde ?? p.retrogrado ?? false),
+          house: p.casa ?? p.house ?? 1,
+        })),
+        aspects: mainAspects,
+        elementalBalance: astrologyMap?.elementalChart ?? { fire: 0, earth: 0, air: 0, water: 0 },
+      },
+
+      // I-Ching (Layer 5) — v0.0.5 T6
+      iching: {
+        hexagramNumber: ichingMap?.hexagramNumber ?? null,
+        hexagramName: ichingMap?.hexagramName ?? null,
+        hexagramChineseName: ichingMap?.hexagramChineseName ?? null,
+        upperTrigram: ichingMap?.upperTrigram ?? null,
+        lowerTrigram: ichingMap?.lowerTrigram ?? null,
+        upperTrigramName: ichingMap?.upperTrigramName ?? null,
+        lowerTrigramName: ichingMap?.lowerTrigramName ?? null,
+        lines: Array.isArray(ichingMap?.lines) ? ichingMap.lines : [],
+        algorithm: ichingMap?.algorithm ?? null,
+        provisional: ichingMap?.provisional ?? true,
+        birthDate: ichingMap?.birthDate ?? null,
+        birthTime: ichingMap?.birthTime ?? null,
+        available: !!ichingMap && !ichingMap.error,
+        error: ichingMap?.error ?? null,
+      },
+
+      // birthDate/birthTime do User (apenas para computeIchingNode no front)
+      _user: {
+        birthDate: userBirthDate ? userBirthDate.toISOString() : null,
+        birthTime: userBirthTime ?? null,
+      },
+    };
+
+    return NextResponse.json(data);
+  } catch (err) {
+    console.error('[GET /api/akasha/mandala]', err);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-
-  // Formatar dados para o componente SVG
-  // Os campos são JSON armazenados — fazemos cast
-  const astrologyMap = chart.astrologyMap as any;
-  const kabalisticMap = chart.kabalisticMap as any;
-  const tantricMap = chart.tantricMap as any;
-  const oduBirth = chart.oduBirth as any;
-  const ichingMap = (chart?.ichingMap ?? null) as any;
-  const userBirthDate = user?.birthDate ?? null;
-  const userBirthTime = user?.birthTime ?? null;
-
-  // Preparar dados astrológicos para cálculo de aspectos
-  const rawPlanets: Record<string, any> = astrologyMap?.planeta ?? {};
-  const planetPositions = Object.values(rawPlanets);
-
-  // Calcular aspectos astrológicos
-  const allAspects = findAspects(planetPositions);
-  const mainAspects = allAspects
-    .filter((a) => MAIN_ASPECT_TYPES.includes(a.tipo))
-    .slice(0, 5)
-    .map((a) => ({
-      planet1: a.planeta1,
-      planet2: a.planeta2,
-      aspect: a.tipo,
-      orb: Math.round(a.orb * 100) / 100,
-      interpretation: interpretAspect(a),
-    }));
-
-  // Retornar estrutura MandalaData
-  const data = {
-    incomplete: chart.incomplete,
-
-    // Núcleo — Odus (Layer 1)
-    odus: {
-      oduName: oduBirth?.oduName ?? oduBirth?.birthOdu?.[0]?.meaning ?? 'Ori',
-      oduNumber: oduBirth?.oduNumber ?? null,
-      orixaRegency: oduBirth?.orixaRegency ?? [],
-      elementalForce: oduBirth?.elementalForce ?? null,
-      provisional: oduBirth?.provisional ?? true,
-      preceitos: oduBirth?.preceitos ?? [],
-      quizilas: oduBirth?.quizilas ?? [],
-    },
-
-    // Kabala (Layer 2)
-    kabala: {
-      lifePath: kabalisticMap?.lifePath ?? null,
-      lifePathMaster: kabalisticMap?.lifePathMaster ?? false,
-      expression: kabalisticMap?.expression ?? null,
-      expressionMaster: kabalisticMap?.expressionMaster ?? false,
-      motivation: kabalisticMap?.motivation ?? null,
-      impression: kabalisticMap?.impression ?? null,
-      mission: kabalisticMap?.mission ?? null,
-      personalYear: kabalisticMap?.personalCycles?.personalYear ?? null,
-      personalMonth: kabalisticMap?.personalCycles?.personalMonth ?? null,
-      personalDay: kabalisticMap?.personalCycles?.personalDay ?? null,
-      sefira: kabalisticMap?.sefirotPath ?? null,
-      hebrewLetter: kabalisticMap?.hebrewLetter ?? null,
-      tarotCard: kabalisticMap?.rulingArcana?.lifePath ?? null,
-      challenges: kabalisticMap?.challenges ?? null,
-      pinnacles: kabalisticMap?.pinnacles ?? null,
-      lifeCycles: kabalisticMap?.lifeCycles ?? null,
-    },
-
-    // Tântrica (Layer 3) — 11 Corpos
-    tantra: {
-      soul: tantricMap?.soul ?? null,
-      karma: tantricMap?.karma ?? null,
-      divineGift: tantricMap?.divineGift ?? null,
-      destiny: tantricMap?.destiny ?? null,
-      tantricPath: tantricMap?.tantricPath ?? null,
-      // Se tantricBodies existir, usar; senão gerar placeholders
-      bodies: tantricMap?.tantricBodies
-        ? Object.entries(tantricMap.tantricBodies).map(([k, v]: [string, any]) => ({
-            index: parseInt(k) || 0,
-            name: v?.name ?? `Corpo ${k}`,
-            active: v?.active !== false,
-          }))
-        : Array.from({ length: 11 }, (_, i) => ({
-            index: i + 1,
-            name: TANTRIC_BODY_NAMES[i] ?? `Corpo ${i + 1}`,
-            active: true,
-          })),
-    },
-
-    // Astrologia (Layer 4)
-    astrology: {
-      ascendant: astrologyMap?.ascendant ?? null,
-      midheaven: astrologyMap?.midheaven ?? null,
-      dominantPlanet: astrologyMap?.dominantPlanet ?? null,
-      // Todos os planetas disponíveis (sem limite artificial)
-      planets: Object.values(rawPlanets).map((p: any) => ({
-        name: p.planeta ?? p.name,
-        sign: p.signo ?? p.sign,
-        degree: p.grauNoSigno ?? p.degree ?? 0,
-        // Mandala Fase 3 (spec mandala-fase3-zodiac-tantra): passar longitude absoluta
-        // (0-360°) para que o MandalaChart posicione os planetas na eclíptica correta.
-        // Antes desta mudança, o MandalaChart usava `degree` (0-30° = grau dentro do
-        // signo), clusterizando todos os planetas no arco 0-30°.
-        absoluteLongitude: typeof p.longitude === 'number' ? p.longitude : null,
-        retrograde: Boolean(p.retrograde ?? p.retrogrado ?? false),
-        house: p.casa ?? p.house ?? 1,
-      })),
-      aspects: mainAspects,
-      elementalBalance: astrologyMap?.elementalChart ?? { fire: 0, earth: 0, air: 0, water: 0 },
-    },
-
-    // I-Ching (Layer 5) — v0.0.5 T6
-    iching: {
-      hexagramNumber: ichingMap?.hexagramNumber ?? null,
-      hexagramName: ichingMap?.hexagramName ?? null,
-      hexagramChineseName: ichingMap?.hexagramChineseName ?? null,
-      upperTrigram: ichingMap?.upperTrigram ?? null,
-      lowerTrigram: ichingMap?.lowerTrigram ?? null,
-      upperTrigramName: ichingMap?.upperTrigramName ?? null,
-      lowerTrigramName: ichingMap?.lowerTrigramName ?? null,
-      lines: Array.isArray(ichingMap?.lines) ? ichingMap.lines : [],
-      algorithm: ichingMap?.algorithm ?? null,
-      provisional: ichingMap?.provisional ?? true,
-      birthDate: ichingMap?.birthDate ?? null,
-      birthTime: ichingMap?.birthTime ?? null,
-      available: !!ichingMap && !ichingMap.error,
-      error: ichingMap?.error ?? null,
-    },
-
-    // birthDate/birthTime do User (apenas para computeIchingNode no front)
-    _user: {
-      birthDate: userBirthDate ? userBirthDate.toISOString() : null,
-      birthTime: userBirthTime ?? null,
-    },
-  };
-
-  return NextResponse.json(data);
 }

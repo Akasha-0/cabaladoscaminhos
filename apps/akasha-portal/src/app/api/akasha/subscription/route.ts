@@ -3,22 +3,27 @@ import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { prisma } from '@/lib/infrastructure/prisma';
 
 export async function GET(request: NextRequest) {
-  const auth = await requireAkashaApi(request);
-  if (auth instanceof NextResponse) return auth;
+  try {
+    const auth = await requireAkashaApi(request);
+    if (auth instanceof NextResponse) return auth;
 
-  const sub = await prisma.subscription.findUnique({
-    where: { userId: auth.id },
-    select: { plan: true, status: true, currentPeriodEnd: true, stripeSubscriptionId: true },
-  });
+    const sub = await prisma.subscription.findUnique({
+      where: { userId: auth.id },
+      select: { plan: true, status: true, currentPeriodEnd: true, stripeSubscriptionId: true },
+    });
 
-  if (!sub) {
-    return NextResponse.json({ plan: 'FREEMIUM', status: 'ACTIVE', currentPeriodEnd: null });
+    if (!sub) {
+      return NextResponse.json({ plan: 'FREEMIUM', status: 'ACTIVE', currentPeriodEnd: null });
+    }
+
+    return NextResponse.json({
+      plan: sub.plan,
+      status: sub.status,
+      currentPeriodEnd: sub.currentPeriodEnd?.toISOString() ?? null,
+      hasSubscription: !!sub.stripeSubscriptionId,
+    });
+  } catch (err) {
+    console.error('[GET /api/akasha/subscription]', err);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-
-  return NextResponse.json({
-    plan: sub.plan,
-    status: sub.status,
-    currentPeriodEnd: sub.currentPeriodEnd?.toISOString() ?? null,
-    hasSubscription: !!sub.stripeSubscriptionId,
-  });
 }

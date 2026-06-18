@@ -78,193 +78,198 @@ export async function POST(request: NextRequest) {
   if (authResult instanceof NextResponse) return authResult;
   const { id: userId } = authResult;
 
-  // 2. Validate body
-  let parsed: z.infer<typeof bodySchema>;
   try {
-    const raw = await request.json();
-    parsed = bodySchema.parse(raw);
-  } catch {
-    return NextResponse.json({ error: 'Parâmetros inválidos' }, { status: 400 });
-  }
-
-  const { question, consultationId } = parsed;
-
-  // 3. Check credit balance
-  const ledger = await prisma.creditEntry.aggregate({
-    where: { userId },
-    _sum: { delta: true },
-  });
-  const balance = ledger._sum.delta ?? 0;
-
-  if (balance < 1) {
-    return NextResponse.json({ error: 'Créditos insuficientes' }, { status: 402 });
-  }
-
-  // 4. Determine credit cost
-  const creditCost = question.length > 200 ? 3 : 1;
-
-  if (balance < creditCost) {
-    return NextResponse.json(
-      { error: 'Créditos insuficientes para esta consulta' },
-      { status: 402 }
-    );
-  }
-
-  // 5. Create or fetch consultation
-  let consultation: { id: string };
-  if (consultationId) {
-    const existing = await prisma.consultation.findFirst({
-      where: { id: consultationId, userId },
-      select: { id: true },
-    });
-    if (!existing) {
-      return NextResponse.json({ error: 'Consulta não encontrada' }, { status: 404 });
+    // 2. Validate body
+    let parsed: z.infer<typeof bodySchema>;
+    try {
+      const raw = await request.json();
+      parsed = bodySchema.parse(raw);
+    } catch {
+      return NextResponse.json({ error: 'Parâmetros inválidos' }, { status: 400 });
     }
-    consultation = existing;
-  } else {
-    consultation = await prisma.consultation.create({
-      data: { userId, title: question.slice(0, 80) },
-      select: { id: true },
+
+    const { question, consultationId } = parsed;
+
+    // 3. Check credit balance
+    const ledger = await prisma.creditEntry.aggregate({
+      where: { userId },
+      _sum: { delta: true },
     });
-  }
+    const balance = ledger._sum.delta ?? 0;
 
-  // 6. Persist user message
-  await prisma.chatMessage.create({
-    data: {
-      consultationId: consultation.id,
-      role: 'USER',
-      content: question,
-      routedPillars: [],
-      grimoireRefs: [],
-      creditCost: 0,
-    },
-  });
+    if (balance < 1) {
+      return NextResponse.json({ error: 'Créditos insuficientes' }, { status: 402 });
+    }
 
-  // 7. Fetch mapa natal do usuário
-  const chart = await prisma.birthChart.findUnique({
-    where: { userId },
-    select: {
-      astrologyMap: true,
-      kabalisticMap: true,
-      oduBirth: true,
-    },
-  });
+    // 4. Determine credit cost
+    const creditCost = question.length > 200 ? 3 : 1;
 
-  // v0.0.4 T10.5 — busca I-Ching map do usuário (só injeta se ichingEnabled).
-  // LGPD: o mapa é opt-in e nunca é incluído se o usuário não ativou.
-  const userRow = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { ichingEnabled: true, ichingMap: true },
-  });
-  const ichingMap =
-    userRow?.ichingEnabled && userRow.ichingMap
-      ? (userRow.ichingMap as unknown as IChingMap)
-      : null;
+    if (balance < creditCost) {
+      return NextResponse.json(
+        { error: 'Créditos insuficientes para esta consulta' },
+        { status: 402 }
+      );
+    }
 
-  const astrologyMap = (chart?.astrologyMap as Record<string, unknown>) ?? {};
-  const oduBirth = (chart?.oduBirth as Record<string, unknown>) ?? {};
-
-  const chartCtx: ChartContext = {
-    element: getDominantElement(astrologyMap),
-    oduId: (oduBirth?.oduName as string) ?? undefined,
-  };
-
-  // 8. Buscar Grimório contextual (RAG)
-  const grimoireCtx = await searchGrimoire(question, chartCtx, 4);
-
-  // 9. Build enriched system prompt
-  const systemPrompt = buildConsultSystemPrompt(chart, grimoireCtx, ichingMap);
-
-  // 10. Open SSE stream
-  const encoder = new TextEncoder();
-  let sseController!: ReturnType<typeof createSSEStream>;
-
-  const stream = new ReadableStream({
-    async start(controller) {
-      sseController = createSSEStream(controller, encoder, { timeoutMs: 120_000 });
-
-      let fullResponse = '';
-
-      try {
-        const messages = [
-          { role: 'system' as const, content: systemPrompt },
-          { role: 'user' as const, content: question },
-        ];
-
-        for await (const chunk of streamCompletion({
-          messages,
-          temperature: 0.85,
-          max_tokens: 1200,
-        })) {
-          if (chunk.error) {
-            sseController.send({ event: 'error', data: { message: chunk.error } });
-            sseController.close();
-            return;
-          }
-
-          if (chunk.content) {
-            fullResponse += chunk.content;
-            sseController.send({ event: 'token', data: { delta: chunk.content } });
-          }
-
-          if (chunk.done) break;
-        }
-
-        // 11. Persist oracle response and debit credits
-        const grimoireRefs = grimoireCtx.entries
-          .map((e) => e.titulo ?? e.title)
-          .filter(Boolean) as string[];
-
-        await prisma.chatMessage.create({
-          data: {
-            consultationId: consultation.id,
-            role: 'ORACLE',
-            content: fullResponse,
-            routedPillars: grimoireCtx.pillarsConsulted,
-            grimoireRefs,
-            creditCost,
-          },
-        });
-
-        const newBalance = balance - creditCost;
-
-        await prisma.creditEntry.create({
-          data: {
-            userId,
-            delta: -creditCost,
-            reason: creditCost === 1 ? 'consult_simple' : 'consult_complex',
-            balance: newBalance,
-          },
-        });
-
-        sseController.send({
-          event: 'done',
-          data: {
-            consultationId: consultation.id,
-            creditCost,
-            remainingBalance: newBalance,
-            pillarsConsulted: grimoireCtx.pillarsConsulted,
-          },
-        });
-      } catch (err) {
-        const message = err instanceof Error ? err.message : 'Erro interno do oráculo';
-        try {
-          sseController.send({ event: 'error', data: { message } });
-        } catch {
-          /* stream may already be closed */
-        }
-      } finally {
-        sseController.close();
+    // 5. Create or fetch consultation
+    let consultation: { id: string };
+    if (consultationId) {
+      const existing = await prisma.consultation.findFirst({
+        where: { id: consultationId, userId },
+        select: { id: true },
+      });
+      if (!existing) {
+        return NextResponse.json({ error: 'Consulta não encontrada' }, { status: 404 });
       }
-    },
-  });
+      consultation = existing;
+    } else {
+      consultation = await prisma.consultation.create({
+        data: { userId, title: question.slice(0, 80) },
+        select: { id: true },
+      });
+    }
 
-  return new NextResponse(stream, {
-    headers: {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      Connection: 'keep-alive',
-      'X-Accel-Buffering': 'no',
-    },
-  });
+    // 6. Persist user message
+    await prisma.chatMessage.create({
+      data: {
+        consultationId: consultation.id,
+        role: 'USER',
+        content: question,
+        routedPillars: [],
+        grimoireRefs: [],
+        creditCost: 0,
+      },
+    });
+
+    // 7. Fetch mapa natal do usuário
+    const chart = await prisma.birthChart.findUnique({
+      where: { userId },
+      select: {
+        astrologyMap: true,
+        kabalisticMap: true,
+        oduBirth: true,
+      },
+    });
+
+    // v0.0.4 T10.5 — busca I-Ching map do usuário (só injeta se ichingEnabled).
+    // LGPD: o mapa é opt-in e nunca é incluído se o usuário não ativou.
+    const userRow = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { ichingEnabled: true, ichingMap: true },
+    });
+    const ichingMap =
+      userRow?.ichingEnabled && userRow.ichingMap
+        ? (userRow.ichingMap as unknown as IChingMap)
+        : null;
+
+    const astrologyMap = (chart?.astrologyMap as Record<string, unknown>) ?? {};
+    const oduBirth = (chart?.oduBirth as Record<string, unknown>) ?? {};
+
+    const chartCtx: ChartContext = {
+      element: getDominantElement(astrologyMap),
+      oduId: (oduBirth?.oduName as string) ?? undefined,
+    };
+
+    // 8. Buscar Grimório contextual (RAG)
+    const grimoireCtx = await searchGrimoire(question, chartCtx, 4);
+
+    // 9. Build enriched system prompt
+    const systemPrompt = buildConsultSystemPrompt(chart, grimoireCtx, ichingMap);
+
+    // 10. Open SSE stream
+    const encoder = new TextEncoder();
+    let sseController!: ReturnType<typeof createSSEStream>;
+
+    const stream = new ReadableStream({
+      async start(controller) {
+        sseController = createSSEStream(controller, encoder, { timeoutMs: 120_000 });
+
+        let fullResponse = '';
+
+        try {
+          const messages = [
+            { role: 'system' as const, content: systemPrompt },
+            { role: 'user' as const, content: question },
+          ];
+
+          for await (const chunk of streamCompletion({
+            messages,
+            temperature: 0.85,
+            max_tokens: 1200,
+          })) {
+            if (chunk.error) {
+              sseController.send({ event: 'error', data: { message: chunk.error } });
+              sseController.close();
+              return;
+            }
+
+            if (chunk.content) {
+              fullResponse += chunk.content;
+              sseController.send({ event: 'token', data: { delta: chunk.content } });
+            }
+
+            if (chunk.done) break;
+          }
+
+          // 11. Persist oracle response and debit credits
+          const grimoireRefs = grimoireCtx.entries
+            .map((e) => e.titulo ?? e.title)
+            .filter(Boolean) as string[];
+
+          await prisma.chatMessage.create({
+            data: {
+              consultationId: consultation.id,
+              role: 'ORACLE',
+              content: fullResponse,
+              routedPillars: grimoireCtx.pillarsConsulted,
+              grimoireRefs,
+              creditCost,
+            },
+          });
+
+          const newBalance = balance - creditCost;
+
+          await prisma.creditEntry.create({
+            data: {
+              userId,
+              delta: -creditCost,
+              reason: creditCost === 1 ? 'consult_simple' : 'consult_complex',
+              balance: newBalance,
+            },
+          });
+
+          sseController.send({
+            event: 'done',
+            data: {
+              consultationId: consultation.id,
+              creditCost,
+              remainingBalance: newBalance,
+              pillarsConsulted: grimoireCtx.pillarsConsulted,
+            },
+          });
+        } catch (err) {
+          const message = err instanceof Error ? err.message : 'Erro interno do oráculo';
+          try {
+            sseController.send({ event: 'error', data: { message } });
+          } catch {
+            /* stream may already be closed */
+          }
+        } finally {
+          sseController.close();
+        }
+      },
+    });
+
+    return new NextResponse(stream, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        Connection: 'keep-alive',
+        'X-Accel-Buffering': 'no',
+      },
+    });
+  } catch (err) {
+    console.error('[POST /api/akasha/consult]', err);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
 }
