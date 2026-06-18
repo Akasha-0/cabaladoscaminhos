@@ -13,7 +13,7 @@ Your job: implement the improvement described, verify with triad, write result.
 2. Use `codegraph_explore` before touching unknown code
 3. Implement the improvement carefully
 4. After each file change: `pnpm typecheck` must pass
-5. Write result to `/home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/omp-agent-results.json`:
+5. Write result to `$(git rev-parse --show-toplevel)/.autonomous/multi-agent/omp-agent-results.json`:
    - Read existing file, add your result to the "results" array
    - Format: `{"agent_id": "...", "type": "...", "success": true/false, "message": "..."}`
 6. Use Headroom compression for any output > 5k tokens
@@ -48,7 +48,7 @@ Your job: implement the improvement described, verify with triad, write result.
 
 ## Result Format
 
-Add to `results` array in `omp-agent-results.json`:
+Add to `results` array in `$(git rev-parse --show-toplevel)/.autonomous/multi-agent/omp-agent-results.json`:
 ```json
 {
   "agent_id": "{{AGENT_ID}}",
