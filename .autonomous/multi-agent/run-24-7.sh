@@ -46,16 +46,16 @@ log_err(){ echo -e "[$(date +%H:%M:%S)]$RED ERR $1$NC"; }
 
 preflight(){
     log "Pre-flight checks..."
-    if [[ ! -f "$$DAEMON" ]]; then log_err "v9 daemon not found"; exit 1; fi
+    if [[ ! -f "$DAEMON" ]]; then log_err "canonical daemon not found"; exit 1; fi
     local missing=()
-    for mod in adaptive_pacer self_healer_v2 predictive_engine skill_discoverer_v2 \
-               continuity_manager memory_manager_v2 guardian telemetry \
-               project_scanner_v2 reasoning_chain_v2 context_engine_v2 evolver \
-               prompt_engine_v2 agent_orchestrator_v2 intelligence_v2; do
+    for mod in adaptive_pacer self_healer predictive_engine skill_discoverer \
+               continuity_manager memory_manager guardian telemetry \
+               reasoning_chain context_engine evolver \
+               prompt_engine agent_orchestrator; do
         [[ ! -f "$MA/${mod}.py" ]] && missing+=("$mod")
     done
     [[ ${#missing[@]} -gt 0 ]] && { log_err "Missing: ${missing[*]}"; exit 1; }
-    log_ok "Pre-flight passed — v9 ready"
+    log_ok "Pre-flight passed — canonical ready"
 }
 
 get_status(){
@@ -164,7 +164,7 @@ validate(){
                continuity_manager memory_manager guardian telemetry \
                project_map reasoning_chain context_engine evolver \
                prompt_engine agent_orchestrator \
-               akasha-loop-daemon-v5 akasha-evolution-loop-v2; do
+               akasha-evolution-loop-v2; do
         [[ -f "$MA/${mod}.py" ]] || continue
         python3 -m py_compile "$MA/${mod}.py" 2>/dev/null \
             && echo -e "  $GREEN${mod}.py$NC syntax OK" \

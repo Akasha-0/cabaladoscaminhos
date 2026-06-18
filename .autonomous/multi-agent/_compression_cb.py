@@ -1,7 +1,7 @@
 """
 _compression_cb.py — Compression circuit breaker + retry with exponential backoff.
 
-State file: /home/skynet/.omp/compression-circuit-breaker.json
+State file: .omp/compression-circuit-breaker.json
 
 Circuit breaker states:
   CLOSED      → normal operation, compression attempts allowed
@@ -32,7 +32,7 @@ MAX_RETRIES    = 3          # consecutive failures before breaker trips
 COOLDOWN_SECS  = 600       # 10 minutes before HALF_OPEN
 BASE_DELAY_SECS = [2, 5, 15]  # exponential backoff per retry slot
 
-STATE_FILE = Path("/home/skynet/.omp/compression-circuit-breaker.json")
+STATE_FILE = Path(__file__).resolve().parent.parent / ".omp" / "compression-circuit-breaker.json"
 
 # ── State machine ──────────────────────────────────────────────────────────
 

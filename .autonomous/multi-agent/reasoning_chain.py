@@ -47,7 +47,7 @@ from typing import Any
 
 # ── path constants ──────────────────────────────────────────────────────────────
 
-ROOT = Path("/home/skynet/cabala-dos-caminhos")
+ROOT = Path(__file__).resolve().parent.parent if '__file__' in globals() else Path.cwd()
 MA = ROOT / ".autonomous" / "multi-agent"
 CACHE_DIR = MA / "reasoning_cache"
 HISTORY_DIR = MA / "confidence_history"

@@ -2,8 +2,8 @@
 """Spawn task agents from implementations JSON — runs agents directly."""
 import json, os, subprocess, sys, time
 
-MA = os.environ.get("MA", "/home/skynet/cabala-dos-caminhos/.autonomous/multi-agent")
-ROOT = os.environ.get("ROOT", "/home/skynet/cabala-dos-caminhos")
+MA = os.environ.get("MA", str(Path(__file__).resolve().parent if '__file__' in globals() else Path.cwd()))
+ROOT = os.environ.get("ROOT", str(Path(__file__).resolve().parent.parent if '__file__' in globals() else Path.cwd()))
 IMPL_FILE = os.environ.get("IMPL_FILE", f"{MA}/omp-implementations.json")
 AGENT_RESULTS_DIR = os.environ.get("AGENT_RESULTS_DIR", f"{MA}/agent-results")
 PIDS_FILE = os.environ.get("PIDS_FILE", f"{MA}/agent-pids.txt")

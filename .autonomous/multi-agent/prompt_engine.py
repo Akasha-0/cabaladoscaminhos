@@ -147,7 +147,7 @@ class PromptEngineV2:
     IMPROVEMENT_PROMPTS = IMPROVEMENT_PROMPTS
 
     def __init__(self, ma_path: Path | None = None, memory=None) -> None:
-        self._root = Path("/home/skynet/cabala-dos-caminhos")
+        self._root = Path(__file__).resolve().parent.parent if '__file__' in globals() else Path.cwd()
         self._ma = (ma_path or self._root / ".autonomous" / "multi-agent")
         self._outcomes_file = self._ma / "prompt_engine_v2_outcomes.json"
         self._lock = threading.RLock()

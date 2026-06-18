@@ -22,7 +22,7 @@ from typing import Any, Optional
 
 # ── Path constants ──────────────────────────────────────────────────────────────
 
-ROOT = Path("/home/skynet/cabala-dos-caminhos")
+ROOT = Path(__file__).resolve().parent.parent if '__file__' in globals() else Path.cwd()
 MA = ROOT / ".autonomous" / "multi-agent"
 CACHE_FILE = MA / "project_scanner_v2" / "cache.json"
 CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)

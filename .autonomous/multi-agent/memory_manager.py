@@ -33,7 +33,7 @@ from typing import Any
 
 # ── path constants ─────────────────────────────────────────────────────────────
 
-ROOT = Path("/home/skynet/cabala-dos-caminhos/.autonomous/multi-agent")
+ROOT = Path(__file__).resolve().parent.parent if '__file__' in globals() else Path.cwd()
 MA = ROOT
 MEM_DIR = MA / "memory_v2"
 WARM_DIR = MEM_DIR / "warm"

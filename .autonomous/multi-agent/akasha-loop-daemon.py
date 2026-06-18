@@ -1092,12 +1092,14 @@ def phase_implementation(state, memory):
 
         result_file = str(AGENT_RESULTS_DIR / f"result-{agent_id}.json")
         prompt = prompt.replace(
-            "/home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/task-result.json",
+            str(AGENT_RESULTS_DIR / "task-result.json"),
             result_file, 1,
         )
         prompt_file.write_text(prompt)
+        import shutil as _shutil
+        _omp = _shutil.which("omp") or str(ROOT / ".local/bin/omp")
         proc = _sub.Popen(
-            ["timeout", "600", "/home/skynet/.bun/bin/omp", "-p", "--model", "minimax/M2.7", prompt],
+            ["timeout", "600", _omp, "-p", "--model", "minimax/M2.7", prompt],
             cwd=str(ROOT), stdout=_sub.DEVNULL, stderr=_sub.DEVNULL,
             env={**os.environ},
             preexec_fn=lambda: os.setpriority(os.PRIO_PROCESS, 0, 10),

@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any, Optional
 
 # ── path constants ────────────────────────────────────────────────────────────
-ROOT = Path("/home/skynet/cabala-dos-caminhos")
+ROOT = Path(__file__).resolve().parent.parent if '__file__' in globals() else Path.cwd()
 MA = ROOT / ".autonomous" / "multi-agent"
 MA.mkdir(parents=True, exist_ok=True)
 
