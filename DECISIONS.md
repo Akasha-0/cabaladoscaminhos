@@ -326,3 +326,17 @@ The profile is:
 **Evidence**: `run-24-7.sh` hardcoded `/home/skynet/cabala-dos-caminhos` — violates §3 portability requirement.
 **Action**: Replaced with `ROOT="$(git rev-parse --show-toplevel)"`.
 **Registered by**: §3 SSOT constitution rule.
+### Decision: ralph-loop/ deleted — parallel loop eliminated per §3
+**Evidence**: 10 tracked files, 0 active references from any script. Explicitly named in constitution §3 §50 as "cut candidate." No unique functionality not present in canonical daemon.
+**Action**: Deleted all 10 tracked files. Entry removed from AGENTS.md Child DOX Index.
+**Registered by**: §3 SSOT constitution rule.
+
+### Decision: All 18 harness Python modules now have portable ROOT
+**Evidence**: `_compression_cb.py` and `prompt_engine.py` were missing ROOT entirely (not just hardcoded). Remaining 16 modules already fixed in prior commits.
+**Action**: Added `ROOT = Path(__file__).resolve().parent.parent if '__file__' in globals() else Path.cwd()` to both files.
+**Registered by**: §3 §55-57 portability requirement.
+
+### Decision: Second archived/ copy deleted — redundant per SSOT
+**Evidence**: `.autonomous/multi-agent/archived/` (untracked) contained a second copy of `intelligence_v2.py`, `project_scanner_v2.py`, `circuit-breaker-v2.json`, and `skill_patterns_v2/` — all already tracked under `archived/v2-artifacts/` in git.
+**Action**: Deleted untracked `.autonomous/multi-agent/archived/` entirely. These were runtime artifacts, not canonical copies.
+**Registered by**: §3 SSOT — one canonical archive only.
