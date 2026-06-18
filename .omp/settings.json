@@ -48,14 +48,13 @@ async:
   maxJobs: 4
 
 # Model assignments by role.
-# All use MiniMax-M2.7-highspeed; thinking level differentiates.
+# All use MiniMax-M2.7; thinking level differentiates.
 modelRoles:
-  default: minimax/MiniMax-M2.7-highspeed   # coder, qa, validator, designer
-  smol:    minimax/MiniMax-M2.7-highspeed   # researcher (fast exploratory reads)
-  slow:    minimax/MiniMax-M2.7-highspeed   # architect (deep reasoning + codegraph)
-  plan:    minimax/MiniMax-M2.7-highspeed   # /plan mode synthesis
-  commit:  minimax/MiniMax-M2.7-highspeed   # atomic split-commit via omp commit
-
+  default: minimax/MiniMax-M2.7   # coder, qa, validator, designer
+  smol:    minimax/MiniMax-M2.7   # researcher (fast exploratory reads)
+  slow:    minimax/MiniMax-M2.7   # architect (deep reasoning + codegraph)
+  plan:    minimax/MiniMax-M2.7   # /plan mode synthesis
+  commit:  minimax/MiniMax-M2.7   # atomic split-commit via omp commit
 # Global default thinking budget for the orchestrator.
 # 'high' gives the model room to reason before committing.
 # Override per-call with explicit thinking level if needed.

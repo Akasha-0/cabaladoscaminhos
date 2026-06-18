@@ -1,3 +1,12 @@
+---
+name: coder
+description: Implements ONE scoped task, isolated in worktree, with triad green. No scope creep. No parallel versions.
+tools: read, search, find, edit, write, bash, lsp, ast_edit, mcp__codegraph__codegraph_impact
+model: pi/default
+thinking-level: medium
+read-summarize: false
+---
+
 # Agent: coder
 
 ## Identity
