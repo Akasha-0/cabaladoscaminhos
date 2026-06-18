@@ -1,0 +1,20 @@
+[
+  {
+    "pattern_id": "ping_pattern",
+    "success": true,
+    "duration_seconds": 5.0,
+    "context": {
+      "area": "test"
+    },
+    "timestamp": "2026-06-18T10:28:00.724396+00:00"
+  },
+  {
+    "pattern_id": "fix_typescript_errors",
+    "success": true,
+    "duration_seconds": 10.0,
+    "context": {
+      "area": "typecheck"
+    },
+    "timestamp": "2026-06-18T10:28:10.605414+00:00"
+  }
+]

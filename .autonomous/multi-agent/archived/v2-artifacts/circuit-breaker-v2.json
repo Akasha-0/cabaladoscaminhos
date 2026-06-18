@@ -1,0 +1,82 @@
+{
+  "AdaptivePacer": {
+    "subsystem": "AdaptivePacer",
+    "state": "CLOSED",
+    "calls": 0,
+    "failures": 0,
+    "failure_rate": 0.0,
+    "opened_at": 0.0
+  },
+  "MemoryManager": {
+    "subsystem": "MemoryManager",
+    "state": "CLOSED",
+    "calls": 0,
+    "failures": 0,
+    "failure_rate": 0.0,
+    "opened_at": 0.0
+  },
+  "ContextEngine": {
+    "subsystem": "ContextEngine",
+    "state": "CLOSED",
+    "calls": 0,
+    "failures": 0,
+    "failure_rate": 0.0,
+    "opened_at": 0.0
+  },
+  "SkillDiscoverer": {
+    "subsystem": "SkillDiscoverer",
+    "state": "CLOSED",
+    "calls": 0,
+    "failures": 0,
+    "failure_rate": 0.0,
+    "opened_at": 0.0
+  },
+  "ReasoningChain": {
+    "subsystem": "ReasoningChain",
+    "state": "CLOSED",
+    "calls": 0,
+    "failures": 0,
+    "failure_rate": 0.0,
+    "opened_at": 0.0
+  },
+  "AgentOrchestrator": {
+    "subsystem": "AgentOrchestrator",
+    "state": "CLOSED",
+    "calls": 0,
+    "failures": 0,
+    "failure_rate": 0.0,
+    "opened_at": 0.0
+  },
+  "PromptEngine": {
+    "subsystem": "PromptEngine",
+    "state": "CLOSED",
+    "calls": 0,
+    "failures": 0,
+    "failure_rate": 0.0,
+    "opened_at": 0.0
+  },
+  "Telemetry": {
+    "subsystem": "Telemetry",
+    "state": "CLOSED",
+    "calls": 0,
+    "failures": 0,
+    "failure_rate": 0.0,
+    "opened_at": 0.0
+  },
+  "PredictiveEngine": {
+    "subsystem": "PredictiveEngine",
+    "state": "CLOSED",
+    "calls": 0,
+    "failures": 0,
+    "failure_rate": 0.0,
+    "opened_at": 0.0
+  },
+  "Guardian": {
+    "subsystem": "Guardian",
+    "state": "CLOSED",
+    "calls": 0,
+    "failures": 0,
+    "failure_rate": 0.0,
+    "opened_at": 0.0
+  }
+}

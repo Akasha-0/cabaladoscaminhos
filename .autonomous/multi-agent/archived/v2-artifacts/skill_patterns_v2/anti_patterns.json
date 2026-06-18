@@ -1,0 +1,46 @@
+[
+  {
+    "id": "skip_typecheck",
+    "actions": [
+      "skip tsc",
+      "no typecheck",
+      "disable tsc",
+      "tsc off"
+    ],
+    "warning": "Skipping TypeScript checks leads to QA failure cascade",
+    "severity": "high"
+  },
+  {
+    "id": "ignore_qa_fail",
+    "actions": [
+      "ignore QA",
+      "skip QA",
+      "bypass QA",
+      "QA off"
+    ],
+    "warning": "Ignoring QA failures causes iteration waste",
+    "severity": "high"
+  },
+  {
+    "id": "no_spec_review",
+    "actions": [
+      "no spec",
+      "without planning",
+      "skip spec",
+      "no design"
+    ],
+    "warning": "Acting without planning often wastes iterations",
+    "severity": "medium"
+  },
+  {
+    "id": "overly_complex",
+    "actions": [
+      "add abstraction",
+      "add layer",
+      "over-abstract",
+      "premature abstraction"
+    ],
+    "warning": "Unnecessary complexity is an anti-pattern",
+    "severity": "low"
+  }
+]
