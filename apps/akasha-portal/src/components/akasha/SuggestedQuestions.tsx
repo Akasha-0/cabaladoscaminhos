@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * SuggestedQuestions — F-XXX
+ * SuggestedQuestions — F-249
  *
  * Mostra 3 sugestões de perguntas para o Oráculo baseadas no perfil do usuário.
  * Transforma o Oráculo de "空白" para "guiado".
