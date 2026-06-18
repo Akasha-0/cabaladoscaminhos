@@ -9,8 +9,8 @@
  *
  * A tabela raiz ICHING_PRIMITIVES vive em iching-base.ts (dados versionados).
  */
-import type { Polaridade, PrimitiveContribution } from './types';
 import { ICHING_PRIMITIVES } from './iching-base';
+import type { Polaridade, PrimitiveContribution } from './types';
 
 // ─── Helper de ajuste por nível ─────────────────────────────────────────────
 

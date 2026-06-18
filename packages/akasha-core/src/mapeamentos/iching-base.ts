@@ -883,8 +883,7 @@ export const BASE: Record<number, HexagramaBase> = {
         primitivo: 'Transformacao',
         intensidade: 8,
         polaridade: 'ambas',
-        fonte:
-          'Wilhelm/Baynes 1976, hexagrama 38 — Opostos (Kuíl): tensão entre opostos,催化剂',
+        fonte: 'Wilhelm/Baynes 1976, hexagrama 38 — Opostos (Kuíl): tensão entre opostos,催化剂',
       },
       {
         primitivo: 'Discernimento',
@@ -936,8 +935,7 @@ export const BASE: Record<number, HexagramaBase> = {
         primitivo: 'Movimento',
         intensidade: 7,
         polaridade: 'luz',
-        fonte:
-          'Wilhelm/Baynes 1976, hexagrama 40 — Liberação (Xiè): ação decisiva, descompresión',
+        fonte: 'Wilhelm/Baynes 1976, hexagrama 40 — Liberação (Xiè): ação decisiva, descompresión',
       },
     ],
   },
@@ -1067,8 +1065,7 @@ export const BASE: Record<number, HexagramaBase> = {
         primitivo: 'Ascensao',
         intensidade: 9,
         polaridade: 'luz',
-        fonte:
-          'Wilhelm/Baynes 1976, hexagrama 46 — Subida (Shēng): elevação gradual, upward march',
+        fonte: 'Wilhelm/Baynes 1976, hexagrama 46 — Subida (Shēng): elevação gradual, upward march',
       },
       {
         primitivo: 'Persistencia',
@@ -1113,8 +1110,7 @@ export const BASE: Record<number, HexagramaBase> = {
         primitivo: 'Nutricao',
         intensidade: 9,
         polaridade: 'luz',
-        fonte:
-          'Wilhelm/Baynes 1976, hexagrama 48 — Poço (Jǐng): fonte perene, wellspring of life',
+        fonte: 'Wilhelm/Baynes 1976, hexagrama 48 — Poço (Jǐng): fonte perene, wellspring of life',
       },
       {
         primitivo: 'Conexao',
@@ -1166,8 +1162,7 @@ export const BASE: Record<number, HexagramaBase> = {
         primitivo: 'Nutricao',
         intensidade: 8,
         polaridade: 'luz',
-        fonte:
-          'Wilhelm/Baynes 1976, hexagrama 50 — Caldeirão (Dǐng): nutrição sagrada,吃点仪式',
+        fonte: 'Wilhelm/Baynes 1976, hexagrama 50 — Caldeirão (Dǐng): nutrição sagrada,吃点仪式',
       },
     ],
   },
@@ -1304,8 +1299,7 @@ export const BASE: Record<number, HexagramaBase> = {
         primitivo: 'Adaptacao',
         intensidade: 7,
         polaridade: 'ambas',
-        fonte:
-          'Wilhelm/Baynes 1976, hexagrama 56 — Viagem (Lǚ):俊杰, adapting to foreign terrain',
+        fonte: 'Wilhelm/Baynes 1976, hexagrama 56 — Viagem (Lǚ):俊杰, adapting to foreign terrain',
       },
     ],
   },
