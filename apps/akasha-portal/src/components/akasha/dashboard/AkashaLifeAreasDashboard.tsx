@@ -40,7 +40,7 @@ import {
   GitBranch,
   type LucideIcon,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useMemo, memo } from 'react';
 import type { FrequencyLevel } from '@/lib/application/akasha/synthesis-engine/synthesis-types';
 import { AkashaSignificadoCard } from '../AkashaSignificadoCard';
 import { PriorityAreasQuickView } from './PriorityAreasQuickView';
@@ -97,7 +97,7 @@ const PATH_STAGES = [
   },
 ];
 
-function FrequencyPathExplorer({
+const FrequencyPathExplorer = memo(function FrequencyPathExplorer({
   dominantFrequency,
   overallFrequencyScore,
   transformationStage,
@@ -285,9 +285,9 @@ function FrequencyPathExplorer({
       </AnimatePresence>
     </div>
   );
-}
+});
 
-function StrategyBadge({ strategy }: { strategy: string }) {
+const StrategyBadge = memo(function StrategyBadge({ strategy }: { strategy: string }) {
   const cfg: Record<string, { color: string; bg: string; label: string }> = {
     act: { color: '#34C759', bg: 'rgba(52,199,89,0.15)', label: 'Agir' },
     wait: { color: '#FF9500', bg: 'rgba(255,149,0,0.15)', label: 'Aguarde' },
@@ -302,9 +302,9 @@ function StrategyBadge({ strategy }: { strategy: string }) {
       {c.label}
     </span>
   );
-}
+});
 
-export function DailyDecisionCard({ decision }: { decision: DailyDecisionUI }) {
+export const DailyDecisionCard = memo(function DailyDecisionCard({ decision }: { decision: DailyDecisionUI }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-[#1C1C1E] to-[#2C2C2E] p-5 space-y-4">
       <div className="flex items-center justify-between">
@@ -334,7 +334,7 @@ export function DailyDecisionCard({ decision }: { decision: DailyDecisionUI }) {
       </div>
     </div>
   );
-}
+});
 
 // ─── F-227: ONE Akasha Profile Card ───────────────────────────────────────────
 
@@ -345,7 +345,7 @@ const AUTHORITY_LABELS: Record<string, string> = {
   mental: 'Autoridade Mental',
 };
 
-export function OneProfileCard({
+export const OneProfileCard = memo(function OneProfileCard({
   profile,
   narrativaCentral,
 }: {
@@ -467,9 +467,9 @@ export function OneProfileCard({
       )}
     </div>
   );
-}
+});
 
-function RitualBadge({
+const RitualBadge = memo(function RitualBadge({
   ritual,
 }: {
   ritual: { title: string; instruction: string; duration: string; element: string; color: string };
@@ -494,9 +494,9 @@ function RitualBadge({
       </div>
     </div>
   );
-}
+});
 
-function SexualidadeSection({ sexualidade }: { sexualidade: SexualidadeUI }) {
+const SexualidadeSection = memo(function SexualidadeSection({ sexualidade }: { sexualidade: SexualidadeUI }) {
   const [showDetails, setShowDetails] = useState(false);
   return (
     <div className="border-t border-[#FF2D55]/20 pt-2 mt-2">
@@ -575,10 +575,10 @@ function SexualidadeSection({ sexualidade }: { sexualidade: SexualidadeUI }) {
       )}
     </div>
   );
-}
+});
 
 // ─── AreaCard ──────────────────────────────────────────────────────────────────
-function AreaCard({
+const AreaCard = memo(function AreaCard({
   areaKey,
   narrative,
   modulation,
@@ -852,7 +852,7 @@ function AreaCard({
       </AnimatePresence>
     </motion.div>
   );
-}
+});
 
 // ─── Main component ────────────────────────────────────────────────────────────
 
@@ -866,7 +866,7 @@ interface AkashaLifeAreasDashboardProps {
 
 type CycleModulationEntry = { alignmentScore: number; suggestedBoost: string; rationale: string };
 
-export function AkashaLifeAreasDashboard({
+export const AkashaLifeAreasDashboard = memo(function AkashaLifeAreasDashboard({
   synthesis,
   loading = false,
   onRefetch,
@@ -882,16 +882,19 @@ export function AkashaLifeAreasDashboard({
   ];
 
   // §P5: Build modulation lookup from cycle data
-  const modulationMap: Record<string, CycleModulationEntry> = {};
-  if (cycle?.modulation) {
-    for (const m of cycle.modulation) {
-      modulationMap[m.area] = {
-        alignmentScore: m.alignmentScore,
-        suggestedBoost: m.suggestedBoost,
-        rationale: m.rationale,
-      };
+  const modulationMap = useMemo(() => {
+    const map: Record<string, CycleModulationEntry> = {};
+    if (cycle?.modulation) {
+      for (const m of cycle.modulation) {
+        map[m.area] = {
+          alignmentScore: m.alignmentScore,
+          suggestedBoost: m.suggestedBoost,
+          rationale: m.rationale,
+        };
+      }
     }
-  }
+    return map;
+  }, [cycle?.modulation]);
 
   if (loading) {
     return (
@@ -1051,4 +1054,4 @@ export function AkashaLifeAreasDashboard({
       </div>
     </div>
   );
-}
+});

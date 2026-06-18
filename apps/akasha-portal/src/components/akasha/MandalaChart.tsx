@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, memo } from 'react';
 import { AstrologyInfoPanel, type AstrologyAspect } from '@/components/akasha/AstrologyInfoPanel';
 import { IchingInfoPanel } from '@/components/akasha/IchingInfoPanel';
 import { MandalaAtmosphere } from '@/components/akasha/MandalaAtmosphere';
@@ -34,6 +34,9 @@ import {
   longitudeToSvgAngle,
 } from '@/lib/shared/zodiac';
 import { useCockpitStore } from '@/stores/cockpit-store';
+
+// buildAstroSegments() uses only constants — compute once at module load
+const ASTRO_SEGMENTS = buildAstroSegments();
 
 export interface MandalaData {
   incomplete: boolean;
@@ -129,7 +132,7 @@ interface Props {
 // LIFE_PATH_MEANINGS, TANTRIC_BODY_WISDOM, resolveSig and SignificadoEmbed
 // are imported from @/components/akasha/mandala-meanings.
 
-export default function MandalaChart({ data }: Props) {
+const MandalaChart = memo(function MandalaChart({ data }: Props) {
   const [activeLayer, setActiveLayer] = useState<null | Layer>(null);
   const [hoveredLayer, setHoveredLayer] = useState<null | Layer>(null);
   const atmosphereIntensity = useCockpitStore((s) => s.atmosphereIntensity);
@@ -151,25 +154,23 @@ export default function MandalaChart({ data }: Props) {
 
   // Per-layer curated tooltip text (F-206) — maps visual layer → Pilar id
   // and resolves a short essence from the grimoire for native <title> hover.
-  const tooltipByLayer = buildTooltipByLayer(data);
-
-  const astroSegments = buildAstroSegments();
+  const tooltipByLayer = useMemo(() => buildTooltipByLayer(data), [data]);
 
   // Mandala Fase 3 (spec mandala-fase3-zodiac-tantra):
   // - Uses `absoluteLongitude` (0-360°) to distribute planets on the
   //   ecliptic correctly; falls back to `degree` for backwards compat.
-  const planetDots = buildPlanetDots(data.astrology.planets);
+  const planetDots = useMemo(() => buildPlanetDots(data.astrology.planets), [data.astrology.planets]);
 
-  const tantricNodes = buildTantricNodes(data.tantra.bodies);
+  const tantricNodes = useMemo(() => buildTantricNodes(data.tantra.bodies), [data.tantra.bodies]);
 
-  const kabVerts = buildKabVerts(data.kabala);
+  const kabVerts = useMemo(() => buildKabVerts(data.kabala), [data.kabala]);
 
-  const trianglePath = buildTrianglePath(kabVerts);
+  const trianglePath = useMemo(() => buildTrianglePath(kabVerts), [kabVerts]);
 
-  const elem = dominantElement(data.astrology.elementalBalance);
-  const inactiveBodies = tantricNodes.filter((n) => !n.active);
-  const lpMeaning = LIFE_PATH_MEANINGS[data.kabala.lifePath ?? 0] ?? null;
-  const elemGuidance = ELEMENT_GUIDANCE[elem] ?? null;
+  const elem = useMemo(() => dominantElement(data.astrology.elementalBalance), [data.astrology.elementalBalance]);
+  const inactiveBodies = useMemo(() => tantricNodes.filter((n) => !n.active), [tantricNodes]);
+  const lpMeaning = useMemo(() => LIFE_PATH_MEANINGS[data.kabala.lifePath ?? 0] ?? null, [data.kabala.lifePath]);
+  const elemGuidance = useMemo(() => ELEMENT_GUIDANCE[elem] ?? null, [elem]);
 
   return (
     <div
@@ -344,7 +345,7 @@ export default function MandalaChart({ data }: Props) {
               stroke="rgba(124,92,255,0.12)"
               strokeWidth="0.5"
             />
-            {astroSegments.map(({ startDeg, endDeg, sym, labelPos }, i) => (
+            {ASTRO_SEGMENTS.map(({ startDeg, endDeg, sym, labelPos }, i) => (
               <g key={i}>
                 <path
                   d={describeArc(200, 200, 183, startDeg, endDeg)}
@@ -745,4 +746,6 @@ export default function MandalaChart({ data }: Props) {
       )}
     </div>
   );
-}
+});
+
+export default MandalaChart;

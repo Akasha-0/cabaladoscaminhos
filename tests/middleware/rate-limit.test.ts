@@ -266,7 +266,7 @@ describe('Rate Limiting Middleware', () => {
     });
   });
 
-  describe.skip('Rate limit window reset', () => {
+  describe('Rate limit window reset', () => {
     it('should allow requests after the window expires', () => {
       // Make some requests
       for (let i = 0; i < 50; i++) {

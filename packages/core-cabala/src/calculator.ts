@@ -1,4 +1,3 @@
-// @ts-nocheck
 // Numerology calculator - multiple methods
 import {
   calcularPitagorica,
@@ -7,11 +6,13 @@ import {
   calcularTantrica,
   calcularPitagoricaData,
   getInterpretacao,
+} from './calculos';
+import {
   calculateLifePath,
   calculateExpression,
-  calculateSoulUrge,
-  calculatePersonality,
-} from './calculos';
+  calculateMotivation as calculateSoulUrge,
+  calculateImpression as calculatePersonality,
+} from './numerology-kabalah';
 
 export interface NumerologyInput {
   name: string;
@@ -46,7 +47,7 @@ function reduceToDigits(num: number): number {
 
 function interpret(num: number): string {
   const interp = getInterpretacao(num);
-  return interp?.descricao || `Número ${num}`;
+  return interp?.significado || `Número ${num}`;
 }
 
 const methods = {
@@ -70,8 +71,8 @@ const methods = {
     const n = calcularPitagoricaData(date);
     return { numero: n, interpretacao: interpret(n) };
   },
-  vida: (date: string): number => reduceToDigits(calculateLifePath(date)),
-  expressao: (name: string): number => reduceToDigits(calculateExpression(name)),
-  motivacao: (name: string): number => reduceToDigits(calculateSoulUrge(name)),
-  impressao: (name: string): number => reduceToDigits(calculatePersonality(name)),
+  vida: (date: string): number => reduceToDigits(calculateLifePath(date).number),
+  expressao: (name: string): number => reduceToDigits(calculateExpression(name).number),
+  motivacao: (name: string): number => reduceToDigits(calculateSoulUrge(name).number),
+  impressao: (name: string): number => reduceToDigits(calculatePersonality(name).number),
 };
