@@ -929,7 +929,7 @@ def main():
     while load_state().get("running", False):
         # PERFORMANCE: select.poll() blocks until socket is readable OR timeout
         # No busy-waiting, near-zero CPU while idle
-        events = poll_obj.poll(timeout=1000)  # 1 second max wait
+        events = poll_obj.poll(1000)  # 1 second max wait; positional required on Python 3.14
 
         # Handle any pending socket connections (non-blocking check)
         for fd, event in events:

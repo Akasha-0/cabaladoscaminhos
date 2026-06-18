@@ -131,8 +131,9 @@ def _parse_spec_vision() -> dict:
     except Exception:
         return {"vision": "", "principles": [], "stack": []}
 
-    # Extract mission paragraph (first non-heading block after "## 1. Mission")
-    mission = ""
+    # Extract mission text from blockquote sections and principles
+    # Blockquotes (>) are valid content lines in SPEC.md
+    mission_lines: list[str] = []
     principle_blocks: list[str] = []
     stack_info: list[str] = []
 
@@ -142,21 +143,27 @@ def _parse_spec_vision() -> dict:
 
     for line in lines:
         stripped = line.strip()
-        if "## 1. Mission" in stripped or "## 2. Mandato" in stripped:
-            capture_mission = True
-            capture_principles = False
-            continue
-        if "## 3. Princípios Inegociáveis" in stripped:
-            capture_mission = False
-            capture_principles = True
-            continue
+        # Section boundary detection
         if stripped.startswith("## "):
+            if "## 1. Mission" in stripped or "## 2. Mandato" in stripped:
+                capture_mission = True
+                capture_principles = False
+                continue
+            if "## 3. Princípios Inegociáveis" in stripped:
+                capture_mission = False
+                capture_principles = True
+                continue
+            # Any other ## heading ends both captures
             capture_mission = False
             capture_principles = False
+
         if capture_mission and stripped and not stripped.startswith("#"):
-            mission += " " + stripped
-        if capture_principles and stripped and stripped[0].isupper() and stripped[1].islower():
-            principle_blocks.append(stripped)
+            # lstrip(">") handles blockquote markup
+            mission_lines.append(stripped.lstrip(">").strip())
+        elif capture_principles and stripped and not stripped.startswith("#"):
+            principle_blocks.append(stripped.lstrip(">").strip())
+
+    mission_text = " ".join(mission_lines)
 
     # Extract stack from PROGRESS overview
     try:
@@ -168,7 +175,7 @@ def _parse_spec_vision() -> dict:
         pass
 
     return {
-        "vision": mission.strip(),
+        "vision": mission_text.strip(),
         "principles": principle_blocks[:13],
         "stack": stack_info,
         "source": str(SPEC_FILE),
