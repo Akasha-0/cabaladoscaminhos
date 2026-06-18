@@ -1,865 +1,579 @@
 #!/usr/bin/env python3
 """
-Agent orchestration for parallel high-efficiency agent management.
-
-Coordinates multiple agents in parallel with resource awareness, monitors health,
-merges results, and degrades gracefully under low resources.
+AgentOrchestratorV2 — advanced agent pool management with pre-warmed agents,
+intelligent routing, result aggregation, and performance tracking.
 """
 
 from __future__ import annotations
 
-import json
-import os
-import signal
-import subprocess
-import sys
-import threading
-import time
-import uuid
+import heapq, json, os, signal, subprocess, sys, threading, time, uuid
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from enum import Enum
+from enum import Enum, auto
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any
 
-# ── path constants ─────────────────────────────────────────────────────────────
-
+# ── paths ───────────────────────────────────────────────────────────────────────
 ROOT = Path("/home/skynet/cabala-dos-caminhos")
-MA = ROOT / ".autonomous/multi-agent"
+MA = ROOT / ".autonomous" / "multi-agent"
 LOGS_DIR = MA / "logs"
-SESSION_DIR = MA / "sessions"
-OMP = "/home/skynet/.bun/bin/omp"
-PY_HEADROOM = ROOT / ".headroom-venv/bin/python"
-
-os.makedirs(MA, exist_ok=True)
-os.makedirs(LOGS_DIR, exist_ok=True)
-os.makedirs(SESSION_DIR, exist_ok=True)
+RESULTS_DIR = MA / "agent-results"
+METRICS_FILE = MA / "orchestrator_metrics.json"
+for _d in (MA, LOGS_DIR, RESULTS_DIR):
+    os.makedirs(_d, exist_ok=True)
 
 # ── low-level JSON helpers ────────────────────────────────────────────────────
-
-
-def load_json(path: Path, default=None) -> dict[str, Any] | list:
-    """Load JSON from *path*, return *default* on any error."""
+def _load_json(path: Path, default=None):
     try:
         return json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
-        return default if default is not None else {}  # type: ignore[return-value]
+        return default if default is not None else {}
 
-
-def save_json(path: Path, data: dict[str, Any] | list) -> None:
-    """Atomically write *data* as JSON to *path* via rename."""
+def _save_json(path: Path, data) -> None:
     tmp = path.with_suffix(".tmp")
     tmp.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
     tmp.rename(path)
 
-
-# ── log helper ───────────────────────────────────────────────────────────────
-
-
+# ── logging ───────────────────────────────────────────────────────────────────
 def log(msg: str) -> None:
-    """Print *msg* with ISO timestamp prefix."""
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    print(f"[{ts}] AgentOrchestrator: {msg}", flush=True)
+    print(f"[{ts}] AgentOrchestratorV2: {msg}", flush=True)
 
+# ── enums ─────────────────────────────────────────────────────────────────────
+class AgentState(Enum):
+    IDLE = auto(); BUSY = auto(); DEAD = auto(); COOLING = auto()
 
-# ── agent types ────────────────────────────────────────────────────────────────
+class TaskStatus(Enum):
+    PENDING = auto(); RUNNING = auto(); DONE = auto(); FAILED = auto(); CANCELLED = auto()
 
+class Priority(Enum):
+    HIGH = 0; NORMAL = 1
 
-class AgentType(str, Enum):
-    RESEARCHER = "researcher"
-    PLANNER = "planner"
-    IMPLEMENTER = "implementer"
-    QA_ENGINEER = "qa_engineer"
-    VALIDATOR = "validator"
-
-
-# ── agent configs ─────────────────────────────────────────────────────────────
-
+# ── data classes ──────────────────────────────────────────────────────────────
+@dataclass
+class AgentRecord:
+    agent_id: str; skill_tags: list[str]; state: AgentState = AgentState.IDLE
+    current_task_id: str | None = None; proc: subprocess.Popen | None = None
+    started_at: float = field(default_factory=time.time)
+    last_heartbeat: float = field(default_factory=time.time)
+    tasks_completed: int = 0; tasks_failed: int = 0; total_duration_s: float = 0.0
+    success_rate: float = 1.0; quality_score: float = 0.8
+    area_success: dict[str, tuple[int, int]] = field(default_factory=dict)
 
 @dataclass
-class _AgentConfig:
-    timeout_s: int
-    cpu_priority: int  # -20 (low) to 20 (high); lower = nicer
-    memory_profile_mb: int  # estimated resident memory per agent instance
+class TaskRecord:
+    task_id: str; area: str; prompt: str; priority: Priority
+    status: TaskStatus = TaskStatus.PENDING; assigned_agent_id: str | None = None
+    created_at: float = field(default_factory=time.time); started_at: float | None = None
+    completed_at: float | None = None; result: dict[str, Any] | None = None
+    context_used: str = ""
 
-
-_AGENT_CONFIGS: dict[AgentType, _AgentConfig] = {
-    AgentType.RESEARCHER:    _AgentConfig(timeout_s=300, cpu_priority=10, memory_profile_mb=150),
-    AgentType.PLANNER:       _AgentConfig(timeout_s=300, cpu_priority=10, memory_profile_mb=200),
-    AgentType.IMPLEMENTER:   _AgentConfig(timeout_s=600, cpu_priority=5,  memory_profile_mb=400),
-    AgentType.QA_ENGINEER:   _AgentConfig(timeout_s=300, cpu_priority=15, memory_profile_mb=250),
-    AgentType.VALIDATOR:     _AgentConfig(timeout_s=300, cpu_priority=15, memory_profile_mb=180),
+# ── lightweight context builder ───────────────────────────────────────────────
+_AREA_PATHS = {
+    "frontend": "apps/akasha-portal/src: components, pages, hooks",
+    "backend": "apps/api, packages/*/src: routes, services, db",
+    "infra": "deploy/, docker*, .github/workflows, terraform",
+    "testing": "tests/, __tests__, *.test.*, *.spec.*",
+    "docs": "docs/, *.md, grimoire/, SPEC.md",
+    "default": "src/, lib/: general library code",
 }
 
-# System resource thresholds for graceful degradation
-_MIN_FREE_MEMORY_MB: int = 512   # below this: run agents sequentially
-_LOW_MEMORY_MB: int = 1024       # below this: cap parallel agents at 2
-_MIN_CPU_CORES: int = 2           # below this: never parallel
-
-# ── resource monitoring helpers ────────────────────────────────────────────────
-
-
-def _get_memory_info() -> dict[str, int]:
-    """
-    Read /proc/self/statm for process-level memory stats.
-    Returns {total_kb, resident_kb, share_kb} using Linux page-size (4096 bytes).
-    """
-    try:
-        statm = Path("/proc/self/statm").read_text(encoding="utf-8").split()
-        page_kb = os.sysconf("SC_PAGE_SIZE") // 1024
-        return {
-            "size_kb":    int(statm[0]) * page_kb,
-            "resident_kb": int(statm[1]) * page_kb,
-            "share_kb":   int(statm[2]) * page_kb,
-        }
-    except (OSError, IndexError, ValueError):
-        return {"size_kb": 0, "resident_kb": 0, "share_kb": 0}
-
-
-def _system_memory_free_mb() -> int:
-    """
-    Read /proc/meminfo for system-wide free memory.
-    Returns free = MemAvailable if present, else MemFree.
-    """
-    try:
-        for line in Path("/proc/meminfo").read_text(encoding="utf-8").splitlines():
-            if line.startswith("MemAvailable:"):
-                return int(line.split()[1]) // 1024
-            if line.startswith("MemFree:"):
-                return int(line.split()[1]) // 1024
-    except (OSError, IndexError, ValueError):
-        pass
-    return 4096  # fallback assumption
-
-
-def _cpu_count() -> int:
-    """Return os.cpu_count() with safe fallback."""
-    return os.cpu_count() or 2
-
-
-def _set_cpu_priority(pid: int, priority: int) -> None:
-    """
-    Set process nice value via os.setpriority.
-    priority=-10 (high) to 10 (low) mapped from agent cpu_priority.
-    """
-    try:
-        os.setpriority(os.PRIO_PROCESS, pid, priority)
-    except OSError:
-        pass
-
-
-# ── result dataclasses ───────────────────────────────────────────────────────
-
-
-@dataclass
-class AgentResult:
-    agent_id: str
-    area: str
-    success: bool
-    output_summary: str
-    files_changed: list[str] = field(default_factory=list)
-    quality_score: float = 0.0
-    duration_s: float = 0.0
-    errors: list[str] = field(default_factory=list)
-
-
-@dataclass
-class CoordinatedResult:
-    merged_plan: dict[str, Any]
-    conflicts_resolved: list[str]
-    quality_score: float
-    improvement_count: int
-
-
-@dataclass
-class OrchestratorResult:
-    results: list[AgentResult]
-    summary: str
-    duration_s: float
-    resource_usage: dict[str, Any]
-
-
-# ── agent registry (in-memory) ─────────────────────────────────────────────────
-
-
-class _AgentRegistry:
-    """
-    Thread-safe in-memory registry of active agents.
-    Tracks: pid, agent_id, agent_type, start_time, status, result_file, log_file.
-    """
-
-    def __init__(self) -> None:
-        self._lock = threading.RLock()
-        self._agents: dict[str, dict[str, Any]] = {}
-
-    def register(self, agent_id: str, agent_type: str, pid: int,
-                 result_file: Path, log_file: Path) -> None:
-        with self._lock:
-            self._agents[agent_id] = {
-                "agent_id": agent_id,
-                "agent_type": agent_type,
-                "pid": pid,
-                "result_file": result_file,
-                "log_file": log_file,
-                "start_time": time.monotonic(),
-                "status": "running",
-                "quality_score": 0.0,
-                "output_summary": "",
-                "files_changed": [],
-                "errors": [],
-            }
-
-    def mark_done(self, agent_id: str, status: str,
-                  quality_score: float = 0.0,
-                  output_summary: str = "",
-                  files_changed: list[str] | None = None,
-                  errors: list[str] | None = None) -> None:
-        with self._lock:
-            if agent_id in self._agents:
-                self._agents[agent_id]["status"] = status
-                self._agents[agent_id]["quality_score"] = quality_score
-                self._agents[agent_id]["output_summary"] = output_summary
-                self._agents[agent_id]["files_changed"] = files_changed or []
-                self._agents[agent_id]["errors"] = errors or []
-
-    def get(self, agent_id: str) -> dict[str, Any] | None:
-        with self._lock:
-            return dict(self._agents.get(agent_id, {}))
-
-    def all(self) -> list[dict[str, Any]]:
-        with self._lock:
-            return [dict(v) for v in self._agents.values()]
-
-    def pids(self) -> list[int]:
-        with self._lock:
-            return [v["pid"] for v in self._agents.values()]
-
-    def unregister(self, agent_id: str) -> None:
-        with self._lock:
-            self._agents.pop(agent_id, None)
-
-    def clear(self) -> None:
-        with self._lock:
-            self._agents.clear()
-
-
-# ── default agent prompts ─────────────────────────────────────────────────────
-
-
-_AGENT_PROMPTS: dict[str, str] = {
-    "researcher": (
-        "You are the Researcher agent. Your role is to gather, validate, and synthesize "
-        "information relevant to the assigned improvement. Search the codebase, read "
-        "documentation, and produce a concise summary of findings including relevant file "
-        "paths, patterns, and gaps. Write your JSON result to the result file."
-    ),
-    "planner": (
-        "You are the Planner agent. Your role is to take research findings and produce "
-        "a detailed, phased implementation plan with acceptance criteria, file changes, "
-        "and risk assessments. Write your JSON result to the result file."
-    ),
-    "implementer": (
-        "You are the Implementer agent. Your role is to execute the plan by making "
-        "targeted code changes. Prefer surgical edits over broad rewrites. Write your "
-        "JSON result to the result file listing every file changed."
-    ),
-    "qa_engineer": (
-        "You are the QA Engineer agent. Your role is to write or update tests, verify "
-        "correctness, and identify edge cases for the assigned improvement. Write your "
-        "JSON result to the result file."
-    ),
-    "validator": (
-        "You are the Validator agent. Your role is to review the entire change — "
-        "correctness, security, performance, and alignment with project standards — "
-        "and produce a validation report. Write your JSON result to the result file."
-    ),
-}
-
-# ── AgentOrchestrator ─────────────────────────────────────────────────────────
-
-
-class AgentOrchestrator:
-    """
-    Orchestrates multiple agents in parallel with resource awareness.
-
-    Usage:
-        orch = AgentOrchestrator()
-        result = orch.orchestrate(improvements=[...], context={...})
-    """
-
-    def __init__(self) -> None:
-        self._registry = _AgentRegistry()
-        self._cancel_requested = threading.Event()
-        self._lock = threading.RLock()
-
-    # ── public API ────────────────────────────────────────────────────────────
-
-    def orchestrate(
-        self,
-        improvements: list[dict[str, Any]],
-        context: dict[str, Any],
-    ) -> OrchestratorResult:
-        """
-        Orchestrate a list of improvements using parallel agents.
-
-        Returns OrchestratorResult with:
-          - results: list of AgentResult per agent
-          - summary: human-readable synthesis
-          - duration_s: total elapsed time
-          - resource_usage: snapshot of resource metrics
-        """
-        t0 = time.monotonic()
-        self._cancel_requested.clear()
-
-        # Determine how many agents can run in parallel given current resources
-        available = self.get_available_resources()
-        can_parallel = self.should_spawn_parallel(len(improvements))
-
-        log(f"Orchestrating {len(improvements)} improvements | "
-            f"parallel={can_parallel} | "
-            f"cpu={available['cpu_cores']} | "
-            f"free_mem={available['memory_free_mb']}MB")
-
-        if can_parallel:
-            results = self._orchestrate_parallel(improvements, context)
-        else:
-            log("Running in sequential mode due to low resources")
-            results = self._orchestrate_sequential(improvements, context)
-
-        # Coordinate and merge results
-        coordinated = self.coordinate_results(results)
-
-        duration_s = time.monotonic() - t0
-        usage = self._resource_usage_snapshot()
-
-        summary = (
-            f"Processed {len(results)} agents in {duration_s:.1f}s. "
-            f"Conflicts resolved: {len(coordinated.conflicts_resolved)}. "
-            f"Quality score: {coordinated.quality_score:.1f}. "
-            f"Merged {coordinated.improvement_count} improvements into plan."
-        )
-
-        return OrchestratorResult(
-            results=results,
-            summary=summary,
-            duration_s=duration_s,
-            resource_usage=usage,
-        )
-
-    def spawn_agent(
-        self,
-        improvement: dict[str, Any],
-        context: dict[str, Any],
-    ) -> AgentResult:
-        """
-        Spawn a single agent for one improvement.
-
-        Returns AgentResult with agent_id, success, output_summary, etc.
-        """
-        agent_type_str = improvement.get("agent_type", "researcher")
-        agent_id = f"{agent_type_str}-{uuid.uuid4().hex[:8]}"
-
+def build_injected_context(area: str, hint: str = "", tags: list[str] | None = None) -> str:
+    """Build up to 8000-char context: hint, project summary, decisions, area paths, learnings."""
+    parts, rem = [], 8000
+    if hint:
+        chunk = hint[:min(2000, rem)]; parts.append(f"## Task Context\n{chunk}"); rem -= len(chunk) + 2
+    pm_file = MA / "project_map.json"
+    if rem > 200 and pm_file.exists():
         try:
-            cfg = _AGENT_CONFIGS.get(
-                AgentType(agent_type_str),
-                _AGENT_CONFIGS[AgentType.RESEARCHER],
-            )
-        except ValueError:
-            cfg = _AGENT_CONFIGS[AgentType.RESEARCHER]
-        AGENT_RESULTS_DIR = MA / "agent-results"
-        result_file = AGENT_RESULTS_DIR / f"result-{agent_id}.json"
-        log_file = LOGS_DIR / f"agent-{agent_id}-{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S')}.log"
-
-        if result_file.exists():
-            result_file.unlink()
-
-        t0 = time.monotonic()
-
-        # Build system prompt
-        system_prompt = self._build_system_prompt(agent_type_str, improvement, context)
-
-        # Write log header
+            pm = _load_json(pm_file, {}); s = pm.get("summary", "")[:min(500, rem)]
+            if s: parts.append(f"## Project Summary\n{s}"); rem -= len(s) + 20
+        except Exception: pass
+    dec_file = ROOT / "DECISIONS.md"
+    if rem > 100 and dec_file.exists():
         try:
-            with open(log_file, "w", encoding="utf-8") as f:
-                f.write(f"# Agent: {agent_type_str} | ID: {agent_id}\n")
-                f.write(f"# Spawned: {datetime.now(timezone.utc).isoformat()}\n")
-                f.write(f"# Result: {result_file}\n\n")
-        except OSError as exc:
-            log(f"Warning: could not write log file {log_file}: {exc}")
-            log_file = Path("/dev/null")
-
-        # Spawn subprocess
-        proc = None
-        pid = 0
-        try:
-            env = {
-                **os.environ,
-                "HEADROOM_QUIET": "1",
-                "ANTHROPIC_BASE_URL": "http://127.0.0.1:8787",
-            }
-            proc = subprocess.Popen(
-                [
-                    OMP, "-p",
-                    "--no-lsp", "--no-rules", "--no-extensions", "--no-skills",
-                    "--system-prompt", system_prompt,
-                    "--session-dir", str(SESSION_DIR / agent_type_str),
-                    "--auto-approve",
-                    f"You are {agent_type_str}Agent. Work on: {improvement.get('description', '')}. "
-                    f"Write JSON result to {result_file}.",
-                ],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                text=True,
-                cwd=str(ROOT),
-                env=env,
-            )
-            pid = proc.pid
-            self._registry.register(agent_id, agent_type_str, pid, result_file, log_file)
-
-            # Set CPU priority
-            _set_cpu_priority(pid, cfg.cpu_priority)
-
-            # Stream output to log
-            for line in proc.stdout:
-                try:
-                    with open(log_file, "a", encoding="utf-8") as f:
-                        f.write(line)
-                except OSError:
-                    pass
-
-            proc.wait()
-
-        except Exception as exc:  # noqa: BLE001
-            duration_s = time.monotonic() - t0
-            self._registry.mark_done(agent_id, "error", errors=[str(exc)])
-            return AgentResult(
-                agent_id=agent_id,
-                area=improvement.get("area", ""),
-                success=False,
-                output_summary=f"Spawn failed: {exc}",
-                duration_s=duration_s,
-                errors=[str(exc)],
-            )
-
-        # Read result
-        raw = load_json(result_file, None)
-        duration_s = time.monotonic() - t0
-
-        if raw is None or proc.returncode != 0:
-            status = "error"
-            success = False
-            quality_score = 0.0
-            output_summary = raw.get("summary", "no result") if raw else "no result file"
-            errors = [f"returncode={proc.returncode}"] if proc else []
-            files_changed = []
-        else:
-            status = "done"
-            success = raw.get("status") != "error"
-            quality_score = raw.get("quality_score", 0.0)
-            output_summary = raw.get("summary", str(raw)[:500])
-            errors = raw.get("errors", [])
-            files_changed = raw.get("files_changed", [])
-
-        self._registry.mark_done(
-            agent_id, status,
-            quality_score=quality_score,
-            output_summary=output_summary,
-            files_changed=files_changed,
-            errors=errors,
-        )
-
-        return AgentResult(
-            agent_id=agent_id,
-            area=improvement.get("area", ""),
-            success=success,
-            output_summary=output_summary,
-            files_changed=files_changed,
-            quality_score=quality_score,
-            duration_s=duration_s,
-            errors=errors,
-        )
-
-    def monitor_agents(
-        self,
-        agent_pids: list[int],
-    ) -> list[dict[str, Any]]:
-        """
-        Poll resource usage for a list of agent PIDs.
-
-        Returns list of {pid, status, cpu_percent, memory_mb}.
-        """
-        # Read /proc/<pid>/stat for cpu and /proc/<pid>/statm for memory
-        monitored = []
-        for pid in agent_pids:
+            lines = dec_file.read_text().splitlines()[-20:]
+            chunk = "\n".join(lines)[:min(600, rem)]
+            if chunk: parts.append(f"## Recent Decisions\n{chunk}"); rem -= len(chunk) + 20
+        except Exception: pass
+    if rem > 100:
+        hint_lines = [f"- {t}: {_AREA_PATHS.get(t, _AREA_PATHS['default'])}"
+                      for t in (tags or []) if t in _AREA_PATHS]
+        if not hint_lines: hint_lines = [f"- {_AREA_PATHS['default']}"]
+        chunk = "\n".join(hint_lines)[:min(400, rem)]
+        if chunk: parts.append(f"## Relevant Paths\n{chunk}"); rem -= len(chunk) + 20
+    if rem > 100:
+        mem_file = MA / "memory.json"
+        if mem_file.exists():
             try:
-                stat = Path(f"/proc/{pid}/stat").read_text(encoding="utf-8")
-                parts = stat.split()
-                # utime (14) + stime (15) in clock ticks; convert to seconds
-                cpu_ticks = int(parts[13]) + int(parts[14])
-                cpu_s = cpu_ticks / os.sysconf("SC_CLK_TCK")
+                mem = _load_json(mem_file, {})
+                lns = [f"- {l}" for l in mem.get("learnings", [])[-5:]]
+                if lns:
+                    chunk = "\n".join(lns)[:min(500, rem)]
+                    parts.append(f"## Memory Hints\n{chunk}")
+            except Exception: pass
+    return "\n\n".join(parts)[:8000]
 
-                statm = Path(f"/proc/{pid}/statm").read_text(encoding="utf-8").split()
-                page_kb = os.sysconf("SC_PAGE_SIZE") // 1024
-                resident_mb = int(statm[1]) * page_kb // 1024
+# ── minimal agent subprocess script (written to temp file at spawn) ───────────
+_AGENT_SCRIPT = r"""
+import json, sys, os, subprocess, time
+from datetime import datetime, timezone
+from pathlib import Path
 
-                # Status: R=running, S=sleeping, Z=zombie
-                state_char = parts[2] if len(parts) > 2 else "?"
-                status_map = {"R": "running", "S": "sleeping", "Z": "zombie"}
-                status = status_map.get(state_char, f"unknown({state_char})")
+READY = "AGENT_READY"
 
-                # Rough cpu% using elapsed wall time from stat starttime (22)
-                start_ticks = int(parts[21])
-                uptime_s = self._system_uptime_s()
-                elapsed_s = max(1.0, uptime_s - start_ticks / os.sysconf("SC_CLK_TCK"))
-                cpu_percent = min(400.0, (cpu_s / elapsed_s) * 100.0)
+def log(m): print(f"[{datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}] SA: {m}", flush=True)
 
-                monitored.append({
-                    "pid": pid,
-                    "status": status,
-                    "cpu_percent": round(cpu_percent, 1),
-                    "memory_mb": resident_mb,
-                })
-            except (OSError, IndexError, ValueError):
-                # Process may have exited; treat as zombie/unknown
-                monitored.append({
-                    "pid": pid,
-                    "status": "gone",
-                    "cpu_percent": 0.0,
-                    "memory_mb": 0,
-                })
-        return monitored
+def ctx(skill_tags, hint, ma):
+    parts, rem = [], 8000
+    if hint:
+        c = hint[:min(2000, rem)]; parts.append(f"## Context\n{c}"); rem -= len(c) + 2
+    pm = ma / "project_map.json"
+    if rem > 200 and pm.exists():
+        try:
+            d = json.loads(pm.read_text()); s = d.get("summary", "")[:min(500, rem)]
+            if s: parts.append(f"## Project\n{s}"); rem -= len(s) + 20
+        except: pass
+    dec = Path({root}) / "DECISIONS.md"
+    if rem > 100 and dec.exists():
+        try:
+            lines = dec.read_text().splitlines()[-20:]
+            c = "\n".join(lines)[:min(600, rem)]
+            if c: parts.append(f"## Decisions\n{c}"); rem -= len(c) + 20
+        except: pass
+    if rem > 100:
+        tags = {tags}
+        areas = {areas}
+        lines = [f"- {t}: {areas.get(t, areas['default'])}" for t in tags if t in areas]
+        if not lines: lines = [f"- {areas['default']}"]
+        c = "\n".join(lines)[:min(400, rem)]
+        if c: parts.append(f"## Paths\n{c}"); rem -= len(c) + 20
+    if rem > 100:
+        mf = ma / "memory.json"
+        if mf.exists():
+            try:
+                mem = json.loads(mf.read_text())
+                lns = [f"- {l}" for l in mem.get("learnings", [])[-5:]]
+                if lns:
+                    c = "\n".join(lns)[:min(500, rem)]
+                    parts.append(f"## Memory\n{c}")
+            except: pass
+    return "\n\n".join(parts)[:8000]
 
-    def coordinate_results(self, results: list[AgentResult]) -> CoordinatedResult:
-        """
-        Merge multiple AgentResults into a coherent plan.
-        Detects conflicts, resolves by quality score, returns CoordinatedResult.
-        """
-        if not results:
-            return CoordinatedResult(
-                merged_plan={},
-                conflicts_resolved=[],
-                quality_score=0.0,
-                improvement_count=0,
-            )
+def run_task(prompt, skill_tags, ma):
+    full = f"<<CONTEXT>>\n{ctx(skill_tags, '', ma)}\n<</CONTEXT>>\n\n<<TASK>>\n{prompt}\n<</TASK>>"
+    for cmd in [{omp}, {py}]:
+        try:
+            r = subprocess.run([cmd, "-p", "--model", "MiniMax-M2.7-highspeed", full],
+                capture_output=True, text=True, timeout=600, cwd={root_repr},
+                env={{**os.environ, "ANTHROPIC_MODEL": "MiniMax-M2.7-highspeed"}})
+            return {{"success": r.returncode == 0, "output": r.stdout[:5000],
+                     "stderr": r.stderr[:1000], "rc": r.returncode}}
+        except Exception: continue
+    return {{"success": False, "output": "", "stderr": "No agent binary found", "rc": -1}}
 
-        # Sort by quality_score descending
-        sorted_results = sorted(results, key=lambda r: r.quality_score, reverse=True)
+skill_tags = {tags}
+agent_id = "{{agent_id}}"
+ma = Path("{ma_path}")
+log(f"Ready tags={skill_tags}")
+print(READY, flush=True)
 
-        conflicts: list[str] = []
-        merged_files: list[str] = []
-        merged_errors: list[str] = []
-        total_quality: float = 0.0
-
-        seen_files: set[str] = set()
-        for r in sorted_results:
-            total_quality += r.quality_score
-            for f in r.files_changed:
-                if f in seen_files:
-                    conflicts.append(f"File modified by multiple agents: {f}")
-                else:
-                    seen_files.add(f)
-                    merged_files.append(f)
-            merged_errors.extend(r.errors)
-
-        avg_quality = total_quality / len(results) if results else 0.0
-
-        # Build merged plan: list all changes grouped by agent
-        merged_plan: dict[str, Any] = {
-            "changes": [
-                {
-                    "agent_id": r.agent_id,
-                    "area": r.area,
-                    "success": r.success,
-                    "output_summary": r.output_summary,
-                    "files_changed": r.files_changed,
-                    "quality_score": r.quality_score,
-                    "duration_s": round(r.duration_s, 1),
-                }
-                for r in sorted_results
-            ],
-            "all_files_changed": merged_files,
-            "conflict_count": len(conflicts),
-        }
-
-        return CoordinatedResult(
-            merged_plan=merged_plan,
-            conflicts_resolved=conflicts,
-            quality_score=round(avg_quality, 2),
-            improvement_count=len(results),
-        )
-
-    def get_available_resources(self) -> dict[str, Any]:
-        """
-        Return current system resource snapshot.
-
-        Returns {cpu_cores, memory_free_mb, can_spawn_more}.
-        """
-        cpu_cores = _cpu_count()
-        memory_free_mb = _system_memory_free_mb()
-
-        # Sum estimated memory of all currently running agents
-        running_agents = [a for a in self._registry.all() if a.get("status") == "running"]
-        estimated_mem_mb = sum(
-            _AGENT_CONFIGS.get(AgentType(at), _AGENT_CONFIGS[AgentType.RESEARCHER]).memory_profile_mb
-            for at in [a.get("agent_type", "researcher") for a in running_agents]
-        )
-        usable_mem_mb = max(0, memory_free_mb - estimated_mem_mb)
-
-        can_spawn_more = (
-            usable_mem_mb > _MIN_FREE_MEMORY_MB
-            and cpu_cores >= _MIN_CPU_CORES
-        )
-
-        return {
-            "cpu_cores": cpu_cores,
-            "memory_free_mb": memory_free_mb,
-            "can_spawn_more": can_spawn_more,
-            "running_agents": len(running_agents),
-            "estimated_used_mb": estimated_mem_mb,
-            "usable_memory_mb": usable_mem_mb,
-        }
-
-    def should_spawn_parallel(self, num_requested: int) -> bool:
-        """
-        Decide whether to spawn *num_requested* agents in parallel.
-
-        Returns True if system has enough CPU cores and free memory.
-        """
-        res = self.get_available_resources()
-        cpu_ok = res["cpu_cores"] >= _MIN_CPU_CORES
-        mem_ok = res["memory_free_mb"] > _LOW_MEMORY_MB
-        can_do = res["can_spawn_more"]
-        cores_ok = res["cpu_cores"] >= num_requested // 2  # at least half in cores
-
-        if not cpu_ok or not mem_ok:
-            return False
-        if not can_do:
-            return False
-        # Soft cap: don't spawn more than 4 in parallel on this hardware
-        return num_requested <= 4 or cores_ok
-
-    def cancel_all(self) -> None:
-        """Send SIGTERM to all running agents and wait for them to exit."""
-        log("Cancel requested — terminating all agents")
-        self._cancel_requested.set()
-
-        for agent in self._registry.all():
-            pid = agent.get("pid", 0)
-            if pid and agent.get("status") == "running":
-                try:
-                    os.kill(pid, signal.SIGTERM)
-                except OSError:
-                    pass  # already dead
-
-        # Wait briefly for graceful shutdown
-        time.sleep(1.0)
-
-        # Force kill any remaining
-        for agent in self._registry.all():
-            pid = agent.get("pid", 0)
-            if pid and agent.get("status") == "running":
-                try:
-                    os.kill(pid, signal.SIGKILL)
-                except OSError:
-                    pass
-
-        self._registry.clear()
-        log("All agents cancelled")
-
-    def get_agent_status(self, agent_id: str) -> dict[str, Any]:
-        """
-        Return current status dict for one agent.
-
-        Returns {agent_id, status, quality_score, output_summary, files_changed, errors}
-        or empty dict if not found.
-        """
-        return self._registry.get(agent_id) or {}
-
-    # ── internal helpers ──────────────────────────────────────────────────────
-
-    def _orchestrate_parallel(
-        self,
-        improvements: list[dict[str, Any]],
-        context: dict[str, Any],
-    ) -> list[AgentResult]:
-        max_workers = min(4, len(improvements), (_cpu_count() or 2))
-        log(f"Spawning up to {max_workers} agents in parallel")
-
-        results: list[AgentResult] = []
-        cancel_event = self._cancel_requested
-
-        with ThreadPoolExecutor(max_workers=max_workers) as pool:
-            futures = {
-                pool.submit(self.spawn_agent, imp, context): imp
-                for imp in improvements
-            }
-
-            for future in as_completed(futures):
-                if cancel_event.is_set():
-                    log("Cancel event set — aborting remaining futures")
-                    pool.shutdown(wait=False, cancel_futures=True)
-                    break
-
-                try:
-                    result = future.result(timeout=900)
-                    results.append(result)
-                except Exception as exc:  # noqa: BLE001
-                    imp = futures[future]
-                    results.append(AgentResult(
-                        agent_id="unknown",
-                        area=imp.get("area", ""),
-                        success=False,
-                        output_summary=f"Future failed: {exc}",
-                        errors=[str(exc)],
-                    ))
-
-        return results
-
-    def _orchestrate_sequential(
-        self,
-        improvements: list[dict[str, Any]],
-        context: dict[str, Any],
-    ) -> list[AgentResult]:
-        log("Running agents sequentially")
-        results: list[AgentResult] = []
-        for imp in improvements:
-            if self._cancel_requested.is_set():
-                break
-            results.append(self.spawn_agent(imp, context))
-        return results
-
-    def _build_system_prompt(
-        self,
-        agent_type: str,
-        improvement: dict[str, Any],
-        context: dict[str, Any],
-    ) -> str:
-        fid = improvement.get("id", "?")
-        ftitle = improvement.get("title", improvement.get("description", ""))[:120]
-        agent_prompt = _AGENT_PROMPTS.get(agent_type, _AGENT_PROMPTS["researcher"])
-
-        # Inline relevant context keys
-        ctx_lines = []
-        for key in ("version", "iteration", "features", "triad", "plans"):
-            val = context.get(key)
-            if val is not None:
-                ctx_lines.append(f"  {key}: {val}")
-
-        context_block = "\n".join(ctx_lines) if ctx_lines else "  (no context available)"
-
-        return f"""You are {agent_type.title()}Agent for the AKASHA spiritual technology project.
-
-{agent_prompt}
-
-=== CURRENT IMPROVEMENT ===
-  id: {fid}
-  title: {ftitle}
-  area: {improvement.get('area', 'general')}
-  priority: {improvement.get('priority', 'medium')}
-  description: {improvement.get('description', '')[:500]}
-
-=== PROJECT CONTEXT ===
-{context_block}
-
-IMPORTANT:
-- Write your JSON result to the file specified by the orchestrator
-- Use codegraph_explore before making architectural claims
-- This is a REAL project. Do not fabricate file paths or code
-- Your job is to advance improvement {fid}: {ftitle}
+while True:
+    line = sys.stdin.readline()
+    if not line: break
+    try: msg = json.loads(line.strip())
+    except: continue
+    cmd = msg.get("cmd")
+    if cmd == "execute":
+        tid, prompt = msg.get("task_id", ""), msg.get("prompt", "")
+        log(f"Task {tid}")
+        t0 = time.time()
+        res = run_task(prompt, skill_tags, ma)
+        print(json.dumps({{"cmd": "result", "task_id": tid, "agent_id": agent_id,
+                           "success": res["success"], "output": res["output"],
+                           "stderr": res["stderr"],
+                           "duration_s": round(time.time() - t0, 2),
+                           "timestamp": datetime.now(timezone.utc).isoformat()}}), flush=True)
+    elif cmd == "shutdown":
+        log("Shutdown"); break
 """
 
-    @staticmethod
-    def _system_uptime_s() -> float:
-        """Read /proc/uptime and return uptime in seconds."""
+_AREAS_DICT = json.dumps(_AREA_PATHS)
+
+def _build_script(agent_id: str, tags: list[str]) -> str:
+    return _AGENT_SCRIPT.format(
+        root=repr(str(ROOT)), root_repr=repr(str(ROOT)),
+        ma_path=str(MA), agent_id=agent_id,
+        tags=repr(tags), areas=_AREAS_DICT,
+        omp=repr("/home/skynet/.bun/bin/omp"),
+        py=repr(str(ROOT / ".headroom-venv/bin/python")),
+    )
+
+# ── orchestrator ──────────────────────────────────────────────────────────────
+class AgentOrchestratorV2:
+    def __init__(
+        self, ma: Path | None = None,
+        max_agents: int = 8, min_agents: int = 2,
+        respawn_timeout: float = 5.0,
+        heartbeat_interval: float = 30.0,
+        task_timeout: float = 600.0,
+    ):
+        self.ma = ma or MA; self.max_agents = max_agents; self.min_agents = min_agents
+        self.respawn_timeout = respawn_timeout; self.heartbeat_interval = heartbeat_interval
+        self.task_timeout = task_timeout
+        self._lock = threading.RLock()
+        self._agents: dict[str, AgentRecord] = {}
+        self._task_queue: list[tuple[int, int, TaskRecord]] = []
+        self._task_counter = 0
+        self._tasks: dict[str, TaskRecord] = {}
+        self._result_cache: dict[str, dict[str, Any]] = {}
+        self._monitor_thread: threading.Thread | None = None
+        self._dispatch_thread: threading.Thread | None = None
+        self._shutdown_event = threading.Event()
+        self._metrics_file = self.ma / "orchestrator_metrics.json"
+        self._metrics = _load_json(self._metrics_file, {
+            "area_metrics": {}, "agent_metrics": {}, "total_tasks": 0,
+            "total_success": 0, "total_failed": 0,
+        })
+        log(f"Initialized max={max_agents} min={min_agents}")
+
+    # ── public API ──────────────────────────────────────────────────────────────
+    def spawn_agent(self, skill_tags: list[str]) -> str:
+        with self._lock:
+            aid = f"agent-{uuid.uuid4().hex[:8]}"
+            sp = self.ma / f".agent_script_{aid}.py"
+            sp.write_text(_build_script(aid, skill_tags), encoding="utf-8")
+            proc = subprocess.Popen(
+                [sys.executable, str(sp)],
+                stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE, text=True, bufsize=1,
+                cwd=str(ROOT), env={**os.environ},
+                preexec_fn=lambda: os.sched_setaffinity(0, {0, 1})
+                    if hasattr(os, "sched_setaffinity") else None,
+            )
+            self._agents[aid] = AgentRecord(agent_id=aid, skill_tags=skill_tags, proc=proc)
+            self._wait_ready(proc, aid)
+            log(f"Spawned {aid} tags={skill_tags} pool={len(self._agents)}")
+            return aid
+
+    def assign(self, area: str, prompt: str, priority: str = "normal", context: str = "") -> str:
+        prio = Priority.HIGH if priority.lower() == "high" else Priority.NORMAL
+        with self._lock:
+            self._task_counter += 1
+            tid = f"task-{uuid.uuid4().hex[:8]}"
+            ctx = build_injected_context(area, context)
+            rec = TaskRecord(task_id=tid, area=area, prompt=prompt, priority=prio, context_used=ctx)
+            self._tasks[tid] = rec
+            self._metrics["total_tasks"] = self._metrics.get("total_tasks", 0) + 1
+            heapq.heappush(self._task_queue, (prio.value, self._task_counter, rec))
+            log(f"Queued {tid} ({area}/{priority}) queue={len(self._task_queue)}")
+            return tid
+
+    def get_result(self, task_id: str) -> dict[str, Any] | None:
+        with self._lock:
+            t = self._tasks.get(task_id)
+            return t.result if t and t.status == TaskStatus.DONE else None
+
+    def get_task_status(self, task_id: str) -> str:
+        with self._lock:
+            t = self._tasks.get(task_id)
+            return {TaskStatus.PENDING: "pending", TaskStatus.RUNNING: "running",
+                    TaskStatus.DONE: "done", TaskStatus.FAILED: "failed",
+                    TaskStatus.CANCELLED: "cancelled"}.get(t.status if t else TaskStatus.PENDING, "pending")
+
+    def wait_all(self, timeout: float = 300.0) -> list[dict[str, Any]]:
+        deadline = time.time() + timeout
+        while time.time() < deadline:
+            with self._lock:
+                if not [t for t in self._tasks.values()
+                        if t.status in (TaskStatus.PENDING, TaskStatus.RUNNING)]:
+                    return [t.result for t in self._tasks.values()
+                            if t.status == TaskStatus.DONE and t.result]
+            time.sleep(0.5)
+        return [t.result for t in self._tasks.values()
+                if t.status == TaskStatus.DONE and t.result]
+
+    def wait_any(self, timeout: float = 60.0) -> dict[str, Any] | None:
+        deadline = time.time() + timeout
+        while time.time() < deadline:
+            with self._lock:
+                for t in self._tasks.values():
+                    if t.status in (TaskStatus.DONE, TaskStatus.FAILED):
+                        return t.result or {"success": False, "task_id": t.task_id, "error": "failed"}
+            time.sleep(0.25)
+        return None
+
+    def cancel(self, task_id: str) -> bool:
+        with self._lock:
+            t = self._tasks.get(task_id)
+            if not t or t.status in (TaskStatus.DONE, TaskStatus.FAILED, TaskStatus.CANCELLED):
+                return False
+            t.status = TaskStatus.CANCELLED; t.completed_at = time.time()
+            if t.assigned_agent_id:
+                a = self._agents.get(t.assigned_agent_id)
+                if a and a.proc and a.proc.poll() is None:
+                    try: a.proc.terminate()
+                    except Exception: pass
+                if a and a.current_task_id == task_id:
+                    a.current_task_id = None
+                    if a.state == AgentState.BUSY: a.state = AgentState.IDLE
+            log(f"Cancelled {task_id}"); return True
+
+    def resize_pool(self, size: int) -> None:
+        size = max(self.min_agents, min(self.max_agents, size))
+        with self._lock:
+            if size == len(self._agents): return
+        if size > len(self._agents):
+            for _ in range(size - len(self._agents)): self.spawn_agent(["general"])
+        else:
+            with self._lock:
+                idle = [(aid, r) for aid, r in self._agents.items()
+                        if r.state == AgentState.IDLE and r.current_task_id is None]
+                for aid, _ in idle[:len(self._agents) - size]:
+                    self._shutdown_agent(aid)
+        log(f"Pool resized to {size}")
+
+    def shutdown(self) -> None:
+        log("Shutting down..."); self._shutdown_event.set()
+        with self._lock:
+            for aid in list(self._agents.keys()): self._shutdown_agent(aid)
+            self._agents.clear(); self._tasks.clear(); self._task_queue.clear()
+        for t in (self._monitor_thread, self._dispatch_thread):
+            if t and t.is_alive(): t.join(timeout=5.0)
+        self._save_metrics(); log("Shutdown complete")
+
+    def get_pool_status(self) -> dict[str, Any]:
+        with self._lock:
+            agents = [{
+                "agent_id": aid, "state": r.state.name, "skill_tags": r.skill_tags,
+                "current_task_id": r.current_task_id,
+                "tasks_completed": r.tasks_completed, "success_rate": round(r.success_rate, 3),
+                "quality_score": round(r.quality_score, 3),
+            } for aid, r in self._agents.items()]
+            pending = sum(1 for t in self._tasks.values() if t.status == TaskStatus.PENDING)
+            running = sum(1 for t in self._tasks.values() if t.status == TaskStatus.RUNNING)
+            done = sum(1 for t in self._tasks.values() if t.status == TaskStatus.DONE)
+            failed = sum(1 for t in self._tasks.values() if t.status == TaskStatus.FAILED)
+            return {"pool_size": len(self._agents), "max_agents": self.max_agents,
+                    "agents": agents, "queue_depth": len(self._task_queue),
+                    "tasks": {"pending": pending, "running": running, "done": done, "failed": failed},
+                    "total_tasks": self._metrics.get("total_tasks", 0),
+                    "total_success": self._metrics.get("total_success", 0),
+                    "total_failed": self._metrics.get("total_failed", 0)}
+
+    def inject_context(self, area: str, hint: str = "") -> str:
+        return build_injected_context(area, hint)
+
+    # ── routing ─────────────────────────────────────────────────────────────────
+    def _route_task(self, area: str) -> str | None:
+        with self._lock:
+            idle = [r for r in self._agents.values()
+                    if r.state == AgentState.IDLE and r.current_task_id is None]
+            if not idle: return None
+            def score(r: AgentRecord):
+                ov = len(set(r.skill_tags) & {area})
+                act = (r.tasks_completed + r.tasks_failed) / max(r.tasks_completed, 1)
+                ok, tot = r.area_success.get(area, (1, 1))
+                return (-ov, act, -(ok / max(tot, 1)))
+            idle.sort(key=score); return idle[0].agent_id
+
+    # ── background threads ──────────────────────────────────────────────────────
+    def start(self) -> None:
+        if self._monitor_thread and self._monitor_thread.is_alive(): return
+        self._shutdown_event.clear()
+        self._monitor_thread = threading.Thread(target=self._monitor_loop, daemon=True, name="Monitor")
+        self._monitor_thread.start()
+        self._dispatch_thread = threading.Thread(target=self._dispatch_loop, daemon=True, name="Dispatch")
+        self._dispatch_thread.start()
+        log("Background threads started")
+
+    def _monitor_loop(self) -> None:
+        while not self._shutdown_event.is_set():
+            try:
+                self._cleanup_dead()
+                self._check_heartbeats()
+            except Exception as e: log(f"Monitor error: {e}")
+            self._shutdown_event.wait(self.heartbeat_interval)
+
+    def _dispatch_loop(self) -> None:
+        while not self._shutdown_event.is_set():
+            try: self._dispatch_one()
+            except Exception as e: log(f"Dispatch error: {e}")
+            time.sleep(0.25)
+
+    def _dispatch_one(self) -> None:
+        with self._lock:
+            if not self._task_queue: return
+            # find any idle agent
+            agent_id = self._route_task("")
+            if not agent_id:
+                # try harder — any non-busy agent
+                idle = [aid for aid, r in self._agents.items()
+                        if r.state in (AgentState.IDLE, AgentState.COOLING)
+                        and r.current_task_id is None]
+                if not idle: return
+                agent_id = idle[0]
+            agent = self._agents.get(agent_id)
+            if not agent or agent.state == AgentState.BUSY: return
+            _, _, task = heapq.heappop(self._task_queue)
+            if task.status != TaskStatus.PENDING: return
+            task.status = TaskStatus.RUNNING; task.assigned_agent_id = agent_id
+            task.started_at = time.time()
+            agent.state = AgentState.BUSY; agent.current_task_id = task.task_id
+        self._send_task(agent, task)
+
+    def _send_task(self, agent: AgentRecord, task: TaskRecord) -> None:
         try:
-            return float(Path("/proc/uptime").read_text(encoding="utf-8").split()[0])
-        except (OSError, IndexError, ValueError):
-            return 0.0
+            msg = {"cmd": "execute", "task_id": task.task_id, "prompt": task.prompt,
+                   "context": task.context_used, "skill_tags": agent.skill_tags}
+            if agent.proc and agent.proc.stdin:
+                agent.proc.stdin.write(json.dumps(msg) + "\n"); agent.proc.stdin.flush()
+                log(f"Dispatched {task.task_id} → {agent.agent_id}")
+        except Exception as e:
+            log(f"Send error {task.task_id}: {e}")
+            with self._lock:
+                task.status = TaskStatus.FAILED
+                task.result = {"success": False, "error": str(e)}
+                agent.state = AgentState.DEAD; agent.current_task_id = None
 
-    @staticmethod
-    def _resource_usage_snapshot() -> dict[str, Any]:
-        """Capture a snapshot of current resource usage."""
-        mem_info = _get_memory_info()
-        free_mb = _system_memory_free_mb()
-        return {
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-            "system_memory_free_mb": free_mb,
-            "process_memory_rss_kb": mem_info.get("resident_kb", 0),
-            "process_memory_size_kb": mem_info.get("size_kb", 0),
-            "cpu_cores": _cpu_count(),
-        }
+    def _process_agent_output(self, agent: AgentRecord) -> None:
+        """Read and dispatch one line of agent stdout."""
+        try:
+            if not agent.proc or not agent.proc.stdout: return
+            import select
+            if not select.select([agent.proc.stdout], [], [], 0.1)[0]: return
+            line = agent.proc.stdout.readline()
+            if not line or "AGENT_READY" in line: return
+            try: msg = json.loads(line.strip())
+            except json.JSONDecodeError: return
+            if msg.get("cmd") == "result":
+                tid = msg.get("task_id", "")
+                with self._lock:
+                    task = self._tasks.get(tid)
+                    if not task: return
+                    task.completed_at = time.time()
+                    ok = msg.get("success", False)
+                    task.status = TaskStatus.DONE if ok else TaskStatus.FAILED
+                    res = {"success": ok, "task_id": tid, "agent_id": msg.get("agent_id", agent.agent_id),
+                           "output": msg.get("output", ""), "stderr": msg.get("stderr", ""),
+                           "duration_s": msg.get("duration_s", 0.0),
+                           "timestamp": msg.get("timestamp", "")}
+                    # deduplicate
+                    h = str(hash(res.get("output", "")))
+                    prev = self._result_cache.get(h)
+                    if prev and prev.get("success") and ok:
+                        if len(res.get("stderr", "")) < len(prev.get("stderr", "")):
+                            self._result_cache[h] = res; task.result = res
+                        else: task.result = prev
+                    else:
+                        self._result_cache[h] = res; task.result = res
+                    # agent metrics
+                    agent.tasks_completed += 1 if ok else 0
+                    agent.tasks_failed += 1 if not ok else 0
+                    tot = agent.tasks_completed + agent.tasks_failed
+                    agent.success_rate = agent.tasks_completed / tot if tot else 1.0
+                    dur = msg.get("duration_s", 0.0)
+                    if dur > 0: agent.total_duration_s += dur
+                    # per-area
+                    ok2, tot2 = agent.area_success.get(task.area, (0, 0))
+                    agent.area_success[task.area] = (ok2 + (1 if ok else 0), tot2 + 1)
+                    # global
+                    self._metrics["total_success"] = self._metrics.get("total_success", 0) + (1 if ok else 0)
+                    self._metrics["total_failed"] = self._metrics.get("total_failed", 0) + (1 if not ok else 0)
+                    am = self._metrics.setdefault("area_metrics", {})
+                    ae = am.setdefault(task.area, {"success": 0, "total": 0})
+                    ae["total"] = ae.get("total", 0) + 1
+                    ae["success"] = ae.get("success", 0) + (1 if ok else 0)
+                    self._save_metrics()
+                    agent.current_task_id = None
+                    agent.state = AgentState.IDLE
+                    agent.last_heartbeat = time.time()
+                    # timeout check for other running tasks
+                    for tid, t in self._tasks.items():
+                        if t.status == TaskStatus.RUNNING:
+                            elapsed = time.time() - (t.started_at or 0)
+                            if elapsed > self.task_timeout:
+                                t.status = TaskStatus.FAILED
+                                t.result = {"success": False, "task_id": tid, "error": f"timeout {elapsed:.0f}s"}
+                                ag = self._agents.get(t.assigned_agent_id)
+                                if ag: ag.state = AgentState.IDLE; ag.current_task_id = None
+                    log(f"Task {tid} {task.status.name.lower()} ({agent.agent_id}, {dur:.1f}s)")
+            elif msg.get("cmd") == "pong":
+                agent.last_heartbeat = time.time()
+        except Exception as e: log(f"Output parse error {agent.agent_id}: {e}")
 
+    def _check_heartbeats(self) -> None:
+        with self._lock:
+            for agent in self._agents.values():
+                if agent.state == AgentState.DEAD: continue
+                if time.time() - agent.last_heartbeat > self.heartbeat_interval * 3:
+                    log(f"Heartbeat timeout {agent.agent_id} — DEAD")
+                    agent.state = AgentState.DEAD
+                    if agent.current_task_id:
+                        t = self._tasks.get(agent.current_task_id)
+                        if t and t.status == TaskStatus.RUNNING:
+                            t.status = TaskStatus.FAILED
+                            t.result = {"success": False, "task_id": t.task_id,
+                                        "error": "heartbeat timeout"}
+                    agent.current_task_id = None
 
-# ── module-level convenience ───────────────────────────────────────────────────
+    def _cleanup_dead(self) -> None:
+        with self._lock:
+            dead = [a for a, r in self._agents.items() if r.state == AgentState.DEAD]
+            alive = sum(1 for r in self._agents.values() if r.state != AgentState.DEAD)
+        for aid in dead:
+            rec = self._agents.get(aid)
+            if not rec: continue
+            try:
+                if rec.proc and rec.proc.poll() is None:
+                    rec.proc.terminate(); rec.proc.wait(timeout=2.0)
+            except Exception: pass
+            try: (self.ma / f".agent_script_{aid}.py").unlink(missing_ok=True)
+            except Exception: pass
+            with self._lock: self._agents.pop(aid, None)
+            log(f"Removed dead {aid}")
+        # respawn to min
+        with self._lock:
+            cur = sum(1 for r in self._agents.values() if r.state != AgentState.DEAD)
+        need = self.min_agents - cur
+        if need > 0:
+            log(f"Respawning {need} to maintain min pool")
+            for _ in range(need): self.spawn_agent(["general"])
 
-_orchestrator_instance: AgentOrchestrator | None = None
-_instance_lock = threading.Lock()
+    def _shutdown_agent(self, agent_id: str) -> None:
+        with self._lock: agent = self._agents.get(agent_id)
+        if not agent: return
+        try:
+            if agent.proc and agent.proc.poll() is None:
+                try:
+                    if agent.proc.stdin:
+                        agent.proc.stdin.write(json.dumps({"cmd": "shutdown"}) + "\n")
+                        agent.proc.stdin.flush()
+                    time.sleep(0.5)
+                except Exception: pass
+                if agent.proc.poll() is None: agent.proc.terminate()
+                try: agent.proc.wait(timeout=3.0)
+                except Exception: agent.proc.kill()
+        except Exception as e: log(f"Shutdown agent {agent_id}: {e}")
+        finally:
+            with self._lock: self._agents.pop(agent_id, None)
+            try: (self.ma / f".agent_script_{agent_id}.py").unlink(missing_ok=True)
+            except Exception: pass
 
+    def _wait_ready(self, proc: subprocess.Popen, agent_id: str) -> None:
+        if not proc.stdout: return
+        start = time.time()
+        while time.time() - start < 10.0:
+            if proc.poll() is not None: log(f"Agent {agent_id} died at startup rc={proc.returncode}"); return
+            try:
+                import select
+                if select.select([proc.stdout], [], [], 0.5)[0]:
+                    line = proc.stdout.readline()
+                    if line and "AGENT_READY" in line: return
+            except Exception: time.sleep(0.5)
+        log(f"Agent {agent_id} READY timeout (10s)")
 
-def get_orchestrator() -> AgentOrchestrator:
-    """Return a singleton AgentOrchestrator instance."""
-    global _orchestrator_instance
-    with _instance_lock:
-        if _orchestrator_instance is None:
-            _orchestrator_instance = AgentOrchestrator()
-        return _orchestrator_instance
-
-
-# ── CLI ───────────────────────────────────────────────────────────────────────
-
-
-def _cli() -> None:
-    """Simple CLI for testing the orchestrator."""
-    import argparse
-
-    parser = argparse.ArgumentParser(description="AgentOrchestrator CLI")
-    sub = parser.add_subparsers(dest="cmd")
-
-    status = sub.add_parser("status", help="Show resource status")
-    status.add_argument("--agent-id", default=None, help="Specific agent ID")
-
-    cancel = sub.add_parser("cancel", help="Cancel all running agents")
-
-    orchestrate = sub.add_parser("orchestrate", help="Run a test orchestration")
-    orchestrate.add_argument("--num", type=int, default=3, help="Number of improvements")
-
-    args = parser.parse_args()
-    orch = get_orchestrator()
-
-    if args.cmd == "status":
-        res = orch.get_available_resources()
-        print(json.dumps(res, indent=2))
-        if args.agent_id:
-            print(json.dumps(orch.get_agent_status(args.agent_id), indent=2))
-
-    elif args.cmd == "cancel":
-        orch.cancel_all()
-        print("All agents cancelled")
-
-    elif args.cmd == "orchestrate":
-        improvements = [
-            {
-                "id": f"test-{i}",
-                "title": f"Test improvement {i}",
-                "area": "general",
-                "priority": "medium",
-                "description": f"Automated test improvement {i}",
-                "agent_type": "researcher",
-            }
-            for i in range(args.num)
-        ]
-        result = orch.orchestrate(improvements, {"version": "test", "iteration": 0})
-        print(json.dumps({
-            "summary": result.summary,
-            "duration_s": round(result.duration_s, 2),
-            "resource_usage": result.resource_usage,
-            "result_count": len(result.results),
-        }, indent=2))
-
-    else:
-        parser.print_help()
-
-
-if __name__ == "__main__":
-    _cli()
+    def _save_metrics(self) -> None:
+        try: _save_json(self._metrics_file, self._metrics)
+        except Exception as e: log(f"Metrics save error: {e}")

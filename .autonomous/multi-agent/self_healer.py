@@ -1,847 +1,1078 @@
 """
-SelfHealer — autonomous fault detection and recovery for the multi-agent system.
+SelfHealerV2 — automatic error recovery with circuit breaker patterns.
 
-Detects: DEADLOCK, OOM, TIMEOUT, CORRUPT, CIRCUIT_OPEN
-Priorities: CORRUPT > DEADLOCK > OOM > TIMEOUT > CIRCUIT_OPEN
-Circuit breaker: >3 retries in 1800s per phase opens circuit.
+Circuit Breaker States:
+  CLOSED  → normal operation; failures tracked
+  OPEN    → >50% failure rate over 10 calls; fallback used immediately
+  HALF_OPEN → 60s cooldown elapsed; allow one trial call
+
+Error Categories:
+  TRANSIENT  → retry immediately up to 3 times
+  PERSISTENT → skip phase, log error, continue loop
+  FATAL      → log critical, halt loop, set running=False
+
+Graceful Degradation:
+  Per-subsystem fallback strategies ensure the daemon never crashes.
+  Degraded subsystems are tracked in state.json.
+
+Subsystems monitored:
+  AdaptivePacer, MemoryManager, ContextEngine, SkillDiscoverer,
+  ReasoningChain, AgentOrchestrator, PromptEngine, Telemetry,
+  PredictiveEngine, Guardian
+
+Healing Strategies (per subsystem):
+  AdaptivePacer  → reset to NORMAL state, reduce intensity
+  MemoryManager  → clear warm/cold cache, restart fresh
+  ContextEngine  → fall back to simple string context
+  SkillDiscoverer → disable pattern warnings, log only
+  ReasoningChain → disable reasoning enhancement, continue without
+  AgentOrchestrator → restart orchestrator, re-register agents
+  PromptEngine   → reset template cache, use defaults
+  Telemetry      → reset metrics buffers, continue without
+  PredictiveEngine → disable predictions, use static fallback
+  Guardian       → restart guardian, reload state
 """
 
 from __future__ import annotations
 
 import json
 import os
-import signal
+import subprocess
+import threading
 import time
+from datetime import datetime
 from enum import Enum, auto
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Callable, Optional
 
 # --------------------------------------------------------------------------- #
 # Constants
 # --------------------------------------------------------------------------- #
 
-ROOT = Path("/home/skynet/cabala-dos-caminhos")
-MA = ROOT / ".autonomous" / "multi-agent"
+ROOT: Path = Path("/home/skynet/cabala-dos-caminhos")
+MA: Path = ROOT / ".autonomous" / "multi-agent"
 
-STATE_FILE = MA / "state.json"
-SOCKET_FILE = MA / "agent.sock"
-RECOVERY_HISTORY = MA / "recovery-history.json"
-CIRCUIT_BREAKER_FILE = MA / "circuit-breaker.json"
+STATE_FILE: Path = MA / "state.json"
+CB_FILE: Path = MA / "circuit-breaker-v2.json"
+DEGRADED_FILE: Path = MA / "degraded-subsystems.json"
+HEAL_LOG: Path = MA / "self-healer-v2.log"
 
-MAX_RETRIES = 3
-CIRCUIT_WINDOW_S = 1800  # 30 minutes
-RETENTION_S = 86400  # 24 hours — prune history entries older than this
+# Circuit breaker thresholds
+CB_WINDOW_CALLS: int = 10       # rolling window size
+CB_FAILURE_RATE: float = 0.50   # >50% failures triggers OPEN
+CB_COOLDOWN_S: float = 60.0     # seconds before HALF_OPEN transition
+CB_HALF_OPEN_MAX: int = 1      # allow 1 trial call in HALF_OPEN
+
+# Retry defaults
+DEFAULT_MAX_ATTEMPTS: int = 3
+DEFAULT_BASE_DELAY: float = 2.0
+
+# Self-heal trigger interval
+HEAL_INTERVAL_S: float = 60.0
+
+# Subsystem list
+SUBSYSTEMS: list[str] = [
+    "AdaptivePacer",
+    "MemoryManager",
+    "ContextEngine",
+    "SkillDiscoverer",
+    "ReasoningChain",
+    "AgentOrchestrator",
+    "PromptEngine",
+    "Telemetry",
+    "PredictiveEngine",
+    "Guardian",
+]
+
+# --------------------------------------------------------------------------- #
+# Error category enum
+# --------------------------------------------------------------------------- #
+
+class ErrorCategory(Enum):
+    TRANSIENT = auto()   # retry immediately, up to 3 times
+    PERSISTENT = auto() # skip phase, log error, continue loop
+    FATAL = auto()       # halt loop, set running=False
 
 
 # --------------------------------------------------------------------------- #
-# Enums
+# Circuit breaker state enum
 # --------------------------------------------------------------------------- #
 
-class IssueType(Enum):
-    NONE = auto()
-    DEADLOCK = auto()
-    OOM = auto()
-    TIMEOUT = auto()
-    CORRUPT = auto()
-    CIRCUIT_OPEN = auto()
-
-
-class RecoveryStrategy(Enum):
-    STATE_ROLLBACK = auto()
-    GC_RESTART = auto()
-    KILL_RETRY = auto()
-    RESTORE_BACKUP = auto()
-    SKIP_PHASE = auto()
+class CircuitState(Enum):
+    CLOSED = auto()    # normal operation
+    OPEN = auto()      # fallback active, no calls permitted
+    HALF_OPEN = auto() # cooldown elapsed, one trial call allowed
 
 
 # --------------------------------------------------------------------------- #
-# JSON helpers (load / save)
+# JSON helpers
 # --------------------------------------------------------------------------- #
 
-def load_json(path: Path) -> Any:
-    """Load JSON from *path*, returning {} on any error."""
+def _load_json(path: Path) -> dict[str, Any]:
     try:
         return json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
+    except (FileNotFoundError, json.JSONDecodeError):
         return {}
 
 
-def save_json(path: Path, data: Any) -> None:
-    """Write *data* as JSON to *path* (pretty-printed)."""
+def _save_json(path: Path, data: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+    tmp = path.with_suffix(".tmp")
+    tmp.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+    tmp.replace(path)
 
 
 # --------------------------------------------------------------------------- #
-# System diagnostics (memory / CPU / process)
+# Logging
 # --------------------------------------------------------------------------- #
 
-def _read_proc_stat(path: str) -> Optional[str]:
-    """Read a /proc/* file as text, or None if unavailable."""
+def log(msg: str) -> None:
+    ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    line = f"[{ts}] SELF-HEALER-V2: {msg}"
+    print(line, flush=True)
     try:
-        return Path(path).read_text(encoding="utf-8", errors="replace").strip()
-    except Exception:
-        return None
-
-
-def get_process_memory_mb(pid: int) -> Optional[float]:
-    """RSS memory of *pid* in MB, or None if unavailable."""
-    try:
-        stat = _read_proc_stat(f"/proc/{pid}/status")
-        if stat:
-            for line in stat.splitlines():
-                if line.startswith("VmRSS:"):
-                    kb = int(line.split()[1])
-                    return kb / 1024
+        HEAL_LOG.parent.mkdir(parents=True, exist_ok=True)
+        HEAL_LOG.append_text(line + "\n")
     except Exception:
         pass
-    return None
 
 
-def get_system_memory_percent() -> Optional[float]:
-    """Overall system memory usage as percent (0–100), or None if unavailable."""
-    try:
-        meminfo = _read_proc_stat("/proc/meminfo")
-        if not meminfo:
-            return None
-        total = avail = None
-        for line in meminfo.splitlines():
-            parts = line.split()
-            if len(parts) < 2:
-                continue
-            if parts[0] == "MemTotal:":
-                total = int(parts[1])
-            elif parts[0] == "MemAvailable:":
-                avail = int(parts[1])
-        if total and avail is not None:
-            return round((total - avail) / total * 100, 1)
-    except Exception:
-        pass
-    return None
-
-
-def get_system_cpu_percent() -> Optional[float]:
-    """System CPU utilisation as percent (0–100), or None if unavailable."""
-    try:
-        # Read two snapshots 0.1 s apart
-        def _cpu_times() -> Optional[tuple[int, int]]:
-            line = _read_proc_stat("/proc/stat")
-            if not line or not line.startswith("cpu "):
-                return None
-            fields = line.split()
-            user = int(fields[1])
-            nice = int(fields[2])
-            system = int(fields[3])
-            idle = int(fields[4])
-            iowait = int(fields[5]) if len(fields) > 5 else 0
-            irq = int(fields[6]) if len(fields) > 6 else 0
-            softirq = int(fields[7]) if len(fields) > 7 else 0
-            active = user + nice + system + irq + softirq
-            total = active + idle + iowait
-            return (active, total)
-
-        t1 = _cpu_times()
-        if not t1:
-            return None
-        time.sleep(0.1)
-        t2 = _cpu_times()
-        if not t2:
-            return None
-        dac, dtc = t2[0] - t1[0], t2[1] - t1[1]
-        if dtc == 0:
-            return 0.0
-        return round(dac / dtc * 100, 1)
-    except Exception:
-        return None
-
-
-def is_process_alive(pid: int) -> bool:
-    """Check whether a process with *pid* exists (sends signal 0)."""
-    try:
-        os.kill(pid, 0)
-        return True
-    except (ProcessLookupError, PermissionError):
-        return False
-    except Exception:
-        return False
-
-
-def get_zombie_pids() -> list[int]:
-    """Return PIDs of zombie processes whose parent is the current process tree."""
-    zombies: list[int] = []
-    try:
-        for entry in Path("/proc").iterdir():
-            if not entry.name.isdigit():
-                continue
-            pid = int(entry.name)
-            try:
-                status = entry.joinpath("status").read_text(encoding="utf-8", errors="replace")
-            except Exception:
-                continue
-            is_zombie = False
-            ppid = os.getpid()
-            for line in status.splitlines():
-                if line.startswith("State:") and "Z" in line:
-                    is_zombie = True
-                if line.startswith("PPid:"):
-                    try:
-                        ppid = int(line.split()[1])
-                    except Exception:
-                        pass
-            # Only report zombies whose PPid is a process we may be responsible for
-            if is_zombie and (ppid == os.getpid() or ppid == 1):
-                zombies.append(pid)
-    except Exception:
-        pass
-    return zombies
+def log_heal(subsystem: str, action: str, before: Any, after: Any) -> None:
+    log(f"HEAL [{subsystem}] {action}  before={before!r}  after={after!r}")
 
 
 # --------------------------------------------------------------------------- #
-# State / socket / backup helpers
+# CircuitBreaker — per-subsystem failure tracker
 # --------------------------------------------------------------------------- #
 
-def validate_state_json() -> tuple[bool, Optional[str]]:
+class CircuitBreaker:
     """
-    Check that state.json is a valid, parseable JSON file.
-    Returns (True, None) if valid, (False, reason) otherwise.
+    Tracks the failure rate for one subsystem within a rolling window.
+
+    State machine:
+      CLOSED  → failure rate in window > CB_FAILURE_RATE → OPEN
+      OPEN    → CB_COOLDOWN_S elapsed                    → HALF_OPEN
+      HALF_OPEN → 1 trial call succeeds                  → CLOSED
+      HALF_OPEN → 1 trial call fails                     → OPEN (cooldown restarts)
     """
-    if not STATE_FILE.exists():
-        return False, "state.json does not exist"
-    try:
-        data = json.loads(STATE_FILE.read_text(encoding="utf-8"))
-        if not isinstance(data, dict):
-            return False, "state.json root must be an object"
-        return True, None
-    except json.JSONDecodeError as e:
-        return False, f"state.json is not valid JSON: {e}"
-    except Exception as e:
-        return False, f"state.json read error: {e}"
 
+    __slots__ = ("subsystem", "_state", "_calls", "_failures",
+                 "_last_failure_ts", "_opened_at", "_lock")
 
-def check_socket_exists() -> tuple[bool, Optional[str]]:
-    """Check that the agent socket exists and is a socket."""
-    if not SOCKET_FILE.exists():
-        return False, "agent.sock does not exist"
-    try:
-        stat_info = SOCKET_FILE.stat()
-        import stat
+    def __init__(self, subsystem: str) -> None:
+        self.subsystem: str = subsystem
+        self._state: CircuitState = CircuitState.CLOSED
+        self._calls: list[float] = []        # timestamps of calls
+        self._failures: list[float] = []     # timestamps of failures
+        self._last_failure_ts: float = 0.0
+        self._opened_at: float = 0.0
+        self._lock = threading.RLock()
 
-        if not stat.S_ISSOCK(stat_info.st_mode):
-            return False, "agent.sock exists but is not a socket"
-        return True, None
-    except Exception as e:
-        return False, f"socket stat error: {e}"
+    # ------------------------------------------------------------------ #
+    # Public API
+    # ------------------------------------------------------------------ #
 
+    def state(self) -> CircuitState:
+        with self._lock:
+            self._check_transitions_unlocked()
+            return self._state
 
-# --------------------------------------------------------------------------- #
-# Backup management
-# --------------------------------------------------------------------------- #
+    def record_call(self, success: bool) -> bool:
+        """
+        Record a call outcome.
 
-BACKUP_DIR = MA / "backups"
+        Returns True if the call is allowed to proceed,
+        False if the circuit is OPEN (fallback must be used).
+        """
+        with self._lock:
+            self._check_transitions_unlocked()
 
+            if self._state == CircuitState.OPEN:
+                return False
 
-def list_backups() -> list[dict[str, Any]]:
-    """Return sorted list of backup metadata dicts (newest first)."""
-    backups: list[dict[str, Any]] = []
-    if not BACKUP_DIR.is_dir():
-        return backups
-    for entry in sorted(BACKUP_DIR.iterdir(), key=lambda p: p.stat().st_mtime, reverse=True):
-        if entry.suffix == ".json":
-            meta = load_json(entry)
-            if isinstance(meta, dict):
-                backups.append({"file": str(entry.name), "mtime": entry.stat().st_mtime, **meta})
-    return backups
+            now = time.time()
+            self._calls.append(now)
+            self._prune_unlocked(now)
 
+            if success:
+                self._handle_success_unlocked(now)
+            else:
+                self._handle_failure_unlocked(now)
 
-def create_backup(tag: str) -> Optional[Path]:
-    """Snapshot current state.json into backups/ with *tag*."""
-    if not STATE_FILE.exists():
-        return None
-    BACKUP_DIR.mkdir(parents=True, exist_ok=True)
-    dest = BACKUP_DIR / f"{tag}_{int(time.time())}.json"
-    try:
-        dest.write_text(STATE_FILE.read_text(encoding="utf-8"), encoding="utf-8")
-        return dest
-    except Exception:
-        return None
-
-
-def restore_backup(backup_file: Path) -> bool:
-    """Restore *backup_file* over state.json. Returns True on success."""
-    if not backup_file.exists():
-        return False
-    try:
-        # Validate before restoring
-        json.loads(backup_file.read_text(encoding="utf-8"))
-        BACKUP_DIR.mkdir(parents=True, exist_ok=True)
-        STATE_FILE.write_text(backup_file.read_text(encoding="utf-8"), encoding="utf-8")
-        return True
-    except Exception:
-        return False
-
-
-# --------------------------------------------------------------------------- #
-# Recovery history
-# --------------------------------------------------------------------------- #
-
-def load_recovery_history() -> list[dict[str, Any]]:
-    """Load the recovery history list, or [] if absent / corrupt."""
-    return load_json(RECOVERY_HISTORY) if isinstance(load_json(RECOVERY_HISTORY), list) else []
-
-
-def append_recovery_event(
-    issue: IssueType,
-    strategy: RecoveryStrategy,
-    phase: Optional[str],
-    success: bool,
-    details: Optional[str] = None,
-) -> None:
-    """Append a recovery event to the history log, then prune old entries."""
-    history = load_recovery_history()
-    entry: dict[str, Any] = {
-        "ts": time.time(),
-        "iso": time.strftime("%Y-%m-%dT%H:%M:%S"),
-        "issue": issue.name,
-        "strategy": strategy.name,
-        "phase": phase,
-        "success": success,
-    }
-    if details:
-        entry["details"] = details
-    history.insert(0, entry)
-    # Prune entries older than RETENTION_S and cap list at 500 entries
-    cutoff = time.time() - RETENTION_S
-    history = [e for e in history if e.get("ts", 0) > cutoff][:500]
-    save_json(RECOVERY_HISTORY, history)
-
-
-# --------------------------------------------------------------------------- #
-# Circuit breaker
-# --------------------------------------------------------------------------- #
-
-def load_circuit_state() -> dict[str, list[float]]:
-    """Load circuit-breaker state: {phase: [timestamp, ...]}."""
-    data = load_json(CIRCUIT_BREAKER_FILE)
-    if isinstance(data, dict) and all(
-        isinstance(v, list) and all(isinstance(t, (int, float)) for t in v)
-        for v in data.values()
-    ):
-        return data
-    return {}
-
-
-def save_circuit_state(state: dict[str, list[float]]) -> None:
-    save_json(CIRCUIT_BREAKER_FILE, state)
-
-
-def is_circuit_open_for_phase(phase: str) -> bool:
-    """Return True if *phase* has exceeded MAX_RETRIES within CIRCUIT_WINDOW_S."""
-    state = load_circuit_state()
-    now = time.time()
-    window = [t for t in state.get(phase, []) if now - t < CIRCUIT_WINDOW_S]
-    return len(window) > MAX_RETRIES
-
-
-def record_retry_for_phase(phase: str) -> None:
-    """Record a retry attempt for *phase*."""
-    state = load_circuit_state()
-    now = time.time()
-    window = [t for t in state.get(phase, []) if now - t < CIRCUIT_WINDOW_S]
-    window.append(now)
-    state[phase] = window
-    save_circuit_state(state)
-
-
-def clear_phase_from_circuit(phase: str) -> None:
-    """Remove all retry timestamps for *phase*."""
-    state = load_circuit_state()
-    state.pop(phase, None)
-    save_circuit_state(state)
-
-
-# --------------------------------------------------------------------------- #
-# Issue detection helpers
-# --------------------------------------------------------------------------- #
-
-def detect_deadlock() -> bool:
-    """
-    Detect a potential deadlock.
-    Heuristic: state.json exists and reports phase='RUNNING' but the
-    process registered in state.json is not alive.
-    """
-    data = load_json(STATE_FILE)
-    if not isinstance(data, dict):
-        return False
-    # If phase is stuck in a running state for an unreasonably long time,
-    # and the tracked PID is dead, suspect deadlock.
-    if data.get("phase") in ("RUNNING", "WAITING", "BLOCKED") and data.get("stuck_since"):
-        stuck_duration = time.time() - data.get("stuck_since", 0)
-        if stuck_duration > 300:  # 5 minutes
-            pid = data.get("pid")
-            if pid and not is_process_alive(int(pid)):
-                return True
-    # Check for circular dependency in agent dependencies
-    deps = data.get("dependencies", {})
-    if isinstance(deps, dict):
-        # Simple cycle detection in dependency graph
-        visited: set[str] = set()
-        stack: list[str] = list(deps.keys())
-        while stack:
-            node = stack.pop()
-            if node in visited:
-                return True  # cycle detected
-            visited.add(node)
-            node_deps = deps.get(node, [])
-            if isinstance(node_deps, list):
-                stack.extend(node_deps)
-    return False
-
-
-def detect_oom() -> bool:
-    """Detect whether the system or a relevant process is near OOM."""
-    mem_percent = get_system_memory_percent()
-    if mem_percent is not None and mem_percent > 90:
-        return True
-    # Check if any agent process exceeds 80% of available memory
-    data = load_json(STATE_FILE)
-    pid = data.get("pid")
-    if pid:
-        proc_mem = get_process_memory_mb(int(pid))
-        if proc_mem:
-            total_mem_mb = _total_memory_mb()
-            if total_mem_mb and proc_mem / total_mem_mb > 0.8:
-                return True
-    return False
-
-
-def _total_memory_mb() -> Optional[float]:
-    """Total system memory in MB."""
-    try:
-        line = _read_proc_stat("/proc/meminfo")
-        if line:
-            for lline in line.splitlines():
-                if lline.startswith("MemTotal:"):
-                    return int(lline.split()[1]) / 1024
-    except Exception:
-        pass
-    return None
-
-
-def detect_timeout() -> bool:
-    """Detect a phase timeout condition."""
-    data = load_json(STATE_FILE)
-    if not isinstance(data, dict):
-        return False
-    timeout_ts = data.get("phase_timeout")
-    if timeout_ts:
-        if time.time() > float(timeout_ts):
             return True
-    # Check recovery history for recent timeout issues
-    history = load_recovery_history()
-    now = time.time()
-    recent_timeouts = [
-        e for e in history
-        if e.get("issue") == IssueType.TIMEOUT.name
-        and now - e.get("ts", 0) < 600  # 10-minute window
-    ]
-    return len(recent_timeouts) >= 3
 
+    def is_open(self) -> bool:
+        return self.state() == CircuitState.OPEN
 
-def detect_corrupt() -> bool:
-    """Detect corruption: state.json invalid JSON, or socket missing, or zombie PIDs."""
-    valid, _ = validate_state_json()
-    if not valid:
-        return True
-    sock_ok, _ = check_socket_exists()
-    if not sock_ok:
-        return True
-    if get_zombie_pids():
-        return True
-    return False
+    def failure_rate(self) -> float:
+        with self._lock:
+            self._prune_unlocked(time.time())
+            if not self._calls:
+                return 0.0
+            return len(self._failures) / len(self._calls)
 
+    def reset(self) -> None:
+        with self._lock:
+            self._calls.clear()
+            self._failures.clear()
+            self._state = CircuitState.CLOSED
+            self._opened_at = 0.0
 
-# --------------------------------------------------------------------------- #
-# Recovery executors
-# --------------------------------------------------------------------------- #
+    def snapshot(self) -> dict[str, Any]:
+        with self._lock:
+            return {
+                "subsystem": self.subsystem,
+                "state": self._state.name,
+                "calls": len(self._calls),
+                "failures": len(self._failures),
+                "failure_rate": round(self.failure_rate(), 3),
+                "opened_at": self._opened_at,
+            }
 
-def rollback_state() -> bool:
-    """Rollback state.json to the most recent valid backup."""
-    backups = list_backups()
-    for backup in backups:
-        bp = BACKUP_DIR / backup["file"]
-        if restore_backup(bp):
-            return True
-    return False
+    # ------------------------------------------------------------------ #
+    # Internal — no lock held on entry (callers must hold _lock)
+    # ------------------------------------------------------------------ #
 
+    def _check_transitions_unlocked(self) -> None:
+        if self._state == CircuitState.OPEN:
+            if time.time() - self._opened_at >= CB_COOLDOWN_S:
+                self._state = CircuitState.HALF_OPEN
+                log(f"Circuit [{self.subsystem}] HALF_OPEN (cooldown elapsed)")
 
-def gc_restart() -> bool:
-    """
-    Attempt to free memory by triggering garbage collection,
-    then verify the process is still alive.
-    """
-    import gc
+    def _handle_success_unlocked(self, now: float) -> None:
+        if self._state == CircuitState.HALF_OPEN:
+            self._state = CircuitState.CLOSED
+            self._calls.clear()
+            self._failures.clear()
+            log(f"Circuit [{self.subsystem}] CLOSED (trial success)")
 
-    gc.collect()
-    # Also try to drop inotify watches if any are stuck
-    try:
-        for fd_path in Path("/proc/self/fd").iterdir():
-            try:
-                link = os.readlink(str(fd_path))
-                if "inotify" in link:
-                    pass  # just a hint; we can't safely close FDs from here
-            except Exception:
-                pass
-    except Exception:
-        pass
+    def _handle_failure_unlocked(self, now: float) -> None:
+        self._failures.append(now)
+        self._last_failure_ts = now
+        self._prune_unlocked(now)
 
-    data = load_json(STATE_FILE)
-    pid = data.get("pid")
-    if pid and not is_process_alive(int(pid)):
-        return False
-    return True
+        if self._state == CircuitState.HALF_OPEN:
+            self._opened_at = now
+            self._state = CircuitState.OPEN
+            log(f"Circuit [{self.subsystem}] OPEN (half_open trial failed)")
+        elif len(self._failures) / max(len(self._calls), 1) > CB_FAILURE_RATE:
+            if self._state != CircuitState.OPEN:
+                self._opened_at = now
+                self._state = CircuitState.OPEN
+                log(f"Circuit [{self.subsystem}] OPEN (>{CB_FAILURE_RATE*100:.0f}% failure rate)")
 
-
-def kill_and_retry(phase: Optional[str] = None) -> bool:
-    """
-    Kill stuck child processes, record retry, and return True
-    to signal the loop should re-enter the phase.
-    """
-    zombies = get_zombie_pids()
-    for zp in zombies:
-        try:
-            os.kill(zp, signal.SIGKILL)
-        except Exception:
-            pass
-    # Also kill any subprocess tree registered in state.json
-    data = load_json(STATE_FILE)
-    for child in data.get("children", []):
-        try:
-            os.kill(int(child), signal.SIGKILL)
-        except Exception:
-            pass
-    if phase:
-        record_retry_for_phase(phase)
-    return True
-
-
-def restore_from_backup() -> bool:
-    """Restore from the most recent backup; rollback_state is preferred."""
-    backups = list_backups()
-    if not backups:
-        return False
-    return restore_backup(BACKUP_DIR / backups[0]["file"])
-
-
-def skip_phase() -> bool:
-    """
-    Mark the current phase as SKIPPED in state.json and advance.
-    Returns True if state was updated, False otherwise.
-    """
-    if not STATE_FILE.exists():
-        return False
-    try:
-        data = load_json(STATE_FILE)
-        data["phase"] = "SKIPPED"
-        data["skipped_at"] = time.time()
-        save_json(STATE_FILE, data)
-        return True
-    except Exception:
-        return False
+    def _prune_unlocked(self, now: float) -> None:
+        window = CB_WINDOW_CALLS
+        self._calls = self._calls[-window:]
+        self._failures = [f for f in self._failures if f in self._calls[-window:]]
 
 
 # --------------------------------------------------------------------------- #
-# Recovery suggestion matrix
+# Fallback implementations — no-op or minimal safe versions
 # --------------------------------------------------------------------------- #
 
-_RECOVERY_MAP: dict[IssueType, list[RecoveryStrategy]] = {
-    IssueType.CORRUPT: [
-        RecoveryStrategy.RESTORE_BACKUP,
-        RecoveryStrategy.STATE_ROLLBACK,
-        RecoveryStrategy.SKIP_PHASE,
-    ],
-    IssueType.DEADLOCK: [
-        RecoveryStrategy.KILL_RETRY,
-        RecoveryStrategy.GC_RESTART,
-        RecoveryStrategy.STATE_ROLLBACK,
-    ],
-    IssueType.OOM: [
-        RecoveryStrategy.GC_RESTART,
-        RecoveryStrategy.KILL_RETRY,
-        RecoveryStrategy.SKIP_PHASE,
-    ],
-    IssueType.TIMEOUT: [
-        RecoveryStrategy.KILL_RETRY,
-        RecoveryStrategy.STATE_ROLLBACK,
-        RecoveryStrategy.SKIP_PHASE,
-    ],
-    IssueType.CIRCUIT_OPEN: [
-        RecoveryStrategy.STATE_ROLLBACK,
-        RecoveryStrategy.SKIP_PHASE,
-    ],
-    IssueType.NONE: [],
+def _fallback_context() -> str:
+    """Safe fallback for ContextEngine — returns empty string."""
+    return ""
+
+
+def _fallback_pacer() -> dict[str, Any]:
+    """Safe fallback for AdaptivePacer — returns a minimal NORMAL state."""
+    return {"state": "NORMAL", "intensity": 3, "phase": "IDLE"}
+
+
+def _fallback_memory() -> dict[str, Any]:
+    """Safe fallback for MemoryManager — returns empty warm/cold stores."""
+    return {"warm": {}, "cold": {}, "compressed": {}}
+
+
+def _fallback_reasoning() -> dict[str, Any]:
+    """Safe fallback for ReasoningChain — returns empty reasoning."""
+    return {"chain": [], "enabled": False, "confidence": 0.0}
+
+
+def _fallback_skill() -> dict[str, Any]:
+    """Safe fallback for SkillDiscoverer — returns empty patterns."""
+    return {"patterns": [], "warnings_enabled": False}
+
+
+def _fallback_orchestrator() -> dict[str, Any]:
+    """Safe fallback for AgentOrchestrator — returns empty agent list."""
+    return {"agents": [], "running": False}
+
+
+def _fallback_prompt() -> dict[str, Any]:
+    """Safe fallback for PromptEngine — returns default template."""
+    return {"templates": {}, "default": "Working...", "cache_size": 0}
+
+
+def _fallback_telemetry() -> dict[str, Any]:
+    """Safe fallback for Telemetry — returns zeroed metrics."""
+    return {"metrics": {}, "buffer": []}
+
+
+def _fallback_predictive() -> dict[str, Any]:
+    """Safe fallback for PredictiveEngine — returns empty forecasts."""
+    return {"forecasts": [], "enabled": False}
+
+
+def _fallback_guardian() -> dict[str, Any]:
+    """Safe fallback for Guardian — returns DEGRADED state."""
+    return {"state": "DEGRADED", "health_score": 0.0}
+
+
+FALLBACKS: dict[str, Callable[[], Any]] = {
+    "ContextEngine": _fallback_context,
+    "AdaptivePacer": _fallback_pacer,
+    "MemoryManager": _fallback_memory,
+    "ReasoningChain": _fallback_reasoning,
+    "SkillDiscoverer": _fallback_skill,
+    "AgentOrchestrator": _fallback_orchestrator,
+    "PromptEngine": _fallback_prompt,
+    "Telemetry": _fallback_telemetry,
+    "PredictiveEngine": _fallback_predictive,
+    "Guardian": _fallback_guardian,
 }
 
 
 # --------------------------------------------------------------------------- #
-# SelfHealer
+# SelfHealerV2
 # --------------------------------------------------------------------------- #
 
-class SelfHealer:
+class SelfHealerV2:
     """
-    Autonomous fault detection and recovery for the multi-agent loop.
+    Automatic error recovery system with circuit breaker patterns,
+    graceful degradation, retry with exponential backoff, and
+    self-healing triggers.
 
-    Usage::
-
-        healer = SelfHealer()
-        health = healer.check_health()
-        issue  = healer.detect_issue()
-        healer.recover(RecoveryStrategy.KILL_RETRY)
-        healer.is_circuit_open()   # per-phase circuit breaker
-        healer.reset_circuit()
+    Parameters
+    ----------
+    MA : Path
+        Path to the .autonomous/multi-agent directory.
     """
 
-    # --------------------------------------------------------------------------- #
-    # Public API
-    # --------------------------------------------------------------------------- #
+    def __init__(self, MA: Path = MA) -> None:
+        self.MA: Path = Path(MA)
+        self._lock = threading.RLock()
+        self._breakers: dict[str, CircuitBreaker] = {
+            s: CircuitBreaker(s) for s in SUBSYSTEMS
+        }
+        self._degraded: set[str] = set()
+        self._last_heal_ts: float = 0.0
+        self._load_degraded()
+        log("SelfHealerV2 initialised")
+
+    # ------------------------------------------------------------------ #
+    # Circuit breaker API
+    # ------------------------------------------------------------------ #
+
+    def get_circuit_state(self, subsystem: str) -> str:
+        """Return the circuit state for a subsystem as a string."""
+        if subsystem not in self._breakers:
+            return "UNKNOWN"
+        return self._breakers[subsystem].state().name
+
+    def record_success(self, subsystem: str) -> None:
+        """Record a successful call for a subsystem."""
+        with self._lock:
+            if subsystem in self._breakers:
+                self._breakers[subsystem].record_call(success=True)
+                if subsystem in self._degraded and self.get_circuit_state(subsystem) == "CLOSED":
+                    self._degraded.discard(subsystem)
+                    self._save_degraded()
+                    log(f"Subsystem [{subsystem}] recovered to healthy")
+
+    def record_failure(self, subsystem: str, error: Exception) -> None:
+        """Record a failed call for a subsystem and log the exception."""
+        with self._lock:
+            if subsystem in self._breakers:
+                self._breakers[subsystem].record_call(success=False)
+                if self.get_circuit_state(subsystem) == "OPEN":
+                    self._mark_degraded(subsystem)
+            log(f"FAILURE [{subsystem}] {type(error).__name__}: {error}")
+
+    # ------------------------------------------------------------------ #
+    # Health check
+    # ------------------------------------------------------------------ #
 
     def check_health(self) -> dict[str, Any]:
         """
-        Run all health checks and return a structured report.
+        Run a lightweight health check across all subsystems.
 
-        Returns::
-
-            {
-                "healthy": bool,
-                "status": str,          # "OK" | "DEGRADED" | "CRITICAL"
-                "details": {
-                    "state_json":    {"valid": bool, "reason": Optional[str]},
-                    "socket":        {"exists": bool, "reason": Optional[str]},
-                    "memory":        {"percent": Optional[float], "pid_mb": Optional[float]},
-                    "cpu":           {"percent": Optional[float]},
-                    "zombies":      list[int],
-                    "pid_alive":     bool,
-                }
-            }
+        Returns
+        -------
+        dict with keys:
+          healthy   : bool  — True if no subsystems are degraded or OPEN
+          issues    : list  — list of str issue descriptions
+          degraded  : list  — list of currently degraded subsystem names
+          circuits  : dict  — per-subsystem circuit state snapshot
         """
-        state_valid, state_reason = validate_state_json()
-        socket_ok, socket_reason = check_socket_exists()
-        mem_pct = get_system_memory_percent()
-        cpu_pct = get_system_cpu_percent()
-        zombies = get_zombie_pids()
-
-        pid_alive = False
-        proc_mem_mb: Optional[float] = None
-        data = load_json(STATE_FILE)
-        pid = data.get("pid") if isinstance(data, dict) else None
-        if pid:
-            pid_alive = is_process_alive(int(pid))
-            proc_mem_mb = get_process_memory_mb(int(pid))
-
         issues: list[str] = []
-        if not state_valid:
-            issues.append(f"state.json: {state_reason}")
-        if not socket_ok:
-            issues.append(f"socket: {socket_reason}")
-        if mem_pct and mem_pct > 85:
-            issues.append(f"high memory ({mem_pct}%)")
-        if zombies:
-            issues.append(f"zombie PIDs: {zombies}")
-        if not pid_alive:
-            issues.append("registered process not alive")
+        degraded: list[str] = []
+        circuits: dict[str, dict[str, Any]] = {}
 
-        status = "OK" if not issues else ("CRITICAL" if len(issues) > 2 else "DEGRADED")
-        healthy = status == "OK"
+        with self._lock:
+            for subsystem in SUBSYSTEMS:
+                br = self._breakers[subsystem]
+                snap = br.snapshot()
+                circuits[subsystem] = snap
+                state = snap["state"]
 
+                if state == "OPEN":
+                    degraded.append(subsystem)
+                    issues.append(f"Circuit OPEN for [{subsystem}]")
+
+                rate = snap["failure_rate"]
+                if rate > CB_FAILURE_RATE:
+                    issues.append(
+                        f"High failure rate [{subsystem}]: {rate:.0%} "
+                        f"({snap['failures']}/{snap['calls']} calls)"
+                    )
+
+        healthy = len(issues) == 0
         return {
             "healthy": healthy,
-            "status": status,
-            "details": {
-                "state_json": {"valid": state_valid, "reason": state_reason},
-                "socket": {"exists": socket_ok, "reason": socket_reason},
-                "memory": {"percent": mem_pct, "pid_mb": proc_mem_mb},
-                "cpu": {"percent": cpu_pct},
-                "zombies": zombies,
-                "pid_alive": pid_alive,
+            "issues": issues,
+            "degraded": degraded,
+            "circuits": circuits,
+        }
+
+    # ------------------------------------------------------------------ #
+    # Issue detection
+    # ------------------------------------------------------------------ #
+
+    def detect_issue(self) -> dict[str, Any] | None:
+        """
+        Scan system state and circuit breakers to detect active issues.
+
+        Returns None when no issue is found; otherwise a dict with keys:
+          type       : str  — issue category name
+          subsystem  : str  — affected subsystem (or "system")
+          detail     : str  — human-readable description
+          category    : ErrorCategory
+        """
+        health = self.check_health()
+
+        if health["healthy"]:
+            return None
+
+        for subsystem in health["degraded"]:
+            state = self.get_circuit_state(subsystem)
+            return {
+                "type": "CIRCUIT_OPEN",
+                "subsystem": subsystem,
+                "detail": f"Circuit breaker OPEN for [{subsystem}] — using fallback",
+                "category": ErrorCategory.PERSISTENT,
+            }
+
+        for issue in health["issues"]:
+            return {
+                "type": "HIGH_FAILURE_RATE",
+                "subsystem": "system",
+                "detail": issue,
+                "category": ErrorCategory.PERSISTENT,
+            }
+
+        return None
+
+    # ------------------------------------------------------------------ #
+    # Recovery strategy selection
+    # ------------------------------------------------------------------ #
+
+    def suggest_recovery(self, issue: dict[str, Any] | None) -> str:
+        """
+        Given a detected issue, return the name of the recommended
+        recovery strategy (a method name on SelfHealerV2).
+        """
+        if issue is None:
+            return "no-op"
+
+        subsystem = issue.get("subsystem", "")
+        issue_type = issue.get("type", "")
+
+        strategy_map: dict[str, dict[str, str]] = {
+            "AdaptivePacer": {
+                "CIRCUIT_OPEN": "_heal_adaptive_pacer",
+                "HIGH_FAILURE_RATE": "_heal_adaptive_pacer",
+            },
+            "MemoryManager": {
+                "CIRCUIT_OPEN": "_heal_memory_manager",
+                "HIGH_FAILURE_RATE": "_heal_memory_manager",
+            },
+            "ContextEngine": {
+                "CIRCUIT_OPEN": "_heal_context_engine",
+                "HIGH_FAILURE_RATE": "_heal_context_engine",
+            },
+            "SkillDiscoverer": {
+                "CIRCUIT_OPEN": "_heal_skill_discoverer",
+                "HIGH_FAILURE_RATE": "_heal_skill_discoverer",
+            },
+            "ReasoningChain": {
+                "CIRCUIT_OPEN": "_heal_reasoning_chain",
+                "HIGH_FAILURE_RATE": "_heal_reasoning_chain",
+            },
+            "AgentOrchestrator": {
+                "CIRCUIT_OPEN": "_heal_agent_orchestrator",
+                "HIGH_FAILURE_RATE": "_heal_agent_orchestrator",
+            },
+            "PromptEngine": {
+                "CIRCUIT_OPEN": "_heal_prompt_engine",
+                "HIGH_FAILURE_RATE": "_heal_prompt_engine",
+            },
+            "Telemetry": {
+                "CIRCUIT_OPEN": "_heal_telemetry",
+                "HIGH_FAILURE_RATE": "_heal_telemetry",
+            },
+            "PredictiveEngine": {
+                "CIRCUIT_OPEN": "_heal_predictive_engine",
+                "HIGH_FAILURE_RATE": "_heal_predictive_engine",
+            },
+            "Guardian": {
+                "CIRCUIT_OPEN": "_heal_guardian",
+                "HIGH_FAILURE_RATE": "_heal_guardian",
             },
         }
 
-    def detect_issue(self) -> IssueType:
-        """
-        Detect the highest-priority active issue.
+        if subsystem in strategy_map and issue_type in strategy_map[subsystem]:
+            return strategy_map[subsystem][issue_type]
 
-        Priority order (highest first):
-            1. CORRUPT
-            2. DEADLOCK
-            3. OOM
-            4. TIMEOUT
-            5. CIRCUIT_OPEN
-            6. NONE
-        """
-        # Build list in priority order
-        checks: list[tuple[IssueType, callable]] = [
-            (IssueType.CORRUPT, detect_corrupt),
-            (IssueType.DEADLOCK, detect_deadlock),
-            (IssueType.OOM, detect_oom),
-            (IssueType.TIMEOUT, detect_timeout),
-            (IssueType.CIRCUIT_OPEN, lambda: False),  # handled by is_circuit_open
-        ]
+        if subsystem == "system":
+            return "_heal_system_wide"
 
-        for issue_type, check_fn in checks:
-            if issue_type == IssueType.CIRCUIT_OPEN:
-                # Check circuit breaker per phase
-                data = load_json(STATE_FILE)
-                phase = data.get("phase", "UNKNOWN") if isinstance(data, dict) else "UNKNOWN"
-                if self.is_circuit_open() or is_circuit_open_for_phase(phase):
-                    return IssueType.CIRCUIT_OPEN
-            else:
-                try:
-                    if check_fn():
-                        return issue_type
-                except Exception:
-                    pass
-        return IssueType.NONE
+        return "no-op"
 
-    def suggest_recovery(self, issue: IssueType) -> list[RecoveryStrategy]:
-        """
-        Return the ordered list of recovery strategies to try for *issue*,
-        from most aggressive to least.
-        """
-        return list(_RECOVERY_MAP.get(issue, []))
+    # ------------------------------------------------------------------ #
+    # Recovery execution
+    # ------------------------------------------------------------------ #
 
-    def recover(self, strategy: RecoveryStrategy, phase: Optional[str] = None) -> bool:
+    def recover(self, strategy: str) -> bool:
         """
-        Execute *strategy* and record the outcome in recovery history.
+        Execute the named recovery strategy.
 
-        Returns True if the recovery succeeded (system recovered),
-        False otherwise.
+        Each strategy is retried up to 3 times with exponential backoff.
+        Returns True if the recovery succeeded, False otherwise.
         """
-        executor: callable[[], bool]
-        if strategy == RecoveryStrategy.STATE_ROLLBACK:
-            executor = rollback_state
-        elif strategy == RecoveryStrategy.GC_RESTART:
-            executor = gc_restart
-        elif strategy == RecoveryStrategy.KILL_RETRY:
-            executor = lambda: kill_and_retry(phase)
-        elif strategy == RecoveryStrategy.RESTORE_BACKUP:
-            executor = restore_from_backup
-        elif strategy == RecoveryStrategy.SKIP_PHASE:
-            executor = skip_phase
-        else:
-            executor = lambda: False
+        if strategy == "no-op":
+            return True
+
+        method_name = f"_heal_{strategy}" if not strategy.startswith("_heal_") else strategy
+
+        with self._lock:
+            if not hasattr(self, method_name):
+                log(f"Unknown recovery strategy: {strategy}")
+                return False
+
+            method = getattr(self, method_name)
 
         try:
-            success = bool(executor())
+            result = self._retry(method, max_attempts=3, base_delay=2.0)
+            return bool(result)
         except Exception as e:
-            success = False
-            err_msg = str(e)
-        else:
-            err_msg = None
+            log(f"Recovery [{strategy}] failed: {e}")
+            return False
 
-        # Fetch phase from state if not supplied
-        if phase is None:
-            data = load_json(STATE_FILE)
-            phase = data.get("phase") if isinstance(data, dict) else None
+    # ------------------------------------------------------------------ #
+    # Subsystem-specific healing strategies
+    # ------------------------------------------------------------------ #
 
-        append_recovery_event(
-            issue=self.detect_issue(),
-            strategy=strategy,
-            phase=phase,
-            success=success,
-            details=err_msg,
-        )
-
-        # If KILL_RETRY succeeded and a phase was set, record the retry
-        if success and strategy == RecoveryStrategy.KILL_RETRY and phase:
-            record_retry_for_phase(phase)
-
-        return success
-
-    def is_circuit_open(self) -> bool:
+    def _heal_adaptive_pacer(self) -> bool:
         """
-        Return True if the global circuit breaker is open
-        (>3 retries in the last 1800 s across any phase).
+        Heal AdaptivePacer: reset circuit, reduce intensity, clear state file.
         """
-        state = load_circuit_state()
-        now = time.time()
-        total = 0
-        for phase_ts in state.values():
-            window = [t for t in phase_ts if now - t < CIRCUIT_WINDOW_S]
-            total += len(window)
-        return total > MAX_RETRIES
+        br = self._breakers["AdaptivePacer"]
+        before = {"state": br.state().name, "rate": br.failure_rate()}
+        br.reset()
 
-    def reset_circuit(self, phase: Optional[str] = None) -> None:
+        state = _load_json(STATE_FILE)
+        old_intensity = state.get("intensity", 5)
+        new_intensity = max(1, old_intensity - 1)
+        state["intensity"] = new_intensity
+        _save_json(STATE_FILE, state)
+
+        after = {"state": "CLOSED", "rate": 0.0, "intensity": new_intensity}
+        log_heal("AdaptivePacer", "reset + intensity reduction", before, after)
+        return True
+
+    def _heal_memory_manager(self) -> bool:
         """
-        Reset the circuit breaker.
-
-        If *phase* is given, only that phase's counters are cleared.
-        Otherwise all phases are reset.
+        Heal MemoryManager: clear warm/cold cache files, reset circuit.
         """
-        if phase:
-            clear_phase_from_circuit(phase)
-        else:
-            save_circuit_state({})
+        br = self._breakers["MemoryManager"]
+        before = {"state": br.state().name}
+        br.reset()
 
-    # --------------------------------------------------------------------------- #
-    # Convenience / debugging helpers
-    # --------------------------------------------------------------------------- #
+        warm_cache = self.MA / "memory-warm.json"
+        cold_cache = self.MA / "memory-cold"
+        state_cache = self.MA / "memory.json"
 
-    def full_diagnostic_report(self) -> dict[str, Any]:
-        """Return a combined health report + detected issue + recovery suggestions."""
-        health = self.check_health()
+        for path in [warm_cache, state_cache]:
+            try:
+                if path.exists():
+                    path.unlink()
+                    log(f"Cleared cache file: {path.name}")
+            except Exception as e:
+                log(f"Could not clear {path}: {e}")
+
+        try:
+            if cold_cache.exists() and cold_cache.is_dir():
+                for child in cold_cache.iterdir():
+                    try:
+                        child.unlink()
+                    except Exception:
+                        pass
+                log("Cleared memory-cold/ directory")
+        except Exception as e:
+            log(f"Could not clear memory-cold/: {e}")
+
+        log_heal("MemoryManager", "cache cleared, circuit reset", before, {"state": "CLOSED"})
+        return True
+
+    def _heal_context_engine(self) -> bool:
+        """
+        Heal ContextEngine: reset circuit, clear snapshot files, use fallback.
+        """
+        br = self._breakers["ContextEngine"]
+        before = {"state": br.state().name}
+        br.reset()
+
+        snapshots = [
+            self.MA / "context_snapshot.json",
+            self.MA / "prev_context_snapshot.json",
+            self.MA / "context_bootstrap.py",
+        ]
+
+        for path in snapshots:
+            try:
+                if path.exists():
+                    path.unlink()
+                    log(f"Cleared context file: {path.name}")
+            except Exception as e:
+                log(f"Could not clear {path}: {e}")
+
+        log_heal("ContextEngine", "snapshot cleared, circuit reset", before, {"state": "CLOSED"})
+        return True
+
+    def _heal_skill_discoverer(self) -> bool:
+        """
+        Heal SkillDiscoverer: reset circuit, disable pattern warnings.
+        """
+        br = self._breakers["SkillDiscoverer"]
+        before = {"state": br.state().name}
+        br.reset()
+
+        skills_file = self.MA / "skills.json"
+        patterns_file = self.MA / "skill_patterns_v2" / "patterns.json"
+
+        try:
+            if skills_file.exists():
+                data = _load_json(skills_file)
+                if isinstance(data, dict):
+                    data.setdefault("flags", {})["warnings_enabled"] = False
+                    _save_json(skills_file, data)
+                    log("Disabled pattern warnings in skills.json")
+                else:
+                    log(f"skills.json is a {type(data).__name__}, skipping dict update")
+        except Exception as e:
+            log(f"Could not update skills.json: {e}")
+
+        try:
+            if patterns_file.exists():
+                data = _load_json(patterns_file)
+                data.setdefault("meta", {})["warnings_enabled"] = False
+                _save_json(patterns_file, data)
+                log("Disabled pattern warnings in patterns.json")
+        except Exception as e:
+            log(f"Could not update patterns.json: {e}")
+
+        log_heal("SkillDiscoverer", "warnings disabled, circuit reset", before, {"state": "CLOSED"})
+        return True
+
+    def _heal_reasoning_chain(self) -> bool:
+        """
+        Heal ReasoningChain: reset circuit, clear reasoning cache, disable enhancement.
+        """
+        br = self._breakers["ReasoningChain"]
+        before = {"state": br.state().name}
+        br.reset()
+
+        rc_history = self.MA / "reasoning_cache"
+        try:
+            if rc_history.exists() and rc_history.is_dir():
+                for child in rc_history.iterdir():
+                    if child.suffix == ".jsonl":
+                        try:
+                            child.unlink()
+                        except Exception:
+                            pass
+                log("Cleared reasoning_cache/ .jsonl files")
+        except Exception as e:
+            log(f"Could not clear reasoning cache: {e}")
+
+        state = _load_json(STATE_FILE)
+        state["reasoning_enabled"] = False
+        _save_json(STATE_FILE, state)
+
+        log_heal("ReasoningChain", "cache cleared, reasoning disabled", before, {"state": "CLOSED"})
+        return True
+
+    def _heal_agent_orchestrator(self) -> bool:
+        """
+        Heal AgentOrchestrator: reset circuit, mark orchestrator for restart.
+        """
+        br = self._breakers["AgentOrchestrator"]
+        before = {"state": br.state().name}
+        br.reset()
+
+        state = _load_json(STATE_FILE)
+        state["orchestrator_restart"] = True
+        _save_json(STATE_FILE, state)
+
+        log_heal("AgentOrchestrator", "orchestrator restart flag set", before, {"state": "CLOSED"})
+        return True
+
+    def _heal_prompt_engine(self) -> bool:
+        """
+        Heal PromptEngine: reset circuit, clear prompt cache outcomes.
+        """
+        br = self._breakers["PromptEngine"]
+        before = {"state": br.state().name}
+        br.reset()
+
+        outcomes = self.MA / "prompt_engine_v2_outcomes.json"
+        try:
+            if outcomes.exists():
+                outcomes.unlink()
+                log("Cleared prompt_engine_v2_outcomes.json")
+        except Exception as e:
+            log(f"Could not clear outcomes file: {e}")
+
+        log_heal("PromptEngine", "outcomes cleared, circuit reset", before, {"state": "CLOSED"})
+        return True
+
+    def _heal_telemetry(self) -> bool:
+        """
+        Heal Telemetry: reset circuit, clear metrics buffer.
+        """
+        br = self._breakers["Telemetry"]
+        before = {"state": br.state().name}
+        br.reset()
+
+        metrics_file = self.MA / "metrics.json"
+        try:
+            if metrics_file.exists():
+                data = _load_json(metrics_file)
+                if isinstance(data, dict) and "buffer" in data:
+                    data["buffer"] = []
+                    _save_json(metrics_file, data)
+                    log("Cleared metrics buffer")
+        except Exception as e:
+            log(f"Could not clear metrics buffer: {e}")
+
+        log_heal("Telemetry", "metrics buffer cleared, circuit reset", before, {"state": "CLOSED"})
+        return True
+
+    def _heal_predictive_engine(self) -> bool:
+        """
+        Heal PredictiveEngine: reset circuit, disable predictions.
+        """
+        br = self._breakers["PredictiveEngine"]
+        before = {"state": br.state().name}
+        br.reset()
+
+        state = _load_json(STATE_FILE)
+        state["predictions_enabled"] = False
+        _save_json(STATE_FILE, state)
+
+        log_heal("PredictiveEngine", "predictions disabled, circuit reset", before, {"state": "CLOSED"})
+        return True
+
+    def _heal_guardian(self) -> bool:
+        """
+        Heal Guardian: reset circuit, request guardian state reload.
+        """
+        br = self._breakers["Guardian"]
+        before = {"state": br.state().name}
+        br.reset()
+
+        gstate = MA / "guardian-state.json"
+        try:
+            if gstate.exists():
+                data = _load_json(gstate)
+                data["_reload_requested"] = time.time()
+                _save_json(gstate, data)
+                log("Guardian reload requested")
+        except Exception as e:
+            log(f"Could not request guardian reload: {e}")
+
+        log_heal("Guardian", "reload requested, circuit reset", before, {"state": "CLOSED"})
+        return True
+
+    def _heal_system_wide(self) -> bool:
+        """
+        System-wide healing: reset all circuits, clear degraded list.
+        """
+        before = {s: self._breakers[s].state().name for s in SUBSYSTEMS}
+
+        for subsystem in SUBSYSTEMS:
+            self._breakers[subsystem].reset()
+
+        self._degraded.clear()
+        self._save_degraded()
+
+        log_heal("system", "all circuits reset, degraded list cleared", before, {"all": "CLOSED"})
+        return True
+
+    # ------------------------------------------------------------------ #
+    # Retry with exponential backoff
+    # ------------------------------------------------------------------ #
+
+    def _retry(
+        self,
+        fn: Callable[..., Any],
+        *args: Any,
+        max_attempts: int = DEFAULT_MAX_ATTEMPTS,
+        base_delay: float = DEFAULT_BASE_DELAY,
+        **kwargs: Any,
+    ) -> Any:
+        """
+        Retry *fn(*args, **kwargs) up to *max_attempts* times.
+
+        On exception: wait base_delay * 2^(attempt-1) seconds, then retry.
+        Logs each retry attempt.
+        Raises the last exception if all attempts fail.
+        """
+        last_exc: Exception | None = None
+        for attempt in range(1, max_attempts + 1):
+            try:
+                return fn(*args, **kwargs)
+            except Exception as exc:  # noqa: BLE001
+                last_exc = exc
+                if attempt == max_attempts:
+                    break
+                delay = base_delay * (2 ** (attempt - 1))
+                log(f"Retry [{fn.__name__}] attempt {attempt}/{max_attempts} "
+                    f"failed ({type(exc).__name__}), "
+                    f"waiting {delay:.1f}s before retry...")
+                time.sleep(delay)
+
+        if last_exc is not None:
+            raise last_exc
+        return None
+
+    # ------------------------------------------------------------------ #
+    # Self-healing trigger
+    # ------------------------------------------------------------------ #
+
+    def should_heal(self) -> bool:
+        """Return True if a self-heal check should run (every HEAL_INTERVAL_S)."""
+        return time.time() - self._last_heal_ts >= HEAL_INTERVAL_S
+
+    def trigger_self_heal(self) -> dict[str, Any]:
+        """
+        Run the self-healing check and apply recovery if needed.
+
+        This method is non-blocking by design — it runs quickly and
+        returns a summary dict.
+
+        Returns
+        -------
+        dict with keys:
+          performed : bool       — whether a recovery was attempted
+          issue     : dict|None  — the issue that was detected
+          strategy  : str        — recovery strategy applied
+          success   : bool      — whether recovery succeeded
+          elapsed_s : float     — time taken for the heal operation
+        """
+        start = time.time()
+        self._last_heal_ts = start
+
         issue = self.detect_issue()
-        suggestions = self.suggest_recovery(issue)
-        circuit_open = self.is_circuit_open()
-        recovery_history = load_recovery_history()[:10]  # last 10 events
-        backups = list_backups()[:5]  # last 5 backups
+        if issue is None:
+            return {
+                "performed": False,
+                "issue": None,
+                "strategy": "no-op",
+                "success": True,
+                "elapsed_s": time.time() - start,
+            }
 
+        strategy = self.suggest_recovery(issue)
+        log(f"Self-heal triggered: {issue['type']} on [{issue.get('subsystem')}] "
+            f"→ strategy={strategy}")
+
+        success = self.recover(strategy)
         return {
-            "health": health,
-            "detected_issue": issue.name,
-            "recovery_suggestions": [s.name for s in suggestions],
-            "circuit_open": circuit_open,
-            "recovery_history": recovery_history,
-            "available_backups": backups,
+            "performed": True,
+            "issue": issue,
+            "strategy": strategy,
+            "success": success,
+            "elapsed_s": round(time.time() - start, 3),
         }
 
-    def auto_recover(self) -> tuple[bool, Optional[RecoveryStrategy]]:
+    # ------------------------------------------------------------------ #
+    # Degraded subsystem management
+    # ------------------------------------------------------------------ #
+
+    def _mark_degraded(self, subsystem: str) -> None:
+        """Mark a subsystem as degraded and persist to disk."""
+        self._degraded.add(subsystem)
+        self._save_degraded()
+
+    def get_degraded(self) -> list[str]:
+        """Return the list of currently degraded subsystems."""
+        with self._lock:
+            return sorted(self._degraded)
+
+    def _load_degraded(self) -> None:
+        """Load degraded subsystems list from disk."""
+        data = _load_json(DEGRADED_FILE)
+        degraded = data.get("degraded", [])
+        if isinstance(degraded, list):
+            self._degraded = set(degraded)
+
+    def _save_degraded(self) -> None:
+        """Persist the degraded subsystems list to disk."""
+        _save_json(DEGRADED_FILE, {"degraded": sorted(self._degraded)})
+
+    # ------------------------------------------------------------------ #
+    # State persistence helpers
+    # ------------------------------------------------------------------ #
+
+    def persist_circuit_state(self) -> None:
+        """Write circuit breaker snapshot for all subsystems to disk."""
+        data = {s: self._breakers[s].snapshot() for s in SUBSYSTEMS}
+        _save_json(CB_FILE, data)
+
+    def load_circuit_state(self) -> dict[str, Any]:
+        """Load circuit breaker state from disk (used for cross-process sync)."""
+        return _load_json(CB_FILE)
+
+    # ------------------------------------------------------------------ #
+    # Public convenience — run self-heal cycle
+    # ------------------------------------------------------------------ #
+
+    def run_heal_cycle(self) -> dict[str, Any]:
         """
-        Run detect_issue(), then iterate over suggested strategies in order
-        until one succeeds.
+        Convenience method: check if a heal should run, run it if so,
+        and return the result.
 
-        Returns (recovered, strategy_used).
+        This is the primary entry point for the daemon loop.
         """
-        issue = self.detect_issue()
-        if issue == IssueType.NONE:
-            return True, None
+        if not self.should_heal():
+            return {"skipped": True, "reason": "too_soon"}
 
-        # Check circuit breaker before attempting recovery
-        if issue == IssueType.CIRCUIT_OPEN or self.is_circuit_open():
-            # Cannot auto-recover with circuit open — signal need for manual intervention
-            return False, None
+        result = self.trigger_self_heal()
+        self.persist_circuit_state()
+        return result
 
-        data = load_json(STATE_FILE)
-        phase = data.get("phase") if isinstance(data, dict) else None
+    # ------------------------------------------------------------------ #
+    # Categorise an exception for retry decisions
+    # ------------------------------------------------------------------ #
 
-        for strategy in self.suggest_recovery(issue):
-            if self.recover(strategy, phase=phase):
-                return True, strategy
-        return False, None
+    @staticmethod
+    def categorise_error(exc: Exception) -> ErrorCategory:
+        """
+        Classify an exception into TRANSIENT / PERSISTENT / FATAL.
 
-    def prune_old_history(self) -> int:
-        """Remove entries older than RETENTION_S from recovery history. Returns count removed."""
-        history = load_recovery_history()
-        before = len(history)
-        cutoff = time.time() - RETENTION_S
-        history = [e for e in history if e.get("ts", 0) > cutoff]
-        save_json(RECOVERY_HISTORY, history)
-        return before - len(history)
+        TRANSIENT  — network timeout, temporary I/O error
+        PERSISTENT — malformed data, missing file, value error
+        FATAL      — keyboard interrupt, system exit, broken pipe
+        """
+        transient_keywords = (
+            "timeout", "timed out", "temporary", "connection refused",
+            "network", "eagain", "resource temporarily unavailable",
+        )
+        fatal_keywords = (
+            "keyboard interrupt", "system exit", "broken pipe",
+            "connection reset by peer", "operation cancelled",
+        )
+        # Check exception class name directly for FATAL types (some have no message)
+        fatal_classes = {"KeyboardInterrupt", "SystemExit", "BrokenPipeError",
+                         "ConnectionResetError", "OperationCancelledError"}
 
-    def get_phase_retry_count(self, phase: str) -> int:
-        """Return the number of retries for *phase* within the circuit window."""
-        state = load_circuit_state()
-        now = time.time()
-        return len([t for t in state.get(phase, []) if now - t < CIRCUIT_WINDOW_S])
+        msg = str(exc).lower()
 
-    def create_state_backup(self, tag: str = "manual") -> Optional[Path]:
-        """Create a manually-tagged snapshot of state.json."""
-        return create_backup(tag)
+        if any(k in msg for k in fatal_keywords) or type(exc).__name__ in fatal_classes:
+            return ErrorCategory.FATAL
+
+        if any(k in msg for k in transient_keywords):
+            return ErrorCategory.TRANSIENT
+
+        # Default to PERSISTENT — the safe default for unknown errors
+        return ErrorCategory.PERSISTENT
+
+    # ------------------------------------------------------------------ #
+    # Call-with-circuit-breaker wrapper
+    # ------------------------------------------------------------------ #
+
+    def with_circuit(
+        self,
+        subsystem: str,
+        fn: Callable[..., Any],
+        *args: Any,
+        **kwargs: Any,
+    ) -> tuple[Any, bool]:
+        """
+        Call *fn(*args, **kwargs) with circuit breaker protection.
+
+        Parameters
+        ----------
+        subsystem : str
+            Name of the subsystem (must be in SUBSYSTEMS).
+        fn : callable
+            The function to call.
+        *args, **kwargs
+            Forwarded to *fn*.
+
+        Returns
+        -------
+        (result, used_fallback)
+            result          — the function return, or the subsystem fallback
+            used_fallback   — True if the circuit was OPEN and fallback was used
+        """
+        if subsystem not in self._breakers:
+            # Unknown subsystem — call directly without circuit protection
+            return fn(*args, **kwargs), False
+
+        br = self._breakers[subsystem]
+
+        if br.is_open():
+            fallback = FALLBACKS.get(subsystem, lambda: None)
+            return fallback(), True
+
+        try:
+            result = self._retry(fn, *args, max_attempts=3, base_delay=2.0)
+            br.record_call(success=True)
+            return result, False
+        except Exception as exc:  # noqa: BLE001
+            br.record_call(success=False)
+            self.record_failure(subsystem, exc)
+
+            category = self.categorise_error(exc)
+            if category == ErrorCategory.FATAL:
+                # FATAL — halt immediately
+                log(f"FATAL error in [{subsystem}]: {exc}")
+                state = _load_json(STATE_FILE)
+                state["running"] = False
+                _save_json(STATE_FILE, state)
+                raise
+
+            # PERSISTENT / TRANSIENT — use fallback, continue
+            fallback = FALLBACKS.get(subsystem, lambda: None)
+            return fallback(), True
+
+    # ------------------------------------------------------------------ #
+    # Snapshot / debug
+    # ------------------------------------------------------------------ #
+
+    def full_snapshot(self) -> dict[str, Any]:
+        """Return a complete snapshot of all health and circuit data."""
+        health = self.check_health()
+        circuits = {s: self._breakers[s].snapshot() for s in SUBSYSTEMS}
+        return {
+            "healthy": health["healthy"],
+            "issues": health["issues"],
+            "degraded": self.get_degraded(),
+            "circuits": circuits,
+            "last_heal_ts": self._last_heal_ts,
+        }

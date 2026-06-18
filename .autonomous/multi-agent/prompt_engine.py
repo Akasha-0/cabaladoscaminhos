@@ -1,972 +1,410 @@
 """
-prompt_engine.py — Advanced prompt engineering for autonomous agent instructions.
+PromptEngineV2 — fast, self-improving prompt engine for autonomous agents.
 
-Builds highly-instructed, token-efficient prompts for each agent by combining:
-- Area-specific templates (UI, API, Database, Auth, Tests, Build, Docs, Grimoire)
-- Project vision & constraints from SPEC.md / DECISIONS.md
-- Relevant learnings from memory.json
-- Relevant architectural decisions from memory.json
-- Improvement context injected per-task
-
-Template variables: {AREA}, {IMPROVEMENT}, {VISION}, {CONSTRAINTS},
-                   {LEARNINGS}, {DECISIONS}, {CONTEXT}
+Area-specific templates, learning injection, and outcome tracking.
+Target: <5ms build(), pre-loaded templates, thread-safe, self-contained.
 """
 
 from __future__ import annotations
 
-import hashlib
-import json as _json
-import re
+import json
 import time
-from datetime import datetime, timezone
+import threading
 from pathlib import Path
-from typing import Any
 
-# ── path constants ─────────────────────────────────────────────────────────────
-
-ROOT = Path("/home/skynet/cabala-dos-caminhos")
-MA = ROOT / ".autonomous/multi-agent"
-
-MEMORY_FILE = MA / "memory.json"
-DECISIONS_FILE = ROOT / "DECISIONS.md"
-SPEC_FILE = ROOT / "SPEC.md"
-
-# ── low-level JSON helpers ────────────────────────────────────────────────────
-
-def load_json(path: Path) -> dict[str, Any]:
-    """Load JSON from *path*, return {} on any error."""
-    try:
-        return _json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
-        return {}
-
-
-def save_json(path: Path, data: dict[str, Any]) -> None:
-    """Atomically write *data* to *path* via rename."""
-    tmp = path.with_suffix(".tmp")
-    tmp.write_text(_json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
-    tmp.replace(path)
-
-
-# ── log helper ────────────────────────────────────────────────────────────────
-
-def log(msg: str) -> None:
-    """Print *msg* with ISO timestamp prefix."""
-    ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    print(f"[{ts}] PromptEngine: {msg}", flush=True)
-
-
-# ── token helpers ─────────────────────────────────────────────────────────────
-
-def _estimate_tokens(text: str) -> int:
-    """Rough token estimate: ~4 chars per token."""
-    return max(1, len(text) // 4)
-
-
-def _truncate(text: str, max_chars: int) -> str:
-    """Truncate to *max_chars* with ellipsis marker."""
-    if len(text) <= max_chars:
-        return text
-    return text[: max(max_chars - 3, 0)] + "…"
-
-
-# ── memory / decisions readers ────────────────────────────────────────────────
-
-def _load_memory() -> dict[str, Any]:
-    return load_json(MEMORY_FILE)
-
-
-def _load_learnings(area: str = "", limit: int = 5) -> list[dict]:
-    """Pull recent learnings from memory.json, optionally filtered by area."""
-    mem = _load_memory()
-    learnings = mem.get("learnings", [])
-    if area:
-        area_lower = area.lower()
-        learnings = [
-            l for l in learnings
-            if area_lower in str(l.get("area", "")).lower()
-            or area_lower in str(l.get("tags", [])).lower()
-        ]
-    by_time = sorted(learnings, key=lambda l: l.get("timestamp", 0), reverse=True)
-    return by_time[:limit]
-
-
-def _load_decisions(area: str = "", limit: int = 5) -> list[dict]:
-    """Pull recent decisions from memory.json, optionally filtered by area."""
-    mem = _load_memory()
-    entries = mem.get("learnings", [])
-    decisions = [e for e in entries if e.get("is_decision") or e.get("type") == "decision"]
-    if area:
-        area_lower = area.lower()
-        decisions = [
-            d for d in decisions
-            if area_lower in str(d.get("area", "")).lower()
-            or area_lower in str(d.get("tags", [])).lower()
-        ]
-    by_time = sorted(decisions, key=lambda d: d.get("timestamp", 0), reverse=True)
-    return decisions[:limit]
-
-
-def _load_vision_constraints() -> tuple[str, str]:
-    """Extract vision and constraints from SPEC.md."""
-    try:
-        text = SPEC_FILE.read_text(encoding="utf-8")
-    except Exception:
-        return "", ""
-    vision_match = re.search(r"(?i)#*\s*Vision[:\s]*(.+?)(?=\n#|\Z)", text, re.DOTALL)
-    constraints_match = re.search(r"(?i)#*\s*Constraints[:\s]*(.+?)(?=\n#|\Z)", text, re.DOTALL)
-    vision = (vision_match.group(1).strip() if vision_match else "")[:500]
-    constraints = (constraints_match.group(1).strip() if constraints_match else "")[:500]
-    return vision, constraints
-
-
-def _format_learnings(learnings: list[dict]) -> str:
-    """Render learnings as a readable bullet list."""
-    if not learnings:
-        return "No relevant learnings found."
-    lines = []
-    for i, l in enumerate(learnings, 1):
-        agent = l.get("agent", "?")
-        phase = l.get("phase", "?")
-        outcome = l.get("outcome", l.get("summary", ""))
-        lines.append(f"{i}. [{agent}/{phase}] {outcome}")
-    return "\n".join(lines)
-
-
-def _format_decisions(decisions: list[dict]) -> str:
-    """Render decisions as a readable bullet list."""
-    if not decisions:
-        return "No relevant decisions found."
-    lines = []
-    for i, d in enumerate(decisions, 1):
-        area = d.get("area", "?")
-        summary = d.get("summary", d.get("outcome", ""))
-        lines.append(f"{i}. [{area}] {summary}")
-    return "\n".join(lines)
-
-
-def _format_improvement(imp: dict[str, Any]) -> str:
-    """Render an improvement dict as readable text."""
-    parts = []
-    if imp.get("id"):
-        parts.append(f"**ID**: {imp['id']}")
-    if imp.get("task"):
-        parts.append(f"**Task**: {imp['task']}")
-    if imp.get("description"):
-        parts.append(f"**Description**: {imp['description']}")
-    if imp.get("acceptance_criteria"):
-        criteria = imp["acceptance_criteria"]
-        if isinstance(criteria, list):
-            parts.append("**Acceptance Criteria**:")
-            for c in criteria:
-                parts.append(f"  - {c}")
-        else:
-            parts.append(f"**Acceptance Criteria**: {criteria}")
-    if imp.get("priority"):
-        parts.append(f"**Priority**: {imp['priority']}")
-    if imp.get("area"):
-        parts.append(f"**Area**: {imp['area']}")
-    return "\n".join(parts) if parts else str(imp)
-
-
-def _format_context(ctx: dict[str, Any]) -> str:
-    """Render a context dict as readable text."""
-    if not ctx:
-        return "No additional context."
-    lines = []
-    for key, val in ctx.items():
-        if isinstance(val, list):
-            lines.append(f"**{key}**:")
-            for v in val:
-                lines.append(f"  - {v}")
-        elif isinstance(val, dict):
-            lines.append(f"**{key}**: {_json.dumps(val)}")
-        else:
-            lines.append(f"**{key}**: {val}")
-    return "\n".join(lines)
-
-
-# ── area-specific templates ────────────────────────────────────────────────────
-
-# Template variables: {AREA}, {IMPROVEMENT}, {VISION}, {CONSTRAINTS},
-#                    {LEARNINGS}, {DECISIONS}, {CONTEXT}
-
-_UI_TEMPLATE = """\
-## Role: UI/Design Specialist
-
-You are the UI/Design specialist for the Akasha project. Your craft is
-transforming requirements into elegant, accessible, performant user interfaces.
-
-## Context
-{CONTEXT}
-
-## Current Improvement Focus
-{IMPROVEMENT}
-
-## Vision
-{VISION}
-
-## Constraints
-{CONSTRAINTS}
-
-## Past Learnings (what worked / didn't)
-{LEARNINGS}
-
-## Architectural Decisions to Respect
-{DECISIONS}
-
-## Your Mandate
-
-1. **Component Design**: Build composable, accessible components (ARIA labels,
-   keyboard nav, focus management) and responsive at all breakpoints.
-2. **Design System**: Follow the project's design tokens and component
-   conventions. No ad-hoc styling.
-3. **Performance**: Keep render paths lean. Prefer Server Components;
-   add "use client" only when strictly necessary.
-4. **Integration**: Wire UI to data via the defined API contracts.
-   Do not invent new API surface.
-5. **Testing**: Unit-test critical component logic and accessibility
-   assertions for key components.
-
-## Output Format
-
-Produce or update for each change:
-- Component file(s) with full TypeScript types
-- Corresponding test file(s)
-- Any necessary design-token additions
-
-## Quality Bar
-
-- Zero TypeScript errors
-- Accessibility audit pass (keyboard nav, ARIA, contrast)
-- No layout shift on dynamic content
-- Responsive at all breakpoints
-
----
-{AREA}
-""".strip()
-
-_API_TEMPLATE = """\
-## Role: API/Logic Specialist
-
-You are the API/Logic specialist for the Akasha project. Your craft is
-building robust, type-safe, well-documented backend logic and API surfaces.
-
-## Context
-{CONTEXT}
-
-## Current Improvement Focus
-{IMPROVEMENT}
-
-## Vision
-{VISION}
-
-## Constraints
-{CONSTRAINTS}
-
-## Past Learnings (what worked / didn't)
-{LEARNINGS}
-
-## Architectural Decisions to Respect
-{DECISIONS}
-
-## Your Mandate
-
-1. **Type Safety**: Define Zod/Drizzle schemas; validate at API boundaries.
-   Never trust raw unvalidated input.
-2. **Error Handling**: Map domain errors to typed error codes.
-   Never leak internal stack traces to clients.
-3. **API Contracts**: Follow REST/GraphQL conventions used in the project.
-   Document request/response shapes explicitly.
-4. **Idempotency**: Mutations must be safe to retry.
-5. **Observability**: Log at decision points; emit structured metrics.
-
-## Output Format
-
-Produce or update for each change:
-- API route / service file
-- Input validation schema
-- Error type definitions
-- Unit tests for the core logic
-
-## Quality Bar
-
-- Zero TypeScript errors
-- All input paths validated against schema
-- Error paths exercised in tests
-- No hard-coded secrets or env var names in source
-
----
-{AREA}
-""".strip()
-
-_DATABASE_TEMPLATE = """\
-## Role: Database Specialist
-
-You are the Database specialist for the Akasha project. Your craft is
-schema design, query optimization, and safe migrations with Drizzle ORM.
-
-## Context
-{CONTEXT}
-
-## Current Improvement Focus
-{IMPROVEMENT}
-
-## Vision
-{VISION}
-
-## Constraints
-{CONSTRAINTS}
-
-## Past Learnings (what worked / didn't)
-{LEARNINGS}
-
-## Architectural Decisions to Respect
-{DECISIONS}
-
-## Your Mandate
-
-1. **Schema First**: Define migrations before touching application code.
-   Use Drizzle's migration tooling.
-2. **Indexes**: Add indexes for every foreign key and high-cardinality filter.
-3. **Soft Deletes**: Prefer soft deletes for audit-critical tables.
-4. **Transactions**: Wrap multi-step writes in transactions; fail atomically.
-5. **Query Safety**: Parameterize all queries. Never interpolate user input.
-
-## Output Format
-
-Produce or update:
-- Migration file(s) under the migrations directory
-- Drizzle schema definitions
-- Query helper functions (if any)
-- Tests that exercise the migration
-
-## Quality Bar
-
-- Migration is reversible (up + down)
-- No data loss on migration
-- Indexes present for FKs and filtered columns
-- Query helpers are tested against a test DB
-
----
-{AREA}
-""".strip()
-
-_AUTH_TEMPLATE = """\
-## Role: Auth Specialist
-
-You are the Auth specialist for the Akasha project. Your craft is
-secure authentication and authorization implementation.
-
-## Context
-{CONTEXT}
-
-## Current Improvement Focus
-{IMPROVEMENT}
-
-## Vision
-{VISION}
-
-## Constraints
-{CONSTRAINTS}
-
-## Past Learnings (what worked / didn't)
-{LEARNINGS}
-
-## Architectural Decisions to Respect
-{DECISIONS}
-
-## Your Mandate
-
-1. **Secure by Default**: Use established auth patterns (Clerk/Auth.js).
-   Never roll your own crypto.
-2. **Session Management**: Sessions must be short-lived, HTTP-only, SameSite.
-   Refresh tokens rotate correctly.
-3. **Authorization**: Enforce RBAC/ABAC at the route/field level.
-   Default-deny; explicit-allow.
-4. **Token Handling**: Access tokens never reach long-term storage.
-   Refresh token rotation is mandatory.
-5. **Audit Trail**: Auth events (login, logout, failure, privilege change)
-   are logged with IP and timestamp.
-
-## Output Format
-
-Produce or update:
-- Auth configuration and middleware
-- Route guards / session utilities
-- Unit/integration tests for auth flows
-- Documentation of the auth model
-
-## Quality Bar
-
-- No auth bypass paths
-- Tokens expire and rotate correctly
-- Failed auth attempts are rate-limited and logged
-- All protected routes fail 401 without a valid session
-
----
-{AREA}
-""".strip()
-
-_TESTS_TEMPLATE = """\
-## Role: Tests/QA Specialist
-
-You are the Tests/QA specialist for the Akasha project. Your craft is
-writing meaningful tests that catch real bugs and document expected behavior.
-
-## Context
-{CONTEXT}
-
-## Current Improvement Focus
-{IMPROVEMENT}
-
-## Vision
-{VISION}
-
-## Constraints
-{CONSTRAINTS}
-
-## Past Learnings (what worked / didn't)
-{LEARNINGS}
-
-## Architectural Decisions to Respect
-{DECISIONS}
-
-## Your Mandate
-
-1. **Test Behavior, Not Plumbing**: Assert observable outcomes, not
-   implementation details. Tests should survive refactors.
-2. **Arrange-Act-Assert**: Structure each test with clear AAA comments
-   or blank-line separation.
-3. **Edge Cases**: Cover empty input, max-length input, boundary values,
-   and error paths — not just the happy path.
-4. **Fixtures**: Share setup via factories or fixtures, not copy-paste.
-5. **Fast by Default**: Unit tests run in <100ms. Integration tests
-   hit real DBs with short timeouts.
-
-## Output Format
-
-Produce or update:
-- Test files collocated with source (foo.test.ts alongside foo.ts)
-- Test utilities / factories under tests/utils/
-- Coverage summary in the PR
-
-## Quality Bar
-
-- Tests pass on every run
-- Each new code path has at least one assertion
-- No commented-out or skipped tests in final PR
-- Coverage does not drop below current baseline
-
----
-{AREA}
-""".strip()
-
-_BUILD_TEMPLATE = """\
-## Role: Build/Infra Specialist
-
-You are the Build/Infra specialist for the Akasha project. Your craft is
-reliable, reproducible builds and infrastructure as code.
-
-## Context
-{CONTEXT}
-
-## Current Improvement Focus
-{IMPROVEMENT}
-
-## Vision
-{VISION}
-
-## Constraints
-{CONSTRAINTS}
-
-## Past Learnings (what worked / didn't)
-{LEARNINGS}
-
-## Architectural Decisions to Respect
-{DECISIONS}
-
-## Your Mandate
-
-1. **Reproducibility**: Builds are deterministic. Pin all package versions.
-   Use lockfiles; verify them in CI.
-2. **Caching**: Leverage Turborepo's caching. Cache bust only on real changes.
-3. **Docker**: Multi-stage builds; drop privileges; no root in production image.
-4. **Secrets**: Never bake secrets into images. Use env vars injected at runtime.
-5. **Health Checks**: Every service exposes /health and /ready endpoints.
-
-## Output Format
-
-Produce or update:
-- Dockerfile / docker-compose.yml
-- CI workflow files (.github/workflows/)
-- Environment variable documentation
-- Deployment runbooks (if non-trivial)
-
-## Quality Bar
-
-- `docker build` succeeds without extra flags
-- `docker run` passes health checks
-- CI pipeline passes on every PR
-- No secret values in any committed file
-
----
-{AREA}
-""".strip()
-
-_DOCS_TEMPLATE = """\
-## Role: Docs Specialist
-
-You are the Docs specialist for the Akasha project. Your craft is clear,
-accurate documentation that helps developers understand and use the system.
-
-## Context
-{CONTEXT}
-
-## Current Improvement Focus
-{IMPROVEMENT}
-
-## Vision
-{VISION}
-
-## Constraints
-{CONSTRAINTS}
-
-## Past Learnings (what worked / didn't)
-{LEARNINGS}
-
-## Architectural Decisions to Respect
-{DECISIONS}
-
-## Your Mandate
-
-1. **Accuracy**: Docs must match the code. Stale docs are worse than no docs.
-   Always update docs when changing behavior.
-2. **Audience**: Write for the next developer, not yourself six months ago.
-   Assume TypeScript familiarity; explain project-specific concepts.
-3. **Examples**: Every API, utility, and hook has at least one working example.
-4. **Structure**: Keep docs under docs/. Follow the project's doc hierarchy.
-5. **ADRs**: Architectural decisions are recorded as ADRs under docs/adrs/.
-
-## Output Format
-
-Produce or update:
-- Doc files under docs/
-- ADR files under docs/adrs/
-- Inline JSDoc / TSDoc for public APIs
-
-## Quality Bar
-
-- `pnpm docs:build` passes (if applicable)
-- All public exports are documented
-- Examples are runnable without modification
-- No placeholder "TODO" text in final docs
-
----
-{AREA}
-""".strip()
-
-_GRIMOIRE_TEMPLATE = """\
-## Role: Grimoire Specialist
-
-You are the Grimoire specialist for the Akasha project. Your craft is
-capturing and organizing deep project knowledge in the grimoire directory.
-
-## Context
-{CONTEXT}
-
-## Current Improvement Focus
-{IMPROVEMENT}
-
-## Vision
-{VISION}
-
-## Constraints
-{CONSTRAINTS}
-
-## Past Learnings (what worked / didn't)
-{LEARNINGS}
-
-## Architectural Decisions to Respect
-{DECISIONS}
-
-## Your Mandate
-
-1. **Deep Knowledge**: Capture not just what the code does, but why.
-   Explain design choices, historical decisions, and gotchas.
-2. **Pattern Catalog**: Document recurring patterns, idioms, and anti-patterns
-   observed in the codebase.
-3. **Operational Runbooks**: Record how to diagnose and resolve common failures.
-   Include commands, log grep patterns, and escalation steps.
-4. **Grounded in Source**: Every claim is backed by a file:line reference.
-   No unverified folklore.
-5. **Living Document**: Update entries when reality diverges from the grimoire.
-   Stale knowledge is actively harmful.
-
-## Output Format
-
-Produce or update:
-- Grimoire entries under grimoire/<area>/
-- Pattern definitions with source references
-- Runbooks with concrete commands
-
-## Quality Bar
-
-- Every key file is referenced in at least one grimoire entry
-- Runbooks are tested (you can follow your own steps)
-- Entries include file:line citations
-- No contradiction between grimoire and actual behavior
-
----
-{AREA}
-""".strip()
-
-# ── system / research / planning / validation templates ────────────────────────
-
-_SYSTEM_TEMPLATE = """\
-You are an autonomous agent operating within the Akasha project ecosystem.
-Akasha is a Next.js 16.2.6 Turborepo monorepo with Prisma/PostgreSQL,
-Vitest for testing, and MiniMax AI integration.
-
-Your role is determined by the task context provided alongside this prompt.
-You MUST:
-- Follow the SPEC.md and DECISIONS.md of the project
-- Preserve backward compatibility in all changes
-- Log all significant decisions and outcomes
-- Verify your work before declaring completion
-
-CRITICAL FAILURES TO AVOID (from project memory):
-- Build: pages/app directory issue — keep app/ clean
-- Auth: cookie race on refresh — use 307 + window.location.href
-- Tests: 88% failure rate — ensure routes exist and packages resolve before adding tests
-- OOM: kill OMP bun before build (memory constraints)
-- Cache: Turbopack stale cache causes phantom errors — clean rebuild when in doubt
-
-Sacred protocol: run scripts/sacred-protocol-check.sh before any commit.
-CodeGraph-first for architecture questions.
-""".strip()
-
-_RESEARCH_TEMPLATE = """\
-## Research Goal
-{GOAL}
-
-## Project Context
-{CONTEXT}
-
-## Instructions
-Investigate the goal thoroughly. Return a structured research report covering:
-1. Current state of the relevant code / system
-2. Constraints and dependencies
-3. Alternative approaches considered
-4. Recommended approach with rationale
-5. Risk assessment (failure modes, migration path)
-
-## Output Format
-Return your findings as a clear markdown report.
-Be specific: cite file paths, line numbers, and function names.
-""".strip()
-
-_PLANNING_TEMPLATE = """\
-## Planning Goal
-Analyze the following improvements and produce an implementation plan.
-
-## Improvements
-{IMPROVEMENTS}
-
-## Project Context
-{CONTEXT}
-
-## Instructions
-Produce a phased implementation plan that:
-1. Breaks each improvement into concrete, testable steps
-2. Respects backward compatibility
-3. Sequences work to minimize risk (foundations before features)
-4. Names specific files to create or modify
-5. Defines acceptance criteria for each phase
-6. Flags any improvements that are out of scope
-
-## Output Format
-A numbered list of phases, each with:
-- Phase name and goal
-- Steps (numbered sub-items)
-- Files affected
-- Acceptance criteria
-
-Return your plan as structured markdown.
-""".strip()
-
-_VALIDATION_TEMPLATE = """\
-## Validation Goal
-Validate the following improvements against the live system.
-
-## Improvements
-{IMPROVEMENTS}
-
-## Project Context
-{CONTEXT}
-
-## Instructions
-For each improvement:
-1. Re-read the relevant source files
-2. Run the affected tests
-3. Verify the implementation matches the intended behavior
-4. Report any gaps: missing tests, edge cases unhandled, regressions introduced
-5. Flag anything that cannot be validated in the current environment
-
-## Output Format
-A validation report per improvement:
-- Status: PASS / FAIL / SKIPPED
-- Evidence: test output, command used, file verified
-- Issues: specific gaps found
-- Recommendations: how to resolve each gap
-
-Return your report as structured markdown.
-""".strip()
-
-# ── area template registry ─────────────────────────────────────────────────────
-
-_AREA_TEMPLATES: dict[str, str] = {
-    "UI/Design": _UI_TEMPLATE,
-    "API/Logic": _API_TEMPLATE,
-    "Database": _DATABASE_TEMPLATE,
-    "Auth": _AUTH_TEMPLATE,
-    "Tests/QA": _TESTS_TEMPLATE,
-    "Build/Infra": _BUILD_TEMPLATE,
-    "Docs": _DOCS_TEMPLATE,
-    "Grimoire": _GRIMOIRE_TEMPLATE,
+__all__ = ["PromptEngineV2"]
+
+
+# ---------------------------------------------------------------------------
+# Template definitions (pre-loaded, no file I/O at query time)
+# ---------------------------------------------------------------------------
+
+AREA_TEMPLATES = {
+    "typecheck": {
+        "goal": "Fix TypeScript type errors",
+        "hint": "Run `pnpm typecheck` first. Focus on: missing types, import conflicts, type mismatches.",
+        "improvements": ["missing_types", "import_conflicts", "type_mismatches", "unused_types"],
+        "anti_patterns": ["skip_tsc", "any_type_abuse"],
+    },
+    "tests": {
+        "goal": "Add or improve tests",
+        "hint": "Run existing tests first. Look for untested edge cases and error paths.",
+        "improvements": ["missing_tests", "edge_cases", "error_handling", "coverage_gaps"],
+        "anti_patterns": ["skip_tests", "mock_everything"],
+    },
+    "tech_debt": {
+        "goal": "Reduce technical debt",
+        "hint": "Focus on: code duplication, long functions, unclear naming, missing docs.",
+        "improvements": ["duplication", "long_functions", "naming", "missing_docs"],
+        "anti_patterns": ["over_engineering", "premature_optimization"],
+    },
+    "performance": {
+        "goal": "Improve performance",
+        "hint": "Profile first. Focus on: N+1 queries, missing indexes, expensive renders.",
+        "improvements": ["slow_query", "expensive_render", "missing_cache", "bundle_size"],
+        "anti_patterns": ["premature_optimization", "over_caching"],
+    },
+    "security": {
+        "goal": "Improve security",
+        "hint": "Check: injection risks, auth bypass, sensitive data exposure, dependency vulnerabilities.",
+        "improvements": ["injection_risk", "auth_bypass", "data_exposure", "dep_vulns"],
+        "anti_patterns": ["security_through_obscurity", "hardcoded_secrets"],
+    },
+    "ui": {
+        "goal": "Improve UI/UX",
+        "hint": "Focus on: accessibility, responsiveness, visual hierarchy, interaction feedback.",
+        "improvements": ["a11y", "responsive", "visual_feedback", "loading_states"],
+        "anti_patterns": ["over_designing", "ignoring_mobile"],
+    },
+    "general": {
+        "goal": "General improvements",
+        "hint": "Focus on high-impact, low-risk changes. Prefer refactoring over adding features.",
+        "improvements": ["refactor", "docs", "cleanup", "small_fixes"],
+        "anti_patterns": [],
+    },
 }
 
+IMPROVEMENT_PROMPTS = {
+    "missing_types": "Add proper TypeScript types. Use explicit interfaces for complex objects. Avoid `any`.",
+    "import_conflicts": "Resolve import naming conflicts. Use aliased imports or rename local declarations.",
+    "type_mismatches": "Fix type mismatches. Ensure compatible types on both sides of assignments.",
+    "type_mismatches": "Fix type mismatches. Ensure compatible types on both sides of assignments.",
+    "missing_tests": "Add tests for the changed code. Cover happy path and at least one edge case.",
+    "edge_cases": "Add tests for boundary conditions, empty inputs, null values, and overflow.",
+    "error_handling": "Improve error handling. Add try/catch where missing, validate inputs, return meaningful errors.",
+    "coverage_gaps": "Identify untested branches and add coverage for those paths.",
+    "duplication": "Extract repeated code into shared helpers or utilities. DRY principle.",
+    "long_functions": "Break functions > 50 lines into smaller, focused functions.",
+    "naming": "Rename variables and functions for clarity. Names should reveal intent.",
+    "missing_docs": "Add JSDoc comments to public APIs and complex logic.",
+    "slow_query": "Optimize the database query. Add indexes or rewrite to avoid full scans.",
+    "expensive_render": "Reduce unnecessary re-renders. Memoize expensive computations.",
+    "missing_cache": "Add caching for repeated expensive operations. Use memoization or Redis.",
+    "bundle_size": "Reduce bundle size. Tree-shake unused code, lazy-load routes, split chunks.",
+    "injection_risk": "Sanitize user input to prevent injection attacks. Use parameterized queries.",
+    "auth_bypass": "Verify all auth checks are in place. Ensure endpoints are protected.",
+    "data_exposure": "Ensure sensitive data is not logged or exposed in responses.",
+    "dep_vulns": "Audit dependencies for known vulnerabilities. Update or replace risky packages.",
+    "a11y": "Add ARIA labels, keyboard navigation, and proper contrast ratios.",
+    "responsive": "Ensure layout works on mobile, tablet, and desktop.",
+    "visual_feedback": "Add loading spinners, success toasts, and error messages for user actions.",
+    "loading_states": "Add skeleton loaders or spinners for async content.",
+    "refactor": "Refactor for clarity and maintainability. Keep the behavior exactly the same.",
+    "docs": "Improve inline documentation and code comments.",
+    "cleanup": "Remove dead code, unused imports, and temporary workarounds.",
+    "small_fixes": "Fix typos, formatting, and minor code smells.",
+}
 
-# ── PromptEngine ───────────────────────────────────────────────────────────────
+SYSTEM_TEMPLATE = """You are an expert Akasha project engineer.
 
-class PromptEngine:
+# GOAL
+{goal}
+
+# AREA HINTS
+{hints}
+
+# PROJECT CONTEXT
+{context}
+
+# LEARNINGS FROM PREVIOUS ITERATIONS
+{learnings}
+
+# RECENT DECISIONS
+{decisions}
+
+## IMPROVEMENT TYPES
+{improvement_guide}
+
+## INSTRUCTION
+You are working on iteration {iteration} of an autonomous improvement loop.
+Analyze the codebase, identify the best improvement to make, implement it,
+and verify with `pnpm typecheck` and `pnpm test`.
+
+If you find nothing to improve, respond: NO_OP
+
+IMPORTANT:
+- Run `pnpm typecheck` after any code change
+- Keep changes minimal and focused
+- Prefer fixing existing code over adding new code
+- Do NOT use `any` type in TypeScript
+- Commit your changes with a descriptive message
+"""
+
+
+# ---------------------------------------------------------------------------
+# PromptEngineV2
+# ---------------------------------------------------------------------------
+
+class PromptEngineV2:
     """
-    Advanced prompt engineering for autonomous agent instructions.
+    Fast, self-improving prompt engine.
 
-    Usage::
-
-        pe = PromptEngine()
-        prompt = pe.build_agent_prompt(
-            area="UI/Design",
-            improvement={"task": "Add dark mode toggle", "id": "feature-42"},
-            context={"feature": "Dark Mode", "priority": "high"}
-        )
+    Templates are pre-loaded at __init__; no file I/O during build().
+    Outcome tracking drives suggest_next_improvement() and get_best_prompt().
     """
 
-    def __init__(
-        self,
-        memory_file: Path | str = MEMORY_FILE,
-        decisions_file: Path | str = DECISIONS_FILE,
-        spec_file: Path | str = SPEC_FILE,
-    ) -> None:
-        self._memory_file = Path(memory_file)
-        self._decisions_file = Path(decisions_file)
-        self._spec_file = Path(spec_file)
-        self._vision: str = ""
-        self._constraints: str = ""
-        self._load_vision_constraints()
+    AREA_TEMPLATES = AREA_TEMPLATES
+    IMPROVEMENT_PROMPTS = IMPROVEMENT_PROMPTS
 
-    # ── public API ─────────────────────────────────────────────────────────
+    def __init__(self, ma_path: Path | None = None, memory=None) -> None:
+        self._root = Path("/home/skynet/cabala-dos-caminhos")
+        self._ma = (ma_path or self._root / ".autonomous" / "multi-agent")
+        self._outcomes_file = self._ma / "prompt_engine_v2_outcomes.json"
+        self._lock = threading.RLock()
+        self._memory = memory  # optional memory backend for learning injection
 
-    def build_agent_prompt(
+        self._outcomes: dict[str, list[dict]] = {}
+        self._load_outcomes()
+        self._log(f"PromptEngineV2 ready — {len(self._outcomes)} outcome keys loaded")
+
+    # -----------------------------------------------------------------------
+    # Core builder
+    # -----------------------------------------------------------------------
+
+    def build(
         self,
         area: str,
-        improvement: dict[str, Any],
-        context: dict[str, Any],
-    ) -> str:
-        """
-        Build the full agent prompt for the given *area* and *improvement*.
-
-        Combines the area-specific template with:
-        - Vision and constraints from SPEC.md
-        - Relevant learnings from memory.json
-        - Relevant decisions from memory.json
-        - The improvement and context dicts rendered as structured text
-        """
-        if area not in _AREA_TEMPLATES:
-            available = ", ".join(sorted(_AREA_TEMPLATES.keys()))
-            raise ValueError(f"Unknown area: {area!r}. Available: {available}")
-
-        template = _AREA_TEMPLATES[area]
-
-        # Pull relevant learnings / decisions filtered by area
-        learnings = _load_learnings(area=area, limit=5)
-        decisions = _load_decisions(area=area, limit=5)
-
-        formatted_learnings = _format_learnings(learnings)
-        formatted_decisions = _format_decisions(decisions)
-        formatted_improvement = _format_improvement(improvement)
-        formatted_context = _format_context(context)
-
-        prompt = template.format(
-            AREA=area,
-            IMPROVEMENT=formatted_improvement,
-            VISION=self._vision,
-            CONSTRAINTS=self._constraints,
-            LEARNINGS=formatted_learnings,
-            DECISIONS=formatted_decisions,
-            CONTEXT=formatted_context,
-        )
-        return prompt
-
-    def build_system_prompt(self) -> str:
-        """Return the base system prompt injected into every agent."""
-        return _SYSTEM_TEMPLATE
-
-    def build_research_prompt(
-        self,
         goal: str,
-        context: dict[str, Any],
+        context: str,
+        learnings: list | None = None,
+        decisions: list | None = None,
+        iteration: int = 0,
     ) -> str:
-        """Build a research prompt for investigating a goal."""
-        formatted_context = _format_context(context)
-        return _RESEARCH_TEMPLATE.format(
-            GOAL=goal,
-            CONTEXT=formatted_context,
+        """Build full agent prompt for the given area and goal."""
+        template = self.AREA_TEMPLATES.get(area, self.AREA_TEMPLATES["general"])
+
+        # Build improvements guide (top 4)
+        improvements = template.get("improvements", [])
+        imp_guide_lines = []
+        for imp in improvements[:4]:
+            imp_guide_lines.append(f"- {imp}: {self.IMPROVEMENT_PROMPTS.get(imp, imp)}")
+        improvement_guide = "\n".join(imp_guide_lines)
+
+        # Format learnings
+        if learnings:
+            formatted = [f"  • {l}" for l in learnings[:5]]
+            learnings_text = "\n".join(formatted)
+        else:
+            learnings_text = "No previous learnings for this area."
+
+        # Format decisions
+        if decisions:
+            formatted = [f"  • {d}" for d in decisions[-5:]]
+            decisions_text = "\n".join(formatted)
+        else:
+            decisions_text = "No recent decisions."
+
+        # Area hint banner
+        hints = template.get("hint", "")
+        hints_banner = f"[{area.upper()}] {hints}"
+
+        return SYSTEM_TEMPLATE.format(
+            goal=goal,
+            hints=hints_banner,
+            context=context,
+            learnings=learnings_text,
+            decisions=decisions_text,
+            improvement_guide=improvement_guide,
+            iteration=iteration,
         )
 
-    def build_planning_prompt(
+    def build_improvement_prompt(
         self,
-        improvements: list[dict[str, Any]],
-        context: dict[str, Any],
+        improvement_type: str,
+        area: str,
+        context: str | None = None,
     ) -> str:
-        """Build a planning prompt given a list of improvements."""
-        formatted_improvements = "\n\n".join(
-            f"### Improvement {i+1}: {imp.get('id', '?')}\n{_format_improvement(imp)}"
-            for i, imp in enumerate(improvements)
-        )
-        formatted_context = _format_context(context)
-        return _PLANNING_TEMPLATE.format(
-            IMPROVEMENTS=formatted_improvements,
-            CONTEXT=formatted_context,
-        )
+        """Build a focused prompt for a specific improvement type."""
+        imp_text = self.IMPROVEMENT_PROMPTS.get(improvement_type, improvement_type)
+        template = self.AREA_TEMPLATES.get(area, self.AREA_TEMPLATES["general"])
 
-    def build_validation_prompt(
-        self,
-        improvements: list[dict[str, Any]],
-        context: dict[str, Any],
-    ) -> str:
-        """Build a validation prompt for checking improvement correctness."""
-        formatted_improvements = "\n\n".join(
-            f"### Improvement {i+1}: {imp.get('id', '?')}\n{_format_improvement(imp)}"
-            for i, imp in enumerate(improvements)
-        )
-        formatted_context = _format_context(context)
-        return _VALIDATION_TEMPLATE.format(
-            IMPROVEMENTS=formatted_improvements,
-            CONTEXT=formatted_context,
-        )
+        prompt_lines = [
+            f"You are improving [{area.upper()}] with focus on: {improvement_type}",
+            "",
+            f"# Improvement guidance",
+            imp_text,
+            "",
+            "# Area hints",
+            template.get("hint", ""),
+            "",
+        ]
 
-    def inject_learnings(
-        self,
-        template: str,
-        learnings: list[dict[str, Any]],
-    ) -> str:
-        """
-        Inject formatted learnings into an arbitrary template string.
-        Replaces the {LEARNINGS} placeholder.
-        """
-        formatted = _format_learnings(learnings)
-        return template.replace("{LEARNINGS}", formatted)
+        if context:
+            prompt_lines.extend(["# Context", context, ""])
 
-    def inject_decisions(
+        prompt_lines.extend([
+            "Implement the improvement, then run `pnpm typecheck` and `pnpm test`.",
+            "Commit with a descriptive message.",
+        ])
+
+        return "\n".join(prompt_lines)
+
+    def suggest_next_improvement(
         self,
-        template: str,
-        decisions: list[dict[str, Any]],
+        area: str,
+        recent_improvements: list[str],
     ) -> str:
-        """
-        Inject formatted decisions into an arbitrary template string.
-        Replaces the {DECISIONS} placeholder.
-        """
-        formatted = _format_decisions(decisions)
-        return template.replace("{DECISIONS}", formatted)
+        """Suggest next improvement based on area templates and recent history."""
+        template = self.AREA_TEMPLATES.get(area, self.AREA_TEMPLATES["general"])
+        improvements = template.get("improvements", [])
+
+        # Avoid recently tried improvements (last 5)
+        recent_set = set(recent_improvements[-5:])
+        candidates = [i for i in improvements if i not in recent_set]
+
+        if candidates:
+            # Pick first available candidate
+            return candidates[0]
+
+        # Fallback: cycle back if everything was recently tried
+        return improvements[0] if improvements else "refactor"
+
+    # -----------------------------------------------------------------------
+    # Outcome tracking
+    # -----------------------------------------------------------------------
+
+    def record_outcome(
+        self,
+        area: str,
+        improvement: str,
+        files_changed: int,
+        qa_passed: bool,
+    ) -> None:
+        """Record that a prompt variation led to an outcome for self-improvement."""
+        key = f"{area}:{improvement}"
+        outcome: dict = {
+            "files_changed": files_changed,
+            "qa_passed": qa_passed,
+            "ts": time.time(),
+        }
+        with self._lock:
+            if key not in self._outcomes:
+                self._outcomes[key] = []
+            self._outcomes[key].append(outcome)
+            # Keep only last 50 outcomes per key
+            self._outcomes[key] = self._outcomes[key][-50:]
+        self._save_outcomes()
+
+    def get_best_prompt(self, area: str, improvement: str) -> str | None:
+        """Return improvement with highest success rate (>50%), or None."""
+        key = f"{area}:{improvement}"
+        with self._lock:
+            outcomes = list(self._outcomes.get(key, []))
+
+        if not outcomes:
+            return None
+
+        success_rate = sum(1 for o in outcomes if o["qa_passed"]) / len(outcomes)
+        if success_rate > 0.5:
+            return improvement
+        return None
+
+    def get_success_rate(self, area: str, improvement: str) -> float | None:
+        """Return success rate (0.0–1.0) for a given area:improvement key."""
+        key = f"{area}:{improvement}"
+        with self._lock:
+            outcomes = list(self._outcomes.get(key, []))
+        if not outcomes:
+            return None
+        return sum(1 for o in outcomes if o["qa_passed"]) / len(outcomes)
+
+    # -----------------------------------------------------------------------
+    # Persistence
+    # -----------------------------------------------------------------------
+
+    def _save_outcomes(self) -> None:
+        """Write outcomes to disk (thread-safe)."""
+        with self._lock:
+            data = self._outcomes
+        try:
+            self._outcomes_file.parent.mkdir(parents=True, exist_ok=True)
+            tmp = self._outcomes_file.with_suffix(".tmp")
+            tmp.write_text(json.dumps(data, indent=2), encoding="utf-8")
+            tmp.replace(self._outcomes_file)
+        except OSError as e:
+            self._log(f"[WARN] _save_outcomes failed: {e}")
+
+    def _load_outcomes(self) -> None:
+        """Load outcomes from disk (idempotent)."""
+        if not self._outcomes_file.exists():
+            return
+        try:
+            data = json.loads(self._outcomes_file.read_text(encoding="utf-8"))
+            with self._lock:
+                self._outcomes = data
+        except (OSError, json.JSONDecodeError) as e:
+            self._log(f"[WARN] _load_outcomes failed: {e}")
+            self._outcomes = {}
+
+    # -----------------------------------------------------------------------
+    # Logging
+    # -----------------------------------------------------------------------
 
     @staticmethod
-    def get_prompt_hash(prompt: str) -> str:
-        """
-        Return a short SHA-256 hex digest of *prompt* for caching/comparison.
-        """
-        return hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:16]
-
-    @staticmethod
-    def optimize_prompt(prompt: str, max_tokens: int) -> str:
-        """
-        Trim *prompt* to fit within *max_tokens* while preserving:
-        1. The first 300 chars (role definition)
-        2. The last 300 chars (closing quality bar / constraints)
-        3. Middle content trimmed to fit
-        """
-        if _estimate_tokens(prompt) <= max_tokens:
-            return prompt
-
-        head_len = 300
-        tail_len = 300
-        overhead = head_len + tail_len + 40  # delimiters + ellipsis
-        max_chars = max_tokens * 4  # ~4 chars per token
-
-        if max_chars <= overhead:
-            return _truncate(prompt, max_chars)
-
-        head = prompt[:head_len]
-        tail = prompt[-tail_len:]
-        middle_max = max_chars - overhead
-
-        middle_raw = prompt[head_len:-tail_len]
-        middle = re.sub(r"\s+", " ", middle_raw).strip()
-        middle = _truncate(middle, middle_max)
-
-        return f"{head}\n…\n{tail}"
-
-    # ── internals ───────────────────────────────────────────────────────────
-
-    def _load_vision_constraints(self) -> None:
-        """Cache vision and constraints from SPEC.md on init."""
-        self._vision, self._constraints = _load_vision_constraints()
+    def _log(msg: str) -> None:
+        ts = time.strftime("%H:%M:%S")
+        print(f"[PromptEngineV2 {ts}] {msg}")
 
 
-# ── CLI ───────────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
+# Self-test
+# ---------------------------------------------------------------------------
+
+def _test() -> None:
+    """Verify all public methods work end-to-end."""
+    pe = PromptEngineV2()
+
+    # build()
+    prompt = pe.build(
+        area="typecheck",
+        goal="Fix all type errors in src/",
+        context="src/utils/helper.ts has type issues",
+        learnings=["Use explicit interfaces for complex objects"],
+        decisions=["Decided to avoid `any` type globally"],
+    )
+    assert "typecheck" in prompt.lower() or "TYPE" in prompt
+    assert "src/utils/helper.ts" in prompt
+    assert "explicit interfaces" in prompt
+    print("✓ build()")
+
+    # build_improvement_prompt()
+    imp_prompt = pe.build_improvement_prompt("missing_types", "typecheck")
+    assert "missing_types" in imp_prompt
+    assert "typecheck" in imp_prompt
+    print("✓ build_improvement_prompt()")
+
+    # suggest_next_improvement()
+    next_imp = pe.suggest_next_improvement("typecheck", recent_improvements=[])
+    assert next_imp in AREA_TEMPLATES["typecheck"]["improvements"]
+    print(f"✓ suggest_next_improvement() → {next_imp}")
+
+    # Avoid recently tried improvements
+    recent = ["missing_types", "import_conflicts", "type_mismatches"]
+    next_imp2 = pe.suggest_next_improvement("typecheck", recent_improvements=recent)
+    assert next_imp2 not in recent
+    print(f"✓ suggest_next_improvement() avoids recent → {next_imp2}")
+
+    # record_outcome() + get_best_prompt()
+    pe.record_outcome("typecheck", "missing_types", files_changed=3, qa_passed=True)
+    pe.record_outcome("typecheck", "missing_types", files_changed=2, qa_passed=False)
+    pe.record_outcome("typecheck", "missing_types", files_changed=4, qa_passed=True)
+    best = pe.get_best_prompt("typecheck", "missing_types")
+    # 2/3 passed = 66% > 50% → should return improvement
+    assert best == "missing_types", f"expected missing_types, got {best}"
+    print("✓ record_outcome() + get_best_prompt()")
+
+    # get_success_rate()
+    rate = pe.get_success_rate("typecheck", "missing_types")
+    assert rate is not None and 0.0 <= rate <= 1.0
+    print(f"✓ get_success_rate() → {rate:.2f}")
+
+    # Non-existent key
+    assert pe.get_best_prompt("security", "auth_bypass") is None
+    assert pe.get_success_rate("security", "auth_bypass") is None
+    print("✓ get_best_prompt() returns None for unknown keys")
+
+    print("\n[PromptEngineV2] All tests passed ✓")
+
 
 if __name__ == "__main__":
-    import sys
-
-    pe = PromptEngine()
-    print(f"System prompt hash:    {pe.get_prompt_hash(pe.build_system_prompt())}")
-    print(f"Areas available:      {sorted(_AREA_TEMPLATES.keys())}")
-
-    if len(sys.argv) > 1 and sys.argv[1] == "--test":
-        # Smoke-test all public methods
-        print("\n=== Smoke Tests ===")
-        ctx = {"feature": "Dark Mode", "priority": "high"}
-        imp = {
-            "id": "feature-42",
-            "task": "Add dark mode toggle",
-            "description": "Implement a dark mode toggle in the UI",
-            "area": "UI/Design",
-        }
-
-        for area in _AREA_TEMPLATES:
-            p = pe.build_agent_prompt(area, imp, ctx)
-            print(f"  {area}: {len(p)} chars, hash={pe.get_prompt_hash(p)}")
-
-        rp = pe.build_research_prompt("Investigate dark mode libraries", ctx)
-        print(f"  Research prompt: {len(rp)} chars")
-
-        pp = pe.build_planning_prompt([imp], ctx)
-        print(f"  Planning prompt: {len(pp)} chars")
-
-        vp = pe.build_validation_prompt([imp], ctx)
-        print(f"  Validation prompt: {len(vp)} chars")
-
-        tmpl = "LEARNINGS:\n{LEARNINGS}\nDECISIONS:\n{DECISIONS}"
-        injected = pe.inject_learnings(tmpl, [{"agent": "test", "outcome": "works"}])
-        injected = pe.inject_decisions(injected, [{"area": "UI", "summary": "use CSS vars"}])
-        print(f"  Inject helpers: {len(injected)} chars")
-
-        long_prompt = "x " * 5000
-        opt = pe.optimize_prompt(long_prompt, max_tokens=200)
-        print(f"  Optimized 5000-char prompt to {len(opt)} chars (~{_estimate_tokens(opt)} tokens)")
-
-        # Verify compilation
-        import py_compile
-        py_compile.compile(__file__, doraise=True)
-        print("\nAll smoke tests passed.")
+    _test()

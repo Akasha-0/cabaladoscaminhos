@@ -98,8 +98,8 @@ Default section order:
 
 When the user requests a durable behavior change, record it here or in the relevant child AGENTS.md
 
-**akasha-loop-daemon-v5** (PRIMARY): 24/7 Autonomous Evolution Engine v5.
-  Script: `.autonomous/multi-agent/akasha-loop-daemon-v5.py` (v5, 41KB, fully integrated).
+**akasha-loop-daemon-v9** (PRIMARY): 24/7 Autonomous Evolution Engine v9.
+  Script: `.autonomous/multi-agent/akasha-loop-daemon-v9.py` (v9, 74KB, fully integrated).
   Start: `bash .autonomous/multi-agent/run-24-7.sh start` (or `run-loop-supervised.sh`).
   Flow: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE.
   v1 subsystems (8): Guardian, Memory Manager, Telemetry, Adaptive Pacer, SelfHealer,
@@ -115,7 +115,7 @@ When the user requests a durable behavior change, record it here or in the relev
 **akasha-evolution-loop** (LEGACY): Ralph-style continuous loop, 5-agent parallel v2.
   Script: `.autonomous/multi-agent/akasha-evolution-loop.py`.
   Start: `bash .autonomous/multi-agent/start-akasha-evolution.sh`.
-  Use: fallback only. Primary loop is the v5 daemon above.
+  Use: fallback only. Primary loop is the v9 daemon above.
 **Ralph-loop** (legacy/fallback): Single-agent 6-phase loop.
   Scripts: `.autonomous/ralph-loop/akasha-ralph-loop.py`.
 **Headroom proxy**: Running on port 8787. All large tool outputs (>5k tokens) use Headroom compression.
@@ -133,7 +133,7 @@ When the user requests a durable behavior change, record it here or in the relev
 
 ## Child DOX Index
 
-  - `multi-agent/akasha-loop-daemon-v5.py` — 24/7 autonomous daemon v5 (PRIMARY)
+  - `multi-agent/akasha-loop-daemon-v9.py` — 24/7 autonomous daemon v9 (PRIMARY)
   - `multi-agent/akasha-evolution-loop-v2.py` — standalone loop v2 (active)
   - `multi-agent/akasha-loop-daemon.py` — socket daemon v3 (legacy)
   - `multi-agent/guardian.py` — process supervisor with exponential backoff restart

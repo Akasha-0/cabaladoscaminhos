@@ -46,7 +46,7 @@ O loop só funciona se houver exatamente **um** de cada coisa. A primeira respon
 permanente do harness é se manter consolidado.
 
 - **Um loop canônico.** Um único entrypoint, um único daemon, um único motor de contexto, de
-  memória, de prompt, de raciocínio. Qualquer duplicata (`*-v4..v8`, `*_v2`, `*-new`,
+  memória, de prompt, de raciocínio. Qualquer duplicata (`*-v4..v9`, `*_v2`, `*-new`,
   `ralph-loop` paralelo, entrypoints redundantes) é candidata a corte: consolide no canônico e
   apague o resto, registrando em `DECISIONS`.
 - **Um conjunto de specs/estado canônico**, sem cópias divergentes. Se existirem dois arquivos
