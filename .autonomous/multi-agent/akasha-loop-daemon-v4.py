@@ -80,6 +80,11 @@ def _load_module(name: str, path: Path):
     mod.save_json = save_json
     mod.run_cmd = _run_cmd
     mod.AGENT_RESULTS_DIR = AGENT_RESULTS_DIR
+    # Register under logical name (strip leading _) before exec_module so that
+    # @dataclass decorators in Python 3.14 can find cls.__module__ in sys.modules
+    # during decoration (Python 3.14 checks sys.modules[cls.__module__].__dict__).
+    logical_name = name.lstrip('_')
+    sys.modules[logical_name] = mod
     old = sys.path[:]
     sys.path.insert(0, str(MA))
     try:

@@ -318,3 +318,11 @@
 [2026-06-18T00:53:43Z] [SUP]   Cleanup complete.
 [2026-06-18T00:53:43Z] [SUP] 🚀 STARTING DAEMON
 [2026-06-18T00:53:43Z] [SUP] ✅ DAEMON RUNNING PID=1150610
+[2026-06-18T00:55:07Z] [SUP] Cleaning stale state...
+[2026-06-18T00:55:07Z] [SUP]   Removed stale PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-18T00:55:07Z] [SUP]   Killing stale agent ta-1781744054-1 (PID=1152979)
+[2026-06-18T00:55:07Z] [SUP]   Killing stale agent ta-1781744054-0 (PID=1152980)
+[2026-06-18T00:55:07Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-18T00:55:07Z] [SUP]   Cleanup complete.
+[2026-06-18T00:55:07Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-18T00:55:07Z] [SUP] ✅ DAEMON RUNNING PID=1157525

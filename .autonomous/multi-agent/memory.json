@@ -2,12 +2,6 @@
   "task_history": [],
   "context_window": [
     {
-      "ts": "2026-06-17T01:05:23.573459+00:00",
-      "improvement": "large_file",
-      "version": "0.63.0",
-      "agents": 0
-    },
-    {
       "ts": "2026-06-17T01:08:08.463446+00:00",
       "improvement": "large_file",
       "version": "0.64.0",
@@ -119,6 +113,12 @@
       "ts": "2026-06-18T00:52:59.086760+00:00",
       "improvement": "missing_tests, tech_debt, large_file",
       "version": "0.84.0",
+      "agents": 0
+    },
+    {
+      "ts": "2026-06-18T00:53:47.911967+00:00",
+      "improvement": "tech_debt, large_file",
+      "version": "0.85.0",
       "agents": 0
     }
   ],
@@ -849,5 +849,5 @@
     }
   ],
   "learnings": [],
-  "iteration": 95
+  "iteration": 96
 }
