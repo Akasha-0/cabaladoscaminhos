@@ -1,4 +1,4 @@
-# Akasha Evolution Skill — OMP Autonomous Loop v5
+# Akasha Evolution Skill — OMP Autonomous Loop v7
 
 ## Purpose
 Start and manage the Akasha 24/7 autonomous evolution loop via OMP.
@@ -13,13 +13,13 @@ start akasha-evolution
 ### Pre-flight Check
 1. Source `scripts/sacred-protocol-check.sh` (validates CodeGraph + Headroom)
 2. Check system resources (CPU, memory, disk)
-3. Verify all 14 v5 modules exist
+3. Verify all 17 v7 modules exist
 4. Check git status — warn if uncommitted changes
 
 ### Startup
 Runs: `bash .autonomous/multi-agent/run-loop-supervised.sh start`
 
-The supervisor starts daemon v5 (akasha-loop-daemon-v5.py) which integrates all 14 modules.
+The supervisor starts daemon v7 (akasha-loop-daemon-v7.py) which integrates all 17 modules.
 
 ### v1 Subsystems (8)
 1. **Guardian** — process supervision, PID alive checks, exponential backoff restart (5s→120s)
@@ -38,6 +38,13 @@ The supervisor starts daemon v5 (akasha-loop-daemon-v5.py) which integrates all 
 12. **Evolver** — autonomous brain, self-optimizing, intensity levels 1-10, orchestrates all subsystems
 13. **PromptEngine** — 8 area-specific templates (UI/Design, API/Logic, Database, Auth, Tests/QA, Build/Infra, Docs, Grimoire), learnings/decisions injection
 14. **AgentOrchestrator** — parallel spawning, resource monitoring via /proc, graceful degradation under low resources
+
+### v7 Improvements
+- **Zombie detection fix**: `/proc/{pid}/cmdline` check prevents zombie `timeout` wrappers from blocking wait loop
+- **QA fail-fast**: After 3 consecutive QA failures, loop advances with degraded quality (40%) instead of infinite retry
+- **Partial results**: If all agents die but some results exist, proceeds after 90s stall (no longer waits full MAX_WAIT)
+- **TypeScript fix**: `iching-base.ts` Primitivos extended to 36 values (I Ching Wilhelm/Baynes data)
+- **Improved zombie reaping**: Stale zombie PIDs correctly excluded from agent count
 
 ### Performance Optimizations
 - `select.poll()` replaces busy-wait socket polling (zero CPU idle)
@@ -89,7 +96,7 @@ RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE
 9. Autonomous Loop — .autonomous/multi-agent/
 
 ### Key Files
-- `akasha-loop-daemon-v5.py` — daemon with all integrations (41KB)
+- `akasha-loop-daemon-v7.py` — daemon with all integrations (41KB)
 - `akasha-evolution-loop-v2.py` — standalone loop using v2 modules (27KB)
 - `evolver.py` — autonomous brain (62KB)
 - `context_engine.py` — deep context management (35KB)
