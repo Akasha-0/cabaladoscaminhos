@@ -36,5 +36,8 @@
     "tags": [],
     "anti_pattern": false,
     "desc": ""
+  },
+  "meta": {
+    "warnings_enabled": false
   }
 }

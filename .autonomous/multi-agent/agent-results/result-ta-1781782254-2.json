@@ -1,6 +1,0 @@
-{
-  "success": false,
-  "message": "Cannot extract helper from packages/akasha-core/src/mapeamentos/synthesis-engine/iching-base-data.ts: file contains only data (HexagramaBase type + BASE constant), no functions to extract",
-  "type": "large_file",
-  "detail": "File is 1483 lines of pure hexagrama data records. No functions exist in scope for extraction."
-}

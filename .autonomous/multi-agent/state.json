@@ -2,17 +2,17 @@
   "phase": "RESEARCH",
   "iteration": 6,
   "running": true,
-  "current_features": [
-    "missing_tests",
-    "tech_debt",
-    "large_file"
-  ],
+  "current_features": [],
   "retry_count": 0,
-  "intensity": 5,
-  "qa_failures": 2,
-  "quality_snapshot": 0.649,
+  "intensity": 4,
+  "daemon_pid": 1398701,
   "consecutive_no_changes": 0,
-  "last_cycle_time": 1781779007.4376087,
+  "consecutive_success_with_changes": 0,
+  "last_cycle_time": 1781784092.6751323,
   "quality_trend": "stable",
-  "daemon_pid": 1391919
+  "qa_consecutive_passes": 0,
+  "persistent_error": 0,
+  "reasoning_enabled": false,
+  "orchestrator_restart": true,
+  "predictions_enabled": false
 }

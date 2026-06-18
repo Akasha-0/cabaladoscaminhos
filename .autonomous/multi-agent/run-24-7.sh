@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 #
-# run-24-7.sh — Akasha 24/7 Autonomous Evolution Engine v8
+# run-24-7.sh — Akasha 24/7 Autonomous Evolution Engine v9
 # =========================================================
 #
-# Full 24/7 operation with Guardian + Loop Daemon v8.
-# Implements: Guardian supervision, adaptive pacing, cross-session continuity,
-#             ProjectMap, ReasoningChain, ContextEngine, Evolver, PromptEngine,
-#             AgentOrchestrator.
+# Full 24/7 operation with Guardian + Loop Daemon v9.
+# Implements: Phase timeout, crash-resilient execution, ContextEngineV2, PromptEngineV2,
+#             ReasoningChainV2, MemoryManagerV2, SkillDiscovererV2, IntelligenceV2,
+#             SelfHealerV2, ProjectScannerV2, AgentOrchestratorV2.
 #
 # Usage:
 #   ./run-24-7.sh start       — Start 24/7 operation
@@ -21,13 +21,13 @@
 #   ./run-24-7.sh validate    — Run validation suite
 #
 # Flow:
-#   run-24-7.sh → run-loop-supervised.sh → akasha-loop-daemon-v8.py
+#   run-24-7.sh → run-loop-supervised.sh → akasha-loop-daemon-v9.py
 #
 set -euo pipefail
 
 ROOT="/home/skynet/cabala-dos-caminhos"
 MA="$ROOT/.autonomous/multi-agent"
-DAEMON_V8="$MA/akasha-loop-daemon-v8.py"
+DAEMON_V9="$MA/akasha-loop-daemon-v9.py"
 SUPERVISOR="$MA/run-loop-supervised.sh"
 PID_FILE="$MA/loop-daemon.pid"
 STATE_FILE="$MA/state.json"
@@ -46,16 +46,16 @@ log_err(){ echo -e "[$(date +%H:%M:%S)]$RED ERR $1$NC"; }
 
 preflight(){
     log "Pre-flight checks..."
-    if [[ ! -f "$DAEMON_V8" ]]; then log_err "v8 daemon not found"; exit 1; fi
+    if [[ ! -f "$DAEMON_V9" ]]; then log_err "v9 daemon not found"; exit 1; fi
     local missing=()
-    for mod in adaptive_pacer self_healer predictive_engine skill_discoverer \
-               continuity_manager memory_manager guardian telemetry \
-               project_map reasoning_chain context_engine evolver \
-               prompt_engine agent_orchestrator; do
+    for mod in adaptive_pacer self_healer_v2 predictive_engine skill_discoverer_v2 \
+               continuity_manager memory_manager_v2 guardian telemetry \
+               project_scanner_v2 reasoning_chain_v2 context_engine_v2 evolver \
+               prompt_engine_v2 agent_orchestrator_v2 intelligence_v2; do
         [[ ! -f "$MA/${mod}.py" ]] && missing+=("$mod")
     done
     [[ ${#missing[@]} -gt 0 ]] && { log_err "Missing: ${missing[*]}"; exit 1; }
-    log_ok "Pre-flight passed — v8 ready"
+    log_ok "Pre-flight passed — v9 ready"
 }
 
 get_status(){
