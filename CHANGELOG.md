@@ -1,3 +1,17 @@
+## v0.85.2 (2026-06-17) — fix: MandalaChart SVG hydration mismatch (floating-point precision)
+
+### Bug Fix: React Hydration Mismatch in MandalaChart
+ `mandala-geometry.ts` `toXY`: added `round()` helper — rounds `Math.cos`/`Math.sin`
+  outputs to 10 significant figures before returning coordinates.
+ **Root cause:** Node.js (server) and V8/browser (client) produce slightly different
+  floating-point results for `Math.cos`/`Math.sin` at ~15-digit precision
+  (e.g., `351.0474541976653` vs `351.04745419766533`). React's SSR hydration
+  detects this as a mismatch on `cy`, `y2`, `y`, and `d` (SVG path) attributes.
+ **Fix:** `round()` normalizes both x/y outputs of `toXY`. Since `STARS`, `PARTICLES`,
+  `buildAstroSegments`, `buildPlanetDots`, `buildTantricNodes`, `buildKabVerts`,
+  and `describeArc` all use `toXY` internally, all coordinate-producing code paths
+  are now normalized. Zero visual change — geometry is identical to pixel level.
+ **Verification:** all 1385 tests pass.
 ## v0.85.1 (2026-06-17) — fix: sameSite strict→lax on session cookie; auth tests
 
 ### Bug Fix: Session Cookie sameSite
