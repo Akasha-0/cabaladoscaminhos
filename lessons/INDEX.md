@@ -18,3 +18,4 @@ Each lesson: `{filename}.md`
 | `001-auth-refresh-bug.md` | Auth token expires silently after 15min | OPEN |
 | `003-ssot-consolidation.md` | SSOT violations accumulate silently unless audited every iteration | CLOSED |
 | `007-orphaned-tests-runtime-artifacts.md` | Orphaned test files + runtime artifacts committed to git | CLOSED |
+| `008-odu-stub-vitest-noise.md` | odu-data null stub + vitest shell noise deferred | OPEN |
