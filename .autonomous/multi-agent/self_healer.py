@@ -52,10 +52,9 @@ from typing import Any, Callable, Optional
 ROOT: Path = Path(__file__).resolve().parent.parent if '__file__' in globals() else Path.cwd()
 MA: Path = ROOT / ".autonomous" / "multi-agent"
 
-STATE_FILE: Path = MA / "state.json"
-CB_FILE: Path = MA / "circuit-breaker-v2.json"
+CB_FILE: Path = MA / "circuit-breaker.json"
 DEGRADED_FILE: Path = MA / "degraded-subsystems.json"
-HEAL_LOG: Path = MA / "self-healer-v2.log"
+HEAL_LOG: Path = MA / "self-healer.log"
 
 # Circuit breaker thresholds
 CB_WINDOW_CALLS: int = 10       # rolling window size
@@ -661,8 +660,6 @@ class SelfHealerV2:
         br.reset()
 
         skills_file = self.MA / "skills.json"
-        patterns_file = self.MA / "skill_patterns_v2" / "patterns.json"
-
         try:
             if skills_file.exists():
                 data = _load_json(skills_file)
@@ -674,15 +671,6 @@ class SelfHealerV2:
                     log(f"skills.json is a {type(data).__name__}, skipping dict update")
         except Exception as e:
             log(f"Could not update skills.json: {e}")
-
-        try:
-            if patterns_file.exists():
-                data = _load_json(patterns_file)
-                data.setdefault("meta", {})["warnings_enabled"] = False
-                _save_json(patterns_file, data)
-                log("Disabled pattern warnings in patterns.json")
-        except Exception as e:
-            log(f"Could not update patterns.json: {e}")
 
         log_heal("SkillDiscoverer", "warnings disabled, circuit reset", before, {"state": "CLOSED"})
         return True

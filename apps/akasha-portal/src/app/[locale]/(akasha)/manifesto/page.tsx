@@ -164,7 +164,7 @@ export default function ManifestoPage() {
         });
 
         if (res.status === 401 || res.status === 403) {
-          router.replace(`/${locale}/onboarding`);
+          router.replace(`/${locale}/login`);
           return;
         }
         if (res.status === 404) {
