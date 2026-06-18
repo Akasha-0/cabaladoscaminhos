@@ -89,3 +89,42 @@ Subagents nao persistem ficheiros para alem do seu contexto de output — os fic
 **Backoff adaptativo**: se nenhum resultado novo chega, o intervalo de polling dobra (1s→1.5s→2.2s→3.3s→5s→7.5s→10s). Se resultados chegam, reseta para 1s. Minimiza latencia quando ha atividade, minimiza CPU quando ha silencio.
 
 **QA paralelo**: typecheck + tests + format rodam simultaneamente em vez de linear. Wall-clock time reduzido de ~7min (4min tsc + 3min tests) para ~3min (max(tsc, tests, format)).
+### v5 Engine Modules (6 novos modulos)
+
+6 modulos de/engine de alta inteligencia adicionados ao sistema:
+
+| Modulo | Tamanho | Funcao |
+|---|---|---|
+| `project_map.py` | 44KB / 991 linhas | Mapeia 9 areas do projeto, 2204 arquivos, quality=69.9, health=59.9. Top potential: Auth, Database/Prisma, Build/Infra |
+| `reasoning_chain.py` | 71KB | Cadeia de pensamento (3-7 passos), confianca, auto-correcao, plano topologico |
+| `context_engine.py` | 36KB / 934 linhas | Contexto profundo (8000 tokens), scoring: recency x decision-impact x goal-overlap |
+| `evolver.py` | 62KB | Cerebro autonomo, self-optimizing, intensity 1-10, orquestra todos os modulos |
+| `prompt_engine.py` | 29KB | 8 templates por area, injecao de learnings/decisions, SHA-256 hash |
+| `agent_orchestrator.py` | 31KB | Spawn paralelo, resource monitoring via /proc, graceful degradation |
+
+**Daemon v5**: `akasha-loop-daemon-v5.py` (41KB) — integra todos os 14 modulos (8 v1 + 6 v2).
+
+**Loop v2**: `akasha-evolution-loop-v2.py` (27KB) — loop standalone usando modulos v2.
+
+**OMP Skill**: `skills/akasha-evolution/SKILL.md` — `start akasha-evolution` via OMP.
+
+**Status**: 18/18 arquivos validados — syntax OK, JSON valido, shell OK.
+
+### v5 Commands
+
+```bash
+# Operacao 24/7
+bash .autonomous/multi-agent/run-24-7.sh start        # iniciar
+bash .autonomous/multi-agent/run-24-7.sh stop         # parar
+bash .autonomous/multi-agent/run-24-7.sh status       # status
+bash .autonomous/multi-agent/run-24-7.sh detailed     # detalhado
+bash .autonomous/multi-agent/run-24-7.sh health       # saude
+bash .autonomous/multi-agent/run-24-7.sh telemetry    # telemetria
+bash .autonomous/multi-agent/run-24-7.sh project-map  # areas do projeto
+bash .autonomous/multi-agent/run-24-7.sh reasoning    # cadeia de raciocinio
+bash .autonomous/multi-agent/run-24-7.sh context       # engine de contexto
+bash .autonomous/multi-agent/run-24-7.sh validate     # validacao completa
+
+# Loop standalone (sem daemon)
+python3 .autonomous/multi-agent/akasha-evolution-loop-v2.py [num_iterations]
+```

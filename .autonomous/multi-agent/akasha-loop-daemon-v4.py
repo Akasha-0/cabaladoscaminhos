@@ -477,9 +477,9 @@ def phase_implementation(state, memory):
         )
         prompt_file.write_text(prompt)
         proc = _sub.Popen(
-            ["timeout", "600", "claude", "-p", "--model", "MiniMax-M2.7-highspeed", prompt],
+            ["timeout", "600", "claude", "-p", "--model", "minimax/MiniMax-M2.7", prompt],
             cwd=str(ROOT), stdout=_sub.DEVNULL, stderr=_sub.DEVNULL,
-            env={**os.environ, "ANTHROPIC_MODEL": "MiniMax-M2.7-highspeed"},
+            env={**os.environ, "ANTHROPIC_MODEL": "minimax/MiniMax-M2.7"},
             # Lower CPU priority so agents don't saturate the system
             preexec_fn=lambda: os.setpriority(os.PRIO_PROCESS, 0, 10),
         )

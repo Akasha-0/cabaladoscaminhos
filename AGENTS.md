@@ -98,26 +98,24 @@ Default section order:
 
 When the user requests a durable behavior change, record it here or in the relevant child AGENTS.md
 
-**akasha-loop-daemon-v4** (PRIMARY): 24/7 Autonomous Evolution Engine.
-  Script: `.autonomous/multi-agent/akasha-loop-daemon-v4.py` (v4 event-driven).
-  Start: `bash .autonomous/multi-agent/run-24-7.sh` (or `run-loop-supervised.sh`).
+**akasha-loop-daemon-v5** (PRIMARY): 24/7 Autonomous Evolution Engine v5.
+  Script: `.autonomous/multi-agent/akasha-loop-daemon-v5.py` (v5, 41KB, fully integrated).
+  Start: `bash .autonomous/multi-agent/run-24-7.sh start` (or `run-loop-supervised.sh`).
   Flow: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE.
-  Integrated subsystems:
-    - Guardian (`guardian.py`): process supervision, exponential backoff restart
-    - Memory Manager (`memory_manager.py`): 3-tier archival (hot/warm/cold)
-    - Telemetry (`telemetry.py`): real-time phase metrics, anomaly detection
-    - Adaptive Pacer (`adaptive_pacer.py`): quality-based speed (FAST/NORMAL/SLOW/PAUSE)
-    - Self-Healer (`self_healer.py`): deadlock detection, circuit breaker
-    - Predictive Engine (`predictive_engine.py`): proactive risk detection
-    - Skill Discoverer (`skill_discoverer.py`): autonomous pattern learning
-    - Continuity Manager (`continuity_manager.py`): cross-session state preservation
-  Bootstrap: `context_bootstrap.py` v2 with smart caching (5min TTL, light triad)
-  Evals: `evals.py` v2 with real-time recalculation (60s cache, weighted quality)
-  Supervised by: `run-loop-supervised.sh` → `run-24-7.sh` (24/7 orchestration)
+  v1 subsystems (8): Guardian, Memory Manager, Telemetry, Adaptive Pacer, SelfHealer,
+    Predictive Engine, Skill Discoverer, Continuity Manager.
+  v2 engine (6): ProjectMap, ReasoningChain, ContextEngine, Evolver,
+    PromptEngine, AgentOrchestrator.
+  Performance: select.poll() (zero CPU idle), adaptive polling 1s→10s,
+    in-memory state cache (TTL 2s), parallel QA via ThreadPoolExecutor.
+  Skill: `.autonomous/multi-agent/skills/akasha-evolution/SKILL.md`.
+**akasha-evolution-loop-v2** (ACTIVE): Standalone loop using v2 engine modules.
+  Script: `.autonomous/multi-agent/akasha-evolution-loop-v2.py` (27KB).
+  Start: `python3 akasha-evolution-loop-v2.py [num_iterations]`.
 **akasha-evolution-loop** (LEGACY): Ralph-style continuous loop, 5-agent parallel v2.
   Script: `.autonomous/multi-agent/akasha-evolution-loop.py`.
   Start: `bash .autonomous/multi-agent/start-akasha-evolution.sh`.
-  Use: fallback only. Primary loop is the v4 daemon above.
+  Use: fallback only. Primary loop is the v5 daemon above.
 **Ralph-loop** (legacy/fallback): Single-agent 6-phase loop.
   Scripts: `.autonomous/ralph-loop/akasha-ralph-loop.py`.
 **Headroom proxy**: Running on port 8787. All large tool outputs (>5k tokens) use Headroom compression.
@@ -127,29 +125,39 @@ When the user requests a durable behavior change, record it here or in the relev
   Status: `bash .autonomous/multi-agent/run-24-7.sh detailed`
   Health: `bash .autonomous/multi-agent/run-24-7.sh health`
   Telemetry: `bash .autonomous/multi-agent/run-24-7.sh telemetry`
+  ProjectMap: `bash .autonomous/multi-agent/run-24-7.sh project-map`
+  Reasoning: `bash .autonomous/multi-agent/run-24-7.sh reasoning`
+  Context: `bash .autonomous/multi-agent/run-24-7.sh context`
   Validate: `bash .autonomous/multi-agent/run-24-7.sh validate`
   Architecture: `.autonomous/multi-agent/AUTONOMOUS-EVOLUTION-BLUEPRINT.md`
 
 ## Child DOX Index
 
-  - `multi-agent/akasha-loop-daemon-v4.py` — 24/7 autonomous daemon (PRIMARY)
+  - `multi-agent/akasha-loop-daemon-v5.py` — 24/7 autonomous daemon v5 (PRIMARY)
+  - `multi-agent/akasha-evolution-loop-v2.py` — standalone loop v2 (active)
   - `multi-agent/akasha-loop-daemon.py` — socket daemon v3 (legacy)
-  - `multi-agent/guardian.py` — process supervisor with backoff restart
-  - `multi-agent/memory_manager.py` — 3-tier memory (hot/warm/cold) + archival
-  - `multi-agent/telemetry.py` — real-time metrics + anomaly detection
-  - `multi-agent/adaptive_pacer.py` — quality-based iteration speed control
-  - `multi-agent/self_healer.py` — deadlock detection + recovery + circuit breaker
-  - `multi-agent/predictive_engine.py` — proactive risk detection + forecasting
-  - `multi-agent/skill_discoverer.py` — autonomous pattern learning
-  - `multi-agent/continuity_manager.py` — cross-session state preservation
+  - `multi-agent/guardian.py` — process supervisor with exponential backoff restart
+  - `multi-agent/memory_manager.py` — 3-tier memory (hot/warm/cold) + forgetting curve
+  - `multi-agent/telemetry.py` — real-time metrics + anomaly detection (mean+2σ)
+  - `multi-agent/adaptive_pacer.py` — quality-based speed (FAST/NORMAL/SLOW/PAUSE)
+  - `multi-agent/self_healer.py` — 5 recovery strategies + circuit breaker
+  - `multi-agent/predictive_engine.py` — proactive risk detection (memory/quality/error)
+  - `multi-agent/skill_discoverer.py` — Apriori mining + success sequences + anti-patterns
+  - `multi-agent/continuity_manager.py` — atomic saves + session restore + git HEAD detection
+  - `multi-agent/project_map.py` — 9 project areas, 2204 files, quality + potential scoring
+  - `multi-agent/reasoning_chain.py` — chain-of-thought reasoning (3-7 steps) + self-correction
+  - `multi-agent/context_engine.py` — deep context (8000 tokens), recency×decision-impact scoring
+  - `multi-agent/evolver.py` — autonomous brain, self-optimizing, intensity 1-10
+  - `multi-agent/prompt_engine.py` — 8 area templates, learnings/decisions injection
+  - `multi-agent/agent_orchestrator.py` — parallel spawning + /proc resource monitoring
   - `multi-agent/akasha-evolution-loop.py` — 5-agent parallel loop v2 (legacy, fallback)
   - `multi-agent/intelligence.py` — evidence-based decisions + exponential learning
   - `multi-agent/context_bootstrap.py` — fresh project context every iteration (v2 smart cache)
   - `multi-agent/evals.py` + `eval-report.py` — loop quality measurement (v2 real-time)
-  - `multi-agent/run-24-7.sh` — 24/7 orchestration script
+  - `multi-agent/run-24-7.sh` — 24/7 operational commands (start/stop/health/validate)
   - `multi-agent/AUTONOMOUS-EVOLUTION-BLUEPRINT.md` — architecture blueprint
+  - `skills/akasha-evolution/` — OMP skill: start akasha-evolution
   - `ralph-loop/` — Ralph-style 6-phase autonomous loop (fallback)
-  - `skills/akasha-evolution/` — OMP skill for autonomous evolution loop
 - `apps/` — aplicações do produto
 - `packages/` — workspaces compartilhados e engines
 - `docs/` — documentação canônica
