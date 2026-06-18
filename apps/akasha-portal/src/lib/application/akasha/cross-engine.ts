@@ -9,7 +9,7 @@
  *
  * REGRA CRÍTICA: apenas correlações verificáveis das tradições.
  */
-import { getOduByName, type OduData, type OduElement } from './odu-data';
+import { getOduByName, type OduData, type OduElement } from '@/lib/domain/odu-data';
 
 // ─── Tipos de entrada ────────────────────────────────────────────────────────
 
