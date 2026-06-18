@@ -6,7 +6,7 @@ import { NextResponse } from 'next/server';
 // ----------------------------------------------------------------------------
 
 // Mock do akasha-guard
-const mockRequireAkashaApi = vi.fn();
+const mockRequireAkashaApi = vi.hoisted(() => vi.fn());
 
 vi.mock('@/lib/application/auth/akasha-guard', () => ({
   requireAkashaApi: mockRequireAkashaApi,
@@ -67,6 +67,10 @@ beforeEach(() => {
 afterEach(() => {
   ritualStorage.clear();
 });
+import { GET as ritualGet } from '@/app/api/akasha/ritual/route';
+import { POST as ritualConfigPost } from '@/app/api/akasha/ritual/config/route';
+import { GET as ritualTodayGet } from '@/app/api/akasha/ritual/today/route';
+import { getRitualConfig, setRitualConfig } from '@/lib/application/akasha/ritual-storage';
 
 // ----------------------------------------------------------------------------
 // GET /api/akasha/ritual
@@ -78,15 +82,13 @@ describe('GET /api/akasha/ritual', () => {
       new NextResponse(JSON.stringify({ error: 'Unauthorized' }), { status: 401 })
     );
 
-    const { GET } = await import('@/app/api/akasha/ritual/route');
-    const res = await GET(new Request('http://localhost/api/akasha/ritual'));
+    const res = await ritualGet(new Request('http://localhost/api/akasha/ritual'));
 
     expect(res.status).toBe(401);
   });
 
   it('retorna 404 quando ritual não configurado', async () => {
-    const { GET } = await import('@/app/api/akasha/ritual/route');
-    const res = await GET(new Request('http://localhost/api/akasha/ritual'));
+    const res = await ritualGet(new Request('http://localhost/api/akasha/ritual'));
 
     expect(res.status).toBe(404);
     const body = await res.json();
@@ -94,7 +96,6 @@ describe('GET /api/akasha/ritual', () => {
   });
 
   it('retorna ritual configurado com sucesso', async () => {
-    const { setRitualConfig } = await import('@/lib/application/akasha/ritual-storage');
     setRitualConfig('user-123', {
       horario: '07:00',
       timezone: 'America/Sao_Paulo',
@@ -107,8 +108,7 @@ describe('GET /api/akasha/ritual', () => {
       ativo: true,
     });
 
-    const { GET } = await import('@/app/api/akasha/ritual/route');
-    const res = await GET(new Request('http://localhost/api/akasha/ritual'));
+    const res = await ritualGet(new Request('http://localhost/api/akasha/ritual'));
 
     expect(res.status).toBe(200);
     const body = await res.json();
@@ -125,19 +125,17 @@ describe('GET /api/akasha/ritual', () => {
 
 describe('POST /api/akasha/ritual/config', () => {
   it('retorna 400 quando body inválido', async () => {
-    const { POST } = await import('@/app/api/akasha/ritual/config/route');
     const req = new Request('http://localhost/api/akasha/ritual/config', {
       method: 'POST',
       body: JSON.stringify({ horario: 'invalid' }),
       headers: { 'Content-Type': 'application/json' },
     });
-    const res = await POST(req);
+    const res = await ritualConfigPost(req);
 
     expect(res.status).toBe(400);
   });
 
   it('salva config com sucesso', async () => {
-    const { POST } = await import('@/app/api/akasha/ritual/config/route');
     const config = {
       horario: '07:00',
       timezone: 'America/Sao_Paulo',
@@ -155,7 +153,7 @@ describe('POST /api/akasha/ritual/config', () => {
       body: JSON.stringify(config),
       headers: { 'Content-Type': 'application/json' },
     });
-    const res = await POST(req);
+    const res = await ritualConfigPost(req);
 
     expect(res.status).toBe(200);
     const body = await res.json();
@@ -164,7 +162,6 @@ describe('POST /api/akasha/ritual/config', () => {
   });
 
   it('atualiza config existente', async () => {
-    const { setRitualConfig, getRitualConfig } = await import('@/lib/application/akasha/ritual-storage');
     setRitualConfig('user-123', {
       horario: '06:00',
       timezone: 'UTC',
@@ -172,7 +169,6 @@ describe('POST /api/akasha/ritual/config', () => {
       ativo: false,
     });
 
-    const { POST } = await import('@/app/api/akasha/ritual/config/route');
     const config = {
       horario: '08:30',
       timezone: 'America/Sao_Paulo',
@@ -190,7 +186,7 @@ describe('POST /api/akasha/ritual/config', () => {
       body: JSON.stringify(config),
       headers: { 'Content-Type': 'application/json' },
     });
-    const res = await POST(req);
+    const res = await ritualConfigPost(req);
 
     expect(res.status).toBe(200);
     const updated = getRitualConfig('user-123') as { horario: string } | undefined;
@@ -204,8 +200,7 @@ describe('POST /api/akasha/ritual/config', () => {
 
 describe('GET /api/akasha/ritual/today', () => {
   it('retorna ritual do dia com config default quando não configurado', async () => {
-    const { GET } = await import('@/app/api/akasha/ritual/today/route');
-    const res = await GET(new Request('http://localhost/api/akasha/ritual/today'));
+    const res = await ritualTodayGet(new Request('http://localhost/api/akasha/ritual/today'));
 
     expect(res.status).toBe(200);
     const body = await res.json();
@@ -215,7 +210,6 @@ describe('GET /api/akasha/ritual/today', () => {
   });
 
   it('retorna ritual do dia usando config customizada', async () => {
-    const { setRitualConfig } = await import('@/lib/application/akasha/ritual-storage');
     setRitualConfig('user-123', {
       horario: '06:00',
       timezone: 'Europe/London',
@@ -228,8 +222,7 @@ describe('GET /api/akasha/ritual/today', () => {
       ativo: true,
     });
 
-    const { GET } = await import('@/app/api/akasha/ritual/today/route');
-    const res = await GET(new Request('http://localhost/api/akasha/ritual/today'));
+    const res = await ritualTodayGet(new Request('http://localhost/api/akasha/ritual/today'));
 
     expect(res.status).toBe(200);
     const body = await res.json();
