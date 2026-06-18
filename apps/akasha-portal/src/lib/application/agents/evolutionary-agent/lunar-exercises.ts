@@ -1,0 +1,237 @@
+/**
+ * lunar-exercises.ts
+ *
+ * Lunar exercise library — static data + derivation for the evolutionary agent.
+ * Extracted from evolutionary-agent/index.ts to reduce file size.
+ */
+
+import type { PersonalCycleSnapshot } from '@/lib/application/agents/personal-cycle-engine';
+import type { EvolutionaryExercise } from './index';
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+type LunarExerciseType = EvolutionaryExercise['type'];
+
+interface LunarExerciseEntry {
+  title: string;
+  instruction: string;
+  duration: string;
+  difficulty: 'light' | 'moderate' | 'deep';
+}
+
+type LunarPhase = keyof typeof LUNAR_EXERCISES;
+
+// ─── Static Data ──────────────────────────────────────────────────────────────
+
+export const LUNAR_EXERCISES = {
+  nova: {
+    theme: 'Plantio interno — introspecção e intenção',
+    exercises: {
+      ritual: {
+        title: 'Ritual de Intenção Lunar',
+        instruction:
+          'Acenda uma vela branca. No papel, escreva 3 intenções para este ciclo lunar. Leia em voz alta, dobrando o papel e guardando num lugar sagrado. Prancha: https://youtu.be/placeholder',
+        duration: '10 minutos',
+        difficulty: 'light' as const,
+      },
+      meditation: {
+        title: 'Meditação do Vazio Criativo',
+        instruction:
+          'Sente-se em silêncio. Observe os pensamentos sem apego, como nuvens passando. Permita que a mente se aquiete até surgir uma imagem ou sensação — é a sua intenção.seed.',
+        duration: '12 minutos',
+        difficulty: 'light' as const,
+      },
+      journaling: {
+        title: 'Diário do Novo Começo',
+        instruction:
+          'Escreva: "Este ciclo lunar eu escolho ___" (3 preenchimentos). Depois escreva: "O que preciso soltar para que isso se manifeste é ___" (2 preenchimentos). Sem filtro, sem censura.',
+        duration: '10 minutos',
+        difficulty: 'light' as const,
+      },
+      movement: {
+        title: 'Dança do Novo Ar',
+        instruction:
+          'Música: algo fluido e ascendente. Mova-se livremente, imaginando que cada gesto planta uma semente no espaço. Termine em posição de gratidão.',
+        duration: '15 minutos',
+        difficulty: 'light' as const,
+      },
+      social: {
+        title: 'Círculo de Intenções Partilhadas',
+        instruction:
+          'Reúna 1-3 pessoas de confiança. Cada um partilha uma intenção para este ciclo. Os outros reflectem sem advice — só espelho e acolhimento.',
+        duration: '45 minutos',
+        difficulty: 'moderate' as const,
+      },
+    },
+  },
+  crescente: {
+    theme: 'Expansão — ação e construção',
+    exercises: {
+      ritual: {
+        title: 'Ritual de Cascata Ascendente',
+        instruction:
+          'Com um copo de água, desperdice simbólica e lentamente enquanto diz: "Que isto cresça e se multiplique". Visualize a água infiltrando na terra e dela brotando o que pediu.',
+        duration: '7 minutos',
+        difficulty: 'light' as const,
+      },
+      meditation: {
+        title: 'Meditação do Fogo Interior',
+        instruction:
+          'Feche os olhos. Visualize um fogo no centro do peito — pequeno no início, depois cada vez maior. Sinta-o aquecer o corpo inteiro e projectar luz para fora.',
+        duration: '12 minutos',
+        difficulty: 'moderate' as const,
+      },
+      journaling: {
+        title: 'Plano de 3 Próximos Passos',
+        instruction:
+          'Escolha uma intenção da Lua Nova. Escreva 3 acções concretas — com quem, quando, como — que avance essa intenção nos próximos 7 dias. Seja específico.',
+        duration: '10 minutos',
+        difficulty: 'moderate' as const,
+      },
+      movement: {
+        title: 'Yoga Solar (Surya Namaskar)',
+        instruction:
+          '7 rounds de Salutação ao Sol. Comece devagar, aumente gradualmente. Sinta o calor muscular e a energia subindo do sacro ao coração.',
+        duration: '20 minutos',
+        difficulty: 'moderate' as const,
+      },
+      social: {
+        title: 'Alinhamento com Aliado',
+        instruction:
+          'Marque uma conversa com alguém que respeito — amigo, mentor, terapeuta. Peça feedback honesto sobre o seu caminho actual e ouça sem defender.',
+        duration: '60 minutos',
+        difficulty: 'moderate' as const,
+      },
+    },
+  },
+  cheia: {
+    theme: 'Pico de energia — manifestação e celebração',
+    exercises: {
+      ritual: {
+        title: 'Ritual de Gratidão Luminosa',
+        instruction:
+          'Ao entardecer, acenda uma vela dourada. Liste em voz alta 7 coisas que recebeu desde a Lua Nova — concretas ou subtis. Agradeça uma a uma.',
+        duration: '10 minutos',
+        difficulty: 'light' as const,
+      },
+      meditation: {
+        title: 'Meditação do Abraço Infinito',
+        instruction:
+          'Sentado, visualize-se no centro de uma esfera de luz. Primeiro, dirija amor a si mesmo; depois, às pessoas que ama; depois, aos que dificuldade. Termine com compaixão pelo mundo.',
+        duration: '15 minutos',
+        difficulty: 'moderate' as const,
+      },
+      journaling: {
+        title: 'Diário de Celebração e Projecção',
+        instruction:
+          'Escreva: "As maiores vitórias desde a Lua Nova foram ___. Como me senti ___." Depois: "O que quero celebrar na próxima Lua Cheia é ___."',
+        duration: '10 minutos',
+        difficulty: 'light' as const,
+      },
+      movement: {
+        title: 'Dança de Alegria Elemental',
+        instruction:
+          'Música que evoque os 4 elementos — água, fogo, terra, ar. Dança livre com cada elemento, fechando com uma posição de gratidão.',
+        duration: '20 minutos',
+        difficulty: 'moderate' as const,
+      },
+      social: {
+        title: 'Cerimónia de Grupo — Partilha de Luz',
+        instruction:
+          'Reúna um grupo (ou marque uma videochamada). Cada pessoa partilha uma bênção que recebeu ou ofereceu neste ciclo. Feche com um momento de silêncio partilhado.',
+        duration: '60 minutos',
+        difficulty: 'moderate' as const,
+      },
+    },
+  },
+  minguante: {
+    theme: 'Liberação — soltura e depuração',
+    exercises: {
+      ritual: {
+        title: 'Ritual de Soltura Controlada',
+        instruction:
+          'Escreva num papel o que quer soltar — hábito, relação, crença, padrão. Leia em voz alta. Depois queime o papel num recipiente seguro, dizendo: "Solto para o universo transformar."',
+        duration: '10 minutos',
+        difficulty: 'moderate' as const,
+      },
+      meditation: {
+        title: 'Meditação do Vento que Carrega',
+        instruction:
+          'Visualize um vento forte mas gentil a atravessá-lo, levando consigo os pesos que escreveu. Cada vez que expira, o vento fica mais forte e leve. Permita que leve o que não serve.',
+        duration: '12 minutos',
+        difficulty: 'moderate' as const,
+      },
+      journaling: {
+        title: 'Diário de Desapego Consciente',
+        instruction:
+          'Escreva: "Estou pronto para soltar ___" (3 coisas). "O que tem peso e já não me serve é ___." Depois um texto livre: o que sente ao deixar ir.',
+        duration: '10 minutos',
+        difficulty: 'moderate' as const,
+      },
+      movement: {
+        title: 'Shaking — Libertação Somática',
+        instruction:
+          'De pé, com música tribal ou ritmo forte, shakingsubstancial do corpo inteiro — comeca nos pés e vai subindo. Primeiro 2 minutos de shakingsustido leve, depois 1 minuto intenso, depois 1 minuto de silêncio e respire.',
+        duration: '15 minutos',
+        difficulty: 'moderate' as const,
+      },
+      social: {
+        title: 'Perdão Ritualizado',
+        instruction:
+          'Escreva uma carta de perdão — para si mesmo ou outro. Não precisa enviar. Leia em voz alta, depois guarde ou queime. O acto de escrever já é ritual.',
+        duration: '30 minutos',
+        difficulty: 'deep' as const,
+      },
+    },
+  },
+} as const;
+
+// ─── Normalize Phase ──────────────────────────────────────────────────────────
+
+export function normalizePhase(moonPhase: string): LunarPhase {
+  const p = moonPhase.toLowerCase().normalize('NFD')[0];
+  if (p === 'n') return 'nova';
+  if (p === 'c' && moonPhase.toLowerCase().includes('cresc')) return 'crescente';
+  if (p === 'c') return 'cheia';
+  if (p === 'm') return 'minguante';
+  return 'nova';
+}
+
+// ─── Derivation ───────────────────────────────────────────────────────────────
+
+const AREA_BY_LUNAR_TYPE: Record<LunarExerciseType, string> = {
+  ritual: 'missaoDestino',
+  meditation: 'oriCabecaQuizilas',
+  journaling: 'desafiosSombras',
+  movement: 'vitalidadeEnergia',
+  social: 'conexoesAmor',
+};
+
+/**
+ * Derives lunar-phase exercises for the given moon phase and personal cycle snapshot.
+ */
+export function deriveLunarExercises(
+  moonPhase: string,
+  snapshot: PersonalCycleSnapshot,
+): EvolutionaryExercise[] {
+  const phase = normalizePhase(moonPhase);
+  const lunar = LUNAR_EXERCISES[phase];
+
+  return (
+    Object.entries(lunar.exercises) as [LunarExerciseType, LunarExerciseEntry][]
+  ).map(([type, ex]) => {
+    const area = AREA_BY_LUNAR_TYPE[type] ?? 'missaoDestino';
+    const id = `${area}-${type}-${Date.now()}-lunar`;
+    return {
+      id,
+      area,
+      title: ex.title,
+      instruction: ex.instruction,
+      duration: ex.duration,
+      difficulty: ex.difficulty,
+      type,
+      cycleAnchor: { lunar: true } as EvolutionaryExercise['cycleAnchor'],
+      rationale: `${lunar.theme}. Este exercício lunar activa a fase de ${lunar.theme.toLowerCase()}, canalizando a energia da lua ${phase} para a área de ${area}.`,
+    };
+  });
+}

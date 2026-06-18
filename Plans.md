@@ -1249,6 +1249,42 @@
 - [~] **PLN-025[1]** -- tech_debt | 2 files with XXX
 - [~] **PLN-025[2]** -- console_cleanup | 1 files with console statements
 - [~] **PLN-025[3]** -- large_file | 36 oversized files
+- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX
+- [~] **PLN-026[3]** -- large_file | 37 oversized files
+- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX
+- [~] **PLN-026[3]** -- large_file | 37 oversized files
+- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX
+- [~] **PLN-026[3]** -- large_file | 37 oversized files
+- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX
+- [~] **PLN-026[3]** -- large_file | 37 oversized files
+- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX
+- [~] **PLN-026[3]** -- large_file | 37 oversized files
+- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX
+- [~] **PLN-026[3]** -- large_file | 37 oversized files
+- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX
+- [~] **PLN-026[3]** -- large_file | 37 oversized files
+- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX
+- [~] **PLN-026[3]** -- large_file | 37 oversized files
+- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX
+- [~] **PLN-026[3]** -- large_file | 37 oversized files
+- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX
+- [~] **PLN-026[3]** -- large_file | 37 oversized files
+- [~] **PLN-026[1]** -- missing_tests | 1 changed files lack tests
+- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX
+- [~] **PLN-026[3]** -- large_file | 37 oversized files
+- [~] **PLN-026[1]** -- missing_tests | 1 changed files lack tests
+- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX
+- [~] **PLN-026[3]** -- large_file | 37 oversized files
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)

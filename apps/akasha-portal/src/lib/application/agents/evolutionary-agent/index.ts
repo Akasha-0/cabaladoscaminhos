@@ -9,6 +9,7 @@
 import type { PersonalCycleSnapshot } from '@/lib/application/agents/personal-cycle-engine';
 export type { AreaHistoryEntry, CycleModulation } from './area-history';
 export { trackAreaRead, detectAreaPatterns } from './area-history';
+export { LUNAR_EXERCISES, normalizePhase, deriveLunarExercises } from './lunar-exercises';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

@@ -1,24 +1,3 @@
 {
-  "results": [
-    {
-      "success": true,
-      "message": "Removed console statements from packages/akasha-core/src/mapeamentos/types.ts (2 statements: console.warn and console.info in setTradicaoWeights)",
-      "type": "console_cleanup"
-    },
-    {
-      "success": true,
-      "message": "Extracted helper from apps/akasha-portal/src/lib/application/agents/evolutionary-agent/index.ts",
-      "type": "large_file"
-    },
-    {
-      "success": true,
-      "message": "No tech_debt comments found in target files (PlainEnglishPlanet.tsx, SuggestedQuestions.tsx contain only F-XXX feature stubs, no tech_debt markers)",
-      "type": "tech_debt"
-    },
-    {
-      "success": true,
-      "message": "Removed console statements",
-      "type": "console_cleanup"
-    }
-  ]
+  "results": []
 }

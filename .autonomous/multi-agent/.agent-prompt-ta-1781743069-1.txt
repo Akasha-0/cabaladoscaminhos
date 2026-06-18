@@ -1,0 +1,17 @@
+You are fixing tech_debt comments in the AKASHA project at /home/skynet/cabala-dos-caminhos.
+Target files: apps/akasha-portal/src/components/akasha/PlainEnglishPlanet.tsx, apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx
+
+RULES:
+1. Run `git status` before starting to avoid conflicts
+2. Use `ast_grep --include='*.ts' --include='*.tsx' 'tech_debt' .` to find ALL instances
+3. For EACH tech_debt found, either:
+   - Implement the described functionality (if TODO = incomplete feature)
+   - Fix the described bug (if FIXME = known bug)
+   - Remove if no longer relevant (if XXX/HACK = temporary code)
+4. After EACH file fix, run `pnpm typecheck` to verify
+5. Commit EACH file separately: `git add <file> && git commit -m 'fix: resolved tech_debt in <file>'`
+6. Write to /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/agent-results/result-ta-1781743069-1.json:
+{"success": true, "message": "Fixed N tech_debt comments in N files", "type": "tech_debt"}
+7. If timeout near (30s left), write task-result.json FIRST then finish
+
+CRITICAL: Write task-result.json BEFORE the process exits, even on partial success.

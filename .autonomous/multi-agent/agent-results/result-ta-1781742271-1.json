@@ -1,1 +1,0 @@
-{"success": true, "message": "Removed console statements from packages/akasha-core/src/mapeamentos/types.ts (2 statements: console.warn and console.info in setTradicaoWeights)", "type": "console_cleanup"}

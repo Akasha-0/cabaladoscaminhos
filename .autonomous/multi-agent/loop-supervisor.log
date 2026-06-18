@@ -285,3 +285,13 @@
 [2026-06-17T00:18:35Z] [SUP] 🚀 STARTING DAEMON
 [2026-06-17T00:18:35Z] [SUP] ✅ DAEMON RUNNING PID=2917703
 [2026-06-17T00:18:38Z] [SUP] Daemon confirmed alive PID=2917703 (attempt 1)
+[2026-06-18T00:50:10Z] [SUP] Cleaning stale state...
+[2026-06-18T00:50:10Z] [SUP]   Removed stale socket: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.sock
+[2026-06-18T00:50:10Z] [SUP]   Removed stale PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-18T00:50:10Z] [SUP]   Killing stale agent ta-1781743770-0 (PID=1136644)
+[2026-06-18T00:50:11Z] [SUP]   Killing stale agent ta-1781743770-2 (PID=1136643)
+[2026-06-18T00:50:11Z] [SUP]   Killing stale agent ta-1781743770-1 (PID=1136642)
+[2026-06-18T00:50:11Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-18T00:50:11Z] [SUP]   Cleanup complete.
+[2026-06-18T00:50:11Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-18T00:50:11Z] [SUP] ✅ DAEMON RUNNING PID=1139848

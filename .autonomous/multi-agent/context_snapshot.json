@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-18T00:33:58.609617+00:00",
-  "version": "0.85.2",
+  "generated_at": "2026-06-18T00:50:14.763052+00:00",
+  "version": "0.82.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-UI/UX-001** — ralph_loop_ui_improvements | 0.13.2",
@@ -1085,25 +1085,58 @@
       "- [~] **PLN-025[1]** -- tech_debt | 2 files with XXX",
       "- [~] **PLN-025[2]** -- console_cleanup | 1 files with console statements",
       "- [~] **PLN-025[3]** -- large_file | 36 oversized files",
+      "- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX",
+      "- [~] **PLN-026[3]** -- large_file | 37 oversized files",
+      "- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX",
+      "- [~] **PLN-026[3]** -- large_file | 37 oversized files",
+      "- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX",
+      "- [~] **PLN-026[3]** -- large_file | 37 oversized files",
+      "- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX",
+      "- [~] **PLN-026[3]** -- large_file | 37 oversized files",
+      "- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX",
+      "- [~] **PLN-026[3]** -- large_file | 37 oversized files",
+      "- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX",
+      "- [~] **PLN-026[3]** -- large_file | 37 oversized files",
+      "- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX",
+      "- [~] **PLN-026[3]** -- large_file | 37 oversized files",
+      "- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX",
+      "- [~] **PLN-026[3]** -- large_file | 37 oversized files",
+      "- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX",
+      "- [~] **PLN-026[3]** -- large_file | 37 oversized files",
+      "- [~] **PLN-026[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX",
+      "- [~] **PLN-026[3]** -- large_file | 37 oversized files",
+      "- [~] **PLN-026[1]** -- missing_tests | 1 changed files lack tests",
+      "- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX",
+      "- [~] **PLN-026[3]** -- large_file | 37 oversized files",
+      "- [~] **PLN-026[1]** -- missing_tests | 1 changed files lack tests",
+      "- [~] **PLN-026[2]** -- tech_debt | 2 files with XXX",
+      "- [~] **PLN-026[3]** -- large_file | 37 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2",
       "- [~] **PLN-AE-003** — Ralph-loop continuous | QA cycling (v0.12.1)"
     ],
-    "pending_count": 1085
+    "pending_count": 1121
   },
   "git": {
-    "untracked": 14,
-    "modified": 16,
-    "total": 30,
+    "untracked": 63,
+    "modified": 24,
+    "total": 87,
     "has_changes": true
   },
   "triad": {
     "typecheck": {
       "pass": false,
-      "errors": [
-        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(174,19): error TS1005: ',' expected.",
-        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(221,9): error TS1005: ',' expected."
-      ]
+      "errors": []
     },
     "lint": {
       "pass": false,
@@ -1111,7 +1144,7 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1376,
+      "passed": 1382,
       "failed": 1
     }
   },
@@ -1123,11 +1156,8 @@
     {
       "type": "typecheck_errors",
       "priority": 9,
-      "description": "2 TypeScript errors",
-      "errors": [
-        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(174,19): error TS1005: ',' expected.",
-        "apps/akasha-portal/src/components/akasha/SuggestedQuestions.tsx(221,9): error TS1005: ',' expected."
-      ]
+      "description": "0 TypeScript errors",
+      "errors": []
     },
     {
       "type": "tech_debt",
@@ -1154,26 +1184,25 @@
       "description": "37 oversized files",
       "files": [
         {
-          "file": "apps/akasha-portal/src/components/akasha/dashboard/AkashaLifeAreasDashboard.tsx",
-          "lines": 1078
-        },
-        {
           "file": "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/index.ts",
-          "lines": 1027
+          "lines": 1028
         },
         {
           "file": "apps/akasha-portal/src/components/akasha/dashboard/Dashboard.tsx",
           "lines": 1021
+        },
+        {
+          "file": "apps/akasha-portal/src/components/akasha/dashboard/AkashaLifeAreasDashboard.tsx",
+          "lines": 1017
         }
       ]
     },
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "2 changed files lack tests",
+      "description": "1 changed files lack tests",
       "files": [
-        "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/area-history/index.ts",
-        "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/index.ts"
+        "tests/lib/grimoire/mural-tzolkin.test.ts"
       ]
     },
     {
@@ -1184,7 +1213,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "9b5abe0ef6f2e5e806688a382fe93ab6c1afead7",
+  "git_head": "346179da855ac39cbaec297901a9dd3925ad8f40",
   "decision_factors": {
     "has_pending_features": true
   }

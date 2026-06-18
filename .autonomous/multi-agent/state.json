@@ -1,13 +1,12 @@
 {
   "phase": "RELEASE",
-  "iteration": 25,
+  "iteration": 26,
   "current_features": [
+    "missing_tests",
     "tech_debt",
-    "console_cleanup",
     "large_file"
   ],
   "retry_count": 0,
   "running": true,
-  "daemon_pid": 933609,
   "skipped_phase": "RELEASE"
 }

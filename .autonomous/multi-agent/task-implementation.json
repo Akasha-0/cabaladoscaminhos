@@ -1,6 +1,14 @@
 {
   "improvements": [
     {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "1 changed files lack tests",
+      "files": [
+        "tests/lib/grimoire/mural-tzolkin.test.ts"
+      ]
+    },
+    {
       "type": "tech_debt",
       "priority": 5,
       "description": "2 files with XXX",
@@ -10,32 +18,24 @@
       ]
     },
     {
-      "type": "console_cleanup",
-      "priority": 5,
-      "description": "1 files with console statements",
-      "files": [
-        "packages/akasha-core/src/mapeamentos/types.ts"
-      ]
-    },
-    {
       "type": "large_file",
       "priority": 4,
-      "description": "36 oversized files",
+      "description": "37 oversized files",
       "files": [
         {
           "file": "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/index.ts",
-          "lines": 1101
-        },
-        {
-          "file": "apps/akasha-portal/src/components/akasha/dashboard/AkashaLifeAreasDashboard.tsx",
-          "lines": 1078
+          "lines": 1028
         },
         {
           "file": "apps/akasha-portal/src/components/akasha/dashboard/Dashboard.tsx",
           "lines": 1021
+        },
+        {
+          "file": "apps/akasha-portal/src/components/akasha/dashboard/AkashaLifeAreasDashboard.tsx",
+          "lines": 1017
         }
       ]
     }
   ],
-  "iteration": 25
+  "iteration": 26
 }
