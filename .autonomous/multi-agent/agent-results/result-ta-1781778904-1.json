@@ -1,0 +1,5 @@
+{
+  "success": true,
+  "message": "Skipped: packages/akasha-core/src/mapeamentos/iching-base.ts is a data file (BASE table ~1460 lines of static hexagrama data, no extractable function group in the 50-150 line range)",
+  "type": "data_file"
+}

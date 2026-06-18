@@ -923,11 +923,13 @@ def phase_qa(state):
     if tsc_ok and tests_ok and format_ok:
         state["phase"] = "VALIDATION"
         log("  QA passed cleanly → VALIDATION")
+        save_state(state)
         _record_outcome(True, state.get("quality_snapshot", 90.0))
     elif tsc_ok and (format_ok or not tests_ok):
         # TypeScript OK, Format cosmetic → proceed (v8)
         log("  QA passed (TypeScript OK, Format cosmetic) → VALIDATION")
         state["phase"] = "VALIDATION"
+        save_state(state)
         _record_outcome(True, state.get("quality_snapshot", 80.0))
     else:
         # QA failed
@@ -937,10 +939,12 @@ def phase_qa(state):
             state["quality_snapshot"] = 40.0
             state["phase"] = "VALIDATION"
             state["qa_failures"] = 0
+            save_state(state)
             _record_outcome(False, 40.0)
         else:
             log(f"  QA failed ({state['qa_failures']}/3) → IMPLEMENTATION")
             state["phase"] = "IMPLEMENTATION"
+            save_state(state)
             _record_outcome(False, 0.0)
 
 # ── VALIDATION (v8: reduced timeout 30s) ───────────────────────────────────

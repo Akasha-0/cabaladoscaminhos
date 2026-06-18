@@ -150,6 +150,39 @@ class ContinuityManager:
 
     # ── public API ─────────────────────────────────────────────────────────────
 
+    def _save_session_inner(self, warm_state: Optional[dict]) -> dict:
+        """Core logic without lock — caller must hold _lock."""
+        current_head = get_git_head()
+        now = datetime.now(timezone.utc).isoformat()
+
+        checkpoint = {
+            "git_head": current_head,
+            "saved_at": now,
+            "auto_save_count": self._auto_save_count,
+            "pid": os.getpid(),
+        }
+
+        tracked = load_json(self._head_tracking_file, {})
+        prev_head = tracked.get("head", "")
+
+        if prev_head and prev_head != current_head:
+            checkpoint["git_head_mismatch"] = True
+            checkpoint["previous_head"] = prev_head
+            checkpoint["mismatch_detected_at"] = now
+
+        if warm_state is not None:
+            existing = load_json(self._memory_file, {})
+            merged = {**existing, **warm_state}
+        else:
+            merged = load_json(self._memory_file, {})
+
+        tracked = {"head": current_head, "saved_at": now}
+        atomic_save(self._head_tracking_file, tracked)
+        atomic_save(self._memory_file, merged)
+        atomic_save(self._checkpoint_file, checkpoint)
+
+        return checkpoint
+
     def save_session(self, warm_state: Optional[dict] = None) -> dict:
         """
         Atomically save session state to memory-warm.json and state-checkpoint.json.
@@ -162,46 +195,7 @@ class ContinuityManager:
             The checkpoint dict written (includes git HEAD + timestamp).
         """
         with self._lock:
-            current_head = get_git_head()
-            now = datetime.now(timezone.utc).isoformat()
-
-            # Build checkpoint
-            checkpoint = {
-                "git_head": current_head,
-                "saved_at": now,
-                "auto_save_count": self._auto_save_count,
-                "pid": os.getpid(),
-            }
-
-            # Load tracked HEAD from previous sessions
-            tracked = load_json(self._head_tracking_file, {})
-            prev_head = tracked.get("head", "")
-
-            # Detect mismatch
-            if prev_head and prev_head != current_head:
-                checkpoint["git_head_mismatch"] = True
-                checkpoint["previous_head"] = prev_head
-                checkpoint["mismatch_detected_at"] = now
-
-            # Merge warm state: existing + incoming (incoming wins on key conflict)
-            if warm_state is not None:
-                existing = load_json(self._memory_file, {})
-                merged = {**existing, **warm_state}
-            else:
-                merged = load_json(self._memory_file, {})
-
-            # Update tracked HEAD for next session
-            tracked = {
-                "head": current_head,
-                "saved_at": now,
-            }
-            atomic_save(self._head_tracking_file, tracked)
-
-            # Atomic writes
-            atomic_save(self._memory_file, merged)
-            atomic_save(self._checkpoint_file, checkpoint)
-
-            return checkpoint
+            return self._save_session_inner(warm_state)
 
     def restore_session(self) -> dict:
         """
@@ -298,9 +292,8 @@ class ContinuityManager:
             if not self._auto_save_active:
                 return
             self._auto_save_count += 1
-            # Re-load current warm state to pick up any changes since last save
             current_warm = load_json(self._memory_file, {})
-            self.save_session.__wrapped__(self, current_warm)  # bypass lock guard
+            self._save_session_inner(current_warm)  # holds lock already
 
         # Schedule next tick (outside lock to avoid blocking)
         with self._lock:

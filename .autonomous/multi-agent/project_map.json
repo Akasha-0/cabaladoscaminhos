@@ -1,6 +1,6 @@
 {
-  "scanned_at": 1781778373.6214147,
-  "scanned_at_iso": "2026-06-18T10:26:13.621418+00:00",
+  "scanned_at": 1781778843.20465,
+  "scanned_at_iso": "2026-06-18T10:34:03.204653+00:00",
   "areas": {
     "UI/Design": {
       "description": "User interface components and design system",
@@ -2015,12 +2015,12 @@
         "CONTRIBUTING.md"
       ],
       "file_count": 81,
-      "last_modified": 1781778258.3609593,
-      "last_modified_iso": "2026-06-18T10:24:18.360959+00:00",
+      "last_modified": 1781778728.1977656,
+      "last_modified_iso": "2026-06-18T10:32:08.197766+00:00",
       "quality_score": 83.5,
       "activity_level": "hot",
       "improvement_potential": 9.3,
-      "total_lines": 15846,
+      "total_lines": 15849,
       "coverage_estimate": 1.0
     },
     "Grimoire": {
@@ -2145,10 +2145,10 @@
     "Autonomous loop": {
       "description": "Self-evolution, autonomous agents, and loop infrastructure",
       "files": [
-        ".autonomous/multi-agent/akasha-loop-daemon-v8.py",
-        ".autonomous/multi-agent/skill_discoverer_v2.py",
+        ".autonomous/multi-agent/reasoning_chain_v2.py",
         ".autonomous/multi-agent/context_snapshot.json",
         ".autonomous/multi-agent/triad-cache.json",
+        ".autonomous/multi-agent/confidence_history/calibration_goal.json",
         ".autonomous/multi-agent/pacer-state.json",
         ".autonomous/multi-agent/project_map.json",
         ".autonomous/multi-agent/state-checkpoint.json",
@@ -2159,14 +2159,21 @@
         ".autonomous/multi-agent/tuning.json",
         ".autonomous/multi-agent/state.json",
         ".autonomous/multi-agent/metrics.json",
+        ".autonomous/multi-agent/akasha-loop-daemon-v8.py",
+        ".autonomous/multi-agent/run-24-7.sh",
+        ".autonomous/multi-agent/run-loop-supervised.sh",
         ".autonomous/multi-agent/omp-agent-results.json",
-        ".autonomous/multi-agent/agent-results/result-ta-1781777925-0.json",
-        ".autonomous/multi-agent/agent-results/result-ta-1781777925-1.json",
+        ".autonomous/multi-agent/agent-results/result-ta-1781778434-0.json",
+        ".autonomous/multi-agent/skill_patterns_v2/meta.json",
+        ".autonomous/multi-agent/skill_patterns_v2/history.json",
+        ".autonomous/multi-agent/skill_patterns_v2/patterns.json",
+        ".autonomous/multi-agent/skill_patterns_v2/anti_patterns.json",
+        ".autonomous/multi-agent/agent-results/result-ta-1781778434-1.json",
+        ".autonomous/multi-agent/skill_discoverer_v2.py",
+        ".autonomous/multi-agent/memory_manager_v2.py",
         ".autonomous/multi-agent/task-implementation.json",
         ".autonomous/multi-agent/smart_iterator_history.json",
         ".autonomous/multi-agent/skills/akasha-evolution/SKILL.md",
-        ".autonomous/multi-agent/run-loop-supervised.sh",
-        ".autonomous/multi-agent/run-24-7.sh",
         ".autonomous/multi-agent/akasha-loop-daemon-v7.py",
         ".autonomous/multi-agent/akasha-loop-daemon-v5.py",
         ".autonomous/multi-agent/memory_manager.py",
@@ -2350,13 +2357,13 @@
         ".autonomous/coding_prompt.md",
         ".autonomous/bootstrap-prompt.json"
       ],
-      "file_count": 204,
-      "last_modified": 1781778372.8224883,
-      "last_modified_iso": "2026-06-18T10:26:12.822488+00:00",
-      "quality_score": 60.7,
+      "file_count": 211,
+      "last_modified": 1781778842.749,
+      "last_modified_iso": "2026-06-18T10:34:02.749000+00:00",
+      "quality_score": 60.5,
       "activity_level": "hot",
       "improvement_potential": 44.5,
-      "total_lines": 52896,
+      "total_lines": 54139,
       "coverage_estimate": 0.0
     }
   }

@@ -271,7 +271,7 @@ class CausalGraph:
         self.nodes: dict[str, CausalNode] = {}
         self.links: list[dict] = []  # serialisable form
         self.root_id = root_id
-        self._lock = threading.Lock()
+        self._lock = threading.RLock()
 
     def add_node(self, node_id: str, label: str, ntype: str = "event", confidence: float = 0.5) -> CausalNode:
         with self._lock:
@@ -427,6 +427,23 @@ class CausalGraph:
         if not path:
             return 1.0
         return math.prod(p["confidence"] for p in path)
+
+    def to_dict(self) -> dict:
+        """Return a serialisable dict representation of the graph."""
+        return {
+            "nodes": [
+                {
+                    "id": n.id,
+                    "label": n.label,
+                    "type": n.type,
+                    "confidence": n.confidence,
+                    "weight": n.weight,
+                }
+                for n in self.nodes.values()
+            ],
+            "links": self.links,
+            "root_id": self.root_id,
+        }
 
 
 # ── hypothesis scoring ─────────────────────────────────────────────────────────
@@ -682,6 +699,8 @@ class ReasoningChain:
             "causal_links": causal_links,
             "hypotheses": hypotheses,
             "evidence_weights": evidence_weights,
+            "_graph": graph,                 # live CausalGraph for explain_failure
+            "_graph_dict": graph.to_dict(),  # serialisable form for history files
             "_perf_ms": round((time.perf_counter() - start) * 1000, 2),
         }
 
@@ -802,15 +821,9 @@ class ReasoningChain:
             max_depth=4,
         )
 
-        # Rebuild a temporary graph for traversal analysis
-        graph = CausalGraph()
-        for link in result.get("causal_links", []):
-            graph.add_link(
-                link["from"], link["to"],
-                link["cause"], link["effect"],
-                link["confidence"], link.get("type", "both"),
-            )
-        if graph.root_id:
+        # Use the live graph already built inside think() — node IDs match chain node_ids
+        graph = result.get("_graph")
+        if graph and graph.root_id:
             root_causes = graph.find_root_causes(graph.root_id, max_depth=4)
         else:
             root_causes = []
@@ -1218,7 +1231,8 @@ class ReasoningChain:
     def _save_result(self, result: dict) -> None:
         """Append result to the per-chain history file."""
         path = CACHE_DIR / f"{self.chain_id}_history.jsonl"
-        record = {k: v for k, v in result.items() if k != "_perf_ms"}
+        record = {k: v for k, v in result.items()
+                  if k not in ("_perf_ms", "_graph")}
         with path.open("a", encoding="utf-8") as fh:
             fh.write(json.dumps(record, ensure_ascii=False) + "\n")
 

@@ -1,1 +1,0 @@
-{"success": false, "message": "packages/akasha-core/src/mapeamentos/iching-base.ts is a data-only file (BASE constant + trivial Object.fromEntries transform). No extractable helper functions (50-150 lines) exist in this file. File is not a code module with logic suitable for extraction.", "type": "large_file"}

@@ -1,4 +1,4 @@
-# Akasha Evolution Skill — OMP Autonomous Loop v7
+# Akasha Evolution Skill — OMP Autonomous Loop v8
 
 ## Purpose
 Start and manage the Akasha 24/7 autonomous evolution loop via OMP.
@@ -13,13 +13,13 @@ start akasha-evolution
 ### Pre-flight Check
 1. Source `scripts/sacred-protocol-check.sh` (validates CodeGraph + Headroom)
 2. Check system resources (CPU, memory, disk)
-3. Verify all 17 v7 modules exist
+3. Verify all 20 v8 modules exist
 4. Check git status — warn if uncommitted changes
 
 ### Startup
 Runs: `bash .autonomous/multi-agent/run-loop-supervised.sh start`
 
-The supervisor starts daemon v7 (akasha-loop-daemon-v7.py) which integrates all 17 modules.
+The supervisor starts daemon v7 (akasha-loop-daemon-v8.py) which integrates all 17 modules.
 
 ### v1 Subsystems (8)
 1. **Guardian** — process supervision, PID alive checks, exponential backoff restart (5s→120s)
@@ -39,12 +39,20 @@ The supervisor starts daemon v7 (akasha-loop-daemon-v7.py) which integrates all 
 13. **PromptEngine** — 8 area-specific templates (UI/Design, API/Logic, Database, Auth, Tests/QA, Build/Infra, Docs, Grimoire), learnings/decisions injection
 14. **AgentOrchestrator** — parallel spawning, resource monitoring via /proc, graceful degradation under low resources
 
-### v7 Improvements
-- **Zombie detection fix**: `/proc/{pid}/cmdline` check prevents zombie `timeout` wrappers from blocking wait loop
-- **QA fail-fast**: After 3 consecutive QA failures, loop advances with degraded quality (40%) instead of infinite retry
-- **Partial results**: If all agents die but some results exist, proceeds after 90s stall (no longer waits full MAX_WAIT)
-- **TypeScript fix**: `iching-base.ts` Primitivos extended to 36 values (I Ching Wilhelm/Baynes data)
-- **Improved zombie reaping**: Stale zombie PIDs correctly excluded from agent count
+### v8 Improvements
+- **Fast polling**: Adaptive 1s→5s→10s intervals in IMPLEMENTATION_WAIT instead of fixed 10s
+- **Quick win detection**: Skip remaining wait if TS passes + file changes exist
+- **Intensity auto-scaling**: +2 intensity after 3x no changes, -1 after >5 changes (clamped 1-10)
+- **Quality trend tracking**: improving/degrading/stable based on last 5 quality scores
+- **Smarter QA transitions**: TS+Format PASS → immediate VALIDATION; TS PASS + cosmetic FAIL → proceed
+- **Stale detection**: 60s no-progress timeout in wait loop
+- **v7 fixes preserved**: Zombie detection, QA fail-fast, partial results handling
+
+### v8 New Modules (4)
+- **memory_manager_v2.py** (992L): Exponential learning memory — patterns strengthen/weakens with repetition, hot/warm/cold tiers, evidence store, bounded 50MB
+- **skill_discoverer_v2.py** (632L): Semantic pattern matching with TF-IDF Jaccard similarity, success rate prediction, anti-pattern warnings
+- **reasoning_chain_v2.py** (1388L): Causal reasoning engine — root cause analysis, counterfactual reasoning, hypothesis testing, confidence calibration, memoisation
+- **akasha-loop-daemon-v8.py** (1441L): Fast polling daemon with intensity auto-scaling and quality tracking
 
 ### Performance Optimizations
 - `select.poll()` replaces busy-wait socket polling (zero CPU idle)
@@ -96,7 +104,7 @@ RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE
 9. Autonomous Loop — .autonomous/multi-agent/
 
 ### Key Files
-- `akasha-loop-daemon-v7.py` — daemon with all integrations (41KB)
+- `akasha-loop-daemon-v8.py` — daemon with all integrations (41KB)
 - `akasha-evolution-loop-v2.py` — standalone loop using v2 modules (27KB)
 - `evolver.py` — autonomous brain (62KB)
 - `context_engine.py` — deep context management (35KB)
