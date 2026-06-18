@@ -1298,6 +1298,8 @@
 - [~] **PLN-031[2]** -- large_file | 37 oversized files
 - [~] **PLN-032[1]** -- tech_debt | 2 files with XXX
 - [~] **PLN-032[2]** -- large_file | 37 oversized files
+- [~] **PLN-033[1]** -- tech_debt | 2 files with XXX
+- [~] **PLN-033[2]** -- large_file | 37 oversized files
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)

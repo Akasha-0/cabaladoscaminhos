@@ -632,20 +632,36 @@ class ProjectMap:
         log(f"project_map: scan complete — {len(result)} areas mapped")
         return result
 
+    @staticmethod
+    def _expand_glob_patterns(patterns: list[str]) -> list[Path]:
+        """Resolve glob patterns (supporting {a,b} brace expansion) to files."""
+        import re as _re
+        files: list[Path] = []
+        seen: set[Path] = set()
+        for pattern in patterns:
+            # Expand brace syntax: apps/foo/**/*.{ts,tsx} → two patterns
+            expanded = []
+            brace_match = _re.search(r'\{([^}]+)\}', pattern)
+            if brace_match:
+                variants = [v.strip() for v in brace_match.group(1).split(',')]
+                for variant in variants:
+                    expanded.append(pattern[:brace_match.start()] + variant + pattern[brace_match.end():])
+            else:
+                expanded.append(pattern)
+            for p in expanded:
+                if p.startswith("/"):
+                    matched = ROOT.glob(p.lstrip("/"))
+                else:
+                    matched = ROOT.glob(p)
+                for path in matched:
+                    if path.is_file() and path not in seen:
+                        seen.add(path)
+                        files.append(path)
+        return files
     def _scan_area(self, area_name: str, area_config: dict[str, Any]) -> dict[str, Any]:
         """Scan a single project area and return its data."""
         patterns = area_config.get("patterns", [])
-        files: list[Path] = []
-
-        for pattern in patterns:
-            # Resolve relative to ROOT
-            if pattern.startswith("/"):
-                matched = ROOT.glob(pattern.lstrip("/"))
-            else:
-                matched = ROOT.glob(pattern)
-            for p in matched:
-                if p.is_file() and p not in files:
-                    files.append(p)
+        files = ProjectMap._expand_glob_patterns(patterns)
 
         # Sort by modification time (most recent first)
         files.sort(key=lambda f: self._get_mtime(f), reverse=True)

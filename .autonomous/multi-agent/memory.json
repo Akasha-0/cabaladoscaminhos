@@ -2,12 +2,6 @@
   "task_history": [],
   "context_window": [
     {
-      "ts": "2026-06-17T01:18:22.296705+00:00",
-      "improvement": "large_file",
-      "version": "0.67.0",
-      "agents": 0
-    },
-    {
       "ts": "2026-06-17T01:22:12.796418+00:00",
       "improvement": "large_file",
       "version": "0.68.0",
@@ -119,6 +113,12 @@
       "ts": "2026-06-18T00:57:50.389755+00:00",
       "improvement": "tech_debt, large_file",
       "version": "0.88.0",
+      "agents": 0
+    },
+    {
+      "ts": "2026-06-18T00:58:46.088829+00:00",
+      "improvement": "tech_debt, large_file",
+      "version": "0.89.0",
       "agents": 0
     }
   ],
@@ -848,6 +848,91 @@
       "description": "37 oversized files"
     }
   ],
-  "learnings": [],
-  "iteration": 99
+  "learnings": [
+    {
+      "id": "lesson-100-0",
+      "content": "FAILED improvements: fix-auth-race. These must be diagnosed and either fixed or replaced before retry.",
+      "score": 0.7,
+      "iteration": 100,
+      "timestamp": "2026-06-18T00:59:38.401897+00:00",
+      "tags": [
+        "self-correction",
+        "reasoning-chain"
+      ],
+      "metadata": {
+        "type": "correction_lesson"
+      }
+    },
+    {
+      "id": "lesson-100-1",
+      "content": "NEW ERRORS introduced: regression_auth. This indicates the change was too aggressive for the current baseline.",
+      "score": 0.7,
+      "iteration": 100,
+      "timestamp": "2026-06-18T00:59:38.401902+00:00",
+      "tags": [
+        "self-correction",
+        "reasoning-chain"
+      ],
+      "metadata": {
+        "type": "correction_lesson"
+      }
+    },
+    {
+      "id": "lesson-100-2",
+      "content": "Test pass rate dropped by -10.0%. Remaining test-related improvements should be paused until coverage recovers.",
+      "score": 0.7,
+      "iteration": 100,
+      "timestamp": "2026-06-18T00:59:38.401904+00:00",
+      "tags": [
+        "self-correction",
+        "reasoning-chain"
+      ],
+      "metadata": {
+        "type": "correction_lesson"
+      }
+    },
+    {
+      "id": "lesson-100-3",
+      "content": "FAILED improvements: fix-auth-race. These must be diagnosed and either fixed or replaced before retry.",
+      "score": 0.7,
+      "iteration": 100,
+      "timestamp": "2026-06-18T00:59:56.491764+00:00",
+      "tags": [
+        "self-correction",
+        "reasoning-chain"
+      ],
+      "metadata": {
+        "type": "correction_lesson"
+      }
+    },
+    {
+      "id": "lesson-100-4",
+      "content": "NEW ERRORS introduced: regression_auth. This indicates the change was too aggressive for the current baseline.",
+      "score": 0.7,
+      "iteration": 100,
+      "timestamp": "2026-06-18T00:59:56.491769+00:00",
+      "tags": [
+        "self-correction",
+        "reasoning-chain"
+      ],
+      "metadata": {
+        "type": "correction_lesson"
+      }
+    },
+    {
+      "id": "lesson-100-5",
+      "content": "Test pass rate dropped by -10.0%. Remaining test-related improvements should be paused until coverage recovers.",
+      "score": 0.7,
+      "iteration": 100,
+      "timestamp": "2026-06-18T00:59:56.491772+00:00",
+      "tags": [
+        "self-correction",
+        "reasoning-chain"
+      ],
+      "metadata": {
+        "type": "correction_lesson"
+      }
+    }
+  ],
+  "iteration": 100
 }

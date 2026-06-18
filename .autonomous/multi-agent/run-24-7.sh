@@ -1,28 +1,33 @@
 #!/usr/bin/env bash
 #
-# run-24-7.sh — Akasha 24/7 Autonomous Evolution Engine
-# ====================================================
+# run-24-7.sh — Akasha 24/7 Autonomous Evolution Engine v5
+# =========================================================
 #
-# Full 24/7 operation with Guardian + Loop Daemon v4.
-# Implements: Guardian supervision, adaptive pacing, cross-session continuity.
+# Full 24/7 operation with Guardian + Loop Daemon v5.
+# Implements: Guardian supervision, adaptive pacing, cross-session continuity,
+#             ProjectMap, ReasoningChain, ContextEngine, Evolver, PromptEngine,
+#             AgentOrchestrator.
 #
 # Usage:
-#   ./run-24-7.sh start     — Start 24/7 operation
-#   ./run-24-7.sh stop      — Graceful stop
-#   ./run-24-7.sh restart    — Restart
-#   ./run-24-7.sh status     — Check status
-#   ./run-24-7.sh health     — Health check
-#   ./run-24-7.sh telemetry  — Show telemetry summary
-#   ./run-24-7.sh validate   — Run validation suite
+#   ./run-24-7.sh start       — Start 24/7 operation
+#   ./run-24-7.sh stop        — Graceful stop
+#   ./run-24-7.sh restart     — Restart
+#   ./run-24-7.sh status      — Check status
+#   ./run-24-7.sh health      — Health check
+#   ./run-24-7.sh telemetry   — Show telemetry summary
+#   ./run-24-7.sh project-map — Project area intelligence
+#   ./run-24-7.sh reasoning   — Reasoning chain status
+#   ./run-24-7.sh context      — Context engine summary
+#   ./run-24-7.sh validate    — Run validation suite
 #
 # Flow:
-#   run-24-7.sh → run-loop-supervised.sh → akasha-loop-daemon-v4.py
+#   run-24-7.sh → run-loop-supervised.sh → akasha-loop-daemon-v5.py
 #
 set -euo pipefail
 
 ROOT="/home/skynet/cabala-dos-caminhos"
 MA="$ROOT/.autonomous/multi-agent"
-DAEMON_V4="$MA/akasha-loop-daemon-v4.py"
+DAEMON_V5="$MA/akasha-loop-daemon-v5.py"
 SUPERVISOR="$MA/run-loop-supervised.sh"
 PID_FILE="$MA/loop-daemon.pid"
 STATE_FILE="$MA/state.json"
@@ -41,14 +46,16 @@ log_err(){ echo -e "[$(date +%H:%M:%S)]$RED ERR $1$NC"; }
 
 preflight(){
     log "Pre-flight checks..."
-    if [[ ! -f "$DAEMON_V4" ]]; then log_err "v4 daemon not found"; exit 1; fi
+    if [[ ! -f "$DAEMON_V5" ]]; then log_err "v5 daemon not found"; exit 1; fi
     local missing=()
     for mod in adaptive_pacer self_healer predictive_engine skill_discoverer \
-               continuity_manager memory_manager guardian telemetry; do
+               continuity_manager memory_manager guardian telemetry \
+               project_map reasoning_chain context_engine evolver \
+               prompt_engine agent_orchestrator; do
         [[ ! -f "$MA/${mod}.py" ]] && missing+=("$mod")
     done
     [[ ${#missing[@]} -gt 0 ]] && { log_err "Missing: ${missing[*]}"; exit 1; }
-    log_ok "Pre-flight passed"
+    log_ok "Pre-flight passed — v5 ready"
 }
 
 get_status(){
@@ -155,7 +162,9 @@ validate(){
     local errors=0
     for mod in adaptive_pacer self_healer predictive_engine skill_discoverer \
                continuity_manager memory_manager guardian telemetry \
-               akasha-loop-daemon-v4; do
+               project_map reasoning_chain context_engine evolver \
+               prompt_engine agent_orchestrator \
+               akasha-loop-daemon-v5 akasha-evolution-loop-v2; do
         [[ -f "$MA/${mod}.py" ]] || continue
         python3 -m py_compile "$MA/${mod}.py" 2>/dev/null \
             && echo -e "  $GREEN${mod}.py$NC syntax OK" \
@@ -197,6 +206,45 @@ case "$CMD" in
     detailed|info) detailed_status ;;
     health|check) health_check ;;
     telemetry|telem) telemetry_summary ;;
+    project-map|pmap)
+        python3 -c "
+import sys; sys.path.insert(0,'$MA')
+from project_map import ProjectMap
+pm = ProjectMap()
+print('ProjectMap v5 — 9 areas scanned:')
+stats = pm.get_project_stats()
+for a in stats.get('areas', {}).values():
+    print(f\"  {a.get('name','?')}: quality={a.get('quality_score',0):.0f} potential={a.get('improvement_potential',0):.0f}\")
+print()
+print('High potential:', [a.get('area') for a in pm.get_high_potential_areas(top_n=3)])
+print('Neglected (>30d):', pm.get_neglected_areas(threshold_days=30))
+" 2>/dev/null || echo "ProjectMap not available"
+        ;;
+    reasoning)
+        python3 -c "
+import sys; sys.path.insert(0,'$MA')
+from reasoning_chain import ReasoningChain
+rc = ReasoningChain()
+result = rc.think('What should Akasha evolve next?', {})
+print('ReasoningChain v5:')
+for step in (result.reasoning_steps if hasattr(result, 'reasoning_steps') else []):
+    print(f\"  Step {step.step_number}: {step.observation[:80]}\")
+print(f\"  Conclusion: {result.conclusion[:120] if hasattr(result, 'conclusion') else '?'}\")
+print(f\"  Confidence: {result.confidence:.2f}\" if hasattr(result, 'confidence') else '')
+" 2>/dev/null || echo "ReasoningChain not available"
+        ;;
+    context)
+        python3 -c "
+import sys; sys.path.insert(0,'$MA')
+from context_engine import ContextEngine
+ce = ContextEngine()
+summary = ce.get_context_summary()
+print('ContextEngine v5:')
+for k,v in summary.items():
+    print(f'  {k}: {str(v)[:80]}')
+print(f\"  Hash: {ce.get_context_hash()[:16]}\")
+" 2>/dev/null || echo "ContextEngine not available"
+        ;;
     validate|check) validate ;;
-    *) echo "Usage: $0 {start|stop|restart|status|detailed|health|telemetry|validate}" ;;
+    *) echo "Usage: $0 {start|stop|restart|status|detailed|health|telemetry|project-map|reasoning|context|validate}" ;;
 esac

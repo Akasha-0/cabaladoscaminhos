@@ -268,10 +268,19 @@ def _parse_memory_decisions(limit: int = 10) -> list[dict]:
     data = load_json(MEMORY_FILE)
     entries: list[dict] = []
 
-    # recent_decisions field
-    for entry in data.get("recent_decisions", [])[:limit]:
-        entry["is_decision"] = True
-        entry["source"] = str(MEMORY_FILE)
+    for raw in data.get("recent_decisions", [])[:limit]:
+        ts = raw.get("timestamp", time.time())
+        if isinstance(ts, str):
+            ts = _date_to_timestamp(ts)
+        entry = {
+            "id": raw.get("id", f"mem:{raw.get('title', 'unknown')}"),
+            "title": raw.get("title", ""),
+            "date": raw.get("date", ""),
+            "summary": raw.get("summary", str(raw)[:200]),
+            "is_decision": True,
+            "source": str(MEMORY_FILE),
+            "timestamp": ts,
+        }
         entries.append(entry)
 
     return entries
@@ -297,9 +306,18 @@ def _parse_memory_learnings() -> list[dict]:
     data = load_json(MEMORY_FILE)
     learnings: list[dict] = []
 
-    for entry in data.get("learnings", [])[:5]:
-        entry["is_decision"] = False
-        entry["source"] = str(MEMORY_FILE)
+    for raw in data.get("learnings", [])[:5]:
+        # Convert ISO timestamp string to float if needed
+        ts = raw.get("timestamp", time.time())
+        if isinstance(ts, str):
+            ts = _date_to_timestamp(ts)
+        entry = {
+            "id": raw.get("id", "unknown"),
+            "is_decision": False,
+            "source": str(MEMORY_FILE),
+            "timestamp": ts,
+            "summary": str(raw.get("summary", raw))[:200],
+        }
         learnings.append(entry)
 
     for pattern_type in ("success_patterns", "error_patterns"):
@@ -368,11 +386,11 @@ class ContextEngine:
     def _warm_store(self) -> None:
         """Pre-load static project context into the store."""
         ts = time.time()
-        # Vision
+        # Vision — store each sub-field as a flat entry
         vision = _parse_spec_vision()
-        self._add_entry_unscored("vision:mission", {"vision": vision}, ts)
-        self._add_entry_unscored("vision:principles", {"principles": vision.get("principles", [])}, ts)
-        self._add_entry_unscored("vision:stack", {"stack": vision.get("stack", [])}, ts)
+        self._add_entry_unscored("vision:mission", vision.get("vision", ""), ts)
+        self._add_entry_unscored("vision:principles", vision.get("principles", []), ts)
+        self._add_entry_unscored("vision:stack", vision.get("stack", []), ts)
 
         # Decisions from DECISIONS.md
         decisions = _parse_decisions_md(limit=20)
@@ -740,14 +758,23 @@ class ContextEngine:
         dict with keys ``vision`` (str), ``principles`` (list[str]),
         ``stack`` (list[str]), ``source`` (str)
         """
-        entry = self._store.get("vision:mission", {})
-        value = entry.get("value", {}) if isinstance(entry, dict) else {}
-        if not value:
-            value = _parse_spec_vision()
+        # vision:mission stores the string directly; principles and stack are separate keys
+        vision_text = ""
+        principles: list[str] = []
+        stack: list[str] = []
+        if "vision:mission" in self._store:
+            vision_text = str(self._store["vision:mission"].get("value", ""))
+        if "vision:principles" in self._store:
+            principles = self._store["vision:principles"].get("value", [])
+        if "vision:stack" in self._store:
+            stack = self._store["vision:stack"].get("value", [])
+        if not vision_text:
+            vs = _parse_spec_vision()
+            return vs
         return {
-            "vision": value.get("vision", ""),
-            "principles": value.get("principles", []),
-            "stack": value.get("stack", []),
+            "vision": vision_text,
+            "principles": principles,
+            "stack": stack,
             "source": str(SPEC_FILE),
         }
 
@@ -798,21 +825,20 @@ class ContextEngine:
         dict with keys ``stack``, ``principles``, ``quality_target``,
         ``live_status``
         """
-        # Principles from vision entry
+        # Principles and stack are stored as flat lists in separate keys
         principles: list[str] = []
-        entry = self._store.get("vision:principles", {})
-        val = entry.get("value", {}) if isinstance(entry, dict) else {}
-        if isinstance(val, dict):
-            principles = val.get("principles", [])
+        if "vision:principles" in self._store:
+            raw = self._store["vision:principles"].get("value", [])
+            if isinstance(raw, list):
+                principles = raw
         if not principles:
             principles = [p for p in _parse_spec_vision().get("principles", []) if p]
 
-        # Stack from vision entry
         stack: list[str] = []
-        sentry = self._store.get("vision:stack", {})
-        sval = sentry.get("value", {}) if isinstance(sentry, dict) else {}
-        if isinstance(sval, dict):
-            stack = sval.get("stack", [])
+        if "vision:stack" in self._store:
+            raw = self._store["vision:stack"].get("value", [])
+            if isinstance(raw, list):
+                stack = raw
         if not stack:
             stack = _parse_spec_vision().get("stack", [])
 
