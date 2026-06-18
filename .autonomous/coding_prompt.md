@@ -12,7 +12,7 @@ vai perceber. A cada sessão: commitar código em `apps/`, `packages/`,
 ### STEP 1 — ORIENTAÇÃO (60s)
 
 ```bash
-cd /home/skynet/cabala-dos-caminhos
+cd "$(git rev-parse --show-toplevel)"
 cat .autonomous/research/CHECKPOINT.md 2>/dev/null | head -40
 git log --oneline -10
 git log --oneline -10 --name-only 2>/dev/null | grep -E "^(apps|packages|src|tests)/" | sort -u
@@ -147,7 +147,7 @@ A cada respawn, o agente é stateless. **Reconstrua contexto em 30s:**
 
 ```bash
 # 1. Quem sou eu, o que já foi feito?
-cd /home/skynet/cabala-dos-caminhos
+cd "$(git rev-parse --show-toplevel)"
 PREV=$(ls -t .autonomous/sessions/session-*.log 2>/dev/null | head -1)
 [ -n "$PREV" ] && tail -200 "$PREV"
 

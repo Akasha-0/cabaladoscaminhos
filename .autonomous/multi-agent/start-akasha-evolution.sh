@@ -11,7 +11,7 @@
 #
 set -euo pipefail
 
-ROOT="/home/skynet/cabala-dos-caminhos"
+ROOT="$(git rev-parse --show-toplevel)"
 MA="$ROOT/.autonomous/multi-agent"
 SUPERVISOR="$MA/run-loop-supervised.sh"
 STATE_FILE="$MA/state.json"

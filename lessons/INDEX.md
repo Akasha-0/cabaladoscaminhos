@@ -1,37 +1,16 @@
-# lessons/ — AKASHA Loop Corpus
+# Lessons Index
 
-> Units of long-term learning. Short, operational, never motivational.
-> Read at bootstrap: pass your eye over the index to find lessons relevant to the current target.
+> Unit of long-term learning. Each lesson is a short, evidence-based observation
+> that prevents repeating a costly mistake or encodes a hard-won insight.
+> Per AKASHA_HARNESS_CONSTITUTION.md §4 and §9.
+
+## Format
+
+Each lesson: `{filename}.md`
+- Title: what was learned
+- Body: what happened, what was decided, what to do differently
+- Tag: `lesson`, `harness`, `architecture`, `process`
 
 ## Index
 
-| # | Title | Area | Date |
-|---|-------|------|------|
-| 001 | Auth refresh bug — token expires silently, no caller | auth/harness | 2026-06-18 |
-
-## Lesson Format
-
-```markdown
-# L-XXX — Short Title
-
-**Date:** YYYY-MM-DD
-**Area:** auth | build | test | harness | ssot | memory | archive | path-portability | triad
-**Status:** open | resolved
-
-## What happened
-(one sentence, factual)
-
-## Non-obvious insight
-(what the constitution or instinct would NOT have told you; the thing that cost time)
-
-## Actionable guidance
-(step the next iteration should take without re-discovering this)
-
-## Related failures
-(links to other lessons or known issues)
-```
-
-## Reading Protocol
-- At bootstrap: scan index for lessons matching the current target area
-- At audit: cross-reference triad failures against this index
-- Never repeat a failed approach — read the lesson first
+*(empty — lessons added as they are earned)*

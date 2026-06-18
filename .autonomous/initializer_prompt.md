@@ -18,7 +18,7 @@ muito. Pense muito. Escreva muito.
 ### STEP 0 — ORIENTAÇÃO COMPLETA (30min)
 
 ```bash
-cd /home/skynet/cabala-dos-caminhos
+cd "$(git rev-parse --show-toplevel)"
 pwd && ls -la
 cat .autonomous/app_spec.txt           # MISSÃO
 cat .autonomous/feature_list.json | jq '.[] | {id, phase, priority, description}'

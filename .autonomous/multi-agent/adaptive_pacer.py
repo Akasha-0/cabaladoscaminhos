@@ -40,7 +40,7 @@ from typing import Any, Literal
 
 # ── Path constants ──────────────────────────────────────────────────────────────
 
-ROOT = Path("/home/skynet/cabala-dos-caminhos")
+ROOT = Path(__file__).resolve().parent.parent if '__file__' in globals() else Path.cwd()
 MA = ROOT / ".autonomous" / "multi-agent"
 PACER_STATE_FILE = MA / "pacer-state.json"
 

@@ -6,7 +6,7 @@ intelligent routing, result aggregation, and performance tracking.
 
 from __future__ import annotations
 
-import heapq, json, os, signal, subprocess, sys, threading, time, uuid
+import heapq, json, os, signal, shutil, subprocess, sys, threading, time, uuid
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Any
 
 # ── paths ───────────────────────────────────────────────────────────────────────
-ROOT = Path("/home/skynet/cabala-dos-caminhos")
+ROOT = Path(__file__).resolve().parent.parent if '__file__' in globals() else Path.cwd()
 MA = ROOT / ".autonomous" / "multi-agent"
 LOGS_DIR = MA / "logs"
 RESULTS_DIR = MA / "agent-results"
@@ -206,7 +206,7 @@ def _build_script(agent_id: str, tags: list[str]) -> str:
         root=repr(str(ROOT)), root_repr=repr(str(ROOT)),
         ma_path=str(MA), agent_id=agent_id,
         tags=repr(tags), areas=_AREAS_DICT,
-        omp=repr("/home/skynet/.bun/bin/omp"),
+        omp=repr(str(ROOT / ".local/bin/omp")),
         py=repr(str(ROOT / ".headroom-venv/bin/python")),
     )
 

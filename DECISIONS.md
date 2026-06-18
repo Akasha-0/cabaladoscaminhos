@@ -309,3 +309,20 @@ The profile is:
 - DELETE e GET partilham o mesmo padrao de authorization check
 
 **Source:** `apps/akasha-portal/src/app/api/akasha/conexoes/[id]/route.ts`
+
+## SSOT Consolidation — 2026-06-18
+
+### Decision: v2 modules become canonical; v1 archived
+**Evidence**: `akasha-loop-daemon.py` (the running canonical daemon per `run-24-7.sh`) imports exclusively v2 versions of all core engine modules. v1 modules were orphaned.
+**Action**: Archived v1 modules to `archived/v1-modules/`. Renamed v2 → canonical (no `_v2` suffix). Updated imports in daemon.
+**Registered by**: §3 SSOT constitution rule.
+
+### Decision: v9 daemon becomes canonical; v4/v5 references purged
+**Evidence**: `akasha-loop-daemon-v5.py` does not exist on disk (despite AGENTS.md reference). `akasha-loop-daemon-v4.py` does not exist. v9 is what `run-24-7.sh` actually invokes.
+**Action**: Renamed v9 → `akasha-loop-daemon.py`. Updated `run-24-7.sh` entrypoint. Purged stale v5/v4 references from docs.
+**Registered by**: §3 SSOT constitution rule.
+
+### Decision: Portable ROOT via git rev-parse
+**Evidence**: `run-24-7.sh` hardcoded `/home/skynet/cabala-dos-caminhos` — violates §3 portability requirement.
+**Action**: Replaced with `ROOT="$(git rev-parse --show-toplevel)"`.
+**Registered by**: §3 SSOT constitution rule.

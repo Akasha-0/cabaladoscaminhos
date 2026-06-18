@@ -98,8 +98,8 @@ Default section order:
 
 When the user requests a durable behavior change, record it here or in the relevant child AGENTS.md
 
-**akasha-loop-daemon-v9** (PRIMARY): 24/7 Autonomous Evolution Engine v9.
-  Script: `.autonomous/multi-agent/akasha-loop-daemon-v9.py` (v9, 74KB, fully integrated).
+**akasha-loop-daemon** (PRIMARY): 24/7 Autonomous Evolution Engine v9.
+  Script: `.autonomous/multi-agent/akasha-loop-daemon.py` ((canonical, evolved from v9)).
   Start: `bash .autonomous/multi-agent/run-24-7.sh start` (or `run-loop-supervised.sh`).
   Flow: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE.
   v1 subsystems (8): Guardian, Memory Manager, Telemetry, Adaptive Pacer, SelfHealer,
@@ -133,7 +133,7 @@ When the user requests a durable behavior change, record it here or in the relev
 
 ## Child DOX Index
 
-  - `multi-agent/akasha-loop-daemon-v9.py` — 24/7 autonomous daemon v9 (PRIMARY)
+  - `multi-agent/akasha-loop-daemon.py` — 24/7 autonomous daemon (canonical, evolved from v9)
   - `multi-agent/akasha-evolution-loop-v2.py` — standalone loop v2 (active)
   - `multi-agent/akasha-loop-daemon.py` — socket daemon v3 (legacy)
   - `multi-agent/guardian.py` — process supervisor with exponential backoff restart
