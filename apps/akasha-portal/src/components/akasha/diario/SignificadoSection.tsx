@@ -37,6 +37,7 @@ export interface SignificadoSectionProps {
   pilares: PilaresDoMandato;
   pilarPrincipal: Pilar;
   significados: SignificadosPorPilar;
+  locale: string;
 }
 
 function cardStyle(borderColor: string, isOpen: boolean): React.CSSProperties {

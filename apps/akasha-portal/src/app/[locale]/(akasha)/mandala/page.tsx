@@ -3,9 +3,10 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import MandalaChart from '@/components/akasha/MandalaChart';
 import { MandalaNarrativeLoader } from '@/components/akasha/MandalaNarrativeLoader';
+import { MandalaAuthorityBlock } from '@/components/akasha/MandalaAuthorityBlock';
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import { formatDegreeToZodiac } from '@/lib/shared/zodiac';
-
+import type { AkashaSynthesisUI } from '@/components/akasha/dashboard/hooks/useAkashaSynthesis';
 export const metadata = {
   title: 'Minha Mandala',
   description: 'Sua Mandala Akáshica — os 5 pilares da sua existência.',
@@ -16,6 +17,20 @@ function getSaudacao(): string {
   if (h < 12) return 'Bom despertar —';
   if (h < 18) return 'Boa tarde —';
   return 'Boa noite —';
+}
+/** Build a Partial<PilaresDados> from MandalaData for F-227 authority derivation */
+function buildAuthorityPilares(data: { kabala?: { lifePath?: number | null }; tantra?: { soul?: number | null }; astrology?: { ascendant?: string | null; lua_signo?: string } }): Partial<import('@/lib/grimoire/significados-curados').PilaresDados> {
+  return {
+    cabala: data.kabala?.lifePath != null
+      ? { life_path: data.kabala.lifePath, birthday: 0, expression: 0, ano_pessoal: 0 }
+      : undefined,
+    tantrica: data.tantra?.soul != null
+      ? { corpo_predominante: data.tantra.soul, trigemeo: 'fisico' as const, temperamento_atual: 'sanguineo' as const }
+      : undefined,
+    astrologia: data.astrology?.ascendant != null
+      ? { sol_signo: data.astrology.ascendant ?? '', asc_signo: data.astrology.ascendant, lua_signo: data.astrology.lua_signo ?? 'desconhecido', lua_fase: 'cheia' as const, trinity: { sombra: 0, dom: 0, graca: 0 }, trinity_dominante: 'dom' as const, lilith_signo: null, casa_8_signo: null }
+      : undefined,
+  };
 }
 
 export default async function MandalaPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -112,6 +127,10 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
         <MandalaNarrativeLoader locale={locale} />
       </div>
 
+      {/* F-227: Akasha Authority Prompt — appears above MandalaChart when synthesis is available */}
+      <div className="w-full max-w-xl">
+        <MandalaAuthorityBlock pilares={buildAuthorityPilares(data)} />
+      </div>
       <MandalaChart data={data} />
 
       {/* Painel explicativo dos 5 Pilares + Mandato do dia */}

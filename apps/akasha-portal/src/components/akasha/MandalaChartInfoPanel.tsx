@@ -5,14 +5,17 @@ export function InfoPanel({
   title,
   subtitle,
   children,
+  className = '',
 }: {
   color: string;
   title: string;
   subtitle: string;
   children: ReactNode;
+  className?: string;
 }) {
   return (
     <div
+      className={`info-panel ${className}`.trim()}
       style={{
         background: 'rgba(11,14,28,0.88)',
         border: `1px solid ${color}33`,

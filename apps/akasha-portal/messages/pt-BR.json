@@ -44,6 +44,8 @@
     "noLayerSelected": "Nenhuma camada selecionada",
     "layerClosed": "Camada fechada",
     "emptyState": "Selecione uma camada para explorar",
+    "emptyStateMessage": "Selecione uma camada para revelar seus dados e orientações práticas.",
+    "layerSelectorAriaLabel": "Camadas da Mandala — selecione para revelar significados",
     "layerTooltip1": "Linha Ancestral — Odu e Orixá",
     "layerTooltip2": "Linha Numérica — Número de Vida, Expressão e Motivação",
     "layerTooltip3": "Linha Energética — Corpos Tantricos",

@@ -70,6 +70,8 @@ export interface AkashaAuthority {
   readonly areaFoco: Area;
   /** Síntese de 1-2 frases: o que fazer HOJE */
   readonly decisaoHoje: string;
+  /** Prática diária derivada da autoridade */
+  readonly praticaDiaria: string;
 }
 
 /**
@@ -210,6 +212,7 @@ export function deriveAkashaAuthority(pilares: Partial<PilaresDados>): AkashaAut
     timing,
     areaFoco,
     decisaoHoje,
+    praticaDiaria: `Centre-se na área de ${areaFoco}: ${autoridade === 'sagrada' ? 'confirme no corpo antes de agir' : autoridade === 'emocional' ? 'aceda à paz antes de decidir' : autoridade === 'esplénica' ? 'espere o "sim" intuitivo' : 'reflita com clareza e sem ansiedade'}`,
   };
 }
 

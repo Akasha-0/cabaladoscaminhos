@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { MandalaMiniBadge } from './MandalaMiniBadge';
 
 interface DiarioScrollContainerProps {
@@ -19,6 +20,7 @@ export function DiarioScrollContainer({
   totalSections = 5,
   locale,
 }: DiarioScrollContainerProps) {
+  const [currentSection] = useState(1);
   const formattedDate = new Date(date + 'T12:00:00').toLocaleDateString(locale || 'pt-BR', {
     weekday: 'long',
     day: 'numeric',
@@ -36,8 +38,8 @@ export function DiarioScrollContainer({
             {formattedDate}
           </time>
           <MandalaMiniBadge phase={pilarPrincipal} color={pilarInfo.cor} size="sm" />
-          <span className="text-[0.75rem] text-white/40 font-light tabular-nums">
-            {totalSections}/5
+          <span data-testid="section-counter" className="text-[0.75rem] text-white/40 font-light tabular-nums">
+            {currentSection}/{totalSections}
           </span>
         </div>
       </header>

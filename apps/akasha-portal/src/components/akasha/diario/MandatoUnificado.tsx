@@ -8,20 +8,7 @@
  */
 import { useState, useEffect } from 'react';
 import type { MandatoEsqueleto, MentorHook } from './types';
-import { ESCALA_LABELS } from './types';
-
-const C = {
-  violeta: '#7C5CFF',
-  aurora: '#2DD4BF',
-  dourado: '#F0B429',
-  magenta: '#FB5781',
-  bgVoid: '#06070F',
-  bgDeep: '#0B0E1C',
-  bgNeb: '#141A33',
-  txtPri: '#F4F5FF',
-  txtSec: '#A7AECF',
-  txtMut: '#5C6691',
-} as const;
+import { ESCALA_LABELS, C } from './types';
 
 const PILAR_COR: Record<string, string> = {
   cabala: C.violeta,
@@ -43,12 +30,13 @@ function formatDate(iso: string): string {
   }
 }
 
-interface MandatoUnificadoProps {
+export interface MandatoUnificadoProps {
   date: string;
   mandato: MandatoEsqueleto;
   mentor_hook: MentorHook;
   frases: string[];
   pilarInfo: { nome: string; cor: string };
+  locale: string;
 }
 
 export function MandatoUnificado({
@@ -57,6 +45,7 @@ export function MandatoUnificado({
   mentor_hook,
   frases,
   pilarInfo,
+  locale: _locale,
 }: MandatoUnificadoProps) {
   const crise = mentor_hook.crise_detectada;
   const [perguntaOpen, setPerguntaOpen] = useState(false);

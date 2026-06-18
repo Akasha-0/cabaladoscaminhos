@@ -57,7 +57,7 @@ describe('buildSynthesisParagraph', () => {
     const shadowArea = makeArea({ frequency: 'shadow', shadowPattern: 'Padrão de sombra.' });
     const result = buildSynthesisParagraph(giftArea, shadowArea, shadowArea, shadowArea, shadowArea, shadowArea);
     expect(result).toContain('Dom');
-    expect(result).toContain('capacidade de transformar');
+    expect(result).toContain('capacidade de transformação');
   });
 
   it('falls back to shadow text when no gift areas exist', () => {
@@ -68,9 +68,10 @@ describe('buildSynthesisParagraph', () => {
   });
 
   it('falls back to transformation text when no gift and no shadow areas exist', () => {
+    // With empty giftStrengths the mid sentence uses the default fallback
     const neutralArea = makeArea({ frequency: 'gift', giftStrengths: [] });
     const result = buildSynthesisParagraph(neutralArea, neutralArea, neutralArea, neutralArea, neutralArea, neutralArea);
-    expect(result).toContain('Continue o trabalho interior');
+    expect(result).toContain('sua capacidade de transformar');
   });
 
   it('returns a string with exactly 3 sentences (intro + mid + action)', () => {

@@ -44,6 +44,8 @@
     "noLayerSelected": "No layer selected",
     "layerClosed": "Layer closed",
     "emptyState": "Select a layer to explore",
+    "emptyStateMessage": "Tap a layer to reveal your data and practical guidance.",
+    "layerSelectorAriaLabel": "Mandala layers — select to reveal meanings",
     "layerTooltip1": "Ancestral Line — Odu and Orixá",
     "layerTooltip2": "Numeric Line — Life Path, Expression and Motivation",
     "layerTooltip3": "Energy Line — Tantric Bodies",

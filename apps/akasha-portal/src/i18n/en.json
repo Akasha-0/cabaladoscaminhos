@@ -102,5 +102,60 @@
     "noDataAlignment": "No alignment data yet",
     "noDataFrequency": "No frequency data yet",
     "noDataRituals": "Rituals will appear as history grows"
+  },
+  "diario": {
+    "scrollContainer": {
+      "headerLabel": "Diary Header"
+    },
+    "mandato": {
+      "escalaPrefix": "Mandate · Scale",
+      "vozDoAkasha": "The Voice of Akasha",
+      "leiaEmVozAlta": "Read aloud. Notice what resonates most.",
+      "tresFrasesDesc": "Three phrases that condense the energetic message of your chart for today.",
+      "roleParaBaixo": "Scroll down for the next section ↓",
+      "fontes": "Sources",
+      "perguntaDoDia": "The Question of the Day",
+      "respire": "Breathe. Let the answer emerge before seeking words.",
+      "textareaPlaceholder": "What's the first answer that comes, before the mind judges?",
+      "salvoLocal": "Saved only in your browser — no server submission.",
+      "intencaoDoDia": "Intention of the day",
+      "suaSemente": "Your seed of the day — intention derived from your chart",
+      "cvvRecurso": "Human resource · CVV 188",
+      "voceNaoEstaSozinho": "You are not alone.",
+      "cvvReconhece": "The Akasha Mentor recognizes signs of emotional distress in your intention and, by ethical design, steps back. Talk now with someone trained to listen, for free and 24h:",
+      "cvvNome": "CVV — Centro de Valorização da Vida",
+      "cvvLigue": "call 188",
+      "cvvChat": "chat also:",
+      "cvvSite": "cvv.org.br"
+    },
+    "authority": {
+      "autoridadeAkashica": "Akáshic Authority",
+      "suaAutoridade": "Your Authority",
+      "regraDeHoje": "Rule of today",
+      "melhorJanela": "Best window",
+      "evite": "Avoid",
+      "praticaDoDia": "Practice of the day"
+    },
+    "ritual": {
+      "microRitual": "The Micro-Ritual",
+      "porQueEsteRitual": "Why this ritual?",
+      "consultarOraculo": "Consult Oracle →",
+      "explicaContaCantiga": "Cabalistic Numerology works with numbers as resonance codes. This ritual activates the vibration of your base number in the context of the day.",
+      "explicaRespiracao": "Astrology asks you to align with the celestial rhythm. Breathing with the Moon and the sign dissolves mental resistance.",
+      "explicaVarredura": "Tantric Numerology holds that each subtle body carries memories. Passing 11 breaths through each one mobilizes dormant energy.",
+      "explicaOracao": "The Birth Odu is your oral signature. Thanking the Ori before acting establishes presence and discernment.",
+      "explicaIching": "The I Ching reveals ongoing mutations. Writing 1 word per mutable line anchors perception before the mind interprets."
+    },
+    "significado": {
+      "titulo": "Meaning of the Pillars",
+      "instrucao": "Read each Pillar in order. Note the Shadow first (what you tend to refuse), then the Practice (the antidote). In the end, see how they connect.",
+      "principal": "main",
+      "indisponivel": "Meaning not available for {pilar}."
+    },
+    "areas": {
+      "titulo": "Areas of Life",
+      "descricao": "Pilar {pilar} translated for each area.",
+      "leiaInstrucao": "Read from left to right — from professional to intimate."
+    }
   }
 }

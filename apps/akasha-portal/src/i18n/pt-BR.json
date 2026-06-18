@@ -102,5 +102,60 @@
     "noDataAlignment": "Sem dados de alinhamento ainda",
     "noDataFrequency": "Sem dados de frequência ainda",
     "noDataRituals": "Rituais serão exibidos conforme o histórico cresce"
+  },
+  "diario": {
+    "scrollContainer": {
+      "headerLabel": "Cabeçalho do diário"
+    },
+    "mandato": {
+      "escalaPrefix": "Mandato · Escala",
+      "vozDoAkasha": "A Voz do Akasha",
+      "leiaEmVozAlta": "Leia em voz alta. Observe o que mais ressoa.",
+      "tresFrasesDesc": "Três frases que condensam a mensagem energética do seu mapa para hoje.",
+      "roleParaBaixo": "Role para baixo para a próxima seção ↓",
+      "fontes": "Fontes",
+      "perguntaDoDia": "A Pergunta do Dia",
+      "respire": "Respire. Deixe a resposta emergir antes de buscar palavras.",
+      "textareaPlaceholder": "Qual é a primeira resposta que vem, antes da mente juzgar?",
+      "salvoLocal": "Salvo apenas no seu navegador — sem envio ao servidor.",
+      "intencaoDoDia": "Intenção do dia",
+      "suaSemente": "Sua semente do dia — intenção derivada do seu mapa",
+      "cvvRecurso": "Recurso humano · CVV 188",
+      "voceNaoEstaSozinho": "Você não está sozinho(a).",
+      "cvvReconhece": "O Mentor Akasha reconhece sinais de sofrimento emocional na sua intenção e, por design ético, se afasta. Fale agora com alguém treinado para ouvir, gratuitamente e 24h:",
+      "cvvNome": "CVV — Centro de Valorização da Vida",
+      "cvvLigue": "ligue 188",
+      "cvvChat": "chat também:",
+      "cvvSite": "cvv.org.br"
+    },
+    "authority": {
+      "autoridadeAkashica": "Autoridade Akáshica",
+      "suaAutoridade": "Sua Autoridade",
+      "regraDeHoje": "Regra de hoje",
+      "melhorJanela": "Melhor janela",
+      "evite": "Evite",
+      "praticaDoDia": "Prática do dia"
+    },
+    "ritual": {
+      "microRitual": "O Micro-Ritual",
+      "porQueEsteRitual": "Por que este ritual?",
+      "consultarOraculo": "Consultar Oráculo →",
+      "explicaContaCantiga": "A Numerologia Cabalística trabalha com números como códigos de ressonância. Este ritual ativa a vibração do seu número-base no contexto do dia.",
+      "explicaRespiracao": "A Astrologia pede que você se alinhe com o ritmo celeste. Respirar com a Lua e o signo dissolve a resistência mental.",
+      "explicaVarredura": "A Numerologia Tântrica sustenta que cada corpo sutil carrega memórias. Passar 11 respirações por cada um mobiliza energia adormecida.",
+      "explicaOracao": "O Odu de Nascimento é a sua assinatura oral. Agradecer ao Ori antes de agir estabelece presença e discernimento.",
+      "explicaIching": "O I Ching revela mutações em curso. Escrever 1 palavra por linha mutável ancora a percepção antes que a mente interprete."
+    },
+    "significado": {
+      "titulo": "Significado dos Pilares",
+      "instrucao": "Leia cada Pilar na ordem. Note a Sombra primeiro (o que tende a recusar), depois a Prática (o antídoto). Ao final, veja como se conectam.",
+      "principal": "principal",
+      "indisponivel": "Significado não disponível para {pilar}."
+    },
+    "areas": {
+      "titulo": "Áreas da Vida",
+      "descricao": "Pilar {pilar} traduzido para cada área.",
+      "leiaInstrucao": "Leia da esquerda para direita — do profissional ao íntimo."
+    }
   }
 }

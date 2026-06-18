@@ -2,7 +2,7 @@
  * Shared types for Diario components.
  * Extracted from page.tsx (F-235).
  */
-import type { PilaresDados, Pilar } from '@/lib/grimoire/significados-curados';
+import type { PilaresDados } from '@/lib/grimoire/significados-curados';
 
 export const C = {
   violeta: '#7C5CFF',
@@ -45,6 +45,7 @@ export type MentorHook = {
   recurso: string | null;
 };
 
+/** Pillar data from mandato-do-dia API (subset of PilaresDados) */
 export type PilaresDoMandato = {
   cabala: { life_path: number; birthday: number; expression: number; ano_pessoal: number };
   astrologia: {
@@ -67,6 +68,12 @@ export type MandatoDoDiaResponse = {
   pilares: PilaresDoMandato;
   mentor_hook: MentorHook;
 };
+
+/** Shape of GET /api/akasha/daily — includes ritual from daily_reading */
+export interface DailyResponse {
+  date: string;
+  ritual: object | string | null;
+}
 
 export type DailyRitualUI = {
   titulo: string;

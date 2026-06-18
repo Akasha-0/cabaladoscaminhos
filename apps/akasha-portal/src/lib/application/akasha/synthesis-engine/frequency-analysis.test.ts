@@ -6,7 +6,8 @@
  */
 import { describe, it, expect } from 'vitest';
 import { assessAreaFrequency, deriveDominantFrequency, computeOverallScore, deriveActiveSequence } from './frequency-analysis';
-import type { AreaNarrative, AstrologyMap, KabalisticMap, TantricMap, OduBirth } from './synthesis-types';
+import type { AreaNarrative } from './synthesis-types';
+import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/types';
 
 // Minimal map fixtures (only fields actually read by assessAreaFrequency)
 function makeAstro(overrides: Partial<AstrologyMap> = {}): AstrologyMap {
@@ -100,13 +101,14 @@ describe('assessAreaFrequency', () => {
     expect(result.intensity).toBe(3);
   });
 
-  it('returns gift when no shadow signals and giftScore >= 2', () => {
+  it('returns siddhi when noShadow + lifePathMaster (soul non-master → siddhi intensity 2)', () => {
     const astro = makeAstro();
     const kab = makeKab({ lifePathMaster: true });
-    const tantra = makeTantra({ soul: 7 }); // soul=7 → no siddhi bonus, but lifePathMaster gives giftScore >= 2
+    const tantra = makeTantra({ soul: 7 }); // soul=7 → no siddhi bonus, lifePathMaster → giftScore=2
     const result = assessAreaFrequency(astro, kab, tantra, makeOdu(), 'oriCabecaQuizilas');
-    // With lifePathMaster=true → giftScore=2, shadowScore=0 → gift
-    expect(result.frequency).toBe('gift');
+    // With noShadow + lifePathMaster + non-master soul → siddhi intensity 2 (not gift)
+    expect(result.frequency).toBe('siddhi');
+    expect(result.intensity).toBe(2);
   });
 
   it('returns shadow (intensity 1) as default when scores are tied', () => {
@@ -119,18 +121,20 @@ describe('assessAreaFrequency', () => {
 });
 
 describe('deriveDominantFrequency', () => {
-  it('returns siddhi when 3 or more areas are siddhi', () => {
+  it('returns gift when gifts > shadows (only 2 siddhi < 3 threshold)', () => {
     const s = () => makeAreaNarrative('siddhi', 3);
     const g = () => makeAreaNarrative('gift', 2);
     const result = deriveDominantFrequency(s(), s(), g(), g(), g(), g());
-    expect(result).toBe('siddhi');
+    // 2 siddhi (< 3), 4 gift → gifts > shadows → gift
+    expect(result).toBe('gift');
   });
 
-  it('returns gift when gifts > shadows', () => {
+  it('returns shadow when gifts == shadows (tie → shadow)', () => {
     const g = () => makeAreaNarrative('gift', 2);
     const s = () => makeAreaNarrative('shadow', 2);
     const result = deriveDominantFrequency(g(), g(), g(), s(), s(), s());
-    expect(result).toBe('gift');
+    // 3 gift, 3 shadow → gifts NOT > shadows → shadow
+    expect(result).toBe('shadow');
   });
 
   it('returns shadow when shadows >= gifts', () => {

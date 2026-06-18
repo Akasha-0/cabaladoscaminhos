@@ -19,12 +19,14 @@ import { redirect } from 'next/navigation';
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import {
   significadosEspecificos,
-  type SignificadoCurado,
   type Pilar,
+  type PilaresDados,
 } from '@/lib/grimoire/significados-curados';
+import { deriveAkashaAuthority } from '@/lib/grimoire/synthesis/synthesizer';
+import { praticaAuthorityDiaria } from '@/lib/grimoire/akasha-authority';
 
 import { C } from '@/components/akasha/diario/types';
-import type { MandatoDoDiaResponse, DailyRitualUI } from '@/components/akasha/diario/types';
+import type { MandatoDoDiaResponse, DailyResponse, DailyRitualUI } from '@/components/akasha/diario/types';
 import { DiarioScrollContainer } from '@/components/akasha/diario/DiarioScrollContainer';
 import { MandatoUnificado } from '@/components/akasha/diario/MandatoUnificado';
 import { RitualSection } from '@/components/akasha/diario/RitualSection';
@@ -43,7 +45,6 @@ export const metadata = {
   },
 };
 
-
 export default async function DiarioPage({
   params,
   searchParams,
@@ -61,20 +62,22 @@ export default async function DiarioPage({
   if (authStatus !== 'refreshed' && !verifyAkashaToken(token, 'access'))
     redirect(`/${locale}/login`);
 
-  // Data fetch
+  // Parallel fetch: /mandato-do-dia (pilares + autoridade synthesis) + /daily (ritual)
   const qs = intencao?.trim() ? `?intencao=${encodeURIComponent(intencao.trim())}` : '';
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia${qs}`,
-    {
-      method: 'GET',
-      headers: { Cookie: `${AKASHA_TOKEN_COOKIE}=${token}` },
-      cache: 'no-store',
-    }
-  );
+  const [mandatoRes, dailyRes] = await Promise.all([
+    fetch(
+      `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia${qs}`,
+      { method: 'GET', headers: { Cookie: `${AKASHA_TOKEN_COOKIE}=${token}` }, cache: 'no-store' }
+    ),
+    fetch(
+      `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/daily`,
+      { method: 'GET', headers: { Cookie: `${AKASHA_TOKEN_COOKIE}=${token}` }, cache: 'no-store' }
+    ),
+  ]);
 
-  if (res.status === 401 || res.status === 404) redirect(`/${locale}/login`);
+  if (mandatoRes.status === 401 || mandatoRes.status === 404) redirect(`/${locale}/login`);
 
-  if (!res.ok) {
+  if (!mandatoRes.ok) {
     return (
       <div className="min-h-dvh bg-[#06070F] flex items-center justify-center p-6">
         <div className="bg-[rgba(11,14,28,0.72)] backdrop-blur-xl border border-[#FB5781]/40 border-l-4 border-l-[#FB5781] rounded-2xl p-6 max-w-md w-full">
@@ -82,27 +85,48 @@ export default async function DiarioPage({
             Mandato indisponível
           </span>
           <p className="text-[0.9rem] leading-relaxed text-[#A7AECF]">
-            Não conseguimos calcular o Mandato de hoje ({res.status}). Tente novamente em alguns instantes.
+            Não conseguimos calcular o Mandato de hoje ({mandatoRes.status}). Tente novamente em alguns instantes.
           </p>
         </div>
       </div>
     );
   }
 
-  const payload: MandatoDoDiaResponse = await res.json();
+  const payload: MandatoDoDiaResponse = await mandatoRes.json();
   const { date, mandato, pilares, mentor_hook } = payload;
 
   const pilarPrincipal = (mandato.pilares_relevantes[0] ?? 'cabala') as Pilar;
   const pilarInfo = { nome: pilarPrincipal, cor: C.violeta };
   const crise = mentor_hook.crise_detectada;
 
-  const frases = crise ? [] : extractFrasesFallback(mandato.redacao_bruta);
-  const ritual = buildRitual(pilarPrincipal);
-  const authority = buildAuthority();
+  // ── Derive real Akasha Authority from pilares (F-227 synthesis engine) ──
+  const pilaresParciais: Partial<PilaresDados> = pilares as Partial<PilaresDados>;
+  const authorityRaw = deriveAkashaAuthority(pilaresParciais);
+  const authority = {
+    ...authorityRaw,
+    praticaDiaria: praticaAuthorityDiaria(pilaresParciais),
+  };
 
-  const significados = significadosEspecificos(
-    pilares as unknown as Parameters<typeof significadosEspecificos>[0]
-  );
+  // ── Ritual from /daily API with per-pilar fallback ───────────────────
+  let ritual: DailyRitualUI;
+  if (dailyRes.ok) {
+    const dailyPayload: DailyResponse = await dailyRes.json();
+    if (dailyPayload.ritual && typeof dailyPayload.ritual === 'object') {
+      const r = dailyPayload.ritual as { titulo?: string; instrucao?: string; cor?: string };
+      if (r.titulo && r.instrucao) {
+        ritual = { titulo: r.titulo, instrucao: r.instrucao, cor: r.cor ?? pilarInfo.cor };
+      } else {
+        ritual = buildRitualFallback(pilarPrincipal);
+      }
+    } else {
+      ritual = buildRitualFallback(pilarPrincipal);
+    }
+  } else {
+    ritual = buildRitualFallback(pilarPrincipal);
+  }
+
+  const frases = crise ? [] : extractFrasesFallback(mandato.redacao_bruta);
+  const significados = significadosEspecificos(pilares as unknown as PilaresDados);
 
   return (
     <DiarioScrollContainer
@@ -119,6 +143,7 @@ export default async function DiarioPage({
           mentor_hook={mentor_hook}
           frases={frases}
           pilarInfo={pilarInfo}
+          locale={locale}
         />
       </div>
 
@@ -129,7 +154,7 @@ export default async function DiarioPage({
       <div className="max-w-xl mx-auto w-full px-5 py-4">
         <DiarioAuthorityBlock
           authority={authority}
-          pilares={pilares as unknown as never}
+          pilares={pilaresParciais}
           locale={locale}
         />
       </div>
@@ -139,16 +164,18 @@ export default async function DiarioPage({
           pilares={pilares}
           pilarPrincipal={pilarPrincipal}
           significados={significados}
+          locale={locale}
         />
       </div>
 
       <div className="max-w-xl mx-auto w-full px-5 py-4 pb-16">
-        <AreasSection pilarPrincipal={pilarPrincipal} pilarInfo={pilarInfo} />
+        <AreasSection pilarPrincipal={pilarPrincipal} pilarInfo={pilarInfo} locale={locale} />
       </div>
     </DiarioScrollContainer>
   );
 }
 
+/** Server-side utility: splits redacao_bruta into 1–3 sentences for the pergunta card. */
 function extractFrasesFallback(redacao: string): string[] {
   const cleaned = redacao.replace(/\s*\(LLM redige.*?\)\.?\s*$/i, '').trim();
   const raw = cleaned
@@ -159,7 +186,8 @@ function extractFrasesFallback(redacao: string): string[] {
   return raw.length > 0 ? [cleaned] : ['(Mandato vazio — tente novamente)'];
 }
 
-function buildRitual(pilarPrincipal: string): DailyRitualUI {
+/** Per-pilar ritual fallback — used when /daily API is unavailable. */
+function buildRitualFallback(pilarPrincipal: string): DailyRitualUI {
   const mapa: Record<string, { titulo: string; instrucao: string }> = {
     cabala: {
       titulo: 'Conta-Cantiga',
@@ -188,24 +216,4 @@ function buildRitual(pilarPrincipal: string): DailyRitualUI {
       instrucao: 'Sente-se, respire e anote o primeiro pensamento que surgir.',
     }
   );
-}
-
-function buildAuthority(): {
-  estrategia: 'act' | 'wait' | 'observe' | 'surrender';
-  autoridade: 'emocional' | 'sagrada' | 'esplénica' | 'mental';
-  explicacao: string;
-  regra: { condicao: string; accao: string };
-  timing: { melhor: string; pior: string };
-  decisaoHoje: string;
-  praticaDiaria: string;
-} {
-  return {
-    estrategia: 'observe',
-    autoridade: 'mental',
-    explicacao: 'Observe antes de agir.',
-    regra: { condicao: 'Quando há incerteza', accao: 'Observe sem julgue' },
-    timing: { melhor: 'Manhã', pior: 'Noite' },
-    decisaoHoje: 'Aguarde clareza',
-    praticaDiaria: 'Respire antes de decidir',
-  };
 }

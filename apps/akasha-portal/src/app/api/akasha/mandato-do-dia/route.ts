@@ -23,6 +23,7 @@
  *   400 — dados natais incompletos ou input inválido
  *   401 — sem sessão
  *   404 — sem Mapa Natal persistido (redireciona ao onboarding)
+ *   429 — rate limit excedido
  *   500 — falha inesperada de cálculo
  *
  * IMPORTANTE (Ethics Charter §5 — Pilar 3):
@@ -31,6 +32,11 @@
  *   'CVV-188' e o cliente deve EXIBIR a sugestão de recurso humano
  *   em vez de renderizar `redacao_bruta` no Mentor.
  */
+import {
+  checkMemoryRateLimit,
+  API_RATE_LIMIT_CONFIG,
+  API_RATE_LIMIT_KEY_PREFIX,
+} from '@/lib/infrastructure/rate-limit';
 import { AkashaInputSchema, calcular, type MandatoEsqueleto } from '@akasha/core';
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
@@ -38,6 +44,9 @@ import { prisma } from '@/lib/infrastructure/prisma';
 
 // Intent default — primeira chamada sem query param.
 const INTENCAO_DEFAULT = 'buscar clareza para o dia';
+
+// Intent max length — prevents prompt overflow attacks (Security Finding #2 High).
+const INTENCAO_MAX = 500;
 
 function formatISODate(d: Date): string {
   return d.toISOString().split('T')[0];
@@ -57,8 +66,21 @@ export async function GET(request: NextRequest) {
   if (authResult instanceof NextResponse) return authResult;
   const { id: userId, name } = authResult;
 
-  // 2. Resolver intent (query param → default validado).
+  // 1b. Rate limit — critical security fix (Finding #1 Critical).
+  const rateLimit = checkMemoryRateLimit(
+    `${API_RATE_LIMIT_KEY_PREFIX}:${userId}`,
+    API_RATE_LIMIT_CONFIG,
+  );
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: 'Muitas solicitações — tente novamente em alguns minutos' },
+      { status: 429 },
+    );
+  }
+
+  // 2. Resolver intent (query param → default → capped).
   const rawIntencao = request.nextUrl.searchParams.get('intencao')?.trim() ?? INTENCAO_DEFAULT;
+  const sanitizedIntencao = rawIntencao.slice(0, INTENCAO_MAX);
 
   // 3. Carregar birthChart + dados natais do usuário.
   const [birthChart, user] = await Promise.all([
@@ -72,14 +94,14 @@ export async function GET(request: NextRequest) {
   if (!birthChart) {
     return NextResponse.json(
       { error: 'Mapa natal não encontrado — conclua o onboarding' },
-      { status: 404 }
+      { status: 404 },
     );
   }
 
   if (!user?.birthDate) {
     return NextResponse.json(
       { error: 'Dados natais incompletos — atualize seu perfil' },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -89,13 +111,13 @@ export async function GET(request: NextRequest) {
     data_nascimento: formatISODate(user.birthDate),
     hora_nascimento: parseHora(user.birthTime),
     local_nascimento: user.birthCity ?? 'local não informado',
-    intencao_inicial: rawIntencao,
+    intencao_inicial: sanitizedIntencao,
   });
 
   if (!inputParse.success) {
     return NextResponse.json(
       { error: 'Entrada inválida para cálculo do Mandato', details: inputParse.error.flatten() },
-      { status: 400 }
+      { status: 400 },
     );
   }
 

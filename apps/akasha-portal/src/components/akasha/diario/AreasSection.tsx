@@ -22,6 +22,7 @@ const TraducaoAreaPanel = dynamic(
 export interface AreasSectionProps {
   pilarPrincipal: Pilar;
   pilarInfo: { nome: string; cor: string };
+  locale: string;
 }
 
 function headerStyle(cor: string, isOpen: boolean): React.CSSProperties {
