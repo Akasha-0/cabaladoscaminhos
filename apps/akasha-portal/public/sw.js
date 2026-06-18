@@ -7,9 +7,7 @@
  *   e 503 com JSON se totalmente offline (o usuário vê aviso em vez de quebrar)
  * - HTML (navegação): stale-while-revalidate (mostra cache, atualiza em background)
  * - Demais /api/* sensíveis (consult, auth, credits): bypass — nunca cachear
- *
- * Versão: akasha-v0.0.4-pwa-v1. Incrementar invalida caches antigos.
- */
+ * Versão: akasha-v0.0.4-pwa-v2. Incrementar invalida caches antigos.
 const CACHE_VERSION = 'akasha-v0.0.4-pwa-v2';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const API_CACHE = `${CACHE_VERSION}-api`;
