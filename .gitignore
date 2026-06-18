@@ -191,3 +191,9 @@ playwright-report/
 
 # Fallow reports
 fallow-reports/
+
+# Akasha v2 runtime data dirs
+.autonomous/multi-agent/skill_patterns_v2/
+.autonomous/multi-agent/intelligence_v2/
+.autonomous/multi-agent/project_scanner_v2/
+.autonomous/multi-agent/circuit-breaker-v2.json
