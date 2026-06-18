@@ -43,70 +43,15 @@ interface DashboardProps {
 
 type TabType = 'daily' | 'profile' | 'progress';
 
-// Akasha Strategy Styling (Doc 26)
-const ESTRATEGIA_BG: Record<string, string> = {
-  act: 'rgba(45,212,191,0.06)',
-  wait: 'rgba(240,180,41,0.06)',
-  observe: 'rgba(124,92,255,0.06)',
-  surrender: 'rgba(196,62,142,0.06)',
-};
-
-const ESTRATEGIA_BORDER: Record<string, string> = {
-  act: 'rgba(45,212,191,0.2)',
-  wait: 'rgba(240,180,41,0.2)',
-  observe: 'rgba(124,92,255,0.2)',
-  surrender: 'rgba(196,62,142,0.2)',
-};
-
-const ESTRATEGIA_COLOR: Record<string, string> = {
-  act: '#2DD4BF',
-  wait: '#F0B429',
-  observe: '#7C5CFF',
-  surrender: '#C43E8E',
-};
-
-const ESTRATEGIA_LABEL: Record<string, string> = {
-  act: 'Aja',
-  wait: 'Espere',
-  observe: 'Observe',
-  surrender: 'Entregue',
-};
-
-
-// Helper to determine greeting based on local hour
-function getGreeting(): string {
-  const hr = new Date().getHours();
-  if (hr < 5) return 'Boa madrugada';
-  if (hr < 12) return 'Bom despertar';
-  if (hr < 18) return 'Boa tarde';
-  return 'Boa noite';
-}
-
-function getFormattedDate(): string {
-  return new Date().toLocaleDateString('pt-BR', { 
-    weekday: 'long', 
-    day: 'numeric', 
-    month: 'long' 
-  });
-}
-
-// Simple markdown renderer to highlight bold sections
-function renderNarrative(text: string, fontSize = '0.9rem'): React.ReactNode[] {
-  if (!text) return [];
-  const paragraphs = text.split('\n\n').filter(Boolean);
-  return paragraphs.map((para, i) => {
-    const parts = para.split(/\*\*(.+?)\*\*/g);
-    return (
-      <p key={i} style={{ fontSize }}>
-        {parts.map((part, j) =>
-          j % 2 === 1
-            ? <strong key={j} className="text-[#9D86FF] font-semibold">{part}</strong>
-            : <span key={j}>{part}</span>
-        )}
-      </p>
-    );
-  });
-}
+import {
+  ESTRATEGIA_BG,
+  ESTRATEGIA_BORDER,
+  ESTRATEGIA_COLOR,
+  ESTRATEGIA_LABEL,
+  getGreeting,
+  getFormattedDate,
+  renderNarrative,
+} from './dashboard-text';
 
 export function Dashboard({ userId, userName = 'Viajante', initialPilares, locale }: DashboardProps) {
   const [activeTab, setActiveTab] = useState<TabType>('daily');
