@@ -145,8 +145,23 @@ export function AkashaSignificadoCard({ lifePath, defaultNivel = 'gift' }: Props
         {(['shadow', 'gift', 'siddhi'] as Nivel[]).map((n) => (
           <button
             key={n}
-            aria-pressed={nivel === n}
             onClick={() => setNivel(n)}
+            style={{
+              flex: 1,
+              padding: '5px 4px',
+              borderRadius: 7,
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '0.65rem',
+              fontFamily: 'var(--font-cinzel, serif)',
+              letterSpacing: '0.04em',
+              background: nivel === n ? `${NIVEL_LABEL[n].cor}28` : 'transparent',
+              color: nivel === n ? NIVEL_LABEL[n].cor : '#a089b4',
+              transition: 'all 0.15s ease',
+            }}
+          >
+            {NIVEL_LABEL[n].titulo}
+          </button>
         ))}
       </div>
 

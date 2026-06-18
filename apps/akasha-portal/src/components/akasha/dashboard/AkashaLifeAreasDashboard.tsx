@@ -711,6 +711,8 @@ function AreaCard({ areaKey, narrative, modulation }: {
     >
       {/* Header — sempre visível */}
       <button
+        aria-expanded={expanded}
+        aria-controls={`area-content-${areaKey}`}
         onClick={() => setExpanded(v => !v)}
         className="w-full flex items-center gap-3 p-4 text-left"
       >
@@ -749,6 +751,7 @@ function AreaCard({ areaKey, narrative, modulation }: {
       <AnimatePresence>
         {expanded && (
           <motion.div
+            id={areaKey}
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
