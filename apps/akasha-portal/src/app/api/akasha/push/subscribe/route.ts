@@ -5,8 +5,7 @@ import {
   upsertPushSubscription,
   deletePushSubscription,
   getUserPushSubscriptions,
-  type PushSubscription,
-} from '@/lib/push/push-subscription-service';
+} from '@/lib/application/push/push-subscription-service';
 
 export interface PushSubscriptionPayload {
   endpoint: string;

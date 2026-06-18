@@ -39,7 +39,7 @@ vi.mock('@/lib/prisma', () => ({
   },
 }));
 
-vi.mock('@/lib/push/push-subscription-service', () => ({
+vi.mock('@/lib/application/push/push-subscription-service', () => ({
   upsertPushSubscription: (...args: unknown[]) => mockUpsertService(...args),
   deletePushSubscription: (...args: unknown[]) => mockDeleteService(...args),
   getUserPushSubscriptions: (...args: unknown[]) => mockGetUserSubs(...args),
