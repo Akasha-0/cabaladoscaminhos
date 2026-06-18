@@ -1498,14 +1498,7 @@ export const BASE: Record<number, HexagramaBase> = {
  *
  * Usar getIChingContribution() para obter versões ajustadas por nível.
  */
-export const ICHING_PRIMITIVES: Record<number, PrimitiveContribution[]> = Object.fromEntries(
-  Object.entries(BASE).map(([num, data]) => [
-    Number(num),
-    data.primitivos.map(({ primitivo, intensidade, polaridade, fonte }) => ({
-      primitivo: primitivo as PrimitiveContribution['primitivo'],
-      intensidade,
-      polaridade: polaridade as Polaridade,
-      fonte,
-    })),
-  ])
-) as Record<number, PrimitiveContribution[]>;
+import { compileIChingPrimitives } from './synthesis-engine/iching-primitives';
+
+export const ICHING_PRIMITIVES: Record<number, PrimitiveContribution[]> =
+  compileIChingPrimitives(BASE);
