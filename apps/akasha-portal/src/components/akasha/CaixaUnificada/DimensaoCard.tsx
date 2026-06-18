@@ -73,7 +73,7 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
   const hintTexto = locale in HINT ? HINT[locale] : HINT.pt;
   return (
     <article
-
+      aria-label={`${sintese.titulo}: ${sintese.descricao?.slice(0, 40) ?? ''}`}
       style={{
         background: DIMENSAO_BG[sintese.dimensoesId] ?? 'rgba(255,255,255,0.04)',
         border: `1px solid ${DIMENSAO_BORDER[sintese.dimensoesId] ?? 'rgba(255,255,255,0.1)'}`,
@@ -186,7 +186,7 @@ export function DimensaoCard({ sintese, index, locale = 'pt' }: DimensaoCardProp
                 return rawContent.slice(0, breakAt) + '\u2026';
               })()
             : rawContent;
-          return <p style={{ margin: 0, lineHeight: 1.55 }}>{truncated}</p>;
+          return <p style={{ margin: 0, lineHeight: 1.55, wordBreak: 'break-word', overflowWrap: 'break-word' }}>{truncated}</p>;
         })()}
       </div>
       {/* Conteúdo expandido */}

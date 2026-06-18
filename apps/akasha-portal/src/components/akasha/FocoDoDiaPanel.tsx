@@ -34,6 +34,7 @@ export function FocoDoDiaPanel({ foco }: { foco: FocoDoDia }) {
   const cor = CORES_DIMENSAO[foco.pilar];
   return (
     <article
+      aria-label={`Foco do dia: ${foco.area} · ${foco.pilar}`}
       data-pilar={foco.pilar}
       data-area={foco.area}
       style={{
@@ -163,7 +164,7 @@ export function FocoDoDiaPanel({ foco }: { foco: FocoDoDia }) {
 
       {/* Conexões que tocam esta Área */}
       {foco.conexoes.length > 0 && (
-        <section>
+        <section aria-label="Conexões entre Pilares">
           <span
             style={{
               fontSize: '0.65rem',

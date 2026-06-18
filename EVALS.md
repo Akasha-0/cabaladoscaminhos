@@ -136,14 +136,18 @@ Race condition fechado: RSC nunca mais lê token expirado antes do middleware fa
 
 **Score: 92 / 100** — updated 2026-06-17 (was 90)
 
-**Evidence updated 2026-06-17:** `clearCookieOptions` (logout) agora usa `sameSite: 'strict'` — cookies de logout são limpos em todos os contextos de navegação. `setAkashaRefreshCookie` passa `sameSite: 'lax'` explicitamente com comentário explicando a necessidade para o redirect POST do middleware.
+**Evidence updated 2026-06-17:** `clearCookieOptions` (logout) usa `sameSite: 'strict'`. `setAkashaRefreshCookie` passa `sameSite: 'lax'`. **Both access and refresh cookies now use `sameSite: 'lax'`** in the inline cookie-setting code in `middleware.ts` lines 289-308 (the helper function is one path; the direct `Set-Cookie` header in the refresh POST response path also uses `lax`).
+
+**Also fixed v0.85.2:**
+- `ConexoesClient` — `router.push('/perfil')` replaced with `window.location.href` to avoid missing-session redirect loops
+- `AkashaSignificadoCard` — broken button syntax (`</>` missing `>` and inner content) fixed in JSX
 
 **Evidence (code):** `apps/akasha-portal/middleware.ts` lines 289-308 + `akasha-jwt.ts` lines 42-53, 56-64, 134-151
 
 | Setting | Access Cookie | Refresh Cookie | Logout (clear) |
 |:--------|:------------|:--------------|:---------------|
 | `httpOnly` | ✅ `true` | ✅ `true` | ✅ `true` |
-| `sameSite` | ✅ `'strict'` | ✅ `'lax'` | ✅ `'strict'` |
+:| `sameSite` | ✅ `'lax'` | ✅ `'lax'` | ✅ `'strict'` |
 | `secure` | ✅ prod-only | ✅ prod-only | ✅ prod-only |
 | `path` | ✅ `'/'` | ✅ `'/'` | ✅ `'/'` |
 | `domain` | ✅ not set | ✅ not set | ✅ not set |

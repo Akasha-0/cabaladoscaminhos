@@ -94,6 +94,12 @@ export function InsightDoDiaPanel({ insight }: { insight: InsightDoDia }) {
             lineHeight: 1.6,
             margin: 0,
             fontFamily: 'var(--font-lora, serif)',
+            maxHeight: '4.8rem',
+            overflow: 'hidden',
+            display: '-webkit-box',
+            WebkitLineClamp: 4,
+            WebkitBoxOrient: 'vertical',
+            textOverflow: 'ellipsis',
           }}
         >
           {insight.sintese}
@@ -154,6 +160,7 @@ export function ConexoesPilaresPanel({ conexoes }: { conexoes: ConexaoPilar[] })
     >
       {conexoes.map((c) => (
         <article
+          aria-label={`Conexão ${c.origem} → ${c.destino}: ${c.frase.slice(0, 40)}`}
           key={`${c.origem}-${c.destino}`}
           style={{
             background: `${CORES_DIMENSAO[c.origem]}0a`,

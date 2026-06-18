@@ -21,6 +21,8 @@ interface SuggestedQuestionsProps {
   onSelectQuestion: (question: string) => void;
   /** Número de sugestões a mostrar (default 3) */
   maxQuestions?: number;
+  /** Mostra estado de loading */
+  isLoading?: boolean;
 }
 
 /**
@@ -96,12 +98,13 @@ const AREA_ICONS = {
   financas: Target,
   espiritualidade: MessageCircle,
 };
-
+export function SuggestedQuestions({
 export function SuggestedQuestions({
   sunSign,
   lifeArea = 'proposito',
   onSelectQuestion,
   maxQuestions = 3,
+  isLoading = false,
 }: SuggestedQuestionsProps) {
   const template = QUESTION_TEMPLATES[lifeArea] ?? QUESTION_TEMPLATES.proposito;
   const Icon = AREA_ICONS[lifeArea] ?? Sparkles;
@@ -148,7 +151,26 @@ export function SuggestedQuestions({
           flexDirection: 'column',
           gap: '8px',
         }}
-      >
+        {isLoading ? (
+          [0, 1, 2].map((i) => (
+            <div
+              key={i}
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '10px',
+                padding: '12px 14px',
+                borderRadius: '10px',
+                background: 'rgba(124, 92, 255, 0.05)',
+                border: '1px solid rgba(124, 92, 255, 0.1)',
+                animation: 'pulse 1.5s ease-in-out infinite',
+              }}
+            >
+              <div style={{ width: 20, height: 12, borderRadius: 4, background: 'rgba(124, 92, 255, 0.2)' }} />
+              <div style={{ flex: 1, height: 12, borderRadius: 4, background: 'rgba(124, 92, 255, 0.15)' }} />
+            </div>
+          ))
+        ) : (
         {questions.map((question, index) => (
           <button
             key={index}
@@ -195,7 +217,8 @@ export function SuggestedQuestions({
               {question}
             </span>
           </button>
-        ))}
+        ))
+        )}
       </div>
 
       {/* Contexto adicional se temos dados astrológicos */}

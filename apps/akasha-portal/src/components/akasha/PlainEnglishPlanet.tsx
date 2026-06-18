@@ -127,17 +127,17 @@ const HOUSE_MEANINGS: Record<number, { title: string; practice: string }> = {
 };
 
 /** Significado dos planetas em linguagem simples */
-const PLANET_MEANINGS: Record<string, {驱动力: string; quando: string }> = {
-  'Sol': {驱动力: 'sua vontade central', quando: 'agora é hora de brilhar' },
-  'Lua': {驱动力: 'seu mundo emocional', quando: 'confie seus sentimentos' },
-  'Marte': {驱动力: 'sua energia de ação', quando: 'age, mas com consciência' },
-  'Mercúrio': {驱动力: 'sua mente e comunicação', quando: 'comunique-se com clareza' },
-  'Vênus': {驱动力: 'seu amor e valores', quando: 'cultive o que ama' },
-  'Júpiter': {驱动力: 'sua expansão', quando: 'busque meaning' },
-  'Saturno': {驱动力: 'sua estrutura', quando: 'trabalhe com disciplina' },
-  'Urano': {驱动力: 'sua inovação', quando: 'traga algo novo' },
-  'Netuno': {驱动力: 'sua espiritualidade', quando: 'confie na intuição' },
-  'Plutão': {驱动力: 'sua transformação', quando: 'mude o que precisa' },
+const PLANET_MEANINGS: Record<string, { forca: string; momento: string }> = {
+  'Sol': { forca: 'sua vontade central', momento: 'agora é hora de brilhar' },
+  'Lua': { forca: 'seu mundo emocional', momento: 'confie seus sentimentos' },
+  'Marte': { forca: 'sua energia de ação', momento: 'age, mas com consciência' },
+  'Mercúrio': { forca: 'sua mente e comunicação', momento: 'comunique-se com clareza' },
+  'Vênus': { forca: 'seu amor e valores', momento: 'cultive o que ama' },
+  'Júpiter': { forca: 'sua expansão', momento: 'busque significado' },
+  'Saturno': { forca: 'sua estrutura', momento: 'trabalhe com disciplina' },
+  'Urano': { forca: 'sua inovação', momento: 'traga algo novo' },
+  'Netuno': { forca: 'sua espiritualidade', momento: 'confie na intuição' },
+  'Plutão': { forca: 'sua transformação', momento: 'mude o que precisa' },
 };
 
 export function PlainEnglishPlanet({
@@ -158,8 +158,8 @@ export function PlainEnglishPlanet({
   };
 
   const planetData = PLANET_MEANINGS[planet] ?? {
-   驱动力: 'energia única',
-    quando: 'use com sabedoria',
+    forca: 'energia única',
+    momento: 'use com sabedoria',
   };
 
   const houseData = house ? HOUSE_MEANINGS[house] : null;
@@ -260,6 +260,7 @@ export function PlainEnglishPlanet({
           )}
         </div>
         <button
+          aria-label={expanded ? 'Fechar detalhes' : 'Ver mais detalhes'}
           onClick={() => setExpanded(!expanded)}
           style={{
             background: 'none',
@@ -289,7 +290,7 @@ export function PlainEnglishPlanet({
             lineHeight: 1.5,
           }}
         >
-          <strong>Sua {planetData.驱动力.toLowerCase()}</strong> está em modo{" "}
+          <strong>Sua {planetData.forca.toLowerCase()}</strong> está em modo
           <strong>{signData.energia}</strong>.
         </p>
 
