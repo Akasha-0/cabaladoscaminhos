@@ -36,7 +36,7 @@ from typing import Any, Callable, Optional
 # Constants
 # ---------------------------------------------------------------------------
 
-ROOT: Path = Path("/home/skynet/cabala-dos-caminhos")
+ROOT: Path = Path(__file__).resolve().parent.parent if '__file__' in globals() else Path.cwd()
 MA: Path = ROOT / ".autonomous" / "multi-agent"
 STATE_FILE: Path = MA / "guardian-state.json"
 PID_FILE: Path = MA / "guardian.pid"
