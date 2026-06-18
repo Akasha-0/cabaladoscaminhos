@@ -16,5 +16,5 @@ Each lesson: `{filename}.md`
 | Lesson | Title | Status |
 |---|---|---|
 | `001-auth-refresh-bug.md` | Auth token expires silently after 15min | OPEN |
-| `002-harness-audit-found-work-done.md` | Audit found high-leverage work already done | CLOSED |
 | `003-ssot-consolidation.md` | SSOT violations accumulate silently unless audited every iteration | CLOSED |
+| `007-orphaned-tests-runtime-artifacts.md` | Orphaned test files + runtime artifacts committed to git | CLOSED |
