@@ -89,7 +89,7 @@ modelo por agente via swarm extension). Contrato conceitual de cada um:
   `read`, `bash`, `lsp`. *Limite:* sem refactor oportunista fora do escopo.
 - **qa** (`default`) — roda o triad completo (typecheck/test/lint) + LSP diagnostics. **Único** a
   rodar build pesado. Categoriza falha pré-existente vs. introduzida.
-- **validator** (`default`) — conformidade: AGENTS.md chain, backwards-compat, spec atualizada,
+- **validator** (`slow`) — conformidade: AGENTS.md chain, backwards-compat, spec atualizada,
   truth-base. **Poder de veto** sobre o release.
 - **designer** (`default`) — UI/UX, revelação progressiva, mandala/visual, acessibilidade. (Agente
   `designer` já é nativo do omp.)
