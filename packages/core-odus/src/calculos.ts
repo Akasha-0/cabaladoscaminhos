@@ -43,7 +43,7 @@ export const odusData: Record<number, OduInfo> = {
   },
   3: {
     numero: 3,
-    nome: 'Etaogundá',
+    nome: 'Etogundá',
     significado: 'A revolta, a força física, a criação de ferramentas. O corte e a separação.',
     elementos: 'Fogo/Terra',
     orixaRegente: 'Ogum',

@@ -12,7 +12,7 @@ export { OduInfo };
 export const ODUS_IFA: OduInfo[] = [
   {
     numero: 1,
-    nome: 'Ogbe (Oxé)',
+    nome: 'Ogbe',
     significado: 'A luz que ilumina o caminho. Vitória, criação, renascimento, autoridade divina.',
     elementos: 'Fogo',
     orixaRegente: 'Oxalá',
