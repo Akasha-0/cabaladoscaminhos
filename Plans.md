@@ -1288,6 +1288,8 @@
 - [~] **PLN-027[1]** -- missing_tests | 3 changed files lack tests
 - [~] **PLN-027[2]** -- tech_debt | 2 files with XXX
 - [~] **PLN-027[3]** -- large_file | 37 oversized files
+- [~] **PLN-028[1]** -- tech_debt | 2 files with XXX
+- [~] **PLN-028[2]** -- large_file | 37 oversized files
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)

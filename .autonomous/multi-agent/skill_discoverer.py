@@ -15,7 +15,7 @@ from __future__ import annotations
 # Workaround for Python 3.14 dataclass issue: force module registration in
 # sys.modules before any @dataclass decorator runs. Python 3.14 resolves
 # cls.__module__ via sys.modules at dataclass decoration time and can race.
-import sys as _sys; _sys.modules[__name__] = _sys.modules.get(__name__) or __import__(__name__); del _sys
+import sys as _sys; _sys.modules[__name__] = _sys.modules.get(__name__) or (mod if 'mod' in dir() else __import__(__name__)); del _sys
 
 import hashlib
 import json

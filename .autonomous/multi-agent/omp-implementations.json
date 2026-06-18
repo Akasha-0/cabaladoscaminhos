@@ -1,16 +1,6 @@
 {
   "improvements": [
     {
-      "type": "missing_tests",
-      "priority": 6,
-      "description": "3 changed files lack tests",
-      "files": [
-        "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/cycle-modulation.ts",
-        "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/index.ts",
-        "apps/akasha-portal/src/lib/application/agents/evolutionary-agent/lunar-exercises.ts"
-      ]
-    },
-    {
       "type": "tech_debt",
       "priority": 5,
       "description": "2 files with XXX",
@@ -39,6 +29,6 @@
       ]
     }
   ],
-  "agent_count": 3,
-  "iteration": 27
+  "agent_count": 2,
+  "iteration": 28
 }
