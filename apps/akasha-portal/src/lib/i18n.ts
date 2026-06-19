@@ -8,6 +8,7 @@
  *   import { getTranslations, getLocaleFromHeader } from '@/lib/i18n';
  *   const t = getTranslations(locale, 'evolution');
  *   t('areas.vitalidadeEnergia');  // → 'Vitalidade' | 'Vitality'
+ *   t('areas.descricao', { nome: 'Cabala' }); // interpolation supported
  */
 import en from '@/i18n/en.json';
 import ptBR from '@/i18n/pt-BR.json';
@@ -28,7 +29,7 @@ export function getTranslations(locale: string, _namespace?: string) {
   const safeLocale = isSupportedLocale(locale) ? locale : 'pt-BR';
   const dict = translations[safeLocale];
 
-  return function t(key: string): string {
+  return function t(key: string, params?: Record<string, string | number>): string {
     const parts = key.split('.');
     let result: unknown = dict;
     for (const part of parts) {
@@ -38,6 +39,12 @@ export function getTranslations(locale: string, _namespace?: string) {
         return key; // fall back to the key itself
       }
     }
-    return typeof result === 'string' ? result : key;
+    let value = typeof result === 'string' ? result : key;
+    if (params) {
+      value = value.replace(/\{(\w+)\}/g, (_, k) =>
+        Object.prototype.hasOwnProperty.call(params, k) ? String(params[k]) : `{${k}}`
+      );
+    }
+    return value;
   };
 }

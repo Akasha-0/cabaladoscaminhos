@@ -163,6 +163,7 @@ export function AkashaAuthorityPrompt({
           <div className="relative">
             <div
               className="w-10 h-10 rounded-xl flex items-center justify-center text-lg"
+              aria-hidden="true"
               style={{
                 background:
                   'linear-gradient(135deg, rgba(124,92,255,0.3) 0%, rgba(167,139,250,0.2) 100%)',
@@ -361,6 +362,7 @@ export function AkashaAuthorityPrompt({
             <div className="flex items-center gap-2">
               <div
                 className="w-5 h-5 rounded-full flex items-center justify-center text-[10px]"
+                aria-hidden="true"
                 style={{
                   background:
                     'linear-gradient(135deg, rgba(124,92,255,0.4) 0%, rgba(167,139,250,0.2) 100%)',

@@ -7,7 +7,9 @@
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { significadosEspecificos, type SignificadoCurado, type Pilar } from '@/lib/grimoire/significados-curados';
+import { getTranslations } from '@/lib/i18n';
+import { useReducedMotion } from '@/components/akasha/hooks/useReducedMotion';
+import type { SignificadoCurado, Pilar } from '@/lib/grimoire/significados-curados';
 import type { PilaresDoMandato } from './types';
 
 const SignificadoPilar = dynamic(
@@ -66,7 +68,7 @@ function chevronStyle(isOpen: boolean): React.CSSProperties {
   return {
     transition: 'transform 0.3s ease',
     transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-    color: '#5C6691',
+    color: '#8A9BB8',
     fontSize: '1rem',
     lineHeight: 1,
   };
@@ -76,8 +78,11 @@ export function SignificadoSection({
   pilares,
   pilarPrincipal,
   significados,
+  locale,
 }: SignificadoSectionProps) {
+  const t = getTranslations(locale);
   const [openPilar, setOpenPilar] = useState<Pilar | null>(null);
+  const shouldReduce = useReducedMotion();
 
   const sexualidade = (() => {
     if (!('astrologia' in pilares)) return undefined;
@@ -87,15 +92,14 @@ export function SignificadoSection({
 
   return (
     <section
-      aria-label="Significado dos Pilares"
+      aria-label={t('diario.significado.titulo')}
       className="bg-[rgba(11,14,28,0.72)] backdrop-blur-xl border border-white/10 rounded-2xl p-6 mb-4"
     >
       <h2 className="text-[1.15rem] font-cinzel text-[#F4F5FF] mb-1 leading-snug">
-        Significado dos Pilares
+        {t('diario.significado.titulo')}
       </h2>
-      <p className="text-[0.8rem] text-[#5C6691] leading-relaxed mb-4">
-        Leia cada Pilar na ordem. Note a <em>Sombra</em> primeiro (o que tende a recusar), depois
-        a <em>Prática</em> (o antídoto). Ao final, veja como se conectam.
+      <p className="text-[0.8rem] text-[#8A9BB8] leading-relaxed mb-4">
+        {t('diario.significado.instrucao')}
       </p>
 
       {ORDEM_PILARES.map((p) => {
@@ -111,6 +115,7 @@ export function SignificadoSection({
               style={headerStyle()}
               onClick={() => setOpenPilar(isOpen ? null : p)}
               aria-expanded={isOpen}
+              aria-controls={`significado-${p}`}
             >
               <div className="flex items-center gap-3">
                 <span
@@ -126,7 +131,7 @@ export function SignificadoSection({
                 <div>
                   <span
                     className="text-[0.8rem] font-semibold"
-                    style={{ color: isPrincipal ? cor : '#A7AECF' }}
+                    style={{ color: isPrincipal ? cor : '#B8BFCE' }}
                   >
                     {p.charAt(0).toUpperCase() + p.slice(1)}
                   </span>
@@ -140,7 +145,7 @@ export function SignificadoSection({
                         letterSpacing: '0.08em',
                       }}
                     >
-                      principal
+                      {t('diario.significado.principal')}
                     </span>
                   )}
                 </div>
@@ -148,32 +153,52 @@ export function SignificadoSection({
               <span style={chevronStyle(isOpen)}>▼</span>
             </button>
 
-            <AnimatePresence>
-              {isOpen && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.3, ease: 'easeOut' }}
-                  style={{ overflow: 'hidden' }}
-                >
-                  <div className="px-5 pb-5 pt-2">
-                    {sig ? (
-                      <SignificadoPilar
-                        significado={sig}
-                        cor={cor}
-                        destaque={isPrincipal}
-                        sexualidade={p === 'astrologia' ? sexualidade : undefined}
-                      />
-                    ) : (
-                      <p className="text-[0.8rem] text-[#5C6691] italic">
-                        Significado não disponível para {p}.
-                      </p>
-                    )}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {!shouldReduce ? (
+              <AnimatePresence>
+                {isOpen && (
+                  <motion.div
+                    id={`significado-${p}`}
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                    style={{ overflow: 'hidden' }}
+                  >
+                    <div className="px-5 pb-5 pt-2">
+                      {sig ? (
+                        <SignificadoPilar
+                          significado={sig}
+                          cor={cor}
+                          destaque={isPrincipal}
+                          sexualidade={p === 'astrologia' ? sexualidade : undefined}
+                        />
+                      ) : (
+                        <p className="text-[0.8rem] text-[#8A9BB8] italic">
+                          {t('diario.significado.indisponivel', { pilar: p })}
+                        </p>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            ) : isOpen ? (
+              <div id={`significado-${p}`}>
+                <div className="px-5 pb-5 pt-2">
+                  {sig ? (
+                    <SignificadoPilar
+                      significado={sig}
+                      cor={cor}
+                      destaque={isPrincipal}
+                      sexualidade={p === 'astrologia' ? sexualidade : undefined}
+                    />
+                  ) : (
+                    <p className="text-[0.8rem] text-[#8A9BB8] italic">
+                      {t('diario.significado.indisponivel', { pilar: p })}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ) : null}
           </div>
         );
       })}

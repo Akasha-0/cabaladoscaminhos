@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { getTranslations } from '@/lib/i18n';
 import { MandalaMiniBadge } from './MandalaMiniBadge';
 
 interface DiarioScrollContainerProps {
@@ -8,38 +9,73 @@ interface DiarioScrollContainerProps {
   date: string;
   pilarInfo: { nome: string; cor: string };
   pilarPrincipal: string;
+  lua_fase?: string;
   totalSections?: number;
   locale: string;
 }
+
+const SECTION_LABELS: Record<string, string[]> = {
+  'pt-BR': ['Mandato', 'Autoridade', 'Ritual', 'Significado', 'Áreas'],
+  en: ['Mandate', 'Authority', 'Ritual', 'Meaning', 'Areas'],
+};
 
 export function DiarioScrollContainer({
   children,
   date,
   pilarInfo,
   pilarPrincipal,
+  lua_fase,
   totalSections = 5,
   locale,
 }: DiarioScrollContainerProps) {
-  const [currentSection] = useState(1);
+  const [currentSection, setCurrentSection] = useState(1);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const t = getTranslations(locale);
+
+  const labels = SECTION_LABELS[locale] ?? SECTION_LABELS['pt-BR'];
+
   const formattedDate = new Date(date + 'T12:00:00').toLocaleDateString(locale || 'pt-BR', {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
   });
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const index = Number(entry.target.getAttribute('data-section-index'));
+            if (!isNaN(index)) setCurrentSection(index);
+          }
+        }
+      },
+      { rootMargin: '-40% 0px -40% 0px' }
+    );
+    observerRef.current = observer;
+
+    const sections = document.querySelectorAll('[data-section-index]');
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="min-h-dvh bg-[#06070F] flex flex-col">
       <header
         className="sticky top-0 z-50 backdrop-blur-xl bg-[rgba(6,7,15,0.85)] border-b border-white/5"
-        aria-label="Cabeçalho do diário"
+        aria-label={t('diario.scrollContainer.headerLabel')}
       >
         <div className="flex items-center justify-between px-4 py-3 gap-3">
-          <time dateTime={date} className="text-[0.8rem] text-white/60 font-light capitalize">
+          <time
+            dateTime={date}
+            className="text-[0.8rem] text-white/60 font-light capitalize"
+          >
             {formattedDate}
           </time>
-          <MandalaMiniBadge phase={pilarPrincipal} color={pilarInfo.cor} size="sm" />
+          <MandalaMiniBadge phase={pilarPrincipal} moonPhase={lua_fase} color={pilarInfo.cor} size="sm" />
           <span data-testid="section-counter" className="text-[0.75rem] text-white/40 font-light tabular-nums">
-            {currentSection}/{totalSections}
+            {currentSection} · {labels[currentSection - 1] ?? ''}
           </span>
         </div>
       </header>

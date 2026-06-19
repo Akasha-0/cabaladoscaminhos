@@ -105,7 +105,8 @@
   },
   "diario": {
     "scrollContainer": {
-      "headerLabel": "Cabeçalho do diário"
+      "headerLabel": "Cabeçalho do diário",
+      "badgeAriaLabel": "Fase Mandala: {phase}"
     },
     "mandato": {
       "escalaPrefix": "Mandato · Escala",

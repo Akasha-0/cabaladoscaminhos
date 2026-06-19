@@ -98,6 +98,7 @@ export default async function DiarioPage({
   const pilarPrincipal = (mandato.pilares_relevantes[0] ?? 'cabala') as Pilar;
   const pilarInfo = { nome: pilarPrincipal, cor: C.violeta };
   const crise = mentor_hook.crise_detectada;
+  const lua_fase = pilares.astrologia?.lua_fase;
 
   // ── Derive real Akasha Authority from pilares (F-227 synthesis engine) ──
   const pilaresParciais: Partial<PilaresDados> = pilares as Partial<PilaresDados>;
@@ -112,9 +113,20 @@ export default async function DiarioPage({
   if (dailyRes.ok) {
     const dailyPayload: DailyResponse = await dailyRes.json();
     if (dailyPayload.ritual && typeof dailyPayload.ritual === 'object') {
-      const r = dailyPayload.ritual as { titulo?: string; instrucao?: string; cor?: string };
+      const r = dailyPayload.ritual as {
+        titulo?: string;
+        instrucao?: string;
+        cor?: string;
+        elemento?: string;
+        herbs?: string[];
+      };
       if (r.titulo && r.instrucao) {
-        ritual = { titulo: r.titulo, instrucao: r.instrucao, cor: r.cor ?? pilarInfo.cor };
+        ritual = {
+          titulo: r.titulo,
+          instrucao: r.instrucao,
+          elemento: r.elemento,
+          cor: r.cor ?? pilarInfo.cor,
+        };
       } else {
         ritual = buildRitualFallback(pilarPrincipal);
       }
@@ -133,6 +145,7 @@ export default async function DiarioPage({
       date={date}
       pilarInfo={pilarInfo}
       pilarPrincipal={pilarPrincipal}
+      lua_fase={lua_fase}
       totalSections={5}
       locale={locale}
     >
@@ -148,7 +161,9 @@ export default async function DiarioPage({
       </div>
 
       <div className="max-w-xl mx-auto w-full px-5 py-4">
-        <RitualSection ritual={ritual} pilarInfo={pilarInfo} locale={locale} />
+        {ritual ? (
+          <RitualSection ritual={ritual} pilarInfo={pilarInfo} locale={locale} />
+        ) : null}
       </div>
 
       <div className="max-w-xl mx-auto w-full px-5 py-4">

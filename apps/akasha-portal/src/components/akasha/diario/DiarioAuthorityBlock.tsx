@@ -48,17 +48,17 @@ export function DiarioAuthorityBlock({ authority, pilares, locale }: DiarioAutho
       />
 
       <div className="mt-4 px-1">
-        <p className="text-[0.72rem] text-[#5C6691] leading-relaxed">{authority.explicacao}</p>
+        <p className="text-[0.72rem] text-[#8A9BB8] leading-relaxed">{authority.explicacao}</p>
       </div>
 
       <div
         className="rounded-2xl p-4 mt-3"
         style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
       >
-        <p className="text-[0.65rem] font-cinzel tracking-[0.15em] uppercase text-[#5C6691] mb-1">
+        <p className="text-[0.65rem] font-cinzel tracking-[0.15em] uppercase text-[#8A9BB8] mb-1">
           {t('diario.authority.regraDeHoje')}
         </p>
-        <p className="text-[0.85rem] text-[#A7AECF]">
+        <p className="text-[0.85rem] text-[#B8BFCE]">
           <span className="text-[#F0B429]">{authority.regra.condicao}</span>
           {' — '}
           {authority.regra.accao}
@@ -71,14 +71,14 @@ export function DiarioAuthorityBlock({ authority, pilares, locale }: DiarioAutho
           style={{ background: 'rgba(45,212,191,0.06)', border: '1px solid rgba(45,212,191,0.2)' }}
         >
           <p className="text-[0.6rem] text-[#2DD4BF] tracking-wide uppercase mb-0.5">{t('diario.authority.melhorJanela')}</p>
-          <p className="text-[0.8rem] text-[#A7AECF]">{authority.timing.melhor}</p>
+          <p className="text-[0.8rem] text-[#B8BFCE]">{authority.timing.melhor}</p>
         </div>
         <div
           className="rounded-xl p-3"
           style={{ background: 'rgba(251,87,129,0.06)', border: '1px solid rgba(251,87,129,0.2)' }}
         >
           <p className="text-[0.6rem] text-[#FB5781] tracking-wide uppercase mb-0.5">{t('diario.authority.pioresJanelas')}</p>
-          <p className="text-[0.8rem] text-[#A7AECF]">{authority.timing.pior}</p>
+          <p className="text-[0.8rem] text-[#B8BFCE]">{authority.timing.pior}</p>
         </div>
       </div>
 
@@ -89,7 +89,7 @@ export function DiarioAuthorityBlock({ authority, pilares, locale }: DiarioAutho
         <p className="text-[0.65rem] font-cinzel tracking-[0.15em] uppercase text-[#7C5CFF] mb-1">
           {t('diario.authority.praticaDiaria')}
         </p>
-        <p className="text-[0.85rem] text-[#A7AECF]">{authority.praticaDiaria}</p>
+        <p className="text-[0.85rem] text-[#B8BFCE]">{authority.praticaDiaria}</p>
       </div>
     </section>
   );

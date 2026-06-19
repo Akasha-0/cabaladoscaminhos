@@ -105,7 +105,8 @@
   },
   "diario": {
     "scrollContainer": {
-      "headerLabel": "Diary Header"
+      "headerLabel": "Diary Header",
+      "badgeAriaLabel": "Mandala Phase: {phase}"
     },
     "mandato": {
       "escalaPrefix": "Mandate · Scale",
@@ -148,13 +149,13 @@
     },
     "significado": {
       "titulo": "Meaning of the Pillars",
-      "instrucao": "Read each Pillar in order. Note the Shadow first (what you tend to refuse), then the Practice (the antidote). In the end, see how they connect.",
-      "principal": "main",
-      "indisponivel": "Meaning not available for {pilar}."
+      "instrucao": "Read each Pillar in order. Note the Shadow first (what you tend to refuse), then the Practice (the antidote). At the end, see how they connect.",
+      "principal": "principal",
+      "indisponivel": "No meaning available for {pilar}."
     },
     "areas": {
       "titulo": "Areas of Life",
-      "descricao": "Pilar {pilar} translated for each area.",
+      "descricao": "Pillar {pilar} translated for each area.",
       "leiaInstrucao": "Read from left to right — from professional to intimate."
     }
   }

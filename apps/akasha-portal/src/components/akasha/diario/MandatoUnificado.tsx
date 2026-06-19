@@ -6,7 +6,8 @@
  * Preserva o bloco CVV-188 intacto (Ethics Charter §5).
  * Usa sessionStorage para a pergunta (sem server action).
  */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useDeferredValue } from 'react';
+import { getTranslations } from '@/lib/i18n';
 import type { MandatoEsqueleto, MentorHook } from './types';
 import { ESCALA_LABELS, C } from './types';
 
@@ -18,9 +19,9 @@ const PILAR_COR: Record<string, string> = {
   iching: '#A0763A',
 };
 
-function formatDate(iso: string): string {
+function formatDate(iso: string, locale: string): string {
   try {
-    return new Date(iso + 'T12:00:00').toLocaleDateString('pt-BR', {
+    return new Date(iso + 'T12:00:00').toLocaleDateString(locale || 'pt-BR', {
       weekday: 'long',
       day: 'numeric',
       month: 'long',
@@ -45,20 +46,26 @@ export function MandatoUnificado({
   mentor_hook,
   frases,
   pilarInfo,
-  locale: _locale,
+  locale,
 }: MandatoUnificadoProps) {
+  const t = getTranslations(locale);
   const crise = mentor_hook.crise_detectada;
   const [perguntaOpen, setPerguntaOpen] = useState(false);
   const [perguntaText, setPerguntaText] = useState('');
+  const deferredPergunta = useDeferredValue(perguntaText);
 
   useEffect(() => {
-    const stored = sessionStorage.getItem('diario_pergunta');
+    const stored = sessionStorage.getItem(t('diario.mandato.sessionStorageKey'));
     if (stored) setPerguntaText(stored);
-  }, []);
+  }, [t]);
+
+  useEffect(() => {
+    // Deferred write — fires after React renders, off the keystroke path
+    sessionStorage.setItem(t('diario.mandato.sessionStorageKey'), deferredPergunta);
+  }, [deferredPergunta, t]);
 
   function handlePerguntaChange(value: string) {
     setPerguntaText(value);
-    sessionStorage.setItem('diario_pergunta', value);
   }
 
   const card = (borderColor: string) =>
@@ -69,27 +76,27 @@ export function MandatoUnificado({
 
   const headline = `text-[1.15rem] font-cinzel text-[#F4F5FF] mb-2 leading-snug`;
 
-  const body = `text-[0.9rem] leading-relaxed text-[#A7AECF]`;
+  const body = `text-[0.9rem] leading-relaxed text-[#B8BFCE]`;
 
   const badge = (color: string) =>
     `inline-block text-[0.72rem] tracking-wide px-3 py-1 rounded-full mr-2 mb-2 border`;
 
   return (
-    <section aria-label="Mandato do Dia">
+    <section aria-label={t('diario.mandato.ariaLabel')}>
       {/* Header: data + escala + intenção */}
       <div className={card(pilarInfo.cor)}>
         <span className={label(pilarInfo.cor)} style={{ color: pilarInfo.cor }}>
-          Mandato · Escala {mandato.escala} ({ESCALA_LABELS[mandato.escala]})
+          {t('diario.mandato.escalaPrefix')} {mandato.escala} ({ESCALA_LABELS[mandato.escala]})
         </span>
         <p className={headline} style={{ color: pilarInfo.cor }}>
-          {formatDate(date)}
+          {formatDate(date, locale)}
         </p>
-        <div className="mt-2.5 text-[0.78rem] text-[#5C6691]">
-          <strong className="text-[#A7AECF]">Intenção do dia</strong>
+        <div className="mt-2.5 text-[0.78rem] text-[#8A9BB8]">
+          <strong className="text-[#B8BFCE]">{t('diario.mandato.intencaoDoDia')}</strong>
           <br />
-          <span>Sua semente do dia — intenção derivada do seu mapa</span>
+          <span>{t('diario.mandato.suaSemente')}</span>
           <br />
-          <em className="text-[#A7AECF]">{mentor_hook.intencao}</em>
+          <em className="text-[#B8BFCE]">{mentor_hook.intencao}</em>
         </div>
       </div>
 
@@ -97,22 +104,18 @@ export function MandatoUnificado({
       {crise ? (
         <div className={card(C.magenta)}>
           <span className={label(C.magenta)} style={{ color: C.magenta }}>
-            Recurso humano · CVV 188
+            {t('diario.mandato.cvvRecurso')}
           </span>
           <h2 className={headline} style={{ color: C.magenta }}>
-            Você não está sozinho(a).
+            {t('diario.mandato.voceNaoEstaSozinho')}
           </h2>
-          <p className={body}>
-            O Mentor Akasha reconhece sinais de sofrimento emocional na sua intenção e, por
-            design ético, se afasta. Fale agora com alguém treinado para ouvir,
-            gratuitamente e 24h:
-          </p>
+          <p className={body}>{t('diario.mandato.cvvReconhece')}</p>
           <div
             className="mt-4 p-4 rounded-xl"
             style={{ background: 'rgba(251,87,129,0.08)', border: '1px solid rgba(251,87,129,0.4)' }}
           >
             <p className={`${body} text-[#F4F5FF] font-semibold mb-1`}>
-              CVV — Centro de Valorização da Vida
+              {t('diario.mandato.cvvNome')}
             </p>
             <p
               className={body}
@@ -123,10 +126,10 @@ export function MandatoUnificado({
                 letterSpacing: '0.08em',
               }}
             >
-              ligue 188
+              {t('diario.mandato.cvvLigue')}
             </p>
-            <p className={`${body} text-[0.78rem] text-[#5C6691] mt-1.5`}>
-              chat também:{' '}
+            <p className={`${body} text-[0.78rem] text-[#8A9BB8] mt-1.5`}>
+              {t('diario.mandato.cvvChat')}{' '}
               <a
                 href="https://cvv.org.br"
                 target="_blank"
@@ -134,7 +137,7 @@ export function MandatoUnificado({
                 className="underline"
                 style={{ color: C.magenta }}
               >
-                cvv.org.br
+                {t('diario.mandato.cvvSite')}
               </a>
             </p>
           </div>
@@ -143,13 +146,13 @@ export function MandatoUnificado({
         <>
           <div className={card(pilarInfo.cor)}>
             <h2 className={headline} style={{ color: pilarInfo.cor }}>
-              A Voz do Akasha
+              {t('diario.mandato.vozDoAkasha')}
             </h2>
-            <span className="text-[0.68rem] text-[#A7AECF] block mb-1.5">
-              Leia em voz alta. Observe o que mais ressoa.
+            <span className="text-[0.68rem] text-[#B8BFCE] block mb-1.5">
+              {t('diario.mandato.leiaEmVozAlta')}
             </span>
-            <span className="text-[0.72rem] text-[#5C6691] italic block mb-2">
-              Três frases que condensam a mensagem energética do seu mapa para hoje.
+            <span className="text-[0.72rem] text-[#8A9BB8] italic block mb-2">
+              {t('diario.mandato.tresFrasesDesc')}
             </span>
 
             {frases.map((f, i) => (
@@ -177,17 +180,17 @@ export function MandatoUnificado({
             )}
 
             <div className="text-center mt-2">
-              <span className="text-[0.7rem] text-[#5C6691]">
-                Role para baixo para a próxima seção ↓
+              <span className="text-[0.7rem] text-[#8A9BB8]">
+                {t('diario.mandato.roleParaBaixo')}
               </span>
             </div>
 
             {mandato.cita_fontes.length > 0 && (
               <details className="mt-2" aria-label="Fontes e referências desta análise">
                 <summary className="text-xs text-white/30 cursor-pointer hover:text-white/50">
-                  Fontes
+                  {t('diario.mandato.fontes')}
                 </summary>
-                <div className="mt-3.5 pt-3 border-t border-[#141A33] text-[0.72rem] text-[#5C6691] leading-relaxed">
+                <div className="mt-3.5 pt-3 border-t border-[#141A33] text-[0.72rem] text-[#8A9BB8] leading-relaxed">
                   {mandato.cita_fontes.map((c, i) => (
                     <div key={i}>· {c}</div>
                   ))}
@@ -203,26 +206,26 @@ export function MandatoUnificado({
               onClick={() => setPerguntaOpen((v) => !v)}
               className="w-full text-left"
               aria-expanded={perguntaOpen}
+              aria-controls="pergunta-panel"
             >
-              <h2 className={headline} style={{ color: C.violeta }}>
-                A Pergunta do Dia
+              <h2 id="pergunta-heading" className={headline} style={{ color: C.violeta }}>
+                {t('diario.mandato.perguntaDoDia')}
               </h2>
             </button>
 
             {perguntaOpen && (
-              <div className="mt-3">
-                <p className={body}>
-                  Respire. Deixe a resposta emergir antes de buscar palavras.
-                </p>
+              <div id="pergunta-panel" className="mt-3">
+                <p className={body}>{t('diario.mandato.respire')}</p>
                 <textarea
                   value={perguntaText}
                   onChange={(e) => handlePerguntaChange(e.target.value)}
-                  placeholder="Qual é a primeira resposta que vem, antes da mente julgar?"
+                  placeholder={t('diario.mandato.naoJulgue')}
                   className="w-full min-h-[100px] mt-3 p-3 rounded-xl bg-[rgba(124,92,255,0.06)] border border-[rgba(124,92,255,0.3)] text-[#F4F5FF] text-[0.88rem] font-lora leading-relaxed resize-y outline-none"
                   rows={4}
+                  aria-labelledby="pergunta-heading"
                 />
-                <p className="text-[0.65rem] text-[#5C6691] mt-2">
-                  Salvo apenas no seu navegador — sem envio ao servidor.
+                <p className="text-[0.65rem] text-[#8A9BB8] mt-2">
+                  {t('diario.mandato.salvoLocal')}
                 </p>
               </div>
             )}
