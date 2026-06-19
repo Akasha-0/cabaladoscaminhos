@@ -7,6 +7,10 @@ vi.mock('@/components/akasha/MandalaAtmosphere', () => ({
   MandalaAtmosphere: () => null,
   default: () => null,
 }));
+// Mock useReducedMotion — window.matchMedia unavailable in jsdom
+vi.mock('@/components/akasha/hooks/useReducedMotion', () => ({
+  useReducedMotion: () => false,
+}));
 
 const mockMandalaData = {
   incomplete: false,

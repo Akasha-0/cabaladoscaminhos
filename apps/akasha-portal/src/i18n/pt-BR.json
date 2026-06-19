@@ -109,6 +109,7 @@
       "badgeAriaLabel": "Fase Mandala: {phase}"
     },
     "mandato": {
+      "indisponivel": "Mandato não disponível.",
       "escalaPrefix": "Mandato · Escala",
       "vozDoAkasha": "A Voz do Akasha",
       "leiaEmVozAlta": "Leia em voz alta. Observe o que mais ressoa.",
@@ -128,6 +129,11 @@
       "cvvLigue": "ligue 188",
       "cvvChat": "chat também:",
       "cvvSite": "cvv.org.br"
+    },
+    "errorBoundary": {
+      "titulo": "Erro no Diário",
+      "mensagem": "Não conseguimos carregar o seu Diário energético. Tente novamente em alguns instantes.",
+      "retry": "Tentar novamente"
     },
     "authority": {
       "autoridadeAkashica": "Autoridade Akáshica",

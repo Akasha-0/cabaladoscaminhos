@@ -69,10 +69,37 @@ export type MandatoDoDiaResponse = {
   mentor_hook: MentorHook;
 };
 
-/** Shape of GET /api/akasha/daily — includes ritual from daily_reading */
+/** Shape of GET /api/akasha/daily — mirrors all fields returned by the route */
 export interface DailyResponse {
   date: string;
+  climate: string;
   ritual: object | string | null;
+  alert: string;
+  tensionPoint: object;
+  hexagram: string;
+  hexagramLines: object;
+  /** AkashaSynthesis | null — may be null when synthesis engine fails */
+  synthesis: unknown | null;
+  /** Cycle snapshot with personalDay/Month/Year + exercises + modulation */
+  cycle: {
+    snapshot: {
+      birthDate: string;
+      currentDate: string;
+      age: number;
+      lifePath: number;
+      personalDay: object;
+      personalMonth: object;
+      personalYear: object;
+      universalYear: object;
+      currentPinnacle: object;
+      karmicLessons: object[];
+      maturity: object;
+      synthesis: string;
+      overallEnergy: number;
+    };
+    exercises: object;
+    modulation: object[];
+  };
 }
 
 export type DailyRitualUI = {

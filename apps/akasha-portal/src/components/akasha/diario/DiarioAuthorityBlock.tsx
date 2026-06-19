@@ -1,8 +1,13 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { getTranslations } from '@/lib/i18n';
 import type { PilaresDados } from '@/lib/grimoire/significados-curados';
-import { AkashaAuthorityPrompt } from '@/components/akasha/AkashaAuthorityPrompt/AkashaAuthorityPrompt';
+
+const AkashaAuthorityPrompt = dynamic(
+  () => import('@/components/akasha/AkashaAuthorityPrompt/AkashaAuthorityPrompt').then((m) => m.AkashaAuthorityPrompt),
+  { ssr: false }
+);
 
 export interface DiarioAuthorityBlockProps {
   authority: {
@@ -37,10 +42,9 @@ export function DiarioAuthorityBlock({ authority, pilares, locale }: DiarioAutho
             letterSpacing: '0.1em',
           }}
         >
-          {authority.autoridade}
+          {t(`diario.authority.${authority.autoridade.normalize('NFD').replace(/[\u0300-\u036f]/g, '')}`)}
         </span>
       </div>
-
       <AkashaAuthorityPrompt
         authority={authority}
         pilares={pilares}

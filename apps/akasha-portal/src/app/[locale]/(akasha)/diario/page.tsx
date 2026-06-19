@@ -33,6 +33,7 @@ import { RitualSection } from '@/components/akasha/diario/RitualSection';
 import { DiarioAuthorityBlock } from '@/components/akasha/diario/DiarioAuthorityBlock';
 import { SignificadoSection } from '@/components/akasha/diario/SignificadoSection';
 import { AreasSection } from '@/components/akasha/diario/AreasSection';
+import { DiarioErrorBoundary } from '@/components/akasha/shared/DiarioErrorBoundary';
 
 export const metadata = {
   title: 'Diário Energético — Akasha',
@@ -141,14 +142,15 @@ export default async function DiarioPage({
   const significados = significadosEspecificos(pilares as unknown as PilaresDados);
 
   return (
-    <DiarioScrollContainer
-      date={date}
-      pilarInfo={pilarInfo}
-      pilarPrincipal={pilarPrincipal}
-      lua_fase={lua_fase}
-      totalSections={5}
-      locale={locale}
-    >
+    <DiarioErrorBoundary locale={locale}>
+      <DiarioScrollContainer
+        date={date}
+        pilarInfo={pilarInfo}
+        pilarPrincipal={pilarPrincipal}
+        lua_fase={lua_fase}
+        totalSections={5}
+        locale={locale}
+      >
       <div className="max-w-xl mx-auto w-full px-5 pt-8 pb-4">
         <MandatoUnificado
           date={date}
@@ -187,6 +189,7 @@ export default async function DiarioPage({
         <AreasSection pilarPrincipal={pilarPrincipal} pilarInfo={pilarInfo} locale={locale} />
       </div>
     </DiarioScrollContainer>
+    </DiarioErrorBoundary>
   );
 }
 

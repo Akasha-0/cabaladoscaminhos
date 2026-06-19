@@ -107,16 +107,18 @@ export function SignificadoSection({
         const cor = CORES_POR_PILAR[p];
         const isPrincipal = p === pilarPrincipal;
         const sig = significados[p];
+        const oduAviso = p === 'odu' ? (pilares.odu as { aviso?: string } | undefined)?.aviso : undefined;
 
         return (
           <div key={p} style={cardStyle(cor, isOpen)}>
             <button
-              type="button"
-              style={headerStyle()}
-              onClick={() => setOpenPilar(isOpen ? null : p)}
-              aria-expanded={isOpen}
-              aria-controls={`significado-${p}`}
-            >
+                          type="button"
+                          className="focus:outline-none"
+                          style={headerStyle()}
+                          onClick={() => setOpenPilar(isOpen ? null : p)}
+                          aria-expanded={isOpen}
+                          aria-controls={`significado-${p}`}
+                        >
               <div className="flex items-center gap-3">
                 <span
                   style={{
@@ -133,7 +135,7 @@ export function SignificadoSection({
                     className="text-[0.8rem] font-semibold"
                     style={{ color: isPrincipal ? cor : '#B8BFCE' }}
                   >
-                    {p.charAt(0).toUpperCase() + p.slice(1)}
+                    {t(`diario.mandato.pilar${p.charAt(0).toUpperCase() + p.slice(1)}` as never)}
                   </span>
                   {isPrincipal && (
                     <span
@@ -150,7 +152,7 @@ export function SignificadoSection({
                   )}
                 </div>
               </div>
-              <span style={chevronStyle(isOpen)}>▼</span>
+              <span aria-hidden="true" style={chevronStyle(isOpen)}>▼</span>
             </button>
 
             {!shouldReduce ? (
@@ -177,6 +179,23 @@ export function SignificadoSection({
                           {t('diario.significado.indisponivel', { pilar: p })}
                         </p>
                       )}
+                      {/* LGPD Ethics Charter — Odu aviso (Pilar 4) */}
+                      {p === 'odu' && oduAviso ? (
+                        <div
+                          className="mt-3 px-4 py-3 rounded-xl text-[0.75rem] leading-relaxed"
+                          style={{
+                            background: 'rgba(251,87,129,0.06)',
+                            border: '1px solid rgba(251,87,129,0.3)',
+                            color: '#A7AECF',
+                          }}
+                        >
+                          <span className="font-semibold" style={{ color: '#FB5781' }}>
+                            ⚠ Aviso ético — Pilar Odu
+                          </span>
+                          <br />
+                          {oduAviso}
+                        </div>
+                      ) : null}
                     </div>
                   </motion.div>
                 )}
@@ -196,6 +215,23 @@ export function SignificadoSection({
                       {t('diario.significado.indisponivel', { pilar: p })}
                     </p>
                   )}
+                  {/* LGPD Ethics Charter — Odu aviso (Pilar 4) */}
+                  {p === 'odu' && oduAviso ? (
+                    <div
+                      className="mt-3 px-4 py-3 rounded-xl text-[0.75rem] leading-relaxed"
+                      style={{
+                        background: 'rgba(251,87,129,0.06)',
+                        border: '1px solid rgba(251,87,129,0.3)',
+                        color: '#A7AECF',
+                      }}
+                    >
+                      <span className="font-semibold" style={{ color: '#FB5781' }}>
+                        ⚠ Aviso ético — Pilar Odu
+                      </span>
+                      <br />
+                      {oduAviso}
+                    </div>
+                  ) : null}
                 </div>
               </div>
             ) : null}
