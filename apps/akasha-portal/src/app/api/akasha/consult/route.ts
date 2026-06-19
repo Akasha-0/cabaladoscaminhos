@@ -1,3 +1,8 @@
+import {
+  checkMemoryRateLimit,
+  API_RATE_LIMIT_CONFIG,
+  API_RATE_LIMIT_KEY_PREFIX,
+} from '@/lib/infrastructure/rate-limit';
 import type { IChingMap } from '@akasha/core-iching';
 import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
@@ -71,12 +76,23 @@ REGRAS ABSOLUTAS:
 5. Nunca faça diagnósticos médicos, jurídicos ou financeiros categóricos.
 6. Responda em português brasileiro. Máximo 3 parágrafos.${grimoireSection}`;
 }
-
 export async function POST(request: NextRequest) {
   // 1. Auth
   const authResult = await requireAkashaApi(request);
   if (authResult instanceof NextResponse) return authResult;
   const { id: userId } = authResult;
+
+  // Rate limit — protect expensive LLM + RAG calls.
+  const rateLimit = checkMemoryRateLimit(
+    `${API_RATE_LIMIT_KEY_PREFIX}:${userId}`,
+    API_RATE_LIMIT_CONFIG,
+  );
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: 'Muitas solicitações — tente novamente em alguns minutos' },
+      { status: 429 }
+    );
+  }
 
   try {
     // 2. Validate body

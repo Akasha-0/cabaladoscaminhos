@@ -8,6 +8,11 @@ import { computeDailyHexagram } from '@/lib/domain/iching';
  * Determinístico por data — mesma data → mesmo hexagrama para todos.
  */
 export async function GET() {
-  const hex = computeDailyHexagram(new Date());
-  return NextResponse.json(hex);
+  try {
+    const hex = computeDailyHexagram(new Date());
+    return NextResponse.json(hex);
+  } catch (err) {
+    console.error('[GET /api/akasha/iching/daily]', err);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
 }
