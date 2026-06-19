@@ -98,3 +98,47 @@
   padding: 8px 16px !important;
   /* Other styles remain via inline style in MandalaChart.tsx */
 }
+/* ── WCAG 2.4.7 Focus Visible — Layer 2 Kabala keyboard focus ring ────────── */
+.layer2-focus-ring {
+  transition: opacity 0.15s ease;
+}
+g:has(.layer2-focus-ring):focus-visible .layer2-focus-ring,
+g:has(.layer2-focus-ring):focus .layer2-focus-ring {
+  opacity: 1 !important;
+}
+
+/* ── WCAG 2.4.7 Focus Visible — InfoPanel buttons ─────────────────────────── */
+/* Every interactive button in InfoPanel panels needs a visible focus ring */
+.info-panel button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* Ensure <details> summary inside InfoPanel also gets a focus ring */
+.info-panel details > summary:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* ── WCAG 2.3.3 Animations — respect prefers-reduced-motion ───────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .info-panel {
+    animation: none !important;
+  }
+
+  .info-panel-backdrop {
+    animation: none !important;
+  }
+
+  .layer-btn {
+    transition: none !important;
+  }
+
+  /* Also disable any CSS transitions on panel internals */
+  .info-panel * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

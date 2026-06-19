@@ -4,7 +4,6 @@ import { describeArc, PARTICLES, toXY } from '@/components/akasha/mandala-geomet
 import { buildAstroSegments } from '@/components/akasha/mandala-layers';
 import { longitudeToSvgAngle } from '@/lib/shared/zodiac';
 import type { Layer } from '@/components/akasha/mandala-geometry';
-import type { MandalaData } from '@/components/akasha/MandalaChart';
 import type { PlanetDot } from '@/components/akasha/mandala-layers';
 
 const ASTRO_SEGMENTS = buildAstroSegments();
@@ -21,7 +20,15 @@ interface Layer4Props {
 
 /** Layer 4 — Movimento Celeste (Astrology).
  * 12 zodiac sign segments + 12 house lines + 10 planet glyphs on ecliptic.
- * Rotates via CSS; pauses when Layer 4 is active (ringPaused=true).
+ * Rotation: CSS animation (NOT requestAnimationFrame). The zodiac ring uses
+ * the `ring-rotate` keyframe (120s period, mandala-css.ts) applied via
+ * className='ring-astrological' on the <g> element. Two reduced-motion
+ * mechanisms:
+ *   1. Component-level: reducedMotion=true or ringPaused=true → class switches
+ *      to 'ring-astrological-paused' → `animation: none` (instant stop)
+ *   2. Global fallback: `@media (prefers-reduced-motion: reduce) { * { animation:
+ *      none !important } }` in mandala-css.ts MANDALA_STYLES string.
+ * RAF is NOT used — CHANGELOG claim of "RAF-driven rotation" is incorrect.
  * Phase 1 extracted from MandalaChart.tsx.
  * Keyboard accessible: Enter/Space to activate. */
 const Layer4Astrology = memo(function Layer4Astrology({

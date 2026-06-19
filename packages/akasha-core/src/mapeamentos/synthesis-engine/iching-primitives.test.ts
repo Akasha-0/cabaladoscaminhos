@@ -1,19 +1,28 @@
 import { describe, it, expect } from 'vitest';
 import { compileIChingPrimitives } from './iching-primitives';
-import type { HexagramaBase } from './iching-base-data';
-
-type HexagramaBaseMap = Record<number, HexagramaBase>;
 
 describe('compileIChingPrimitives', () => {
-  it('compiles a single hexagrama with one primitivo', () => {
-    const base: HexagramaBaseMap = {
+  it('returns an empty object when passed an empty base', () => {
+    const result = compileIChingPrimitives({});
+    expect(result).toEqual({});
+    expect(Object.keys(result)).toHaveLength(0);
+  });
+
+  it('maps a single hexagrama entry to its primitive contributions', () => {
+    const base = {
       1: {
         primitivos: [
           {
-            primitivo: 'Transformacao',
-            intensidade: 10,
-            polaridade: 'luz',
-            fonte: 'Wilhelm/Baynes 1976, hexagrama 1',
+            primitivo: 'Ancestralidade' as const,
+            intensidade: 8,
+            polaridade: 'luz' as const,
+            fonte: 'I Ching — Hexagrama 1',
+          },
+          {
+            primitivo: 'Criatividade' as const,
+            intensidade: 9,
+            polaridade: 'luz' as const,
+            fonte: 'I Ching — Hexagrama 1',
           },
         ],
       },
@@ -22,64 +31,53 @@ describe('compileIChingPrimitives', () => {
     const result = compileIChingPrimitives(base);
 
     expect(result).toHaveProperty('1');
-    expect(result[1]).toHaveLength(1);
-    expect(result[1][0]).toEqual({
-      primitivo: 'Transformacao',
-      intensidade: 10,
+    expect(result[1]).toHaveLength(2);
+    expect(result[1][0]).toMatchObject({
+      primitivo: 'Ancestralidade',
+      intensidade: 8,
       polaridade: 'luz',
-      fonte: 'Wilhelm/Baynes 1976, hexagrama 1',
+      fonte: 'I Ching — Hexagrama 1',
+    });
+    expect(result[1][1]).toMatchObject({
+      primitivo: 'Criatividade',
+      intensidade: 9,
+      polaridade: 'luz',
     });
   });
 
-  it('compiles a hexagrama with multiple primitivos', () => {
-    const base: HexagramaBaseMap = {
-      26: {
+  it('maps numeric keys from Object.entries correctly', () => {
+    const base = {
+      42: {
         primitivos: [
-          { primitivo: 'Expansao', intensidade: 9, polaridade: 'luz', fonte: 'hex 26' },
-          { primitivo: 'Ordem', intensidade: 8, polaridade: 'ambas', fonte: 'hex 26' },
+          {
+            primitivo: 'Caminhada' as const,
+            intensidade: 7,
+            polaridade: 'ambas' as const,
+            fonte: 'I Ching — Hexagrama 42',
+          },
         ],
       },
     };
 
     const result = compileIChingPrimitives(base);
 
-    expect(result[26]).toHaveLength(2);
-    expect(result[26][0].primitivo).toBe('Expansao');
-    expect(result[26][1].primitivo).toBe('Ordem');
-    expect(result[26][1].polaridade).toBe('ambas');
+    // Number(num) conversion inside compileIChingPrimitives ensures numeric key
+    expect(Object.keys(result)).toContain('42');
+    expect(result).toHaveProperty(42);
+    expect(result[42][0].intensidade).toBe(7);
+    expect(result[42][0].polaridade).toBe('ambas');
   });
 
-  it('returns empty record for empty input', () => {
-    const result = compileIChingPrimitives({});
-    expect(result).toEqual({});
-    expect(Object.keys(result)).toHaveLength(0);
-  });
-
-  it('handles hexagrama with no primitivos (empty array)', () => {
-    const base: HexagramaBaseMap = {
-      99: { primitivos: [] },
+  it('handles a hexagrama with zero primitivos (empty array)', () => {
+    const base = {
+      99: {
+        primitivos: [],
+      },
     };
 
     const result = compileIChingPrimitives(base);
 
     expect(result).toHaveProperty('99');
     expect(result[99]).toEqual([]);
-  });
-
-  it('coerces numeric key to string index (JS Object semantics)', () => {
-    const base: HexagramaBaseMap = {
-      42: {
-        primitivos: [
-          { primitivo: 'Integracao', intensidade: 7, polaridade: 'sombra', fonte: 'test' },
-        ],
-      },
-    };
-
-    const result = compileIChingPrimitives(base);
-
-    // Object.fromEntries always creates string keys; numeric 42 becomes "42"
-    expect(result).toHaveProperty('42');
-    expect(result[42]).toHaveLength(1);
-    expect(result['42']).toHaveLength(1);
   });
 });

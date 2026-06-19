@@ -294,11 +294,10 @@ const InnerMandalaChart = memo(function InnerMandalaChart({
             onLayerHover={setHoveredLayer}
           />
 
-          {/* Layer 2 — Kabala */}
+          {/* Layer 2 — Kabala (Sefirot Tree of Life) */}
           <Layer2Kabala
             data={data}
-            kabVerts={derived.kabVerts}
-            trianglePath={derived.trianglePath}
+            sefiraTree={derived.sefiraTree}
             tooltipByLayer={derived.tooltipByLayer}
             opacity={opacity}
             onLayerToggle={setActiveLayer}

@@ -19,7 +19,7 @@ All notable changes to the Mandala visualization system in this evolution cycle.
 - **New file**: `src/components/akasha/layers/Layer4Astrology.tsx` (196 lines)
   - Zodiac ring (12 arcs + symbols), 12 house lines + numbers
   - Planet glyphs with `aria-label` for accessibility
-  - RAF-driven rotation with `prefers-reduced-motion` support
+  - CSS-driven rotation (`ring-rotate` keyframe, 120s period) with `prefers-reduced-motion` support via component-level class switch + global `@media (prefers-reduced-motion: reduce)` override (no RAF)
   - Props: `data`, `planetDots`, `tooltipByLayer`, `opacity`, `onLayerToggle`, `onLayerHover`, `ringPaused`, `reducedMotion`
 
 ### Phase 1 — Hook Extraction

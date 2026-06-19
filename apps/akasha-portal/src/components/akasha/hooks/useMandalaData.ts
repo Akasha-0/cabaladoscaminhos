@@ -36,12 +36,16 @@ export function useMandalaData(data: MandalaData) {
 
   const sefiraTree = useMemo(() => buildSefiraTree(data.kabala), [data.kabala]);
 
+  const kabVerts = useMemo(() => buildKabVerts(data.kabala), [data.kabala]);
+
   const trianglePath = useMemo(() => buildTrianglePath(kabVerts), [kabVerts]);
 
   const elem = useMemo(
     () => dominantElement(data.astrology.elementalBalance),
     [data.astrology.elementalBalance]
   );
+
+  const elemGuidance = useMemo(() => ELEMENT_GUIDANCE[elem] ?? null, [elem]);
 
   const inactiveBodies = useMemo(
     () => tantricNodes.filter((n: TantricNode) => !n.active),
