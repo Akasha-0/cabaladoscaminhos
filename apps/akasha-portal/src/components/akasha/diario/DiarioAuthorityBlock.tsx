@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
 import { getTranslations } from '@/lib/i18n';
 import type { PilaresDados } from '@/lib/grimoire/significados-curados';
 
@@ -70,11 +71,15 @@ export function DiarioAuthorityBlock({
           {t(`diario.authority.${authority.autoridade.normalize('NFD').replace(/[\u0300-\u036f]/g, '')}`)}
         </span>
       </div>
-      <AkashaAuthorityPrompt
-        authority={authority}
-        pilares={pilares}
-        compact={true}
-      />
+      <Suspense fallback={
+        <div className="h-20 w-full rounded-xl bg-white/5 animate-pulse" />
+      }>
+        <AkashaAuthorityPrompt
+          authority={authority}
+          pilares={pilares}
+          compact={true}
+        />
+      </Suspense>
 
       <div className="mt-4 px-1">
         <p className="text-[0.72rem] text-[#8A9BB8] leading-relaxed">{authority.explicacao}</p>

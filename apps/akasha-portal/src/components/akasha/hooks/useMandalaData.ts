@@ -16,6 +16,7 @@ import {
   type SefiraTree,
 } from '@/components/akasha/mandala-layers';
 import type { MandalaData } from '@/components/akasha/MandalaChart';
+import type { Layer } from '@/components/akasha/mandala-geometry';
 
 /** Phase 1 hook — all per-layer derived data.
  * Replaces 7 inline useMemo calls in MandalaChart.
@@ -33,12 +34,9 @@ export function useMandalaData(data: MandalaData) {
     () => buildTantricNodes(data.tantra.bodies),
     [data.tantra.bodies]
   );
-
-  const sefiraTree = useMemo(() => buildSefiraTree(data.kabala), [data.kabala]);
-
   const kabVerts = useMemo(() => buildKabVerts(data.kabala), [data.kabala]);
-
   const trianglePath = useMemo(() => buildTrianglePath(kabVerts), [kabVerts]);
+  const sefiraTree = useMemo(() => buildSefiraTree(data.kabala), [data.kabala]);
 
   const elem = useMemo(
     () => dominantElement(data.astrology.elementalBalance),
@@ -74,7 +72,7 @@ export function useMandalaData(data: MandalaData) {
 export type { PlanetDot, TantricNode, KabVert, SefiraTree };
 
 export interface MandalaDerivedData {
-  tooltipByLayer: Record<import('@/components/akasha/mandala-geometry').Layer, string>;
+  tooltipByLayer: Record<Layer, string>;
   planetDots: PlanetDot[];
   tantricNodes: TantricNode[];
   kabVerts: KabVert[];

@@ -114,7 +114,24 @@
         "showAdvanced": "Show advanced details →",
         "hideAdvanced": "Hide advanced details",
         "challenge": "Challenge",
-        "activate": "Activate"
+        "activate": "Activate",
+        "wisdom": {
+          "challenge": "Challenge: {text}",
+          "activate": "Activate: {text}"
+        },
+        "bodies": {
+          "corpoDaAlma": { "desc": "Soul Body", "challenge": "Finding humble purpose", "activate": "Ong Namo Meditation" },
+          "menteNegativa": { "desc": "Negative Mind", "challenge": "Discerning without paralyzing", "activate": "Breath of Fire" },
+          "mentePositiva": { "desc": "Positive Mind", "challenge": "Trusting the process", "activate": "Sat Kriya — 3 min" },
+          "menteNeutra": { "desc": "Neutral Mind", "challenge": "Observing without reacting", "activate": "Heart Meditation" },
+          "corpoFisico": { "desc": "Physical Body", "challenge": "Fully embodying", "activate": "Conscious Movement" },
+          "linhaDoArco": { "desc": "Arc Line", "challenge": "Protecting the auric field", "activate": "Being an integral human being" },
+          "aura": { "desc": "Aura", "challenge": "Expanding without dissolving", "activate": "Projection and Protection" },
+          "corpoPrnico": { "desc": "Pranic Body", "challenge": "Sustaining vitality", "activate": "Daily Pranayama" },
+          "corpoSutil": { "desc": "Subtle Body", "challenge": "Listening to the ineffable", "activate": "Listening to intuition" },
+          "corpoRadiante": { "desc": "Radiant Body", "challenge": "Shining courageously", "activate": "Courageous everyday action" },
+          "menteDivina": { "desc": "Divine Mind", "challenge": "Remaining open to the infinite", "activate": "Gratitude and surrender" }
+        }
       },
       "astrology": {
         "title": "Celestial Movement — The Sky",
@@ -229,6 +246,7 @@
       "perguntaDoDia": "The Question of the Day",
       "respire": "Breathe. Let the answer emerge before seeking words.",
       "textareaPlaceholder": "What's the first answer that comes, before the mind judges?",
+      "naoJulgue": "What's the first answer that comes, before the mind judges?",
       "salvoLocal": "Saved only in your browser — no server submission.",
       "intencaoDoDia": "Intention of the day",
       "suaSemente": "Your seed of the day — intention derived from your chart",
@@ -240,8 +258,9 @@
       "cvvChat": "chat also:",
       "cvvSite": "cvv.org.br",
       "indisponivelDesc": "We couldn't calculate today's Mandate ({status}). Please try again in a moment.",
-      "alertaDoDia": "Daily Alert",
-      "alertAriaLabel": "Daily Energetic Alert"
+      "alertAriaLabel": "Daily Energetic Alert",
+      "sessionStorageKey": "akasha-diario-pergunta",
+      "ariaLabel": "Daily Mandate"
     },
     "errorBoundary": {
       "titulo": "Diary Error",
@@ -249,12 +268,12 @@
       "retry": "Try again"
     },
     "authority": {
-      "autoridadeAkashica": "Akáshic Authority",
+      "autoridadeAkashica": "Akashic Authority",
       "suaAutoridade": "Your Authority",
       "regraDeHoje": "Rule of today",
       "melhorJanela": "Best window",
       "evite": "Avoid",
-      "praticaDoDia": "Practice of the day",
+      "praticaDiaria": "Daily practice",
       "tensaoAtiva": "Active Tension"
     },
     "ritual": {
@@ -271,7 +290,14 @@
       "titulo": "Meaning of the Pillars",
       "instrucao": "Read each Pillar in order. Note the Shadow first (what you tend to refuse), then the Practice (the antidote). At the end, see how they connect.",
       "principal": "principal",
-      "indisponivel": "No meaning available for {pilar}."
+      "indisponivel": "No meaning available for {pilar}.",
+      "pilarNames": {
+        "cabala": "Cabalistic Numerology",
+        "astrologia": "Astrology",
+        "tantrica": "Tantric Numerology",
+        "odu": "Birth Odu",
+        "iching": "I Ching"
+      }
     },
     "areas": {
       "titulo": "Areas of Life",

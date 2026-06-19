@@ -114,7 +114,24 @@
         "showAdvanced": "Mostrar detalhes avançados →",
         "hideAdvanced": "Ocultar detalhes avançados",
         "challenge": "Desafio",
-        "activate": "Ativar"
+        "activate": "Ativar",
+        "wisdom": {
+          "challenge": "Desafio: {text}",
+          "activate": "Ativar: {text}"
+        },
+        "bodies": {
+          "corpoDaAlma": { "desc": "Corpo da Alma", "challenge": "Encontrar propósito humilde", "activate": "Meditação Ong Namo" },
+          "menteNegativa": { "desc": "Mente Negativa", "challenge": "Discernir sem paralisar", "activate": "Respiração de fogo" },
+          "mentePositiva": { "desc": "Mente Positiva", "challenge": "Confiar no processo", "activate": "Sat Kriya — 3 min" },
+          "menteNeutra": { "desc": "Mente Neutra", "challenge": "Observar sem reagir", "activate": "Meditação do coração" },
+          "corpoFisico": { "desc": "Corpo Físico", "challenge": "Encarnar totalmente", "activate": "Movimento consciente" },
+          "linhaDoArco": { "desc": "Linha do Arco", "challenge": "Proteger o campo áurico", "activate": "Ser humano íntegro" },
+          "aura": { "desc": "Aura", "challenge": "Expandir sem dissolver", "activate": "Projeção e Proteção" },
+          "corpoPrnico": { "desc": "Corpo Prânico", "challenge": "Sustentar a vitalidade", "activate": "Pranayama diário" },
+          "corpoSutil": { "desc": "Corpo Sutil", "challenge": "Escutar o infinalível", "activate": "Escuta da intuição" },
+          "corpoRadiante": { "desc": "Corpo Radiante", "challenge": "Brilhar corajosamente", "activate": "Ação corajosa cotidiana" },
+          "menteDivina": { "desc": "Mente Divina", "challenge": "Manter-se aberto ao infinito", "activate": "Gratidão e rendição" }
+        }
       },
       "astrology": {
         "title": "Movimento Celeste — O Céu",
@@ -229,6 +246,7 @@
       "perguntaDoDia": "A Pergunta do Dia",
       "respire": "Respire. Deixe a resposta emergir antes de buscar palavras.",
       "textareaPlaceholder": "Qual é a primeira resposta que vem, antes da mente juzgar?",
+      "naoJulgue": "Qual é a primeira resposta que vem, antes da mente juzgar?",
       "salvoLocal": "Salvo apenas no seu navegador — sem envio ao servidor.",
       "intencaoDoDia": "Intenção do dia",
       "suaSemente": "Sua semente do dia — intenção derivada do seu mapa",
@@ -241,7 +259,9 @@
       "cvvSite": "cvv.org.br",
       "indisponivelDesc": "Não conseguimos calcular o Mandato de hoje ({status}). Tente novamente em alguns instantes.",
       "alertaDoDia": "Alerta do Dia",
-      "alertAriaLabel": "Alerta Energético do Dia"
+      "alertAriaLabel": "Alerta Energético do Dia",
+      "sessionStorageKey": "akasha-diario-pergunta",
+      "ariaLabel": "Mandato do Dia"
     },
     "errorBoundary": {
       "titulo": "Erro no Diário",
@@ -271,7 +291,14 @@
       "titulo": "Significado dos Pilares",
       "instrucao": "Leia cada Pilar na ordem. Note a Sombra primeiro (o que tende a recusar), depois a Prática (o antídoto). Ao final, veja como se conectam.",
       "principal": "principal",
-      "indisponivel": "Significado não disponível para {pilar}."
+      "indisponivel": "Significado não disponível para {pilar}.",
+      "pilarNames": {
+        "cabala": "Numerologia Cabalística",
+        "astrologia": "Astrologia",
+        "tantrica": "Numerologia Tântrica",
+        "odu": "Odu de Nascimento",
+        "iching": "I Ching"
+      }
     },
     "areas": {
       "titulo": "Áreas da Vida",

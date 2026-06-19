@@ -6,7 +6,7 @@
  * Collapsed by default with framer-motion expand.
  */
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useState, useMemo, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getTranslations } from '@/lib/i18n';
 import { useReducedMotion } from '@/components/akasha/hooks/useReducedMotion';
@@ -27,38 +27,34 @@ export interface AreasSectionProps {
   locale: string;
 }
 
-function headerStyle(cor: string, isOpen: boolean): React.CSSProperties {
-  return {
+export function AreasSection({ pilarPrincipal, pilarInfo, locale }: AreasSectionProps) {
+  const t = getTranslations(locale);
+  const [expanded, setExpanded] = useState(false);
+  const shouldReduce = useReducedMotion();
+
+  const headerStyle = useMemo<React.CSSProperties>(() => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '14px 20px',
-    background: isOpen ? `${cor}18` : 'rgba(11,14,28,0.6)',
-    border: `1px solid ${cor}44`,
-    borderLeft: `3px solid ${cor}`,
+    background: expanded ? `${pilarInfo.cor}18` : 'rgba(11,14,28,0.6)',
+    border: `1px solid ${pilarInfo.cor}44`,
+    borderLeft: `3px solid ${pilarInfo.cor}`,
     borderRadius: 12,
     cursor: 'pointer',
     width: '100%',
     outline: '2px solid transparent',
     outlineOffset: '-2px',
     transition: 'background 0.2s ease, outline-color 0.15s ease',
-  };
-}
+  }), [pilarInfo.cor, expanded]);
 
-function chevronStyle(isOpen: boolean): React.CSSProperties {
-  return {
+  const chevronStyle = useMemo<React.CSSProperties>(() => ({
     transition: 'transform 0.3s ease',
-    transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+    transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
     color: '#8A9BB8',
     fontSize: '1rem',
     lineHeight: 1,
-  };
-}
-
-export function AreasSection({ pilarPrincipal, pilarInfo, locale }: AreasSectionProps) {
-  const t = getTranslations(locale);
-  const [expanded, setExpanded] = useState(false);
-  const shouldReduce = useReducedMotion();
+  }), [expanded]);
 
   return (
     <section
@@ -66,13 +62,13 @@ export function AreasSection({ pilarPrincipal, pilarInfo, locale }: AreasSection
       className="bg-[rgba(11,14,28,0.72)] backdrop-blur-xl border border-white/10 rounded-2xl p-6 mb-4"
     >
       <button
-              type="button"
-              style={{ ...headerStyle(pilarInfo.cor, expanded), outlineColor: pilarInfo.cor }}
-              onClick={() => setExpanded((v) => !v)}
-              aria-expanded={expanded}
-              aria-controls="areas-panel"
-              className="mb-4 focus-visible:outline-2 focus-visible:outline-offset-2"
-            >
+        type="button"
+        style={{ ...headerStyle, outlineColor: pilarInfo.cor }}
+        onClick={() => setExpanded((v) => !v)}
+        aria-expanded={expanded}
+        aria-controls="areas-panel"
+        className="mb-4 focus-visible:outline-2 focus-visible:outline-offset-2"
+      >
         <div>
           <h2 className="text-[1.15rem] font-cinzel text-[#F4F5FF] leading-snug mb-0.5">
             {t('diario.areas.titulo')}
@@ -81,7 +77,7 @@ export function AreasSection({ pilarPrincipal, pilarInfo, locale }: AreasSection
             {t('diario.areas.descricao', { pilar: pilarInfo.nome })}
           </p>
         </div>
-        <span aria-hidden="true" style={chevronStyle(expanded)}>▼</span>
+        <span aria-hidden="true" style={chevronStyle}>▼</span>
       </button>
 
       {!shouldReduce ? (
@@ -98,20 +94,26 @@ export function AreasSection({ pilarPrincipal, pilarInfo, locale }: AreasSection
               <p className="text-[0.68rem] text-[#8A9BB8] mb-3 px-1">
                 {t('diario.areas.leiaInstrucao')}
               </p>
-              <div className="grid grid-cols-1 gap-3">
-                {AREAS.map((area) => {
-                  const traducao = traducaoPara(pilarPrincipal, area);
-                  if (!traducao) return null;
-                  return (
-                    <TraducaoAreaPanel
-                      key={area}
-                      traducao={traducao}
-                      cor={pilarInfo.cor}
-                      variant="expanded"
-                    />
-                  );
-                })}
-              </div>
+              <Suspense fallback={
+                <div className="space-y-3">
+                  {[1,2,3].map(i => <div key={i} className="h-16 w-full rounded-xl bg-white/5 animate-pulse" />)}
+                </div>
+              }>
+                <div className="grid grid-cols-1 gap-3">
+                  {AREAS.map((area) => {
+                    const traducao = traducaoPara(pilarPrincipal, area);
+                    if (!traducao) return null;
+                    return (
+                      <TraducaoAreaPanel
+                        key={area}
+                        traducao={traducao}
+                        cor={pilarInfo.cor}
+                        variant="expanded"
+                      />
+                    );
+                  })}
+                </div>
+              </Suspense>
             </motion.div>
           )}
         </AnimatePresence>
@@ -120,20 +122,26 @@ export function AreasSection({ pilarPrincipal, pilarInfo, locale }: AreasSection
           <p className="text-[0.68rem] text-[#8A9BB8] mb-3 px-1">
             {t('diario.areas.leiaInstrucao')}
           </p>
-          <div className="grid grid-cols-1 gap-3">
-            {AREAS.map((area) => {
-              const traducao = traducaoPara(pilarPrincipal, area);
-              if (!traducao) return null;
-              return (
-                <TraducaoAreaPanel
-                  key={area}
-                  traducao={traducao}
-                  cor={pilarInfo.cor}
-                  variant="expanded"
-                />
-              );
-            })}
-          </div>
+          <Suspense fallback={
+            <div className="space-y-3">
+              {[1,2,3].map(i => <div key={i} className="h-16 w-full rounded-xl bg-white/5 animate-pulse" />)}
+            </div>
+          }>
+            <div className="grid grid-cols-1 gap-3">
+              {AREAS.map((area) => {
+                const traducao = traducaoPara(pilarPrincipal, area);
+                if (!traducao) return null;
+                return (
+                  <TraducaoAreaPanel
+                    key={area}
+                    traducao={traducao}
+                    cor={pilarInfo.cor}
+                    variant="expanded"
+                  />
+                );
+              })}
+            </div>
+          </Suspense>
         </div>
       ) : null}
     </section>

@@ -1,4 +1,3 @@
-// THIS FILE IS BEING SUPERSEDED BY THE NEXT EDIT
 'use client';
 
 /**
@@ -6,13 +5,12 @@
  * Renders "Significado dos Pilares" with collapsible cards per pillar.
  */
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getTranslations } from '@/lib/i18n';
 import { useReducedMotion } from '@/components/akasha/hooks/useReducedMotion';
 import type { SignificadoCurado, Pilar } from '@/lib/grimoire/significados-curados';
 import type { PilaresDoMandato } from './types';
-import { PILLAR_LABELS } from './types';
 import { PILLAR_COLORS } from './types';
 
 const SignificadoPilar = dynamic(
@@ -187,12 +185,16 @@ export function SignificadoSection({
                   >
                     <div className="px-5 pb-5 pt-2">
                       {sig ? (
-                        <SignificadoPilar
-                          significado={sig}
-                          cor={cor}
-                          destaque={isPrincipal}
-                          sexualidade={p === 'astrologia' ? sexualidade : undefined}
-                        />
+                        <Suspense fallback={
+                          <div className="h-24 w-full rounded-xl bg-white/5 animate-pulse" />
+                        }>
+                          <SignificadoPilar
+                            significado={sig}
+                            cor={cor}
+                            destaque={isPrincipal}
+                            sexualidade={p === 'astrologia' ? sexualidade : undefined}
+                          />
+                        </Suspense>
                       ) : (
                         <p className="text-[0.8rem] text-[#8A9BB8] italic">
                           {t('diario.significado.indisponivel', { pilar: p })}
@@ -222,12 +224,16 @@ export function SignificadoSection({
               <div id={`significado-${p}`}>
                 <div className="px-5 pb-5 pt-2">
                   {sig ? (
-                    <SignificadoPilar
-                      significado={sig}
-                      cor={cor}
-                      destaque={isPrincipal}
-                      sexualidade={p === 'astrologia' ? sexualidade : undefined}
-                    />
+                    <Suspense fallback={
+                      <div className="h-24 w-full rounded-xl bg-white/5 animate-pulse" />
+                    }>
+                      <SignificadoPilar
+                        significado={sig}
+                        cor={cor}
+                        destaque={isPrincipal}
+                        sexualidade={p === 'astrologia' ? sexualidade : undefined}
+                      />
+                    </Suspense>
                   ) : (
                     <p className="text-[0.8rem] text-[#8A9BB8] italic">
                       {t('diario.significado.indisponivel', { pilar: p })}

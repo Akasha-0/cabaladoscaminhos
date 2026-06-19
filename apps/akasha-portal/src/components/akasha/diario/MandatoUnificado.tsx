@@ -49,14 +49,22 @@ export function MandatoUnificado({
   const [perguntaText, setPerguntaText] = useState('');
   const deferredPergunta = useDeferredValue(perguntaText);
 
-  useEffect(() => {
-    const stored = sessionStorage.getItem(t('diario.mandato.sessionStorageKey'));
-    if (stored) setPerguntaText(stored);
-  }, [t]);
 
   useEffect(() => {
+    try {
+      const stored = sessionStorage.getItem(t('diario.mandato.sessionStorageKey'));
+      if (stored) setPerguntaText(stored);
+    } catch {
+      // sessionStorage unavailable (private browsing, quota exceeded, or other browser restrictions)
+    }
+  }, [t]);
+  useEffect(() => {
     // Deferred write — fires after React renders, off the keystroke path
-    sessionStorage.setItem(t('diario.mandato.sessionStorageKey'), deferredPergunta);
+    try {
+      sessionStorage.setItem(t('diario.mandato.sessionStorageKey'), deferredPergunta);
+    } catch {
+      // sessionStorage unavailable (private browsing, quota exceeded, or other browser restrictions)
+    }
   }, [deferredPergunta, t]);
 
   function handlePerguntaChange(value: string) {
@@ -183,7 +191,7 @@ export function MandatoUnificado({
                       color: PILLAR_LABELS[p]?.cor ?? C.txtMut,
                     }}
                   >
-                    {p}
+                    {PILLAR_LABELS[p]?.nome ?? p}
                   </span>
                 ))}
               </div>

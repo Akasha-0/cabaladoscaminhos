@@ -96,8 +96,8 @@ describe('MandatoUnificado', () => {
 
     it('renders pilar badges for relevant pilares', () => {
       render(<MandatoUnificado {...defaultProps} />);
-      expect(screen.getByText('cabala')).toBeInTheDocument();
-      expect(screen.getByText('astrologia')).toBeInTheDocument();
+      expect(screen.getByText('Numerologia Cabalística')).toBeInTheDocument();
+      expect(screen.getByText('Astrologia')).toBeInTheDocument();
     });
 
     it('renders escala S header (text split across nodes)', () => {
