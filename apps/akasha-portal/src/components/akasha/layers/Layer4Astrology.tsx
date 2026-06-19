@@ -22,7 +22,8 @@ interface Layer4Props {
 /** Layer 4 — Movimento Celeste (Astrology).
  * 12 zodiac sign segments + 12 house lines + 10 planet glyphs on ecliptic.
  * Rotates via CSS; pauses when Layer 4 is active (ringPaused=true).
- * Phase 1 extracted from MandalaChart.tsx. */
+ * Phase 1 extracted from MandalaChart.tsx.
+ * Keyboard accessible: Enter/Space to activate. */
 const Layer4Astrology = memo(function Layer4Astrology({
   planetDots,
   tooltipByLayer,
@@ -42,8 +43,17 @@ const Layer4Astrology = memo(function Layer4Astrology({
       onClick={() => onLayerToggle(4)}
       onMouseEnter={() => onLayerHover(4)}
       onMouseLeave={() => onLayerHover(null)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onLayerToggle(4);
+        }
+      }}
       style={{ cursor: 'pointer' }}
       className={ringClass}
+      role="button"
+      tabIndex={0}
+      aria-label={tooltipByLayer[4]}
     >
       <title>{tooltipByLayer[4]}</title>
 

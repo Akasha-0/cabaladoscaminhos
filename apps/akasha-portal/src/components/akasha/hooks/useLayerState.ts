@@ -1,5 +1,5 @@
 'use client';
-import { useState, useCallback, memo } from 'react';
+import { useState, useCallback } from 'react';
 import type { Layer } from '@/components/akasha/mandala-geometry';
 
 /** Phase 1 hook — extracts layer selection state + derived opacity logic.

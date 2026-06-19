@@ -9,6 +9,10 @@ const AkashaAuthorityPrompt = dynamic(
   { ssr: false }
 );
 
+export interface TensionPoint {
+  theme: string;
+}
+
 export interface DiarioAuthorityBlockProps {
   authority: {
     estrategia: 'act' | 'wait' | 'observe' | 'surrender';
@@ -21,9 +25,16 @@ export interface DiarioAuthorityBlockProps {
   };
   pilares: Partial<PilaresDados>;
   locale: string;
+  /** DailyResponse.tensionPoint — ponto de tensão ativo do dia */
+  tensionPoint?: TensionPoint;
 }
 
-export function DiarioAuthorityBlock({ authority, pilares, locale }: DiarioAuthorityBlockProps) {
+export function DiarioAuthorityBlock({
+  authority,
+  pilares,
+  locale,
+  tensionPoint,
+}: DiarioAuthorityBlockProps) {
   const t = getTranslations(locale);
 
   const sectionCard =
@@ -31,6 +42,20 @@ export function DiarioAuthorityBlock({ authority, pilares, locale }: DiarioAutho
 
   return (
     <section aria-label={t('diario.authority.autoridadeAkashica')} className={sectionCard}>
+      {/* Tension point — top callout when present */}
+      {tensionPoint ? (
+        <div
+          className="rounded-xl p-3 mb-4"
+          style={{ background: 'rgba(240,180,41,0.06)', border: '1px solid rgba(240,180,41,0.2)' }}
+          aria-label={t('diario.authority.tensaoAtiva')}
+        >
+          <p className="text-[0.6rem] text-[#F0B429] tracking-wide uppercase mb-0.5 font-cinzel">
+            {t('diario.authority.tensaoAtiva')}
+          </p>
+          <p className="text-[0.82rem] text-[#B8BFCE] leading-relaxed">{tensionPoint.theme}</p>
+        </div>
+      ) : null}
+
       <div className="flex items-center gap-2 mb-4">
         <h2 className="text-[1.15rem] font-cinzel text-[#F4F5FF]">{t('diario.authority.suaAutoridade')}</h2>
         <span

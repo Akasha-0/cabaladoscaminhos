@@ -14,7 +14,7 @@ interface Layer3Props {
 /** Layer 3 — Corpo e Energia (Tantric Bodies).
  * 11 nodes distributed evenly on r=138; web lines between adjacent nodes.
  * Active = teal, inactive = pink.
- * Phase 1 extracted from MandalaChart.tsx. */
+ * Keyboard accessible: Enter/Space to activate. */
 const Layer3Tantra = memo(function Layer3Tantra({
   tantricNodes,
   tooltipByLayer,
@@ -28,7 +28,16 @@ const Layer3Tantra = memo(function Layer3Tantra({
       onClick={() => onLayerToggle(3)}
       onMouseEnter={() => onLayerHover(3)}
       onMouseLeave={() => onLayerHover(null)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onLayerToggle(3);
+        }
+      }}
       style={{ cursor: 'pointer' }}
+      role="button"
+      tabIndex={0}
+      aria-label={tooltipByLayer[3]}
     >
       <title>{tooltipByLayer[3]}</title>
 
@@ -62,7 +71,6 @@ const Layer3Tantra = memo(function Layer3Tantra({
       {/* Tantric body nodes */}
       {tantricNodes.map(({ pos, active, label }, i) => (
         <g key={`node-${i}`}>
-          {/* Pink halo for inactive nodes (WCAG contrast fix — was rgba(251,87,129,0.12)) */}
           {!active && (
             <circle cx={pos.x} cy={pos.y} r="10" fill="rgba(251,87,129,0.35)" />
           )}
@@ -89,5 +97,5 @@ const Layer3Tantra = memo(function Layer3Tantra({
     </g>
   );
 });
-export { Layer3Tantra };
 
+export { Layer3Tantra };

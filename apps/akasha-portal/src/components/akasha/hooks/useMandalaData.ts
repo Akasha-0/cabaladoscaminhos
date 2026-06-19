@@ -67,3 +67,16 @@ export function useMandalaData(data: MandalaData) {
 }
 
 export type { PlanetDot, TantricNode, KabVert };
+
+export interface MandalaDerivedData {
+  tooltipByLayer: Record<import('@/components/akasha/mandala-geometry').Layer, string>;
+  planetDots: PlanetDot[];
+  tantricNodes: TantricNode[];
+  kabVerts: KabVert[];
+  trianglePath: string;
+  elem: string | null;
+  inactiveBodies: TantricNode[];
+  lpMeaning: string | null;
+  /** { balance, ritual } — null when no element is dominant */
+  elemGuidance: { balance: string; ritual: string } | null;
+}

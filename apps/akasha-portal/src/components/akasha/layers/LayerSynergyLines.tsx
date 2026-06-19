@@ -1,6 +1,5 @@
 'use client';
 import { memo } from 'react';
-import type { MandalaData } from '@/components/akasha/MandalaChart';
 import type { TantricNode } from '@/components/akasha/mandala-layers';
 
 interface LayerSynergyLinesProps {

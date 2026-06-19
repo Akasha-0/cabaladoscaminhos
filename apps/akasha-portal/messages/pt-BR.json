@@ -103,7 +103,14 @@
       "titulo": "Significado dos Pilares",
       "instrucao": "Toque em cada pilar para revelar sua interpretação energética de hoje.",
       "principal": "Principal",
-      "indisponivel": "Interpretação de {pilar} indisponível."
+      "indisponivel": "Interpretação de {pilar} indisponível.",
+      "pilarNames": {
+        "cabala": "Cabala",
+        "astrologia": "Astrologia",
+        "tantrica": "Tântrica",
+        "odu": "Odu",
+        "iching": "I Ching"
+      }
     },
     "ritual": {
       "microRitual": "Micro-Ritual do Dia",

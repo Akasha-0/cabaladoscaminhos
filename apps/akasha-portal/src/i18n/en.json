@@ -106,7 +106,9 @@
   "diario": {
     "scrollContainer": {
       "headerLabel": "Diary Header",
-      "badgeAriaLabel": "Mandala Phase: {phase}"
+      "badgeAriaLabel": "Mandala Phase: {phase}",
+      "skipToContent": "Skip to main content",
+      "clima": "Climate"
     },
     "mandato": {
       "indisponivel": "Mandate unavailable.",
@@ -128,7 +130,10 @@
       "cvvNome": "CVV — Centro de Valorização da Vida",
       "cvvLigue": "call 188",
       "cvvChat": "chat also:",
-      "cvvSite": "cvv.org.br"
+      "cvvSite": "cvv.org.br",
+      "indisponivelDesc": "We couldn't calculate today's Mandate ({status}). Please try again in a moment.",
+      "alertaDoDia": "Daily Alert",
+      "alertAriaLabel": "Daily Energetic Alert"
     },
     "errorBoundary": {
       "titulo": "Diary Error",
@@ -141,7 +146,8 @@
       "regraDeHoje": "Rule of today",
       "melhorJanela": "Best window",
       "evite": "Avoid",
-      "praticaDoDia": "Practice of the day"
+      "praticaDoDia": "Practice of the day",
+      "tensaoAtiva": "Active Tension"
     },
     "ritual": {
       "microRitual": "The Micro-Ritual",

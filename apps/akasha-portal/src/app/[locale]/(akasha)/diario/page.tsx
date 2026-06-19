@@ -12,11 +12,23 @@
  *     <SignificadoSection />     <- tela 4
  *     <AreasSection />           <- tela 5
  *   </DiarioScrollContainer>
+ *
+ * DailyResponse fields wired (Iteration 6 — Clarity + Content):
+ *   climate  -> DiarioScrollContainer header badge
+ *   alert   -> MandatoUnificado alert card
+ *   ritual  -> RitualSection (pre-existing)
+ *   tensionPoint -> DiarioAuthorityBlock tension callout
+ *
+ * Intentionally unused (documented):
+ *   hexagram / hexagramLines — I Ching natal data; shown in Mandala, not diario
+ *   synthesis — rendered by DiarioAuthorityBlock via deriveAkashaAuthority
+ *   cycle — complex personal timing data; out of scope for this iteration
  */
 import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
+import { getTranslations } from '@/lib/i18n';
 import {
   significadosEspecificos,
   type Pilar,
@@ -78,15 +90,17 @@ export default async function DiarioPage({
 
   if (mandatoRes.status === 401 || mandatoRes.status === 404) redirect(`/${locale}/login`);
 
+  const t = getTranslations(locale);
+
   if (!mandatoRes.ok) {
     return (
       <div className="min-h-dvh bg-[#06070F] flex items-center justify-center p-6">
         <div className="bg-[rgba(11,14,28,0.72)] backdrop-blur-xl border border-[#FB5781]/40 border-l-4 border-l-[#FB5781] rounded-2xl p-6 max-w-md w-full">
           <span className="block text-[0.7rem] font-cinzel tracking-[0.2em] uppercase text-[#FB5781] mb-3">
-            Mandato indisponível
+            {t('diario.mandato.indisponivel')}
           </span>
           <p className="text-[0.9rem] leading-relaxed text-[#A7AECF]">
-            Não conseguimos calcular o Mandato de hoje ({mandatoRes.status}). Tente novamente em alguns instantes.
+            {t('diario.mandato.indisponivelDesc', { status: String(mandatoRes.status) })}
           </p>
         </div>
       </div>
@@ -109,10 +123,17 @@ export default async function DiarioPage({
     praticaDiaria: praticaAuthorityDiaria(pilaresParciais),
   };
 
-  // ── Ritual from /daily API with per-pilar fallback ───────────────────
+  // ── Ritual + unused fields from /daily API ─────────────────────────────
+  // §DailyResponse fields — all extracted here; each wired to its UI slot
   let ritual: DailyRitualUI;
+  let climate: string | undefined;
+  let alert: string | undefined;
+  let tensionPoint: { theme: string } | undefined;
+
   if (dailyRes.ok) {
     const dailyPayload: DailyResponse = await dailyRes.json();
+
+    // ritual — pre-existing wiring
     if (dailyPayload.ritual && typeof dailyPayload.ritual === 'object') {
       const r = dailyPayload.ritual as {
         titulo?: string;
@@ -134,11 +155,31 @@ export default async function DiarioPage({
     } else {
       ritual = buildRitualFallback(pilarPrincipal);
     }
+
+    // §DailyResponse: climate — wired to DiarioScrollContainer header badge
+    climate = typeof dailyPayload.climate === 'string' ? dailyPayload.climate : undefined;
+
+    // §DailyResponse: alert — wired to MandatoUnificado alert card
+    alert = typeof dailyPayload.alert === 'string' ? dailyPayload.alert : undefined;
+
+    // §DailyResponse: tensionPoint — wired to DiarioAuthorityBlock tension callout
+    if (
+      dailyPayload.tensionPoint &&
+      typeof dailyPayload.tensionPoint === 'object' &&
+      'theme' in dailyPayload.tensionPoint
+    ) {
+      tensionPoint = { theme: String(dailyPayload.tensionPoint.theme) };
+    }
+
+    // Intentionally not wired in this iteration:
+    //   hexagram / hexagramLines — I Ching natal/day data; belongs in Mandala or IchingInfoPanel
+    //   synthesis — rendered via deriveAkashaAuthority + praticaAuthorityDiaria above
+    //   cycle — complex personal timing data (personalDay/Month/Year, exercises, modulation)
+    //     out of scope for Iteration 6; consider AreasSection integration in a future iteration
   } else {
     ritual = buildRitualFallback(pilarPrincipal);
   }
 
-  const frases = crise ? [] : extractFrasesFallback(mandato.redacao_bruta);
   const significados = significadosEspecificos(pilares as unknown as PilaresDados);
 
   return (
@@ -150,33 +191,36 @@ export default async function DiarioPage({
         lua_fase={lua_fase}
         totalSections={5}
         locale={locale}
+        climate={climate}
       >
-      <div className="max-w-xl mx-auto w-full px-5 pt-8 pb-4">
+      <div data-section-index="1" className="max-w-xl mx-auto w-full px-5 pt-8 pb-4">
         <MandatoUnificado
           date={date}
           mandato={mandato}
           mentor_hook={mentor_hook}
-          frases={frases}
+          frases={[]}
           pilarInfo={pilarInfo}
           locale={locale}
+          alert={alert}
         />
       </div>
 
-      <div className="max-w-xl mx-auto w-full px-5 py-4">
+      <div data-section-index="2" className="max-w-xl mx-auto w-full px-5 py-4">
         {ritual ? (
           <RitualSection ritual={ritual} pilarInfo={pilarInfo} locale={locale} />
         ) : null}
       </div>
 
-      <div className="max-w-xl mx-auto w-full px-5 py-4">
+      <div data-section-index="3" className="max-w-xl mx-auto w-full px-5 py-4">
         <DiarioAuthorityBlock
           authority={authority}
           pilares={pilaresParciais}
           locale={locale}
+          tensionPoint={tensionPoint}
         />
       </div>
 
-      <div className="max-w-xl mx-auto w-full px-5 py-4">
+      <div data-section-index="4" className="max-w-xl mx-auto w-full px-5 py-4">
         <SignificadoSection
           pilares={pilares}
           pilarPrincipal={pilarPrincipal}
@@ -185,23 +229,12 @@ export default async function DiarioPage({
         />
       </div>
 
-      <div className="max-w-xl mx-auto w-full px-5 py-4 pb-16">
+      <div data-section-index="5" className="max-w-xl mx-auto w-full px-5 py-4 pb-16">
         <AreasSection pilarPrincipal={pilarPrincipal} pilarInfo={pilarInfo} locale={locale} />
       </div>
     </DiarioScrollContainer>
     </DiarioErrorBoundary>
   );
-}
-
-/** Server-side utility: splits redacao_bruta into 1–3 sentences for the pergunta card. */
-function extractFrasesFallback(redacao: string): string[] {
-  const cleaned = redacao.replace(/\s*\(LLM redige.*?\)\.?\s*$/i, '').trim();
-  const raw = cleaned
-    .split(/(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÂÊÔÃÕÇ])/g)
-    .map((s) => s.trim())
-    .filter((s) => s.length > 0);
-  if (raw.length >= 3) return raw.slice(0, 3);
-  return raw.length > 0 ? [cleaned] : ['(Mandato vazio — tente novamente)'];
 }
 
 /** Per-pilar ritual fallback — used when /daily API is unavailable. */

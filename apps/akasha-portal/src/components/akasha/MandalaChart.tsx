@@ -2,6 +2,7 @@
 
 import { memo } from 'react';
 import { useCockpitStore } from '@/stores/cockpit-store';
+import type { AtmosphereIntensity } from '@/stores/cockpit-store';
 import { AstrologyInfoPanel, type AstrologyAspect } from '@/components/akasha/AstrologyInfoPanel';
 import { IchingInfoPanel } from '@/components/akasha/IchingInfoPanel';
 import { KabalaInfoPanel, TantricBodyInfoPanel } from '@/components/akasha/MandalaInfoPanels';
@@ -16,16 +17,17 @@ import { Layer3Tantra } from '@/components/akasha/layers/Layer3Tantra';
 import { Layer4Astrology } from '@/components/akasha/layers/Layer4Astrology';
 import { Layer5Iching } from '@/components/akasha/layers/Layer5Iching';
 import { LayerSynergyLines } from '@/components/akasha/layers/LayerSynergyLines';
-import { useLayerState } from '@/components/akasha/hooks/useLayerState';
-import { useMandalaData } from '@/components/akasha/hooks/useMandalaData';
+import { useMandalaData, type MandalaDerivedData } from '@/components/akasha/hooks/useMandalaData';
 import { useReducedMotion } from '@/components/akasha/hooks/useReducedMotion';
 import {
   PILAR_COLORS,
   PILAR_LABEL_BY_LAYER,
-  STARS,
   toXY,
   type Layer,
 } from '@/components/akasha/mandala-geometry';
+import { MandalaProvider, useMandalaContext } from '@/lib/application/akasha/mandala-context';
+import { AkashaAuthorityPrompt } from '@/components/akasha/AkashaAuthorityPrompt';
+import type { PilaresDados } from '@/lib/grimoire/significados-curados';
 
 // ─── MandalaData (unchanged — immutable API contract) ────────────────────────
 
@@ -79,8 +81,6 @@ export interface MandalaData {
     ascendant: string | null;
     midheaven: string | null;
     dominantPlanet: string | null;
-    // Mandala Fase 3: absoluteLongitude (0-360°) for ecliptic positioning.
-    // `degree` (0-30°) remains for InfoPanel display.
     planets: Array<{
       name: string;
       sign: string;
@@ -119,29 +119,65 @@ interface Props {
 
 const LAYERS: Layer[] = [1, 2, 3, 4, 5];
 
+/**
+ * MandalaChart — root orchestrator for the interactive Akashic mandala.
+ *
+ * Phase 3 change: layer state and synthesis are now provided via MandalaContext
+ * (created by MandalaProvider). The outer component fetches shared data
+ * (atmosphere intensity, reduced-motion preference, per-layer derived data)
+ * and passes them as props to InnerMandalaChart, which consumes the context.
+ */
 const MandalaChart = memo(function MandalaChart({ data }: Props) {
   const atmosphereIntensity = useCockpitStore((s) => s.atmosphereIntensity);
   const reducedMotion = useReducedMotion();
+  const derived = useMandalaData(data);
 
+  return (
+    <MandalaProvider>
+      <InnerMandalaChart
+        data={data}
+        atmosphereIntensity={atmosphereIntensity}
+        reducedMotion={reducedMotion}
+        derived={derived}
+      />
+    </MandalaProvider>
+  );
+});
+
+export default MandalaChart;
+
+// ─── Inner component (consumes MandalaContext) ────────────────────────────────
+
+/** Inner component — must be rendered inside MandalaProvider. */
+const InnerMandalaChart = memo(function InnerMandalaChart({
+  data,
+  atmosphereIntensity,
+  reducedMotion,
+  derived,
+}: Props & {
+  atmosphereIntensity: AtmosphereIntensity;
+  reducedMotion: boolean;
+  derived: MandalaDerivedData;
+}) {
   const {
     activeLayer,
-    hoveredLayer,
     ringPaused,
     opacity,
     setActiveLayer,
     setHoveredLayer,
-  } = useLayerState();
+    authority,
+  } = useMandalaContext();
 
-  const {
-    tooltipByLayer,
-    planetDots,
-    tantricNodes,
-    kabVerts,
-    trianglePath,
-    inactiveBodies,
-    lpMeaning,
-    elemGuidance,
-  } = useMandalaData(data);
+  // Build partial pilares from MandalaData for AkashaAuthorityPrompt (F-227).
+  // Cast through unknown because MandalaData field names (e.g. lifePath)
+  // differ from PilaresDados field names (e.g. life_path).
+  const pilares = {
+    cabala: data.kabala,
+    astrologia: data.astrology,
+    tantrica: data.tantra,
+    odu: data.odus,
+    iching: data.iching,
+  } as unknown as Partial<PilaresDados>;
 
   return (
     <div
@@ -216,8 +252,10 @@ const MandalaChart = memo(function MandalaChart({ data }: Props) {
             return (
               <line
                 key={`cross-${i}`}
-                x1={outer.x} y1={outer.y}
-                x2={inner.x} y2={inner.y}
+                x1={outer.x}
+                y1={outer.y}
+                x2={inner.x}
+                y2={inner.y}
                 stroke="rgba(45,212,191,0.08)"
                 strokeWidth="0.5"
                 strokeDasharray="3 5"
@@ -228,7 +266,7 @@ const MandalaChart = memo(function MandalaChart({ data }: Props) {
           {/* Layer 5 — I Ching (outermost, rendered first = behind L4/L3/L2/L1) */}
           <Layer5Iching
             data={data}
-            tooltipByLayer={tooltipByLayer}
+            tooltipByLayer={derived.tooltipByLayer}
             opacity={opacity}
             onLayerToggle={setActiveLayer}
             onLayerHover={setHoveredLayer}
@@ -236,8 +274,8 @@ const MandalaChart = memo(function MandalaChart({ data }: Props) {
 
           {/* Layer 4 — Astrology (with CSS rotation) */}
           <Layer4Astrology
-            planetDots={planetDots}
-            tooltipByLayer={tooltipByLayer}
+            planetDots={derived.planetDots}
+            tooltipByLayer={derived.tooltipByLayer}
             opacity={opacity}
             onLayerToggle={setActiveLayer}
             onLayerHover={setHoveredLayer}
@@ -245,33 +283,31 @@ const MandalaChart = memo(function MandalaChart({ data }: Props) {
             reducedMotion={reducedMotion}
           />
 
-          {/* Layer 3 — Tantra */}
+          {/* Layer 3 — Tantra (synergy lines rendered behind Layer 2) */}
+          <LayerSynergyLines tantricNodes={derived.tantricNodes} reducedMotion={reducedMotion} />
+
           <Layer3Tantra
-            tantricNodes={tantricNodes}
-            tooltipByLayer={tooltipByLayer}
+            tantricNodes={derived.tantricNodes}
+            tooltipByLayer={derived.tooltipByLayer}
             opacity={opacity}
             onLayerToggle={setActiveLayer}
             onLayerHover={setHoveredLayer}
           />
-
-          {/* Toroidal synergy lines (Layer 3 nodes → center) — rendered before L2 */}
-          <LayerSynergyLines tantricNodes={tantricNodes} reducedMotion={reducedMotion} />
 
           {/* Layer 2 — Kabala */}
           <Layer2Kabala
             data={data}
-            kabVerts={kabVerts}
-            trianglePath={trianglePath}
-            tooltipByLayer={tooltipByLayer}
+            kabVerts={derived.kabVerts}
+            trianglePath={derived.trianglePath}
+            tooltipByLayer={derived.tooltipByLayer}
             opacity={opacity}
             onLayerToggle={setActiveLayer}
             onLayerHover={setHoveredLayer}
           />
-
           {/* Layer 1 — Ancestralidade (innermost, rendered last = on top) */}
           <Layer1Ancestralidade
             data={data}
-            tooltipByLayer={tooltipByLayer}
+            tooltipByLayer={derived.tooltipByLayer}
             opacity={opacity}
             onLayerToggle={setActiveLayer}
             onLayerHover={setHoveredLayer}
@@ -306,12 +342,12 @@ const MandalaChart = memo(function MandalaChart({ data }: Props) {
 
       {/* Info panels */}
       {activeLayer === 4 && (
-        <AstrologyInfoPanel astrology={data.astrology} elemGuidance={elemGuidance} />
+        <AstrologyInfoPanel astrology={data.astrology} elemGuidance={derived.elemGuidance} />
       )}
       {activeLayer === 3 && (
-        <TantricBodyInfoPanel tantra={data.tantra} inactiveBodies={inactiveBodies} />
+        <TantricBodyInfoPanel tantra={data.tantra} inactiveBodies={derived.inactiveBodies} />
       )}
-      {activeLayer === 2 && <KabalaInfoPanel kabala={data.kabala} lpMeaning={lpMeaning} />}
+      {activeLayer === 2 && <KabalaInfoPanel kabala={data.kabala} lpMeaning={derived.lpMeaning} />}
       {activeLayer === 1 && <OduInfoPanel odu={data.odus} />}
       {activeLayer === 5 && <IchingInfoPanel iching={data.iching} />}
       {activeLayer === null && (
@@ -319,8 +355,11 @@ const MandalaChart = memo(function MandalaChart({ data }: Props) {
           Toque em uma camada para revelar seus dados e orientações práticas.
         </p>
       )}
+
+      {/* F-227: Akasha Authority Prompt — shown when authority data is available */}
+      {authority && (
+        <AkashaAuthorityPrompt authority={authority} pilares={pilares} />
+      )}
     </div>
   );
 });
-
-export default MandalaChart;

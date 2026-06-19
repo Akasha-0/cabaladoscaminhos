@@ -1,3 +1,4 @@
+// THIS FILE IS BEING SUPERSEDED BY THE NEXT EDIT
 'use client';
 
 /**
@@ -11,21 +12,24 @@ import { getTranslations } from '@/lib/i18n';
 import { useReducedMotion } from '@/components/akasha/hooks/useReducedMotion';
 import type { SignificadoCurado, Pilar } from '@/lib/grimoire/significados-curados';
 import type { PilaresDoMandato } from './types';
+import { PILLAR_LABELS } from './types';
+import { PILLAR_COLORS } from './types';
 
 const SignificadoPilar = dynamic(
   () => import('@/components/akasha/SignificadoPilar').then((m) => m.SignificadoPilar),
   { ssr: false }
 );
 
-const CORES_POR_PILAR: Record<Pilar, string> = {
-  cabala: '#7C5CFF',
-  astrologia: '#2DD4BF',
-  tantrica: '#F0B429',
-  odu: '#FB5781',
-  iching: '#A0763A',
-};
-
 const ORDEM_PILARES: Pilar[] = ['cabala', 'astrologia', 'tantrica', 'odu', 'iching'];
+
+/** Type-safe i18n key lookup — avoids unsafe string manipulation. */
+const PILAR_NAME_KEYS: Record<Pilar, string> = {
+  cabala: 'diario.significado.pilarNames.cabala',
+  astrologia: 'diario.significado.pilarNames.astrologia',
+  tantrica: 'diario.significado.pilarNames.tantrica',
+  odu: 'diario.significado.pilarNames.odu',
+  iching: 'diario.significado.pilarNames.iching',
+};
 
 type SignificadosPorPilar = {
   cabala: SignificadoCurado;
@@ -90,6 +94,21 @@ export function SignificadoSection({
     return { lilith_signo: astro.lilith_signo, casa_8_signo: astro.casa_8_signo };
   })();
 
+  // Show principal + 2 nearest secondary pilares (3 total)
+  const principalIdx = ORDEM_PILARES.indexOf(pilarPrincipal);
+  const tresPilares: Pilar[] = (() => {
+    if (principalIdx > 0) {
+      // principal is not first: show one before, principal, one after (or next closest)
+      const before = principalIdx - 1;
+      const after = principalIdx < ORDEM_PILARES.length - 1 ? principalIdx + 1 : principalIdx + 2;
+      return [ORDEM_PILARES[before], pilarPrincipal, ORDEM_PILARES[after]].filter(
+        (p): p is Pilar => p !== undefined
+      );
+    }
+    // principal is first: show principal + next two
+    return [pilarPrincipal, ORDEM_PILARES[1], ORDEM_PILARES[2]];
+  })();
+
   return (
     <section
       aria-label={t('diario.significado.titulo')}
@@ -102,9 +121,9 @@ export function SignificadoSection({
         {t('diario.significado.instrucao')}
       </p>
 
-      {ORDEM_PILARES.map((p) => {
+      {tresPilares.map((p) => {
         const isOpen = openPilar === p;
-        const cor = CORES_POR_PILAR[p];
+        const cor = PILLAR_COLORS[p];
         const isPrincipal = p === pilarPrincipal;
         const sig = significados[p];
         const oduAviso = p === 'odu' ? (pilares.odu as { aviso?: string } | undefined)?.aviso : undefined;
@@ -112,13 +131,13 @@ export function SignificadoSection({
         return (
           <div key={p} style={cardStyle(cor, isOpen)}>
             <button
-                          type="button"
-                          className="focus:outline-none"
-                          style={headerStyle()}
-                          onClick={() => setOpenPilar(isOpen ? null : p)}
-                          aria-expanded={isOpen}
-                          aria-controls={`significado-${p}`}
-                        >
+              type="button"
+              className="focus-visible:outline-2 focus-visible:outline-offset-2"
+              style={{ ...headerStyle(), outlineColor: cor }}
+              onClick={() => setOpenPilar(isOpen ? null : p)}
+              aria-expanded={isOpen}
+              aria-controls={`significado-${p}`}
+            >
               <div className="flex items-center gap-3">
                 <span
                   style={{
@@ -135,7 +154,7 @@ export function SignificadoSection({
                     className="text-[0.8rem] font-semibold"
                     style={{ color: isPrincipal ? cor : '#B8BFCE' }}
                   >
-                    {t(`diario.mandato.pilar${p.charAt(0).toUpperCase() + p.slice(1)}` as never)}
+                    {t(PILAR_NAME_KEYS[p])}
                   </span>
                   {isPrincipal && (
                     <span
@@ -179,7 +198,6 @@ export function SignificadoSection({
                           {t('diario.significado.indisponivel', { pilar: p })}
                         </p>
                       )}
-                      {/* LGPD Ethics Charter — Odu aviso (Pilar 4) */}
                       {p === 'odu' && oduAviso ? (
                         <div
                           className="mt-3 px-4 py-3 rounded-xl text-[0.75rem] leading-relaxed"
@@ -215,7 +233,6 @@ export function SignificadoSection({
                       {t('diario.significado.indisponivel', { pilar: p })}
                     </p>
                   )}
-                  {/* LGPD Ethics Charter — Odu aviso (Pilar 4) */}
                   {p === 'odu' && oduAviso ? (
                     <div
                       className="mt-3 px-4 py-3 rounded-xl text-[0.75rem] leading-relaxed"

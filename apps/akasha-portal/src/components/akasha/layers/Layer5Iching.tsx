@@ -13,7 +13,8 @@ interface Layer5Props {
 
 /** Layer 5 — Mutação do Caminho (I Ching hexagram).
  * Single hexagram node at top (200, 110).
- * Phase 1 extracted from MandalaChart.tsx. */
+ * Phase 1 extracted from MandalaChart.tsx.
+ * Keyboard accessible: Enter/Space to activate. */
 const Layer5Iching = memo(function Layer5Iching({
   data,
   tooltipByLayer,
@@ -27,7 +28,16 @@ const Layer5Iching = memo(function Layer5Iching({
       onClick={() => onLayerToggle(5)}
       onMouseEnter={() => onLayerHover(5)}
       onMouseLeave={() => onLayerHover(null)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onLayerToggle(5);
+        }
+      }}
       style={{ cursor: 'pointer' }}
+      role="button"
+      tabIndex={0}
+      aria-label={tooltipByLayer[5]}
     >
       <title>{tooltipByLayer[5]}</title>
 
@@ -86,4 +96,3 @@ const Layer5Iching = memo(function Layer5Iching({
   );
 });
 export { Layer5Iching };
-

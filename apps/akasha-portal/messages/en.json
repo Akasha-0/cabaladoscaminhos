@@ -103,7 +103,14 @@
       "titulo": "Pillar Meanings",
       "instrucao": "Tap each pillar to reveal its energetic interpretation for today.",
       "principal": "Main",
-      "indisponivel": "{pilar} interpretation unavailable."
+      "indisponivel": "{pilar} interpretation unavailable.",
+      "pilarNames": {
+        "cabala": "Kabbalah",
+        "astrologia": "Astrology",
+        "tantrica": "Tantric",
+        "odu": "Odu",
+        "iching": "I Ching"
+      }
     },
     "ritual": {
       "microRitual": "Daily Micro-Ritual",

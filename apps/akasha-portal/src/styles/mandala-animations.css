@@ -1,0 +1,100 @@
+/* ============================================================
+   Mandala InfoPanel — Mobile Bottom Sheet & Touch UX
+   Applied via .info-panel class on InfoPanel root div
+   (InfoPanel already sets className="info-panel")
+   ============================================================ */
+
+/* ── Mobile bottom sheet ──────────────────────────────────── */
+@media (max-width: 768px) {
+  .info-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    max-height: 65vh;
+    overflow-y: auto;
+    border-radius: 18px 18px 0 0;
+    animation: info-panel-slide-up 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow:
+      0 -6px 32px rgba(0, 0, 0, 0.55),
+      0 -2px 8px rgba(0, 0, 0, 0.4);
+    /* Collapse max-width from desktop; always full width on mobile */
+    max-width: 100% !important;
+    width: 100%;
+  }
+
+  /* Semi-opaque backdrop behind the sheet */
+  .info-panel-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(6, 7, 15, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 49;
+    animation: info-panel-fade-in 0.25s ease-out;
+  }
+
+  /* Drag handle pill at top of sheet */
+  .info-panel::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(167, 174, 207, 0.4);
+    margin: 10px auto 4px;
+    flex-shrink: 0;
+  }
+}
+
+/* ── Desktop inline panel ──────────────────────────────────── */
+@media (min-width: 769px) {
+  .info-panel {
+    position: relative;
+    max-height: none;
+    overflow-y: visible;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
+    /* Already: maxWidth 400 + width 100% from InfoPanel inline styles */
+  }
+
+  .info-panel-backdrop {
+    display: none;
+  }
+
+  .info-panel::before {
+    display: none;
+  }
+}
+
+/* ── Slide-up keyframe ─────────────────────────────────────── */
+@keyframes info-panel-slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ── Backdrop fade-in keyframe ─────────────────────────────── */
+@keyframes info-panel-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Touch-friendly layer buttons (already correct inline,
+       repeated here for CSS-level enforcement) ─────────────── */
+.layer-btn {
+  min-height: 44px !important;
+  min-width: 88px !important;
+  padding: 8px 16px !important;
+  /* Other styles remain via inline style in MandalaChart.tsx */
+}

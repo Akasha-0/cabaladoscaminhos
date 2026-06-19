@@ -28,6 +28,7 @@ Meu Dia, Minha Caixa, e 9 dimensões de vida. PWA-ready (F-228 mobile strategy).
   - `src/lib/grimoire/akasha-authority.ts`: F-227 framework (regra Corpo 3=paz, Corpo 4=ansiedade)
   - `src/lib/grimoire/synthesis/synthesizer.ts`: deriveAkashaAuthority + 9 dimensões
   - `src/lib/application/akasha/synthesis-engine.ts`: AkashaSynthesis + 9 Akasha Types + DailyDecision
+  - `src/lib/application/akasha/mandala-context.tsx`: MandalaProvider + MandalaContextValue + useMandalaContext hook (Phase 3). Consolidates layer state + Akasha synthesis + F-227 authority; consumed by InnerMandalaChart.
   - `src/lib/application/akasha/narrative-generator.ts`: F-226 (12 caminhos Cabala + LIFE_PATH_NARRATIVES)
   - `src/lib/infrastructure/rate-limit.ts`: rate limit compartilhado para middleware e Mentor
   - `src/lib/shared/zodiac.ts`: helpers do zodíaco (Fase 3)
@@ -49,6 +50,7 @@ Meu Dia, Minha Caixa, e 9 dimensões de vida. PWA-ready (F-228 mobile strategy).
 - `useAkashaSynthesis` hook retorna `DailyContentUI` com `synthesis: AkashaSynthesisUI | null` (null = sem dados dos 5 Pilares ainda)
 - `synthesis.oneProfile?: AkashaTypeProfileUI` — só presente se Pilar data completa
 - **PWA** (F-228): `output: 'export'` PROIBIDO (incompatível com `cookies()` em rotas auth); usar Vercel Fluid Compute para runtime
+- **MandalaContext** (Phase 3): `MandalaProvider` expõe layer state + Akasha synthesis + F-227 authority; `InnerMandalaChart` consome via `useMandalaContext()`. `MandalaData` permanece o contrato imutável de API.
 
 ## Work Guidance
 
@@ -81,7 +83,7 @@ Meu Dia, Minha Caixa, e 9 dimensões de vida. PWA-ready (F-228 mobile strategy).
 | F-225 Sexualidade Deep    | ✅ Done     | `lib/application/akasha/synthesis-engine.ts:deriveSexualArchetype`              |
 | F-226 Narrative Generator | ✅ Done     | `lib/application/akasha/narrative-generator.ts`                                 |
 | F-227 Akasha Authority    | ✅ Done     | `lib/grimoire/akasha-authority.ts` + `components/akasha/AkashaAuthorityPrompt/` |
-| F-228 Mobile Strategy     | ✅ Doc done | `.trae/specs/akasha-v0.0.19/mobile-strategy.md` (PWA-first)                     |
+| F-228 Mobile Strategy     | ✅ Doc done | `.trae/specs/akasha-v0.0.19/mobile-strategy.md` (PWA-first)                    |
 
 ## Child DOX Index
 

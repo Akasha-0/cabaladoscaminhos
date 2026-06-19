@@ -13,7 +13,7 @@ interface Layer1Props {
 
 /** Layer 1 — Ancestralidade (Odu/Ifá system).
  * Animated gold glow rings + Odu name + Orixá regência.
- * Phase 1 extracted from MandalaChart.tsx. */
+ * Keyboard accessible: Enter/Space to activate. */
 export const Layer1Ancestralidade = memo(function Layer1Ancestralidade({
   data,
   tooltipByLayer,
@@ -27,7 +27,16 @@ export const Layer1Ancestralidade = memo(function Layer1Ancestralidade({
       onClick={() => onLayerToggle(1)}
       onMouseEnter={() => onLayerHover(1)}
       onMouseLeave={() => onLayerHover(null)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onLayerToggle(1);
+        }
+      }}
       style={{ cursor: 'pointer' }}
+      role="button"
+      tabIndex={0}
+      aria-label={tooltipByLayer[1]}
     >
       <title>{tooltipByLayer[1]}</title>
 

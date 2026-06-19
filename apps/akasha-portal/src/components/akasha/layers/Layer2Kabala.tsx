@@ -16,9 +16,8 @@ interface Layer2Props {
 }
 
 /** Layer 2 — Número de Vida (Kabala triangle: Vida / Expressão / Motivação).
- * Phase 1 extracted from MandalaChart.tsx. */
+ * Keyboard accessible: Enter/Space to activate. */
 export const Layer2Kabala = memo(function Layer2Kabala({
-  data,
   kabVerts,
   trianglePath,
   tooltipByLayer,
@@ -32,7 +31,16 @@ export const Layer2Kabala = memo(function Layer2Kabala({
       onClick={() => onLayerToggle(2)}
       onMouseEnter={() => onLayerHover(2)}
       onMouseLeave={() => onLayerHover(null)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onLayerToggle(2);
+        }
+      }}
       style={{ cursor: 'pointer' }}
+      role="button"
+      tabIndex={0}
+      aria-label={tooltipByLayer[2]}
     >
       <title>{tooltipByLayer[2]}</title>
 
@@ -51,7 +59,6 @@ export const Layer2Kabala = memo(function Layer2Kabala({
       {/* 3 vertices: Vida, Expressão, Motivação */}
       {kabVerts.map(({ pos, value, master }, i) => (
         <g key={i}>
-          {/* Master number outer ring */}
           {master && (
             <circle
               cx={pos.x}

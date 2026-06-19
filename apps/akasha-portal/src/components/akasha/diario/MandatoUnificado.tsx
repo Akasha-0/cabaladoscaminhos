@@ -9,15 +9,7 @@
 import { useState, useEffect, useDeferredValue } from 'react';
 import { getTranslations } from '@/lib/i18n';
 import type { MandatoEsqueleto, MentorHook } from './types';
-import { ESCALA_LABELS, C } from './types';
-
-const PILAR_COR: Record<string, string> = {
-  cabala: C.violeta,
-  astrologia: C.aurora,
-  tantrica: C.dourado,
-  odu: C.magenta,
-  iching: '#A0763A',
-};
+import { ESCALA_LABELS, C, PILLAR_LABELS } from './types';
 
 function formatDate(iso: string, locale: string): string {
   try {
@@ -38,6 +30,8 @@ export interface MandatoUnificadoProps {
   frases: string[];
   pilarInfo: { nome: string; cor: string };
   locale: string;
+  /** DailyResponse.alert — crise / alerta do dia */
+  alert?: string;
 }
 
 export function MandatoUnificado({
@@ -47,6 +41,7 @@ export function MandatoUnificado({
   frases,
   pilarInfo,
   locale,
+  alert,
 }: MandatoUnificadoProps) {
   const t = getTranslations(locale);
   const crise = mentor_hook.crise_detectada;
@@ -144,6 +139,21 @@ export function MandatoUnificado({
         </div>
       ) : (
         <>
+          {/* Daily alert — from DailyResponse.alert */}
+          {alert ? (
+            <div
+              className={card(C.magenta)}
+              style={{ borderColor: `${C.magenta}55`, background: 'rgba(251,87,129,0.05)' }}
+              role="alert"
+              aria-label={t('diario.mandato.alertAriaLabel')}
+            >
+              <span className={label(C.magenta)} style={{ color: C.magenta }}>
+                {t('diario.mandato.alertaDoDia')}
+              </span>
+              <p className={body} style={{ color: '#F4F5FF' }}>{alert}</p>
+            </div>
+          ) : null}
+
           <div className={card(pilarInfo.cor)}>
             <h2 className={headline} style={{ color: pilarInfo.cor }}>
               {t('diario.mandato.vozDoAkasha')}
@@ -166,11 +176,11 @@ export function MandatoUnificado({
                 {mandato.pilares_relevantes.map((p) => (
                   <span
                     key={p}
-                    className={badge(PILAR_COR[p] ?? C.txtMut)}
+                    className={badge(PILLAR_LABELS[p]?.cor ?? C.txtMut)}
                     style={{
-                      background: `${PILAR_COR[p] ?? C.txtMut}1A`,
-                      borderColor: `${PILAR_COR[p] ?? C.txtMut}55`,
-                      color: PILAR_COR[p] ?? C.txtMut,
+                      background: `${PILLAR_LABELS[p]?.cor ?? C.txtMut}1A`,
+                      borderColor: `${PILLAR_LABELS[p]?.cor ?? C.txtMut}55`,
+                      color: PILLAR_LABELS[p]?.cor ?? C.txtMut,
                     }}
                   >
                     {p}
@@ -185,18 +195,6 @@ export function MandatoUnificado({
               </span>
             </div>
 
-            {mandato.cita_fontes.length > 0 && (
-              <details className="mt-2" aria-label="Fontes e referências desta análise">
-                <summary className="text-xs text-white/30 cursor-pointer hover:text-white/50">
-                  {t('diario.mandato.fontes')}
-                </summary>
-                <div className="mt-3.5 pt-3 border-t border-[#141A33] text-[0.72rem] text-[#8A9BB8] leading-relaxed">
-                  {mandato.cita_fontes.map((c, i) => (
-                    <div key={i}>· {c}</div>
-                  ))}
-                </div>
-              </details>
-            )}
           </div>
 
           {/* Pergunta do Dia (expandível) */}
@@ -204,7 +202,8 @@ export function MandatoUnificado({
             <button
               type="button"
               onClick={() => setPerguntaOpen((v) => !v)}
-              className="w-full text-left"
+              className="w-full text-left focus-visible:outline-2 focus-visible:outline-offset-2"
+              style={{ outlineColor: C.violeta }}
               aria-expanded={perguntaOpen}
               aria-controls="pergunta-panel"
             >

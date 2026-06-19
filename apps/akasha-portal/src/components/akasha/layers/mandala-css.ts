@@ -46,6 +46,6 @@ export const MANDALA_STYLES = `
   }
 
   @media (prefers-reduced-motion: reduce) {
-    * { animation: none !important; }
+    * { animation: none !important; transition: none !important; }
   }
 `;

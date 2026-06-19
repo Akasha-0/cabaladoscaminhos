@@ -1,0 +1,13 @@
+[2026-06-19T01:40:33Z] [SUP] Cleaning stale state...
+[2026-06-19T01:40:33Z] [SUP]   Removed stale socket: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.sock
+[2026-06-19T01:40:33Z] [SUP]   Removed stale PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-19T01:40:33Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-19T01:40:33Z] [SUP]   Cleanup complete.
+[2026-06-19T01:40:33Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-19T01:40:33Z] [SUP] ✅ DAEMON RUNNING PID=2450507
+[2026-06-19T01:41:18Z] [SUP] Cleaning stale state...
+[2026-06-19T01:41:18Z] [SUP]   Removed stale PID file: /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/loop-daemon.pid
+[2026-06-19T01:41:18Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-19T01:41:18Z] [SUP]   Cleanup complete.
+[2026-06-19T01:41:18Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-19T01:41:18Z] [SUP] ✅ DAEMON RUNNING PID=2452754

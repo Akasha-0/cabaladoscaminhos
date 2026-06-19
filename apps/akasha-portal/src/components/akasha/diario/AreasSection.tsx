@@ -66,13 +66,13 @@ export function AreasSection({ pilarPrincipal, pilarInfo, locale }: AreasSection
       className="bg-[rgba(11,14,28,0.72)] backdrop-blur-xl border border-white/10 rounded-2xl p-6 mb-4"
     >
       <button
-        type="button"
-        style={headerStyle(pilarInfo.cor, expanded)}
-        onClick={() => setExpanded((v) => !v)}
-        aria-expanded={expanded}
-        aria-controls="areas-panel"
-        className="mb-4"
-      >
+              type="button"
+              style={{ ...headerStyle(pilarInfo.cor, expanded), outlineColor: pilarInfo.cor }}
+              onClick={() => setExpanded((v) => !v)}
+              aria-expanded={expanded}
+              aria-controls="areas-panel"
+              className="mb-4 focus-visible:outline-2 focus-visible:outline-offset-2"
+            >
         <div>
           <h2 className="text-[1.15rem] font-cinzel text-[#F4F5FF] leading-snug mb-0.5">
             {t('diario.areas.titulo')}
