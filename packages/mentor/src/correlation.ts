@@ -1,6 +1,5 @@
 // Correlation wrapper for DeepCorrelationEngine
-import { DeepCorrelationEngine } from '@/lib/application/ai/deep-correlation-engine';
-import type { UserSpiritualData } from '@/lib/application/ai/types';
+import { DeepCorrelationEngine, type UserSpiritualData } from '@akasha/core';
 import type { UserMaps, CorrelationResult } from './types';
 
 export interface CorrelationOptions {

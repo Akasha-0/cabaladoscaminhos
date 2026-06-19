@@ -106,3 +106,16 @@ export type {
   Tradicao,
   ProcedenciaEntry,
 } from './mapeamentos';
+// deep-correlation-engine/ — Cross-tradition spiritual correlation engine
+export type {
+  UserSpiritualData,
+  ChatMessage,
+  SpiritualSource,
+  SpiritualCorrelation,
+  SystemCorrelation,
+  DetectedPattern,
+  SpiritualSystem,
+  CrossSystemPattern,
+  EnergyHarmonyReport,
+} from './deep-correlation-engine';
+export { DeepCorrelationEngine } from './deep-correlation-engine';
