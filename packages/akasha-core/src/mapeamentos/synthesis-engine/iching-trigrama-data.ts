@@ -7,7 +7,6 @@ export type TrigramaId =
   | 'Fire'     // ☲ — yang over yin, clinging, fire
   | 'Mountain' // ☶ — yin over yang, stillness, mountain
   | 'Lake';    // ☱ — yang over yin, joy, lake
-
 export type TrigramaMeta = {
   id: TrigramaId;
   nome: string;
