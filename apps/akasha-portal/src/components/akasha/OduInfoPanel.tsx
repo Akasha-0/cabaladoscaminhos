@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { Divider, InfoPanel, Insight, Row } from '@/components/akasha/MandalaChartInfoPanel';
 import { resolveSig, SignificadoEmbed } from '@/components/akasha/mandala-meanings';
+import { useTranslation } from '@/i18n';
 
 export interface OduInfo {
   oduName: string;
@@ -23,24 +24,25 @@ interface Props {
  * abaixo de 500 linhas e isolar a lógica de rendering do Pilar 1.
  */
 export function OduInfoPanel({ odu }: Props) {
+  const { t } = useTranslation();
   return (
     <InfoPanel
       color="#F0B429"
-      title={`Odu: ${odu.oduName}`}
-      subtitle="Núcleo — Ancestralidade · Camada 1"
+      title={t('mandala.panels.odu.title', { name: odu.oduName })}
+      subtitle={t('mandala.panels.odu.subtitle')}
     >
       <Row
-        label="Odu de Nascimento — sua essência ancestral"
+        label={t('mandala.panels.odu.oduName')}
         value={`${odu.oduName}${odu.oduNumber ? ` (${odu.oduNumber})` : ''}`}
       />
       <Row
-        label="Orixá(s) regente(s) — suas forças espirituais"
+        label={t('mandala.panels.odu.orixaRegency')}
         value={odu.orixaRegency.join(', ')}
       />
-      <Row label="Força Elemental — seu elemento estruturante" value={odu.elementalForce} />
+      <Row label={t('mandala.panels.odu.elementalForce')} value={odu.elementalForce} />
       {odu.provisional && (
         <p style={{ fontSize: '0.6875rem', color: '#5C6691', marginTop: '0.25rem' }}>
-          * Cálculo provisório — confirmar com linhagem de referência.
+          {t('mandala.panels.odu.provisional')}
         </p>
       )}
       {odu.preceitos && odu.preceitos.length > 0 && (
@@ -58,7 +60,7 @@ export function OduInfoPanel({ odu }: Props) {
                 marginBottom: '0.35rem',
               }}
             >
-              Preceitos do Odu — mandamentos sagrados da sua linhagem
+              {t('mandala.panels.odu.preceitos')}
             </summary>
             {odu.preceitos.map((p, i) => (
               <p key={i} style={{ fontSize: '0.8125rem', color: '#A7AECF' }}>
@@ -68,7 +70,6 @@ export function OduInfoPanel({ odu }: Props) {
           </details>
         </>
       )}
-      ]
       {odu.quizilas && odu.quizilas.length > 0 && (
         <>
           <Divider />
@@ -84,7 +85,7 @@ export function OduInfoPanel({ odu }: Props) {
                 marginBottom: '0.35rem',
               }}
             >
-              Quizilás — práticas que enfraquecem sua conexão
+              {t('mandala.panels.odu.quizilas')}
             </summary>
             {odu.quizilas.map((q, i) => (
               <p key={i} style={{ fontSize: '0.8125rem', color: '#A7AECF' }}>
@@ -94,13 +95,11 @@ export function OduInfoPanel({ odu }: Props) {
           </details>
         </>
       )}
-      ]
       {(!odu.preceitos || odu.preceitos.length === 0) && (
         <Insight color="#F0B429">
-          As quizilás e preceitos específicos do seu Odu serão exibidos quando o Grimório for
-          sincronizado.{' '}
+          {t('mandala.panels.odu.noData')}{' '}
           <Link href="/oraculo" style={{ color: '#F0B429', textDecoration: 'underline' }}>
-            Consulte o Oráculo
+            {t('mandala.panels.odu.consultOracle')}
           </Link>{' '}
           para orientação ancestral personalizada.
         </Insight>

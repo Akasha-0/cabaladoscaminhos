@@ -35,7 +35,7 @@ export async function GET() {
       );
     }
   } catch (err) {
-    console.warn('[GET /api/akasha/transits/today] Redis error, falling back to file', err);
+    // Redis unavailable, fall through to file fallback
   }
 
   // 2. Fallback: arquivo JSON
@@ -57,7 +57,7 @@ export async function GET() {
       }
     }
   } catch (err) {
-    console.warn('[GET /api/akasha/transits/today] Fallback file error', err);
+    // Fallback file unavailable
   }
 
 

@@ -43,6 +43,23 @@ export const Layer2Kabala = memo(function Layer2Kabala({
       aria-label={tooltipByLayer[2]}
     >
       <title>{tooltipByLayer[2]}</title>
+      {/* Focus ring — visible indicator for keyboard navigation (WCAG 2.4.7) */}
+      <circle
+        cx="200"
+        cy="200"
+        r="82"
+        fill="none"
+        stroke="#5C7CFF"
+        strokeWidth="2"
+        opacity="0"
+        className="layer2-focus-ring"
+      />
+      style={{ cursor: 'pointer' }}
+      role="button"
+      tabIndex={0}
+      aria-label={tooltipByLayer[2]}
+    >
+      <title>{tooltipByLayer[2]}</title>
 
       {/* Outer ring */}
       <circle cx="200" cy="200" r="80" fill="none" stroke="rgba(92,124,255,0.2)" strokeWidth="1" strokeDasharray="2 3" />

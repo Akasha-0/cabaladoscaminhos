@@ -9,9 +9,11 @@ import {
   buildTantricNodes,
   buildKabVerts,
   buildTrianglePath,
+  buildSefiraTree,
   type PlanetDot,
   type TantricNode,
   type KabVert,
+  type SefiraTree,
 } from '@/components/akasha/mandala-layers';
 import type { MandalaData } from '@/components/akasha/MandalaChart';
 
@@ -32,7 +34,7 @@ export function useMandalaData(data: MandalaData) {
     [data.tantra.bodies]
   );
 
-  const kabVerts = useMemo(() => buildKabVerts(data.kabala), [data.kabala]);
+  const sefiraTree = useMemo(() => buildSefiraTree(data.kabala), [data.kabala]);
 
   const trianglePath = useMemo(() => buildTrianglePath(kabVerts), [kabVerts]);
 
@@ -51,14 +53,13 @@ export function useMandalaData(data: MandalaData) {
     [data.kabala.lifePath]
   );
 
-  const elemGuidance = useMemo(() => ELEMENT_GUIDANCE[elem] ?? null, [elem]);
-
   return {
     tooltipByLayer,
     planetDots,
     tantricNodes,
     kabVerts,
     trianglePath,
+    sefiraTree,
     elem,
     inactiveBodies,
     lpMeaning,
@@ -66,7 +67,7 @@ export function useMandalaData(data: MandalaData) {
   };
 }
 
-export type { PlanetDot, TantricNode, KabVert };
+export type { PlanetDot, TantricNode, KabVert, SefiraTree };
 
 export interface MandalaDerivedData {
   tooltipByLayer: Record<import('@/components/akasha/mandala-geometry').Layer, string>;
@@ -74,6 +75,7 @@ export interface MandalaDerivedData {
   tantricNodes: TantricNode[];
   kabVerts: KabVert[];
   trianglePath: string;
+  sefiraTree: SefiraTree;
   elem: string | null;
   inactiveBodies: TantricNode[];
   lpMeaning: string | null;
