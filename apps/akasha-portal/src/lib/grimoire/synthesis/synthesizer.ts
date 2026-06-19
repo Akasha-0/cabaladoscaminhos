@@ -88,7 +88,6 @@ export function deriveAkashaAuthority(pilares: Partial<PilaresDados>): AkashaAut
   const luaSigno = pilares.astrologia?.lua_signo;
   const casa8Signo = pilares.astrologia?.casa_8_signo;
   const corpo = pilares.tantrica?.corpo_predominante;
-  const oduPrinc = pilares.odu?.odu_principal;
 
   // ── Derivar Estratégia ─────────────────────────────────────
   // Life Path 1,3,5 → act (iniciativa)
@@ -101,7 +100,7 @@ export function deriveAkashaAuthority(pilares: Partial<PilaresDados>): AkashaAut
   if (lp !== undefined) {
     if ([1, 3, 5].includes(lp)) {
       estrategia = 'act';
-      estrategiaExplicacao = `Life Path ${lp} — você é um iniciador nato. A estratégia não é esperar que as coisas aconteçam: é criar o momento. Masactue com informação, não com impulsividade.`;
+      estrategiaExplicacao = `Life Path ${lp} — você é um iniciador nato. A estratégia não é esperar que as coisas aconteçam: é criar o momento. Aactue com informação, não com impulsividade.`;
     } else if ([2, 4, 6, 7].includes(lp)) {
       estrategia = 'wait';
       estrategiaExplicacao = `Life Path ${lp} — você atrai mais do que força. A vida traz as pessoas e oportunidades certas quando você está no seu centro. Espere o reconhecimento; não corra atrás.`;
@@ -138,7 +137,7 @@ export function deriveAkashaAuthority(pilares: Partial<PilaresDados>): AkashaAut
       'O Corpo 4 (Mente Negativa) traz pensamento repetitivo. Antes de decidir, espere até sentir paz emocional — não clareza mental. A mente pode argumentar para os dois lados.';
   } else if (casa8Signo) {
     autoridade = 'esplénica';
-    autoridadeExplicacao = `A Casa 8 em ${casa8Signo} dá-lheintuição directa. Quando sentir um "sim" no corpo — uma expansão, um calor — é a resposta. Não pense; sinta.`;
+    autoridadeExplicacao = `A Casa 8 em ${casa8Signo} dá-lhe intuição directa. Quando sentir um "sim" no corpo — uma expansão, um calor — é a resposta. Não pense; sinta.`;
   } else {
     autoridade = 'mental';
     autoridadeExplicacao =
@@ -179,7 +178,7 @@ export function deriveAkashaAuthority(pilares: Partial<PilaresDados>): AkashaAut
     } else if (lp === 22 || lp === 33) {
       areaFoco = 'espiritualidade';
       decisaoHoje =
-        'Não force aacção. Hoje é dia de silêncio, reflexão e trustedo que está a emergir. O próximo passo vai estar mais claro amanhã.';
+        'Não force a acção. Hoje é dia de silêncio, reflexão e confiar no que está a emergir. O próximo passo vai estar mais claro amanhã.';
     } else {
       areaFoco = 'trabalho';
       decisaoHoje =
@@ -254,7 +253,6 @@ const PRAKTIKAS: Record<DimensaoId, string> = {
 
 export function sintetizarMapa(pilares: PilaresDados): CaixaSintese {
   const dimensoes: DimensaoSintese[] = [];
-
   for (const dimensao of DIMENSOES) {
     const areasCorrespondentes = (Object.entries(DIMENSAO_DE_AREA) as [Area, DimensaoId][])
       .filter(([, dimId]) => dimId === dimensao.id)
@@ -290,7 +288,6 @@ export function sintetizarMapa(pilares: PilaresDados): CaixaSintese {
     }
     const contribuicoesUnicas = Array.from(porPilar.values());
 
-    // v2: narrativa profunda em vez de concatenação de frases curtas
     const synthes = gerarNarrativaDimensao(dimensao.id, pilares);
 
     // Akasha Authority aplicável a todas as 8 dimensões

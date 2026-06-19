@@ -1,3 +1,4 @@
+import type { FrequencyLevel } from '@/lib/application/akasha/synthesis-engine/synthesis-types';
 'use client';
 
 import { TrendingUp, TrendingDown, Minus, Sparkles, Target, Calendar } from 'lucide-react';
@@ -10,7 +11,6 @@ interface EvolutionPatternsProps {
   loading?: boolean;
 }
 
-type FrequencyLevel = 'shadow' | 'gift' | 'siddhi';
 type AreaKey =
   | 'vitalidadeEnergia'
   | 'conexoesAmor'
