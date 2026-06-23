@@ -56,25 +56,44 @@
 
 ## Wave 3 — Implementacao (depois da Wave 2)
 
-> Bloqueador: conclusao da Wave 2.
+> Bloqueador: conclusao da Wave 2. **Status: EM EXECUCAO 2026-06-23 (3 subagentes em paralelo, branch `wave-3-multi-tenant`).**
 
-### Schema migrations
+### Schema migrations (Task 1 — Coder A)
 
-- [ ] Migration: adicionar `Sessao`, `MapaCalculo`, `GrimorioPessoal`, `MapaRelacional`
-- [ ] Migration: adicionar campos em `Caminhante` (anamnese completa)
+- [~] Migration `20260624000000_XXX_001_multitenant_core` (5 tabelas: sessoes, sessao_chunks, grimorios_pessoais, notas_consulentes, mapas_calculo + indexes) — **em paralelo**
+- [~] Migration `20260624000001_XXX_002_vector_indexes` (ivfflat index para sessao_chunks.embedding) — **em paralelo**
 
-### Application layer
+### Application layer (Task 1 + 2 — Coder A + B)
 
-- [ ] Helper `withCaminhanteContext(zeladorId, caminhanteId)` (isolamento multi-tenant)
-- [ ] Suite de testes de regressao multi-tenant
-- [ ] Reescrita do Mentor com novo tom (chain-of-thought, psicanalise)
+- [~] Helper `withCaminhanteContext(zeladorId, caminhanteId)` (AsyncLocalStorage + Prisma `$extends`) — **em paralelo**
+- [ ] Suite de testes de regressao multi-tenant (Task 4 — QA)
+- [~] Reescrita do Mentor em `packages/mentor/` (tom Mestre/Sacerdote/Terapeuta + chain-of-thought explicito + Vercel AI SDK streamUI) — **em paralelo**
 
-### Chat MCP interface
+### Chat MCP API routes (Task 3 — Coder C)
 
-- [ ] API route `/api/akasha/chat` com contexto de consulente injetado
-- [ ] Frontend: chat unico estilo ChatGPT/Gemini
-- [ ] Frontend: lista de consulentes (sidebar)
-- [ ] Frontend: clique no consulente = "ativa MCP" no chat
+- [~] `GET /api/akasha/caminhantes/:id/sessoes` — **em paralelo**
+- [~] `POST /api/akasha/caminhantes/:id/sessoes` — **em paralelo**
+- [~] `PATCH /api/akasha/sessoes/:id/fechar` — **em paralelo**
+- [~] `GET /api/akasha/caminhantes/:id/notas` — **em paralelo**
+- [~] `POST /api/akasha/caminhantes/:id/notas` — **em paralelo**
+- [~] `GET /api/akasha/caminhantes/:id/mapa` — **em paralelo**
+
+### Frontend (Wave 3.5 — nao incluido nesta wave)
+
+- [ ] Frontend: chat unico estilo ChatGPT/Gemini (Wave 3.5)
+- [ ] Frontend: lista de consulentes (sidebar) (Wave 3.5)
+- [ ] Frontend: clique no consulente = "ativa MCP" no chat (Wave 3.5)
+
+### Branch + Merge
+
+- [x] Branch `wave-3-multi-tenant` criado a partir de `main` (commit `ceb6f82d`)
+- [ ] PR aberto quando os 3 subagentes terminarem
+- [ ] Merge no `main` apos review do Zelador + verificacao juridica P0
+
+### Estimativa
+
+- **Wave 3 completa:** ~78h (~10 dias uteis, 14 com margem)
+- **Wave 3.5 (frontend):** ~40h (~5 dias uteis)
 
 ---
 
