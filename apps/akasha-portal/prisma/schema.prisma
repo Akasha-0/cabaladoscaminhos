@@ -54,6 +54,14 @@ model User {
   cycleSnapshots    CycleSnapshot[]
   areaHistory       AreaHistoryEntry[]
   exerciseCompletions ExerciseCompletion[]
+  // D-041 (Caminhante + Caminhada) + D-XXX (Sessao, SessaoChunk, GrimorioPessoal, NotasConsulente, MapaCalculo)
+  caminhantes         Caminhante[]   @relation("UserCaminhantes")
+  caminhadas          Caminhada[]    @relation("UserCaminhadas")
+  sessoes             Sessao[]       @relation("UserSessoes")
+  sessaoChunks        SessaoChunk[]  @relation("UserSessaoChunks")
+  grimorioPessoal     GrimorioPessoal? @relation("UserGrimorioPessoal")
+  notasConsulentes    NotasConsulente[] @relation("UserNotasConsulentes")
+  mapasCalculo        MapaCalculo[]  @relation("UserMapasCalculo")
   // Refresh token rotation — stores the jti of the current active refresh token.
   // When a refresh request arrives, its jti MUST match this field.
   // On successful refresh the old token's jti is replaced by the new one's — old token immediately invalid.
@@ -336,4 +344,188 @@ model ExerciseCompletion {
   @@index([userId, completed])
   @@index([userId, area, completed])
   @@map("exercise_completions")
+}
+
+// =========================================================================
+// D-041 + D-XXX — Multi-tenant Zelador-tool (Wave 3)
+// Estende o schema canonico com Caminhante + Caminhada + 5 models novos
+// para a visao Zelador-tool. Ver docs/25_visao-akasha.md e ADR 0004.
+// =========================================================================
+
+// D-041 (applied 2026-06-22 via 20260622000000_041_caminhante_caminhada)
+
+model Caminhante {
+  id                          String   @id @default(cuid())
+  zeladorId                   String
+  zelador                     User     @relation("UserCaminhantes", fields: [zeladorId], references: [id], onDelete: Cascade)
+  nome                        String
+  nomeLowercaseNormalized     String
+  nomeCompleto                String?
+  dataNascimento              DateTime
+  horaNascimento              String?
+  localNascimentoCidade       String
+  localNascimentoEstado       String
+  localNascimentoPais         String
+  timezone                    String?
+  contato                     String?
+  saudeRelevante              String?
+  caminhadaEspiritualPrevia    String?
+  observacoes                 String?
+  consentimentoPilar4Dados    Json?
+  consentimentoLGPD           Json?
+  createdAt                   DateTime @default(now())
+  updatedAt                   DateTime @updatedAt
+
+  caminhadas                  Caminhada[]
+
+  @@unique([zeladorId, dataNascimento, nomeLowercaseNormalized])
+  @@index([zeladorId])
+  @@map("caminhantes")
+}
+
+model Caminhada {
+  id                      String   @id @default(cuid())
+  zeladorId               String
+  zelador                 User     @relation("UserCaminhadas", fields: [zeladorId], references: [id], onDelete: Cascade)
+  caminhanteId            String
+  caminhante              Caminhante @relation(fields: [caminhanteId], references: [id], onDelete: Cascade)
+  status                  CaminhadaStatus @default(aberta)
+  intencaoInicial         String
+  zeladorLinhagem         String
+  consentimentoPilar4Uso  Json?
+  abertoEm                DateTime @default(now())
+  dataEncerramento        DateTime?
+  motivo                  String?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  sessoes                 Sessao[]
+  notasConsulentes        NotasConsulente[]
+  mapasCalculo            MapaCalculo[]
+
+  @@index([zeladorId, status])
+  @@index([caminhanteId])
+  @@map("caminhadas")
+}
+
+enum CaminhadaStatus {
+  aberta
+  em_encerramento
+  encerrada
+}
+
+// D-XXX (Wave 3 — multi-tenant core)
+
+model Sessao {
+  id           String       @id @default(cuid())
+  zeladorId    String
+  zelador      User         @relation("UserSessoes", fields: [zeladorId], references: [id], onDelete: Cascade)
+  caminhadaId  String
+  caminhada    Caminhada    @relation(fields: [caminhadaId], references: [id], onDelete: Cascade)
+  tipo         TipoSessao
+  status       StatusSessao @default(aberta)
+  abertoEm     DateTime     @default(now())
+  fechadoEm    DateTime?
+
+  chunks       SessaoChunk[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([zeladorId, caminhadaId, abertoEm])
+  @@index([zeladorId, status])
+  @@map("sessoes")
+}
+
+enum TipoSessao {
+  Apresentacao
+  Leitura
+  Ritual
+  Aconselhamento
+  Integracao
+}
+
+enum StatusSessao {
+  aberta
+  fechada
+}
+
+model SessaoChunk {
+  id         String   @id @default(cuid())
+  zeladorId  String
+  zelador    User     @relation("UserSessaoChunks", fields: [zeladorId], references: [id], onDelete: Cascade)
+  sessaoId   String
+  sessao     Sessao   @relation(fields: [sessaoId], references: [id], onDelete: Cascade)
+  texto      String
+  embedding  Unsupported("vector(768)")?
+  origem     String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  @@index([zeladorId, sessaoId])
+  @@index([zeladorId])
+  @@map("sessao_chunks")
+}
+
+model GrimorioPessoal {
+  id            String   @id @default(cuid())
+  zeladorId     String   @unique
+  zelador       User     @relation("UserGrimorioPessoal", fields: [zeladorId], references: [id], onDelete: Cascade)
+  prescricoes   String?
+  notasInternas String?
+  bibliografia  String?
+  atualizadoEm  DateTime @updatedAt
+  createdAt     DateTime @default(now())
+
+  @@map("grimorios_pessoais")
+}
+
+model NotasConsulente {
+  id            String        @id @default(cuid())
+  zeladorId     String
+  zelador       User          @relation("UserNotasConsulentes", fields: [zeladorId], references: [id], onDelete: Cascade)
+  caminhadaId   String
+  caminhada     Caminhada     @relation(fields: [caminhadaId], references: [id], onDelete: Cascade)
+  categoria     CategoriaNota
+  titulo        String
+  conteudo      String
+  contexto      Json?
+  tags          String[]
+  criadoEm      DateTime      @default(now())
+  atualizadoEm  DateTime      @updatedAt
+
+  @@index([zeladorId, caminhadaId, categoria])
+  @@index([zeladorId, atualizadoEm])
+  @@map("notas_consulentes")
+}
+
+enum CategoriaNota {
+  observacao
+  prescricao
+  ritual
+  firmeza
+  intercorrencia
+}
+
+model MapaCalculo {
+  id              String    @id @default(cuid())
+  zeladorId       String
+  zelador         User      @relation("UserMapasCalculo", fields: [zeladorId], references: [id], onDelete: Cascade)
+  caminhadaId     String
+  caminhada       Caminhada @relation(fields: [caminhadaId], references: [id], onDelete: Cascade)
+  cabala          Json?
+  astrologia      Json?
+  tantra          Json?
+  odu             Json?
+  iching          Json?
+  pilar6          Json?
+  pilar7          Json?
+  setores         Json?
+  versaoCalculo   String
+  calculadoEm     DateTime  @default(now())
+  atualizadoEm    DateTime  @updatedAt
+
+  @@unique([zeladorId, caminhadaId])
+  @@index([zeladorId, versaoCalculo])
+  @@map("mapas_calculo")
 }
