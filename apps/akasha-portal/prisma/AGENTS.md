@@ -9,14 +9,20 @@ billing.
 
 ## Ownership
 
-- `schema.prisma`: schema-fonte único. 11 models: `User`, `BirthChart`,
-  `Subscription`, `CreditEntry`, `Manifesto`, `DailyReading`,
-  `RitualCompletion`, `Consultation`, `ChatMessage`, `PushSubscription`,
-  `GrimoireEntry`.
+- `schema.prisma`: schema-fonte único. 18 models canonicos (apos D-041 +
+  D-XXX Wave 3): `User`, `BirthChart`, `Subscription`, `CreditEntry`,
+  `Manifesto`, `DailyReading`, `RitualCompletion`, `Consultation`,
+  `ChatMessage`, `PushSubscription`, `GrimoireEntry`, `Connection`,
+  `CycleSnapshot`, `AreaHistoryEntry`, `ExerciseCompletion`,
+  `Caminhante`, `Caminhada` (D-041), `Sessao`, `SessaoChunk`,
+  `GrimorioPessoal`, `NotasConsulente`, `MapaCalculo` (D-XXX).
 - `migrations/`: SQL versionado pelo Prisma Migrate. **NÃO** rodar
   `prisma migrate dev` sem aprovação humana (ver Work Guidance).
-  - Estado atual: 1 migration (`20260611000000_init_akasha_v3/`) que
-    consolida 5 migrations legadas v2 → v3 single migration.
+  - 5 migrations aplicadas: `20260611000000_init_akasha_v3/`,
+    `20260618000000_add_ritual_fields_to_area_history/`,
+    `20260622000000_041_caminhante_caminhada/`,
+    `20260624000000_multitenant_core/` (D-XXX.001),
+    `20260624000001_vector_indexes/` (D-XXX.002).
   - `migration_lock.toml`: pin do provider (postgresql).
 - `seed.ts`: idempotente, popula dados de demo em dev. Não roda em prod.
 - `migrations/README.md`: instruções de migration (legado).
@@ -106,11 +112,18 @@ Antes de qualquer mudança em `schema.prisma`, **ler este arquivo** +
 ## Open Items (não-concluídos)
 
 - **D-040** (P1, design): Schema Prisma com 5 Pilares. Design proposal
-  escrito em `.autonomous/research/designs/d-040-prisma-5-pilares-design.md`.
-  Migration setup criada em `migrations/20260611000000_init_akasha_v3/`.
-  **Aguardando aprovação humana** antes de `pnpm exec prisma migrate dev --name 040`.
-  Status: `migration_setup_complete_awaiting_human_apply`.
-- **D-040-progress** (P1, design): mesmo item, fase de tracking.
+  escrito em `apps/akasha-portal/prisma/designs/d-040-prisma-5-pilares-refactor-proposal.md`.
+  Migration setup criada em `migrations/20260624000000_multitenant_core/`.
+  **Aguardando aprovação humana** antes de `pnpm exec prisma migrate dev`.
+  Status: `proposal_accepted_migration_awaiting_human_apply`.
+- **D-XXX** (P1, design): Multi-tenant core + vector indexes (Wave 3).
+  2 migrations criadas: `20260624000000_multitenant_core/` (5 tabelas +
+  3 enums + 9 FKs) e `20260624000001_vector_indexes/` (ivfflat index).
+  Aplicação **requer D-041 já aplicada** (FKs para `caminhadas`).
+  Schema estendido em `schema.prisma` (7 models + 7 reverse relations).
+  Helper `withCaminhanteContext` em `src/lib/application/tenant-context.ts`.
+  **Aguardando aprovação humana** antes de `pnpm exec prisma migrate dev`.
+  Status: `branch_wave_3_multi_tenant_ready_migration_awaiting_human_apply`.
 
 ## Child DOX Index
 
