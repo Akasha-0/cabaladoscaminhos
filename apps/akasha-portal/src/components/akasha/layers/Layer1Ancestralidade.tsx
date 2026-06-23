@@ -1,11 +1,13 @@
 'use client';
 import { memo } from 'react';
+import { useTranslation } from '@/i18n';
 import type { Layer } from '@/components/akasha/mandala-geometry';
+import type { TooltipKey } from '@/components/akasha/mandala-layers';
 import type { MandalaData } from '@/components/akasha/MandalaChart';
 
 interface Layer1Props {
   data: MandalaData;
-  tooltipByLayer: Record<Layer, string>;
+  tooltipByLayer: Record<Layer, TooltipKey>;
   opacity: (layer: Layer) => number;
   onLayerToggle: (layer: Layer) => void;
   onLayerHover: (layer: Layer | null) => void;
@@ -21,6 +23,9 @@ export const Layer1Ancestralidade = memo(function Layer1Ancestralidade({
   onLayerToggle,
   onLayerHover,
 }: Layer1Props) {
+  const { t } = useTranslation();
+  const tip1 = tooltipByLayer[1];
+  const ariaLabel = t(tip1.key, { ...tip1.params } as Record<string, string>);
   return (
     <g
       opacity={opacity(1)}
@@ -36,9 +41,9 @@ export const Layer1Ancestralidade = memo(function Layer1Ancestralidade({
       style={{ cursor: 'pointer' }}
       role="button"
       tabIndex={0}
-      aria-label={tooltipByLayer[1]}
+      aria-label={ariaLabel}
     >
-      <title>{tooltipByLayer[1]}</title>
+      <title>{ariaLabel}</title>
 
       {/* Animated glow rings — 3 concentric, phase-offset */}
       <circle cx="200" cy="200" r="50" fill="none" stroke="#F0B429" strokeWidth="0.5" opacity="0.15" className="mandala-pulse-3" />

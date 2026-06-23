@@ -1,0 +1,101 @@
+{
+  "generated_at": "2026-06-19T01:46:08.092969+00:00",
+  "version": "0.91.6",
+  "features": {
+    "pending_features": [
+      "- [~] **PLN-UI/UX-001** — ralph_loop_ui_improvements | 0.13.2",
+      "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
+      "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2",
+      "- [~] **PLN-AE-003** — Ralph-loop continuous | QA cycling (v0.12.1)"
+    ],
+    "pending_count": 4
+  },
+  "git": {
+    "untracked": 5,
+    "modified": 3,
+    "total": 8,
+    "has_changes": true
+  },
+  "triad": {
+    "typecheck": {
+      "pass": true,
+      "errors": []
+    },
+    "lint": {
+      "pass": true,
+      "warnings": 0
+    },
+    "tests": {
+      "pass": true,
+      "passed": 1692,
+      "failed": 0
+    }
+  },
+  "codegraph": {
+    "pending_files": 0,
+    "ok": true
+  },
+  "improvement_candidates": [
+    {
+      "type": "tech_debt",
+      "priority": 5,
+      "description": "4 files with TODO",
+      "files": [
+        "packages/core-odus/src/odu-birth.ts",
+        "apps/akasha-portal/src/app/api/cron/daily-push/route.ts",
+        "apps/akasha-portal/src/lib/grimoire/significados-curados-helpers.test.ts",
+        "apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts"
+      ]
+    },
+    {
+      "type": "large_file",
+      "priority": 4,
+      "description": "46 oversized files",
+      "files": [
+        {
+          "file": "packages/akasha-core/src/mapeamentos/synthesis-engine/iching-base-data.ts",
+          "lines": 1483
+        },
+        {
+          "file": "packages/akasha-core/src/mapeamentos/index.ts",
+          "lines": 1208
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/application/akasha/narrative-generator.ts",
+          "lines": 1187
+        }
+      ]
+    },
+    {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "5 changed files lack tests",
+      "files": [
+        "apps/akasha-portal/src/components/akasha/diario/types.ts",
+        "apps/akasha-portal/src/components/akasha/hooks/useLayerState.ts",
+        "apps/akasha-portal/src/components/akasha/hooks/useMandalaData.ts",
+        "apps/akasha-portal/src/components/akasha/layers/mandala-css.ts",
+        "apps/akasha-portal/src/lib/__mocks__/i18n.ts"
+      ]
+    },
+    {
+      "type": "missing_tradition",
+      "priority": 8,
+      "description": "ODUS missing from traducao-areas",
+      "trad": "ODUS",
+      "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
+    },
+    {
+      "type": "console_cleanup",
+      "priority": 5,
+      "description": "1 files with console statements",
+      "files": [
+        "apps/akasha-portal/src/app/api/akasha/transits/today/route.ts"
+      ]
+    }
+  ],
+  "git_head": "d1ee2ea6b080e2288053bf45da51eaab3cdc2090",
+  "decision_factors": {
+    "has_pending_features": true
+  }
+}

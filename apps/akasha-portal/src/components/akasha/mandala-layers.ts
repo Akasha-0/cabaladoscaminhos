@@ -96,37 +96,50 @@ export interface KabVert {
   pos: { x: number; y: number };
 }
 
+/** i18n key + params pair for per-layer tooltips (F-206) */
+export interface TooltipKey {
+  key: string;
+  params: Record<string, string>;
+}
+
 // ---------- Helpers ----------
 
 /**
- * Per-layer curated tooltip text (F-206) — maps visual layer to a short
- * essence string suitable for native <title> hover. Each layer resolves
- * a meaning from the grimoire via resolveSig().
+ * Per-layer curated tooltip text (F-206) — returns an i18n key + grimoire
+ * params so the caller (a layer component with useTranslation) can call
+ * t(key, params) to get the full translated tooltip string.
+ *
+ * i18n param names must match those defined in src/i18n/pt-BR.json:
+ *   layer1: { name, essencia }
+ *   layer2: { n, essencia }
+ *   layer3: { n, essencia }
+ *   layer4: { formatted, essencia }
+ *   layer5: { hex, essencia }
  */
-export function buildTooltipByLayer(data: MandalaLayerData): Record<Layer, string> {
+export function buildTooltipByLayer(data: MandalaLayerData): Record<Layer, TooltipKey> {
   const tooltipFor1 = (() => {
     const sig = resolveSig('odu', data.odus.oduName);
-    return `Camada 1 · Ancestralidade (${data.odus.oduName}) — ${sig.essencia}`;
+    return { key: 'mandala.tooltips.layer1', params: { name: data.odus.oduName, essencia: sig.essencia } };
   })();
   const tooltipFor2 = (() => {
     const sig = resolveSig('cabala', data.kabala.lifePath);
-    return `Camada 2 · Número de Vida (Vida ${data.kabala.lifePath ?? '?'}) — ${sig.essencia}`;
+    return { key: 'mandala.tooltips.layer2', params: { n: String(data.kabala.lifePath ?? '?'), essencia: sig.essencia } };
   })();
   const tooltipFor3 = (() => {
     const sig = resolveSig('tantrica', data.tantra.soul);
-    return `Camada 3 · Corpo e Energia (Alma ${data.tantra.soul ?? '?'}) — ${sig.essencia}`;
+    return { key: 'mandala.tooltips.layer3', params: { n: String(data.tantra.soul ?? '?'), essencia: sig.essencia } };
   })();
   const tooltipFor4 = (() => {
     const sig = resolveSig('astrologia', data.astrology.ascendant);
     const formattedAsc = formatDegreeToZodiac(data.astrology.ascendant);
-    return `Camada 4 · Movimento Celeste (Ascendente: ${formattedAsc || '?'}) — ${sig.essencia}`;
+    return { key: 'mandala.tooltips.layer4', params: { formatted: formattedAsc || '?', essencia: sig.essencia } };
   })();
   const tooltipFor5 = (() => {
     const sig = resolveSig('iching', data.iching.hexagramNumber);
     const hex = data.iching.available
       ? `Hex ${data.iching.hexagramNumber} · ${data.iching.hexagramName}`
       : 'Hex do dia (requer Mutação do Caminho)';
-    return `Camada 5 · Mutação do Caminho (${hex}) — ${sig.essencia}`;
+    return { key: 'mandala.tooltips.layer5', params: { hex, essencia: sig.essencia } };
   })();
 
   return {

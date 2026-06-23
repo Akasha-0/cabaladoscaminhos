@@ -1,11 +1,13 @@
 'use client';
 import { memo } from 'react';
+import { useTranslation } from '@/i18n';
 import type { Layer } from '@/components/akasha/mandala-geometry';
+import type { TooltipKey } from '@/components/akasha/mandala-layers';
 import type { MandalaData } from '@/components/akasha/MandalaChart';
 
 interface Layer5Props {
   data: MandalaData;
-  tooltipByLayer: Record<Layer, string>;
+  tooltipByLayer: Record<Layer, TooltipKey>;
   opacity: (layer: Layer) => number;
   onLayerToggle: (layer: Layer) => void;
   onLayerHover: (layer: Layer | null) => void;
@@ -22,6 +24,9 @@ const Layer5Iching = memo(function Layer5Iching({
   onLayerToggle,
   onLayerHover,
 }: Layer5Props) {
+  const { t } = useTranslation();
+  const tip5 = tooltipByLayer[5];
+  const ariaLabel = t(tip5.key, { ...tip5.params } as Record<string, string>);
   return (
     <g
       opacity={opacity(5)}
@@ -37,9 +42,9 @@ const Layer5Iching = memo(function Layer5Iching({
       style={{ cursor: 'pointer' }}
       role="button"
       tabIndex={0}
-      aria-label={tooltipByLayer[5]}
+      aria-label={ariaLabel}
     >
-      <title>{tooltipByLayer[5]}</title>
+      <title>{ariaLabel}</title>
 
       {/* Dashed outer ring */}
       <circle

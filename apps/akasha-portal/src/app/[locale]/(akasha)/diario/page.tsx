@@ -37,11 +37,11 @@ import {
 import { deriveAkashaAuthority } from '@/lib/grimoire/synthesis/synthesizer';
 import { praticaAuthorityDiaria } from '@/lib/grimoire/akasha-authority';
 
-import { C } from '@/components/akasha/diario/types';
-import type { MandatoDoDiaResponse, DailyResponse, DailyRitualUI } from '@/components/akasha/diario/types';
+import type { MandatoDoDiaResponse, DailyResponse, DailyRitualUI, CycleModulationAlignment } from '@/components/akasha/diario/types';
 import { DiarioScrollContainer } from '@/components/akasha/diario/DiarioScrollContainer';
 import { MandatoUnificado } from '@/components/akasha/diario/MandatoUnificado';
 import { RitualSection } from '@/components/akasha/diario/RitualSection';
+import { DiarioRitualSkeleton } from '@/components/akasha/diario/DiarioRitualSkeleton';
 import { DiarioAuthorityBlock } from '@/components/akasha/diario/DiarioAuthorityBlock';
 import { SignificadoSection } from '@/components/akasha/diario/SignificadoSection';
 import { AreasSection } from '@/components/akasha/diario/AreasSection';
@@ -129,7 +129,8 @@ export default async function DiarioPage({
   let climate: string | undefined;
   let alert: string | undefined;
   let tensionPoint: { theme: string } | undefined;
-
+  let synthesisNarrative: string | undefined;
+  let highlightAreas: CycleModulationAlignment[] = [];
   if (dailyRes.ok) {
     const dailyPayload: DailyResponse = await dailyRes.json();
 
@@ -171,11 +172,23 @@ export default async function DiarioPage({
       tensionPoint = { theme: String(dailyPayload.tensionPoint.theme) };
     }
 
-    // Intentionally not wired in this iteration:
-    //   hexagram / hexagramLines — I Ching natal/day data; belongs in Mandala or IchingInfoPanel
-    //   synthesis — rendered via deriveAkashaAuthority + praticaAuthorityDiaria above
-    //   cycle — complex personal timing data (personalDay/Month/Year, exercises, modulation)
-    //     out of scope for Iteration 6; consider AreasSection integration in a future iteration
+    // §DailyResponse: synthesis — AkashaSynthesisUI narrative (Iter7)
+    if (dailyPayload.synthesis && typeof dailyPayload.synthesis === 'object') {
+      const synth = dailyPayload.synthesis as { narrative?: string };
+      synthesisNarrative = synth.narrative ?? (dailyPayload.synthesis as unknown as string);
+    }
+
+    // §DailyResponse: cycle.modulation — alignment scores for AreasSection (Iter7)
+    if (Array.isArray(dailyPayload.cycle?.modulation)) {
+      highlightAreas = (dailyPayload.cycle.modulation as unknown[]).filter(
+        (item): item is CycleModulationAlignment =>
+          typeof item === 'object' &&
+          item !== null &&
+          'area' in item &&
+          'alignmentScore' in item &&
+          'suggestedBoost' in item
+      );
+    }
   } else {
     ritual = buildRitualFallback(pilarPrincipal);
   }
@@ -198,7 +211,7 @@ export default async function DiarioPage({
           date={date}
           mandato={mandato}
           mentor_hook={mentor_hook}
-          frases={[]}
+
           pilarInfo={pilarInfo}
           locale={locale}
           alert={alert}
@@ -208,7 +221,7 @@ export default async function DiarioPage({
       <div data-section-index="2" className="max-w-xl mx-auto w-full px-5 py-4">
         {ritual ? (
           <RitualSection ritual={ritual} pilarInfo={pilarInfo} locale={locale} />
-        ) : null}
+        ) : <DiarioRitualSkeleton />}
       </div>
 
       <div data-section-index="3" className="max-w-xl mx-auto w-full px-5 py-4">
@@ -217,6 +230,7 @@ export default async function DiarioPage({
           pilares={pilaresParciais}
           locale={locale}
           tensionPoint={tensionPoint}
+          synthesisNarrative={synthesisNarrative}
         />
       </div>
 
@@ -230,7 +244,7 @@ export default async function DiarioPage({
       </div>
 
       <div data-section-index="5" className="max-w-xl mx-auto w-full px-5 py-4 pb-16">
-        <AreasSection pilarPrincipal={pilarPrincipal} pilarInfo={pilarInfo} locale={locale} />
+        <AreasSection pilarPrincipal={pilarPrincipal} pilarInfo={pilarInfo} locale={locale} highlightAreas={highlightAreas} />
       </div>
     </DiarioScrollContainer>
     </DiarioErrorBoundary>

@@ -1,0 +1,37 @@
+{
+  "improvements": [
+    {
+      "area": "unknown",
+      "type": "missing_tests",
+      "outcome": "planned",
+      "timestamp": 1781833617.607489,
+      "iso": "2026-06-19T01:46:57.607496+00:00",
+      "version": "",
+      "lines_changed": 0,
+      "files_changed": 0,
+      "quality_delta": 0.0
+    },
+    {
+      "area": "unknown",
+      "type": "console_cleanup",
+      "outcome": "planned",
+      "timestamp": 1781833617.607887,
+      "iso": "2026-06-19T01:46:57.607892+00:00",
+      "version": "",
+      "lines_changed": 0,
+      "files_changed": 0,
+      "quality_delta": 0.0
+    },
+    {
+      "area": "unknown",
+      "type": "large_file",
+      "outcome": "planned",
+      "timestamp": 1781833617.608337,
+      "iso": "2026-06-19T01:46:57.608342+00:00",
+      "version": "",
+      "lines_changed": 0,
+      "files_changed": 0,
+      "quality_delta": 0.0
+    }
+  ]
+}

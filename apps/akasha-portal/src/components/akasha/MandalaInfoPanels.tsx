@@ -5,6 +5,7 @@ import { PILAR_COLORS } from '@/components/akasha/mandala-geometry';
 import { TANTRIC_BODY_WISDOM } from '@/components/akasha/mandala-meanings';
 import { resolveSig, SignificadoEmbed } from '@/components/akasha/mandala-meanings';
 import { KOSHAS } from '@/lib/shared/koshas';
+import { useTranslation } from '@/i18n';
 import type { MandalaData } from './MandalaChart';
 
 const KOSHA_PT: Record<string, string> = {
@@ -23,26 +24,27 @@ interface TantricBodyInfoPanelProps {
 }
 
 export function TantricBodyInfoPanel({ tantra, inactiveBodies }: TantricBodyInfoPanelProps) {
+  const { t } = useTranslation();
   const [showAdvanced, setShowAdvanced] = useState(false);
   return (
     <InfoPanel
       color="#2DD4BF"
-      title="Corpo e Energia — Os 11 Corpos"
-      subtitle="Teia de Conexão · Camada 3"
+      title={t('mandala.panels.tantra.title')}
+      subtitle={t('mandala.panels.tantra.subtitle')}
     >
-      <Row label="Caminho Tântrico — sua prática de integração" value={tantra.tantricPath} />
-      <Row label="Alma — essência que reencarna" value={tantra.soul} />
-      <Row label="Karma — legado de ações passadas" value={tantra.karma} />
-      <Row label="Dom Divino — talento espiritual a cultivar" value={tantra.divineGift} />
+      <Row label={t('mandala.panels.tantra.tantricPath')} value={tantra.tantricPath} />
+      <Row label={t('mandala.panels.tantra.soul')} value={tantra.soul} />
+      <Row label={t('mandala.panels.tantra.karma')} value={tantra.karma} />
+      <Row label={t('mandala.panels.tantra.divineGift')} value={tantra.divineGift} />
       <Divider />
       {inactiveBodies.length === 0 ? (
         <Insight color="#2DD4BF">
-          Todos os 11 Corpos estão ativos — seu campo espiritual está em fluxo.
+          {t('mandala.panels.tantra.allBodiesActive')}
         </Insight>
       ) : (
         <>
           <p style={{ fontSize: '0.75rem', color: '#A7AECF', marginBottom: '0.5rem' }}>
-            Corpos a ativar (indicados em magenta na Mandala):
+            {t('mandala.panels.tantra.inactiveBodiesHint')}
           </p>
           <details aria-label={`${inactiveBodies.length} corpos tântricos inativos`}>
             <summary
@@ -55,17 +57,17 @@ export function TantricBodyInfoPanel({ tantra, inactiveBodies }: TantricBodyInfo
                 marginBottom: '0.35rem',
               }}
             >
-              {inactiveBodies.length} Corpos inativos — clique para ver detalhes →
+              {t('mandala.panels.tantra.inactiveBodiesSummary')}
             </summary>
             {inactiveBodies.map((n) => {
               const w = TANTRIC_BODY_WISDOM[n.i + 1];
               return (
                 <div key={n.i} style={{ marginBottom: '0.5rem' }}>
                   <p style={{ fontSize: '0.8125rem', color: '#FB5781', fontWeight: 600 }}>
-                    Corpo {n.i + 1} — {w?.desc}
+                    {t('mandala.panels.tantra.title')} {n.i + 1} — {w?.desc}
                   </p>
                   <p style={{ fontSize: '0.75rem', color: '#A7AECF' }}>
-                    Desafio: {w?.challenge} · Ativar: {w?.activate}
+                    {t('mandala.panels.tantra.challenge')}: {w?.challenge} · {t('mandala.panels.tantra.activate')}: {w?.activate}
                   </p>
                 </div>
               );
@@ -74,7 +76,7 @@ export function TantricBodyInfoPanel({ tantra, inactiveBodies }: TantricBodyInfo
         </>
       )}
       <SignificadoEmbed
-        significado={resolveSig('tantrica', tantra.destiny ?? tantra.soul ?? 1)}
+        significado={resolveSig('tantrica', tantra.soul ?? 1)}
         color="#2DD4BF"
       />
       {/* Mandala Fase 4 (spec mandala-fase3-zodiac-tantra): 5 Koshas védicas
@@ -91,8 +93,10 @@ export function TantricBodyInfoPanel({ tantra, inactiveBodies }: TantricBodyInfo
               marginBottom: '0.5rem',
             }}
           >
-            5 Koshas (Tantra Védica){' '}
-            <span style={{ color: '#A7AECF', fontWeight: 400 }}>— os 5 revestimentos do ser</span>
+            {t('mandala.panels.tantra.koshasTitle')}{' '}
+            <span style={{ color: '#A7AECF', fontWeight: 400 }}>
+              {t('mandala.panels.tantra.koshasSubtitle')}
+            </span>
           </p>
           {KOSHAS.map((k) => (
             <div
@@ -141,7 +145,7 @@ export function TantricBodyInfoPanel({ tantra, inactiveBodies }: TantricBodyInfo
               textDecoration: 'underline',
             }}
           >
-            Ocultar detalhes avançados
+            {t('mandala.panels.tantra.hideAdvanced')}
           </button>
         </>
       ) : (
@@ -158,7 +162,7 @@ export function TantricBodyInfoPanel({ tantra, inactiveBodies }: TantricBodyInfo
             textDecoration: 'underline',
           }}
         >
-          Mostrar detalhes avançados →
+          {t('mandala.panels.tantra.showAdvanced')}
         </button>
       )}
     </InfoPanel>
@@ -173,35 +177,36 @@ interface KabalaInfoPanelProps {
 }
 
 export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
+  const { t } = useTranslation();
   const [showAdvanced, setShowAdvanced] = useState(false);
   return (
     <InfoPanel
       color={PILAR_COLORS[2]}
-      title="Número de Vida — Geometria Sagrada"
-      subtitle="Geometria Interna · Camada 2"
+      title={t('mandala.panels.kabala.title')}
+      subtitle={t('mandala.panels.kabala.subtitle')}
     >
       <Row
-        label="Caminho de Vida — o mapa da sua jornada"
+        label={t('mandala.panels.kabala.lifePath')}
         value={kabala.lifePath}
         master={kabala.lifePathMaster}
       />
       <Row
-        label="Expressão — como você se manifesta"
+        label={t('mandala.panels.kabala.expression')}
         value={kabala.expression}
         master={kabala.expressionMaster}
       />
-      <Row label="Motivação — o que move suas escolhas" value={kabala.motivation} />
-      <Row label="Impressão — como os outros te percebem" value={kabala.impression} />
-      <Row label="Missão — seu propósito incarnatório" value={kabala.mission} />
-      <Row label="Ano Pessoal — energia deste ciclo" value={kabala.personalYear} />
-      <Row label="Mês Pessoal — energia deste mês" value={kabala.personalMonth} />
-      <Row label="Dia Pessoal — energia de hoje" value={kabala.personalDay} />
-      <Row label="Sefira — atributo divino em ação" value={kabala.sefira} />
-      <Row label="Letra Hebraica — som sagrado do seu caminho" value={kabala.hebrewLetter} />
+      <Row label={t('mandala.panels.kabala.motivation')} value={kabala.motivation} />
+      <Row label={t('mandala.panels.kabala.impression')} value={kabala.impression} />
+      <Row label={t('mandala.panels.kabala.mission')} value={kabala.mission} />
+      <Row label={t('mandala.panels.kabala.personalYear')} value={kabala.personalYear} />
+      <Row label={t('mandala.panels.kabala.personalMonth')} value={kabala.personalMonth} />
+      <Row label={t('mandala.panels.kabala.personalDay')} value={kabala.personalDay} />
+      <Row label={t('mandala.panels.kabala.sefira')} value={kabala.sefira} />
+      <Row label={t('mandala.panels.kabala.hebrewLetter')} value={kabala.hebrewLetter} />
       {kabala.tarotCard && (
         <>
           <Row
-            label="Carta de Tarot — arcano do seu destino"
+            label={t('mandala.panels.kabala.tarotCard')}
             value={`${kabala.tarotCard.name} (#${kabala.tarotCard.major})`}
           />
           {kabala.tarotCard.meaning && (
@@ -229,19 +234,19 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                     marginBottom: '0.35rem',
                   }}
                 >
-                  Ciclos de Desafio{' '}
+                  {t('mandala.panels.kabala.challenges')}{' '}
                   <span style={{ color: '#A7AECF', fontWeight: 400 }}>
-                    — provas que moldam seu caminho
+                    {t('mandala.panels.kabala.challengesSubtitle')}
                   </span>
                 </p>
                 <Row
-                  label="1º Desafio — o que enfrentar primeiro"
+                  label={t('mandala.panels.kabala.challengeFirst')}
                   value={kabala.challenges.first}
                 />
-                <Row label="2º Desafio — o que superar" value={kabala.challenges.second} />
-                <Row label="Desafio Principal — a prova central" value={kabala.challenges.main} />
+                <Row label={t('mandala.panels.kabala.challengeSecond')} value={kabala.challenges.second} />
+                <Row label={t('mandala.panels.kabala.challengeMain')} value={kabala.challenges.main} />
                 <Row
-                  label="Último Desafio — lição final a harmonizar"
+                  label={t('mandala.panels.kabala.challengeLast')}
                   value={kabala.challenges.last}
                 />
               </>
@@ -257,15 +262,15 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                     marginBottom: '0.35rem',
                   }}
                 >
-                  Marcos da Vida{' '}
+                  {t('mandala.panels.kabala.pinnacles')}{' '}
                   <span style={{ color: '#A7AECF', fontWeight: 400 }}>
-                    — transições que redefinem seu caminho
+                    {t('mandala.panels.kabala.pinnaclesSubtitle')}
                   </span>
                 </p>
                 {kabala.pinnacles.first && (
                   <>
                     <Row
-                      label="1º Pináculo — primeira fase de crescimento"
+                      label={t('mandala.panels.kabala.pinacleFirst')}
                       value={`${kabala.pinnacles.first.number} (até ${kabala.pinnacles.first.ageEnd})`}
                     />
                     {kabala.pinnacles.first.meaning && (
@@ -276,7 +281,7 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                 {kabala.pinnacles.second && (
                   <>
                     <Row
-                      label="2º Pináculo — maturação da identidade"
+                      label={t('mandala.panels.kabala.pinacleSecond')}
                       value={`${kabala.pinnacles.second.number} (${kabala.pinnacles.second.ageStart}–${kabala.pinnacles.second.ageEnd})`}
                     />
                     {kabala.pinnacles.second.meaning && (
@@ -287,7 +292,7 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                 {kabala.pinnacles.third && (
                   <>
                     <Row
-                      label="3º Pináculo — construção do propósito"
+                      label={t('mandala.panels.kabala.pinacleThird')}
                       value={`${kabala.pinnacles.third.number} (${kabala.pinnacles.third.ageStart}–${kabala.pinnacles.third.ageEnd})`}
                     />
                     {kabala.pinnacles.third.meaning && (
@@ -298,7 +303,7 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                 {kabala.pinnacles.fourth && (
                   <>
                     <Row
-                      label="4º Pináculo — integração da sabedoria"
+                      label={t('mandala.panels.kabala.pinacleFourth')}
                       value={`${kabala.pinnacles.fourth.number} (depois de ${kabala.pinnacles.fourth.ageStart})`}
                     />
                     {kabala.pinnacles.fourth.meaning && (
@@ -319,26 +324,26 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                     marginBottom: '0.35rem',
                   }}
                 >
-                  Ritmo de Vida{' '}
+                  {t('mandala.panels.kabala.lifeCycles')}{' '}
                   <span style={{ color: '#A7AECF', fontWeight: 400 }}>
-                    — ciclos que pedem consciência
+                    {t('mandala.panels.kabala.lifeCyclesSubtitle')}
                   </span>
                 </p>
                 {kabala.lifeCycles.first && (
                   <Row
-                    label="1º Ciclo — primeiro ritmo de vida"
+                    label={t('mandala.panels.kabala.cycleFirst')}
                     value={`${kabala.lifeCycles.first.number} (${kabala.lifeCycles.first.ageStart}–${kabala.lifeCycles.first.ageEnd})`}
                   />
                 )}
                 {kabala.lifeCycles.second && (
                   <Row
-                    label="2º Ciclo — expansão das possibilidades"
+                    label={t('mandala.panels.kabala.cycleSecond')}
                     value={`${kabala.lifeCycles.second.number} (${kabala.lifeCycles.second.ageStart}–${kabala.lifeCycles.second.ageEnd})`}
                   />
                 )}
                 {kabala.lifeCycles.third && (
                   <Row
-                    label="3º Ciclo — amadurecimento espiritual"
+                    label={t('mandala.panels.kabala.cycleThird')}
                     value={`${kabala.lifeCycles.third.number} (a partir de ${kabala.lifeCycles.third.ageStart})`}
                   />
                 )}
@@ -357,7 +362,7 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
                 textDecoration: 'underline',
               }}
             >
-              Ocultar detalhes avançados
+              {t('mandala.panels.kabala.hideAdvanced')}
             </button>
           </>
         ) : (
@@ -374,7 +379,7 @@ export function KabalaInfoPanel({ kabala, lpMeaning }: KabalaInfoPanelProps) {
               textDecoration: 'underline',
             }}
           >
-            Mostrar detalhes avançados →
+            {t('mandala.panels.kabala.showAdvanced')}
           </button>
         ))}
       <SignificadoEmbed

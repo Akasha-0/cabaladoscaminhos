@@ -1,16 +1,17 @@
 'use client';
 import { memo } from 'react';
+import { useTranslation } from '@/i18n';
 import { describeArc, PARTICLES, toXY } from '@/components/akasha/mandala-geometry';
 import { buildAstroSegments } from '@/components/akasha/mandala-layers';
 import { longitudeToSvgAngle } from '@/lib/shared/zodiac';
 import type { Layer } from '@/components/akasha/mandala-geometry';
-import type { PlanetDot } from '@/components/akasha/mandala-layers';
+import type { PlanetDot, TooltipKey } from '@/components/akasha/mandala-layers';
 
 const ASTRO_SEGMENTS = buildAstroSegments();
 
 interface Layer4Props {
   planetDots: PlanetDot[];
-  tooltipByLayer: Record<Layer, string>;
+  tooltipByLayer: Record<Layer, TooltipKey>;
   opacity: (layer: Layer) => number;
   onLayerToggle: (layer: Layer) => void;
   onLayerHover: (layer: Layer | null) => void;
@@ -40,6 +41,9 @@ const Layer4Astrology = memo(function Layer4Astrology({
   ringPaused,
   reducedMotion = false,
 }: Layer4Props) {
+  const { t } = useTranslation();
+  const tip4 = tooltipByLayer[4];
+  const ariaLabel = t(tip4.key, { ...tip4.params } as Record<string, string>);
   const ringClass = ringPaused || reducedMotion
     ? 'ring-astrological-paused'
     : 'ring-astrological';
@@ -60,9 +64,9 @@ const Layer4Astrology = memo(function Layer4Astrology({
       className={ringClass}
       role="button"
       tabIndex={0}
-      aria-label={tooltipByLayer[4]}
+      aria-label={ariaLabel}
     >
-      <title>{tooltipByLayer[4]}</title>
+      <title>{ariaLabel}</title>
 
       {/* Outer decorative rings */}
       <circle cx="200" cy="200" r="196" fill="none" stroke="rgba(124,92,255,0.12)" strokeWidth="0.5" />
@@ -72,18 +76,19 @@ const Layer4Astrology = memo(function Layer4Astrology({
       {ASTRO_SEGMENTS.map(({ startDeg, endDeg, sym, labelPos }, i) => (
         <g key={`seg-${i}`}>
           <path
-            d={describeArc(200, 200, 183, startDeg, endDeg)}
+            d={describeArc(200, 200, 170, startDeg, endDeg)}
             fill="none"
-            stroke="rgba(38,48,79,0.7)"
-            strokeWidth="1"
+            stroke="rgba(124,92,255,0.25)"
+            strokeWidth="13"
           />
           <text
             x={labelPos.x}
             y={labelPos.y}
             textAnchor="middle"
             dominantBaseline="middle"
-            fontSize="10"
-            fill="#8A9BC0"
+            fontSize="12"
+            fill="rgba(124,92,255,0.7)"
+            style={{ userSelect: 'none' }}
           >
             {sym}
           </text>
@@ -92,29 +97,29 @@ const Layer4Astrology = memo(function Layer4Astrology({
 
       {/* 12 house lines + number labels (Mandala Fase 3) */}
       {Array.from({ length: 12 }, (_, h) => {
-        const houseLong = h * 30;
-        const angle = longitudeToSvgAngle(houseLong);
-        const innerPos = toXY(angle, 152);
-        const outerPos = toXY(angle, 168);
+        const start = h * 30;
+        const end = start + 30;
+        const midAngle = start + 15;
+        const labelRadius = 155;
+        const labelPos = toXY(200, 200, labelRadius, midAngle);
         return (
-          <g key={`house-${h + 1}`}>
+          <g key={`house-${h}`}>
             <line
-              x1={innerPos.x}
-              y1={innerPos.y}
-              x2={outerPos.x}
-              y2={outerPos.y}
-              stroke="rgba(255,255,255,0.20)"
+              x1="200"
+              y1="200"
+              x2={toXY(200, 200, 196, midAngle).x}
+              y2={toXY(200, 200, 196, midAngle).y}
+              stroke="rgba(124,92,255,0.15)"
               strokeWidth="0.5"
-              strokeDasharray="2 3"
             />
             <text
-              x={toXY(angle, 145).x}
-              y={toXY(angle, 145).y}
+              x={labelPos.x}
+              y={labelPos.y}
               textAnchor="middle"
-              dominantBaseline="central"
-              fontSize="10"
-              fill="rgba(255,255,255,1.0)"
-              fontWeight="500"
+              dominantBaseline="middle"
+              fontSize="7"
+              fill="rgba(124,92,255,0.5)"
+              style={{ userSelect: 'none' }}
             >
               {h + 1}
             </text>
@@ -125,23 +130,18 @@ const Layer4Astrology = memo(function Layer4Astrology({
       {/* Planet glyphs — p.pos already computed by buildPlanetDots */}
       {planetDots.map((p, i) => (
         <g key={`planet-${p.name}-${i}`} filter="url(#glow-akasha)">
+          <circle cx={p.pos.x} cy={p.pos.y} r="8" fill={p.color} opacity="0.9" />
           <text
             x={p.pos.x}
             y={p.pos.y}
             textAnchor="middle"
-            dominantBaseline="central"
-            fontSize="13"
-            fontWeight="600"
-            fill={p.color}
-            opacity="0.95"
-            role="img"
-            aria-label={`${p.name} em ${p.sign} casa ${p.house}${p.retrograde ? ' retrógrado' : ''}`}
+            dominantBaseline="middle"
+            fontSize="9"
+            fill="#FFFFFF"
+            fontWeight="700"
+            style={{ userSelect: 'none' }}
           >
             {p.glyph}
-            {p.retrograde ? '℞' : ''}
-            <title>
-              {p.name}: {p.sign} casa {p.house}
-            </title>
           </text>
         </g>
       ))}
@@ -153,20 +153,20 @@ const Layer4Astrology = memo(function Layer4Astrology({
           cx={pt.x}
           cy={pt.y}
           r="1.5"
-          fill="white"
+          fill="rgba(255,255,255,0.3)"
           className="particle-blink"
-          style={{ animationDelay: `${pt.delay}s` }}
         />
       ))}
 
       {/* Layer label */}
       <text
         x="200"
-        y="14"
+        y="12"
         textAnchor="middle"
-        fontSize="10"
-        fill="rgba(124,92,255,0.7)"
-        letterSpacing="2"
+        fontSize="9"
+        fill="rgba(124,92,255,0.6)"
+        letterSpacing="1.5"
+        style={{ userSelect: 'none' }}
       >
         MOVIMENTO CELESTE
       </text>

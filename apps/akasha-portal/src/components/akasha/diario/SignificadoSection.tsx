@@ -11,14 +11,13 @@ import { getTranslations } from '@/lib/i18n';
 import { useReducedMotion } from '@/components/akasha/hooks/useReducedMotion';
 import type { SignificadoCurado, Pilar } from '@/lib/grimoire/significados-curados';
 import type { PilaresDoMandato } from './types';
+import { PILLAR_ORDER } from './types';
 import { PILLAR_COLORS } from './types';
 
 const SignificadoPilar = dynamic(
   () => import('@/components/akasha/SignificadoPilar').then((m) => m.SignificadoPilar),
   { ssr: false }
 );
-
-const ORDEM_PILARES: Pilar[] = ['cabala', 'astrologia', 'tantrica', 'odu', 'iching'];
 
 /** Type-safe i18n key lookup — avoids unsafe string manipulation. */
 const PILAR_NAME_KEYS: Record<Pilar, string> = {
@@ -93,18 +92,18 @@ export function SignificadoSection({
   })();
 
   // Show principal + 2 nearest secondary pilares (3 total)
-  const principalIdx = ORDEM_PILARES.indexOf(pilarPrincipal);
+  const principalIdx = PILLAR_ORDER.indexOf(pilarPrincipal);
   const tresPilares: Pilar[] = (() => {
     if (principalIdx > 0) {
       // principal is not first: show one before, principal, one after (or next closest)
       const before = principalIdx - 1;
-      const after = principalIdx < ORDEM_PILARES.length - 1 ? principalIdx + 1 : principalIdx + 2;
-      return [ORDEM_PILARES[before], pilarPrincipal, ORDEM_PILARES[after]].filter(
+      const after = principalIdx < PILLAR_ORDER.length - 1 ? principalIdx + 1 : principalIdx + 2;
+      return [PILLAR_ORDER[before], pilarPrincipal, PILLAR_ORDER[after]].filter(
         (p): p is Pilar => p !== undefined
       );
     }
     // principal is first: show principal + next two
-    return [pilarPrincipal, ORDEM_PILARES[1], ORDEM_PILARES[2]];
+    return [pilarPrincipal, PILLAR_ORDER[1], PILLAR_ORDER[2]];
   })();
 
   return (

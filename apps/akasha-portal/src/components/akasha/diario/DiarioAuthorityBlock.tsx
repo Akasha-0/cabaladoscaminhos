@@ -28,6 +28,8 @@ export interface DiarioAuthorityBlockProps {
   locale: string;
   /** DailyResponse.tensionPoint — ponto de tensão ativo do dia */
   tensionPoint?: TensionPoint;
+  /** AkashaSynthesis narrative — rendered as a soft callout under authority */
+  synthesisNarrative?: string;
 }
 
 export function DiarioAuthorityBlock({
@@ -35,6 +37,7 @@ export function DiarioAuthorityBlock({
   pilares,
   locale,
   tensionPoint,
+  synthesisNarrative,
 }: DiarioAuthorityBlockProps) {
   const t = getTranslations(locale);
 
@@ -71,15 +74,16 @@ export function DiarioAuthorityBlock({
           {t(`diario.authority.${authority.autoridade.normalize('NFD').replace(/[\u0300-\u036f]/g, '')}`)}
         </span>
       </div>
-      <Suspense fallback={
-        <div className="h-20 w-full rounded-xl bg-white/5 animate-pulse" />
-      }>
-        <AkashaAuthorityPrompt
-          authority={authority}
-          pilares={pilares}
-          compact={true}
-        />
-      </Suspense>
+      {synthesisNarrative ? (
+        <p className="text-[0.8rem] text-[#8A9BB8] italic border-l-2 border-[#2DD4BF] pl-3 my-3">
+          {synthesisNarrative}
+        </p>
+      ) : null}
+      <AkashaAuthorityPrompt
+        authority={authority}
+        pilares={pilares}
+        compact={true}
+      />
 
       <div className="mt-4 px-1">
         <p className="text-[0.72rem] text-[#8A9BB8] leading-relaxed">{authority.explicacao}</p>

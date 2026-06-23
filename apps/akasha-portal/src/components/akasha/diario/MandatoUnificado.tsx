@@ -27,7 +27,8 @@ export interface MandatoUnificadoProps {
   date: string;
   mandato: MandatoEsqueleto;
   mentor_hook: MentorHook;
-  frases: string[];
+  /** Optional frases from deprecated daily API field — page passes [] */
+  frases?: string[];
   pilarInfo: { nome: string; cor: string };
   locale: string;
   /** DailyResponse.alert — crise / alerta do dia */
@@ -38,7 +39,7 @@ export function MandatoUnificado({
   date,
   mandato,
   mentor_hook,
-  frases,
+  frases = [],
   pilarInfo,
   locale,
   alert,

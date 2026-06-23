@@ -36,6 +36,7 @@ export const Layer2Kabala = memo(function Layer2Kabala({
   onLayerHover,
 }: Layer2Props) {
   const { nodes, paths } = sefiraTree;
+  const ariaLabel = tooltipByLayer[2] ?? 'Camada 2 — Kabala';
 
   return (
     <g
@@ -52,9 +53,9 @@ export const Layer2Kabala = memo(function Layer2Kabala({
       style={{ cursor: 'pointer' }}
       role="button"
       tabIndex={0}
-      aria-label={tooltipByLayer[2]}
+      aria-label={ariaLabel}
     >
-      <title>{tooltipByLayer[2]}</title>
+      <title>{ariaLabel}</title>
 
       {/* Outer decorative ring */}
       <circle

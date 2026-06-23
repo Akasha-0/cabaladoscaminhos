@@ -11,7 +11,7 @@ import { getTranslations } from '@/lib/i18n';
 import { useReducedMotion } from '@/components/akasha/hooks/useReducedMotion';
 
 interface RitualSectionProps {
-  ritual: { titulo: string; instrucao: string };
+  ritual: { titulo: string; instrucao: string; elemento?: string };
   pilarInfo: { nome: string; cor: string };
   locale: string;
 }
@@ -49,19 +49,27 @@ export function RitualSection({ ritual, pilarInfo, locale }: RitualSectionProps)
         >
           {pilarInfo.nome}
         </span>
-        <span
-          className={badge('#2DD4BF')}
-          style={{ background: '#2DD4BF1A', borderColor: '#2DD4BF55', color: '#2DD4BF' }}
-        >
-          {t('diario.ritual.duracao')}
-        </span>
+        {ritual.elemento ? (
+          <span
+            className={badge('#2DD4BF')}
+            style={{ background: '#2DD4BF1A', borderColor: '#2DD4BF55', color: '#2DD4BF' }}
+          >
+            {ritual.elemento}
+          </span>
+        ) : (
+          <span
+            className={badge('#2DD4BF')}
+            style={{ background: '#2DD4BF1A', borderColor: '#2DD4BF55', color: '#2DD4BF' }}
+          >
+            {t('diario.ritual.duracao')}
+          </span>
+        )}
       </div>
 
       <button
         type="button"
         onClick={() => setExpanded((v) => !v)}
-        className="mt-3 text-[0.72rem] text-[#8A9BB8] hover:text-white/60 transition-colors flex items-center gap-1 focus:outline-none"
-        style={{ outline: '2px solid #7C5CFF', outlineOffset: '2px', borderRadius: '4px' }}
+        className="mt-3 text-[0.72rem] text-[#8A9BB8] hover:text-white/60 transition-colors flex items-center gap-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C5CFF] rounded"
         aria-expanded={expanded}
         aria-controls="ritual-explain"
       >
@@ -96,8 +104,8 @@ export function RitualSection({ ritual, pilarInfo, locale }: RitualSectionProps)
 
       <Link
         href={`/${locale}/oraculo?pilar=${encodeURIComponent(pilarInfo.nome)}`}
-        className="mt-4 block w-full text-center py-3.5 rounded-xl bg-gradient-to-r from-[rgba(124,92,255,0.13)] to-[rgba(45,212,191,0.08)] border border-[rgba(124,92,255,0.33)] text-[#7C5CFF] text-[0.88rem] tracking-wide font-cinzel no-underline transition-opacity hover:opacity-80 focus:outline-none"
-        style={{ outline: '2px solid #7C5CFF', outlineOffset: '2px' }}
+        className="mt-4 block w-full text-center py-3.5 min-h-[44px] rounded-xl bg-gradient-to-r from-[rgba(124,92,255,0.13)] to-[rgba(45,212,191,0.08)] border border-[rgba(124,92,255,0.33)] text-[#7C5CFF] text-[0.88rem] tracking-wide font-cinzel no-underline transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C5CFF]"
+
       >
         {t('diario.ritual.consultarOraculo')}
       </Link>

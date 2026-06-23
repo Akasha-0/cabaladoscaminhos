@@ -1,0 +1,126 @@
+{
+  "scanned_at": 1781833549.3538175,
+  "scanned_at_iso": "2026-06-19T01:45:49.353821+00:00",
+  "areas": {
+    "UI/Design": {
+      "description": "User interface components and design system",
+      "files": [],
+      "file_count": 0,
+      "last_modified": 0.0,
+      "last_modified_iso": null,
+      "quality_score": 0.0,
+      "activity_level": "unknown",
+      "improvement_potential": 42.5,
+      "total_lines": 0,
+      "coverage_estimate": 1.0
+    },
+    "API/Logic": {
+      "description": "Business logic, API routes, and core library code",
+      "files": [],
+      "file_count": 0,
+      "last_modified": 0.0,
+      "last_modified_iso": null,
+      "quality_score": 0.0,
+      "activity_level": "unknown",
+      "improvement_potential": 51.0,
+      "total_lines": 0,
+      "coverage_estimate": 1.0
+    },
+    "Database/Prisma": {
+      "description": "Database schema, Prisma ORM, and data access",
+      "files": [],
+      "file_count": 0,
+      "last_modified": 0.0,
+      "last_modified_iso": null,
+      "quality_score": 0.0,
+      "activity_level": "unknown",
+      "improvement_potential": 46.8,
+      "total_lines": 0,
+      "coverage_estimate": 1.0
+    },
+    "Auth": {
+      "description": "Authentication, authorization, and security",
+      "files": [],
+      "file_count": 0,
+      "last_modified": 0.0,
+      "last_modified_iso": null,
+      "quality_score": 0.0,
+      "activity_level": "unknown",
+      "improvement_potential": 55.2,
+      "total_lines": 0,
+      "coverage_estimate": 1.0
+    },
+    "Tests/QA": {
+      "description": "Test suites, QA infrastructure, and test utilities",
+      "files": [],
+      "file_count": 0,
+      "last_modified": 0.0,
+      "last_modified_iso": null,
+      "quality_score": 0.0,
+      "activity_level": "unknown",
+      "improvement_potential": 42.5,
+      "total_lines": 0,
+      "coverage_estimate": 1.0
+    },
+    "Build/Infra": {
+      "description": "Build system, Docker, deployment, and infrastructure",
+      "files": [],
+      "file_count": 0,
+      "last_modified": 0.0,
+      "last_modified_iso": null,
+      "quality_score": 0.0,
+      "activity_level": "unknown",
+      "improvement_potential": 38.2,
+      "total_lines": 0,
+      "coverage_estimate": 1.0
+    },
+    "Docs": {
+      "description": "Documentation files and project specifications",
+      "files": [
+        "AKASHA_HARNESS_CONSTITUTION.md",
+        "initializer_prompt.md",
+        "coding_prompt.md",
+        "akasha-redesign-v2.md",
+        "VISION.md"
+      ],
+      "file_count": 5,
+      "last_modified": 1781788628.011925,
+      "last_modified_iso": "2026-06-18T13:17:08.011925+00:00",
+      "quality_score": 88.5,
+      "activity_level": "hot",
+      "improvement_potential": 12.9,
+      "total_lines": 1086,
+      "coverage_estimate": 1.0
+    },
+    "Grimoire": {
+      "description": "Knowledge bases and wisdom repositories",
+      "files": [],
+      "file_count": 0,
+      "last_modified": 0.0,
+      "last_modified_iso": null,
+      "quality_score": 0.0,
+      "activity_level": "unknown",
+      "improvement_potential": 34.0,
+      "total_lines": 0,
+      "coverage_estimate": 1.0
+    },
+    "Autonomous loop": {
+      "description": "Self-evolution, autonomous agents, and loop infrastructure",
+      "files": [
+        ".autonomous/multi-agent/project_map.json",
+        ".autonomous/multi-agent/state-checkpoint.json",
+        ".autonomous/multi-agent/memory-warm.json",
+        ".autonomous/multi-agent/.git-head-tracked.json",
+        ".autonomous/multi-agent/pacer-state.json"
+      ],
+      "file_count": 5,
+      "last_modified": 1781833549.2786143,
+      "last_modified_iso": "2026-06-19T01:45:49.278614+00:00",
+      "quality_score": 88.3,
+      "activity_level": "hot",
+      "improvement_potential": 17.5,
+      "total_lines": 155,
+      "coverage_estimate": 1.0
+    }
+  }
+}

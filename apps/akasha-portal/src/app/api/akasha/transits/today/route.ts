@@ -34,8 +34,8 @@ export async function GET() {
         { headers: { 'Cache-Control': 'public, max-age=300' } }
       );
     }
-  } catch (err) {
-    // Redis unavailable, fall through to file fallback
+  } catch (_err) {
+    // Redis unavailable, falling back to file
   }
 
   // 2. Fallback: arquivo JSON
@@ -56,7 +56,7 @@ export async function GET() {
         );
       }
     }
-  } catch (err) {
+  } catch (_err) {
     // Fallback file unavailable
   }
 

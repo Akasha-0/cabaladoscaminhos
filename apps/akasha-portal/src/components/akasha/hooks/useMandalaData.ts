@@ -14,9 +14,10 @@ import {
   type TantricNode,
   type KabVert,
   type SefiraTree,
+  type TooltipKey,
 } from '@/components/akasha/mandala-layers';
-import type { MandalaData } from '@/components/akasha/MandalaChart';
 import type { Layer } from '@/components/akasha/mandala-geometry';
+import type { MandalaData } from '@/components/akasha/MandalaChart';
 
 /** Phase 1 hook — all per-layer derived data.
  * Replaces 7 inline useMemo calls in MandalaChart.
@@ -69,10 +70,10 @@ export function useMandalaData(data: MandalaData) {
   };
 }
 
-export type { PlanetDot, TantricNode, KabVert, SefiraTree };
+export type { PlanetDot, TantricNode, KabVert, SefiraTree, TooltipKey };
 
 export interface MandalaDerivedData {
-  tooltipByLayer: Record<Layer, string>;
+  tooltipByLayer: Record<Layer, TooltipKey>;
   planetDots: PlanetDot[];
   tantricNodes: TantricNode[];
   kabVerts: KabVert[];

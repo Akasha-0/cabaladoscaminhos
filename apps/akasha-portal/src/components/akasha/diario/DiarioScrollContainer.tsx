@@ -90,7 +90,7 @@ export function DiarioScrollContainer({
             ) : null}
           </div>
           <MandalaMiniBadge phase={pilarPrincipal} moonPhase={lua_fase} color={pilarInfo.cor} size="sm" />
-          <span data-testid="section-counter" className="text-[0.75rem] text-white/40 font-light tabular-nums">
+          <span data-testid="section-counter" className="text-[0.75rem] text-white/40 font-light tabular-nums" role="status" aria-live="polite" aria-atomic="true">
             {currentSection} · {labels[currentSection - 1] ?? ''}
           </span>
         </div>

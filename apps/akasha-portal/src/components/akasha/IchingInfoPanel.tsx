@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Divider, InfoPanel, Insight, Row } from '@/components/akasha/MandalaChartInfoPanel';
 import { SignificadoEmbed, resolveSig } from '@/components/akasha/mandala-meanings';
+import { useTranslation } from '@/i18n';
 
 export interface IchingInfo {
   hexagramNumber: number | null;
@@ -27,17 +28,18 @@ export interface IchingInfo {
  * birth date/time, and the SignificadoEmbed from the grimoire.
  */
 export function IchingInfoPanel({ iching }: { iching: IchingInfo }) {
+  const { t } = useTranslation();
   const [showAdvanced, setShowAdvanced] = useState(false);
   return (
     <InfoPanel
       color="#A0763A"
-      title="Mutação do Caminho — Hexagrama do Ori"
-      subtitle="Sabedoria Ancestral Chinesa · Camada 5"
+      title={t('mandala.panels.iching.title')}
+      subtitle={t('mandala.panels.iching.subtitle')}
     >
       {iching.available ? (
         <>
           <Row
-            label="Hexagrama — sua forma de agir no mundo"
+            label={t('mandala.panels.iching.hexagram')}
             value={
               iching.hexagramChineseName
                 ? `${iching.hexagramNumber} — ${iching.hexagramName} (${iching.hexagramChineseName})`
@@ -45,7 +47,7 @@ export function IchingInfoPanel({ iching }: { iching: IchingInfo }) {
             }
           />
           <Row
-            label="Trigrama superior — a energia que recebe"
+            label={t('mandala.panels.iching.upperTrigram')}
             value={
               iching.upperTrigram != null && iching.upperTrigramName
                 ? `${iching.upperTrigram} — ${iching.upperTrigramName}`
@@ -53,7 +55,7 @@ export function IchingInfoPanel({ iching }: { iching: IchingInfo }) {
             }
           />
           <Row
-            label="Trigrama inferior — a energia que sustenta"
+            label={t('mandala.panels.iching.lowerTrigram')}
             value={
               iching.lowerTrigram != null && iching.lowerTrigramName
                 ? `${iching.lowerTrigram} — ${iching.lowerTrigramName}`
@@ -73,9 +75,9 @@ export function IchingInfoPanel({ iching }: { iching: IchingInfo }) {
                       marginBottom: '0.35rem',
                     }}
                   >
-                    As 6 Linhas (de baixo para cima){' '}
+                    {t('mandala.panels.iching.linesTitle')}{' '}
                     <span style={{ color: '#A7AECF', fontWeight: 400 }}>
-                      — o yang e yin que moldam seu hexagrama
+                      {t('mandala.panels.iching.linesSubtitle')}
                     </span>
                   </p>
                   <div
@@ -104,7 +106,7 @@ export function IchingInfoPanel({ iching }: { iching: IchingInfo }) {
               )}
               <Divider />
               <Row
-                label="Data de nascimento — quando seu hexagrama foi selado"
+                label={t('mandala.panels.iching.birthDate')}
                 value={
                   iching.birthDate
                     ? new Date(iching.birthDate + 'T00:00:00').toLocaleDateString('pt-BR')
@@ -112,11 +114,11 @@ export function IchingInfoPanel({ iching }: { iching: IchingInfo }) {
                 }
               />
               {iching.birthTime && (
-                <Row label="Hora — o momento cósmico da sua consulta" value={iching.birthTime} />
+                <Row label={t('mandala.panels.iching.birthTime')} value={iching.birthTime} />
               )}
               {iching.provisional && (
                 <p style={{ fontSize: '0.6875rem', color: '#5C6691', marginTop: '0.25rem' }}>
-                  * Cálculo provisório — hora de nascimento não informada.
+                  {t('mandala.panels.iching.provisional')}
                 </p>
               )}
               <button
@@ -132,7 +134,7 @@ export function IchingInfoPanel({ iching }: { iching: IchingInfo }) {
                   textDecoration: 'underline',
                 }}
               >
-                Ocultar detalhes avançados
+                {t('mandala.panels.iching.hideAdvanced')}
               </button>
             </>
           ) : (
@@ -149,7 +151,7 @@ export function IchingInfoPanel({ iching }: { iching: IchingInfo }) {
                 textDecoration: 'underline',
               }}
             >
-              Mostrar detalhes avançados →
+              {t('mandala.panels.iching.showAdvanced')}
             </button>
           )}
           <SignificadoEmbed
@@ -160,9 +162,9 @@ export function IchingInfoPanel({ iching }: { iching: IchingInfo }) {
       ) : (
         <div>
           <p style={{ fontSize: '0.8125rem', color: '#A7AECF', lineHeight: 1.55 }}>
-            Forneça sua data e hora de nascimento no perfil para revelar o Hexagrama do seu Ori.{' '}
+            {t('mandala.panels.iching.noData')}{' '}
             <Link href="/oraculo" style={{ color: '#A0763A', textDecoration: 'underline' }}>
-              Consulte o Oráculo
+              {t('mandala.panels.iching.consultOracle')}
             </Link>{' '}
             para orientação ancestral personalizada.
           </p>

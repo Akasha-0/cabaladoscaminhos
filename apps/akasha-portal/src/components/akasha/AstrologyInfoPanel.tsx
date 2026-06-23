@@ -6,6 +6,7 @@ import { ELEMENT_COLORS, ELEMENT_LABELS } from '@/components/akasha/mandala-elem
 import { ASPECT_SYMBOLS } from '@/components/akasha/mandala-geometry';
 import { SignificadoEmbed, resolveSig } from '@/components/akasha/mandala-meanings';
 import { formatDegreeToZodiac } from '@/lib/shared/zodiac';
+import { useTranslation } from '@/i18n';
 
 export interface AstrologyAspect {
   planet1: string;
@@ -48,11 +49,16 @@ export function AstrologyInfoPanel({
   astrology: AstrologyData;
   elemGuidance: ElementGuidance | null;
 }) {
+  const { t } = useTranslation();
   const [showAdvanced, setShowAdvanced] = useState(false);
   return (
-    <InfoPanel color="#7C5CFF" title="Movimento Celeste — O Céu" subtitle="Anel Cósmico · Camada 4">
-      <Row label="Ascendente — como o mundo te percebe" value={astrology.ascendant} />
-      <Row label="Meio do Céu — seu chamado público" value={astrology.midheaven} />
+    <InfoPanel
+      color="#7C5CFF"
+      title={t('mandala.panels.astrology.title')}
+      subtitle={t('mandala.panels.astrology.subtitle')}
+    >
+      <Row label={t('mandala.panels.astrology.ascendant')} value={astrology.ascendant} />
+      <Row label={t('mandala.panels.astrology.midheaven')} value={astrology.midheaven} />
       {/* Planetas traduzidos para linguagem prática */}
       {astrology.planets.slice(0, 5).map((p) => (
         <PlainEnglishPlanet
@@ -76,13 +82,13 @@ export function AstrologyInfoPanel({
               marginBottom: '0.35rem',
             }}
           >
-            Aspectos Principais{' '}
+            {t('mandala.panels.astrology.aspectsTitle')}{' '}
             <span style={{ color: '#A7AECF', fontWeight: 400 }}>
-              — como seus planetas se relacionam entre si
+              {t('mandala.panels.astrology.aspectsSubtitle')}
             </span>
           </p>
           {astrology.aspects.slice(0, 5).length === 0 ? (
-            <Insight color="#7C5CFF">Sem aspectos principais calculados.</Insight>
+            <Insight color="#7C5CFF">{t('mandala.panels.astrology.noAspects')}</Insight>
           ) : (
             astrology.aspects.slice(0, 5).map((a, i) => {
               const symbol = ASPECT_SYMBOLS[a.aspect.toLowerCase()] ?? a.aspect;
@@ -140,7 +146,7 @@ export function AstrologyInfoPanel({
               textDecoration: 'underline',
             }}
           >
-            Ocultar detalhes avançados
+            {t('mandala.panels.astrology.hideAdvanced')}
           </button>
         </>
       ) : (
@@ -157,7 +163,7 @@ export function AstrologyInfoPanel({
             textDecoration: 'underline',
           }}
         >
-          Mostrar aspectos e equilíbrio elemental →
+          {t('mandala.panels.astrology.showAdvanced')}
         </button>
       )}
       <SignificadoEmbed

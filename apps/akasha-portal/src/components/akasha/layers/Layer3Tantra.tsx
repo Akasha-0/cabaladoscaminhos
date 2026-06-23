@@ -1,11 +1,12 @@
 'use client';
 import { memo } from 'react';
+import { useTranslation } from '@/i18n';
 import type { Layer } from '@/components/akasha/mandala-geometry';
-import type { TantricNode } from '@/components/akasha/mandala-layers';
+import type { TantricNode, TooltipKey } from '@/components/akasha/mandala-layers';
 
 interface Layer3Props {
   tantricNodes: TantricNode[];
-  tooltipByLayer: Record<Layer, string>;
+  tooltipByLayer: Record<Layer, TooltipKey>;
   opacity: (layer: Layer) => number;
   onLayerToggle: (layer: Layer) => void;
   onLayerHover: (layer: Layer | null) => void;
@@ -22,6 +23,9 @@ const Layer3Tantra = memo(function Layer3Tantra({
   onLayerToggle,
   onLayerHover,
 }: Layer3Props) {
+  const { t } = useTranslation();
+  const tip3 = tooltipByLayer[3];
+  const ariaLabel = t(tip3.key, { ...tip3.params } as Record<string, string>);
   return (
     <g
       opacity={opacity(3)}
@@ -37,9 +41,9 @@ const Layer3Tantra = memo(function Layer3Tantra({
       style={{ cursor: 'pointer' }}
       role="button"
       tabIndex={0}
-      aria-label={tooltipByLayer[3]}
+      aria-label={ariaLabel}
     >
-      <title>{tooltipByLayer[3]}</title>
+      <title>{ariaLabel}</title>
 
       {/* Layer 3 ring at r=138 */}
       <circle
@@ -47,14 +51,14 @@ const Layer3Tantra = memo(function Layer3Tantra({
         cy="200"
         r="138"
         fill="none"
-        stroke="rgba(45,212,191,0.15)"
-        strokeWidth="1"
-        strokeDasharray="3 4"
+        stroke="rgba(45,212,191,0.1)"
+        strokeWidth="0.75"
+        strokeDasharray="1 4"
       />
 
       {/* Web lines between adjacent tantric nodes */}
       {tantricNodes.map(({ pos }, i) => {
-        const next = tantricNodes[(i + 1) % 11];
+        const next = tantricNodes[(i + 1) % tantricNodes.length];
         return (
           <line
             key={`web-${i}`}
@@ -62,7 +66,7 @@ const Layer3Tantra = memo(function Layer3Tantra({
             y1={pos.y}
             x2={next.pos.x}
             y2={next.pos.y}
-            stroke="rgba(45,212,191,0.1)"
+            stroke="rgba(45,212,191,0.12)"
             strokeWidth="0.5"
           />
         );
@@ -71,24 +75,24 @@ const Layer3Tantra = memo(function Layer3Tantra({
       {/* Tantric body nodes */}
       {tantricNodes.map(({ pos, active, label }, i) => (
         <g key={`node-${i}`}>
-          {!active && (
-            <circle cx={pos.x} cy={pos.y} r="10" fill="rgba(251,87,129,0.35)" />
-          )}
           <circle
             cx={pos.x}
             cy={pos.y}
-            r={active ? 6 : 7}
-            fill={active ? '#2DD4BF' : '#FB5781'}
-            opacity={active ? 0.9 : 0.75}
+            r="8"
+            fill={active ? 'rgba(45,212,191,0.6)' : 'rgba(251,87,129,0.5)'}
+            stroke={active ? '#2DD4BF' : '#FB5781'}
+            strokeWidth="1.2"
+            filter={active ? 'url(#glow-akasha)' : undefined}
           />
           <text
             x={pos.x}
-            y={pos.y}
+            y={pos.y + 1}
             textAnchor="middle"
             dominantBaseline="middle"
-            fontSize="10"
-            fill="#F4F5FF"
-            fontWeight="bold"
+            fontSize="7"
+            fill={active ? '#FFFFFF' : '#A7AECF'}
+            fontWeight={active ? '700' : '400'}
+            style={{ userSelect: 'none' }}
           >
             {label}
           </text>

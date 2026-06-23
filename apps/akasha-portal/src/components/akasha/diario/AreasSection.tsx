@@ -21,10 +21,14 @@ const TraducaoAreaPanel = dynamic(
   { ssr: false }
 );
 
+import type { CycleModulationAlignment } from './types';
+
 export interface AreasSectionProps {
   pilarPrincipal: Pilar;
   pilarInfo: { nome: string; cor: string };
   locale: string;
+  /** cycle.modulation alignment scores — top areas get highlighted with ✨ badge */
+  highlightAreas?: CycleModulationAlignment[];
 }
 
 export function AreasSection({ pilarPrincipal, pilarInfo, locale }: AreasSectionProps) {

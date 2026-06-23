@@ -113,6 +113,13 @@ export interface DailyResponse {
     modulation: object[];
   };
 }
+/** Alignment entry from cycle.modulation — highlights top areas in AreasSection */
+export interface CycleModulationAlignment {
+  area: string;
+  alignmentScore: number;
+  suggestedBoost: string;
+  rationale?: string;
+}
 
 export type DailyRitualUI = {
   titulo: string;

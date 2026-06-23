@@ -19,8 +19,10 @@ export function useLayerState() {
    *  - Hovered (even if another is active) → 1 */
   const opacity = useCallback(
     (layer: Layer): number => {
-      if (hoveredLayer !== null && hoveredLayer === layer) return 1;
-      if (activeLayer !== null && activeLayer !== layer) return 0.3;
+      if (activeLayer === null) return 1;
+      if (activeLayer === layer) return 1;
+      if (activeLayer !== layer && hoveredLayer === null) return 0.3;
+      if (hoveredLayer !== null && hoveredLayer !== layer) return 0.3;
       return 1;
     },
     [activeLayer, hoveredLayer]
