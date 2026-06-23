@@ -1,82 +1,48 @@
-// Layer4Astrology — Movimento Celeste (Layer 4).
-// Zodiac ring (12 arcs), 12 house lines + numbers, planet glyphs.
-// When active and prefers-reduced-motion is false, RAF drives ring rotation.
-
-import React, { memo, useRef, useEffect } from 'react';
-import {
-  describeArc,
-  PARTICLES,
-  toXY,
-  type Layer,
-} from '@/components/akasha/mandala-geometry';
-import { type PlanetDot } from '@/components/akasha/mandala-layers';
-import type { MandalaData } from '@/components/akasha/MandalaChart';
+'use client';
+import { memo } from 'react';
+import { describeArc, PARTICLES, toXY } from '@/components/akasha/mandala-geometry';
+import { buildAstroSegments } from '@/components/akasha/mandala-layers';
 import { longitudeToSvgAngle } from '@/lib/shared/zodiac';
+import type { Layer } from '@/components/akasha/mandala-geometry';
+import type { PlanetDot } from '@/components/akasha/mandala-layers';
 
-interface Props {
-  data: MandalaData;
+const ASTRO_SEGMENTS = buildAstroSegments();
+
+interface Layer4Props {
   planetDots: PlanetDot[];
   tooltipByLayer: Record<Layer, string>;
   opacity: (layer: Layer) => number;
   onLayerToggle: (layer: Layer) => void;
   onLayerHover: (layer: Layer | null) => void;
-  ringPaused?: boolean;
+  ringPaused: boolean;
   reducedMotion?: boolean;
 }
 
-const ASTRO_SEGMENTS = [
-  { sym: '♈', name: 'Áries' },
-  { sym: '♉', name: 'Touro' },
-  { sym: '♊', name: 'Gêmeos' },
-  { sym: '♋', name: 'Câncer' },
-  { sym: '♌', name: 'Leão' },
-  { sym: '♍', name: 'Virgem' },
-  { sym: '♎', name: 'Libra' },
-  { sym: '♏', name: 'Escorpião' },
-  { sym: '♐', name: 'Sagitário' },
-  { sym: '♑', name: 'Capricórnio' },
-  { sym: '♒', name: 'Aquário' },
-  { sym: '♓', name: 'Peixes' },
-];
-
-export const Layer4Astrology = memo(function Layer4Astrology({
-  data,
+/** Layer 4 — Movimento Celeste (Astrology).
+ * 12 zodiac sign segments + 12 house lines + 10 planet glyphs on ecliptic.
+ * Rotation: CSS animation (NOT requestAnimationFrame). The zodiac ring uses
+ * the `ring-rotate` keyframe (120s period, mandala-css.ts) applied via
+ * className='ring-astrological' on the <g> element. Two reduced-motion
+ * mechanisms:
+ *   1. Component-level: reducedMotion=true or ringPaused=true → class switches
+ *      to 'ring-astrological-paused' → `animation: none` (instant stop)
+ *   2. Global fallback: `@media (prefers-reduced-motion: reduce) { * { animation:
+ *      none !important } }` in mandala-css.ts MANDALA_STYLES string.
+ * RAF is NOT used — CHANGELOG claim of "RAF-driven rotation" is incorrect.
+ * Phase 1 extracted from MandalaChart.tsx.
+ * Keyboard accessible: Enter/Space to activate. */
+const Layer4Astrology = memo(function Layer4Astrology({
   planetDots,
   tooltipByLayer,
   opacity,
   onLayerToggle,
   onLayerHover,
-  ringPaused = false,
+  ringPaused,
   reducedMotion = false,
-}: Props) {
-  // RAF rotation ref — stores the animation frame id so we can cancel it.
-  const rafRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    // Only animate when ring is NOT paused AND motion is allowed.
-    if (ringPaused || reducedMotion) {
-      if (rafRef.current !== null) {
-        cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
-      }
-      return;
-    }
-
-    let angle = 0;
-    const animate = () => {
-      angle = (angle + 0.04) % 360;
-      rafRef.current = requestAnimationFrame(animate);
-    };
-
-    rafRef.current = requestAnimationFrame(animate);
-
-    return () => {
-      if (rafRef.current !== null) {
-        cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
-      }
-    };
-  }, [ringPaused, reducedMotion]);
+}: Layer4Props) {
+  const ringClass = ringPaused || reducedMotion
+    ? 'ring-astrological-paused'
+    : 'ring-astrological';
 
   return (
     <g
@@ -84,42 +50,47 @@ export const Layer4Astrology = memo(function Layer4Astrology({
       onClick={() => onLayerToggle(4)}
       onMouseEnter={() => onLayerHover(4)}
       onMouseLeave={() => onLayerHover(null)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onLayerToggle(4);
+        }
+      }}
       style={{ cursor: 'pointer' }}
-      className={ringPaused ? 'ring-astrological-paused' : 'ring-astrological'}
+      className={ringClass}
+      role="button"
+      tabIndex={0}
+      aria-label={tooltipByLayer[4]}
     >
       <title>{tooltipByLayer[4]}</title>
+
+      {/* Outer decorative rings */}
       <circle cx="200" cy="200" r="196" fill="none" stroke="rgba(124,92,255,0.12)" strokeWidth="0.5" />
       <circle cx="200" cy="200" r="170" fill="none" stroke="rgba(124,92,255,0.12)" strokeWidth="0.5" />
 
-      {/* Zodiac arcs + symbols */}
-      {ASTRO_SEGMENTS.map(({ sym }, i) => {
-        const startDeg = i * 30;
-        const endDeg = (i + 1) * 30;
-        const midDeg = startDeg + 15;
-        const labelPos = toXY(midDeg, 190);
-        return (
-          <g key={i}>
-            <path
-              d={describeArc(200, 200, 183, startDeg, endDeg)}
-              fill="none"
-              stroke="rgba(38,48,79,0.7)"
-              strokeWidth="1"
-            />
-            <text
-              x={labelPos.x}
-              y={labelPos.y}
-              textAnchor="middle"
-              dominantBaseline="middle"
-              fontSize="10"
-              fill="#8A9BC0"
-            >
-              {sym}
-            </text>
-          </g>
-        );
-      })}
+      {/* 12 zodiac sign segments at r=183 — ASTRO_SEGMENTS matches current inline code */}
+      {ASTRO_SEGMENTS.map(({ startDeg, endDeg, sym, labelPos }, i) => (
+        <g key={`seg-${i}`}>
+          <path
+            d={describeArc(200, 200, 183, startDeg, endDeg)}
+            fill="none"
+            stroke="rgba(38,48,79,0.7)"
+            strokeWidth="1"
+          />
+          <text
+            x={labelPos.x}
+            y={labelPos.y}
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fontSize="10"
+            fill="#8A9BC0"
+          >
+            {sym}
+          </text>
+        </g>
+      ))}
 
-      {/* 12 house lines + numbers */}
+      {/* 12 house lines + number labels (Mandala Fase 3) */}
       {Array.from({ length: 12 }, (_, h) => {
         const houseLong = h * 30;
         const angle = longitudeToSvgAngle(houseLong);
@@ -151,7 +122,7 @@ export const Layer4Astrology = memo(function Layer4Astrology({
         );
       })}
 
-      {/* Planet glyphs */}
+      {/* Planet glyphs — p.pos already computed by buildPlanetDots */}
       {planetDots.map((p, i) => (
         <g key={`planet-${p.name}-${i}`} filter="url(#glow-akasha)">
           <text
@@ -175,12 +146,7 @@ export const Layer4Astrology = memo(function Layer4Astrology({
         </g>
       ))}
 
-      {/* Ring label */}
-      <text x="200" y="14" textAnchor="middle" fontSize="10" fill="rgba(124,92,255,0.7)" letterSpacing="2">
-        MOVIMENTO CELESTE
-      </text>
-
-      {/* Particle dots on outer edge */}
+      {/* Particle dots — r=1.5 white, matches current inline */}
       {PARTICLES.map((pt, i) => (
         <circle
           key={`particle-${i}`}
@@ -189,8 +155,24 @@ export const Layer4Astrology = memo(function Layer4Astrology({
           r="1.5"
           fill="white"
           className="particle-blink"
+          style={{ animationDelay: `${pt.delay}s` }}
         />
       ))}
+
+      {/* Layer label */}
+      <text
+        x="200"
+        y="14"
+        textAnchor="middle"
+        fontSize="10"
+        fill="rgba(124,92,255,0.7)"
+        letterSpacing="2"
+      >
+        MOVIMENTO CELESTE
+      </text>
     </g>
   );
 });
+export { Layer4Astrology };
+
+export default Layer4Astrology;

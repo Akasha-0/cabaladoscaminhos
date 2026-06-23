@@ -1,0 +1,24 @@
+---
+name: Bug Report
+about: Report something that is not working as expected
+title: '[Bug] '
+labels: bug
+assignees: ''
+---
+
+**Describe the bug**
+A clear description of the bug.
+
+**To Reproduce**
+Steps to reproduce the behavior.
+
+**Expected behavior**
+What you expected to happen.
+
+**Screenshots**
+If applicable, add screenshots to help explain.
+
+**Environment:**
+ - OS: [e.g. macOS, Linux]
+ - Node version: [e.g. 22.x]
+ - Package version: [e.g. 2.0.0]

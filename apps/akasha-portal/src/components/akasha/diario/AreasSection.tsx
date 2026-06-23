@@ -6,8 +6,10 @@
  * Collapsed by default with framer-motion expand.
  */
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useState, useMemo, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getTranslations } from '@/lib/i18n';
+import { useReducedMotion } from '@/components/akasha/hooks/useReducedMotion';
 import { AREAS, traducaoPara } from '@/lib/grimoire/traducao-areas';
 import type { Pilar } from '@/lib/grimoire/significados-curados';
 
@@ -25,70 +27,106 @@ export interface AreasSectionProps {
   locale: string;
 }
 
-function headerStyle(cor: string, isOpen: boolean): React.CSSProperties {
-  return {
+export function AreasSection({ pilarPrincipal, pilarInfo, locale }: AreasSectionProps) {
+  const t = getTranslations(locale);
+  const [expanded, setExpanded] = useState(false);
+  const shouldReduce = useReducedMotion();
+
+  const headerStyle = useMemo<React.CSSProperties>(() => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '14px 20px',
-    background: isOpen ? `${cor}18` : 'rgba(11,14,28,0.6)',
-    border: `1px solid ${cor}44`,
-    borderLeft: `3px solid ${cor}`,
+    background: expanded ? `${pilarInfo.cor}18` : 'rgba(11,14,28,0.6)',
+    border: `1px solid ${pilarInfo.cor}44`,
+    borderLeft: `3px solid ${pilarInfo.cor}`,
     borderRadius: 12,
     cursor: 'pointer',
     width: '100%',
-    transition: 'background 0.2s ease',
-  };
-}
+    outline: '2px solid transparent',
+    outlineOffset: '-2px',
+    transition: 'background 0.2s ease, outline-color 0.15s ease',
+  }), [pilarInfo.cor, expanded]);
 
-function chevronStyle(isOpen: boolean): React.CSSProperties {
-  return {
+  const chevronStyle = useMemo<React.CSSProperties>(() => ({
     transition: 'transform 0.3s ease',
-    transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-    color: '#5C6691',
+    transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+    color: '#8A9BB8',
     fontSize: '1rem',
     lineHeight: 1,
-  };
-}
-
-export function AreasSection({ pilarPrincipal, pilarInfo }: AreasSectionProps) {
-  const [expanded, setExpanded] = useState(false);
+  }), [expanded]);
 
   return (
     <section
-      aria-label="Áreas da Vida"
+      aria-label={t('diario.areas.titulo')}
       className="bg-[rgba(11,14,28,0.72)] backdrop-blur-xl border border-white/10 rounded-2xl p-6 mb-4"
     >
       <button
         type="button"
-        style={headerStyle(pilarInfo.cor, expanded)}
+        style={{ ...headerStyle, outlineColor: pilarInfo.cor }}
         onClick={() => setExpanded((v) => !v)}
         aria-expanded={expanded}
-        className="mb-4"
+        aria-controls="areas-panel"
+        className="mb-4 focus-visible:outline-2 focus-visible:outline-offset-2"
       >
         <div>
           <h2 className="text-[1.15rem] font-cinzel text-[#F4F5FF] leading-snug mb-0.5">
-            Áreas da Vida
+            {t('diario.areas.titulo')}
           </h2>
-          <p className="text-[0.75rem] text-[#5C6691]">
-            Pilar {pilarInfo.nome} traduzido para cada área.
+          <p className="text-[0.75rem] text-[#8A9BB8]">
+            {t('diario.areas.descricao', { pilar: pilarInfo.nome })}
           </p>
         </div>
-        <span style={chevronStyle(expanded)}>▼</span>
+        <span aria-hidden="true" style={chevronStyle}>▼</span>
       </button>
 
-      <AnimatePresence>
-        {expanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
-            style={{ overflow: 'hidden' }}
-          >
-            <p className="text-[0.68rem] text-[#5C6691] mb-3 px-1">
-              Leia da esquerda para direita — do profissional ao íntimo.
-            </p>
+      {!shouldReduce ? (
+        <AnimatePresence>
+          {expanded && (
+            <motion.div
+              id="areas-panel"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              style={{ overflow: 'hidden' }}
+            >
+              <p className="text-[0.68rem] text-[#8A9BB8] mb-3 px-1">
+                {t('diario.areas.leiaInstrucao')}
+              </p>
+              <Suspense fallback={
+                <div className="space-y-3">
+                  {[1,2,3].map(i => <div key={i} className="h-16 w-full rounded-xl bg-white/5 animate-pulse" />)}
+                </div>
+              }>
+                <div className="grid grid-cols-1 gap-3">
+                  {AREAS.map((area) => {
+                    const traducao = traducaoPara(pilarPrincipal, area);
+                    if (!traducao) return null;
+                    return (
+                      <TraducaoAreaPanel
+                        key={area}
+                        traducao={traducao}
+                        cor={pilarInfo.cor}
+                        variant="expanded"
+                      />
+                    );
+                  })}
+                </div>
+              </Suspense>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      ) : expanded ? (
+        <div id="areas-panel">
+          <p className="text-[0.68rem] text-[#8A9BB8] mb-3 px-1">
+            {t('diario.areas.leiaInstrucao')}
+          </p>
+          <Suspense fallback={
+            <div className="space-y-3">
+              {[1,2,3].map(i => <div key={i} className="h-16 w-full rounded-xl bg-white/5 animate-pulse" />)}
+            </div>
+          }>
             <div className="grid grid-cols-1 gap-3">
               {AREAS.map((area) => {
                 const traducao = traducaoPara(pilarPrincipal, area);
@@ -103,9 +141,9 @@ export function AreasSection({ pilarPrincipal, pilarInfo }: AreasSectionProps) {
                 );
               })}
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </Suspense>
+        </div>
+      ) : null}
     </section>
   );
 }

@@ -1,19 +1,20 @@
-// LayerSynergyLines — toroidal synergy lines from each TantricNode to center.
-// Dash-flow animation via CSS classes (synergy-active / synergy-alert).
-// nth-child stagger for animationDelay is handled by mandala-animations.css.
+'use client';
+import { memo } from 'react';
+import type { TantricNode } from '@/components/akasha/mandala-layers';
 
-import React, { memo } from 'react';
-import { type TantricNode } from '@/components/akasha/mandala-layers';
-
-interface Props {
+interface LayerSynergyLinesProps {
   tantricNodes: TantricNode[];
-  reducedMotion?: boolean;
+  reducedMotion: boolean;
 }
 
+/** LayerSynergyLines — 11 dashed lines from Layer 3 tantric nodes to center (200,200).
+ * Solid teal when active, pink when inactive.
+ * Phase 1 extracted from MandalaChart.tsx.
+ * Render BEFORE Layer2 so it appears behind Layer 2 (SVG painter's model). */
 export const LayerSynergyLines = memo(function LayerSynergyLines({
   tantricNodes,
-  reducedMotion = false,
-}: Props) {
+  reducedMotion,
+}: LayerSynergyLinesProps) {
   return (
     <>
       {tantricNodes.map(({ pos, active }, i) => (
@@ -27,9 +28,8 @@ export const LayerSynergyLines = memo(function LayerSynergyLines({
           strokeWidth="0.6"
           strokeDasharray="4 6"
           opacity={active ? 0.35 : 0.25}
-          strokeDashoffset="0"
-          className={active ? 'synergy-active' : 'synergy-alert'}
-          style={reducedMotion ? { animation: 'none' } : undefined}
+          className={reducedMotion ? undefined : active ? 'synergy-active' : 'synergy-alert'}
+          style={{ animationDelay: reducedMotion ? undefined : `${(i * 0.27) % 2}s` }}
         />
       ))}
     </>

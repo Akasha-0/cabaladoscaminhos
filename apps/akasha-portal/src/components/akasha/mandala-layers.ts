@@ -227,3 +227,162 @@ export function buildKabVerts(kabala: KabalaCoreInput): KabVert[] {
 export function buildTrianglePath(verts: KabVert[]): string {
   return `M ${verts[0].pos.x} ${verts[0].pos.y} L ${verts[1].pos.x} ${verts[1].pos.y} L ${verts[2].pos.x} ${verts[2].pos.y} Z`;
 }
+// ---------- Sefirot Tree of Life (Layer 2) ----------
+
+/** Maps lifePath (1-10) to the corresponding sefira name */
+export type SefiraName = 'Keter' | 'Chokhmah' | 'Binah' | 'Chesed' | 'Gevurah' | 'Tiferet' | 'Netzach' | 'Hod' | 'Yesod' | 'Malkuth';
+export type Pillar = 'right' | 'left' | 'center';
+
+export interface SefiraNode {
+  name: SefiraName;
+  pillar: Pillar;
+  pos: { x: number; y: number };
+  /** true when this sefira corresponds to lifePath / expression / motivation */
+  active: boolean;
+  /** the number mapped to this sefira */
+  number: number | null;
+  shortLabel: string;
+  hebrewLetter: string | null;
+}
+
+export interface SefiraPath {
+  pathNumber: number;
+  sefiraA: SefiraName;
+  sefiraB: SefiraName;
+  svgPathData: string;
+  active: boolean;
+}
+
+export interface SefiraTree {
+  nodes: SefiraNode[]; // always 10
+  paths: SefiraPath[]; // always 22
+}
+
+// Standard Kabala Tree coordinates (viewBox 400x400, cx=200 cy=200)
+const SEFIRA_POSITIONS: Record<SefiraName, { x: number; y: number }> = {
+  Keter:    { x: 200, y: 35  },
+  Chokhmah: { x: 245, y: 110 },
+  Binah:    { x: 155, y: 110 },
+  Chesed:   { x: 245, y: 155 },
+  Gevurah:  { x: 155, y: 155 },
+  Tiferet:  { x: 200, y: 180 },
+  Netzach:  { x: 245, y: 240 },
+  Hod:      { x: 155, y: 240 },
+  Yesod:    { x: 200, y: 275 },
+  Malkuth:  { x: 200, y: 320 },
+};
+
+const SEFIRA_PILLAR: Record<SefiraName, Pillar> = {
+  Keter:    'center',
+  Chokhmah: 'right',
+  Binah:    'left',
+  Chesed:   'right',
+  Gevurah:  'left',
+  Tiferet:  'center',
+  Netzach:  'right',
+  Hod:      'left',
+  Yesod:    'center',
+  Malkuth:  'center',
+};
+
+const SEFIRA_SHORTLABEL: Record<SefiraName, string> = {
+  Keter:    'Ke',
+  Chokhmah: 'Ch',
+  Binah:    'Bi',
+  Chesed:   'Ch',
+  Gevurah:  'Ge',
+  Tiferet:  'Ti',
+  Netzach:  'Ne',
+  Hod:      'Ho',
+  Yesod:    'Ye',
+  Malkuth:  'Ma',
+};
+
+const SEFIRA_HEBREW: Record<SefiraName, string> = {
+  Keter:    'כתר',
+  Chokhmah: 'חכמה',
+  Binah:    'בינה',
+  Chesed:   'חסד',
+  Gevurah:  'גבורה',
+  Tiferet:  'תפארת',
+  Netzach:  'נצח',
+  Hod:      'הוד',
+  Yesod:    'יסוד',
+  Malkuth:  'מלכות',
+};
+
+/** 22 paths of the Kabala Tree of Life */
+const SEFIRA_PATH_PAIRS: [SefiraName, SefiraName][] = [
+  ['Keter',    'Chokhmah'],
+  ['Keter',    'Binah'   ],
+  ['Chokhmah', 'Binah'   ],
+  ['Chokhmah', 'Chesed'  ],
+  ['Chokhmah', 'Tiferet' ],
+  ['Binah',    'Gevurah' ],
+  ['Binah',    'Tiferet' ],
+  ['Chesed',   'Gevurah' ],
+  ['Chesed',   'Tiferet' ],
+  ['Gevurah',  'Tiferet' ],
+  ['Chesed',   'Netzach' ],
+  ['Chesed',   'Yesod'   ],
+  ['Gevurah',  'Hod'     ],
+  ['Gevurah',  'Yesod'   ],
+  ['Tiferet',  'Netzach' ],
+  ['Tiferet',  'Hod'     ],
+  ['Tiferet',  'Yesod'   ],
+  ['Netzach',  'Hod'     ],
+  ['Netzach',  'Yesod'   ],
+  ['Hod',      'Yesod'   ],
+  ['Netzach',  'Malkuth' ],
+  ['Hod',      'Malkuth' ],
+  ['Yesod',    'Malkuth' ],
+];
+
+/**
+ * Build the complete Sefirot Tree for Layer 2.
+ * A path is active when both endpoint sefira are active.
+ */
+export function buildSefiraTree(kabala: KabalaCoreInput): SefiraTree {
+  const sefiraNames: SefiraName[] = [
+    'Keter', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+    'Tiferet', 'Netzach', 'Hod', 'Yesod', 'Malkuth',
+  ];
+
+  const numMap: Record<number, SefiraName> = {
+    1: 'Keter', 2: 'Chokhmah', 3: 'Binah', 4: 'Chesed', 5: 'Gevurah',
+    6: 'Tiferet', 7: 'Netzach', 8: 'Hod', 9: 'Yesod', 10: 'Malkuth',
+  };
+
+  const activeSefiraSet = new Set<SefiraName>(
+    ([kabala.lifePath, kabala.expression, kabala.motivation] as (number | null)[])
+      .map((n) => (n != null ? numMap[n] ?? null : null))
+      .filter((s): s is SefiraName => s !== null)
+  );
+
+  const nodes: SefiraNode[] = sefiraNames.map((name) => {
+    const number = sefiraNames.indexOf(name) + 1;
+    return {
+      name,
+      pillar: SEFIRA_PILLAR[name],
+      pos: SEFIRA_POSITIONS[name],
+      active: activeSefiraSet.has(name),
+      number,
+      shortLabel: SEFIRA_SHORTLABEL[name],
+      hebrewLetter: SEFIRA_HEBREW[name],
+    };
+  });
+
+  const paths: SefiraPath[] = SEFIRA_PATH_PAIRS.map(([a, b], i) => {
+    const posA = SEFIRA_POSITIONS[a];
+    const posB = SEFIRA_POSITIONS[b];
+    return {
+      pathNumber: i + 1,
+      sefiraA: a,
+      sefiraB: b,
+      svgPathData: `M ${posA.x} ${posA.y} L ${posB.x} ${posB.y}`,
+      active: activeSefiraSet.has(a) && activeSefiraSet.has(b),
+    };
+  });
+
+  return { nodes, paths };
+}

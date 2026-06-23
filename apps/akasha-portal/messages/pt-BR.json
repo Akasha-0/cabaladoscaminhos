@@ -98,7 +98,80 @@
     "amanha": "Amanhã",
     "ritual": "Ritual",
     "alerta": "Alerta",
-    "clima": "Clima do dia"
+    "clima": "Clima do dia",
+    "significado": {
+      "titulo": "Significado dos Pilares",
+      "instrucao": "Toque em cada pilar para revelar sua interpretação energética de hoje.",
+      "principal": "Principal",
+      "indisponivel": "Interpretação de {pilar} indisponível.",
+      "pilarNames": {
+        "cabala": "Cabala",
+        "astrologia": "Astrologia",
+        "tantrica": "Tântrica",
+        "odu": "Odu",
+        "iching": "I Ching"
+      }
+    },
+    "ritual": {
+      "microRitual": "Micro-Ritual do Dia",
+      "duracao": "2 min",
+      "porQueEsteRitual": "Por que este ritual?",
+      "explicaContaCantiga": "A Conta-Cantiga ancora a intenção do dia através da repetição sagrada. Cada conta é um mantra; cada canto é uma afirmação da sua verdade.",
+      "explicaRespiracao": "A Respiração do Céu canaliza a energia celestial do seu Pilar Principal, purificando os canais de recebimento espiritual.",
+      "explicaVarredura": "A Varredura dos 11 remove energeticamente os bloqueios dos 11 canais principais antes de qualquer trabalho espiritual.",
+      "explicaOracao": "A Oração ao Ori honra a sua fonte interna de sabedoria antes de consultar o oráculo.",
+      "explicaIching": "O I Ching oferece insight através de hexagramas. Medite na pergunta antes de receber a orientação.",
+      "consultarOraculo": "Consultar o Oráculo"
+    },
+    "areas": {
+      "titulo": "8 Áreas da Vida",
+      "descricao": "Tradução do {pilar} para as 8 áreas da vida.",
+      "leiaInstrucao": "Toque em cada área para revelar a orientação energética."
+    },
+    "authority": {
+      "autoridadeAkashica": "Autoridade Akáshica",
+      "suaAutoridade": "Sua Autoridade de Hoje",
+      "regraDeHoje": "Regra de Hoje",
+      "melhorJanela": "Melhor Janela",
+      "pioresJanelas": "Piores Janelas",
+      "praticaDiaria": "Prática Diária",
+      "emocional": "Emocional",
+      "sagrada": "Sagrada",
+      "esplenica": "Esplênica",
+      "mental": "Mental"
+    },
+    "mandato": {
+      "ariaLabel": "Mandato do Dia",
+      "escalaPrefix": "Escala",
+      "intencaoDoDia": "Intenção do Dia",
+      "suaSemente": "Sua semente de hoje:",
+      "cvvRecurso": "Recurso de Crise",
+      "voceNaoEstaSozinho": "Você não está sozinho/a.",
+      "cvvReconhece": "Reconhecemos que este pode ser um momento difícil. Este recurso oferece suporte confidencial.",
+      "cvvNome": "CVV Brasil",
+      "cvvLigue": "188",
+      "cvvChat": "Chat disponível em",
+      "cvvSite": "cvv.org.br",
+      "vozDoAkasha": "Voz do Akasha",
+      "leiaEmVozAlta": "Leia em voz alta:",
+      "tresFrasesDesc": "Repita estas frases ao longo do dia para manter a frequência do seu mandato.",
+      "roleParaBaixo": "Role para baixo para continuar",
+      "fontes": "Fontes e referências",
+      "fontesAriaLabel": "Fontes e referências desta análise",
+      "perguntaDoDia": "Pergunta do Dia",
+      "respire": "Antes de responder, respire profundamente.",
+      "naoJulgue": "Não julgue — apenas escreva o que vier.",
+      "salvoLocal": "Salvo automaticamente no seu navegador.",
+      "sessionStorageKey": "pergunta_do_dia",
+      "pilarCabala": "Cabala",
+      "pilarAstrologia": "Astrologia",
+      "pilarTantrica": "Tântrica",
+      "pilarOdu": "Odu",
+      "pilarIching": "I Ching"
+    },
+    "scrollContainer": {
+      "headerLabel": "Navegação do Diário Energético"
+    }
   },
   "onboarding": {
     "bemVindo": "Bem-vindo à Cabala dos Caminhos",

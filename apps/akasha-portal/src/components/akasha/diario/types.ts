@@ -2,7 +2,7 @@
  * Shared types for Diario components.
  * Extracted from page.tsx (F-235).
  */
-import type { PilaresDados } from '@/lib/grimoire/significados-curados';
+import type { PilaresDados, Pilar } from '@/lib/grimoire/significados-curados';
 
 export const C = {
   violeta: '#7C5CFF',
@@ -24,6 +24,18 @@ export const PILLAR_LABELS: Record<string, { nome: string; cor: string }> = {
   odu: { nome: 'Odu de Nascimento', cor: '#FB5781' },
   iching: { nome: 'I Ching', cor: '#A0763A' },
 };
+
+
+export const PILLAR_COLORS: Record<Pilar, string> = {
+  cabala: '#7C5CFF',
+  astrologia: '#2DD4BF',
+  tantrica: '#F0B429',
+  odu: '#FB5781',
+  iching: '#A0763A',
+};
+
+export const PILLAR_ORDER: Pilar[] = ['cabala', 'astrologia', 'tantrica', 'odu', 'iching'];
+
 
 export const ESCALA_LABELS: Record<MandatoEsqueleto['escala'], string> = {
   D: 'Mandato do Dia',
@@ -69,10 +81,37 @@ export type MandatoDoDiaResponse = {
   mentor_hook: MentorHook;
 };
 
-/** Shape of GET /api/akasha/daily — includes ritual from daily_reading */
+/** Shape of GET /api/akasha/daily — mirrors all fields returned by the route */
 export interface DailyResponse {
   date: string;
+  climate: string;
   ritual: object | string | null;
+  alert: string;
+  tensionPoint: object;
+  hexagram: string;
+  hexagramLines: object;
+  /** AkashaSynthesis | null — may be null when synthesis engine fails */
+  synthesis: unknown | null;
+  /** Cycle snapshot with personalDay/Month/Year + exercises + modulation */
+  cycle: {
+    snapshot: {
+      birthDate: string;
+      currentDate: string;
+      age: number;
+      lifePath: number;
+      personalDay: object;
+      personalMonth: object;
+      personalYear: object;
+      universalYear: object;
+      currentPinnacle: object;
+      karmicLessons: object[];
+      maturity: object;
+      synthesis: string;
+      overallEnergy: number;
+    };
+    exercises: object;
+    modulation: object[];
+  };
 }
 
 export type DailyRitualUI = {

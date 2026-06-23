@@ -1,10 +1,9 @@
-// LayerStars — 30 background star circles with CSS nth-child stagger.
-// No inline styles for animationDelay — stagger is handled by
-// mandala-animations.css .star-twinkle:nth-child(N) rules.
-
-import React, { memo } from 'react';
+'use client';
+import { memo } from 'react';
 import { STARS } from '@/components/akasha/mandala-geometry';
 
+/** LayerStars — 30 deterministic background stars (golden-angle seed).
+ * Phase 1 extracted from MandalaChart.tsx SVG body. */
 export const LayerStars = memo(function LayerStars() {
   return (
     <>
@@ -17,6 +16,7 @@ export const LayerStars = memo(function LayerStars() {
           fill="white"
           opacity={s.opacity}
           className="star-twinkle"
+          style={{ animationDelay: `${s.delay}s` }}
         />
       ))}
     </>

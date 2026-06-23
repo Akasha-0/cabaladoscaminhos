@@ -13,6 +13,11 @@ import { buildDailyContent } from '@/lib/application/akasha/daily-engine';
 import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { computeDailyHexagram } from '@/lib/domain/iching';
 import { prisma } from '@/lib/infrastructure/prisma';
+import {
+  checkMemoryRateLimit,
+  API_RATE_LIMIT_CONFIG,
+  API_RATE_LIMIT_KEY_PREFIX,
+} from '@/lib/infrastructure/rate-limit';
 
 // Cast stored JSON maps to engine types
 interface AstrologyMap {
@@ -266,6 +271,17 @@ export async function GET(request: NextRequest) {
     if (authResult instanceof NextResponse) return authResult;
 
     const { id: userId } = authResult;
+    // Rate limit — mirrors /mandato-do-dia protection (100 req/min per user).
+    const rateLimit = checkMemoryRateLimit(
+      `${API_RATE_LIMIT_KEY_PREFIX}:${userId}`,
+      API_RATE_LIMIT_CONFIG,
+    );
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { error: 'Muitas solicitações — tente novamente em alguns minutos' },
+        { status: 429 },
+      );
+    }
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);

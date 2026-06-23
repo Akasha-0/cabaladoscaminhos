@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security Issue
+    url: https://github.com/akasha-org/akasha/security/advisories/new
+    about: For security vulnerabilities, please report privately.
+  - name: Discussions
+    url: https://github.com/akasha-org/akasha/discussions
+    about: General questions and community discussions.

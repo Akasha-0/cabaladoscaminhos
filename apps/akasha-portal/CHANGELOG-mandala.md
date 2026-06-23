@@ -19,7 +19,7 @@ All notable changes to the Mandala visualization system in this evolution cycle.
 - **New file**: `src/components/akasha/layers/Layer4Astrology.tsx` (196 lines)
   - Zodiac ring (12 arcs + symbols), 12 house lines + numbers
   - Planet glyphs with `aria-label` for accessibility
-  - RAF-driven rotation with `prefers-reduced-motion` support
+  - CSS-driven rotation (`ring-rotate` keyframe, 120s period) with `prefers-reduced-motion` support via component-level class switch + global `@media (prefers-reduced-motion: reduce)` override (no RAF)
   - Props: `data`, `planetDots`, `tooltipByLayer`, `opacity`, `onLayerToggle`, `onLayerHover`, `ringPaused`, `reducedMotion`
 
 ### Phase 1 — Hook Extraction
@@ -46,13 +46,34 @@ All notable changes to the Mandala visualization system in this evolution cycle.
   - `.synergy-active`, `.synergy-alert`
   - `.star-twinkle`, `.particle-blink`
 
-### Phase 3 — Accessibility (WCAG 2.5.5)
+### Phase 2 — Accessibility (WCAG 2.5.5)
 
 - Touch targets: all layer toggle buttons meet 44×44px minimum (WCAG 2.5.5)
 - Color contrast: `text-shadow` added to L1 gold (#FFD700) and L5 amber (#FF9500) layer labels for AA contrast on dark background
-- Keyboard navigation: `tabIndex`, `role="button"`, `onKeyDown` added to all SVG layer `<g>` elements
+- Keyboard navigation: `tabIndex`, `role="button"`, `onKeyDown` added to all SVG layer `<g>` elements (Layers 1–5)
 - `aria-live="polite"` region announces layer changes for screen readers
 - Planet glyphs: `role="img"` + descriptive `aria-label` with planet name, sign, house, retrograde status
+- Native SVG `<title>` elements provide WCAG-compliant tooltips on hover and keyboard focus via `aria-label`
+
+### Phase 3 — MandalaContext + F-227 Authority (Session)
+
+- **New file**: `src/lib/application/akasha/mandala-context.tsx`
+  - `MandalaProvider` component wrapping `InnerMandalaChart`
+  - `MandalaContextValue` interface: layer state (activeLayer, hoveredLayer, ringPaused, opacity setters) + Akasha synthesis + F-227 authority
+  - `useMandalaContext()` hook consuming context for all layer state
+  - AkashaAuthorityPrompt rendered when authority is non-null
+
+- **Refactor**: `MandalaChart.tsx` restructured into two-component pattern
+  - Outer `MandalaChart` wraps JSX with `<MandalaProvider>`
+  - `InnerMandalaChart` consumes `useMandalaContext()` for all layer state
+  - `pilares` built from MandalaData and cast through `unknown` to `Partial<PilaresDados>` (field names differ: `lifePath` vs `life_path`)
+
+- **Fix**: `Layer2Kabala.tsx` `Layer2Props` interface restored `data: MandalaData` prop
+  - Previously corrupted by bad edit (duplicate function body, missing prop in interface)
+  - Layer2Kabala receives `data` prop but destructures as `_data` (unused in current render — reserved for Phase 4 Sefirot expansion)
+
+- **Named types**: `AtmosphereIntensity`, `MandalaDerivedData` exported from `useMandalaData.ts`
+  - Replaces `ReturnType<typeof ...>` patterns per project rules
 
 ### Phase 4 — Synthesis, i18n & Authority
 

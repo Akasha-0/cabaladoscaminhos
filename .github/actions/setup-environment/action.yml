@@ -1,0 +1,36 @@
+name: 'Setup Environment'
+description: 'Setup Node.js and pnpm with shared pnpm-store cache across jobs'
+
+# FORCE_COLOR keeps ANSI in logs (helpful for ESLint/Vitest failures).
+env:
+  FORCE_COLOR: '1'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: '11'
+        run_install: false
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'pnpm'
+        cache-dependency-path: pnpm-lock.yaml
+
+    - name: Cache pnpm store
+      uses: actions/cache@v4
+      id: pnpm-cache
+      with:
+        # pnpm v11 uses content-addressable store at ~/.pnpm-store
+        path: ~/.pnpm-store
+        key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+        restore-keys: |
+          pnpm-store-${{ runner.os }}-
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+      shell: bash
