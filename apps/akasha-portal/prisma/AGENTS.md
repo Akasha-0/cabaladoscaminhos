@@ -4,25 +4,28 @@
 
 Camada de persistência do Portal Akasha — Prisma ORM 7 sobre PostgreSQL
 (com extensão `pgvector` para RAG do Mentor). Define o schema canônico dos
-22 models que sustentam Mandala, Mandato, Mentor, Diário Energético e
+25 models que sustentam Mandala, Mandato, Mentor, Diário Energético e
 billing.
 
 ## Ownership
 
-- `schema.prisma`: schema-fonte único. **22 models canonicos** (apos D-041 +
-  D-XXX Wave 3): `User`, `BirthChart`, `Subscription`, `CreditEntry`,
-  `Manifesto`, `DailyReading`, `RitualCompletion`, `Consultation`,
-  `ChatMessage`, `PushSubscription`, `GrimoireEntry`, `Connection`,
+- `schema.prisma`: schema-fonte único. **25 models canonicos** (apos D-041 +
+  D-XXX Wave 3 + D-YYY/D-ZZZ Wave 4): `User`, `BirthChart`, `Subscription`,
+  `CreditEntry`, `Manifesto`, `DailyReading`, `RitualCompletion`,
+  `Consultation`, `ChatMessage`, `PushSubscription`, `GrimoireEntry`, `Connection`,
   `CycleSnapshot`, `AreaHistoryEntry`, `ExerciseCompletion` (15 v3),
   `Caminhante`, `Caminhada` (2 D-041), `Sessao`, `SessaoChunk`,
-  `GrimorioPessoal`, `NotasConsulente`, `MapaCalculo` (5 D-XXX).
+  `GrimorioPessoal`, `NotasConsulente`, `MapaCalculo` (5 D-XXX),
+  `Pilar6Calculo`, `Pilar7Calculo`, `Pilar7Estagio` (3 D-YYY/D-ZZZ Wave 4).
 - `migrations/`: SQL versionado pelo Prisma Migrate. **NÃO** rodar
   `prisma migrate dev` sem aprovação humana (ver Work Guidance).
-  - 5 migrations aplicadas: `20260611000000_init_akasha_v3/`,
+  - 7 migrations aplicadas: `20260611000000_init_akasha_v3/`,
     `20260618000000_add_ritual_fields_to_area_history/`,
     `20260622000000_041_caminhante_caminhada/`,
     `20260624000000_multitenant_core/` (D-XXX.001),
-    `20260624000001_vector_indexes/` (D-XXX.002).
+    `20260624000001_vector_indexes/` (D-XXX.002),
+    `20260624000002_pilar6_calculo/` (D-YYY Wave 4),
+    `20260624000003_pilar7_calculo/` (D-ZZZ Wave 4).
   - `migration_lock.toml`: pin do provider (postgresql).
 - `seed.ts`: idempotente, popula dados de demo em dev. Não roda em prod.
 - `migrations/README.md`: instruções de migration (legado).
@@ -107,22 +110,20 @@ Antes de qualquer mudança em `schema.prisma`, **ler este arquivo** +
 - `pnpm --filter akasha-portal typecheck` deve passar (imports de
   `@prisma/client` resolvem)
 - `pnpm test:run` deve passar (seed.ts mocks + integration tests)
-- Antes de mergear mudança em `schema.prisma`: rodar `pnpm exec prisma validate`
-
-## Open Items (não-concluídos)
-
-- **D-040** (P1, design): Schema Prisma com 5 Pilares canonicos. Design
-  proposal escrito em `apps/akasha-portal/prisma/designs/d-040-prisma-5-pilares-refactor-proposal.md`.
-  Migration ainda nao criada (precisa de D-041 aplicada primeiro).
-  Status: `proposal_accepted_migration_pending_d041`.
 - **D-XXX** (P1, design): Multi-tenant core + vector indexes (Wave 3).
   2 migrations criadas: `20260624000000_multitenant_core/` (5 tabelas +
   3 enums + 9 FKs) e `20260624000001_vector_indexes/` (ivfflat index).
   Aplicação **requer D-041 já aplicada** (FKs para `caminhadas`).
   Schema estendido em `schema.prisma` (7 models + 7 reverse relations).
   Helper `withCaminhanteContext` em `src/lib/application/tenant-context.ts`.
-  **Aguardando aprovação humana** antes de `pnpm exec prisma migrate dev`.
-  Status: `branch_wave_3_multi_tenant_ready_migration_awaiting_human_apply`.
+  Status: `branch_wave_3_multi_tenant_merged_2026_06_23`.
+- **D-YYY + D-ZZZ** (P1, design): Pilares 6 e 7 (Wave 4).
+  2 migrations: `20260624000002_pilar6_calculo/` (4 enums + pilar6_calculos
+  table) e `20260624000003_pilar7_calculo/` (1 enum + pilar7_calculos +
+  pilar7_estagios tables). Schema estendido (3 models + 5 enums).
+  Engines em `packages/core-pilar6/` (17 tests) e `packages/core-pilar7/`
+  (63 tests + 192 placeholder texts). akasha-core orchestrator integrado.
+  Status: `branch_wave_4_integration_awaiting_human_apply_and_merge`.
 
 ## Child DOX Index
 

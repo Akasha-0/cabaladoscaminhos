@@ -47,7 +47,7 @@ describe('D-043 — calcular() retorna shape completo para 10 perfis', () => {
       expect(leitura.pilares.iching).toBeDefined();
 
       // Mandala: 5 pilares presentes
-      expect(leitura.mandala.pilares_presentes).toHaveLength(5);
+      expect(leitura.mandala.pilares_presentes).toHaveLength(7);
       expect(leitura.mandala.pilares_ausentes).toHaveLength(0);
 
       // Mandato: estrutura
