@@ -38,14 +38,14 @@
 
 ## Wave 2 — Design proposals (proxima semana)
 
-> Bloqueador: conclusao da Wave 1.
+> Bloqueador: conclusao da Wave 1. **Status: COMPLETO 2026-06-23 (proposals aceitos, aguardando revisao tua antes de Wave 3).**
 
 ### Schemas / proposals
 
-- [ ] Proposal D-XXX: Schemas `Sessao`, `MapaCalculo`, `GrimorioPessoal`, `MapaRelacional` (estende D-041/Caminhante)
-- [ ] Proposal D-YYY: Mapeamento Pilar 6 (Human Design traduzido) — nomenclatura, regras, limites
-- [ ] Proposal D-ZZZ: Mapeamento Pilar 7 (Gene Keys traduzido) — nomenclatura, espectro sombra-dom-siddhi
-- [ ] Proposal D-WWW: ADR 0005 (Grafo de Conhecimento) — vector store? graph store? hibrido?
+- [x] Proposal D-XXX: Schemas `Sessao`, `MapaCalculo`, `GrimorioPessoal`, `MapaRelacional` (estende D-041/Caminhante) — `apps/akasha-portal/prisma/designs/D-XXX-schema-multitenant-consulente.md`
+- [x] Proposal D-YYY: Mapeamento Pilar 6 (Human Design traduzido) — nomenclatura, regras, limites — `apps/akasha-portal/prisma/designs/D-YYY-pilar-6-mapa-energetico-traduzido.md`
+- [x] Proposal D-ZZZ: Mapeamento Pilar 7 (Gene Keys traduzido) — nomenclatura, espectro sombra-dom-siddhi — `apps/akasha-portal/prisma/designs/D-ZZZ-pilar-7-espectro-transformacao-traduzido.md`
+- [ ] Proposal D-WWW: ADR 0005 (Grafo de Conhecimento) — **JA DECIDIDO em Wave 1** (ADR 0005 written, accepted). Marcar como done.
 
 ### System prompts / templates
 
