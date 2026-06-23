@@ -4,18 +4,18 @@
 
 Camada de persistência do Portal Akasha — Prisma ORM 7 sobre PostgreSQL
 (com extensão `pgvector` para RAG do Mentor). Define o schema canônico dos
-11 models que sustentam Mandala, Mandato, Mentor, Diário Energético e
+22 models que sustentam Mandala, Mandato, Mentor, Diário Energético e
 billing.
 
 ## Ownership
 
-- `schema.prisma`: schema-fonte único. 18 models canonicos (apos D-041 +
+- `schema.prisma`: schema-fonte único. **22 models canonicos** (apos D-041 +
   D-XXX Wave 3): `User`, `BirthChart`, `Subscription`, `CreditEntry`,
   `Manifesto`, `DailyReading`, `RitualCompletion`, `Consultation`,
   `ChatMessage`, `PushSubscription`, `GrimoireEntry`, `Connection`,
-  `CycleSnapshot`, `AreaHistoryEntry`, `ExerciseCompletion`,
-  `Caminhante`, `Caminhada` (D-041), `Sessao`, `SessaoChunk`,
-  `GrimorioPessoal`, `NotasConsulente`, `MapaCalculo` (D-XXX).
+  `CycleSnapshot`, `AreaHistoryEntry`, `ExerciseCompletion` (15 v3),
+  `Caminhante`, `Caminhada` (2 D-041), `Sessao`, `SessaoChunk`,
+  `GrimorioPessoal`, `NotasConsulente`, `MapaCalculo` (5 D-XXX).
 - `migrations/`: SQL versionado pelo Prisma Migrate. **NÃO** rodar
   `prisma migrate dev` sem aprovação humana (ver Work Guidance).
   - 5 migrations aplicadas: `20260611000000_init_akasha_v3/`,
@@ -111,11 +111,10 @@ Antes de qualquer mudança em `schema.prisma`, **ler este arquivo** +
 
 ## Open Items (não-concluídos)
 
-- **D-040** (P1, design): Schema Prisma com 5 Pilares. Design proposal
-  escrito em `apps/akasha-portal/prisma/designs/d-040-prisma-5-pilares-refactor-proposal.md`.
-  Migration setup criada em `migrations/20260624000000_multitenant_core/`.
-  **Aguardando aprovação humana** antes de `pnpm exec prisma migrate dev`.
-  Status: `proposal_accepted_migration_awaiting_human_apply`.
+- **D-040** (P1, design): Schema Prisma com 5 Pilares canonicos. Design
+  proposal escrito em `apps/akasha-portal/prisma/designs/d-040-prisma-5-pilares-refactor-proposal.md`.
+  Migration ainda nao criada (precisa de D-041 aplicada primeiro).
+  Status: `proposal_accepted_migration_pending_d041`.
 - **D-XXX** (P1, design): Multi-tenant core + vector indexes (Wave 3).
   2 migrations criadas: `20260624000000_multitenant_core/` (5 tabelas +
   3 enums + 9 FKs) e `20260624000001_vector_indexes/` (ivfflat index).
