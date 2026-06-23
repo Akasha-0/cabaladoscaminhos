@@ -74,7 +74,18 @@ describe('akasha.calcular() — 3 personas', () => {
     expect(leitura.pilares.iching.hexagrama_natal).toBeLessThanOrEqual(64);
     expect(leitura.pilares.iching.hexagrama_dia).toBeGreaterThanOrEqual(1);
     expect(leitura.pilares.iching.hexagrama_dia).toBeLessThanOrEqual(64);
-    expect(leitura.mandala.pilares_presentes).toHaveLength(5);
+    expect(leitura.mandala.pilares_presentes).toHaveLength(7);
+    expect(leitura.mandala.pilares_presentes).toEqual([
+      'cabala',
+      'astrologia',
+      'tantrica',
+      'odu',
+      'iching',
+      'pilar6',
+      'pilar7',
+    ]);
+    expect(leitura.pilares.pilar6).toBeDefined();
+    expect(leitura.pilares.pilar7).toBeDefined();
     expect(leitura.mandato.escala).toMatch(/^[DSZV]$/);
     expect(leitura.mandato.cita_fontes.length).toBeGreaterThan(0);
     expect(leitura.mentor_hook.crise_detectada).toBe(false);

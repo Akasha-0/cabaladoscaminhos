@@ -79,6 +79,52 @@ export interface PilarIChing {
   level: 'shadow' | 'gift' | 'siddhi';
 }
 
+// ─── Pilares 6 e 7 (Wave 4 — D-YYY + D-ZZZ, ADR 0002) ───────────────────────
+//
+// Pilar 6 (Mapa Energético Integrado — tradução universalista do Human
+// Design) e Pilar 7 (Espectro de Transformação — tradução universalista
+// do Gene Keys). Os tipos `Json` aceitos aqui são os shapes dos engines
+// `@akasha/core-pilar6` e `@akasha/core-pilar7` — ver
+// `packages/core-pilar6/src/types.ts` (Pilar6Resultado) e
+// `packages/core-pilar7/src/types.ts` (Pilar7Result).
+//
+// São nullable para suportar graceful degradation (engine ausente,
+// erro de cálculo, dados incompletos). NUNCA inventar dados (mesma
+// ética do Pilar 4 Odu — `apps/akasha-portal/prisma/AGENTS.md` §Work
+// Guidance).
+export interface Pilar6ResultadoShape {
+  tipo: string;
+  estrategia: string;
+  autoridade: string | null;
+  centrosDefinidos: string[];
+  canais: Array<{
+    portaA: number;
+    portaB: number;
+    centroA: string;
+    centroB: string;
+    tema: string;
+  }>;
+  versaoCalculo: string;
+  calculadoEm: string;
+}
+export interface Pilar7ResultadoShape {
+  chaveNatal: {
+    numero: number;
+    nome: string;
+    glifo: string;
+    hexagramaOrigem: string;
+    hexagramaOrigemChines: string;
+  } | null;
+  estagioAtual: 'sombra' | 'dom' | 'siddhi';
+  sombra: string;
+  dom: string;
+  siddhi: string;
+  sequenceVenusiana: Array<{ posicao: number; chave: { numero: number; nome: string }; tema: string }>;
+  caminhoDourado: Array<{ posicao: number; chave: { numero: number; nome: string }; tema: string }>;
+  versaoCalculo: string;
+  calculadoEm: string;
+}
+
 export interface MandalaResumo {
   pilares_presentes: string[];
   pilares_ausentes: string[];
@@ -100,6 +146,11 @@ export interface AkashaLeitura {
     tantrica: PilarTantrica;
     odu: PilarOdu;
     iching: PilarIChing;
+    // Pilares 6 e 7 (Wave 4 — D-YYY + D-ZZZ, ADR 0002). Nullable
+    // para graceful degradation: se o engine não estiver disponível
+    // ou o cálculo falhar, o campo fica `null` (NUNCA inventar dados).
+    pilar6: Pilar6ResultadoShape | null;
+    pilar7: Pilar7ResultadoShape | null;
   };
   mandala: MandalaResumo;
   mandato: MandatoEsqueleto;
@@ -143,7 +194,16 @@ async function loadEngines() {
   const iching = await import('@akasha/core-iching').catch(() => {
     return null;
   });
-  return { cabala, astro, tantra, odu, iching };
+  // Pilares 6 e 7 (Wave 4 — D-YYY + D-ZZZ, ADR 0002). Lazy import
+  // individual preserva graceful degradation: falha de um package
+  // não derruba a leitura dos outros pilares.
+  const pilar6 = await import('@akasha/core-pilar6').catch(() => {
+    return null;
+  });
+  const pilar7 = await import('@akasha/core-pilar7').catch(() => {
+    return null;
+  });
+  return { cabala, astro, tantra, odu, iching, pilar6, pilar7 };
 }
 
 // ─── Helpers de data (F-200) ────────────────────────────────────────────────
@@ -617,7 +677,274 @@ function detectarEscala(agora: Date): 'D' | 'S' | 'Z' | 'V' {
 
 // ─── Função pura principal: akasha.calcular() ────────────────────────────────
 
-export async function calcular(input: AkashaInput): Promise<AkashaLeitura> {
+/**
+ * Contexto multi-tenant opcional passado pelo caller (camada de
+ * aplicação). Sem este contexto, os Pilares 6 e 7 ainda funcionam —
+ * apenas usam defaults seguros (centro da vitalidade inativo,
+ * autoridade sem MC calculado). Isso preserva a retrocompatibilidade
+ * com testes e callers que não têm o D-041 / D-XXX ainda.
+ *
+ * - `centroVitalidadeAtivo`: estado do Centro da Vitalidade no MC
+ *   canônico do D-041. Default: `false` (estado mais conservador —
+ *   Pilar 6 cai em 'guia' se Pilar 4 não der pista reflexiva).
+ * - `autoridadeMC`: autoridade interna já detectada pelo D-041
+ *   (string livre; Pilar 6 valida contra o whitelist canônico).
+ *   Default: `null` (sem autoridade = Pilar 6 retorna `null`).
+ * - `caminhadaId`, `zeladorId`, `caminhanteId`: IDs multi-tenant
+ *   para rastreabilidade. Default: `'anonymous'` (modo single-tenant
+ *   legado).
+ */
+export interface AkashaCalcularContext {
+  centroVitalidadeAtivo?: boolean;
+  autoridadeMC?: string | null;
+  caminhadaId?: string;
+  zeladorId?: string;
+  caminhanteId?: string;
+}
+
+// ============================================================================
+// Pilar 6 + 7 (Wave 4 — D-YYY + D-ZZZ, ADR 0002)
+// ============================================================================
+//
+// Helpers para integrar os engines `@akasha/core-pilar6` e
+// `@akasha/core-pilar7` no orquestrador principal. Cada helper é
+// try/catch: falha = `null` no output (NUNCA inventa dados).
+//
+// Racional: Pilar 6 e Pilar 7 são **derivados** dos Pilares 1-5
+// (Pilar 6 combina Pilar 4 + Pilar 2 + D-041; Pilar 7 reusa Pilar 5
+// + Pilar 4 + Pilar 6). O orquestrador passa os resultados
+// recém-calculados como input para os engines de Pilar 6/7.
+//
+// Guardrail ADR 0002:
+//  - 1 (renomear): termos PT-BR próprios no output (ver `Pilar6ResultadoShape`).
+//  - 2 (textos do zero): placeholders originais em Pilar 7 (substituídos Wave 5+).
+//  - 3 (visualização): este módulo é puro, sem SVG.
+//  - 4 (disclaimer): fora de escopo do orchestrator (app-layer).
+// ============================================================================
+
+/**
+ * Adapter: converte a saída canônica dos 5 Pilares (akasha-core) para
+ * o shape `PilaresDados` consumido por `@akasha/core-pilar6`. Mantém
+ * os campos que o Pilar 6 usa como entrada para a heurística de
+ * Tipo: Pilar 4 (Odu), Pilar 2 (Ascendente), Pilar 3 (corpo).
+ *
+ * Aceita `as unknown` para evitar ciclos de import (Pilar 6 importa
+ * o shape literal, não o type do akasha-core).
+ */
+function toPilaresDados(
+  cabala: PilarCabala,
+  astrologia: PilarAstrologia,
+  tantrica: PilarTantrica,
+  odu: PilarOdu,
+  iching: PilarIChing,
+): unknown {
+  return {
+    cabala: {
+      life_path: cabala.life_path,
+      birthday: cabala.birthday,
+      expression: cabala.expression,
+      ano_pessoal: cabala.ano_pessoal,
+    },
+    astrologia: {
+      sol_signo: astrologia.sol_signo,
+      asc_signo: astrologia.asc_signo,
+      lua_signo: astrologia.lua_signo,
+      lua_fase: astrologia.lua_fase,
+      trinity: astrologia.trinity,
+      trinity_dominante: astrologia.trinity_dominante,
+      lilith_signo: astrologia.lilith_signo,
+      casa_8_signo: astrologia.casa_8_signo,
+    },
+    tantrica: {
+      corpo_predominante: tantrica.corpo_predominante,
+      trigemeo: tantrica.trigemeo,
+      temperamento_atual: tantrica.temperamento_atual,
+    },
+    odu: {
+      odu_principal: odu.odu_principal,
+      odu_secundario: odu.odu_secundario,
+      fonte: odu.fonte,
+    },
+    iching: {
+      hexagrama_natal: iching.hexagrama_natal,
+      hexagrama_dia: iching.hexagrama_dia,
+      level: iching.level,
+    },
+  };
+}
+
+/**
+ * Adapter: converte a saída do Pilar 5 (I Ching) para o shape
+ * `IChingData` consumido por `@akasha/core-pilar7`.
+ */
+function toIChingData(iching: PilarIChing): {
+  hexagramNumber: number | null;
+  hexagramName: string | null;
+} {
+  return {
+    hexagramNumber: iching.hexagrama_natal,
+    hexagramName: `Hexagrama ${iching.hexagrama_natal}`,
+  };
+}
+
+/**
+ * Calcula idade em anos completos a partir de uma data ISO (YYYY-MM-DD).
+ * Usado pelo Pilar 7 para a heurística de estágio (Pilar 7 não depende
+ * de Pilar 4 quando a idade está disponível).
+ */
+function idadeDeDataNascimento(dataNascimento: string, agora: Date = new Date()): number {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dataNascimento);
+  if (!m) return 0;
+  const y = parseInt(m[1], 10);
+  const mo = parseInt(m[2], 10) - 1;
+  const d = parseInt(m[3], 10);
+  const nasc = new Date(y, mo, d);
+  if (Number.isNaN(nasc.getTime())) return 0;
+  let idade = agora.getFullYear() - y;
+  const aniversarioEsteAno = new Date(agora.getFullYear(), mo, d);
+  if (agora < aniversarioEsteAno) idade -= 1;
+  return idade < 0 ? 0 : idade;
+}
+
+/**
+ * Calcula Pilar 6 e Pilar 7 a partir dos 5 Pilares canônicos.
+ *
+ * Comportamento (graceful degradation — R-022 §4.4):
+ *  - Se `engines.pilar6` for `null` ou o cálculo lançar exceção,
+ *    retorna `pilar6 = null`. NUNCA inventa dados.
+ *  - Mesma lógica para Pilar 7.
+ *  - `ctx` opcional: sem ele, defaults seguros (Centro da Vitalidade
+ *    inativo, autoridadeMC = null).
+ *
+ * @param engines - engines carregados por `loadEngines()`
+ * @param cabala/astrologia/tantrica/odu/iching - 5 Pilares canônicos
+ * @param ctx - contexto multi-tenant (opcional)
+ * @returns `{ pilar6, pilar7 }` — ambos nullable
+ */
+async function calcularPilares6e7(
+  engines: Awaited<ReturnType<typeof loadEngines>>,
+  cabala: PilarCabala,
+  astrologia: PilarAstrologia,
+  tantrica: PilarTantrica,
+  odu: PilarOdu,
+  iching: PilarIChing,
+  ctx: AkashaCalcularContext = {},
+  dataNascimento?: string,
+): Promise<{ pilar6: Pilar6ResultadoShape | null; pilar7: Pilar7ResultadoShape | null }> {
+  // Pilar 6 — usa pilar6 engine
+  let pilar6: Pilar6ResultadoShape | null = null;
+  if (engines.pilar6) {
+    try {
+      const p6 = engines.pilar6 as unknown as {
+        calcular: (pilares: unknown, mc: unknown) => {
+          tipo: string;
+          estrategia: string;
+          autoridade: string | null;
+          centrosDefinidos: string[];
+          canais: Array<{
+            portaA: number;
+            portaB: number;
+            centroA: string;
+            centroB: string;
+            tema: string;
+          }>;
+          versaoCalculo: string;
+          calculadoEm: Date;
+        };
+      };
+      const pilares = toPilaresDados(cabala, astrologia, tantrica, odu, iching) as Parameters<
+        typeof p6.calcular
+      >[0];
+      const mc = {
+        zeladorId: ctx.zeladorId ?? 'anonymous',
+        caminhanteId: ctx.caminhanteId ?? 'anonymous',
+        caminhadaId: ctx.caminhadaId ?? 'anonymous',
+        centroVitalidadeAtivo: ctx.centroVitalidadeAtivo ?? false,
+        autoridadeMC: ctx.autoridadeMC ?? null,
+        nascimentoIso: 'unknown',
+      };
+      const r6 = p6.calcular(pilares, mc);
+      pilar6 = {
+        tipo: r6.tipo,
+        estrategia: r6.estrategia,
+        autoridade: r6.autoridade,
+        centrosDefinidos: r6.centrosDefinidos,
+        canais: r6.canais,
+        versaoCalculo: r6.versaoCalculo,
+        calculadoEm: r6.calculadoEm.toISOString(),
+      };
+    } catch {
+      // Pilar 6 invariant: graceful degradation. Nunca inventar dados.
+      pilar6 = null;
+    }
+  }
+
+  // Pilar 7 — usa pilar7 engine
+  let pilar7: Pilar7ResultadoShape | null = null;
+  if (engines.pilar7) {
+    try {
+      const p7 = engines.pilar7 as unknown as {
+        calcular: (
+          pilares: unknown,
+          idade: number,
+          agora: Date,
+        ) => {
+          chaveNatal: {
+            numero: number;
+            nome: string;
+            glifo: string;
+            hexagramaOrigem: string;
+            hexagramaOrigemChines: string;
+          } | null;
+          estagioAtual: 'sombra' | 'dom' | 'siddhi';
+          sombra: string;
+          dom: string;
+          siddhi: string;
+          sequenceVenusiana: Array<{ posicao: number; chave: { numero: number; nome: string }; tema: string }>;
+          caminhoDourado: Array<{ posicao: number; chave: { numero: number; nome: string }; tema: string }>;
+          versaoCalculo: string;
+          calculadoEm: Date;
+        };
+      };
+      // Idade do consulente: derivada de `data_nascimento` quando
+      // disponível, senão 30 (heurística padrão Wave 4 — 30 =
+      // maturidade = 'dom', default mais comum). Pilar 7 usa idade
+      // só para escolher estágio quando Pilar 4 ausente.
+      const idadeCalculo = dataNascimento
+        ? idadeDeDataNascimento(dataNascimento, new Date())
+        : 30;
+      const pilares7 = {
+        pilar5: toIChingData(iching),
+        pilar4: { oduPrincipal: odu.odu_principal, faseVida: null },
+        pilar6: pilar6
+          ? { tipo: pilar6.tipo, estrategia: pilar6.estrategia, autoridade: pilar6.autoridade }
+          : null,
+      };
+      const r7 = p7.calcular(pilares7, idadeCalculo, new Date());
+      pilar7 = {
+        chaveNatal: r7.chaveNatal,
+        estagioAtual: r7.estagioAtual,
+        sombra: r7.sombra,
+        dom: r7.dom,
+        siddhi: r7.siddhi,
+        sequenceVenusiana: r7.sequenceVenusiana,
+        caminhoDourado: r7.caminhoDourado,
+        versaoCalculo: r7.versaoCalculo,
+        calculadoEm: r7.calculadoEm.toISOString(),
+      };
+    } catch {
+      // Pilar 7 invariant: graceful degradation. Nunca inventar dados.
+      pilar7 = null;
+    }
+  }
+
+  return { pilar6, pilar7 };
+}
+
+export async function calcular(
+  input: AkashaInput,
+  ctx: AkashaCalcularContext = {},
+): Promise<AkashaLeitura> {
   const parsed = AkashaInputSchema.parse(input);
   // F-200: carrega os 5 engines reais; cada pilar cai no stub se o seu
   // engine estiver indisponível ou lançar exceção.
@@ -629,8 +956,31 @@ export async function calcular(input: AkashaInput): Promise<AkashaLeitura> {
     realPilar4Odu(parsed, engines.odu),
     realPilar5IChing(parsed, engines.iching),
   ]);
+
+  // Wave 4 — Pilares 6 e 7 (D-YYY + D-ZZZ, ADR 0002). Calculados em
+  // paralelo com a composição do Mandala. Falha isolada (Pilar 6 OU
+  // Pilar 7) preserva os outros pilares (graceful degradation).
+  // A idade do consulente é derivada de data_nascimento + ctx.centroVitalidadeAtivo
+  // + ctx.autoridadeMC (D-041) — todos opcionais. Sem contexto, defaults seguros.
+  const { pilar6, pilar7 } = await calcularPilares6e7(
+    engines,
+    cabala,
+    astrologia,
+    tantrica,
+    odu,
+    iching,
+    {
+      centroVitalidadeAtivo: ctx.centroVitalidadeAtivo,
+      autoridadeMC: ctx.autoridadeMC,
+      caminhadaId: ctx.caminhadaId,
+      zeladorId: ctx.zeladorId,
+      caminhanteId: ctx.caminhanteId,
+    },
+    parsed.data_nascimento,
+  );
+
   const mandala: MandalaResumo = {
-    pilares_presentes: ['cabala', 'astrologia', 'tantrica', 'odu', 'iching'],
+    pilares_presentes: ['cabala', 'astrologia', 'tantrica', 'odu', 'iching', 'pilar6', 'pilar7'],
     pilares_ausentes: [],
     camadas_temporais: ['D', 'S', 'Z', 'V'],
   };
@@ -639,7 +989,7 @@ export async function calcular(input: AkashaInput): Promise<AkashaLeitura> {
     D: ['astrologia', 'iching', 'cabala'],
     S: ['astrologia', 'odu', 'tantrica'],
     Z: ['astrologia', 'tantrica', 'cabala'],
-    V: ['cabala', 'astrologia', 'tantrica', 'odu', 'iching'],
+    V: ['cabala', 'astrologia', 'tantrica', 'odu', 'iching', 'pilar6', 'pilar7'],
   };
   const relevantes = relevantesPorEscala[escala];
   const citaFontes: Record<string, string> = {
@@ -648,6 +998,8 @@ export async function calcular(input: AkashaInput): Promise<AkashaLeitura> {
     tantrica: 'Pilar 3, Tantra (tradição hindu, 11 corpos)',
     odu: 'Pilar 4, Ifá (axé/terreiro, 16 Odu)',
     iching: 'Pilar 5, I Ching (Wilhelm/Baynes 1950)',
+    pilar6: 'Pilar 6, Mapa Energético Integrado (D-YYY, ADR 0002)',
+    pilar7: 'Pilar 7, Espectro de Transformação (D-ZZZ, ADR 0002)',
   };
   const mandato: MandatoEsqueleto = {
     escala,
@@ -661,7 +1013,7 @@ export async function calcular(input: AkashaInput): Promise<AkashaLeitura> {
   const crise = detectarCrise(parsed.intencao_inicial);
   return {
     input_normalizado: parsed,
-    pilares: { cabala, astrologia, tantrica, odu, iching },
+    pilares: { cabala, astrologia, tantrica, odu, iching, pilar6, pilar7 },
     mandala,
     mandato,
     mentor_hook: {

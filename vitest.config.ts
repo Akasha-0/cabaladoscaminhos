@@ -9,6 +9,7 @@ const sharedAliases = {
   '@akasha/core-odus': path.resolve(__dirname, './packages/core-odus/src/index.ts'),
   '@akasha/core-tantra': path.resolve(__dirname, './packages/core-tantra/src/index.ts'),
   '@akasha/core-iching': path.resolve(__dirname, './packages/core-iching/src/index.ts'),
+  '@akasha/core-pilar6': path.resolve(__dirname, './packages/core-pilar6/src/index.ts'),
   '@akasha/core-pilar7': path.resolve(__dirname, './packages/core-pilar7/src/index.ts'),
   '@akasha/mentor/maps': path.resolve(__dirname, './packages/mentor/src/maps.ts'),
   '@akasha/mentor/types': path.resolve(__dirname, './packages/mentor/src/types.ts'),
