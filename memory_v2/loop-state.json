@@ -1,0 +1,11 @@
+{
+  "iteration": 0,
+  "phase": "RESEARCH",
+  "current_target": "spiritual-visceral-v2",
+  "quality_score": 0.0,
+  "last_handoff_tokens": 0,
+  "running": false,
+  "session_id": null,
+  "started_at": null,
+  "note": "Initialized 2026-06-22 \u2014 native Claude Code + ECC harness, no OMP"
+}

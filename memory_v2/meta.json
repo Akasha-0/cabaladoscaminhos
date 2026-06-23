@@ -1,0 +1,13 @@
+{
+  "_version": 2,
+  "_last_gc": "2026-06-23T00:21:30.797778+00:00",
+  "keys": {
+    "last_decision": {
+      "tier": "hot",
+      "last_access": 1782170850.5290647,
+      "importance": 0.5,
+      "confidence": 0.5,
+      "access_count": 0
+    }
+  }
+}

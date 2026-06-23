@@ -1,0 +1,43 @@
+{
+  "task": "grimoire-coverage-expanded",
+  "success": true,
+  "commits": [
+    {
+      "commit": "16ed74e2",
+      "files_changed": 4,
+      "message": "GRIMOIRE coverage: added 4 test files (217 tests) — pilar-3 (CORPOS/TRIGEMEO/TEMPERAMENTO), pilar-4 (16 Odu, requer_terreiro===true), pilar-5a (hexagramas 1-32), pilar-5b (hexagramas 33-64)",
+      "test_results": {
+        "significados-curados-pilar-3.test.ts": { "tests": 55, "failed": 0, "passed": 55 },
+        "significados-curados-pilar-4.test.ts": { "tests": 40, "failed": 0, "passed": 40 },
+        "significados-curados-pilar-5a.test.ts": { "tests": 73, "failed": 0, "passed": 73 },
+        "significados-curados-pilar-5b.test.ts": { "tests": 73, "failed": 0, "passed": 73 }
+      },
+      "total_tests": 217
+    },
+    {
+      "commit": "de0bdbd9",
+      "files_changed": 3,
+      "message": "test(grimoire): add tests for escala-temporal, ayahuasca-protocols, ewe-database",
+      "test_results": {
+        "significados-curados-escala-temporal.test.ts": { "tests": 87, "failed": 0, "passed": 87 },
+        "ayahuasca-protocols.test.ts": { "tests": 80, "failed": 0, "passed": 80 },
+        "ewe-database.test.ts": { "tests": 372, "failed": 0, "passed": 372 }
+      },
+      "total_tests": 539
+    },
+    {
+      "commit": "b654cb77",
+      "files_changed": 1,
+      "message": "test(grimoire): add TRADUCOES_DETALHADO matrix validation",
+      "test_results": {
+        "traducao-areas.test.ts": { "tests": 37, "failed": 0, "passed": 37, "note": "added 8 new tests for TRADUCOES_DETALHADO matrix; previously 29 tests covered traducao-areas helpers only" }
+      },
+      "total_tests": 37
+    }
+  ],
+  "combined_total_tests": 793,
+  "pre_existing_failures": 7,
+  "new_failures_introduced": 0,
+  "typecheck": "passed (only pre-existing grimoire-sync.ts TS1128)",
+  "note": "TRADUCOES_DETALHADO: 5 pilasters × 8 areas = 40 entries, each with 6 required fields (frase/explicacao/convergencia/tensao/evitar/pratica). shadow-sintomas.test.ts and traducao-areas.test.ts both pre-existed from prior session."
+}

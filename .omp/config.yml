@@ -1,0 +1,29 @@
+# Akasha Portal — OMP project config
+# Overrides ~/.omp/agent/config.yml for this project
+# Format: nested YAML keys matching the settings schema
+# ─── Akasha thinking budgets ───
+# Cost-control knobs per OMP thinking level. Lower = cheaper & faster,
+# higher = more reasoning for plan/slow. Defaults inherited from OMP user config.
+defaultThinkingLevel: high
+thinkingBudgets:
+  minimal: 1024
+  low: 2048
+  medium: 8192
+  high: 16384
+  xhigh: 32768
+
+task:
+
+compaction:
+  strategy: handoff
+  thresholdTokens: 100000
+  handoffSaveToDisk: true
+  idleEnabled: true
+  idleThresholdTokens: 100000
+  supersedeReads: true
+  dropUseless: true
+
+task:
+  isolation:
+    mode: worktree
+    merge: branch

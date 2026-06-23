@@ -1,0 +1,7 @@
+# Default owner for all files
+* @akasha-org/maintainers
+
+# Package-specific owners
+/packages/* @akasha-org/core-team
+/apps/* @akasha-org/portal-team
+/docs/* @akasha-org/docs-team
