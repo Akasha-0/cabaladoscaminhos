@@ -3,70 +3,118 @@
 > Norte canonico de produto.
 > Em conflito de visao, este documento prevalece sobre os demais documentos operacionais.
 
+## Mudanca de Visao (2026-06-23 — vision realignment)
+
+Ate 2026-06-23, o Akasha era tratado como **produto SaaS para usuario final** (Mandala pessoal + Mandato diario + autoatendimento). Apos sessao de realignment, a visao canonica foi **redefinida**:
+
+**Akasha = ferramenta de trabalho do Zelador** (terapeuta/zelador espiritual) para uso em atendimentos com **consulentes** (pessoas atendidas, sem login proprio). O sistema e um **"livro vivo inteligente"** que o Zelador consulta durante sessoes, com:
+
+- **Grafo de conhecimento** cruzando os 5 Pilares canonicos + Human Design + Gene Keys
+- **IA estilo chat** (unica interface, sem dashboards) com persona de **Mestre/Sacerdote/Terapeuta** (chain-of-thought, psicanalise, perguntas socraticas)
+- **Cadeia de pensamento** que correlaciona todos os mapas automaticamente (sem o Zelador ter que ler cada mapa)
+- **Consultas cirurgicas**: ervas (Ewe), caminhos, prescricoes de acao ("o que fazer agora")
+- **Memoria por consulente** (isolamento multi-tenant, RAG isolado por pessoa)
+- **Consulente como MCP** (clica no cliente, vira ferramenta pro chat carregar aquela base de conhecimento)
+
+**Publico primario:** Zelador (usuario interno, tu) + consulentes (dados gerenciados pelo Zelador). **Publico secundario** (usuario comum autoatendido) vira secundario ou e descontinuado.
+
+**Influencias teologicas** (ancoras da nova visao): Alexandre Cumino (espiritualidade visceral), Rubens Saraceni e Adriano Camargo (teologia dos Orixas, desmistificacao da esquerda), Cigano Ramiro (guia da linhagem do Zelador — nao persona do sistema). **Nao confundir Mentor com Cigano Ramiro**: o Mentor e Akashico com treinamento teologico dos autores acima.
+
 ## 1. Definicao
 
-O Akasha e o produto publico. `Cabala dos Caminhos` e a matriz, o laboratorio e o monorepo que tornam o produto possivel.
+O Akasha e a **ferramenta de diagnostico integral do Zelador**. `Cabala dos Caminhos` e a matriz, o laboratorio e o monorepo que tornam a ferramenta possivel.
 
-O Akasha nao e a soma de leituras independentes. Ele e uma sintese intencional que transforma cinco tradicoes em uma experiencia unica, coerente e acionavel.
+O Akasha nao e a soma de leituras independentes. Ele e uma sintese intencional que transforma **7 sistemas canonicos** (Cabala, Astrologia, Tantra/Ayurveda, Odu, I Ching, Human Design, Gene Keys) em uma experiencia unica, coerente, cirurgica e **orientada a cura/transformation** — nao a descricao de mapa.
 
-## 2. Os 5 Pilares Canonicos
+## 2. Os 7 Pilares Canonicos (versao revisada)
 
-| Pilar | Papel na sintese |
-| --- | --- |
-| Numerologia Cabalistica | identidade, nome, proposito e ciclos |
-| Astrologia | ceu, tempo, transitos e contexto |
-| Numerologia Tantrica | anatomia sutil, corpos e energia |
-| Odu de Nascimento | ori, ancestralidade, terra e destino |
-| I Ching | mutacao, jornada e leitura de passagem |
+| Pilar | Sistema | Dominio | Camada SVG |
+|-------|---------|---------|-----------|
+| 1 | Numerologia Cabalistica | Arvore da Vida, Sefirot, Numeros de vida | Camada 2 |
+| 2 | Astrologia Ocidental | Signos, planetas, aspectos | Camada 4 |
+| 3 | Numerologia Tantrica + Ayurveda | 11 corpos, koshas, doshas | Camada 3 |
+| 4 | Odu de Nascimento (Merindilogun) | Ifa/Candomble, Alafia, preceitos, quizilas | Camada 1 |
+| 5 | I Ching | Hexagrama, trigramas | Camada 5 |
+| **6** | **Human Design (traduzido)** | **Mapa energetico integrado (nao copia literal)** | **Nova camada** |
+| **7** | **Gene Keys (traduzido)** | **Sombra/dom/siddhi (universalist)** | **Nova camada** |
 
-## 3. O Que o Produto Entrega
+**Pilares 6 e 7 (Human Design + Gene Keys)** sao **traduzidos** (nao copias literais) para alinhamento com a visao universalista. Trade-offs de copyright/licensing serao resolvidos via ADR 0002 (ver secoes 9 e 10).
 
-- Uma mandala pessoal que organiza os cinco pilares numa leitura unica.
-- Um mandato diario que converte a sintese em orientacao curta e praticavel.
-- Um mentor que explica, contextualiza e dialoga com base citada.
-- Uma experiencia de uso que prioriza coerencia, nao excesso de features.
+## 3. O Que o Produto Entrega (revisado)
 
-## 4. Principios da Sintese
+- **Chat MCP-style** como interface unica (sem dashboards, sem Mandala visual obrigatoria; dados alimentam backend via MCP por consulente).
+- **Mentor Akashico evoluido** (chain-of-thought + psicanalise + perguntas socraticas) que integra os 7 Pilares via grafo de conhecimento.
+- **Memoria por consulente** (RAG isolado, grimorios pessoais, historico de sessoes).
+- **Prescricoes cirurgicas** (ervas Ewe, caminhos de acao, "o que fazer agora") em vez de relatorios descritivos.
+- **Interface minima** (estilo ChatGPT/Gemini): input do Zelador + resposta sintetica da IA.
 
-- Sintese nao e colagem: a experiencia deve soar como Akasha, nao como cinco blocos empilhados.
-- A inteligencia mora no cruzamento: o valor nasce das correlacoes, nao da simples exibicao dos pilares.
-- A beleza mora na coerencia: linguagem, arquitetura e UX precisam contar a mesma historia.
-- O produto mora na experiencia do usuario: a teoria so vale quando se traduz em leitura, pergunta, ritual ou decisao.
+## 4. Principios da Sintese (revisado)
 
-## 5. Artefatos Centrais
+- Sintese **cirurgica**, nao enciclopedica: o Zelador precisa de uma direcao clara, nao de todas as opcoes.
+- **Correlacao antes de exibicao**: o grafo de conhecimento faz as conexoes, o Mentor apresenta a tese, nao os dados crus.
+- **Acao antes de descricao**: cada sessao de atendimento produz 1-3 proximas acoes concretas.
+- **Memoria por consulente** e o que diferencia "atendimento profissional" de "leitura generica".
 
-### 5.1 Mandala
+## 5. Artefatos Centrais (revisado)
 
-A mandala pessoal e o diagrama-mae da experiencia. Ela organiza os pilares de modo legivel e ajuda o usuario a perceber relacoes, tensoes e foco de jornada.
+### 5.1 Chat MCP por Consulente
 
-### 5.2 Mandato Diario
+A interface central. Cada consulente cadastrado pelo Zelador e um "MCP server" logico: quando o Zelador clica naquele consulente, o chat carrega:
+- Dados do consulente (anamnese, 7 Pilares calculados)
+- Grimorios pessoais (notas do Zelador, observacoes de sessoes)
+- Historico de sessoes anteriores
+- Prescricoes previas
 
-O mandato diario e a unidade vivida da sintese. Ele deve converter a leitura em micro-orientacao clara, com profundidade suficiente para gerar reconhecimento e acao.
+### 5.2 Mentor Akashico
 
-### 5.3 Mentor
+Persona da IA: **Akashico universal**, com chain-of-thought, perguntas socraticas, tom de Mestre/Sacerdote/Terapeuta. Influencias teologicas de Cumino/Saraceni/Camargo por tras da voz (nao como persona).
 
-O mentor e a interface conversacional do sistema. Ele nao substitui a base curada; ele interpreta, contextualiza e acompanha a jornada usando conhecimento ancorado.
+### 5.3 Grafo de Conhecimento
 
-## 6. Camadas Temporais
+Camada de dados que correlaciona os 7 Pilares automaticamente. Implementacao: **a definir via ADR 0005** (proximo design proposal). Candidatos: embeddings + vector store + knowledge graph (Neo4j, Memgraph, ou solucao em Postgres+pgvector).
 
-O Akasha deve sustentar a leitura em quatro escalas de tempo:
+## 6. Camadas Temporais (revisado)
 
-1. Diaria
-2. Semanal-lunar
-3. Sazonal
-4. Vida
+O Akasha sustenta leitura em **3 escalas** (reduzido de 4):
 
-A mesma pessoa precisa ser reconhecivel em todas essas escalas, sem perder unidade de voz.
+1. **Imediata** ("o que faco agora?") — interface principal
+2. **Sessao** ("o que fizemos nesta sessao?") — historico da consulta
+3. **Vida** ("como evolui ao longo do tempo?") — timeline do consulente
+
+A escala "semanal-lunar/sazonal" foi descontinuada (pouco usada no uso real).
 
 ## 7. Nao-Objetivos
 
+- Nao ser app de autoatendimento para usuario final (publico secundario/zero).
 - Nao ser horoscopo generico.
 - Nao ser agregador de tradicoes sem criterio.
-- Nao ser enciclopedia desconectada da experiencia.
 - Nao depender de uma unica tradicao para explicar tudo.
+- Nao exigir que o Zelador leia todos os mapas manualmente.
 
 ## 8. Implicacoes Para o Repositorio
 
-- `docs/03_architecture-spec.md` existe para servir esta visao.
-- `docs/pesquisa/` concentra os resumos de pesquisa usados na navegacao canonica.
-- `.autonomous/VISION.md` funciona apenas como ponteiro operacional para esta visao.
+- `docs/03_architecture-spec.md` precisa ser **reescrito** pra refletir Zelador-tool.
+- `docs/pesquisa/` concentra os resumos de pesquisa usados no sistema de RAG.
+- `.autonomous/VISION.md` fica como ponteiro operacional desta visao (quando reativado).
+- **ADRs pendentes**: 0002 (Pilares 6 e 7), 0003 (Mentor Mestre/Sacerdote), 0004 (multi-tenant consulente-MCP), 0005 (grafo de conhecimento).
+
+## 9. ADRs a Produzir (2026-06-23+)
+
+| # | Titulo | Status | Descricao |
+|---|--------|--------|-----------|
+| 0002 | Pilares 6 e 7 (Human Design + Gene Keys) | pending | Revalidacao da rejeicao anterior do Pilar 6 + decisao sobre licensing de sistemas comerciais |
+| 0003 | Mentor Mestre/Sacerdote/Terapeuta | pending | Redefine persona do Mentor (canonico atual: Akashico unificado). Voz + chain-of-thought + psicanalise |
+| 0004 | Multi-tenant consulente-MCP | pending | Arquitetura de isolamento por consulente + protocolo MCP interno. D-041 (Caminhante) e o modelo base |
+| 0005 | Grafo de Conhecimento (Knowledge Graph) | pending | Implementacao da correlacao automatica entre os 7 Pilares. Decisao tech stack (vector store, graph store, ou hibrido) |
+
+## 10. Decisoes Canonicas Preservadas (Nao Revisar Sem ADR)
+
+- **Mentor = Akashico unificado** (Cigano Ramiro e guia da linhagem do Zelador, NAO persona do sistema — ver `CONTEXT.md:60`).
+- **D-041 (Caminhante + Caminhada) e o modelo de consulente** ja foi aplicado (migration `20260622000000_041_caminhante_caminhada/`). A nova visao reusa D-041 — nao cria schema novo pra consulentes.
+- **LGPD-by-design** se mantem (consulentes sao pessoas atendidas; revogacao + retencao conforme ADR 0002 LGPD).
+
+Conversas exploratorias (`conversa-gemini.md`, `gemini-conversation-2.md`, etc) sao **historico de brainstorm**, nao spec ativa. Decisoes de codigo exigem:
+1. Grill com o usuario (mattpocock skill `grilling`).
+2. ADR formal (mattpocock skill `domain-modeling` — quando atende as 3 condicoes).
+3. Proposta revisada antes de migracao (`prisma/AGENTS.md:69-82`).
+4. Subagentes sob demanda via `delegate_task` (nao loop autonomo).

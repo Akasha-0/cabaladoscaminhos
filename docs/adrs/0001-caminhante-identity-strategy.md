@@ -1,6 +1,6 @@
 # 0001 — Caminhante identity strategy
 
-**Status:** proposed
+**Status:** accepted (applied via migration `20260622000000_041_caminhante_caminhada/`, 2026-06-22)
 
 Caminhante é identificado por surrogate cuid + `UNIQUE (zeladorId, dataNascimento, nomeLowercaseNormalized)` usando o **nome preferido** (não o nome legal completo). A normalização `nomeLowercaseNormalized` é `trim() + NFKD-strip-accents + lowercase` (ex.: `"  Mária  "` → `"maria"`). Resolve o problema das "duas Marias" via UI-level desambiguation: ao tentar cadastrar um Caminhante que colide na UNIQUE, a API retorna 409 e a UI obriga o Zelador a escolher um apelido distinto ("Maria (mãe)", "Maria (filha)").
 
