@@ -55,6 +55,7 @@ model User {
   areaHistory       AreaHistoryEntry[]
   exerciseCompletions ExerciseCompletion[]
   // D-041 (Caminhante + Caminhada) + D-XXX (Sessao, SessaoChunk, GrimorioPessoal, NotasConsulente, MapaCalculo)
+  // + D-YYY/D-ZZZ (Wave 4 — Pilares 6 e 7)
   caminhantes         Caminhante[]   @relation("UserCaminhantes")
   caminhadas          Caminhada[]    @relation("UserCaminhadas")
   sessoes             Sessao[]       @relation("UserSessoes")
@@ -62,6 +63,9 @@ model User {
   grimorioPessoal     GrimorioPessoal? @relation("UserGrimorioPessoal")
   notasConsulentes    NotasConsulente[] @relation("UserNotasConsulentes")
   mapasCalculo        MapaCalculo[]  @relation("UserMapasCalculo")
+  pilar6Calculos      Pilar6Calculo[]  @relation("UserPilar6Calculos")
+  pilar7Calculos      Pilar7Calculo[]  @relation("UserPilar7Calculos")
+  pilar7Estagios      Pilar7Estagio[]  @relation("UserPilar7Estagios")
   // Refresh token rotation — stores the jti of the current active refresh token.
   // When a refresh request arrives, its jti MUST match this field.
   // On successful refresh the old token's jti is replaced by the new one's — old token immediately invalid.
@@ -402,6 +406,9 @@ model Caminhada {
   sessoes                 Sessao[]
   notasConsulentes        NotasConsulente[]
   mapasCalculo            MapaCalculo[]
+  // D-YYY/D-ZZZ (Wave 4 — Pilares 6 e 7)
+  pilar6Calculos          Pilar6Calculo[]
+  pilar7Calculos          Pilar7Calculo[]
 
   @@index([zeladorId, status])
   @@index([caminhanteId])
@@ -528,4 +535,150 @@ model MapaCalculo {
   @@unique([zeladorId, caminhadaId])
   @@index([zeladorId, versaoCalculo])
   @@map("mapas_calculo")
+}
+
+// =========================================================================
+// D-YYY + D-ZZZ — Pilares 6 e 7 (Wave 4)
+// Adiciona Pilar 6 (Mapa Energetico Integrado — traducao universalista
+// do Human Design) e Pilar 7 (Espectro de Transformacao — traducao
+// universalista do Gene Keys). Ver docs/25_visao-akasha.md,
+// docs/adrs/0002-pilares-6-7-human-design-gene-keys.md,
+// apps/akasha-portal/prisma/designs/D-YYY-pilar-6-mapa-energetico-traduzido.md,
+// apps/akasha-portal/prisma/designs/D-ZZZ-pilar-7-espectro-transformacao-traduzido.md.
+// 4 guardrails do ADR 0002: renomear termos, textos do zero,
+// visualizacao propria, disclaimer legal.
+// =========================================================================
+
+// D-YYY (Wave 4 — Pilar 6: Mapa Energetico Integrado)
+
+model Pilar6Calculo {
+  id                String   @id @default(cuid())
+
+  // FKs (escopo multi-tenant — alinha D-XXX)
+  zeladorId         String
+  zelador           User     @relation("UserPilar6Calculos", fields: [zeladorId], references: [id], onDelete: Cascade)
+  caminhadaId       String
+  caminhada         Caminhada @relation(fields: [caminhadaId], references: [id], onDelete: Cascade)
+
+  // Pilar 6 calculation result (D-YYY §3.1)
+  tipo              TipoEnergetico              // 4 tipos (iniciador | guia | iniciador_aberto | refletor)
+  estrategia        EstrategiaEnergetica        // 4 estrategias
+  autoridade        AutoridadeEnergetica?       // 6 autoridades (nullable se inconclusivo)
+  centrosDefinidos  CentroEnergetico[]          // subset dos 9 centros definidos
+
+  // Auditoria
+  versaoCalculo     String                     // ex: "v1"
+  calculadoEm       DateTime                   @default(now())
+  atualizadoEm      DateTime                   @updatedAt
+
+  @@unique([zeladorId, caminhadaId, versaoCalculo]) // cache: 1 calculo por versao
+  @@index([zeladorId, caminhadaId, calculadoEm])
+  @@index([zeladorId, versaoCalculo])
+  @@map("pilar6_calculos")
+}
+
+// D-YYY §3.1: enums dos tipos renomeados (Guardrail 1 do ADR 0002).
+enum TipoEnergetico {
+  iniciador           // ex-Human Design Generator
+  guia                // ex-Human Design Projector
+  iniciador_aberto    // ex-Human Design Manifestor
+  refletor            // ex-Human Design Reflector
+}
+
+// D-YYY §3.1: estrategias funcionais.
+enum EstrategiaEnergetica {
+  esperar_convite         // ex-To Respond
+  informar                // ex-To Inform
+  iniciar                 // ex-To Initiate
+  esperar_ciclo_lunar     // ex-To Wait (lunar)
+}
+
+// D-YYY §3.1: 6 autoridades internas. Reusa Emocional/Esplenica/Cardiaca de D-041.
+enum AutoridadeEnergetica {
+  emocional
+  sacral
+  esplenica
+  cardiaca
+  identidade
+  lunar
+}
+
+// D-YYY §3.1: 9 centros energeticos baseados em I Ching + Cabala + Tantra
+// (Guardrail 3 do ADR 0002: visualizacao propria).
+enum CentroEnergetico {
+  inspiracao          // Cabala (Keter)
+  mental              // Cabala (Hokhmah/Binah)
+  manifestacao        // I Ching (canal de expressao)
+  identidade          // Astrologia (Ascendente)
+  vontade             // Tantra (Anahata)
+  emocoes             // Tantra (Manipura)
+  vitalidade          // Tantra (Svadhisthana)
+  sobrevivencia       // Tantra (Muladhara, instinto)
+  fundamentacao       // Tantra (Muladhara, base)
+}
+
+// D-ZZZ (Wave 4 — Pilar 7: Espectro de Transformacao)
+
+model Pilar7Calculo {
+  id                String   @id @default(cuid())
+
+  // FKs (escopo multi-tenant — alinha D-XXX)
+  zeladorId         String
+  zelador           User     @relation("UserPilar7Calculos", fields: [zeladorId], references: [id], onDelete: Cascade)
+  caminhadaId       String
+  caminhada         Caminhada @relation(fields: [caminhadaId], references: [id], onDelete: Cascade)
+
+  // Pilar 7 calculation result (D-ZZZ §3.1)
+  // 64 chaves (1-64 = I Ching) — cada uma com 3 estagios
+  estagios          Pilar7Estagio[]             // relation para os estagios desta chave
+  chaveNumero       Int                         // 1-64 (I Ching gate)
+  chaveNome         String                      // nome proprio (do zero — Guardrail 2)
+  estagioAtual      EstagioTransformacao        // Sombra | Dom | Siddhi (onde esta HOJE)
+  textoSombra       String                      // texto proprio (do zero — Guardrail 2)
+  textoDom          String
+  textoSiddhi       String
+
+  // Auditoria
+  versaoCalculo     String                      // ex: "v1"
+  calculadoEm       DateTime                    @default(now())
+  atualizadoEm      DateTime                    @updatedAt
+
+  @@unique([zeladorId, caminhadaId, versaoCalculo])
+  @@index([zeladorId, caminhadaId, calculadoEm])
+  @@index([zeladorId, versaoCalculo])
+  @@map("pilar7_calculos")
+}
+
+// D-ZZZ §3.1: enum dos 3 estagios (Sombra → Dom → Siddhi).
+// Termos sao tradicao antiga, nao-protegiveis (D-ZZZ.1).
+enum EstagioTransformacao {
+  sombra
+  dom
+  siddhi
+}
+
+// D-ZZZ §3.1: estagios de cada chave para cada consulente.
+// N chaves × 3 estagios = N × 3 linhas por calculo (se aplicavel).
+model Pilar7Estagio {
+  id                String   @id @default(cuid())
+
+  // FKs
+  zeladorId         String
+  zelador           User     @relation("UserPilar7Estagios", fields: [zeladorId], references: [id], onDelete: Cascade)
+  calculoId         String
+  calculo           Pilar7Calculo @relation(fields: [calculoId], references: [id], onDelete: Cascade)
+
+  // Identificacao da chave
+  chaveNumero       Int                         // 1-64 (corresponde a hexagrama I Ching)
+  chaveNome         String                      // nome proprio (do zero — Guardrail 2)
+  estagio           EstagioTransformacao        // qual dos 3 estagios esta chave representa no consulente
+  texto             String                      // texto proprio (do zero — Guardrail 2)
+
+  // Sequence position (D-ZZZ §3.1): Sequence Venusiana + Caminho Dourado renomeados
+  sequencePosition  Int?                        // 1-22 (Sequence Venusiana — 22 chaves)
+  pathwayPosition   Int?                        // 1-11 (Caminho Dourado — 11 chaves)
+
+  @@index([zeladorId, calculoId])
+  @@index([zeladorId, chaveNumero])
+  @@map("pilar7_estagios")
 }
