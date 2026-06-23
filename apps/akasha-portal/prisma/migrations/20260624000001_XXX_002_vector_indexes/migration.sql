@@ -1,0 +1,53 @@
+-- D-XXX.2 — Vector index for sessao_chunks.embedding
+-- Aprovado 2026-06-23 (vision realignment session).
+-- Ver apps/akasha-portal/prisma/designs/D-XXX-schema-multitenant-consulente.md
+-- secao "Migration Plan — XXX_002_vector_indexes".
+--
+-- Depends on: 20260624000000_XXX_001_multitenant_core (sessao_chunks must exist).
+--
+-- Raw SQL — Prisma does not natively support vector indexes (IVFFlat / HNSW)
+-- in `schema.prisma`; you have to add them with a follow-up migration. This
+-- is the canonical workaround for pgvector + Prisma 7.
+
+-- ─── Why ivfflat (NOT hnsw) for v1 ──────────────────────────────────────────
+--
+-- We picked ivfflat with `lists = 100` for the v1 of sessao_chunks because:
+--
+-- 1. **Build cost is bounded & predictable.** IVFFlat builds an index by
+--    k-means clustering the existing rows; `lists` is the cluster count.
+--    Build time is roughly O(N * lists). For v1, we expect < 100k session
+--    chunks per Zelador, so `lists = 100` is a sweet spot (Postgres
+--    recommendation: sqrt(rows) for lists).
+--
+-- 2. **Smaller index footprint.** IVFFlat is ~30-50% smaller than HNSW at
+--    comparable recall. We care because sessao_chunks grows per-session and
+--    we want to keep RAM pressure low on the (eventual) self-hosted
+--    embedding pipeline.
+--
+-- 3. **Good enough recall for v1.** With `lists = 100` and ~1k-10k
+--    vectors, IVFFlat cosine recall is ~95% of exact search. For v1 of
+--    the RAG pipeline this is acceptable. We are not doing exact
+--    1-nearest-neighbor — we re-rank the top-K candidates with the
+--    weighted UNION ALL in D-XXX §"Retrieval".
+--
+-- 4. **No training requirement at insert time.** HNSW requires
+--    `hnsw.ef_construction` and `hnsw.M` tuning that interact with
+--    workload patterns we haven't measured yet. IVFFlat with a fixed
+--    `lists` is a "set & forget" choice that we can revisit in Wave 5
+--    if we hit scale problems.
+--
+-- **Migration path (documented for the Zelador):** if we exceed ~100k
+-- chunks per Zelador and recall degrades, drop this index and recreate
+-- with HNSW:
+--
+--   DROP INDEX sessao_chunks_embedding_idx;
+--   CREATE INDEX sessao_chunks_embedding_hnsw_idx
+--     ON sessao_chunks USING hnsw (embedding vector_cosine_ops)
+--     WITH (m = 16, ef_construction = 64);
+--
+-- This is documented in apps/akasha-portal/prisma/designs/D-XXX §"Risk
+-- and Rollback" and is a Wave 5+ concern, not v1.
+
+CREATE INDEX "sessao_chunks_embedding_idx"
+    ON "sessao_chunks" USING ivfflat ("embedding" vector_cosine_ops)
+    WITH (lists = 100);
