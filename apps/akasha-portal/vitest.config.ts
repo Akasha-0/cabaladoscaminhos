@@ -17,6 +17,8 @@ const sharedAliases = {
   '@akasha/mentor/types': path.resolve(__dirname, '../../packages/mentor/src/types.ts'),
   '@akasha/mentor/correlation': path.resolve(__dirname, '../../packages/mentor/src/correlation.ts'),
   '@akasha/mentor': path.resolve(__dirname, '../../packages/mentor/src/index.ts'),
+  // Wave 8.4 B.2: MCP package alias for lazy import in mentor route
+  '@akasha/mcp': path.resolve(__dirname, '../../packages/mcp/src/index.ts'),
 };
 
 export default defineConfig({

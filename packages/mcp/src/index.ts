@@ -297,6 +297,16 @@ export interface AkashaMcpRegistry {
 }
 
 // ============================================================================
+// SERVER (Wave 8.4 B.1 — skeleton runtime)
+// ============================================================================
+
+export {
+  AkashaMcpServer,
+  mcpServer,
+} from './server';
+export type { AkashaMcpServerOptions } from './server';
+
+// ============================================================================
 // NOTA SOBRE EXPORTS
 // ============================================================================
 // Todos os tipos e interfaces acima já são exportados via `export interface`
