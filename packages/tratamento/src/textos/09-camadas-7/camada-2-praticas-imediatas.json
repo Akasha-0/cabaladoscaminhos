@@ -1,0 +1,18 @@
+{
+  "id": "camada-2-praticas-imediatas",
+  "categoria": "camada_prompt",
+  "camada_numero": 2,
+  "camada_nome": "Práticas Imediatas",
+  "prompt_template": "Quando o diagnóstico aponta elemento Z (Fogo/Água/Terra/Ar) + Odu Y, gere output de Práticas Imediatas no formato JSON {banho: {ervas: string[], preparo: string}, cristal: {nome: string, uso: string}, duracao_minutos: number, contraindicacao: string|null} com 5 frases no máximo. Não incluir práticas que exijam diagnóstico médico.",
+  "texto": "Quando o diagnóstico aponta elemento Z (Fogo/Água/Terra/Ar) + Odu Y, gere output de Práticas Imediatas no formato JSON {banho: {ervas: string[], preparo: string}, cristal: {nome: string, uso: string}, duracao_minutos: number, contraindicacao: string|null} com 5 frases no máximo. Não incluir práticas que exijam diagnóstico médico.",
+  "grounding": {
+    "research_mtc_linha": 132,
+    "research_np_linha": 24,
+    "research_mtc_secao": "§4 Matriz Cross-Reference",
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão + §4 Detector de Padrões Emocionais",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md"
+  },
+  "alucinacao_score": 0.89,
+  "requires_professional_review": false
+}

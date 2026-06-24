@@ -1,0 +1,18 @@
+{
+  "id": "chacra-3-plexo-solar-pratica-01",
+  "categoria": "chakra_pratica",
+  "chacra": "Plexo Solar (Manipura)",
+  "chacra_numero": 3,
+  "tipo_pratica": "cristal",
+  "nome_pratica": "Olho de Tigre antes de reuniões",
+  "como_aplicar": "Carregue um olho de tigre no bolso direito 10 minutos antes de apresentações; toque-o para lembrar a coragem.",
+  "texto": "Olho de Tigre antes de reuniões: Carregue um olho de tigre no bolso direito 10 minutos antes de apresentações; toque-o para lembrar a coragem.",
+  "grounding": {
+    "research_mtc_linha": 90,
+    "research_mtc_secao": "§2 Cristais por Chácra",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": false
+}

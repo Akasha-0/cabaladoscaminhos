@@ -1,0 +1,17 @@
+{
+  "id": "caminho-03-comunicador-sombra",
+  "categoria": "caminho_sombra",
+  "caminho_numero": 3,
+  "caminho_nome": "Comunicador",
+  "arquetipo_jung": "Criador",
+  "estilo_terapeutico": "Humanista (Rogers)",
+  "texto": "Dispersão e superficialidade para evitar profundidade emocional.",
+  "grounding": {
+    "research_np_linha": 28,
+    "research_np_secao": "§1 Caminho de Vida 1-22 × Arquétipo Junguiano × Estilo Terapêutico",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url": "https://www.simplypsychology.org/carl-jung.html"
+  },
+  "alucinacao_score": 0.94,
+  "requires_professional_review": false
+}

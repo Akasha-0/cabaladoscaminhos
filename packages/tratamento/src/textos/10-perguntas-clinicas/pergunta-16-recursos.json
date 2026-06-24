@@ -1,0 +1,22 @@
+{
+  "id": "pergunta-16-recursos",
+  "categoria": "pergunta_clinica",
+  "pergunta_numero": 16,
+  "grupo": "Recursos",
+  "pergunta": "Que parte de você você tem vergonha de mostrar?",
+  "texto": "Que parte de você você tem vergonha de mostrar?",
+  "grounding": {
+    "research_np_linha": 117,
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão (Protocolo de Entrevista)",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url": "https://www.who.int/publications/i/item/9789241549790"
+  },
+  "alucinacao_score": 0.96,
+  "requires_professional_review": false,
+  "como_interpretar": "⚠️ SAFETY: Se resposta envolver 'eliminar', 'apagar', 'sumir' (referindo-se a si mesmo) → rastrear ideação suicida, aplicar mhGAP. Se vergonha de pedir ajuda = pode indicar isolamento severo. Acolher, normalizar, encaminhar.",
+  "fontes": [
+    "https://www.who.int/publications/i/item/9789241549790",
+    "https://en.wikipedia.org/wiki/Shame",
+    "https://pubmed.ncbi.nlm.nih.gov/12883141"
+  ]
+}

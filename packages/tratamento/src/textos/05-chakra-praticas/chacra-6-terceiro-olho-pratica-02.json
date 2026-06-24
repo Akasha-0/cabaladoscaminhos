@@ -1,0 +1,18 @@
+{
+  "id": "chacra-6-terceiro-olho-pratica-02",
+  "categoria": "chakra_pratica",
+  "chacra": "Terceiro Olho (Ajna)",
+  "chacra_numero": 6,
+  "tipo_pratica": "banho",
+  "nome_pratica": "Banho de sálvia",
+  "como_aplicar": "Ferva 1 colher de sálvia em 500ml de água por 5 minutos; coe e adicione à água morna; banhe a cabeça por último (atenção: gestantes devem evitar).",
+  "texto": "Banho de sálvia: Ferva 1 colher de sálvia em 500ml de água por 5 minutos; coe e adicione à água morna; banhe a cabeça por último (atenção: gestantes devem evitar).",
+  "grounding": {
+    "research_mtc_linha": 121,
+    "research_mtc_secao": "§3 Ervas Medicinais, Banhos e Chás por Elemento",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": false
+}

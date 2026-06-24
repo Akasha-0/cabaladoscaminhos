@@ -1,0 +1,22 @@
+{
+  "id": "pergunta-09-familia",
+  "categoria": "pergunta_clinica",
+  "pergunta_numero": 9,
+  "grupo": "Trauma Familiar",
+  "pergunta": "O que sua mãe fazia que você jurou nunca repetir?",
+  "texto": "O que sua mãe fazia que você jurou nunca repetir?",
+  "grounding": {
+    "research_np_linha": 107,
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão (Protocolo de Entrevista)",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url": "https://www.who.int/publications/i/item/9789241549790"
+  },
+  "alucinacao_score": 0.96,
+  "requires_professional_review": false,
+  "como_interpretar": "Se 'nada' ou 'padrão repetido' → investigar se há padrão de dependência emocional herdado. Se 'padrão positivo' → reconhecer e fortalecer. Não forçar aprofundamento no primeiro encontro (regra do consentimento).",
+  "fontes": [
+    "https://www.who.int/publications/i/item/9789241549790",
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2711529",
+    "https://pubmed.ncbi.nlm.nih.gov/1754826"
+  ]
+}

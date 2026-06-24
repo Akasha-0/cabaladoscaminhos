@@ -1,0 +1,22 @@
+{
+  "id": "pergunta-15-recursos",
+  "categoria": "pergunta_clinica",
+  "pergunta_numero": 15,
+  "grupo": "Recursos",
+  "pergunta": "Quando você era criança, o que te acalmava?",
+  "texto": "Quando você era criança, o que te acalmava?",
+  "grounding": {
+    "research_np_linha": 116,
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão (Protocolo de Entrevista)",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url": "https://www.who.int/publications/i/item/9789241549790"
+  },
+  "alucinacao_score": 0.96,
+  "requires_professional_review": false,
+  "como_interpretar": "Resposta 'música/caminhada' = recursos simples eficazes. Se 'TV/redes sociais' = possível escape sem elaboração. Se 'nada' = investigar capacidade de auto-sobreviver (forte sinal de esgotamento).",
+  "fontes": [
+    "https://www.who.int/publications/i/item/9789241549790",
+    "https://en.wikipedia.org/wiki/Transitional_object",
+    "https://pubmed.ncbi.nlm.nih.gov/19883140"
+  ]
+}

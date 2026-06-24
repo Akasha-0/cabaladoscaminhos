@@ -1,0 +1,18 @@
+{
+  "id": "chacra-5-laringeo-pratica-03",
+  "categoria": "chakra_pratica",
+  "chacra": "Laríngeo (Vishuddha)",
+  "chacra_numero": 5,
+  "tipo_pratica": "cristal",
+  "nome_pratica": "Lápis-Lazúli na escrita",
+  "como_aplicar": "Mantenha um lápis-lazúli próximo ao local de escrita; toque-o antes de começar a redigir textos importantes.",
+  "texto": "Lápis-Lazúli na escrita: Mantenha um lápis-lazúli próximo ao local de escrita; toque-o antes de começar a redigir textos importantes.",
+  "grounding": {
+    "research_mtc_linha": 92,
+    "research_mtc_secao": "§2 Cristais por Chácra",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": false
+}

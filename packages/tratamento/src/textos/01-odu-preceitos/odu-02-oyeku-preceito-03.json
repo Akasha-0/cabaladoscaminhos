@@ -1,0 +1,30 @@
+{
+  "id": "odu-02-oyeku-preceito-03",
+  "categoria": "preceito",
+  "odu": "Oyeku (2)",
+  "orixa": "Obaluaiê/Omolu",
+  "elemento": "Terra",
+  "chacra_referente": [
+    "Raiz"
+  ],
+  "caminhos_afetados": [
+    2,
+    4,
+    8,
+    13
+  ],
+  "camada_synthesis": [
+    "camada2_praticas",
+    "camada5_alinhamento"
+  ],
+  "aspecto": "alimentação",
+  "texto": "Inclua raízes cozidas (batata-doce, inhame) na refeição da noite; elas apoiam o eixo.",
+  "grounding": {
+    "research_mtc_linha": 35,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.92,
+  "requires_professional_review": false
+}

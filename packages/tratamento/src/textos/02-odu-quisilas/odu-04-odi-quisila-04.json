@@ -1,0 +1,29 @@
+{
+  "id": "odu-04-odi-quisila-04",
+  "categoria": "quisila",
+  "odu": "Odi (4)",
+  "orixa": "Oxum",
+  "elemento": "Água",
+  "chacra_referente": [
+    "Cardíaco"
+  ],
+  "caminhos_afetados": [
+    2,
+    6,
+    9,
+    18
+  ],
+  "camada_synthesis": [
+    "camada4_quisilas"
+  ],
+  "aspecto": "emoção",
+  "texto": "Não cobice o que é do outro por carência; volte o olhar para o próprio prato.",
+  "grounding": {
+    "research_mtc_linha": 41,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.93,
+  "requires_professional_review": false
+}

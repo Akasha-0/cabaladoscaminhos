@@ -1,0 +1,22 @@
+{
+  "id": "pergunta-13-recursos",
+  "categoria": "pergunta_clinica",
+  "pergunta_numero": 13,
+  "grupo": "Recursos",
+  "pergunta": "O que você já faz hoje que te ajuda a não desmoronar?",
+  "texto": "O que você já faz hoje que te ajuda a não desmoronar?",
+  "grounding": {
+    "research_np_linha": 114,
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão (Protocolo de Entrevista)",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url": "https://www.who.int/publications/i/item/9789241549790"
+  },
+  "alucinacao_score": 0.96,
+  "requires_professional_review": false,
+  "como_interpretar": "Investigar 1-2 coping strategies ativas. Se 'nenhuma' → sinal de esgotamento de recursos; priorizar psicoeducação. Se 'muitas' → pode indicar hiperresponsabilidade (não descansar).",
+  "fontes": [
+    "https://www.who.int/publications/i/item/9789241549790",
+    "https://en.wikipedia.org/wiki/Solution-focused_brief_therapy",
+    "https://pubmed.ncbi.nlm.nih.gov/22403935"
+  ]
+}

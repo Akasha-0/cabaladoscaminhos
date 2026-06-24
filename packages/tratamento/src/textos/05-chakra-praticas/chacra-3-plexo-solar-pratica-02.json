@@ -1,0 +1,18 @@
+{
+  "id": "chacra-3-plexo-solar-pratica-02",
+  "categoria": "chakra_pratica",
+  "chacra": "Plexo Solar (Manipura)",
+  "chacra_numero": 3,
+  "tipo_pratica": "erva",
+  "nome_pratica": "Chá de gengibre com limão",
+  "como_aplicar": "Ferva 3 rodelas de gengibre fresco em 200ml de água por 5 minutos; adicione suco de meio limão; tome em jejum 3x por semana.",
+  "texto": "Chá de gengibre com limão: Ferva 3 rodelas de gengibre fresco em 200ml de água por 5 minutos; adicione suco de meio limão; tome em jejum 3x por semana.",
+  "grounding": {
+    "research_mtc_linha": 103,
+    "research_mtc_secao": "§3 Ervas Medicinais, Banhos e Chás por Elemento",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": false
+}

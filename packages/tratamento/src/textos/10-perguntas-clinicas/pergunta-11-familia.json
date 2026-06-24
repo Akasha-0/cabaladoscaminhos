@@ -1,0 +1,27 @@
+{
+  "id": "pergunta-11-familia",
+  "categoria": "pergunta_clinica",
+  "pergunta_numero": 11,
+  "grupo": "Trauma Familiar",
+  "pergunta": "Qual é o segredo de família que todo mundo sabe mas ninguém fala?",
+  "texto": "Qual é o segredo de família que todo mundo sabe mas ninguém fala?",
+  "grounding": {
+    "research_np_linha": 109,
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão (Protocolo de Entrevista)",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url": "https://www.who.int/publications/i/item/9789241549790"
+  },
+  "alucinacao_score": 0.96,
+  "requires_professional_review": true,
+  "como_interpretar": "⚠️ SAFETY: Se 'sim, há segredo', aplique protocolo de mhGAP. NÃO force revelação. Acolha, valide, e encaminhe para profissional se necessário. Resposta 'não lembro' pode indicar dissociação ou memória protegida.",
+  "fontes": [
+    "https://www.who.int/publications/i/item/9789241549790",
+    "https://en.wikipedia.org/wiki/Family_secrets",
+    "https://pubmed.ncbi.nlm.nih.gov/14587126"
+  ],
+  "safety_gates": [
+    "consentimento_explicito_para_revelar",
+    "profissional_saude_referencia_registrado",
+    "sem_pressa_de_revelar"
+  ]
+}

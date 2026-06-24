@@ -1,0 +1,18 @@
+{
+  "id": "chacra-6-terceiro-olho-pratica-01",
+  "categoria": "chakra_pratica",
+  "chacra": "Terceiro Olho (Ajna)",
+  "chacra_numero": 6,
+  "tipo_pratica": "cristal",
+  "nome_pratica": "Ametista na meditação",
+  "como_aplicar": "Coloque uma ametista entre as sobrancelhas (ou na altura) ao meditar por 10 minutos; favorece visão interior.",
+  "texto": "Ametista na meditação: Coloque uma ametista entre as sobrancelhas (ou na altura) ao meditar por 10 minutos; favorece visão interior.",
+  "grounding": {
+    "research_mtc_linha": 93,
+    "research_mtc_secao": "§2 Cristais por Chácra",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": false
+}

@@ -1,0 +1,29 @@
+{
+  "id": "odu-03-iwori-quisila-05",
+  "categoria": "quisila",
+  "odu": "Iwori (3)",
+  "orixa": "Xangô",
+  "elemento": "Fogo",
+  "chacra_referente": [
+    "Plexo Solar"
+  ],
+  "caminhos_afetados": [
+    3,
+    14,
+    15,
+    21
+  ],
+  "camada_synthesis": [
+    "camada4_quisilas"
+  ],
+  "aspecto": "saúde",
+  "texto": "Não use substâncias para 'esfriar a cabeça' antes de audiências decisivas.",
+  "grounding": {
+    "research_mtc_linha": 38,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.93,
+  "requires_professional_review": false
+}

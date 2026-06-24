@@ -1,0 +1,18 @@
+{
+  "id": "chacra-5-laringeo-pratica-01",
+  "categoria": "chakra_pratica",
+  "chacra": "Laríngeo (Vishuddha)",
+  "chacra_numero": 5,
+  "tipo_pratica": "cristal",
+  "nome_pratica": "Água-Marinha antes de falar em público",
+  "como_aplicar": "Segure uma água-marinha na mão esquerda 5 minutos antes de apresentações; respire pela garganta.",
+  "texto": "Água-Marinha antes de falar em público: Segure uma água-marinha na mão esquerda 5 minutos antes de apresentações; respire pela garganta.",
+  "grounding": {
+    "research_mtc_linha": 92,
+    "research_mtc_secao": "§2 Cristais por Chácra",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": false
+}

@@ -1,0 +1,29 @@
+{
+  "id": "odu-16-obe-oriquente-03",
+  "categoria": "oriquente",
+  "odu": "Obe (16)",
+  "orixa": "Todos (síntese)",
+  "elemento": "Fogo+Água+Terra+Ar",
+  "chacra_referente": [
+    "Coronário"
+  ],
+  "caminhos_afetados": [
+    11,
+    22,
+    33
+  ],
+  "camada_synthesis": [
+    "camada1_diagnostico",
+    "camada6_psicanalise"
+  ],
+  "padrao_orí": "quente",
+  "texto": "Mania de curar os outros sem ser chamado",
+  "grounding": {
+    "research_mtc_linha": 77,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos (Ori quente)",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.91,
+  "requires_professional_review": false
+}

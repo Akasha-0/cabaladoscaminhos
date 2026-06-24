@@ -1,0 +1,16 @@
+{
+  "id": "elemento-fogo-banho-01",
+  "categoria": "elemento_banho",
+  "elemento": "Fogo",
+  "nome_banho": "Banho de alecrim e canela para Fogo",
+  "modo_preparo": "Ferva 1 maço de alecrim fresco e 2 paus de canela em 2 litros de água por 10 minutos; coe e adicione à água morna do banho de imersão; use após conflitos ou em convalescença; tempo: 15-20 minutos.",
+  "texto": "Ferva 1 maço de alecrim fresco e 2 paus de canela em 2 litros de água por 10 minutos; coe e adicione à água morna do banho de imersão; use após conflitos ou em convalescença; tempo: 15-20 minutos.",
+  "grounding": {
+    "research_mtc_linha": 102,
+    "research_mtc_secao": "§3 Ervas Medicinais, Banhos e Chás por Elemento",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://www.embrapa.br"
+  },
+  "alucinacao_score": 0.91,
+  "requires_professional_review": false
+}

@@ -1,0 +1,22 @@
+{
+  "id": "pergunta-12-familia",
+  "categoria": "pergunta_clinica",
+  "pergunta_numero": 12,
+  "grupo": "Trauma Familiar",
+  "pergunta": "Existe alguém na sua linhagem que você carrega sem saber por quê?",
+  "texto": "Existe alguém na sua linhagem que você carrega sem saber por quê?",
+  "grounding": {
+    "research_np_linha": 110,
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão (Protocolo de Entrevista)",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url": "https://www.who.int/publications/i/item/9789241549790"
+  },
+  "alucinacao_score": 0.96,
+  "requires_professional_review": false,
+  "como_interpretar": "Resposta 'sim' (portador de carga familiar) → investigar se há esgotamento. Pode ser: 1) papel familiar consciente, 2) inversão hierárquica (filho cuidando de pai), 3) compulsão à repetição transgeracional. Acolher sem culpar.",
+  "fontes": [
+    "https://www.who.int/publications/i/item/9789241549790",
+    "https://pubmed.ncbi.nlm.nih.gov/22960583",
+    "https://www.ncbi.nlm.nih.gov/books/NBK207191/"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "chacra-5-laringeo-pratica-02",
+  "categoria": "chakra_pratica",
+  "chacra": "Laríngeo (Vishuddha)",
+  "chacra_numero": 5,
+  "tipo_pratica": "banho",
+  "nome_pratica": "Banho de eucalipto",
+  "como_aplicar": "Ferva 1 colher de folhas de eucalipto em 500ml de água; coe e adicione à água do banho; desobstrui respiração e voz.",
+  "texto": "Banho de eucalipto: Ferva 1 colher de folhas de eucalipto em 500ml de água; coe e adicione à água do banho; desobstrui respiração e voz.",
+  "grounding": {
+    "research_mtc_linha": 121,
+    "research_mtc_secao": "§3 Ervas Medicinais, Banhos e Chás por Elemento",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": false
+}

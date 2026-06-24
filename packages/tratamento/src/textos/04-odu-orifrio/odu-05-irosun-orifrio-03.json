@@ -1,0 +1,30 @@
+{
+  "id": "odu-05-irosun-orifrio-03",
+  "categoria": "orifrio",
+  "odu": "Irosun (5)",
+  "orixa": "Xangô/Ogum",
+  "elemento": "Fogo",
+  "chacra_referente": [
+    "Plexo Solar"
+  ],
+  "caminhos_afetados": [
+    5,
+    14,
+    19,
+    22
+  ],
+  "camada_synthesis": [
+    "camada1_diagnostico",
+    "camada6_psicanalise"
+  ],
+  "padrao_orí": "frio",
+  "texto": "Sensação de 'não ter força nem para começar'",
+  "grounding": {
+    "research_mtc_linha": 44,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos (Ori frio)",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.91,
+  "requires_professional_review": false
+}

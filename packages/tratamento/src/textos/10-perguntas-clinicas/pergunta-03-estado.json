@@ -1,0 +1,23 @@
+{
+  "id": "pergunta-03-estado",
+  "categoria": "pergunta_clinica",
+  "pergunta_numero": 3,
+  "grupo": "Estado Atual",
+  "pergunta": "Qual o nível de energia de 0 a 10 ao acordar, hoje?",
+  "texto": "Qual o nível de energia de 0 a 10 ao acordar, hoje?",
+  "grounding": {
+    "research_np_linha": 95,
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão (Protocolo de Entrevista)",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url": "https://www.who.int/publications/i/item/9789241549790"
+  },
+  "alucinacao_score": 0.96,
+  "requires_professional_review": false,
+  "como_interpretar": "Escala 0-10 simples. ≤3 = baixa energia (depressão, hipotireoidismo, anemias); 4-6 = média; ≥7 = alta ansiedade ou sobrecarga. Usar para acompanhar evolução ao longo das sessões.",
+  "fontes": [
+    "https://www.who.int/publications/i/item/9789241549790",
+    "https://www.cdc.gov/mentalhealth/stress-coping/index.html",
+    "https://www.apa.org/topics/stress/body",
+    "https://pubmed.ncbi.nlm.nih.gov/12431056"
+  ]
+}

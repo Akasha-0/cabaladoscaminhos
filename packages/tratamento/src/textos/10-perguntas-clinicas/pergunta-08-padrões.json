@@ -1,0 +1,22 @@
+{
+  "id": "pergunta-08-padrões",
+  "categoria": "pergunta_clinica",
+  "pergunta_numero": 8,
+  "grupo": "Padrões",
+  "pergunta": "Qual é o oposto que você mais se critica?",
+  "texto": "Qual é o oposto que você mais se critica?",
+  "grounding": {
+    "research_np_linha": 103,
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão (Protocolo de Entrevista)",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url": "https://www.who.int/publications/i/item/9789241549790"
+  },
+  "alucinacao_score": 0.96,
+  "requires_professional_review": false,
+  "como_interpretar": "Se a crítica oposta vem de pessoa significativa, pode indicar projeção de sombra (Jung). Se for genérica, pode ser autocrítica internalizada. Investigar se a pessoa vê algo da crítica em si.",
+  "fontes": [
+    "https://www.who.int/publications/i/item/9789241549790",
+    "https://en.wikipedia.org/wiki/Shadow_(psychology)",
+    "https://www.verywellmind.com/what-is-the-shadow-2795071"
+  ]
+}

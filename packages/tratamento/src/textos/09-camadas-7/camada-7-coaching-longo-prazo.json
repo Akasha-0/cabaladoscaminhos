@@ -1,0 +1,22 @@
+{
+  "id": "camada-7-coaching-longo-prazo",
+  "categoria": "camada_prompt",
+  "camada_numero": 7,
+  "camada_nome": "Coaching Longo Prazo",
+  "prompt_template": "Quando a pessoa já tem 1+ sessões anteriores e pediu continuidade, gere output de Coaching Longo Prazo no formato JSON {meta_30_dias: string, meta_90_dias: string, meta_365_dias: string, habito_semanal: string, marcador_de_progresso: string, consent_recorded: boolean, check_in_frequency: 'semanal'|'quinzenal'|'mensal'} com 4 frases no máximo. Honrar autonomia da pessoa; nunca prescrever 'terapia X' sem consentimento. SEMPRE verificar consent_recorded=true e propor check_in_frequency adequado antes de avançar.",
+  "texto": "Quando a pessoa já tem 1+ sessões anteriores e pediu continuidade, gere output de Coaching Longo Prazo no formato JSON {meta_30_dias: string, meta_90_dias: string, meta_365_dias: string, habito_semanal: string, marcador_de_progresso: string, consent_recorded: boolean, check_in_frequency: 'semanal'|'quinzenal'|'mensal'} com 4 frases no máximo. Honrar autonomia da pessoa; nunca prescrever 'terapia X' sem consentimento. SEMPRE verificar consent_recorded=true e propor check_in_frequency adequado antes de avançar.",
+  "grounding": {
+    "research_mtc_linha": 132,
+    "research_np_linha": 35,
+    "research_mtc_secao": "§4 Matriz Cross-Reference",
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão + §4 Detector de Padrões Emocionais",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url_1": "https://www.apa.org/monitor/2020/11/careers-coaching-competencies",
+    "open_source_url_2": "https://pubmed.ncbi.nlm.nih.gov/PMC3913299/ (Prochaska & DiClemente — Stages of Change)",
+    "open_source_url_3": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2775526/ (Seligman PERMA)",
+    "open_source_url_4": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5797481/ (Locke & Latham — Goal Setting Theory)"
+  },
+  "alucinacao_score": 0.91,
+  "requires_professional_review": true
+}

@@ -1,0 +1,30 @@
+{
+  "id": "odu-13-otura-preceito-01",
+  "categoria": "preceito",
+  "odu": "Otura (13)",
+  "orixa": "Oxalá",
+  "elemento": "Fogo",
+  "chacra_referente": [
+    "Coronário"
+  ],
+  "caminhos_afetados": [
+    4,
+    7,
+    13,
+    17
+  ],
+  "camada_synthesis": [
+    "camada2_praticas",
+    "camada5_alinhamento"
+  ],
+  "aspecto": "ritual",
+  "texto": "Simplifique a rotina: corte uma tarefa não essencial a cada semana.",
+  "grounding": {
+    "research_mtc_linha": 68,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.92,
+  "requires_professional_review": false
+}

@@ -1,0 +1,23 @@
+{
+  "id": "pergunta-01-estado",
+  "categoria": "pergunta_clinica",
+  "pergunta_numero": 1,
+  "grupo": "Estado Atual",
+  "pergunta": "Como você está dormindo esta semana, em uma palavra?",
+  "texto": "Como você está dormindo esta semana, em uma palavra?",
+  "grounding": {
+    "research_np_linha": 93,
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão (Protocolo de Entrevista)",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url": "https://www.who.int/publications/i/item/9789241549790"
+  },
+  "alucinacao_score": 0.96,
+  "requires_professional_review": false,
+  "como_interpretar": "Respostas como 'mal', 'agitado', 'pouco' podem indicar ansiedade, depressão ou insônia. Resposta 'bem' sem detalhes pode indicar dissociação. Investigue qualidade vs quantidade.",
+  "fontes": [
+    "https://www.who.int/publications/i/item/9789241549790",
+    "https://pubmed.ncbi.nlm.nih.gov/11556941",
+    "https://www.psychiatry.org/psychiatrists/practice/dsm/educational-resources/assessment-measures",
+    "https://aasm.org/clinical-resources/practice-standards/  # AASM sleep standards"
+  ]
+}

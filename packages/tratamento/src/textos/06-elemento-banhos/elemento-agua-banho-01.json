@@ -1,0 +1,16 @@
+{
+  "id": "elemento-agua-banho-01",
+  "categoria": "elemento_banho",
+  "elemento": "Água",
+  "nome_banho": "Banho de chá-de-rosa para Água",
+  "modo_preparo": "Prepare 1 litro de chá forte de rosa branca, coe e adicione à água morna do banho de imersão; use à noite, em momentos de mágoa ou antes do ciclo menstrual; tempo: 20 minutos.",
+  "texto": "Prepare 1 litro de chá forte de rosa branca, coe e adicione à água morna do banho de imersão; use à noite, em momentos de mágoa ou antes do ciclo menstrual; tempo: 20 minutos.",
+  "grounding": {
+    "research_mtc_linha": 108,
+    "research_mtc_secao": "§3 Ervas Medicinais, Banhos e Chás por Elemento",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://www.embrapa.br"
+  },
+  "alucinacao_score": 0.91,
+  "requires_professional_review": false
+}

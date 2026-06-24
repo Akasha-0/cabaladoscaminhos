@@ -1,0 +1,18 @@
+{
+  "id": "chacra-6-terceiro-olho-pratica-03",
+  "categoria": "chakra_pratica",
+  "chacra": "Terceiro Olho (Ajna)",
+  "chacra_numero": 6,
+  "tipo_pratica": "cristal",
+  "nome_pratica": "Fluorita no foco mental",
+  "como_aplicar": "Use uma fluorita no ambiente de estudo por 20 minutos antes de sessões que exigem discernimento.",
+  "texto": "Fluorita no foco mental: Use uma fluorita no ambiente de estudo por 20 minutos antes de sessões que exigem discernimento.",
+  "grounding": {
+    "research_mtc_linha": 93,
+    "research_mtc_secao": "§2 Cristais por Chácra",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": false
+}

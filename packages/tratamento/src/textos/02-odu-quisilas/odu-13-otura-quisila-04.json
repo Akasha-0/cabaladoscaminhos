@@ -1,0 +1,29 @@
+{
+  "id": "odu-13-otura-quisila-04",
+  "categoria": "quisila",
+  "odu": "Otura (13)",
+  "orixa": "Oxalá",
+  "elemento": "Fogo",
+  "chacra_referente": [
+    "Coronário"
+  ],
+  "caminhos_afetados": [
+    4,
+    7,
+    13,
+    17
+  ],
+  "camada_synthesis": [
+    "camada4_quisilas"
+  ],
+  "aspecto": "ritmo",
+  "texto": "Evite ruído na rotina; o silêncio é o altar de Otura.",
+  "grounding": {
+    "research_mtc_linha": 68,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.93,
+  "requires_professional_review": false
+}

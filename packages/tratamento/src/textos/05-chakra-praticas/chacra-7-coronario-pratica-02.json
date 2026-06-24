@@ -1,0 +1,18 @@
+{
+  "id": "chacra-7-coronario-pratica-02",
+  "categoria": "chakra_pratica",
+  "chacra": "Coronário (Sahasrara)",
+  "chacra_numero": 7,
+  "tipo_pratica": "banho",
+  "nome_pratica": "Banho de alecrim fresco",
+  "como_aplicar": "Ferva 1 maço pequeno de alecrim fresco em 1 litro de água por 10 minutos; coe e adicione ao banho de imersão; 'clareia a coroa'.",
+  "texto": "Banho de alecrim fresco: Ferva 1 maço pequeno de alecrim fresco em 1 litro de água por 10 minutos; coe e adicione ao banho de imersão; 'clareia a coroa'.",
+  "grounding": {
+    "research_mtc_linha": 103,
+    "research_mtc_secao": "§3 Ervas Medicinais, Banhos e Chás por Elemento",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": false
+}

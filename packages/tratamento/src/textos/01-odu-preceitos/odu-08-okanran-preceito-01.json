@@ -1,0 +1,30 @@
+{
+  "id": "odu-08-okanran-preceito-01",
+  "categoria": "preceito",
+  "odu": "Okanran (8)",
+  "orixa": "Obaluaiê/Omolu",
+  "elemento": "Terra",
+  "chacra_referente": [
+    "Raiz"
+  ],
+  "caminhos_afetados": [
+    4,
+    6,
+    13,
+    16
+  ],
+  "camada_synthesis": [
+    "camada2_praticas",
+    "camada5_alinhamento"
+  ],
+  "aspecto": "ritual",
+  "texto": "Agende check-ups anuais e anote os resultados em um caderno só para isso.",
+  "grounding": {
+    "research_mtc_linha": 53,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.92,
+  "requires_professional_review": false
+}

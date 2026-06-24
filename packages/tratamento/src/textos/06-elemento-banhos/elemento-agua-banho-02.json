@@ -1,0 +1,16 @@
+{
+  "id": "elemento-agua-banho-02",
+  "categoria": "elemento_banho",
+  "elemento": "Água",
+  "nome_banho": "Banho de lavanda e camomila para Água",
+  "modo_preparo": "Misture 2 colheres de lavanda seca e 2 de camomila em 1 litro de água fervente por 10 minutos; coe e adicione ao banho morno; calmante, reconectante; ideal para insônia leve.",
+  "texto": "Misture 2 colheres de lavanda seca e 2 de camomila em 1 litro de água fervente por 10 minutos; coe e adicione ao banho morno; calmante, reconectante; ideal para insônia leve.",
+  "grounding": {
+    "research_mtc_linha": 108,
+    "research_mtc_secao": "§3 Ervas Medicinais, Banhos e Chás por Elemento",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://www.embrapa.br"
+  },
+  "alucinacao_score": 0.91,
+  "requires_professional_review": false
+}

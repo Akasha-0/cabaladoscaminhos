@@ -1,0 +1,23 @@
+{
+  "id": "pergunta-02-estado",
+  "categoria": "pergunta_clinica",
+  "pergunta_numero": 2,
+  "grupo": "Estado Atual",
+  "pergunta": "Onde no corpo você sente a emoção principal desta semana?",
+  "texto": "Onde no corpo você sente a emoção principal desta semana?",
+  "grounding": {
+    "research_np_linha": 94,
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão (Protocolo de Entrevista)",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url": "https://www.who.int/publications/i/item/9789241549790"
+  },
+  "alucinacao_score": 0.96,
+  "requires_professional_review": true,
+  "como_interpretar": "Se 'não sinto nada' → sinal de dissociação. Se 'tudo dói' → sobrecarga sensorial (ansiedade/estresse). Escaneamento corporal é prática terapêutica padrão (somatic experiencing).",
+  "fontes": [
+    "https://www.who.int/publications/i/item/9789241549790",
+    "https://www.somaticsexperiencing.com/research/",
+    "https://pubmed.ncbi.nlm.nih.gov/22403935",
+    "https://www.polivagaltheory.com/research/"
+  ]
+}

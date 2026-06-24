@@ -1,0 +1,18 @@
+{
+  "id": "chacra-2-sacral-pratica-02",
+  "categoria": "chakra_pratica",
+  "chacra": "Sacral (Svadhisthana)",
+  "chacra_numero": 2,
+  "tipo_pratica": "banho",
+  "nome_pratica": "Banho de camomila e lavanda",
+  "como_aplicar": "Misture 2 colheres de camomila e 1 de lavanda em 1 litro de água fervente; coe e adicione à água morna do banho; use à noite.",
+  "texto": "Banho de camomila e lavanda: Misture 2 colheres de camomila e 1 de lavanda em 1 litro de água fervente; coe e adicione à água morna do banho; use à noite.",
+  "grounding": {
+    "research_mtc_linha": 109,
+    "research_mtc_secao": "§3 Ervas Medicinais, Banhos e Chás por Elemento",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": false
+}

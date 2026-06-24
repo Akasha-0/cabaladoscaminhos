@@ -1,0 +1,18 @@
+{
+  "id": "chacra-1-raiz-pratica-03",
+  "categoria": "chakra_pratica",
+  "chacra": "Raiz (Muladhara)",
+  "chacra_numero": 1,
+  "tipo_pratica": "erva",
+  "nome_pratica": "Chá de boldo-do-chile",
+  "como_aplicar": "Tome 1 xícara de chá de boldo após almoço pesado; apoia a digestão emocional e a firmeza da raiz.",
+  "texto": "Chá de boldo-do-chile: Tome 1 xícara de chá de boldo após almoço pesado; apoia a digestão emocional e a firmeza da raiz.",
+  "grounding": {
+    "research_mtc_linha": 115,
+    "research_mtc_secao": "§3 Ervas Medicinais, Banhos e Chás por Elemento",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": true
+}

@@ -1,0 +1,22 @@
+{
+  "id": "pergunta-07-padrões",
+  "categoria": "pergunta_clinica",
+  "pergunta_numero": 7,
+  "grupo": "Padrões",
+  "pergunta": "Em que hora do dia você é mais você mesmo?",
+  "texto": "Em que hora do dia você é mais você mesmo?",
+  "grounding": {
+    "research_np_linha": 102,
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão (Protocolo de Entrevista)",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url": "https://www.who.int/publications/i/item/9789241549790"
+  },
+  "alucinacao_score": 0.96,
+  "requires_professional_review": false,
+  "como_interpretar": "Resposta 'manhã' = cronótipo matutino (geralmente melancólico segundo tradição). 'Tarde/noite' = vespertino (sanguíneo/colérico). Padrão pode correlacionar com Odu dominante (Pilar 4) e caminho de vida (Pilar 1).",
+  "fontes": [
+    "https://www.who.int/publications/i/item/9789241549790",
+    "https://en.wikipedia.org/wiki/Chronotype",
+    "https://pubmed.ncbi.nlm.nih.gov/26446330"
+  ]
+}

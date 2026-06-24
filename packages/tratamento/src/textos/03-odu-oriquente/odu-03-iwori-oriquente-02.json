@@ -1,0 +1,30 @@
+{
+  "id": "odu-03-iwori-oriquente-02",
+  "categoria": "oriquente",
+  "odu": "Iwori (3)",
+  "orixa": "Xangô",
+  "elemento": "Fogo",
+  "chacra_referente": [
+    "Plexo Solar"
+  ],
+  "caminhos_afetados": [
+    3,
+    14,
+    15,
+    21
+  ],
+  "camada_synthesis": [
+    "camada1_diagnostico",
+    "camada6_psicanalise"
+  ],
+  "padrao_orí": "quente",
+  "texto": "Discussão por princípios no café",
+  "grounding": {
+    "research_mtc_linha": 38,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos (Ori quente)",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.91,
+  "requires_professional_review": false
+}
