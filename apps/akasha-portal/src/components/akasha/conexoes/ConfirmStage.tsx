@@ -1,5 +1,5 @@
 'use client';
-import { Loader, Heart } from 'lucide-react';
+import { Loader, Heart, ShieldAlert } from 'lucide-react';
 import { ProfileCard } from './ConexaoComponents';
 import { Stage } from '../ConexoesClient';
 
@@ -56,6 +56,36 @@ export function ConfirmStage({
       </div>
 
       {error && <div className="text-sm text-[#f87171]">{error}</div>}
+
+      {/*
+        Disclaimer LGPD Art. 37 — tratamento de dados de terceiros.
+
+        Ao adicionar uma Conexão, o usuário declara ter consentimento da
+        outra pessoa para que dados de mapa astrológico/cabalístico
+        sejam armazenados e processados. Akasha NÃO verifica esse
+        consentimento — é responsabilidade do titular (usuário que
+        adicionou) obter autorização prévia da pessoa analisada.
+
+        Este aviso é obrigatório por design (LGPD Art. 37 + boas
+        práticas de privacy by design) e fica imediatamente antes
+        do botão de confirmação, garantindo leitura antes da ação.
+      */}
+      <div
+        role="note"
+        aria-label="Aviso de consentimento de terceiros"
+        className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 flex gap-3 items-start"
+      >
+        <ShieldAlert
+          size={18}
+          className="text-amber-400 flex-shrink-0 mt-0.5"
+          aria-hidden="true"
+        />
+        <p className="text-xs text-amber-200/90 leading-relaxed italic">
+          Ao adicionar esta conexão, você declara ter consentimento da
+          outra pessoa para compartilhar dados do mapa astrológico com
+          ela. Akasha não verifica este consentimento. (LGPD Art. 37)
+        </p>
+      </div>
 
       <button
         onClick={onExecuteAnalysis}
