@@ -54,8 +54,8 @@ const mockTantra: MandalaData['tantra'] = {
 describe('KabalaInfoPanel', () => {
   it('renders title and subtitle', () => {
     render(<KabalaInfoPanel kabala={mockKabala} lpMeaning="Caminho do Criador" />);
-    expect(screen.getByText('Número de Vida — Camada 2')).toBeTruthy();
-    expect(screen.getByText('Teosófico')).toBeTruthy();
+    expect(screen.getByText('Número de Vida — Geometria Sagrada')).toBeTruthy();
+    expect(screen.getByText('Geometria Interna · Camada 2')).toBeTruthy();
   });
 
   it('renders life path value', () => {
@@ -65,15 +65,15 @@ describe('KabalaInfoPanel', () => {
 
   it('renders expression and motivation rows', () => {
     render(<KabalaInfoPanel kabala={mockKabala} lpMeaning={null} />);
-    expect(screen.getByText('Caminho de Expressão')).toBeTruthy();
+    expect(screen.getByText('Expressão — como você se manifesta')).toBeTruthy();
     expect(screen.getByText('5')).toBeTruthy();
-    expect(screen.getByText('Motivação')).toBeTruthy();
+    expect(screen.getByText('Motivação — o que move suas escolhas')).toBeTruthy();
     expect(screen.getByText('7')).toBeTruthy();
   });
 
   it('shows master badge when lifePathMaster is true', () => {
     render(<KabalaInfoPanel kabala={mockKabalaMaster} lpMeaning={null} />);
-    expect(screen.getByText('Número Mestre')).toBeTruthy();
+    expect(screen.getByText(/Mestre/)).toBeTruthy();
   });
 
   it('shows life path meaning when provided', () => {
@@ -83,25 +83,25 @@ describe('KabalaInfoPanel', () => {
 
   it('shows advanced details when showAdvanced is toggled', () => {
     render(<KabalaInfoPanel kabala={mockKabala} lpMeaning={null} />);
-    const btn = screen.getByRole('button', { name: /Detalhes Avançados/i });
+    const btn = screen.getByRole('button', { name: /detalhes avançados/i });
     fireEvent.click(btn);
     // Should show impression, mission etc.
-    expect(screen.getByText('Impressão')).toBeTruthy();
-    expect(screen.getByText('Missão')).toBeTruthy();
+    expect(screen.getByText('Impressão — como os outros te percebem')).toBeTruthy();
+    expect(screen.getByText('Missão — seu propósito nesta encarnação')).toBeTruthy();
   });
 
   it('hides advanced details initially', () => {
     render(<KabalaInfoPanel kabala={mockKabala} lpMeaning={null} />);
-    expect(screen.queryByText('Impressão')).toBeNull();
+    expect(screen.queryByText('Impressão — como os outros te percebem')).toBeNull();
   });
 
   it('toggles advanced details off when clicked again', () => {
     render(<KabalaInfoPanel kabala={mockKabala} lpMeaning={null} />);
-    const btn = screen.getByRole('button', { name: /Detalhes Avançados/i });
+    const btn = screen.getByRole('button', { name: /detalhes avançados/i });
     fireEvent.click(btn);
-    expect(screen.getByText('Impressão')).toBeTruthy();
+    expect(screen.getByText('Impressão — como os outros te percebem')).toBeTruthy();
     fireEvent.click(btn);
-    expect(screen.queryByText('Impressão')).toBeNull();
+    expect(screen.queryByText('Impressão — como os outros te percebem')).toBeNull();
   });
 
   it('handles null personalYear/personalMonth/personalDay', () => {
@@ -113,7 +113,7 @@ describe('KabalaInfoPanel', () => {
     };
     render(<KabalaInfoPanel kabala={nulls} lpMeaning={null} />);
     // Should render without crashing — rows with null are hidden
-    expect(screen.getByText('Número de Vida — Camada 2')).toBeTruthy();
+    expect(screen.getByText('Número de Vida — Geometria Sagrada')).toBeTruthy();
   });
 });
 
@@ -170,11 +170,11 @@ describe('TantricBodyInfoPanel', () => {
     render(
       <TantricBodyInfoPanel tantra={mockTantra} inactiveBodies={[]} />
     );
-    const btn = screen.getByRole('button', { name: /Koshas Védicas/i });
+    const btn = screen.getByRole('button', { name: /detalhes avançados/i });
     fireEvent.click(btn);
-    // 5 koshas should be visible
+    // 5 koshas should be visible (PT-BR names from KOSHA_PT)
     expect(screen.getByText('Físico')).toBeTruthy();
-    expect(screen.getByText('Energético')).toBeTruthy();
+    expect(screen.getByText('Vital')).toBeTruthy();
     expect(screen.getByText('Mental')).toBeTruthy();
   });
 
@@ -189,7 +189,7 @@ describe('TantricBodyInfoPanel', () => {
     render(
       <TantricBodyInfoPanel tantra={mockTantra} inactiveBodies={[]} />
     );
-    const btn = screen.getByRole('button', { name: /Koshas Védicas/i });
+    const btn = screen.getByRole('button', { name: /detalhes avançados/i });
     fireEvent.click(btn);
     expect(screen.getByText('Físico')).toBeTruthy();
     fireEvent.click(btn);
