@@ -459,11 +459,26 @@
       "heading": "Para onde sua curiosidade puxa?",
       "subtitle": "Toque num pilar para abrir a camada correspondente no seu mapa.",
       "pilar": {
-        "cabala": { "title": "Cabala", "subtitle": "Caminho de vida" },
-        "astrologia": { "title": "Astrologia", "subtitle": "Ascendente + trânsitos" },
-        "tantra": { "title": "Tantra", "subtitle": "Corpos tântricos" },
-        "odu": { "title": "Odu", "subtitle": "Linha ancestral" },
-        "iching": { "title": "I Ching", "subtitle": "Hexagrama do dia" }
+        "cabala": {
+          "title": "Cabala",
+          "subtitle": "Caminho de vida"
+        },
+        "astrologia": {
+          "title": "Astrologia",
+          "subtitle": "Ascendente + trânsitos"
+        },
+        "tantra": {
+          "title": "Tantra",
+          "subtitle": "Corpos tântricos"
+        },
+        "odu": {
+          "title": "Odu",
+          "subtitle": "Linha ancestral"
+        },
+        "iching": {
+          "title": "I Ching",
+          "subtitle": "Hexagrama do dia"
+        }
       }
     },
     "loading": "carregando seu mapa…"

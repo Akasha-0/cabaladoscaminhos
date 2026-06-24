@@ -103,7 +103,17 @@
     "titulo": "Energetic Diary",
     "hoje": "Today",
     "amanha": "Tomorrow",
-    "ritual": "Ritual",
+    "ritual": {
+      "microRitual": "Daily Micro-Ritual",
+      "duracao": "2 min",
+      "porQueEsteRitual": "Why this ritual?",
+      "explicaContaCantiga": "The Count-Chant anchors the day's intention through sacred repetition. Each count is a mantra; each chant is an affirmation of your truth.",
+      "explicaRespiracao": "The Breath of Heaven channels your Principal Pillar's celestial energy, purifying your spiritual reception channels.",
+      "explicaVarredura": "The Sweep of 11 energetically removes blockages from the 11 main channels before any spiritual work.",
+      "explicaOracao": "The Prayer to Ori honors your inner source of wisdom before consulting the oracle.",
+      "explicaIching": "I Ching offers insight through hexagrams. Meditate on your question before receiving guidance.",
+      "consultarOraculo": "Consult the Oracle"
+    },
     "alerta": "Alert",
     "clima": "Day Climate",
     "significado": {
@@ -118,17 +128,6 @@
         "odu": "Odu",
         "iching": "I Ching"
       }
-    },
-    "ritual": {
-      "microRitual": "Daily Micro-Ritual",
-      "duracao": "2 min",
-      "porQueEsteRitual": "Why this ritual?",
-      "explicaContaCantiga": "The Count-Chant anchors the day's intention through sacred repetition. Each count is a mantra; each chant is an affirmation of your truth.",
-      "explicaRespiracao": "The Breath of Heaven channels your Principal Pillar's celestial energy, purifying your spiritual reception channels.",
-      "explicaVarredura": "The Sweep of 11 energetically removes blockages from the 11 main channels before any spiritual work.",
-      "explicaOracao": "The Prayer to Ori honors your inner source of wisdom before consulting the oracle.",
-      "explicaIching": "I Ching offers insight through hexagrams. Meditate on your question before receiving guidance.",
-      "consultarOraculo": "Consult the Oracle"
     },
     "areas": {
       "titulo": "8 Life Areas",
@@ -205,19 +204,25 @@
       "heading": "How are you today?",
       "skip": "Skip for now"
     },
-    "centrado": { "fallback": "Your map is silent today." },
+    "centrado": {
+      "fallback": "Your map is silent today."
+    },
     "ansioso": {
       "startBreath": "Start breathing",
       "phraseFallback": "You don't need to solve anything right now."
     },
-    "perdido": { "phraseFallback": "When there's no direction, start with the body." },
-    "curioso": { "heading": "Where does your curiosity pull?" },
+    "perdido": {
+      "phraseFallback": "When there's no direction, start with the body."
+    },
+    "curioso": {
+      "heading": "Where does your curiosity pull?"
+    },
     "loading": "loading your map…"
   },
   "mentor": {
     "emotion": {
       "ansioso": "When you're anxious, I can suggest a breathing practice + the code of the day.",
-      "perdido": "When you're feeling lost, I can correlate I Ching with your map to illuminate paths.",
+      "perdido": "When you feel lost, I can correlate I Ching with your map to illuminate paths.",
       "curioso": "When you want to explore, I can list the tools I have available.",
       "centrado": ""
     },
@@ -236,7 +241,7 @@
   },
   "pwa": {
     "install": {
-      "title": "Install Akasha System",
+      "title": "Install Sistema Akasha",
       "subtitle": "Quick access on your phone, works offline",
       "install": "Install",
       "dismiss": "Not now",

@@ -459,42 +459,57 @@
       "heading": "Where does your curiosity pull?",
       "subtitle": "Tap a pillar to open its layer on your map.",
       "pilar": {
-        "cabala": { "title": "Kabbalah", "subtitle": "Life path" },
-        "astrologia": { "title": "Astrology", "subtitle": "Ascendant + transits" },
-        "tantra": { "title": "Tantra", "subtitle": "Tantric bodies" },
-        "odu": { "title": "Odu", "subtitle": "Ancestral line" },
-        "iching": { "title": "I Ching", "subtitle": "Hexagram of the day" }
-              }
-            },
-            "loading": "loading your map…"
-          },
-          "mentor": {
-            "emotion": {
-              "ansioso": "When you're anxious, I can suggest a breathing practice + the code of the day.",
-              "perdido": "When you're feeling lost, I can correlate I Ching with your map to illuminate paths.",
-              "curioso": "When you want to explore, I can list the tools I have available.",
-              "centrado": ""
-            },
-            "dispatching": "Looking for insights for you...",
-            "toolInsights": {
-              "label": "Insights for {emotion} state"
-            }
-          },
-          "mcp": {
-            "health": {
-              "status": "MCP operational"
-            },
-            "tools": {
-              "empty": "No tools registered yet"
-            }
-          },
-          "pwa": {
-            "install": {
-              "title": "Install Akasha System",
-              "subtitle": "Quick access on your phone, works offline",
-              "install": "Install",
-              "dismiss": "Not now",
-              "installed": "Installed ✓"
-            }
-          }
+        "cabala": {
+          "title": "Kabbalah",
+          "subtitle": "Life path"
+        },
+        "astrologia": {
+          "title": "Astrology",
+          "subtitle": "Ascendant + transits"
+        },
+        "tantra": {
+          "title": "Tantra",
+          "subtitle": "Tantric bodies"
+        },
+        "odu": {
+          "title": "Odu",
+          "subtitle": "Ancestral line"
+        },
+        "iching": {
+          "title": "I Ching",
+          "subtitle": "Hexagram of the day"
         }
+      }
+    },
+    "loading": "loading your map…"
+  },
+  "mentor": {
+    "emotion": {
+      "ansioso": "When you're anxious, I can suggest a breathing practice + the code of the day.",
+      "perdido": "When you feel lost, I can correlate I Ching with your map to illuminate paths.",
+      "curioso": "When you want to explore, I can list the tools I have available.",
+      "centrado": ""
+    },
+    "dispatching": "Looking for insights for you...",
+    "toolInsights": {
+      "label": "Insights for {emotion} state"
+    }
+  },
+  "mcp": {
+    "health": {
+      "status": "MCP operational"
+    },
+    "tools": {
+      "empty": "No tools registered yet"
+    }
+  },
+  "pwa": {
+    "install": {
+      "title": "Install Sistema Akasha",
+      "subtitle": "Quick access on your phone, works offline",
+      "install": "Install",
+      "dismiss": "Not now",
+      "installed": "Installed ✓"
+    }
+  }
+}

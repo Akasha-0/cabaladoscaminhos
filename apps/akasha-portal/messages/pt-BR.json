@@ -103,7 +103,17 @@
     "titulo": "Diário Energético",
     "hoje": "Hoje",
     "amanha": "Amanhã",
-    "ritual": "Ritual",
+    "ritual": {
+      "microRitual": "Micro-Ritual do Dia",
+      "duracao": "2 min",
+      "porQueEsteRitual": "Por que este ritual?",
+      "explicaContaCantiga": "A Conta-Cantiga ancora a intenção do dia através da repetição sagrada. Cada conta é um mantra; cada canto é uma afirmação da sua verdade.",
+      "explicaRespiracao": "A Respiração do Céu canaliza a energia celestial do seu Pilar Principal, purificando os canais de recebimento espiritual.",
+      "explicaVarredura": "A Varredura dos 11 remove energeticamente os bloqueios dos 11 canais principais antes de qualquer trabalho espiritual.",
+      "explicaOracao": "A Oração ao Ori honra a sua fonte interna de sabedoria antes de consultar o oráculo.",
+      "explicaIching": "O I Ching oferece insight através de hexagramas. Medite na pergunta antes de receber a orientação.",
+      "consultarOraculo": "Consultar o Oráculo"
+    },
     "alerta": "Alerta",
     "clima": "Clima do dia",
     "significado": {
@@ -118,17 +128,6 @@
         "odu": "Odu",
         "iching": "I Ching"
       }
-    },
-    "ritual": {
-      "microRitual": "Micro-Ritual do Dia",
-      "duracao": "2 min",
-      "porQueEsteRitual": "Por que este ritual?",
-      "explicaContaCantiga": "A Conta-Cantiga ancora a intenção do dia através da repetição sagrada. Cada conta é um mantra; cada canto é uma afirmação da sua verdade.",
-      "explicaRespiracao": "A Respiração do Céu canaliza a energia celestial do seu Pilar Principal, purificando os canais de recebimento espiritual.",
-      "explicaVarredura": "A Varredura dos 11 remove energeticamente os bloqueios dos 11 canais principais antes de qualquer trabalho espiritual.",
-      "explicaOracao": "A Oração ao Ori honra a sua fonte interna de sabedoria antes de consultar o oráculo.",
-      "explicaIching": "O I Ching oferece insight através de hexagramas. Medite na pergunta antes de receber a orientação.",
-      "consultarOraculo": "Consultar o Oráculo"
     },
     "areas": {
       "titulo": "8 Áreas da Vida",
@@ -205,13 +204,19 @@
       "heading": "Como você está hoje?",
       "skip": "Pular por agora"
     },
-    "centrado": { "fallback": "Seu mapa está silencioso hoje." },
+    "centrado": {
+      "fallback": "Seu mapa está silencioso hoje."
+    },
     "ansioso": {
       "startBreath": "Começar respiração",
       "phraseFallback": "Você não precisa resolver nada agora."
     },
-    "perdido": { "phraseFallback": "Quando não há direção, comece pelo corpo." },
-    "curioso": { "heading": "Para onde sua curiosidade puxa?" },
+    "perdido": {
+      "phraseFallback": "Quando não há direção, comece pelo corpo."
+    },
+    "curioso": {
+      "heading": "Para onde sua curiosidade puxa?"
+    },
     "loading": "carregando seu mapa…"
   },
   "mentor": {
