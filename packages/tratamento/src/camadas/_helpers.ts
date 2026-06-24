@@ -52,6 +52,11 @@ export function recordParaSource(rec: TextRecord, relPath?: string): TextSource 
     id: rec.id,
     linha,
     conteudo,
+    // Wave 7.4 A.2: surface arquetipo_jung + estilo_terapeutico quando existirem
+    // (campos opcionais em TextRecord → opcionais em TextSource → renderizados
+    // como badges no CamadaCard se a camada os usar)
+    arquetipo_jung: rec.arquetipo_jung,
+    estilo_terapeutico: rec.estilo_terapeutico,
   };
 }
 

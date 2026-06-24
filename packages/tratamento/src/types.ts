@@ -115,6 +115,10 @@ export interface TextSource {
   linha: number | null;
   /** Conteúdo-fonte PT-BR (1-3 frases) usado pelo motor. */
   conteudo: string;
+  /** Wave 7.4 A.2 — Metadados psicanalíticos opcionais para Camada 6 (psicanálise). */
+  arquetipo_jung?: string;
+  /** Wave 7.4 A.2 — Estilo terapêutico recomendado (ex: 'psicanalise', 'gestalt', 'TCC'). */
+  estilo_terapeutico?: string;
 }
 
 // ─── Camada (saída de cada uma das 7 camadas) ────────────────────────────────

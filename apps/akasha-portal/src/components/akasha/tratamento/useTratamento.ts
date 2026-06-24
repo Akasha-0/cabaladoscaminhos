@@ -2,12 +2,17 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
-export interface FonteRef {
+export type FonteRef = {
   id?: string;
   path?: string;
   linha?: number;
   conteudo?: string;
-}
+  /** Wave 7.4 A.2 — Metadados psicanalíticos opcionais exibidos como badges
+   * no CamadaCard (camada 6 - psicanálise). */
+  arquetipo_jung?: string;
+  /** Wave 7.4 A.2 — Estilo terapêutico recomendado pela fonte (ex: 'psicanalise'). */
+  estilo_terapeutico?: string;
+};
 
 export interface CamadaResultado {
   id: string;
