@@ -39,7 +39,7 @@ function pilarInputCompleto(): PilarInput {
       orixa: 'Oxalá',
     },
     iching: { hexagrama_natal: 1, hexagrama_dia: 1 },
-    pilar6: { tipo: 'Manifestador', estrategia: 'Informar', autoridade: 'Emocional' },
+    pilar6: { tipo: 'iniciador_aberto', estrategia: 'Informar', autoridade: 'Emocional' },
     pilar7: { estagioAtual: 'dom' },
     intencao: 'Quero mais energia no trabalho e melhorar minha saúde do sono.',
     sinais_clinicos: ['mal', '3+ vezes'],
