@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * PwaInstallPrompt — Wave 9.4 polish
+ * PwaInstallPrompt — Wave 9.4 + Wave 10.5 polish
  *
  * Minimal bottom-sheet UI that surfaces the native PWA install prompt.
  * Listens for the `beforeinstallprompt` event, captures the deferred
@@ -12,12 +12,23 @@
  *   - "Agora não" → records the dismissal in localStorage with a
  *     7-day cooldown so we don't nag the user on every visit.
  *
+ * Wave 10.5 changes (Subagente 5):
+ *   - 30s minimum delay before the prompt can show (avoids interrupting
+ *     users on first paint; gives them time to explore the app).
+ *   - More direct copy: "Instale para acesso rápido" + one-line reason
+ *     "Abre em 1 toque, funciona sem internet" instead of the older,
+ *     more abstract "Sistema Akasha / Acesso rápido no seu celular".
+ *   - State machine: 'idle' → wait 30s → 'available'. If user lands on
+ *     the page via deep-link / deeplink-share we don't want to bombard
+ *     them with install UI in the first 5 seconds.
+ *
  * The component renders NOTHING unless:
  *   - the browser has fired `beforeinstallprompt` (only happens when
  *     the PWA is installable — manifest + SW + start_url),
  *   - AND the user hasn't dismissed the prompt in the last 7 days,
  *   - AND the app isn't already running as an installed PWA
- *     (`display-mode: standalone` from window.matchMedia).
+ *     (`display-mode: standalone` from window.matchMedia),
+ *   - AND at least MIN_DELAY_MS has elapsed since mount.
  *
  * Why a custom bottom-sheet instead of a shadcn Sheet/Dialog?
  *   - The Sheet primitive is overkill — we only ever show ONE thing
@@ -38,7 +49,21 @@ import { useCallback, useEffect, useState } from 'react';
 const DISMISS_KEY = 'akasha.pwa.install.dismissedAt';
 const DISMISS_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
-type InstallState = 'idle' | 'available' | 'installed' | 'dismissed' | 'unsupported';
+/**
+ * Wave 10.5: minimum delay before the install prompt can appear.
+ * 30s is a sweet spot — long enough for the user to orient themselves
+ * in the app, short enough that they don't forget about it before
+ * closing the tab.
+ */
+export const PWA_INSTALL_MIN_DELAY_MS = 30 * 1000; // 30 seconds
+
+type InstallState =
+  | 'idle'
+  | 'delayed' // waiting for the 30s delay
+  | 'available'
+  | 'installed'
+  | 'dismissed'
+  | 'unsupported';
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -83,6 +108,9 @@ export function useInstallPrompt() {
   const [state, setState] = useState<InstallState>('idle');
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
 
+  // Wave 10.5: gate the prompt behind a 30s timer. Without this, the
+  // prompt can flash during the initial paint, before the user has even
+  // scrolled past the hero.
   useEffect(() => {
     if (typeof window === 'undefined') return;
     if (isRunningStandalone()) {
@@ -93,10 +121,21 @@ export function useInstallPrompt() {
       setState('dismissed');
       return;
     }
-    // Some browsers don't fire beforeinstallprompt (Firefox desktop, etc.).
-    // We optimistically mark the state 'available' when we know the manifest
-    // is in place — the deferred prompt will follow.
-    setState('available');
+    setState('delayed');
+    const timeoutId = window.setTimeout(() => {
+      // Re-check at the moment of expiration — user could have installed
+      // or dismissed during the wait.
+      if (isRunningStandalone()) {
+        setState('installed');
+      } else if (isDismissed()) {
+        setState('dismissed');
+      } else {
+        setState('available');
+      }
+    }, PWA_INSTALL_MIN_DELAY_MS);
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
   }, []);
 
   useEffect(() => {
@@ -105,7 +144,9 @@ export function useInstallPrompt() {
       // Prevent the browser's default mini-infobar on Android Chrome.
       event.preventDefault();
       setDeferredPrompt(event as BeforeInstallPromptEvent);
-      if (!isDismissed() && !isRunningStandalone()) {
+      // Only flip to 'available' if the delay has already elapsed
+      // (otherwise the timer will handle the transition).
+      if (!isDismissed() && !isRunningStandalone() && state !== 'delayed') {
         setState('available');
       }
     };
@@ -119,7 +160,7 @@ export function useInstallPrompt() {
       window.removeEventListener('beforeinstallprompt', handler);
       window.removeEventListener('appinstalled', installedHandler);
     };
-  }, []);
+  }, [state]);
 
   const prompt = useCallback(async () => {
     if (!deferredPrompt) return false;
@@ -151,6 +192,10 @@ export function useInstallPrompt() {
 export function PwaInstallPrompt() {
   const { state, prompt, dismiss, hasDeferredPrompt } = useInstallPrompt();
 
+  // Wave 10.5: only render once the 30s delay has elapsed AND a real
+  // deferredPrompt is in hand. Before that, stay invisible — we don't
+  // want a placeholder "Install Akasha" bar with a non-functional
+  // button flashing on first paint.
   if (state !== 'available' || !hasDeferredPrompt) {
     return null;
   }
@@ -161,8 +206,12 @@ export function PwaInstallPrompt() {
       aria-labelledby="pwa-install-title"
       aria-describedby="pwa-install-subtitle"
       data-testid="pwa-install-prompt"
-      className="fixed bottom-4 left-4 right-4 z-40 mx-auto max-w-md rounded-2xl border border-white/15 p-4 shadow-2xl backdrop-blur-md"
+      className="fixed left-4 right-4 z-40 mx-auto max-w-md rounded-2xl border border-white/15 p-4 shadow-2xl backdrop-blur-md"
       style={{
+        // Wave 10.5: anchor to the BottomNav so the install bar lives
+        // just above the persistent mobile nav (instead of overlapping
+        // content at the very bottom of the viewport).
+        bottom: 'calc(72px + env(safe-area-inset-bottom, 0px))',
         background:
           'linear-gradient(145deg, rgba(28,28,30,0.96) 0%, rgba(20,20,22,0.98) 100%)',
       }}
@@ -180,17 +229,18 @@ export function PwaInstallPrompt() {
           <Smartphone size={18} className="text-violet-200" />
         </div>
         <div className="flex-1 min-w-0">
+          {/* Wave 10.5: more direct, action-oriented copy. */}
           <p
             id="pwa-install-title"
             className="text-sm font-bold text-white leading-snug"
           >
-            Instalar Sistema Akasha
+            Instale para acesso rápido
           </p>
           <p
             id="pwa-install-subtitle"
             className="text-xs text-white/65 leading-relaxed mt-1"
           >
-            Acesso rápido no seu celular, funciona offline
+            Abre em 1 toque, funciona sem internet.
           </p>
         </div>
         <button
@@ -210,7 +260,7 @@ export function PwaInstallPrompt() {
           onClick={() => {
             void prompt();
           }}
-          aria-label="Instalar"
+          aria-label="Instalar agora"
           className="flex-1 rounded-xl px-4 py-2.5 text-sm font-semibold text-white/95 transition-transform active:scale-[0.98] flex items-center justify-center gap-2"
           style={{
             background:
@@ -220,7 +270,7 @@ export function PwaInstallPrompt() {
           data-testid="pwa-install-button"
         >
           <Download size={14} aria-hidden="true" />
-          Instalar
+          Instalar agora
         </button>
         <button
           type="button"
