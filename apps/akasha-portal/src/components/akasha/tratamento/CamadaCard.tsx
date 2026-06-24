@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { useTranslations } from '@/i18n';
+import { useTranslation } from '@/i18n';
 import type { CamadaResultado, FonteRef } from './useTratamento';
 
 interface CamadaCardProps {
@@ -11,7 +11,7 @@ interface CamadaCardProps {
 }
 
 export function CamadaCard({ camada, index, showFontes = true }: CamadaCardProps) {
-  const t = useTranslations('tratamento');
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
 
   return (

@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from '@/i18n';
+import { useTranslation } from '@/i18n';
 import { CamadaCard } from './CamadaCard';
 import { CadeiaPensamentoCard } from './CadeiaPensamentoCard';
 import {
@@ -25,7 +25,7 @@ export interface TratamentoDashboardProps {
 }
 
 export function TratamentoDashboard({ input, initialData }: TratamentoDashboardProps) {
-  const t = useTranslations('tratamento');
+  const { t } = useTranslation();
   const { data, isLoading, error, refetch } = useTratamento(
     initialData ? null : input
   );

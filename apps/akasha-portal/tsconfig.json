@@ -6,6 +6,7 @@
       "@/*": ["./src/*"],
       "@akasha/types": ["../../packages/types/src/index.ts"],
       "@akasha/core": ["../../packages/akasha-core/src/index.ts"],
+      "@akasha/tratamento": ["../../packages/tratamento/src/index.ts"],
       "@akasha/core-astrology": ["../../packages/core-astrology/src/index.ts"],
       "@akasha/core-cabala": ["../../packages/core-cabala/src/index.ts"],
       "@akasha/core-iching": ["../../packages/core-iching/src/index.ts"],

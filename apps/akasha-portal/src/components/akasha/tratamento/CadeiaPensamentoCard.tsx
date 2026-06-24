@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { useTranslations } from '@/i18n';
+import { useTranslation } from '@/i18n';
 import type { PassoRaciocinio } from './useTratamento';
 
 interface CadeiaPensamentoCardProps {
@@ -9,7 +9,7 @@ interface CadeiaPensamentoCardProps {
 }
 
 export function CadeiaPensamentoCard({ passos }: CadeiaPensamentoCardProps) {
-  const t = useTranslations('tratamento');
+  const { t } = useTranslation();
   if (!passos || passos.length === 0) {
     return null;
   }
