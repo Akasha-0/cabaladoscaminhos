@@ -4,7 +4,7 @@
  * Covers: cookie constants, AkashaJwtSecretMissingError,
  * signAkashaAccessToken, signAkashaRefreshToken, verifyAkashaToken,
  * setAkashaSessionCookie, setAkashaRefreshCookie,
- * clearAkashaSessionCookie, clearAkashaRefreshCookie, validateAuthOrigin.
+ * clearAkashaSessionCookie, clearAkashaRefreshCookie.
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
@@ -20,7 +20,6 @@ import {
  clearAkashaSessionCookie,
  clearAkashaRefreshCookie,
  AkashaJwtSecretMissingError,
- validateAuthOrigin,
  type AkashaTokenPayload,
 } from './akasha-jwt';
 
@@ -82,14 +81,6 @@ function makeMockResponse() {
   },
  };
  return response;
-}
-
-function makeMinimalRequest(headers: Record<string, string | null>) {
- return {
-  headers: {
-   get: (name: string) => headers[name] ?? null,
-  },
- };
 }
 
 // ─── Constants ──────────────────────────────────────────────────────────────
@@ -568,144 +559,5 @@ describe('clearAkashaRefreshCookie — sameSite:strict', () => {
   const response = makeMockResponse();
   clearAkashaRefreshCookie(response);
   expect(response.cookies.getLastOpts()).toMatchObject({ secure: true, httpOnly: true });
- });
-});
-
-// ─── validateAuthOrigin ────────────────────────────────────────────────────
-
-describe('validateAuthOrigin', () => {
- it('returns 403 when Origin header is missing (browser required)', () => {
-  const req = makeMinimalRequest({ origin: null });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).not.toBeNull();
-  expect(result!.status).toBe(403);
-  expect(result!.statusText).toBe('');
- });
-
- it('returns null when origin is in ALLOWED_ORIGINS', () => {
-  process.env.ALLOWED_ORIGINS = 'https://app.example.com,https://staging.example.com';
-  const req = makeMinimalRequest({ origin: 'https://app.example.com' });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).toBeNull();
- });
-
- it('returns 403 when origin is not in ALLOWED_ORIGINS', () => {
-  process.env.ALLOWED_ORIGINS = 'https://app.example.com,https://staging.example.com';
-  const req = makeMinimalRequest({ origin: 'https://evil.example.com' });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).not.toBeNull();
-  expect(result!.status).toBe(403);
- });
-
- it('parses ALLOWED_ORIGINS with whitespace correctly (trim)', () => {
-  process.env.ALLOWED_ORIGINS = ' https://app.example.com , https://staging.example.com ';
-  const req = makeMinimalRequest({ origin: 'https://staging.example.com' });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).toBeNull();
- });
-
- it('returns null for localhost in dev mode without ALLOWED_ORIGINS', () => {
-  vi.stubEnv('NODE_ENV', 'development');
-  const req = makeMinimalRequest({ origin: 'http://localhost:3000' });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).toBeNull();
- });
-
- it('returns null for http://localhost (no port)', () => {
-  vi.stubEnv('NODE_ENV', 'development');
-  const req = makeMinimalRequest({ origin: 'http://localhost' });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).toBeNull();
- });
-
- it('returns 403 for localhost in production without ALLOWED_ORIGINS', () => {
-  vi.stubEnv('NODE_ENV', 'production');
-  const req = makeMinimalRequest({ origin: 'http://localhost:3000' });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).not.toBeNull();
-  expect(result!.status).toBe(403);
- });
-
- it('returns 403 in dev when ALLOWED_ORIGINS is unset and origin is not localhost', () => {
-  vi.stubEnv('NODE_ENV', 'development');
-  const req = makeMinimalRequest({ origin: 'https://some-remote.dev' });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).not.toBeNull();
-  expect(result!.status).toBe(403);
- });
-
- it('returns 403 in production without ALLOWED_ORIGINS configured', () => {
-  vi.stubEnv('NODE_ENV', 'production');
-  const req = makeMinimalRequest({ origin: 'https://app.example.com' });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).not.toBeNull();
-  expect(result!.status).toBe(403);
- });
-
- it('403 response body contains an error field', async () => {
-  vi.stubEnv('NODE_ENV', 'production');
-  const req = makeMinimalRequest({ origin: null });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).not.toBeNull();
-  expect(await result!.json()).toMatchObject({ error: 'Origin header required' });
- });
-
- it('returns 403 when origin is an invalid URL', async () => {
-  const req = { headers: { get: () => ':' } };
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).not.toBeNull();
-  expect(result!.status).toBe(403);
- });
-
- it('returns 403 when Sec-Fetch-Site is cross-site (defense-in-depth)', () => {
-  process.env.ALLOWED_ORIGINS = 'https://app.example.com';
-  const req = makeMinimalRequest({
-   origin: 'https://app.example.com',
-   'sec-fetch-site': 'cross-site',
-  });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).not.toBeNull();
-  expect(result!.status).toBe(403);
- });
-
- it('returns 403 when Sec-Fetch-Site is cross-site even without ALLOWED_ORIGINS (dev)', () => {
-  vi.stubEnv('NODE_ENV', 'development');
-  const req = makeMinimalRequest({
-   origin: 'http://localhost:3000',
-   'sec-fetch-site': 'cross-site',
-  });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).not.toBeNull();
-  expect(result!.status).toBe(403);
- });
-
- it('accepts request when Sec-Fetch-Site is same-origin (allowlisted origin)', () => {
-  process.env.ALLOWED_ORIGINS = 'https://app.example.com';
-  const req = makeMinimalRequest({
-   origin: 'https://app.example.com',
-   'sec-fetch-site': 'same-origin',
-  });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).toBeNull();
- });
-
- it('accepts request when Sec-Fetch-Site is none (top-level navigation)', () => {
-  process.env.ALLOWED_ORIGINS = 'https://app.example.com';
-  const req = makeMinimalRequest({
-   origin: 'https://app.example.com',
-   'sec-fetch-site': 'none',
-  });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).toBeNull();
- });
-
- it('falls through to Origin check when Sec-Fetch-Site is missing (non-browser / old clients)', () => {
-  vi.stubEnv('NODE_ENV', 'development');
-  const req = makeMinimalRequest({
-   origin: 'http://localhost:3000',
-   'sec-fetch-site': null,
-  });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).toBeNull();
  });
 });
