@@ -302,6 +302,7 @@
       "cvvChat": "chat also:",
       "cvvSite": "cvv.org.br",
       "indisponivelDesc": "We couldn't calculate today's Mandate ({status}). Please try again in a moment.",
+      "alertaDoDia": "Alert of the day",
       "alertAriaLabel": "Daily Energetic Alert",
       "sessionStorageKey": "akasha-diario-pergunta",
       "ariaLabel": "Daily Mandate"
