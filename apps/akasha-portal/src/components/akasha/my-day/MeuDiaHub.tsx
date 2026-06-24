@@ -53,44 +53,19 @@ export function MeuDiaHub({ locale, userName }: MeuDiaHubProps) {
 
   return (
     <main
-      style={{
-        background: 'linear-gradient(180deg, #0B0E1C 0%, #1A1F3A 100%)',
-        minHeight: 'calc(100vh - 56px)',
-        padding: '24px 20px 80px',
-      }}
+      className="bg-ak-bg-cosmic-gradient min-h-[calc(100vh-56px)] px-5 py-6 pb-20"
       data-testid="meu-dia-hub"
     >
-      <div
-        style={{
-          maxWidth: 480,
-          margin: '0 auto',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 16,
-        }}
-      >
+      <div className="max-w-[var(--ak-container-narrow)] mx-auto flex flex-col gap-4">
         {/* Header — only when not prompting, so the picker owns the top */}
         {!needsPrompt && (
           <header>
-            <p
-              style={{
-                fontSize: '0.7rem',
-                color: 'rgba(255,255,255,0.5)',
-                letterSpacing: '0.2em',
-                textTransform: 'uppercase',
-                margin: 0,
-              }}
-            >
+            <p className="text-xs text-ak-text-subtle uppercase tracking-[0.2em] m-0">
               {saudacaoTemporal}
             </p>
             <h1
-              style={{
-                fontFamily: 'var(--font-cinzel, serif)',
-                color: '#FFFFFF',
-                fontSize: '1.75rem',
-                margin: '6px 0 4px',
-                lineHeight: 1.1,
-              }}
+              className="text-3xl text-ak-text-primary mt-1.5 mb-1 leading-tight"
+              style={{ fontFamily: 'var(--ak-font-cinzel)' }}
             >
               {userName}.
             </h1>

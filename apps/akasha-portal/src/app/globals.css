@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import '../styles/tokens.css';
 @import '../styles/mandala-animations.css';
 
 @custom-variant dark (&:is(.dark *));
@@ -68,6 +69,35 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* === Wave 10.2 — Design System semantic tokens ===
+     Expõe tokens de `tokens.css` como utilities Tailwind v4.
+     Uso: `bg-ak-bg-cosmic-gradient`, `text-ak-text-muted`,
+          `border-ak-border-default`, `min-h-12`, etc. */
+  --color-ak-bg-void: var(--ak-color-void);
+  --color-ak-bg-deep: var(--ak-color-deep);
+  --color-ak-bg-nebula: var(--ak-color-nebula);
+  --color-ak-bg-cosmic-gradient: var(--ak-bg-cosmic-gradient);
+  --color-ak-bg-page: var(--ak-bg-page);
+
+  --color-ak-text-primary: var(--ak-text-primary);
+  --color-ak-text-secondary: var(--ak-text-secondary);
+  --color-ak-text-muted: var(--ak-text-muted);
+  --color-ak-text-subtle: var(--ak-text-subtle);
+  --color-ak-text-on-accent: var(--ak-text-on-accent);
+  --color-ak-text-link: var(--ak-text-link);
+
+  --color-ak-border-default: var(--ak-border-default);
+  --color-ak-border-subtle: var(--ak-border-subtle);
+  --color-ak-border-strong: var(--ak-border-strong);
+  --color-ak-border-accent: var(--ak-border-accent);
+
+  --color-ak-accent-primary: var(--ak-accent-primary);
+  --color-ak-accent-primary-bright: var(--ak-accent-primary-bright);
+  --color-ak-accent-primary-dim: var(--ak-accent-primary-dim);
+  --color-ak-accent-secondary: var(--ak-accent-secondary);
+  --color-ak-accent-tertiary: var(--ak-accent-tertiary);
+  --color-ak-accent-alert: var(--ak-accent-alert);
 }
 
 /* === AKASHA CANONICAL TOKENS — Doc 26 §3 === */

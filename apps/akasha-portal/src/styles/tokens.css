@@ -1,0 +1,276 @@
+/* ============================================================
+ * Akasha Design System — Tokens (Wave 10.2)
+ * ------------------------------------------------------------
+ * Single source of truth para TODOS os tokens semânticos do
+ * portal. Mapeia os valores hardcoded espalhados por
+ * componentes (MyDayScreen, ContaClient, MandalaChart, etc.)
+ * em variáveis CSS semânticas reutilizáveis.
+ *
+ * PRINCÍPIOS (Doc 26 §3, Wave 10 plan §Subagente 2):
+ *  - Mobile-first (360px width mínimo, touch targets ≥ 48px)
+ *  - Dark theme primário (#06070F)
+ *  - PT-BR primeiro, mas tokens são agnósticos de locale
+ *  - Compatível com shadcn primitives existentes
+ *
+ * USO:
+ *  - Preferir utilitários Tailwind (text-foreground, bg-card)
+ *  - Para valores one-off, usar var(--ak-...) inline
+ *  - Para CSS modules, importar este arquivo
+ *
+ * REGRAS:
+ *  - NUNCA adicionar hex/rgb hardcoded em componentes —
+ *    criar token aqui primeiro.
+ *  - Tokens são compostos: primitivos (*) -> semânticos
+ *    (bg-*, text-*, border-*, space-*, etc.)
+ * ============================================================ */
+
+:root {
+  /* ────────────────────────────────────────────────────────
+   * PRIMITIVOS — não usar diretamente em componentes
+   * ------------------------------------------------------
+   * Escala pura de cores (espelhada em Tailwind @theme).
+   * ──────────────────────────────────────────────────────── */
+
+  /* Backgrounds — vazio cósmico / espaço profundo */
+  --ak-color-void: #06070f;
+  --ak-color-deep: #0b0e1c;
+  --ak-color-nebula: #141a33;
+  --ak-color-border-strong: #26304f;
+  --ak-color-overlay: #030711;
+
+  /* Accents — paleta Akasha canônica */
+  --ak-color-violet: #7c5cff;          /* akasha / consciencia */
+  --ak-color-violet-bright: #9d86ff;
+  --ak-color-violet-dim: #5b3fd6;
+  --ak-color-violet-glow: rgba(124, 92, 255, 0.2);
+  --ak-color-violet-glow-strong: rgba(124, 92, 255, 0.4);
+
+  --ak-color-aurora: #2dd4bf;          /* fluxo / energia */
+  --ak-color-aurora-bright: #5eead4;
+  --ak-color-aurora-dim: #0d9488;
+  --ak-color-aurora-glow: rgba(45, 212, 191, 0.18);
+
+  --ak-color-ori: #f0b429;             /* nucleo / ancestral */
+  --ak-color-ori-bright: #f5c75a;
+  --ak-color-ori-glow: rgba(240, 180, 41, 0.16);
+
+  --ak-color-alert: #fb5781;           /* tensao / sincronicidade */
+  --ak-color-alert-bright: #f87171;
+
+  /* Texto — hierarquia 4 niveis */
+  --ak-color-text-1: #f4f5ff;
+  --ak-color-text-2: #e2e8f0;
+  --ak-color-text-3: #a7aecf;
+  --ak-color-text-4: #5c6691;
+  --ak-color-text-on-accent: #06070f;
+
+  /* Status (success/warning/error/info) */
+  --ak-color-success: #34c759;
+  --ak-color-success-bg: rgba(16, 185, 129, 0.1);
+  --ak-color-success-border: rgba(16, 185, 129, 0.3);
+  --ak-color-success-text: #34d399;
+
+  --ak-color-warning: #f59e0b;
+  --ak-color-warning-bg: rgba(245, 158, 11, 0.1);
+  --ak-color-warning-border: rgba(245, 158, 11, 0.3);
+  --ak-color-warning-text: #f59e0b;
+
+  --ak-color-error: #f43f5e;
+  --ak-color-error-bg: rgba(244, 63, 94, 0.1);
+  --ak-color-error-border: rgba(244, 63, 94, 0.3);
+  --ak-color-error-text: #f87171;
+
+  --ak-color-info: #38bdf8;
+
+  /* Surface elevations (cards/panels) */
+  --ak-color-surface-1: rgba(255, 255, 255, 0.03);
+  --ak-color-surface-2: rgba(255, 255, 255, 0.04);
+  --ak-color-surface-3: rgba(255, 255, 255, 0.05);
+  --ak-color-surface-elevated: rgba(124, 58, 237, 0.05);
+  --ak-color-surface-glass: rgba(255, 255, 255, 0.04);
+
+  --ak-color-border-subtle: rgba(255, 255, 255, 0.08);
+  --ak-color-border-subtle-2: rgba(255, 255, 255, 0.1);
+  --ak-color-border-glass: rgba(124, 58, 237, 0.2);
+  --ak-color-border-violet: rgba(124, 92, 255, 0.25);
+  --ak-color-border-aurora: rgba(45, 212, 191, 0.25);
+
+  /* ────────────────────────────────────────────────────────
+   * SEMANTICOS — usar estes em componentes
+   * ──────────────────────────────────────────────────────── */
+
+  /* Background roles */
+  --ak-bg-primary: var(--ak-color-void);
+  --ak-bg-elevated: var(--ak-color-deep);
+  --ak-bg-elevated-2: var(--ak-color-nebula);
+  --ak-bg-overlay: var(--ak-color-overlay);
+  --ak-bg-cosmic-gradient: linear-gradient(180deg, #0b0e1c 0%, #1a1f3a 100%);
+  --ak-bg-page: var(--ak-color-void);
+
+  /* Text roles */
+  --ak-text-primary: var(--ak-color-text-1);
+  --ak-text-secondary: var(--ak-color-text-2);
+  --ak-text-muted: var(--ak-color-text-3);
+  --ak-text-subtle: var(--ak-color-text-4);
+  --ak-text-on-accent: var(--ak-color-text-on-accent);
+  --ak-text-link: var(--ak-color-violet);
+
+  /* Border roles */
+  --ak-border-default: var(--ak-color-border-subtle-2);
+  --ak-border-subtle: var(--ak-color-border-subtle);
+  --ak-border-strong: var(--ak-color-border-strong);
+  --ak-border-accent: var(--ak-color-border-violet);
+
+  /* Accent roles */
+  --ak-accent-primary: var(--ak-color-violet);
+  --ak-accent-primary-bright: var(--ak-color-violet-bright);
+  --ak-accent-primary-dim: var(--ak-color-violet-dim);
+  --ak-accent-secondary: var(--ak-color-aurora);
+  --ak-accent-tertiary: var(--ak-color-ori);
+  --ak-accent-alert: var(--ak-color-alert);
+
+  /* Surface roles */
+  --ak-surface-glass: var(--ak-color-surface-glass);
+  --ak-surface-elevated: var(--ak-color-surface-elevated);
+  --ak-surface-card: var(--ak-color-surface-2);
+  --ak-surface-overlay: rgba(6, 7, 15, 0.6);
+
+  /* ────────────────────────────────────────────────────────
+   * ESPACAMENTO — escala 4px (mobile-first)
+   * touch targets ≥ 48px => min-h-12 = --ak-space-12
+   * ──────────────────────────────────────────────────────── */
+  --ak-space-1: 0.25rem;   /* 4px  */
+  --ak-space-2: 0.5rem;    /* 8px  */
+  --ak-space-3: 0.75rem;   /* 12px */
+  --ak-space-4: 1rem;      /* 16px */
+  --ak-space-5: 1.25rem;   /* 20px */
+  --ak-space-6: 1.5rem;    /* 24px */
+  --ak-space-8: 2rem;      /* 32px */
+  --ak-space-10: 2.5rem;   /* 40px */
+  --ak-space-12: 3rem;     /* 48px — min touch target */
+  --ak-space-16: 4rem;     /* 64px */
+  --ak-space-20: 5rem;     /* 80px */
+  --ak-space-24: 6rem;     /* 96px */
+
+  /* ────────────────────────────────────────────────────────
+   * TIPOGRAFIA — fonte, tamanho, peso, leading, tracking
+   * ──────────────────────────────────────────────────────── */
+
+  /* Fontes — Doc 26 §5 */
+  --ak-font-cinzel: var(--font-cinzel), serif;
+  --ak-font-cormorant: var(--font-cormorant), Georgia, serif;
+  --ak-font-inter: var(--font-inter), system-ui, sans-serif;
+  --ak-font-lora: var(--font-lora), Georgia, serif;
+  --ak-font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  /* Tamanhos — escala harmonica 1.125 (TS minor third) */
+  --ak-text-xs: 0.75rem;     /* 12px */
+  --ak-text-sm: 0.875rem;    /* 14px */
+  --ak-text-base: 1rem;      /* 16px */
+  --ak-text-lg: 1.125rem;    /* 18px */
+  --ak-text-xl: 1.25rem;     /* 20px */
+  --ak-text-2xl: 1.5rem;     /* 24px */
+  --ak-text-3xl: 1.875rem;   /* 30px */
+  --ak-text-4xl: 2.25rem;    /* 36px */
+
+  /* Pesos */
+  --ak-font-normal: 400;
+  --ak-font-medium: 500;
+  --ak-font-semibold: 600;
+  --ak-font-bold: 700;
+
+  /* Leading (line-height) */
+  --ak-leading-tight: 1.1;
+  --ak-leading-snug: 1.25;
+  --ak-leading-normal: 1.5;
+  --ak-leading-relaxed: 1.625;
+  --ak-leading-loose: 1.8;
+
+  /* Tracking (letter-spacing) */
+  --ak-tracking-tight: -0.01em;
+  --ak-tracking-normal: 0;
+  --ak-tracking-wide: 0.025em;
+  --ak-tracking-widest: 0.2em;
+
+  /* ────────────────────────────────────────────────────────
+   * RADIUS — mobile-first: cantos suaves (12-16px)
+   * ──────────────────────────────────────────────────────── */
+  --ak-radius-sm: 0.5rem;     /* 8px */
+  --ak-radius-md: 0.75rem;    /* 12px */
+  --ak-radius-lg: 1rem;       /* 16px */
+  --ak-radius-xl: 1.25rem;    /* 20px */
+  --ak-radius-2xl: 1.5rem;    /* 24px */
+  --ak-radius-full: 9999px;
+
+  /* ────────────────────────────────────────────────────────
+   * SOMBRAS — com glow semantico para temas esotericos
+   * ──────────────────────────────────────────────────────── */
+  --ak-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --ak-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+                  0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  --ak-shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+  --ak-shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  --ak-shadow-glow-violet: 0 0 20px var(--ak-color-violet-glow-strong),
+                           0 0 40px rgba(124, 92, 255, 0.2);
+  --ak-shadow-glow-aurora: 0 0 20px var(--ak-color-aurora-glow);
+  --ak-shadow-glow-ori: 0 0 20px var(--ak-color-ori-glow);
+  --ak-shadow-glow-alert: 0 0 20px rgba(251, 87, 129, 0.3);
+
+  /* ────────────────────────────────────────────────────────
+   * MOTION — durations + easings (Doc 26 §3)
+   * ──────────────────────────────────────────────────────── */
+  --ak-duration-instant: 75ms;
+  --ak-duration-fast: 150ms;
+  --ak-duration-base: 250ms;
+  --ak-duration-slow: 400ms;
+  --ak-duration-slower: 600ms;
+
+  --ak-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ak-ease-in-out: cubic-bezier(0.37, 0, 0.63, 1);
+  --ak-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ────────────────────────────────────────────────────────
+   * LAYOUT — containers e max-widths
+   * ──────────────────────────────────────────────────────── */
+  --ak-container-narrow: 480px;   /* Meu Dia / one-screen */
+  --ak-container-default: 768px;
+  --ak-container-wide: 1024px;
+  --ak-container-max: 1280px;
+
+  /* ────────────────────────────────────────────────────────
+   * Z-INDEX SCALE — consistente em toda app
+   * ──────────────────────────────────────────────────────── */
+  --ak-z-base: 0;
+  --ak-z-raised: 10;
+  --ak-z-sticky: 20;
+  --ak-z-overlay: 30;
+  --ak-z-modal: 40;
+  --ak-z-popover: 50;
+  --ak-z-toast: 60;
+  --ak-z-tooltip: 70;
+}
+
+/* ============================================================
+ * FOCUS RING — acessibilidade WCAG 2.4.7
+ * Aplicado globalmente via :focus-visible
+ * ============================================================ */
+:where(button, a, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--ak-accent-primary);
+  outline-offset: 2px;
+  border-radius: var(--ak-radius-sm);
+}
+
+/* ============================================================
+ * PREFERS-REDUCED-MOTION — acessibilidade WCAG 2.3.3
+ * Sobrescreve todas as animations com duracao minima
+ * ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
