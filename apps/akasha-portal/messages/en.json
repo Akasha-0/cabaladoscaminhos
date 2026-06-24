@@ -51,6 +51,13 @@
     "layerTooltip3": "Energy Line — Tantric Bodies",
     "layerTooltip4": "Celestial Line — Astrology and Transits",
     "layerTooltip5": "Mutational Line — I Ching",
+    "tooltips": {
+      "layer1": "Ancestrality Layer — Odu {name} · Essence: {essencia}",
+      "layer2": "Life Number Layer — Path {n} · Essence: {essencia}",
+      "layer3": "Body & Energy Layer — Soul {n} · Essence: {essencia}",
+      "layer4": "Celestial Movement Layer — Ascendant {formatted} · Essence: {essencia}",
+      "layer5": "Path Mutation Layer — {hex} · Essence: {essencia}"
+    },
     "pilar1Title": "Ancestrality",
     "pilar2Title": "Life Number",
     "pilar3Title": "Body & Energy",

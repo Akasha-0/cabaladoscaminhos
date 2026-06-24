@@ -1,13 +1,14 @@
 'use client';
 import { memo } from 'react';
+import { useTranslation } from '@/i18n';
 import type { Layer } from '@/components/akasha/mandala-geometry';
-import type { SefiraTree, SefiraName } from '@/components/akasha/mandala-layers';
+import type { SefiraTree, SefiraName, TooltipKey } from '@/components/akasha/mandala-layers';
 import type { MandalaData } from '@/components/akasha/MandalaChart';
 
 interface Layer2Props {
   data: MandalaData;
   sefiraTree: SefiraTree;
-  tooltipByLayer: Record<Layer, string>;
+  tooltipByLayer: Record<Layer, TooltipKey>;
   opacity: (layer: Layer) => number;
   onLayerToggle: (layer: Layer) => void;
   onLayerHover: (layer: Layer | null) => void;
@@ -36,7 +37,9 @@ export const Layer2Kabala = memo(function Layer2Kabala({
   onLayerHover,
 }: Layer2Props) {
   const { nodes, paths } = sefiraTree;
-  const ariaLabel = tooltipByLayer[2] ?? 'Camada 2 — Kabala';
+  const { t } = useTranslation();
+  const tip2 = tooltipByLayer[2];
+  const ariaLabel = t(tip2.key, { ...tip2.params } as Record<string, string>);
 
   return (
     <g

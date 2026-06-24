@@ -51,6 +51,13 @@
     "layerTooltip3": "Linha Energética — Corpos Tantricos",
     "layerTooltip4": "Linha Celestial — Astrologia e Trânsitos",
     "layerTooltip5": "Linha Mutacional — I Ching",
+    "tooltips": {
+      "layer1": "Camada Ancestralidade — Odu {name} · Essência: {essencia}",
+      "layer2": "Camada Número de Vida — Caminho {n} · Essência: {essencia}",
+      "layer3": "Camada Corpo e Energia — Alma {n} · Essência: {essencia}",
+      "layer4": "Camada Movimento Celeste — Ascendente {formatted} · Essência: {essencia}",
+      "layer5": "Camada Mutação do Caminho — {hex} · Essência: {essencia}"
+    },
     "pilar1Title": "Ancestralidade",
     "pilar2Title": "Número de Vida",
     "pilar3Title": "Corpo e Energia",
