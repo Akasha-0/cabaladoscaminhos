@@ -72,8 +72,21 @@ const FALLBACK_LABELS: Record<(typeof NAV_LABEL_KEYS)[keyof typeof NAV_LABEL_KEY
   'bottomNav.conta': 'Conta',
 };
 
-/** Routes where the bottom nav MUST NOT appear (auth flows). */
-function isAuthRoute(pathname: string | null): boolean {
+/**
+ * Routes where the bottom nav MUST NOT appear (auth flows).
+ *
+ * Exported so callers (and tests) can re-use the same predicate —
+ * e.g. the auth pages could check `shouldHideBottomNav(pathname)`
+ * before mounting full app chrome.
+ *
+ * The regex matches:
+ *   - /login        (followed by end-of-string)
+ *   - /login/...    (followed by /)
+ * It also handles locale-prefixed paths because the matched segment
+ * just looks for `/login` anywhere after a path boundary. This means
+ * `/pt-BR/login`, `/en/login`, `/pt-BR/login/verify` all match.
+ */
+export function isAuthRoute(pathname: string | null | undefined): boolean {
   if (!pathname) return false;
   return /\/login(?:\/|$)/.test(pathname) || /\/register(?:\/|$)/.test(pathname);
 }

@@ -16,7 +16,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 
-import { BottomNav } from '../BottomNav';
+import { BottomNav, isAuthRoute } from '../BottomNav';
 
 // ─── next/navigation mock ────────────────────────────────────────────────
 // We control `pathname` per-test by reassigning the mock variable.
@@ -212,5 +212,46 @@ describe('BottomNav', () => {
     render(<BottomNav locale="pt-BR" />);
     const nav = screen.getByTestId('bottom-nav');
     expect(nav.className).toContain('md:hidden');
+  });
+});
+
+describe('isAuthRoute (BottomNav hide predicate)', () => {
+  it('returns false for null/undefined/empty', () => {
+    expect(isAuthRoute(null)).toBe(false);
+    expect(isAuthRoute(undefined)).toBe(false);
+    expect(isAuthRoute('')).toBe(false);
+  });
+
+  it('returns true for /login', () => {
+    expect(isAuthRoute('/login')).toBe(true);
+  });
+
+  it('returns true for /register', () => {
+    expect(isAuthRoute('/register')).toBe(true);
+  });
+
+  it('returns true for locale-prefixed auth routes', () => {
+    expect(isAuthRoute('/pt-BR/login')).toBe(true);
+    expect(isAuthRoute('/en/register')).toBe(true);
+  });
+
+  it('returns true for auth sub-routes', () => {
+    expect(isAuthRoute('/pt-BR/login/verify')).toBe(true);
+    expect(isAuthRoute('/pt-BR/register/email-sent')).toBe(true);
+  });
+
+  it('returns false for non-auth routes', () => {
+    expect(isAuthRoute('/pt-BR/meu-dia')).toBe(false);
+    expect(isAuthRoute('/pt-BR/diario')).toBe(false);
+    expect(isAuthRoute('/')).toBe(false);
+    // A path that contains "login" as part of another word (not a segment)
+    // is NOT an auth route. e.g. /prelogin-flow or /loginfo.
+    expect(isAuthRoute('/pt-BR/prelogin-flow')).toBe(false);
+  });
+
+  it('does NOT treat /loginfo or /signin as auth routes (only /login)', () => {
+    // Confirm the predicate is strict to /login and /register.
+    expect(isAuthRoute('/pt-BR/loginfo')).toBe(false);
+    expect(isAuthRoute('/pt-BR/signin')).toBe(false);
   });
 });
