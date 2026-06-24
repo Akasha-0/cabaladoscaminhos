@@ -3,7 +3,6 @@ import { useTranslation } from '@/i18n';
 import Link from 'next/link';
 import { Divider, InfoPanel, Insight, Row } from '@/components/akasha/MandalaChartInfoPanel';
 import { resolveSig, SignificadoEmbed } from '@/components/akasha/mandala-meanings';
-import { useTranslation } from '@/i18n';
 
 export interface OduInfo {
   oduName: string;
