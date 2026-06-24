@@ -50,8 +50,12 @@ describe('POST /api/akasha/tratamento/calcular', () => {
     localNascimento: 'São Paulo, Brasil',
   };
 
+  // Importa a rota via alias @ (mapeado para apps/akasha-portal/src/ em
+  // vitest.config.ts). Mantém paridade com o padrão usado em outros tests/api/**.
+  const routeImportPath = '@/app/api/akasha/tratamento/calcular/route';
+
   it('returns 200 with 7 camadas on valid body', async () => {
-    const { POST } = await import('../../../../../apps/akasha-portal/src/app/api/akasha/tratamento/calcular/route');
+    const { POST } = await import(/* @vite-ignore */ routeImportPath);
     const req = new Request('http://test/api/akasha/tratamento/calcular', {
       method: 'POST',
       body: JSON.stringify(validBody),
@@ -66,7 +70,7 @@ describe('POST /api/akasha/tratamento/calcular', () => {
   });
 
   it('returns 400 on invalid body', async () => {
-    const { POST } = await import('../../../../../apps/akasha-portal/src/app/api/akasha/tratamento/calcular/route');
+    const { POST } = await import(/* @vite-ignore */ routeImportPath);
     const req = new Request('http://test/api/akasha/tratamento/calcular', {
       method: 'POST',
       body: JSON.stringify({ zeladorId: 'x' }),
@@ -79,7 +83,7 @@ describe('POST /api/akasha/tratamento/calcular', () => {
   });
 
   it('flags cvv188 when crisis text detected', async () => {
-    const { POST } = await import('../../../../../apps/akasha-portal/src/app/api/akasha/tratamento/calcular/route');
+    const { POST } = await import(/* @vite-ignore */ routeImportPath);
     const req = new Request('http://test/api/akasha/tratamento/calcular', {
       method: 'POST',
       body: JSON.stringify({ ...validBody, consulenteNome: 'Paciente quer morrer' }),
@@ -91,7 +95,7 @@ describe('POST /api/akasha/tratamento/calcular', () => {
   });
 
   it('does not flag cvv188 on normal text', async () => {
-    const { POST } = await import('../../../../../apps/akasha-portal/src/app/api/akasha/tratamento/calcular/route');
+    const { POST } = await import(/* @vite-ignore */ routeImportPath);
     const req = new Request('http://test/api/akasha/tratamento/calcular', {
       method: 'POST',
       body: JSON.stringify(validBody),
@@ -104,7 +108,7 @@ describe('POST /api/akasha/tratamento/calcular', () => {
 
   it('returns 500 when engine throws', async () => {
     mockSintetizar.mockRejectedValueOnce(new Error('engine crashed'));
-    const { POST } = await import('../../../../../apps/akasha-portal/src/app/api/akasha/tratamento/calcular/route');
+    const { POST } = await import(/* @vite-ignore */ routeImportPath);
     const req = new Request('http://test/api/akasha/tratamento/calcular', {
       method: 'POST',
       body: JSON.stringify(validBody),
@@ -112,5 +116,56 @@ describe('POST /api/akasha/tratamento/calcular', () => {
     });
     const res = await POST(req as never);
     expect(res.status).toBe(500);
+  });
+
+  /**
+   * A.3 — Wave 7.4: 503 path coverage.
+   *
+   * A rota faz dynamic import do @akasha/tratamento com .catch que devolve
+   * `{ sintetizar: null }`. Quando o engine está indisponível (sintetizar falsy),
+   * a rota responde 503 + body { error: 'engine_unavailable' }.
+   *
+   * Estratégia: importar o módulo mockado e setar `sintetizar = null` para
+   * forçar o branch `if (!sintetizar)`. Como o `vi.mock` é hoisted e o
+   * dynamic import dentro da rota resolve para o mesmo module record, a
+   * mutação afeta tanto o teste quanto a execução do POST handler.
+   */
+  it('A.3: returns 503 with engine_unavailable when @akasha/tratamento is unavailable', async () => {
+    // 1. Força o engine indisponível: sintetizar = null
+    const tratamentoModule = await import('@akasha/tratamento');
+    const originalSintetizar = tratamentoModule.sintetizar;
+    Object.defineProperty(tratamentoModule, 'sintetizar', {
+      value: null,
+      configurable: true,
+      writable: true,
+    });
+
+    try {
+      // 2. Importa a rota (mesmo module record)
+      const { POST } = await import(/* @vite-ignore */ routeImportPath);
+
+      // 3. Dispara o POST com body válido
+      const req = new Request('http://test/api/akasha/tratamento/calcular', {
+        method: 'POST',
+        body: JSON.stringify(validBody),
+        headers: { 'content-type': 'application/json' },
+      });
+
+      // 4. Verifica status 503 + body { error: 'engine_unavailable' }
+      const res = await POST(req as never);
+      expect(res.status).toBe(503);
+      const json = await res.json();
+      expect(json).toEqual({ error: 'engine_unavailable' });
+
+      // 5. Engine NÃO deve ter sido invocado (sintetizar é null)
+      expect(mockSintetizar).not.toHaveBeenCalled();
+    } finally {
+      // 6. Restaura o mock para não vazar estado entre testes
+      Object.defineProperty(tratamentoModule, 'sintetizar', {
+        value: originalSintetizar,
+        configurable: true,
+        writable: true,
+      });
+    }
   });
 });
