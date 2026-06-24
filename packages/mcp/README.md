@@ -1,7 +1,13 @@
-# `@akasha/mcp` — Contrato MCP (Model Context Protocol)
+# `@akasha/mcp` — Akasha MCP Server (Wave 8.4 B.3)
 
-> **STATUS: types-only (Wave 7.2 hardening). Server runtime NÃO implementado.**
+> **STATUS: types + in-memory registry + JSON-RPC 2.0 transport (HTTP)**
 > Veja [`docs/adrs/0006-mcp-protocol.md`](../../docs/adrs/0006-mcp-protocol.md) para contexto completo.
+>
+> **Roadmap**:
+> - Wave 7.2: types-only (ADR 0006)
+> - Wave 8.4 B.1 (commit `a40cd8c6`): `AkashaMcpServer` stub (in-memory)
+> - Wave 8.4 B.2 (commit `9971b7d6`): lazy `@akasha/mcp` import + Mentor fallback
+> - **Wave 8.4 B.3 (current)**: real transport + dispatcher + Mentor integration
 
 ## O que é MCP?
 
@@ -14,82 +20,135 @@ Spec oficial: <https://modelcontextprotocol.io/specification/2024-11-05>
 
 ### Conceitos chave
 
-| Conceito | O que é | Exemplo no Akasha |
-|---|---|---|
-| **Tool** | Função invocável com input tipado | `search_grimoire(query, limit?)` |
-| **Resource** | Leitura nomeada de dados via URI | `akasha://consulente/{id}/perfil` |
-| **Prompt** | Template reutilizável com argumentos | `leitura_mandala({ consulenteId, foco })` |
-| **Transport** | JSON-RPC 2.0 sobre stdio ou HTTP+SSE | Definido em Wave 8 |
+| Conceito    | O que é                                            | Exemplo no Akasha                                    |
+|-------------|----------------------------------------------------|------------------------------------------------------|
+| **Tool**    | Função invocável com input tipado                  | `akasha.find_correlations(system, reference)`        |
+| **Resource**| Leitura nomeada de dados via URI                   | `akasha://consulente/{id}/perfil`                    |
+| **Prompt**  | Template reutilizável com argumentos               | `leitura_mandala({ consulenteId, foco })`            |
+| **Transport**| JSON-RPC 2.0 sobre stdio ou HTTP+SSE              | HTTP POST `/api/mcp` (Wave 8.4 B.3)                  |
 
-## Status atual (Wave 7.2)
+## O que está dentro (Wave 8.4 B.3)
 
-Este pacote exporta **apenas types e interfaces TypeScript** que descrevem o
-contrato. **Não há implementação de servidor.** Não há transport. Não há
-handler. Não há dependência de `@modelcontextprotocol/sdk` instalada.
+### Módulos
 
-```ts
-// ✓ Pode usar AGORA (types-only)
-import type {
-  AkashaTool,
-  AkashaToolContext,
-  AkashaResource,
-  AkashaPrompt,
-} from '@akasha/mcp';
+- `src/index.ts` — barrel: types + classes públicas
+- `src/server.ts` — `AkashaMcpServer` (in-memory registry, `registerTool`,
+  `registerResource`, `registerPrompt`, `unregisterTool`)
+- `src/jsonrpc.ts` — JSON-RPC 2.0 protocol (parse, error codes, helpers)
+- `src/dispatcher.ts` — método dispatcher: `initialize`, `ping`,
+  `tools/list`, `tools/call`, `resources/list`, `resources/read`,
+  `prompts/list`, `prompts/get`
+- `src/transport-http.ts` — `HttpMcpTransport` (Next.js-friendly:
+  consome `Request` web e devolve `Response`)
+- `src/engines.ts` — `registerMentorTools()` (wraps 5 engines
+  `@akasha/core` como tools MCP)
+- `src/__tests__/` — 44 unit tests + 1 smoke test
 
-// ✗ NÃO pode usar ainda (server não existe)
-import { AkashaMcpServer } from '@akasha/mcp'; // → Wave 8
+### Types públicos
+
+- `AkashaToolContext` — multi-tenant first (zeladorId + caminhadaId)
+- `AkashaTool<I, O>` — contrato de uma tool invocável
+- `AkashaResource<T>` — leitura nomeada via URI
+- `AkashaPrompt<A>` — template com argumentos tipados
+- `AkashaJsonSchema` — subset de JSON Schema que usamos
+- `AkashaMcpRegistry` — ponto de agregação (populated em runtime)
+- `JsonRpcRequest`, `JsonRpcResponse` — JSON-RPC 2.0 envelopes
+- `McpToolCallResult`, `McpContentBlock` — MCP canonical types
+
+### Classes / funções runtime
+
+- `AkashaMcpServer` — class
+- `mcpServer` — singleton (process-wide)
+- `HttpMcpTransport` — class
+- `dispatch(server, request, options)` — função pura
+- `registerMentorTools(server)` — registra 5 tools de engine
+- `getRegisteredToolNames(server)` — introspection helper
+- `defaultContextFactory()` — extrai `AkashaToolContext` de params
+
+## Como rodar (B.3)
+
+### 1. Em testes
+
+```bash
+pnpm --filter @akasha/mcp test:run
+# 44 tests passing
 ```
 
-### O que está dentro
+### 2. Smoke test standalone
 
-- `AkashaToolContext` — multi-tenant first (zeladorId + caminhadaId).
-- `AkashaTool<I, O>` — contrato de uma tool invocável.
-- `AkashaResource<T>` — leitura nomeada via URI.
-- `AkashaPrompt<A>` — template com argumentos tipados.
-- `AkashaMcpRegistry` — ponto de agregação (populado em Wave 8).
-- `AkashaJsonSchema` — subset de JSON Schema que usamos.
+```bash
+cd packages/mcp
+pnpm exec tsx scripts/smoke-mcp.ts
+# imprime initialize / tools/list / tools/call JSON-RPC responses
+```
 
-### O que NÃO está dentro (Wave 8+)
+### 3. HTTP endpoint (no portal)
 
-- `AkashaMcpServer` (extends `Server` do SDK oficial).
-- Transport handlers (stdio + HTTP/SSE).
-- Mapeamento automático Zod → JSON Schema.
-- Middleware de tenant context.
-- Auditoria e rate limiting.
-- Autenticação.
+```bash
+# Inicia dev server
+pnpm --filter akasha-portal dev
 
-## Por que só types agora?
+# Health check
+curl http://localhost:3000/api/mcp
 
-1. **Estabilidade do contrato**: outros packages podem implementar contra os
-   tipos sem aguardar Wave 8.
-2. **Documentação executável**: os types servem como contrato vivo entre
-   pacotes e contribuidores.
-3. **Onboarding**: devs novos entendem o papel do MCP sem precisar ler a
-   spec completa.
-4. **Risco zero**: nenhum código de produção depende deste pacote hoje.
+# Initialize
+curl -X POST http://localhost:3000/api/mcp \
+  -H 'Content-Type: application/json' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize"}'
 
-## Roadmap
+# List tools
+curl -X POST http://localhost:3000/api/mcp \
+  -H 'Content-Type: application/json' \
+  -d '{"jsonrpc":"2.0","id":2,"method":"tools/list"}'
 
-| Wave | Entrega |
-|---|---|
-| **7.2 (agora)** | Skeleton types-only + ADR 0006 |
-| 8 | Server runtime + transport + tenant context |
-| 9+ | Mentor consumindo tools MCP via auto-descobrimento |
-| 9+ | Federação de servidores Akasha (multi-Zelador) |
+# Call a tool
+curl -X POST http://localhost:3000/api/mcp \
+  -H 'Content-Type: application/json' \
+  -d '{"jsonrpc":"2.0","id":3,"method":"tools/call", \
+       "params":{"name":"akasha.calculate_code_of_day","arguments":{}}}'
+```
 
-## Como contribuir (antes de Wave 8)
+### 4. Do Mentor (in-process)
 
-Você pode:
+```typescript
+import { mcpMentorClient } from '@akasha/mentor/mcp';
 
-- Adicionar novos types ao `src/index.ts` se necessário (ex: `AkashaAuthContext`).
-- Atualizar o ADR 0006 com novas considerações.
-- Criar mock tools/resources em `src/__examples__/` (Wave 8 vai puxar).
+const result = await mcpMentorClient.callTool(
+  'akasha.find_correlations',
+  { system: 'iching', reference: '1' }
+);
 
-Você **não** pode (ainda):
+if (result.ok) {
+  console.log(result.data);
+} else {
+  console.error(result.error.code, result.error.message);
+}
+```
 
-- Adicionar dependência de runtime (`@modelcontextprotocol/sdk`).
-- Criar classes ou funções executáveis (mantenha types-only).
-- Modificar rotas de produção (`apps/akasha-portal/src/app/api/mentor/*`).
+## Tools registradas (B.3 default)
+
+| Nome                             | Descrição                                                              |
+|----------------------------------|------------------------------------------------------------------------|
+| `mentor.list_tools`              | Introspection: lista tools registradas no server                       |
+| `akasha.find_correlations`       | Cross-tradition correlations via `findCorrelations()`                  |
+| `akasha.build_ritual`            | Daily ritual para um hexagrama e nível (gift/shadow/siddhi)            |
+| `akasha.calculate_code_of_day`   | AkashaCode do dia (ritmo cósmico, hexagrama diário, área de vida)      |
+| `akasha.interpretar_vida`        | Interpretação simbólica da vida para um hexagrama                      |
+
+Mais tools serão adicionadas em Wave 9+ (RAG, autoridade F-227, grafo
+ADR 0005, etc). Para registrar uma tool nova:
+
+```typescript
+import { mcpServer, type AkashaTool } from '@akasha/mcp';
+
+const myTool: AkashaTool = {
+  name: 'meu.pacote.minha_tool',
+  description: 'Faz algo útil',
+  inputSchema: { type: 'object', properties: { ... } },
+  handler: async (ctx, input) => ({ ok: true, data: { ... } }),
+};
+mcpServer.registerTool(myTool);
+```
 
 ## Convenções
 
@@ -99,12 +158,66 @@ Você **não** pode (ainda):
    devem fazer masking na implementação runtime.
 3. **Universalista**: nenhuma string visível ao usuário carrega termo
    proprietário (Human Design, Gene Keys, etc). Respeitar ADR 0002.
-4. **Snake_case**: nomes de tools/resources/prompts em `snake_case`.
-5. **PT-BR first**: descrições e mensagens em PT-BR por padrão.
+4. **Graceful degradation**: engines são lazy-imported. Se
+   `@akasha/core` não estiver disponível, tools retornam
+   `{ ok: false, error: { code: 'CORE_UNAVAILABLE' } }` em vez de throw.
+5. **JSON-RPC 2.0 strict**: notifications (request sem `id`) recebem
+   `202 Accepted` sem body. Erros de transporte (parse) são envelopados
+   em JSON-RPC error. Erros de tool (handler-level) usam `isError: true`
+   no `result`.
 
-## Referências
+## Roadmap Wave 9+
 
-- [ADR 0006 — Adoção do MCP](../../docs/adrs/0006-mcp-protocol.md)
-- [ADR 0004 — Multi-tenant consulente MCP](../types/AGENTS.md)
-- [MCP Spec](https://modelcontextprotocol.io/specification/2024-11-05)
-- [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk)
+- Stdio transport (CLI integration)
+- Auth via `Authorization: Bearer *** (ver ADR 0004 §3.2)
+- Tenant scoping real (zeladorId + caminhadaId em todos os tools)
+- `notifications/tools/list_changed` para hot-reload
+- Adapter fino sobre `@modelcontextprotocol/sdk` oficial (se a SDK
+  for adicionada ao monorepo)
+- Métricas: contador de tool calls, latência, errors
+
+## Local Contracts
+
+- `AkashaMcpServer.getRegistry()` retorna snapshot **frozen** (Maps
+  internos copiados, top-level `Object.freeze`). Não mutar.
+- `dispatch()` é função pura (sem I/O). Para HTTP use
+  `HttpMcpTransport`; para stdio (Wave 9+), basta chamar `dispatch`
+  diretamente.
+- `parseJsonRpc()` aceita apenas requests únicos (sem batch). Batch
+  fica para Wave 9+ se houver demanda.
+
+## Work Guidance
+
+- **1 feature = 1 commit** (conventional commits, PT-BR)
+- **TypeScript estrito** (zero `any` em código novo, exceto o
+  necessário para lazy imports cross-package)
+- **Tests co-located**: `src/__tests__/*.test.ts`
+- **Smoke test** antes de merge: `pnpm exec tsx scripts/smoke-mcp.ts`
+- **Atualizar este README** quando adicionar uma tool ou mudar
+  o contrato público
+
+## Verification
+
+```bash
+# Per-package
+pnpm --filter @akasha/mcp typecheck
+pnpm --filter @akasha/mcp test:run    # 44 tests
+
+# Smoke script
+cd packages/mcp && pnpm exec tsx scripts/smoke-mcp.ts
+
+# Portal integration
+pnpm --filter akasha-portal typecheck
+pnpm --filter akasha-portal test:run tests/api/mcp/
+```
+
+## Related Files
+
+- `apps/akasha-portal/src/app/api/mcp/route.ts` — Next.js route handler
+- `packages/mentor/src/mcp-client.ts` — Mentor in-process client
+- `packages/mentor/src/api/ask/route.ts` — Mentor route (B.3 integration)
+- `docs/adrs/0006-mcp-protocol.md` — ADR original (Wave 7.2)
+
+## Child DOX Index
+
+(Nenhum — módulo flat)
