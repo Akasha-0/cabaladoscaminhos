@@ -5,11 +5,16 @@ import crypto from 'node:crypto';
 // Constantes
 // ============================================================================
 
-export const AKASHA_TOKEN_COOKIE = 'akasha_session';
-export const AKASHA_REFRESH_COOKIE = 'akasha_refresh';
+export const AKASHA_TOKEN_COOKIE = '__Host-akasha_session';
+export const AKASHA_REFRESH_COOKIE = '__Host-akasha_refresh';
 
-const AKASHA_ACCESS_TTL_SECONDS = 4 * 60 * 60; // 4 hours — reduced from 15min to fix silent expiry UX bug
-const AKASHA_REFRESH_TTL_SECONDS = 30 * 24 * 60 * 60;
+const AKASHA_TOKEN_ISSUER = 'akasha';
+const AKASHA_TOKEN_AUDIENCE = 'akasha-portal';
+const AKASHA_ACCESS_TTL_SECONDS = 15 * 60; // 15 minutes
+const AKASHA_REFRESH_TTL_SECONDS = 30 * 24 * 60 * 60; // 30 days
+
+/** Tamanho mínimo do JWT_SECRET (bytes). < 32 chars = HS256 fraco. */
+const JWT_SECRET_MIN_LENGTH = 32;
 
 // ============================================================================
 // Tipos
@@ -47,7 +52,9 @@ function cookieOptions(opts: {
     httpOnly: true,
     sameSite: (opts.sameSite ?? 'lax') as 'lax' | 'strict',
     path: '/',
-    secure: process.env.NODE_ENV === 'production',
+    // __Host- prefix exige Secure: cookies Akasha são sempre HTTPS,
+    // mesmo em dev (proxy local de TLS ou staging em https).
+    secure: true,
     maxAge: opts.maxAge,
     priority: 'medium' as const,
   };
@@ -58,7 +65,7 @@ function clearCookieOptions(): Record<string, unknown> {
     httpOnly: true,
     sameSite: 'strict' as const,
     path: '/',
-    secure: process.env.NODE_ENV === 'production',
+    secure: true,
     maxAge: 0,
   };
 }
@@ -69,7 +76,9 @@ function clearCookieOptions(): Record<string, unknown> {
 
 function getSecret(): string {
   const secret = process.env.JWT_SECRET;
-  if (!secret) throw new AkashaJwtSecretMissingError();
+  if (!secret || secret.length < JWT_SECRET_MIN_LENGTH) {
+    throw new AkashaJwtSecretMissingError();
+  }
   return secret;
 }
 
@@ -82,6 +91,8 @@ export function signAkashaAccessToken(user: { id: string; email: string }): stri
   return jwt.sign(payload, getSecret(), {
     algorithm: 'HS256',
     expiresIn: AKASHA_ACCESS_TTL_SECONDS,
+    issuer: AKASHA_TOKEN_ISSUER,
+    audience: AKASHA_TOKEN_AUDIENCE,
   });
 }
 
@@ -97,6 +108,8 @@ export function signAkashaRefreshToken(user: { id: string; email: string }): str
   return jwt.sign(payload, getSecret(), {
     algorithm: 'HS256',
     expiresIn: AKASHA_REFRESH_TTL_SECONDS,
+    issuer: AKASHA_TOKEN_ISSUER,
+    audience: AKASHA_TOKEN_AUDIENCE,
   });
 }
 
@@ -110,7 +123,11 @@ export function verifyAkashaToken(
 ): AkashaTokenPayload | null {
   if (!token) return null;
   try {
-    const decoded = jwt.verify(token, getSecret(), { algorithms: ['HS256'] });
+    const decoded = jwt.verify(token, getSecret(), {
+      algorithms: ['HS256'],
+      issuer: AKASHA_TOKEN_ISSUER,
+      audience: AKASHA_TOKEN_AUDIENCE,
+    });
     if (typeof decoded !== 'object' || decoded === null) return null;
     const obj = decoded as Record<string, unknown>;
     if (typeof obj.sub !== 'string') return null;
