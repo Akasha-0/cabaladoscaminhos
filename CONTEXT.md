@@ -221,3 +221,70 @@ blockers tecnicos + MCP server skeleton implementation. 3 fronts paralelos.
 - MCP server stub → real transport (stdio/http) + tool registration
 - Advogado PI humano precisa revisar e assinar DPA Anthropic (R$ 2-5k)
 - Bitwarden credential storage setup (anotado na memoria)
+
+### Wave 9 — entregue 2026-06-24
+
+**Escopo:** polish + arquitetura avançada. 4 sub-waves sequenciais:
+
+- **Wave 9.1 — One-Screen Hub** (commit `f3084cf1`, merge `c496dd2e`).
+  `/meu-dia` redesenhado: enum de 4 estados emocionais
+  (`centrado | ansioso | perdido | curioso`) persistido em
+  localStorage + cookie `akasha_state`. StatePicker (1-click,
+  role=radiogroup, 80×80 tiles) + AdaptiveContent dispatcher
+  + 4 views especializadas (BreathOrb 4-7-8 para ansioso,
+  mini-mandala + 3 practice cards para perdido, 5 Pilar cards
+  para curioso, full synthesis para centrado). Mentor CTAs
+  já passam `?intencao=<state>` para Wave 9.3 consumir.
+  43 testes (StatePicker + AdaptiveContent + BreathOrb + views).
+- **Wave 9.3 — Emotion + MCP tool dispatch** (4 commits,
+  merge `443dab27`):
+  - `packages/mcp/`: registra 5 akasha tools (synthesis.generate,
+    iching.cast, odu.lookup, ritual.recommend, authority.derive)
+    + `callTool` API.
+  - `packages/mentor/`: emotion-aware intent detector (`ansioso`,
+    `perdido`, `curioso`, `centrado`) + tool dispatcher que
+    roteia intent → tool call → result injection no prompt.
+  - `apps/akasha-portal/src/app/api/mentor/ask/route.ts`: wire
+    `emotionalState` + tool results no stream de resposta.
+  - `packages/mcp/README.md` expandido com full rewrite.
+- **Wave 8.4 B.3 — `/api/mcp` HTTP route** (commit `7e9ed377`):
+  fecha o gap de transporte HTTP do MCP server (já existia
+  stdio-like stub desde Wave 8.4). Permite que tools MCP sejam
+  invocadas via POST JSON de qualquer cliente.
+- **Wave 9.4 — polish** (Wave 9.4 worktree, este PR):
+  - PWA install prompt UX (`PwaInstallPrompt.tsx`) com
+    beforeinstallprompt handler + 7-day cooldown localStorage +
+    13 testes unitários.
+  - i18n: +13 chaves Wave 9.3/9.4 (mentor.emotion.*,
+    mentor.dispatching, mentor.toolInsights.label, mcp.health.*,
+    mcp.tools.empty, pwa.install.*). 352 → 365 chaves em paridade
+    en ↔ pt-BR.
+  - MiniMax DPA template (`docs/legal/DPA_MINIMAX.md`) — paralelo
+    ao DPA Anthropic (Wave 8.3), cobre LGPD Art. 33 transferência
+    CN↔BR + auditoria de tool-calling MCP.
+  - Playwright config + 9 E2E specs (4 estados emocionais × full
+    + skip-picker variants). Manual por agora — Playwright browser
+    binaries não instaladas; path para CI documentado em
+    `apps/akasha-portal/tests/e2e/README.md`.
+
+**Resultado Wave 9:**
+- Typecheck errors: 22 (todos pré-existentes — Prisma generation
+  ausente neste worktree; nenhum erro novo introduzido).
+- i18n parity: 365/365 OK (`pnpm i18n:check`).
+- Testes Wave 9: 43 (Wave 9.1) + 13 (Wave 9.4 PWA) = 56 testes
+  verdes nas unidades modificadas.
+- Wave 8 → Wave 9 total test failures delta: 17 → 17 (sem regressão).
+- MCP: stub Wave 8.4 → real transport HTTP (Wave 8.4 B.3) + 5 tools
+  registradas (Wave 9.3) + emotion-aware dispatcher (Wave 9.3).
+
+**Pendencias para Wave 10+:**
+- Advogado PI humano precisa revisar e assinar DPA Anthropic
+  (R$ 2-5k, draft `DPA_ANTHROPIC.md`) **e** DPA MiniMax (draft
+  `DPA_MINIMAX.md`).
+- Playwright CI pipeline (instalar `chromium-headless-shell` ~150MB,
+  provisionar Postgres test DB, rodar `pnpm db:seed`).
+- Persistência server-side do emotional state (atualmente
+  localStorage + cookie — não compartilhado entre devices).
+- Auditoria de tool calls MCP (LGPD Art. 37 — cada tool invocada
+  via Mentor deve gerar log estruturado separado).
+- Reconsentimento transparente ao ativar tool-calling no Mentor.

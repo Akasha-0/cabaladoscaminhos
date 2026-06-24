@@ -340,3 +340,122 @@ The profile is:
 **Evidence**: `.autonomous/multi-agent/archived/` (untracked) contained a second copy of `intelligence_v2.py`, `project_scanner_v2.py`, `circuit-breaker-v2.json`, and `skill_patterns_v2/` — all already tracked under `archived/v2-artifacts/` in git.
 **Action**: Deleted untracked `.autonomous/multi-agent/archived/` entirely. These were runtime artifacts, not canonical copies.
 **Registered by**: §3 SSOT — one canonical archive only.
+
+---
+
+## ADR-009: Wave 9 — Adaptive UI by Emotional State
+
+**Date:** 2026-06-24
+**Status:** Accepted
+**Deciders:** Gabriel (product owner), Wave 9.1/9.3/9.4 subagents
+
+**Context:**
+
+Gabriel (product owner) flagged in the 2026-06-24 grill session that
+the portal's UI was too static — every user got the same surface
+regardless of their immediate need:
+
+> *"A interface ainda não está tão clara, então minimalista e objetiva,
+>  mostrando ali o que o usuário precisa fazer. Se eu estou com
+>  ansiedade hoje, eu vou ter que ficar procurando na interface até
+>  eu achar aquilo que eu preciso. Cada dia a gente precisa de uma
+>  coisa diferente e a interface ela não está entregando isso."*
+
+The portal had grown to 50+ API routes, 5 Pilares of synthesis, 9
+life areas, daily ritual, mentor chat, mandala, account settings,
+etc. — all visible by default. A user landing on `/meu-dia` had to
+navigate the surface to find what they actually needed right now
+(breath practice vs. directional guidance vs. exploration vs.
+reflection).
+
+**Decision:**
+
+Adopt an explicit `EmotionalState` enum with 4 canonical values,
+persisted in `localStorage` (`akasha.emotionalState`) and mirrored
+as a non-httpOnly cookie (`akasha_state`):
+
+```typescript
+export type EmotionalState =
+  | 'centrado'  // in peace — full synthesis shown
+  | 'ansioso'   // anxious — BreathOrb 4-7-8 + calming phrase + Mentor CTA
+  | 'perdido'   // directionless — mini-mandala + 3 low-decision practice cards
+  | 'curioso';  // exploratory — 5 Pilar cards as entry points
+```
+
+Rules:
+1. The StatePicker is the FIRST thing the user sees when no state
+   is persisted or it is stale (≥24h). One click writes both
+   `localStorage` and the cookie — no further friction.
+2. The cookie mirror exists so server-side (akasha) layout and
+   middleware can read the state without round-tripping to `/api`.
+3. The cookie is **not** httpOnly — the client must be able to
+   mutate it. Worst case it leaks the user's current mood, which is
+   already in `localStorage`. Acceptable trade-off for the
+   one-screen hub (LGPD risk negligible — no PII, no identifier).
+4. Each state carries its own `<AdaptiveView>`: minimal content,
+   no scroll, no menu. Mentor CTAs embed the state as
+   `?intencao=<state>` so the Wave 9.3 dispatcher can pre-select
+   the right tool.
+5. A "Trocar estado" affordance in every view lets the user re-pick
+   without leaving `/meu-dia`.
+6. The 24h staleness window prevents stale emotional context from
+   steering recommendations on a different day.
+
+**Consequences:**
+
+Positive:
+- `/meu-dia` becomes the single landing surface — no menu hunting.
+- The Mentor (Wave 9.3) can pre-load tool context based on emotion,
+  reducing user effort and credit consumption.
+- The Wave 9.4 PWA install prompt lives in the same client island,
+  so install + state-pick happen on the same first-paint flow.
+- 43 Wave 9.1 unit tests + 13 Wave 9.4 PWA tests give us a fast
+  feedback loop for any UI change.
+
+Negative / accepted trade-offs:
+- The state is **client-side** — not shared across devices. A user
+  who switches phones won't see their state picked up. Wave 10+
+  follow-up: persist to `User.lastEmotionalState` (new column on
+  Prisma).
+- The 4-state enum is a coarse model — a user feeling "50/50
+  ansioso+perdido" has to pick one. We accept this; the picker is
+  intentionally a "vibe check" not a precise diagnostic.
+- The cookie mirror is non-httpOnly (deliberate) — this is
+  documented and reviewed as acceptable given the data carried.
+
+**Alternatives considered (and rejected):**
+
+- **3 states (F-227 framework's `paz/ansiedade/neutro`)** —
+  rejected because Gabriel's grill feedback was specifically about
+  needing a *directionless* surface (perdido) and an *exploratory*
+  surface (curioso). 3 states collapse these into "neutro", which
+  doesn't match the user's mental model.
+- **5 states (incl. `exausto` and `celebrando`)** — rejected
+  because adding more states dilutes the picker (8-tile grid is
+  already 2×4, more would exceed mobile thumb-reach). The 4
+  canonical states cover the modal moments; exausto and celebrando
+  can be folded into `centrado` with adaptive copy later.
+- **No persistence — re-pick every visit** — rejected because it
+  would defeat the purpose (the picker exists to reduce friction,
+  not add it). The 24h staleness window handles the
+  "different-day context" problem without requiring a fresh pick.
+- **Pure server-side state (no localStorage)** — rejected because
+  it requires a round-trip on every `/meu-dia` visit and would
+  block SSR-fast first paint. The cookie mirror covers the
+  server-side need without the round-trip.
+
+**Source:**
+- `apps/akasha-portal/src/lib/state/emotional-state.ts` (canonical
+  contract: enum, storage rules, hook)
+- `apps/akasha-portal/src/components/akasha/state-picker/StatePicker.tsx`
+  (the 1-click picker)
+- `apps/akasha-portal/src/components/akasha/my-day/AdaptiveContent.tsx`
+  (the dispatcher)
+- `apps/akasha-portal/src/components/akasha/my-day/{centrado,ansioso,perdido,curioso}/*.tsx`
+  (the 4 specialized views)
+- `apps/akasha-portal/src/app/[locale]/(akasha)/meu-dia/page.tsx`
+  (the SSR shell)
+
+**Review trigger:**
+Adding a 5th state, switching to server-side persistence, or
+changing the staleness window.

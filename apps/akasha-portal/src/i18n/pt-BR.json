@@ -459,13 +459,57 @@
       "heading": "Para onde sua curiosidade puxa?",
       "subtitle": "Toque num pilar para abrir a camada correspondente no seu mapa.",
       "pilar": {
-        "cabala": { "title": "Cabala", "subtitle": "Caminho de vida" },
-        "astrologia": { "title": "Astrologia", "subtitle": "Ascendente + trânsitos" },
-        "tantra": { "title": "Tantra", "subtitle": "Corpos tântricos" },
-        "odu": { "title": "Odu", "subtitle": "Linha ancestral" },
-        "iching": { "title": "I Ching", "subtitle": "Hexagrama do dia" }
+        "cabala": {
+          "title": "Cabala",
+          "subtitle": "Caminho de vida"
+        },
+        "astrologia": {
+          "title": "Astrologia",
+          "subtitle": "Ascendente + trânsitos"
+        },
+        "tantra": {
+          "title": "Tantra",
+          "subtitle": "Corpos tântricos"
+        },
+        "odu": {
+          "title": "Odu",
+          "subtitle": "Linha ancestral"
+        },
+        "iching": {
+          "title": "I Ching",
+          "subtitle": "Hexagrama do dia"
+        }
       }
     },
     "loading": "carregando seu mapa…"
+  },
+  "mentor": {
+    "emotion": {
+      "ansioso": "Quando você está ansioso, posso sugerir uma prática de respiração + o código do dia.",
+      "perdido": "Quando você se sente perdido, posso correlacionar I Ching com seu mapa para iluminar caminhos.",
+      "curioso": "Quando você quer explorar, posso listar as ferramentas que tenho disponíveis.",
+      "centrado": ""
+    },
+    "dispatching": "Buscando insights para você...",
+    "toolInsights": {
+      "label": "Insights para estado {emotion}"
+    }
+  },
+  "mcp": {
+    "health": {
+      "status": "MCP operacional"
+    },
+    "tools": {
+      "empty": "Nenhuma tool registrada ainda"
+    }
+  },
+  "pwa": {
+    "install": {
+      "title": "Instalar Sistema Akasha",
+      "subtitle": "Acesso rápido no seu celular, funciona offline",
+      "install": "Instalar",
+      "dismiss": "Agora não",
+      "installed": "Instalado ✓"
+    }
   }
 }

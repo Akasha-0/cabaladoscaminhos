@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { AkashaNavigation } from '@/components/akasha/AkashaNavigation';
+import { PwaInstallPrompt } from '@/components/shared/PwaInstallPrompt';
 import { useCockpitStore } from '@/stores/cockpit-store';
 
 interface UserProfile {
@@ -31,6 +32,11 @@ export function AkashaLayoutClient({ children, locale, user }: AkashaLayoutClien
       >
         <main className="flex-grow w-full max-w-5xl mx-auto px-4 py-6 md:p-8">{children}</main>
       </div>
+
+      {/* Wave 9.4 — PWA install prompt. Listens for `beforeinstallprompt`
+          and renders a bottom-sheet install bar. Renders nothing on
+          unsupported browsers or when already installed. */}
+      <PwaInstallPrompt />
     </div>
   );
 }
