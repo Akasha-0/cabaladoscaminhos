@@ -124,6 +124,73 @@ export function buscarPorChacra(corpus: Corpus, chacra: string): TextRecord[] {
   return out;
 }
 
+// ─── Detecção de padrões emocionais (Wave 7.4 — Front A.1) ──────────────────
+
+/**
+ * Padrões emocionais detectados a partir de respostas livres + intenção.
+ * Cada padrão é uma chave semântica + lista de palavras-gatilho PT-BR
+ * (normalizadas: minúsculas, sem acento). Mantemos o conjunto enxuto
+ * para evitar falsos positivos — ver ADR 0002 (sem termos proprietários).
+ */
+export const PADROES_EMOCIONAIS: ReadonlyArray<{
+  nome: string;
+  palavras: ReadonlyArray<string>;
+}> = [
+  {
+    nome: 'conflito parental',
+    palavras: ['pai', 'mae', 'familia', 'pais', 'mae.', 'pai.'],
+  },
+  {
+    nome: 'ansiedade',
+    palavras: ['ansiedade', 'medo', 'panico', 'inquieta', 'nervosa', 'nervoso'],
+  },
+  {
+    nome: 'relacionamento',
+    palavras: ['parceiro', 'parceira', 'namorado', 'namorada', 'casamento', 'relacionamento', 'esposo', 'esposa', 'amor'],
+  },
+  {
+    nome: 'trabalho',
+    palavras: ['trabalho', 'chefe', 'emprego', 'carreira', 'colega', 'empresa'],
+  },
+  {
+    nome: 'identidade',
+    palavras: ['quem sou', 'sentido', 'proposito', 'proposta', 'identidade', 'autoconhecimento'],
+  },
+];
+
+/**
+ * Detecta padrões emocionais a partir das respostas livres às perguntas
+ * clínicas e da intenção declarada. Normalização: lowercase + remoção
+ * de acentos. Match por substring (palavra contida no texto).
+ *
+ * Retorna array único (sem duplicatas) de nomes de padrão. Vazio se
+ * nenhum match (graceful).
+ */
+export function detectarPadroesEmocionais(
+  respostas: ReadonlyArray<{ resposta: string }> | undefined,
+  intencao: string | undefined
+): string[] {
+  const partes: string[] = [];
+  for (const r of respostas ?? []) {
+    if (r?.resposta) partes.push(String(r.resposta));
+  }
+  if (intencao) partes.push(String(intencao));
+  if (partes.length === 0) return [];
+
+  const corpus = partes.join(' ').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
+
+  const detectados = new Set<string>();
+  for (const { nome, palavras } of PADROES_EMOCIONAIS) {
+    for (const p of palavras) {
+      if (corpus.includes(p)) {
+        detectados.add(nome);
+        break;
+      }
+    }
+  }
+  return Array.from(detectados);
+}
+
 // ─── Detecção de padrão orí ──────────────────────────────────────────────────
 
 /**
