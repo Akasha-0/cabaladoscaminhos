@@ -213,5 +213,34 @@
     "perdido": { "phraseFallback": "When there's no direction, start with the body." },
     "curioso": { "heading": "Where does your curiosity pull?" },
     "loading": "loading your map…"
+  },
+  "mentor": {
+    "emotion": {
+      "ansioso": "When you're anxious, I can suggest a breathing practice + the code of the day.",
+      "perdido": "When you're feeling lost, I can correlate I Ching with your map to illuminate paths.",
+      "curioso": "When you want to explore, I can list the tools I have available.",
+      "centrado": ""
+    },
+    "dispatching": "Looking for insights for you...",
+    "toolInsights": {
+      "label": "Insights for {emotion} state"
+    }
+  },
+  "mcp": {
+    "health": {
+      "status": "MCP operational"
+    },
+    "tools": {
+      "empty": "No tools registered yet"
+    }
+  },
+  "pwa": {
+    "install": {
+      "title": "Install Akasha System",
+      "subtitle": "Quick access on your phone, works offline",
+      "install": "Install",
+      "dismiss": "Not now",
+      "installed": "Installed ✓"
+    }
   }
 }

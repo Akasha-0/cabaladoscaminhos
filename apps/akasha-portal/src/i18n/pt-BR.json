@@ -467,5 +467,34 @@
       }
     },
     "loading": "carregando seu mapa…"
+  },
+  "mentor": {
+    "emotion": {
+      "ansioso": "Quando você está ansioso, posso sugerir uma prática de respiração + o código do dia.",
+      "perdido": "Quando você se sente perdido, posso correlacionar I Ching com seu mapa para iluminar caminhos.",
+      "curioso": "Quando você quer explorar, posso listar as ferramentas que tenho disponíveis.",
+      "centrado": ""
+    },
+    "dispatching": "Buscando insights para você...",
+    "toolInsights": {
+      "label": "Insights para estado {emotion}"
+    }
+  },
+  "mcp": {
+    "health": {
+      "status": "MCP operacional"
+    },
+    "tools": {
+      "empty": "Nenhuma tool registrada ainda"
+    }
+  },
+  "pwa": {
+    "install": {
+      "title": "Instalar Sistema Akasha",
+      "subtitle": "Acesso rápido no seu celular, funciona offline",
+      "install": "Instalar",
+      "dismiss": "Agora não",
+      "installed": "Instalado ✓"
+    }
   }
 }
