@@ -60,7 +60,14 @@ export async function POST(request: NextRequest) {
         { status: 503 }
       );
     }
-    output = await sintetizar(input as never, input.opcoes);
+    // Wave 7.4 — Front A.1: passa respostasPerguntas (16 perguntas
+    // clínicas) para o motor detectar padrões emocionais e ajustar
+    // as camadas. Ver `packages/tratamento/src/engine.ts`.
+    const engineInput = {
+      ...(input as unknown as Record<string, unknown>),
+      respostas: input.respostasPerguntas,
+    };
+    output = await sintetizar(engineInput as never, input.opcoes);
   } catch (e) {
     return NextResponse.json(
       { error: 'engine_failed' },

@@ -11,6 +11,24 @@
  * `.hermes/plans/research-medicina-tradicional-2026-06-23.md`.
  */
 
+// ─── RespostaPergunta (Wave 7.4 — Front A.1) ─────────────────────────────────
+
+/**
+ * Resposta livre a uma pergunta clínica do formulário de tratamento.
+ *
+ * Shape espelha `apps/akasha-portal/src/components/akasha/tratamento/
+ * useTratamento.ts` (linha 39). `pergunta_id` referencia uma pergunta
+ * canônica em `packages/tratamento/src/textos/10-perguntas-clinicas/`.
+ *
+ * O motor de síntese usa as `resposta`s para detectar padrões
+ * emocionais (conflito parental, ansiedade, relacionamento, trabalho,
+ * identidade) e ajustar as camadas — ver `engine.ts:detectarPadroes`.
+ */
+export interface RespostaPergunta {
+  pergunta_id: string;
+  resposta: string;
+}
+
 // ─── PilarInput (subset do AkashaLeitura) ────────────────────────────────────
 //
 // A síntese não depende de TODOS os campos de `AkashaLeitura`. Ela usa o
@@ -69,6 +87,15 @@ export interface PilarInput {
    * Ver `packages/tratamento/src/textos/10-perguntas-clinicas/`.
    */
   sinais_clinicos?: string[];
+  /**
+   * Respostas livres às perguntas clínicas (Wave 7.4 — Front A.1).
+   * O motor de síntese usa estas respostas para detectar padrões
+   * emocionais (conflito parental, ansiedade, relacionamento, trabalho,
+   * identidade) e ajustar a Camada 1 (Diagnóstico) — ver
+   * `engine.ts:detectarPadroesEmocionais`. Opcional: ausente = sem
+   * detecção (graceful degradation).
+   */
+  respostas?: RespostaPergunta[];
 }
 
 // ─── TextSource (citação de fonte do corpus) ─────────────────────────────────
@@ -109,6 +136,12 @@ export interface Camada {
   fontes: TextSource[];
   /** Indica que esta camada requer revisão por profissional de saúde antes de uso. */
   requires_professional_review: boolean;
+  /**
+   * Metadata adicional da camada (Wave 7.4 — Front A.1). Usado pela
+   * Camada 1 (Diagnóstico) para expor `padroes: string[]` detectados a
+   * partir de `input.respostas`. Opcional: ausente = sem metadata extra.
+   */
+  metadata?: Record<string, unknown>;
 }
 
 // ─── CadeiaPensamento (rastreabilidade da síntese) ───────────────────────────
