@@ -61,7 +61,7 @@ describe('authRefresh', () => {
   expect(fetchSpy).toHaveBeenCalledOnce();
   const [url, options] = fetchSpy.mock.calls[0]!;
   expect(url).toBe('http://localhost:3000/api/akasha/auth/refresh');
-  expect(options.method).toBe('POST');
+  expect(options!.method).toBe('POST');
  });
 
  it('forwards the incoming cookie header to the refresh endpoint', async () => {
@@ -71,7 +71,7 @@ describe('authRefresh', () => {
   const req = makeMockRequest({ cookie: '__Host-akasha_refresh=my-token' });
   await authRefresh(req);
   const [, options] = fetchSpy.mock.calls[0]!;
-  expect((options.headers as Headers).get('cookie')).toBe('__Host-akasha_refresh=my-token');
+  expect((options!.headers as Headers).get('cookie')).toBe('__Host-akasha_refresh=my-token');
  });
 
  it('forwards the incoming Origin header', async () => {
@@ -81,7 +81,7 @@ describe('authRefresh', () => {
   const req = makeMockRequest({ origin: 'http://localhost:3000' });
   await authRefresh(req);
   const [, options] = fetchSpy.mock.calls[0]!;
-  expect((options.headers as Headers).get('origin')).toBe('http://localhost:3000');
+  expect((options!.headers as Headers).get('origin')).toBe('http://localhost:3000');
  });
 
  it('returns null and does NOT throw when fetch throws AbortError (timeout)', async () => {
@@ -142,13 +142,13 @@ describe('authRefresh', () => {
   const req = makeMockRequest();
   await authRefresh(req);
   const [, options] = fetchSpy.mock.calls[0]!;
-  expect(options.redirect).toBe('manual');
+  expect(options!.redirect).toBe('manual');
  });
 
  it('aborts fetch via AbortController.signal', async () => {
   let capturedSignal: AbortSignal | null = null;
   vi.spyOn(globalThis, 'fetch').mockImplementation(async (_url, options) => {
-   capturedSignal = options.signal as AbortSignal;
+   capturedSignal = options!.signal as AbortSignal;
    // Resolve immediately so we can check the signal
    return makeMockResponse([]);
   });
