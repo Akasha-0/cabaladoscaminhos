@@ -95,6 +95,9 @@ export async function GET(request: NextRequest) {
 
 // ─── POST /api/akasha/conexoes ───────────────────────────────────────────────
 
+// Wave 8 P0-1 fix: import auditLog for LGPD Art. 37 demonstrability
+import { auditLog } from '@/lib/infrastructure/audit-log';
+
 export async function POST(request: NextRequest) {
   try {
     const authResult = await requireAkashaApi(request);
@@ -267,6 +270,16 @@ export async function POST(request: NextRequest) {
         dominantType: result.dominantType,
         authorityMatch: result.authorityMatch,
         resultData: result as unknown as Prisma.InputJsonValue,
+      },
+    });
+
+    // Wave 8 P0-1 fix: audit log for LGPD Art. 37 (consentimento de terceiros)
+    auditLog({
+      userId,
+      action: 'conexao_third_party_consent_declarado',
+      metadata: {
+        connectionId: connection.id,
+        otherName,
       },
     });
 
