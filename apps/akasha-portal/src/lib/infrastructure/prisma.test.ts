@@ -66,8 +66,12 @@ afterEach(() => {
 async function loadPrismaModule() {
   // `await import()` é necessário aqui: o módulo é reavaliado depois de
   // `vi.resetModules()` e static imports ficariam cacheados.
+  // Retornamos uma referência congelada ao proxy para evitar que o runtime
+  // (ou o harness do Vitest) invoque acessos de propriedade ao passar o
+  // objeto por uma fronteira async — o que dispararia a construção lazy
+  // do PrismaClient e quebraria o teste "lazy".
   const mod = await import('./prisma');
-  return mod.prisma;
+  return Object.freeze(mod.prisma);
 }
 
 /**
@@ -87,7 +91,17 @@ describe('prisma.ts — lazy proxy', () => {
     vi.resetModules();
 
     const prisma = await loadPrismaModule();
-    expect(() => void prisma.user).toThrow('DATABASE_URL não está definida');
+    // O proxy lança sincronamente no `get` handler; usar try/catch para
+    // contornar diferenças de matcher entre versões do Vitest (o `toThrow`
+    // em v4 às vezes não captura exceções originadas em Proxy.get).
+    let caught: unknown = null;
+    try {
+      void prisma.user;
+    } catch (err) {
+      caught = err;
+    }
+    expect(caught).toBeInstanceOf(Error);
+    expect((caught as Error).message).toContain('DATABASE_URL não está definida');
   });
 
   it('instancia PrismaPg com a connection string do env', async () => {
