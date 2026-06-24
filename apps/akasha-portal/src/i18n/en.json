@@ -120,17 +120,61 @@
           "activate": "Activate: {text}"
         },
         "bodies": {
-          "corpoDaAlma": { "desc": "Soul Body", "challenge": "Finding humble purpose", "activate": "Ong Namo Meditation" },
-          "menteNegativa": { "desc": "Negative Mind", "challenge": "Discerning without paralyzing", "activate": "Breath of Fire" },
-          "mentePositiva": { "desc": "Positive Mind", "challenge": "Trusting the process", "activate": "Sat Kriya — 3 min" },
-          "menteNeutra": { "desc": "Neutral Mind", "challenge": "Observing without reacting", "activate": "Heart Meditation" },
-          "corpoFisico": { "desc": "Physical Body", "challenge": "Fully embodying", "activate": "Conscious Movement" },
-          "linhaDoArco": { "desc": "Arc Line", "challenge": "Protecting the auric field", "activate": "Being an integral human being" },
-          "aura": { "desc": "Aura", "challenge": "Expanding without dissolving", "activate": "Projection and Protection" },
-          "corpoPrnico": { "desc": "Pranic Body", "challenge": "Sustaining vitality", "activate": "Daily Pranayama" },
-          "corpoSutil": { "desc": "Subtle Body", "challenge": "Listening to the ineffable", "activate": "Listening to intuition" },
-          "corpoRadiante": { "desc": "Radiant Body", "challenge": "Shining courageously", "activate": "Courageous everyday action" },
-          "menteDivina": { "desc": "Divine Mind", "challenge": "Remaining open to the infinite", "activate": "Gratitude and surrender" }
+          "corpoDaAlma": {
+            "desc": "Soul Body",
+            "challenge": "Finding humble purpose",
+            "activate": "Ong Namo Meditation"
+          },
+          "menteNegativa": {
+            "desc": "Negative Mind",
+            "challenge": "Discerning without paralyzing",
+            "activate": "Breath of Fire"
+          },
+          "mentePositiva": {
+            "desc": "Positive Mind",
+            "challenge": "Trusting the process",
+            "activate": "Sat Kriya — 3 min"
+          },
+          "menteNeutra": {
+            "desc": "Neutral Mind",
+            "challenge": "Observing without reacting",
+            "activate": "Heart Meditation"
+          },
+          "corpoFisico": {
+            "desc": "Physical Body",
+            "challenge": "Fully embodying",
+            "activate": "Conscious Movement"
+          },
+          "linhaDoArco": {
+            "desc": "Arc Line",
+            "challenge": "Protecting the auric field",
+            "activate": "Being an integral human being"
+          },
+          "aura": {
+            "desc": "Aura",
+            "challenge": "Expanding without dissolving",
+            "activate": "Projection and Protection"
+          },
+          "corpoPrnico": {
+            "desc": "Pranic Body",
+            "challenge": "Sustaining vitality",
+            "activate": "Daily Pranayama"
+          },
+          "corpoSutil": {
+            "desc": "Subtle Body",
+            "challenge": "Listening to the ineffable",
+            "activate": "Listening to intuition"
+          },
+          "corpoRadiante": {
+            "desc": "Radiant Body",
+            "challenge": "Shining courageously",
+            "activate": "Courageous everyday action"
+          },
+          "menteDivina": {
+            "desc": "Divine Mind",
+            "challenge": "Remaining open to the infinite",
+            "activate": "Gratitude and surrender"
+          }
         }
       },
       "astrology": {
@@ -304,6 +348,43 @@
       "titulo": "Areas of Life",
       "descricao": "Pillar {pilar} translated for each area.",
       "leiaInstrucao": "Read from left to right — from professional to intimate."
+    }
+  },
+  "tratamento": {
+    "title": "Integrated Treatment",
+    "subtitle": "Synthesis in 7 layers + chain of thought",
+    "loading": "Calculating integrated treatment…",
+    "errorTitle": "Could not calculate treatment",
+    "errorRetry": "Try again",
+    "noAuth": "You must be authenticated to access treatment.",
+    "camadas": {
+      "diagnostico": "Immediate Diagnosis",
+      "praticas": "Immediate Practices",
+      "tratamento": "Treatment by Area",
+      "quisilas": "What to Avoid",
+      "alinhamento": "Energetic Alignment",
+      "psicanalise": "Psychoanalysis",
+      "coaching": "Long-Term Coaching"
+    },
+    "camadaNumber": "Layer {n}",
+    "cadeia_pensamento": "Chain of Thought",
+    "cadeiaDescription": "Step-by-step reasoning the engine used to reach these conclusions.",
+    "step": "Step {n}",
+    "requires_professional_review": "This section may benefit from professional accompaniment.",
+    "expand_fonte": "View sources",
+    "collapse_fonte": "Hide sources",
+    "fontesTitle": "Sources ({count})",
+    "collapse": "Collapse",
+    "expand": "More",
+    "fonte_tipo": {
+      "odu_preceito": "Precept (Odu)",
+      "odu_quisila": "Quisila (Odu)",
+      "chakra_pratica": "Practice (Chakra)",
+      "elemento_banho": "Bath (Element)",
+      "caminho_essencia": "Essence (Path)",
+      "caminho_sombra": "Shadow (Path)",
+      "pergunta_clinica": "Clinical question",
+      "camada_prompt": "Prompt layer"
     }
   }
 }
