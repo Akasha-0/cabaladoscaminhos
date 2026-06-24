@@ -120,17 +120,61 @@
           "activate": "Ativar: {text}"
         },
         "bodies": {
-          "corpoDaAlma": { "desc": "Corpo da Alma", "challenge": "Encontrar propósito humilde", "activate": "Meditação Ong Namo" },
-          "menteNegativa": { "desc": "Mente Negativa", "challenge": "Discernir sem paralisar", "activate": "Respiração de fogo" },
-          "mentePositiva": { "desc": "Mente Positiva", "challenge": "Confiar no processo", "activate": "Sat Kriya — 3 min" },
-          "menteNeutra": { "desc": "Mente Neutra", "challenge": "Observar sem reagir", "activate": "Meditação do coração" },
-          "corpoFisico": { "desc": "Corpo Físico", "challenge": "Encarnar totalmente", "activate": "Movimento consciente" },
-          "linhaDoArco": { "desc": "Linha do Arco", "challenge": "Proteger o campo áurico", "activate": "Ser humano íntegro" },
-          "aura": { "desc": "Aura", "challenge": "Expandir sem dissolver", "activate": "Projeção e Proteção" },
-          "corpoPrnico": { "desc": "Corpo Prânico", "challenge": "Sustentar a vitalidade", "activate": "Pranayama diário" },
-          "corpoSutil": { "desc": "Corpo Sutil", "challenge": "Escutar o infinalível", "activate": "Escuta da intuição" },
-          "corpoRadiante": { "desc": "Corpo Radiante", "challenge": "Brilhar corajosamente", "activate": "Ação corajosa cotidiana" },
-          "menteDivina": { "desc": "Mente Divina", "challenge": "Manter-se aberto ao infinito", "activate": "Gratidão e rendição" }
+          "corpoDaAlma": {
+            "desc": "Corpo da Alma",
+            "challenge": "Encontrar propósito humilde",
+            "activate": "Meditação Ong Namo"
+          },
+          "menteNegativa": {
+            "desc": "Mente Negativa",
+            "challenge": "Discernir sem paralisar",
+            "activate": "Respiração de fogo"
+          },
+          "mentePositiva": {
+            "desc": "Mente Positiva",
+            "challenge": "Confiar no processo",
+            "activate": "Sat Kriya — 3 min"
+          },
+          "menteNeutra": {
+            "desc": "Mente Neutra",
+            "challenge": "Observar sem reagir",
+            "activate": "Meditação do coração"
+          },
+          "corpoFisico": {
+            "desc": "Corpo Físico",
+            "challenge": "Encarnar totalmente",
+            "activate": "Movimento consciente"
+          },
+          "linhaDoArco": {
+            "desc": "Linha do Arco",
+            "challenge": "Proteger o campo áurico",
+            "activate": "Ser humano íntegro"
+          },
+          "aura": {
+            "desc": "Aura",
+            "challenge": "Expandir sem dissolver",
+            "activate": "Projeção e Proteção"
+          },
+          "corpoPrnico": {
+            "desc": "Corpo Prânico",
+            "challenge": "Sustentar a vitalidade",
+            "activate": "Pranayama diário"
+          },
+          "corpoSutil": {
+            "desc": "Corpo Sutil",
+            "challenge": "Escutar o infinalível",
+            "activate": "Escuta da intuição"
+          },
+          "corpoRadiante": {
+            "desc": "Corpo Radiante",
+            "challenge": "Brilhar corajosamente",
+            "activate": "Ação corajosa cotidiana"
+          },
+          "menteDivina": {
+            "desc": "Mente Divina",
+            "challenge": "Manter-se aberto ao infinito",
+            "activate": "Gratidão e rendição"
+          }
         }
       },
       "astrology": {
@@ -305,6 +349,43 @@
       "titulo": "Áreas da Vida",
       "descricao": "Pilar {pilar} traduzido para cada área.",
       "leiaInstrucao": "Leia da esquerda para direita — do profissional ao íntimo."
+    }
+  },
+  "tratamento": {
+    "title": "Tratamento Integrado",
+    "subtitle": "Síntese em 7 camadas + cadeia de raciocínio",
+    "loading": "Calculando tratamento integrado…",
+    "errorTitle": "Não foi possível calcular o tratamento",
+    "errorRetry": "Tentar novamente",
+    "noAuth": "Você precisa estar autenticado para acessar o tratamento.",
+    "camadas": {
+      "diagnostico": "Diagnóstico Imediato",
+      "praticas": "Práticas Imediatas",
+      "tratamento": "Tratamento por Área",
+      "quisilas": "O que Evitar",
+      "alinhamento": "Alinhamento Energético",
+      "psicanalise": "Psicanálise",
+      "coaching": "Coaching Longo Prazo"
+    },
+    "camadaNumber": "Camada {n}",
+    "cadeia_pensamento": "Cadeia de Pensamento",
+    "cadeiaDescription": "Raciocínio passo-a-passo que o motor usou para chegar nestas conclusões.",
+    "step": "Passo {n}",
+    "requires_professional_review": "Esta seção pode se beneficiar de acompanhamento profissional.",
+    "expand_fonte": "Ver fontes",
+    "collapse_fonte": "Ocultar fontes",
+    "fontesTitle": "Fontes ({count})",
+    "collapse": "Recolher",
+    "expand": "Mais",
+    "fonte_tipo": {
+      "odu_preceito": "Preceito (Odu)",
+      "odu_quisila": "Quisila (Odu)",
+      "chakra_pratica": "Prática (Chácra)",
+      "elemento_banho": "Banho (Elemento)",
+      "caminho_essencia": "Essência (Caminho)",
+      "caminho_sombra": "Sombra (Caminho)",
+      "pergunta_clinica": "Pergunta clínica",
+      "camada_prompt": "Camada de prompt"
     }
   }
 }
