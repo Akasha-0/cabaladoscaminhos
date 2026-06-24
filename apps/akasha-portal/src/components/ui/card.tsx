@@ -1,19 +1,62 @@
+'use client';
+
+/**
+ * Card — Wave 10.2 Design System (refined)
+ *
+ * Compatível com API shadcn-style existente
+ * (data-slot="card", CardHeader/Title/Description/Content/Footer).
+ * Refinamentos:
+ *  - `variant` semântico: 'default' | 'elevated' | 'interactive'
+ *  - uso de tokens (`--ak-*`) em vez de cores Tailwind fixas
+ *  - `interactive` ganha hover/active feedback (touch + desktop)
+ *  - respeita prefers-reduced-motion (CSS global)
+ *
+ * CONTRATO: consumidores existentes continuam funcionando —
+ * Card mantém export com mesma assinatura.
+ */
 import * as React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/shared/utils';
+
+const cardVariants = cva(
+  'group/card flex flex-col gap-4 overflow-hidden rounded-xl ring-1 text-card-foreground has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl',
+  {
+    variants: {
+      variant: {
+        default:
+          'bg-card ring-foreground/10', // shadcn default — usa globals.css @theme
+        elevated:
+          'bg-ak-bg-elevated/80 backdrop-blur-sm ring-ak-border-default shadow-ak-shadow-md',
+        interactive:
+          'bg-ak-bg-elevated/60 backdrop-blur-sm ring-ak-border-subtle hover:ring-ak-border-accent hover:bg-ak-bg-elevated active:scale-[0.99] transition-all cursor-pointer',
+        glass:
+          'bg-ak-surface-glass ring-ak-border-subtle backdrop-blur-md shadow-ak-shadow-sm',
+      },
+      size: {
+        default: 'gap-4 py-4',
+        sm: 'gap-3 py-3',
+        lg: 'gap-6 py-6',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
+    },
+  }
+);
 
 function Card({
   className,
+  variant,
   size = 'default',
   ...props
-}: React.ComponentPropsWithoutRef<'div'> & { size?: 'default' | 'sm' }) {
+}: React.ComponentPropsWithoutRef<'div'> & VariantProps<typeof cardVariants>) {
   return (
     <div
       data-slot="card"
       data-size={size}
-      className={cn(
-        'group/card flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl',
-        className
-      )}
+      data-variant={variant ?? 'default'}
+      className={cn(cardVariants({ variant, size }), className)}
       {...props}
     />
   );
@@ -78,4 +121,12 @@ function CardFooter({ className, ...props }: React.ComponentPropsWithoutRef<'div
   );
 }
 
-export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter };
+export {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+  cardVariants,
+};
