@@ -120,14 +120,21 @@
 
 ---
 
-## Wave 5 — Hardening (futuro)
+## Wave 6 — Hardening + KG (CONDICIONAL — ADR 0005)
 
-- [ ] Guardrails de psicanalise (LGPD + CVV quando detecta sofrimento emocional)
-- [ ] MCP real (Anthropic Model Context Protocol) — quando sistema estiver maduro
-- [ ] White paper anual (referenciar todos os ADRs ativos)
-- [ ] Migracao de features legadas (Mandala visual, dashboards) para "modo secundario"
+> Wave 5 foi Synthesis Engine (delivered). Wave 6 = KG/RAG trigger check + Hardening.
+> Ver `.hermes/plans/wave-6-plan-2026-06-23.md` para detalhes.
 
----
+### Wave 6 — Engine improvements + Hardening + Hygiene
+
+- [ ] **A.1** Wire respostasPerguntas (16 perguntas) → engine input
+- [ ] **A.2** Surface arquetipo_jung + estilo_terapeutico in TextSource
+- [ ] **A.3** Add 503 path test coverage
+- [ ] **A.4** Recreate TratamentoDashboard.test.tsx + jest-dom setup
+- [ ] **B.1** ADR 0006 — MCP real (Anthropic Model Context Protocol)
+- [ ] **B.2** Advogado PI guidance (LGPD + Trademark checklist + brief)
+- [ ] **B.3** LGPD compliance audit (data flows + retention policy)
+- [ ] **C.2-C.6** Fix 42 pre-existing typecheck errors in akasha-portal
 
 ## Decisoes tomadas no grill (2026-06-23)
 
