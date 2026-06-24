@@ -107,3 +107,69 @@ Estilo **Elegante/Mistico**: fundo escuro, paleta dourado + cobre, tipografia se
 | 4 | Campos Tantricos: significados reais dos 5 corpos numerologicos | Fase 1 |
 | 5 | Orientacao pratica: Mandato + Ritual + Dashboard de energia | Fase 1, 2 |
 | 6 | Animacao de entrada + centro respirante | Fase 2 |
+
+---
+
+## Wave Status Log
+
+Historico de decisoes tomadas em sessoes de grill. Cada Wave marca um
+marcador duravel: o que foi entregue, o que ficou pendente, e o que
+foi decidido para a proxima Wave. Esta secao NAO substitui os
+`.hermes/plans/wave-N-plan-actual-*.md` files — esses sao fonte de verdade.
+Aqui fica apenas o resumo executivo.
+
+### Wave 7 — fechada 2026-06-24
+
+**Escopo:** 3 fronts paralelos (A=Engine improvements, B=Hardening docs,
+C=Hygiene typecheck). 11 cards totais.
+
+**Entregue:** 16 commits merged em `main @ 6ce508bd`. Typecheck 42 → 0.
+Tratamento tests 9 → 18. 3 ADRs/legais criados (ADR 0006 MCP, Advogado PI
+checklist, LGPD audit). 1 bug de producao corrigido (`ewe-database.ts`
+tipo `neutro`).
+
+**Pendencias nao-bloqueantes (Wave 8 follow-up):**
+- 62 test failures pre-existentes (Layer2Kabala/Layer4Astrology testes
+  desatualizados apos `f45ac426`; auth-jwt fixtures quebrados; prisma
+  tests; MandalaInfoPanels; credit-reconciliation)
+- LGPD/DPA blockers de producao (DPA Anthropic pendente; DELETE /profile
+  com cascata faltando; conexoes sem disclaimer de terceiros)
+- ADR 0006 MCP e so types — server real nao implementado
+- Brief Advogado PI pronto em `docs/legal/PROTOCOLO_REVISAO_JURIDICA.md`
+  (R$ 2-5k, ~5-10h, aguardar contratacao)
+
+### Wave 8 — decidida 2026-06-24 (grill sessao)
+
+**Escopo decidido (root decision):** Fix 62 test failures + LGPD/DPA
+blockers tecnicos + MCP server skeleton implementation. 3 fronts paralelos.
+
+**Decomposicao decidida (questao 2 do grill):**
+- Wave 8.1 = Front C-a (~30 min): test fixtures quebrados por mudancas
+  recentes, especialmente Layer2Kabala/Layer4Astrology apos `f45ac426`.
+  Esperado fechar ~30 dos 62 errors. Blocking para Wave 8.2.
+- Wave 8.2 = Front C-b (~60 min): investigar e consertar os 32 errors
+  restantes. Pode revelar erros arquiteturais (Wave 9 follow-up).
+
+**Pendencias para resolver no grill Wave 8 (questoes restantes):**
+- Q3 (em aberto): decompor Front A (LGPD/DPA) e Front B (MCP server)
+
+**Q3 (2026-06-24, confirmada):**
+- Wave 8.3 = Front A (3 sub-tarefas tecnicas LGPD/DPA) ~60 min single subagente
+- A.1 = DELETE /profile com cascata (User + Caminhante + Caminhada + Sessao +
+  MapaCalculo + GrimorioPessoal + MapaRelacional) — LGPD Art. 18
+- A.2 = docs/legal/DPA_ANTHROPIC.md template + checklist Art. 33
+  (transferencia internacional) + auditoria rotas LLM
+- A.3 = disclaimer de terceiros em feature Conexoes + verificacao
+  consent flow (signup → first Caminhante → first Sessao)
+- Subagente DEVE cobrir A.1 com testes (cascade + dry-run + audit log)
+
+**Q4 (2026-06-24, confirmada):**
+- Wave 8.4 = Front B (MCP server skeleton + Mentor route integration) ~60 min
+- B.1 = packages/mcp/src/server.ts runtime types (AkashaMcpServer class com
+  start() lazy, in-process, sem transporte real ainda)
+- B.2 = apps/akasha-portal/src/app/api/mentor/ask/route.ts lazy import
+  @akasha/mcp + graceful degradation (registry vazio → cai pra LLM direto)
+- B.2 inclui 1 teste novo cobrindo "registry empty → fallback direct LLM"
+- MCP server permanece STUB (sem stdio/http transport, sem multi-tenant
+  context, sem tools reais) — esses sao Wave 9+ quando tools concretas
+  forem registradas

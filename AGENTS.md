@@ -109,7 +109,11 @@ When the user requests a durable behavior change, record it here or in the relev
   Performance: select.poll() (zero CPU idle), adaptive polling 1s→10s,
     in-memory state cache (TTL 2s), parallel QA via ThreadPoolExecutor.
   Skill: `.autonomous/multi-agent/skills/akasha-evolution/SKILL.md`.
-**Headroom proxy**: Running on port 8787. All large tool outputs (>5k tokens) use Headroom compression.
+**Headroom proxy**: Running on port 8787 (systemd user service: `systemctl --user status headroom-proxy`). Auto-restart on failure, persists across logout (linger enabled).
+- **Auto-compress (mandatory)**: ALWAYS use `mcp__headroom__headroom_compress` on any tool output >2k tokens (logs, search results, JSON dumps, code listings, file contents). Don't read large outputs raw — compress first, then expand `[CCR:hash]` via `mcp__headroom__headroom_retrieve` only if a detail is actually needed.
+- **Output shaper is ON** (`HEADROOM_OUTPUT_SHAPER=1`, `HEADROOM_OUTPUT_HOLDOUT=0.1`): keep replies terse, skip restating context the user already has, no preamble phrases like "Great question" / "Let me help" / "Sure!". 10% of turns are unshaped as a control group for measurement.
+- **Check before relying**: `curl -s http://127.0.0.1:8787/health` → `status:"healthy"`. If unhealthy, surface the error instead of silently retrying — the systemd service will auto-recover in ~5s.
+- **Savings**: `curl -s http://127.0.0.1:8787/stats | jq '.persistent_savings.lifetime'` shows tokens saved across all sessions.
 **CodeGraph**: Primary exploration tool — `codegraph_explore` before Read/Grep/Glob.
 **24/7 Operations**:
   Start: `bash .autonomous/multi-agent/run-24-7.sh start`
