@@ -1,20 +1,28 @@
 'use client';
 
 /**
- * StatePicker — Wave 9.1 One-Screen Hub
+ * StatePicker — Wave 10.3 One-Screen Hub polish
  *
  * The 1-click emotional state chooser. Shown at the top of /meu-dia when
  * the persisted state is missing or stale (≥24h).
  *
- * Design constraints (from the plan + grill-me):
- *   - Touch-friendly: each tile is min 80×80px, full-width grid on mobile.
- *   - One click writes both localStorage and the `akasha_state` cookie.
- *   - Accessible: `role="radiogroup"`, `role="radio"`, `aria-checked`,
- *     and descriptive `aria-label`s for screen readers.
- *   - Visual language: emerald (centrado) / blue (ansioso) / amber (perdido)
- *     / violet (curioso) — distinct hues so the colour itself encodes state.
- *   - "Pular" link is intentionally low-emphasis — we don't force the
- *     picker, but we DO persist whichever choice the user makes (or doesn't).
+ * Wave 10.3 polish (driven by Gabriel's frustration: "se eu estou com
+ * ansiedade hoje, eu vou ter que ficar procurando na interface até eu
+ * achar aquilo que eu preciso"):
+ *   - Bigger touch targets (120×120 min, was 96×96) — easier on the thumb.
+ *   - Emoji glyph (48px) is now the dominant visual cue, the icon stays
+ *     as accent. The colour alone can be ambiguous under poor lighting.
+ *   - Copy is shorter: heading is 5 words, subtitle is 8 words.
+ *   - Tile layout: emoji → name (bold) → hint. Vertical rhythm is uniform.
+ *   - "Pular" stays low-emphasis but is now a real link with min 44px hit
+ *     area (was a 11px text node).
+ *
+ * Accessibility (preserved from Wave 9.1):
+ *   - role="radiogroup" + role="radio" + aria-checked.
+ *   - aria-label per tile spells the full sentence for screen readers.
+ *   - prefers-reduced-motion: framer-motion scales/animations are muted
+ *     via the same media query (handled by framer-motion's MotionConfig
+ *     up the tree — kept here as a no-JS fallback for legacy mounts).
  *
  * The picker is purely presentational: the caller decides whether to render
  * it (via `useEmotionalState().needsPrompt`). This makes it trivial to test.
@@ -88,8 +96,7 @@ const TILES: readonly TileConfig[] = [
 
 export function StatePicker({ onSelect, onSkip, heading }: StatePickerProps) {
   const resolvedHeading = heading ?? 'Como você está hoje?';
-  const subtitle =
-    'A página se adapta ao que você precisa agora. Escolher uma vez — perguntamos de novo só depois de 24h.';
+  const subtitle = 'A página se adapta ao que você precisa.';
   const skipLabel = 'Pular por agora';
 
   // Touch-keyboard accessibility: tiles are real <button>s so they're
@@ -100,7 +107,7 @@ export function StatePicker({ onSelect, onSkip, heading }: StatePickerProps) {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className="rounded-3xl border border-white/10 p-5 sm:p-6"
+      className="rounded-3xl border border-white/10 p-4 sm:p-5"
       style={{
         background: 'linear-gradient(145deg, rgba(28,28,30,0.95) 0%, rgba(20,20,22,0.98) 100%)',
         backdropFilter: 'blur(12px)',
@@ -110,13 +117,12 @@ export function StatePicker({ onSelect, onSkip, heading }: StatePickerProps) {
       data-testid="state-picker"
     >
       <header className="mb-4">
-        <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] font-semibold m-0">
-          Wave 9 · One-Screen Hub
-        </p>
-        <h2 className="text-lg sm:text-xl font-bold text-white leading-tight mt-1 mb-1">
+        <h2 className="text-xl sm:text-2xl font-bold text-white leading-tight m-0">
           {resolvedHeading}
         </h2>
-        <p className="text-xs text-white/55 leading-relaxed m-0">{subtitle}</p>
+        <p className="text-sm text-white/60 leading-relaxed mt-1.5 m-0">
+          {subtitle}
+        </p>
       </header>
 
       <div className="grid grid-cols-2 gap-3" data-testid="state-picker-grid">
@@ -136,35 +142,35 @@ export function StatePicker({ onSelect, onSkip, heading }: StatePickerProps) {
               transition={{ delay: 0.05 + i * 0.04, duration: 0.25 }}
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.97 }}
-              className="relative rounded-2xl p-4 text-center overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+              className="relative rounded-2xl px-3 py-5 text-center overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
               style={{
                 background: tile.gradient,
                 border: `1px solid ${tile.border}`,
-                minHeight: 96,
-                minWidth: 96,
+                minHeight: 120,
+                minWidth: 120,
               }}
               data-state={tile.state}
               data-testid={`state-picker-tile-${tile.state}`}
             >
               <div className="flex flex-col items-center gap-2">
-                <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                {/* Emoji glyph — dominant visual cue (was unused in Wave 9.1) */}
+                <span
+                  className="leading-none"
                   aria-hidden="true"
-                  style={{
-                    background: `linear-gradient(135deg, ${tile.color}25 0%, ${tile.color}10 100%)`,
-                    border: `1px solid ${tile.color}50`,
-                    boxShadow: `0 0 18px -6px ${tile.glow}`,
-                  }}
+                  style={{ fontSize: '2.5rem', lineHeight: 1 }}
                 >
-                  <Icon size={22} style={{ color: tile.color }} aria-hidden />
+                  {tile.emoji}
+                </span>
+                <div className="flex items-center gap-1.5">
+                  <Icon size={14} style={{ color: tile.color }} aria-hidden />
+                  <span
+                    className="text-sm font-bold uppercase tracking-wider"
+                    style={{ color: tile.color }}
+                  >
+                    {stateLabel(tile.state)}
+                  </span>
                 </div>
-                <div
-                  className="text-sm font-bold uppercase tracking-wider"
-                  style={{ color: tile.color }}
-                >
-                  {stateLabel(tile.state)}
-                </div>
-                <div className="text-[11px] text-white/55 leading-tight">
+                <div className="text-[11px] text-white/65 leading-tight">
                   {stateHint(tile.state)}
                 </div>
               </div>
@@ -181,11 +187,11 @@ export function StatePicker({ onSelect, onSkip, heading }: StatePickerProps) {
       </span>
 
       {onSkip && (
-        <div className="mt-4 text-center">
+        <div className="mt-4 flex justify-center">
           <button
             type="button"
             onClick={onSkip}
-            className="text-[11px] text-white/40 hover:text-white/70 underline-offset-2 hover:underline transition-colors"
+            className="min-h-[44px] px-4 text-xs text-white/50 hover:text-white/80 underline-offset-2 hover:underline transition-colors"
             data-testid="state-picker-skip"
           >
             {skipLabel}

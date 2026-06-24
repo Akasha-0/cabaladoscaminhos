@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * PerdidoView — Wave 9.1
+ * PerdidoView — Wave 10.3 polish
  *
  * Shown when the user picks "perdido" (sem direção).
  *
@@ -12,6 +12,13 @@
  *   - "Me dê um caminho" CTA → opens the diario/ Mentor view with the
  *     `perdido` intent (which the synthesis engine handles by surfacing
  *     the day's `missaoDestino` narrative).
+ *
+ * Wave 10.3 polish:
+ *   - Practice cards: bigger icons (44px box, was 36px), tighter copy
+ *     (description ≤ 6 words), stronger colour cues.
+ *   - Mentor CTA is now a primary button (was a small card with two-line
+ *     label). Copy: "Me dê um caminho".
+ *   - Mini-mandala stays — it anchors the view visually.
  */
 
 import { motion } from 'framer-motion';
@@ -31,12 +38,12 @@ export function PerdidoView({ data, loading, locale }: AdaptiveViewProps) {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="space-y-5"
+      className="space-y-4"
       data-testid="perdido-view"
     >
       {/* Mini mandala — static SVG ring + central glyph */}
       <div
-        className="rounded-3xl border border-amber-400/25 p-6 flex items-center justify-center"
+        className="rounded-3xl border border-amber-400/25 p-4 flex items-center justify-center"
         style={{
           background:
             'linear-gradient(145deg, rgba(251,191,36,0.08) 0%, rgba(245,158,11,0.03) 100%)',
@@ -94,11 +101,12 @@ export function PerdidoView({ data, loading, locale }: AdaptiveViewProps) {
       </div>
 
       {/* One grounding phrase */}
-      <blockquote className="rounded-2xl border border-white/10 p-4 bg-white/[0.03] text-center">
-        <p className="text-sm text-white/85 leading-relaxed italic">“{phrase}”</p>
+      <blockquote className="rounded-2xl border border-white/10 px-4 py-3 bg-white/[0.03] text-center">
+        <p className="text-base text-white/90 leading-snug">“{phrase}”</p>
       </blockquote>
 
-      {/* 3 practice cards — short, low-decision */}
+      {/* 3 practice cards — short, low-decision. Wave 10.3: tighter copy
+          + bigger icons so the cards read as buttons at a glance. */}
       <div className="grid grid-cols-1 gap-3">
         {practice && (
           <PracticeCard
@@ -112,37 +120,36 @@ export function PerdidoView({ data, loading, locale }: AdaptiveViewProps) {
         <PracticeCard
           icon={Eye}
           color="#A78BFA"
-          title="5 minutos de silêncio"
-          description="Sente-se. Apenas observe o que aparece. Não corrija."
+          title="5 min de silêncio"
+          description="Sente-se. Apenas observe."
           testid="perdido-practice-silence"
         />
         <PracticeCard
           icon={Compass}
           color="#34D399"
-          title="Escreva a primeira coisa"
-          description="Sem editar. A próxima palavra virá."
+          title="Escreva a 1ª coisa"
+          description="Sem editar. A próxima vem."
           testid="perdido-practice-write"
         />
       </div>
 
-      {/* Mentor CTA — "me dê um caminho" */}
+      {/* Mentor CTA — primary button. Wave 10.3: was a small amber card
+          with two-line eyebrow + headline. Now a single primary action. */}
       <Link
         href={`/${locale}/diario?intencao=perdido`}
-        className="block rounded-2xl p-4 transition-transform active:scale-[0.98]"
+        className="flex items-center justify-center gap-3 rounded-2xl min-h-[60px] px-5 text-center transition-transform active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
         style={{
-          background:
-            'linear-gradient(135deg, rgba(251,191,36,0.18) 0%, rgba(245,158,11,0.08) 100%)',
-          border: '1px solid rgba(251,191,36,0.35)',
+          background: 'linear-gradient(135deg, #F59E0B 0%, #B45309 100%)',
+          border: '1px solid rgba(252,211,77,0.55)',
           textDecoration: 'none',
+          boxShadow: '0 6px 24px -10px rgba(245,158,11,0.6)',
         }}
         data-testid="perdido-mentor-link"
       >
-        <p className="text-xs text-amber-200/70 uppercase tracking-widest font-semibold">
-          Pedir um caminho
-        </p>
-        <p className="text-sm font-medium text-white leading-snug mt-1">
-          Me dê um caminho — abrir o Mentor com sua missão de hoje
-        </p>
+        <Compass size={22} className="text-white" aria-hidden="true" />
+        <span className="text-base font-bold text-white tracking-wide">
+          Me dê um caminho
+        </span>
       </Link>
 
       {loading && (
@@ -167,7 +174,7 @@ function PracticeCard({
 }) {
   return (
     <div
-      className="rounded-2xl border p-4 flex items-start gap-3"
+      className="rounded-2xl border p-4 flex items-center gap-3 min-h-[64px]"
       style={{
         background: `linear-gradient(135deg, ${color}14 0%, ${color}05 100%)`,
         borderColor: `${color}35`,
@@ -175,18 +182,18 @@ function PracticeCard({
       data-testid={testid}
     >
       <div
-        className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+        className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
         aria-hidden="true"
         style={{
           background: `linear-gradient(135deg, ${color}30 0%, ${color}10 100%)`,
           border: `1px solid ${color}40`,
         }}
       >
-        <Icon size={16} style={{ color }} />
+        <Icon size={20} style={{ color }} />
       </div>
-      <div className="flex-1">
-        <p className="text-sm font-semibold text-white leading-snug">{title}</p>
-        <p className="text-xs text-white/65 leading-relaxed mt-1">{description}</p>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-bold text-white leading-tight">{title}</p>
+        <p className="text-xs text-white/65 leading-snug mt-0.5">{description}</p>
       </div>
     </div>
   );
