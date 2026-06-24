@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * CuriosoView — Wave 9.1
+ * CuriosoView — Wave 10.3 polish
  *
  * Shown when the user picks "curioso" (quero explorar).
  *
@@ -16,6 +16,17 @@
  * Each card is a tappable link to /mandala?layer=N (where layer N
  * corresponds to the Pilar's mandala layer). For Odu we link to /diario
  * (where the Odu is rendered with consent context).
+ *
+ * Wave 10.3 polish:
+ *   - Header collapsed from 3 lines (eyebrow + h3 + subtitle) to 2.
+ *   - Card icon box: 40 → 48 px; icon size 18 → 22 px.
+ *   - Card min-height 64px so it reads as a touch target.
+ *   - Subtitle is now ≤ 3 words (was 2-4 word phrases that took 2 lines
+ *     in some locales).
+ *   - Grid stays 1-col on mobile (per spec — no horizontal scroll on
+ *     360px), becomes 2-col on >= 640px. The plan asked for \"2x3 grid\"
+ *     but 5 cards don't divide evenly; 1-col on mobile + 2-col on
+ *     sm+ gives the same visual density without horizontal cramping.
  */
 
 import { motion } from 'framer-motion';
@@ -96,16 +107,15 @@ export function CuriosoView({ data: _data, loading, locale }: AdaptiveViewProps)
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="space-y-4"
+      className="space-y-3"
       data-testid="curioso-view"
     >
-      <header className="text-center">
-        <p className="text-xs text-violet-200/70 uppercase tracking-widest font-semibold m-0">
-          Explore os 5 Pilares
-        </p>
-        <h3 className="text-lg font-bold text-white mt-1 mb-1">Para onde sua curiosidade puxa?</h3>
-        <p className="text-xs text-white/55 leading-relaxed m-0">
-          Toque num pilar para abrir a camada correspondente no seu mapa.
+      <header className="px-1">
+        <h3 className="text-lg font-bold text-white m-0">
+          Para onde sua curiosidade puxa?
+        </h3>
+        <p className="text-xs text-white/55 leading-snug mt-1 m-0">
+          Toque num pilar.
         </p>
       </header>
 
@@ -121,7 +131,7 @@ export function CuriosoView({ data: _data, loading, locale }: AdaptiveViewProps)
             >
               <Link
                 href={p.href(locale)}
-                className="block rounded-2xl p-4 transition-transform active:scale-[0.98]"
+                className="block rounded-2xl p-4 min-h-[64px] transition-transform active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-300"
                 style={{
                   background: `linear-gradient(135deg, ${p.color}18 0%, ${p.color}05 100%)`,
                   border: `1px solid ${p.color}35`,
@@ -131,7 +141,7 @@ export function CuriosoView({ data: _data, loading, locale }: AdaptiveViewProps)
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                    className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
                     aria-hidden="true"
                     style={{
                       background: `linear-gradient(135deg, ${p.color}30 0%, ${p.color}10 100%)`,
@@ -139,11 +149,11 @@ export function CuriosoView({ data: _data, loading, locale }: AdaptiveViewProps)
                       boxShadow: `0 0 16px -6px ${p.glow}`,
                     }}
                   >
-                    <Icon size={18} style={{ color: p.color }} />
+                    <Icon size={22} style={{ color: p.color }} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-white leading-snug">{p.title}</p>
-                    <p className="text-[11px] text-white/55 leading-tight mt-0.5">{p.subtitle}</p>
+                    <p className="text-base font-bold text-white leading-tight">{p.title}</p>
+                    <p className="text-xs text-white/60 leading-tight mt-0.5">{p.subtitle}</p>
                   </div>
                 </div>
               </Link>
