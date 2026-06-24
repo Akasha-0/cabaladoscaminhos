@@ -20,6 +20,11 @@ import type { UserMaps, MentorMessage } from '@akasha/mentor';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 import { ragForUserMaps, type UserMapsLike } from '@/lib/grimoire/rag-mapa';
+import {
+  dispatchToolsForEmotion,
+  formatDispatchResultsForLLM,
+} from '@akasha/mentor/tool-dispatcher';
+import type { EmotionalState } from '@akasha/mentor/emotional-state';
 
 const MINIMAX_ENDPOINT =
   process.env.MINIMAX_API_BASE_URL ?? 'https://api.minimaxi.chat/v1/text/chatcompletion_v2';
@@ -45,6 +50,15 @@ export interface AskRequest {
   question: string;
   userId: string;
   sessionHistory?: MentorMessage[];
+  /**
+   * Wave 9.3 — estado emocional detectado (opcional). Quando definido,
+   * dispara tools Akasha relevantes antes do LLM call e injeta o
+   * resultado como bloco adicional no system prompt.
+   *
+   * NOTA: também pode vir de detecção automática via `detectEmotion()`
+   * no caller. Aqui aceitamos o valor já classificado.
+   */
+  emotionalState?: EmotionalState | null;
 }
 
 export async function* streamMentorResponse(
@@ -61,6 +75,19 @@ export async function* streamMentorResponse(
   const correlations = await getCorrelations(maps, request.question);
   const correlationsContext = correlationsToContext(correlations);
 
+  // Wave 9.3: dispatch tools Akasha baseadas no emotionalState (se definido).
+  // `dispatchToolsForEmotion` já loga [mentor] emotion=X, dispatching tools: ...
+  // e isola falhas por tool. Se emotionalState é null/undefined, retorna [].
+  const dispatchResults = request.emotionalState
+    ? await dispatchToolsForEmotion(request.emotionalState, {
+        requestId: `mentor-${request.userId}-${Date.now()}`,
+        consulenteId: request.userId,
+      })
+    : [];
+  const toolInsightsBlock = request.emotionalState
+    ? formatDispatchResultsForLLM(request.emotionalState, dispatchResults)
+    : '';
+
   // Build messages
   const systemPrompt = await loadSystemPrompt();
   const messages = [
@@ -68,6 +95,11 @@ export async function* streamMentorResponse(
     { role: 'system' as const, content: mapsContext },
     { role: 'system' as const, content: 'GRIMÓRIO CURADO (F-233):\n' + ragContext },
     { role: 'system' as const, content: `CORRELAÇÕES IDENTIFICADAS: ${correlationsContext}` },
+    // Wave 9.3: injetar tool insights APÓS correlações e ANTES da history.
+    // Só inclui o bloco se houver resultados (string vazia é pulada).
+    ...(toolInsightsBlock
+      ? [{ role: 'system' as const, content: toolInsightsBlock }]
+      : []),
     ...history.map((m) => ({
       role: m.role as 'user' | 'assistant',
       content: m.content,

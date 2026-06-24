@@ -16,6 +16,11 @@ const sharedAliases = {
   '@akasha/mentor/maps': path.resolve(__dirname, '../../packages/mentor/src/maps.ts'),
   '@akasha/mentor/types': path.resolve(__dirname, '../../packages/mentor/src/types.ts'),
   '@akasha/mentor/correlation': path.resolve(__dirname, '../../packages/mentor/src/correlation.ts'),
+  '@akasha/mentor/rag': path.resolve(__dirname, '../../packages/mentor/src/rag/index.ts'),
+  // Wave 9.3 commit 2/3 — emotion + tool dispatcher
+  '@akasha/mentor/intent-detector': path.resolve(__dirname, '../../packages/mentor/src/intent-detector.ts'),
+  '@akasha/mentor/emotional-state': path.resolve(__dirname, '../../packages/mentor/src/emotional-state.ts'),
+  '@akasha/mentor/tool-dispatcher': path.resolve(__dirname, '../../packages/mentor/src/tool-dispatcher.ts'),
   '@akasha/mentor': path.resolve(__dirname, '../../packages/mentor/src/index.ts'),
   // Wave 8.4 B.2: MCP package alias for lazy import in mentor route
   '@akasha/mcp': path.resolve(__dirname, '../../packages/mcp/src/index.ts'),
@@ -162,7 +167,12 @@ export default defineConfig({
           environment: 'node',
           setupFiles: ['../../tests/setup.ts'],
           testTimeout: 15000,
-          include: ['src/lib/**/*.test.ts'],
+          include: [
+            'src/lib/**/*.test.ts',
+            // Wave 9.3 commit 3 — co-located route tests
+            // (apps/akasha-portal/AGENTS.md: "tests/api/...")
+            'src/app/api/**/*.test.ts',
+          ],
           exclude: ['**/*.snap', '**/__snapshots__/**'],
         },
         resolve: {

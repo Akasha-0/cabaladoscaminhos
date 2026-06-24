@@ -10,6 +10,12 @@
  */
 import { loadUserMaps } from '@akasha/mentor/maps';
 import type { MentorMessage } from '@akasha/mentor';
+import {
+  EmotionalStateSchema,
+  isEmotionalState,
+  type EmotionalState,
+} from '@akasha/mentor/emotional-state';
+import { detectEmotion } from '@akasha/mentor/intent-detector';
 import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
@@ -23,6 +29,11 @@ import {
   formatMentorRateLimitError,
 } from '@/lib/infrastructure/rate-limit';
 
+// Header que carrega o estado emocional do consulente (mirror do cookie
+// Wave 9.1). Cliente pode setar `x-akasha-state: ansioso` etc.
+// Wave 9.3 commit 3.
+const AKASHA_STATE_HEADER = 'x-akasha-state';
+
 const bodySchema = z.object({
   question: z.string().min(1).max(2000),
   // userId intentionally removed from body schema — must use authenticated user ID
@@ -34,6 +45,12 @@ const bodySchema = z.object({
       })
     )
     .optional(),
+  /**
+   * Wave 9.3 — estado emocional do consulente. Opcional. Se não vier no
+   * body, tentamos o header `x-akasha-state`; se também ausente, rodamos
+   * `detectEmotion(question)` para classificação automática.
+   */
+  emotionalState: EmotionalStateSchema.optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -78,7 +95,31 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'question is required' }, { status: 400 });
     }
 
-    const { question, sessionHistory = [] } = parsed;
+    const { question, sessionHistory = [], emotionalState: bodyEmotion } = parsed;
+
+    // Wave 9.3 commit 3 — resolução do emotionalState em 3 níveis:
+    //   1. body.emotionalState (Zod-validated, fonte primária)
+    //   2. header x-akasha-state (fallback para clients que não enviam body)
+    //   3. detectEmotion(question) (auto-detect se ambos ausentes)
+    // Se nenhum match → undefined (sem dispatch de tools, e prop não vai
+    // pro router — comportamento mais limpo que null).
+    let resolvedEmotion: EmotionalState | undefined = bodyEmotion;
+    if (resolvedEmotion === undefined) {
+      const headerValue = request.headers.get(AKASHA_STATE_HEADER);
+      if (isEmotionalState(headerValue)) {
+        resolvedEmotion = headerValue;
+      } else {
+        // Auto-detect baseado no texto da pergunta (regex PT-BR).
+        // Só logamos quando detecta — para confirmar o caminho automático.
+        const detected = detectEmotion(question);
+        if (detected) {
+          console.log(
+            `[mentor] emotion=${detected} auto-detected from question`
+          );
+          resolvedEmotion = detected;
+        }
+      }
+    }
 
     // 2. Rate limit check — uses authenticated userId
     const rateLimit = await checkRedisRateLimit(
@@ -121,7 +162,14 @@ export async function POST(request: NextRequest) {
       async start(controller) {
         try {
           for await (const chunk of streamMentorResponse(
-            { question, userId, sessionHistory: history },
+            {
+              question,
+              userId,
+              sessionHistory: history,
+              // Wave 9.3 commit 3: passar emotionalState resolvido para
+              // dispatch de tools Akasha.
+              emotionalState: resolvedEmotion,
+            },
             maps,
             history
           )) {

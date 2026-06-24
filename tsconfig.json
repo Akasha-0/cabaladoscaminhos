@@ -16,7 +16,7 @@
       "@akasha/tratamento": ["./packages/tratamento/src/index.ts"],
       "@akasha/mentor": ["./packages/mentor/src/index.ts"],
       "@akasha/mentor/*": ["./packages/mentor/src/*"],
-      "@akasha/mcp": ["./packages/mcp/src/index.ts"]
+      "@akasha/mcp": ["./packages/mcp/src/index.ts"]     
     }
   },
   "include": [
