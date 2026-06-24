@@ -45,6 +45,7 @@ export interface UseTratamentoResult {
   data: SynthesisOutput | null;
   isLoading: boolean;
   error: string | null;
+  cvv188: boolean;
   refetch: () => void;
 }
 
@@ -52,6 +53,7 @@ export function useTratamento(input: TratamentoInput | null): UseTratamentoResul
   const [data, setData] = useState<SynthesisOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [cvv188, setCvv188] = useState(false);
   const [trigger, setTrigger] = useState(0);
 
   const refetch = useCallback(() => {
@@ -83,6 +85,7 @@ export function useTratamento(input: TratamentoInput | null): UseTratamentoResul
       .then((json) => {
         if (cancelled) return;
         setData(json.output as SynthesisOutput);
+        setCvv188(Boolean(json.cvv188));
         setIsLoading(false);
       })
       .catch((e: Error) => {
@@ -96,5 +99,5 @@ export function useTratamento(input: TratamentoInput | null): UseTratamentoResul
     };
   }, [input, trigger]);
 
-  return { data, isLoading, error, refetch };
+  return { data, isLoading, error, cvv188, refetch };
 }

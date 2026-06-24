@@ -6,7 +6,14 @@ import { TratamentoDashboard } from '@/components/akasha/tratamento/TratamentoDa
 export const dynamic = 'force-dynamic';
 
 interface PageProps {
-  searchParams: Promise<{ zeladorId?: string; caminhadaId?: string; consulenteNome?: string }>;
+  searchParams: Promise<{
+    zeladorId?: string;
+    caminhadaId?: string;
+    consulenteNome?: string;
+    dataNascimento?: string;
+    horaNascimento?: string;
+    localNascimento?: string;
+  }>;
 }
 
 export default async function TratamentoPage({ searchParams }: PageProps) {
@@ -28,6 +35,13 @@ export default async function TratamentoPage({ searchParams }: PageProps) {
     );
   }
 
+  // Parse birth data from query params (with fallback to minimal placeholders
+  // when missing — searchParams will be wired with real consulente data
+  // by the dashboard list page in a follow-up PR).
+  const dataNascimento = params.dataNascimento ?? '1990-01-01';
+  const horaNascimento = params.horaNascimento ?? '12:00';
+  const localNascimento = params.localNascimento ?? 'São Paulo, Brasil';
+
   return (
     <div className="p-4 md:p-8 max-w-6xl mx-auto">
       <h1 className="text-2xl md:text-3xl font-semibold mb-6">
@@ -38,9 +52,9 @@ export default async function TratamentoPage({ searchParams }: PageProps) {
           zeladorId: params.zeladorId,
           caminhadaId: params.caminhadaId,
           consulenteNome: params.consulenteNome ?? 'Consulente',
-          dataNascimento: '1990-01-01',
-          horaNascimento: '12:00',
-          localNascimento: 'São Paulo, Brasil',
+          dataNascimento,
+          horaNascimento,
+          localNascimento,
         }}
       />
     </div>

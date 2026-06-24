@@ -11,7 +11,7 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "test:run": "vitest run --project unit --no-coverage",
+    "test:run": "vitest run --root .",
     "build": "tsc --noEmit"
   },
   "dependencies": {

@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     output = await sintetizar(input as never, input.opcoes);
   } catch (e) {
     return NextResponse.json(
-      { error: 'engine_failed', message: e instanceof Error ? e.message : 'unknown' },
+      { error: 'engine_failed' },
       { status: 500 }
     );
   }

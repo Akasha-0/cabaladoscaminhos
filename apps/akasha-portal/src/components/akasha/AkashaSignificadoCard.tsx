@@ -11,7 +11,7 @@
  * Inspiração visual: benchmark Astrolink + Mirofox — cartões com profundidade prática,
  * não descrições rasas.
  *
- * DEC-004:shadow/gift/siddhi inspirado em Gene Keys (Richard Rudd).
+ * DEC-004:shadow/gift/siddhi em código próprio.
  */
 import { interpretarVida } from '@akasha/core';
 import type { AreaInterpretation, LifeArea, VidaInterpretation } from '@akasha/types';
@@ -134,7 +134,7 @@ export function AkashaSignificadoCard({ lifePath, defaultNivel = 'gift' }: Props
       {/* Attribution — DEC-004 */}
       <div style={{ marginBottom: 12 }}>
         <span style={{ fontSize: '0.68rem', color: '#6b6480', letterSpacing: '0.04em' }}>
-          Inspirado em Gene Keys (Richard Rudd)
+          inspirado em tradições terapêuticas universalistas.
         </span>
       </div>
 
