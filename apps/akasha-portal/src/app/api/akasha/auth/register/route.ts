@@ -47,7 +47,12 @@ export async function POST(request: NextRequest) {
 
   const passwordHash = await bcrypt.hash(body.password, 12);
 
-  await prisma.user.create({
+  // Signup grant: 10 free credits so new users can try the Mentor before
+  // buying. Created in the same request as the user; if the credit insert
+  // fails, user creation is rolled back by Prisma's request flow (the
+  // findUnique below would not return a row, so no orphan credit).
+  const SIGNUP_GRANT_CREDITS = 10;
+  const newUser = await prisma.user.create({
     data: {
       email: body.email,
       passwordHash,
@@ -60,6 +65,16 @@ export async function POST(request: NextRequest) {
       birthTimezone: body.birthTimezone,
       // AD-T5-C: persistência mínima do consentimento LGPD
       consentAt: new Date(),
+    },
+    select: { id: true },
+  });
+
+  await prisma.creditEntry.create({
+    data: {
+      userId: newUser.id,
+      delta: SIGNUP_GRANT_CREDITS,
+      reason: 'signup_grant',
+      balance: SIGNUP_GRANT_CREDITS,
     },
   });
 
