@@ -358,7 +358,7 @@ describe('TRADUCOES_DETALHADO matrix', () => {
   for (const pilar of TODOS_PILARES) {
    for (const area of TODAS_AREAS) {
     const entry = TRADUCOES_DETALHADO[pilar]?.[area];
-    expect(PT_BR_RE.test(entry.frase), `(${pilar}, ${area}).frase`).toBe(true);
+    expect(PT_BR_RE.test(entry!.frase), `(${pilar}, ${area}).frase`).toBe(true);
    }
   }
  });

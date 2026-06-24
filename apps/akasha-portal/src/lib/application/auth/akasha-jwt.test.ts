@@ -195,44 +195,50 @@ describe('signAkashaAccessToken', () => {
 // ─── signAkashaRefreshToken ────────────────────────────────────────────────
 
 describe('signAkashaRefreshToken', () => {
- it('returns an object with token (string) and jti (string)', () => {
-  const result = signAkashaRefreshToken({ id: 'user-1', email: 'a@b.com' });
-  expect(typeof result.token).toBe('string');
-  expect(typeof result.jti).toBe('string');
-  expect(result.token.length).toBeGreaterThan(0);
-  expect(result.jti.length).toBeGreaterThan(0);
+ it('returns a non-empty JWT string with a UUID v4 jti embedded in the payload', () => {
+  const token = signAkashaRefreshToken({ id: 'user-1', email: 'a@b.com' });
+  expect(typeof token).toBe('string');
+  expect(token.length).toBeGreaterThan(0);
+  const decoded = roundTrip<AkashaTokenPayload>(token, TEST_SECRET);
+  expect(typeof decoded.jti).toBe('string');
+  expect(decoded.jti!.length).toBeGreaterThan(0);
  });
 
  it('jti is a valid UUID v4', () => {
-  const { jti } = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
-  expect(jti).toMatch(
+  const token = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
+  const decoded = roundTrip<AkashaTokenPayload>(token, TEST_SECRET);
+  expect(decoded.jti).toMatch(
    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
   );
  });
 
  it('encodes sub and email in the payload', () => {
   const user = { id: 'user-99', email: 'bob@example.com' };
-  const { token } = signAkashaRefreshToken(user);
+  const token = signAkashaRefreshToken(user);
   const decoded = roundTrip<AkashaTokenPayload>(token, TEST_SECRET);
   expect(decoded.sub).toBe(user.id);
   expect(decoded.email).toBe(user.email);
  });
 
  it('sets type to refresh', () => {
-  const { token } = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
+  const token = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
   const decoded = roundTrip<AkashaTokenPayload>(token, TEST_SECRET);
   expect(decoded.type).toBe('refresh');
  });
 
- it('includes jti in the payload matching the returned jti', () => {
-  const { token, jti } = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
-  const decoded = roundTrip<AkashaTokenPayload>(token, TEST_SECRET);
-  expect(decoded.jti).toBe(jti);
+ it('includes a unique jti in the payload on each call', () => {
+  const token1 = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
+  const token2 = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
+  const decoded1 = roundTrip<AkashaTokenPayload>(token1, TEST_SECRET);
+  const decoded2 = roundTrip<AkashaTokenPayload>(token2, TEST_SECRET);
+  expect(decoded1.jti).toBeTruthy();
+  expect(decoded2.jti).toBeTruthy();
+  expect(decoded1.jti).not.toBe(decoded2.jti);
  });
 
  it('sets expiresIn of 30 days (2592000 seconds)', () => {
   const before = Math.floor(Date.now() / 1000);
-  const { token } = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
+  const token = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
   const after = Math.floor(Date.now() / 1000);
   const decoded = roundTrip<AkashaTokenPayload>(token, TEST_SECRET);
   const expectedMin = before + 30 * 24 * 60 * 60;
@@ -322,13 +328,13 @@ describe('verifyAkashaToken', () => {
  });
 
  it('returns null when expectedType=access but token is refresh', async () => {
-  const { token } = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
+  const token = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
   const payload = await verifyAkashaToken(token, 'access');
   expect(payload).toBeNull();
  });
 
  it('returns payload when expectedType=refresh and token is refresh', async () => {
-  const { token } = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
+  const token = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
   const payload = await verifyAkashaToken(token, 'refresh');
   expect(payload).not.toBeNull();
   expect(payload!.type).toBe('refresh');
@@ -378,13 +384,13 @@ describe('verifyAkashaToken', () => {
  });
 
  it('returns a valid payload for a correctly-signed refresh token', async () => {
-  const { token, jti } = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
+  const token = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
   const payload = await verifyAkashaToken(token);
   expect(payload).not.toBeNull();
   expect(payload!.sub).toBe('u1');
   expect(payload!.email).toBe('e@e.com');
   expect(payload!.type).toBe('refresh');
-  expect(payload!.jti).toBe(jti);
+  expect(payload!.jti).toBeTruthy();
  });
 });
 
@@ -403,13 +409,13 @@ describe('end-to-end token lifecycle', () => {
 
  it('refresh token signed by signAkashaRefreshToken verifies cleanly', async () => {
   const user = { id: 'user-e2e', email: 'e2e@test.com' };
-  const { token, jti } = signAkashaRefreshToken(user);
+  const token = signAkashaRefreshToken(user);
   const payload = await verifyAkashaToken(token, 'refresh');
   expect(payload).not.toBeNull();
   expect(payload!.sub).toBe(user.id);
   expect(payload!.email).toBe(user.email);
   expect(payload!.type).toBe('refresh');
-  expect(payload!.jti).toBe(jti);
+  expect(payload!.jti).toBeTruthy();
  });
 
  it('access token cannot be used as refresh (type mismatch)', async () => {
@@ -419,7 +425,7 @@ describe('end-to-end token lifecycle', () => {
  });
 
  it('refresh token cannot be used as access (type mismatch)', async () => {
-  const { token } = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
+  const token = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
   const payload = await verifyAkashaToken(token, 'access');
   expect(payload).toBeNull();
  });
