@@ -37,7 +37,7 @@ import {
 import { deriveAkashaAuthority } from '@/lib/grimoire/synthesis/synthesizer';
 import { praticaAuthorityDiaria } from '@/lib/grimoire/akasha-authority';
 
-import type { MandatoDoDiaResponse, DailyResponse, DailyRitualUI, CycleModulationAlignment } from '@/components/akasha/diario/types';
+import { C, MandatoDoDiaResponse, DailyResponse, DailyRitualUI, CycleModulationAlignment } from '@/components/akasha/diario/types';
 import { DiarioScrollContainer } from '@/components/akasha/diario/DiarioScrollContainer';
 import { MandatoUnificado } from '@/components/akasha/diario/MandatoUnificado';
 import { RitualSection } from '@/components/akasha/diario/RitualSection';
