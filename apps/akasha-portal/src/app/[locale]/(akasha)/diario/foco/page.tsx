@@ -99,7 +99,7 @@ export default async function FocoPage({
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia`,
-    { headers: { Cookie: `akasha_session=${token}` }, cache: 'no-store' }
+    { headers: { Cookie: `__Host-akasha_session=${token}` }, cache: 'no-store' }
   );
   if (res.status === 401 || res.status === 404) redirect(`/${locale}/login`);
   if (!res.ok) {

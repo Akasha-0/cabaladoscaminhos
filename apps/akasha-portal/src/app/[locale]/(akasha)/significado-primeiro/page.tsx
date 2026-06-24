@@ -88,7 +88,7 @@ export default async function SignificadoPrimeiroPage({
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia`,
-    { headers: { Cookie: `akasha_session=${token}` }, cache: 'no-store' }
+    { headers: { Cookie: `__Host-akasha_session=${token}` }, cache: 'no-store' }
   );
 
   let pilares: PilaresDados | null = null;

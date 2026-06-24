@@ -74,8 +74,13 @@ const API_CSP = "default-src 'none'; frame-ancestors 'none'";
 // This avoids Edge-runtime crypto limitations (node:crypto not available).
 // The refresh endpoint handles JWT signing using Node.js crypto (server runtime).
 
-const AKASHA_ACCESS_COOKIE = 'akasha_session';
-const AKASHA_REFRESH_COOKIE = 'akasha_refresh';
+// Edge-safe cookie names. MUST mirror the Node-only constants in
+// akasha-jwt.ts (AKASHA_TOKEN_COOKIE = '__Host-akasha_session',
+// AKASHA_REFRESH_COOKIE = '__Host-akasha_refresh') — keep in sync.
+// Middleware cannot import from akasha-jwt.ts because that module pulls in
+// 'node:crypto' which is not supported in the Edge Runtime.
+const AKASHA_ACCESS_COOKIE = '__Host-akasha_session';
+const AKASHA_REFRESH_COOKIE = '__Host-akasha_refresh';
 
 function getCookiesFromResponseHeaders(headers: Headers): { name: string; value: string }[] {
   const setCookieHeaders = headers.getSetCookie();

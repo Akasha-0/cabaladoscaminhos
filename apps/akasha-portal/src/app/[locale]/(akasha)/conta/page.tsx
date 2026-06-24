@@ -18,7 +18,12 @@ export default async function ContaPage({
     redirect(`/${locale}/login`);
   }
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
-  const requestHeaders = { Cookie: `akasha_session=${token}` };
+  // Pass __Host-akasha_session cookie to internal API (same name login set).
+  // Was: `akasha_session=${token}` — wrong because login uses __Host- prefix
+  // for security (Secure + Path=/ + no Domain). Without prefix, sub-requests
+  // to /api/akasha/auth/me returned 401 even with valid token, causing the
+  // auth/me fetch below to fail and triggering the final `redirect(/login)`.
+  const requestHeaders = { Cookie: `__Host-akasha_session=${token}` };
   const [meRes, credRes, subRes] = await Promise.all([
     fetch(`${baseUrl}/api/akasha/auth/me`, { headers: requestHeaders, cache: 'no-store' }),
     fetch(`${baseUrl}/api/akasha/credits`, { headers: requestHeaders, cache: 'no-store' }),
