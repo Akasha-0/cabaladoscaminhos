@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { useTranslation } from '@/i18n';
 import type { CamadaResultado, FonteRef } from './useTratamento';
@@ -10,9 +11,27 @@ interface CamadaCardProps {
   showFontes?: boolean;
 }
 
+/** Wave 7.4 A.2 — derive metadados psicanalíticos das fontes da camada.
+ * Retorna o primeiro arquetipo_jung + estilo_terapeutico não-vazios
+ * encontrado nas fontes (camada 6 é a principal consumidora). */
+function deriveCamada6Meta(fontes: FonteRef[]): {
+  arquetipo_jung?: string;
+  estilo_terapeutico?: string;
+} {
+  const out: { arquetipo_jung?: string; estilo_terapeutico?: string } = {};
+  for (const f of fontes) {
+    if (!out.arquetipo_jung && f.arquetipo_jung) out.arquetipo_jung = f.arquetipo_jung;
+    if (!out.estilo_terapeutico && f.estilo_terapeutico)
+      out.estilo_terapeutico = f.estilo_terapeutico;
+    if (out.arquetipo_jung && out.estilo_terapeutico) break;
+  }
+  return out;
+}
+
 export function CamadaCard({ camada, index, showFontes = true }: CamadaCardProps) {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
+  const meta = deriveCamada6Meta(camada.fontes ?? []);
 
   return (
     <Card
@@ -44,6 +63,30 @@ export function CamadaCard({ camada, index, showFontes = true }: CamadaCardProps
           <p className="text-sm italic text-muted-foreground">
             {t('noContent')}
           </p>
+        )}
+
+        {/* Wave 7.4 A.2 — Badges psicanalíticos opcionais (Camada 6) */}
+        {(meta.arquetipo_jung || meta.estilo_terapeutico) && (
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {meta.arquetipo_jung && (
+              <span
+                data-testid="camada-meta-arquetipo"
+                className="text-[10px] uppercase tracking-wide bg-indigo-100 dark:bg-indigo-900 text-indigo-900 dark:text-indigo-100 px-2 py-0.5 rounded-full"
+                title={t('camadaArquetipoJung')}
+              >
+                {meta.arquetipo_jung}
+              </span>
+            )}
+            {meta.estilo_terapeutico && (
+              <span
+                data-testid="camada-meta-estilo"
+                className="text-[10px] uppercase tracking-wide bg-emerald-100 dark:bg-emerald-900 text-emerald-900 dark:text-emerald-100 px-2 py-0.5 rounded-full"
+                title={t('camadaEstiloTerapeutico')}
+              >
+                {meta.estilo_terapeutico}
+              </span>
+            )}
+          </div>
         )}
 
         {showFontes && camada.fontes && camada.fontes.length > 0 && (
@@ -78,5 +121,3 @@ export function CamadaCard({ camada, index, showFontes = true }: CamadaCardProps
     </Card>
   );
 }
-
-import { useState } from 'react';

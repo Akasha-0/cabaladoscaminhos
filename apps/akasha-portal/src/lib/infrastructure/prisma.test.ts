@@ -52,11 +52,13 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  // Restaura env global
-  if (ORIGINAL_DATABASE_URL === undefined) delete process.env.DATABASE_URL;
-  else process.env.DATABASE_URL = ORIGINAL_DATABASE_URL;
-  if (ORIGINAL_NODE_ENV === undefined) delete process.env.NODE_ENV;
-  else process.env.NODE_ENV = ORIGINAL_NODE_ENV;
+  // Restaura env global (cast via Record<string,string|undefined> para
+  // contornar o tipo readonly de process.env em @types/node >= 22).
+  const env = process.env as Record<string, string | undefined>;
+  if (ORIGINAL_DATABASE_URL === undefined) delete env.DATABASE_URL;
+  else env.DATABASE_URL = ORIGINAL_DATABASE_URL;
+  if (ORIGINAL_NODE_ENV === undefined) delete env.NODE_ENV;
+  else env.NODE_ENV = ORIGINAL_NODE_ENV;
   // Limpa o cache global escrito por prisma.ts para não vazar entre arquivos
   delete (globalThis as { prisma?: unknown }).prisma;
 });
@@ -100,7 +102,7 @@ describe('prisma.ts — lazy proxy', () => {
 
   it('instancia PrismaClient com log verbose em development', async () => {
     process.env.DATABASE_URL = 'postgresql://x';
-    process.env.NODE_ENV = 'development';
+    (process.env as Record<string, string>).NODE_ENV = 'development';
     vi.resetModules();
 
     await loadAndTouchPrisma();
@@ -113,7 +115,7 @@ describe('prisma.ts — lazy proxy', () => {
 
   it('instancia PrismaClient com log mínimo em produção', async () => {
     process.env.DATABASE_URL = 'postgresql://x';
-    process.env.NODE_ENV = 'production';
+    (process.env as Record<string, string>).NODE_ENV = 'production';
     vi.resetModules();
 
     await loadAndTouchPrisma();
@@ -135,7 +137,7 @@ describe('prisma.ts — lazy proxy', () => {
 
   it('cacheia o client em env não-production — não recria no segundo acesso', async () => {
     process.env.DATABASE_URL = 'postgresql://x';
-    process.env.NODE_ENV = 'test';
+    (process.env as Record<string, string>).NODE_ENV = 'test';
     vi.resetModules();
 
     const prisma = await loadPrismaModule();
@@ -179,7 +181,7 @@ describe('prisma.ts — lazy proxy', () => {
   // ─── Coverage: production mode does NOT mutate globalThis ──────────────
   it('production: NÃO escreve em globalThis.prisma (HMR não vaza clients)', async () => {
     process.env.DATABASE_URL = 'postgresql://x';
-    process.env.NODE_ENV = 'production';
+    (process.env as Record<string, string>).NODE_ENV = 'production';
     vi.resetModules();
 
     await loadAndTouchPrisma();
@@ -193,7 +195,7 @@ describe('prisma.ts — lazy proxy', () => {
   // ─── Coverage: pre-seeded globalThis.prisma is reused (HMR recovery) ──
   it('reusa globalThis.prisma pre-existente (recuperação após HMR)', async () => {
     process.env.DATABASE_URL = 'postgresql://x';
-    process.env.NODE_ENV = 'test';
+    (process.env as Record<string, string>).NODE_ENV = 'test';
     vi.resetModules();
 
     // Simula o cenário onde um reload de módulo preservou um client em
@@ -216,7 +218,7 @@ describe('prisma.ts — lazy proxy', () => {
   // ─── Coverage: production + vi.resetModules recria o client (sem cache) ─
   it('production: vi.resetModules força recriação (sem cache global)', async () => {
     process.env.DATABASE_URL = 'postgresql://first';
-    process.env.NODE_ENV = 'production';
+    (process.env as Record<string, string>).NODE_ENV = 'production';
     vi.resetModules();
 
     await loadAndTouchPrisma();

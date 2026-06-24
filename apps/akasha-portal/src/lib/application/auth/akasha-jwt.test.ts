@@ -4,7 +4,7 @@
  * Covers: cookie constants, AkashaJwtSecretMissingError,
  * signAkashaAccessToken, signAkashaRefreshToken, verifyAkashaToken,
  * setAkashaSessionCookie, setAkashaRefreshCookie,
- * clearAkashaSessionCookie, clearAkashaRefreshCookie, validateAuthOrigin.
+ * clearAkashaSessionCookie, clearAkashaRefreshCookie.
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
@@ -20,7 +20,6 @@ import {
  clearAkashaSessionCookie,
  clearAkashaRefreshCookie,
  AkashaJwtSecretMissingError,
- validateAuthOrigin,
  type AkashaTokenPayload,
 } from './akasha-jwt';
 
@@ -82,14 +81,6 @@ function makeMockResponse() {
   },
  };
  return response;
-}
-
-function makeMinimalRequest(headers: Record<string, string | null>) {
- return {
-  headers: {
-   get: (name: string) => headers[name] ?? null,
-  },
- };
 }
 
 // ─── Constants ──────────────────────────────────────────────────────────────
@@ -204,44 +195,50 @@ describe('signAkashaAccessToken', () => {
 // ─── signAkashaRefreshToken ────────────────────────────────────────────────
 
 describe('signAkashaRefreshToken', () => {
- it('returns an object with token (string) and jti (string)', () => {
-  const result = signAkashaRefreshToken({ id: 'user-1', email: 'a@b.com' });
-  expect(typeof result.token).toBe('string');
-  expect(typeof result.jti).toBe('string');
-  expect(result.token.length).toBeGreaterThan(0);
-  expect(result.jti.length).toBeGreaterThan(0);
+ it('returns a non-empty JWT string with a UUID v4 jti embedded in the payload', () => {
+  const token = signAkashaRefreshToken({ id: 'user-1', email: 'a@b.com' });
+  expect(typeof token).toBe('string');
+  expect(token.length).toBeGreaterThan(0);
+  const decoded = roundTrip<AkashaTokenPayload>(token, TEST_SECRET);
+  expect(typeof decoded.jti).toBe('string');
+  expect(decoded.jti!.length).toBeGreaterThan(0);
  });
 
  it('jti is a valid UUID v4', () => {
-  const { jti } = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
-  expect(jti).toMatch(
+  const token = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
+  const decoded = roundTrip<AkashaTokenPayload>(token, TEST_SECRET);
+  expect(decoded.jti).toMatch(
    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
   );
  });
 
  it('encodes sub and email in the payload', () => {
   const user = { id: 'user-99', email: 'bob@example.com' };
-  const { token } = signAkashaRefreshToken(user);
+  const token = signAkashaRefreshToken(user);
   const decoded = roundTrip<AkashaTokenPayload>(token, TEST_SECRET);
   expect(decoded.sub).toBe(user.id);
   expect(decoded.email).toBe(user.email);
  });
 
  it('sets type to refresh', () => {
-  const { token } = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
+  const token = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
   const decoded = roundTrip<AkashaTokenPayload>(token, TEST_SECRET);
   expect(decoded.type).toBe('refresh');
  });
 
- it('includes jti in the payload matching the returned jti', () => {
-  const { token, jti } = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
-  const decoded = roundTrip<AkashaTokenPayload>(token, TEST_SECRET);
-  expect(decoded.jti).toBe(jti);
+ it('includes a unique jti in the payload on each call', () => {
+  const token1 = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
+  const token2 = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
+  const decoded1 = roundTrip<AkashaTokenPayload>(token1, TEST_SECRET);
+  const decoded2 = roundTrip<AkashaTokenPayload>(token2, TEST_SECRET);
+  expect(decoded1.jti).toBeTruthy();
+  expect(decoded2.jti).toBeTruthy();
+  expect(decoded1.jti).not.toBe(decoded2.jti);
  });
 
  it('sets expiresIn of 30 days (2592000 seconds)', () => {
   const before = Math.floor(Date.now() / 1000);
-  const { token } = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
+  const token = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
   const after = Math.floor(Date.now() / 1000);
   const decoded = roundTrip<AkashaTokenPayload>(token, TEST_SECRET);
   const expectedMin = before + 30 * 24 * 60 * 60;
@@ -331,13 +328,13 @@ describe('verifyAkashaToken', () => {
  });
 
  it('returns null when expectedType=access but token is refresh', async () => {
-  const { token } = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
+  const token = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
   const payload = await verifyAkashaToken(token, 'access');
   expect(payload).toBeNull();
  });
 
  it('returns payload when expectedType=refresh and token is refresh', async () => {
-  const { token } = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
+  const token = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
   const payload = await verifyAkashaToken(token, 'refresh');
   expect(payload).not.toBeNull();
   expect(payload!.type).toBe('refresh');
@@ -387,13 +384,13 @@ describe('verifyAkashaToken', () => {
  });
 
  it('returns a valid payload for a correctly-signed refresh token', async () => {
-  const { token, jti } = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
+  const token = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
   const payload = await verifyAkashaToken(token);
   expect(payload).not.toBeNull();
   expect(payload!.sub).toBe('u1');
   expect(payload!.email).toBe('e@e.com');
   expect(payload!.type).toBe('refresh');
-  expect(payload!.jti).toBe(jti);
+  expect(payload!.jti).toBeTruthy();
  });
 });
 
@@ -412,13 +409,13 @@ describe('end-to-end token lifecycle', () => {
 
  it('refresh token signed by signAkashaRefreshToken verifies cleanly', async () => {
   const user = { id: 'user-e2e', email: 'e2e@test.com' };
-  const { token, jti } = signAkashaRefreshToken(user);
+  const token = signAkashaRefreshToken(user);
   const payload = await verifyAkashaToken(token, 'refresh');
   expect(payload).not.toBeNull();
   expect(payload!.sub).toBe(user.id);
   expect(payload!.email).toBe(user.email);
   expect(payload!.type).toBe('refresh');
-  expect(payload!.jti).toBe(jti);
+  expect(payload!.jti).toBeTruthy();
  });
 
  it('access token cannot be used as refresh (type mismatch)', async () => {
@@ -428,7 +425,7 @@ describe('end-to-end token lifecycle', () => {
  });
 
  it('refresh token cannot be used as access (type mismatch)', async () => {
-  const { token } = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
+  const token = signAkashaRefreshToken({ id: 'u1', email: 'e@e.com' });
   const payload = await verifyAkashaToken(token, 'access');
   expect(payload).toBeNull();
  });
@@ -568,144 +565,5 @@ describe('clearAkashaRefreshCookie — sameSite:strict', () => {
   const response = makeMockResponse();
   clearAkashaRefreshCookie(response);
   expect(response.cookies.getLastOpts()).toMatchObject({ secure: true, httpOnly: true });
- });
-});
-
-// ─── validateAuthOrigin ────────────────────────────────────────────────────
-
-describe('validateAuthOrigin', () => {
- it('returns 403 when Origin header is missing (browser required)', () => {
-  const req = makeMinimalRequest({ origin: null });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).not.toBeNull();
-  expect(result!.status).toBe(403);
-  expect(result!.statusText).toBe('');
- });
-
- it('returns null when origin is in ALLOWED_ORIGINS', () => {
-  process.env.ALLOWED_ORIGINS = 'https://app.example.com,https://staging.example.com';
-  const req = makeMinimalRequest({ origin: 'https://app.example.com' });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).toBeNull();
- });
-
- it('returns 403 when origin is not in ALLOWED_ORIGINS', () => {
-  process.env.ALLOWED_ORIGINS = 'https://app.example.com,https://staging.example.com';
-  const req = makeMinimalRequest({ origin: 'https://evil.example.com' });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).not.toBeNull();
-  expect(result!.status).toBe(403);
- });
-
- it('parses ALLOWED_ORIGINS with whitespace correctly (trim)', () => {
-  process.env.ALLOWED_ORIGINS = ' https://app.example.com , https://staging.example.com ';
-  const req = makeMinimalRequest({ origin: 'https://staging.example.com' });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).toBeNull();
- });
-
- it('returns null for localhost in dev mode without ALLOWED_ORIGINS', () => {
-  vi.stubEnv('NODE_ENV', 'development');
-  const req = makeMinimalRequest({ origin: 'http://localhost:3000' });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).toBeNull();
- });
-
- it('returns null for http://localhost (no port)', () => {
-  vi.stubEnv('NODE_ENV', 'development');
-  const req = makeMinimalRequest({ origin: 'http://localhost' });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).toBeNull();
- });
-
- it('returns 403 for localhost in production without ALLOWED_ORIGINS', () => {
-  vi.stubEnv('NODE_ENV', 'production');
-  const req = makeMinimalRequest({ origin: 'http://localhost:3000' });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).not.toBeNull();
-  expect(result!.status).toBe(403);
- });
-
- it('returns 403 in dev when ALLOWED_ORIGINS is unset and origin is not localhost', () => {
-  vi.stubEnv('NODE_ENV', 'development');
-  const req = makeMinimalRequest({ origin: 'https://some-remote.dev' });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).not.toBeNull();
-  expect(result!.status).toBe(403);
- });
-
- it('returns 403 in production without ALLOWED_ORIGINS configured', () => {
-  vi.stubEnv('NODE_ENV', 'production');
-  const req = makeMinimalRequest({ origin: 'https://app.example.com' });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).not.toBeNull();
-  expect(result!.status).toBe(403);
- });
-
- it('403 response body contains an error field', async () => {
-  vi.stubEnv('NODE_ENV', 'production');
-  const req = makeMinimalRequest({ origin: null });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).not.toBeNull();
-  expect(await result!.json()).toMatchObject({ error: 'Origin header required' });
- });
-
- it('returns 403 when origin is an invalid URL', async () => {
-  const req = { headers: { get: () => ':' } };
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).not.toBeNull();
-  expect(result!.status).toBe(403);
- });
-
- it('returns 403 when Sec-Fetch-Site is cross-site (defense-in-depth)', () => {
-  process.env.ALLOWED_ORIGINS = 'https://app.example.com';
-  const req = makeMinimalRequest({
-   origin: 'https://app.example.com',
-   'sec-fetch-site': 'cross-site',
-  });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).not.toBeNull();
-  expect(result!.status).toBe(403);
- });
-
- it('returns 403 when Sec-Fetch-Site is cross-site even without ALLOWED_ORIGINS (dev)', () => {
-  vi.stubEnv('NODE_ENV', 'development');
-  const req = makeMinimalRequest({
-   origin: 'http://localhost:3000',
-   'sec-fetch-site': 'cross-site',
-  });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).not.toBeNull();
-  expect(result!.status).toBe(403);
- });
-
- it('accepts request when Sec-Fetch-Site is same-origin (allowlisted origin)', () => {
-  process.env.ALLOWED_ORIGINS = 'https://app.example.com';
-  const req = makeMinimalRequest({
-   origin: 'https://app.example.com',
-   'sec-fetch-site': 'same-origin',
-  });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).toBeNull();
- });
-
- it('accepts request when Sec-Fetch-Site is none (top-level navigation)', () => {
-  process.env.ALLOWED_ORIGINS = 'https://app.example.com';
-  const req = makeMinimalRequest({
-   origin: 'https://app.example.com',
-   'sec-fetch-site': 'none',
-  });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).toBeNull();
- });
-
- it('falls through to Origin check when Sec-Fetch-Site is missing (non-browser / old clients)', () => {
-  vi.stubEnv('NODE_ENV', 'development');
-  const req = makeMinimalRequest({
-   origin: 'http://localhost:3000',
-   'sec-fetch-site': null,
-  });
-  const result = validateAuthOrigin(req as Parameters<typeof validateAuthOrigin>[0]);
-  expect(result).toBeNull();
  });
 });

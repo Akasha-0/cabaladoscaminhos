@@ -20,6 +20,7 @@ import type {
   Corpus,
   EngineOptions,
   PilarInput,
+  RespostaPergunta,
   SynthesisOutput,
 } from './types';
 
@@ -32,6 +33,7 @@ import { gerarCamada4Quisilas } from './camadas/camada-4-quisilas';
 import { gerarCamada5Alinhamento } from './camadas/camada-5-alinhamento-energetico';
 import { gerarCamada6Psicanalise } from './camadas/camada-6-psicanalise';
 import { gerarCamada7Coaching } from './camadas/camada-7-coaching';
+import { detectarPadroesEmocionais } from './camadas/_helpers';
 
 /** Versão semver do motor. Incrementar em mudanças de schema/lógica. */
 export const ENGINE_VERSION = '0.1.0';
@@ -83,12 +85,37 @@ export function sintetizar(
     fontes_usadas: [],
   });
 
+  // Step 2.5 (Wave 7.4 — Front A.1): detectar padr\u00f5es emocionais a partir
+  // das respostas livres + inten\u00e7\u00e3o. O resultado \u00e9 anexado ao input
+  // como `padroes` para que a Camada 1 (Diagn\u00f3stico) exponha a lista em
+  // `camadas.diagnostico.metadata.padroes`. \u00c9 puramente derivativo
+  // (sem rede/IO) e n\u00e3o altera o PilarInput do caller.
+  const padroes = detectarPadroesEmocionais(
+    input.respostas as ReadonlyArray<RespostaPergunta> | undefined,
+    input.intencao
+  );
+  const inputComPadroes: PilarInput & { padroes?: string[] } =
+    padroes.length > 0 ? { ...input, padroes } : { ...input };
+  if (padroes.length > 0) {
+    cadeia.push({
+      step: proximo(),
+      descricao: `Detectar padr\u00f5es emocionais nas respostas: ${padroes.join(', ')}.`,
+      fontes_usadas: [],
+    });
+  }
+
   // Step 3: gerar Camada 1.
-  const camada1 = gerarCamada1Diagnostico(input, corpus, maxFrases);
+  const camada1 = gerarCamada1Diagnostico(inputComPadroes, corpus, maxFrases);
+  // Anexa metadata.padroes (Camada 1 n\u00e3o recebe input mutado, ent\u00e3o
+  // enriquecemos o resultado final aqui).
+  const camada1ComMetadata: Camada =
+    padroes.length > 0
+      ? { ...camada1, metadata: { ...(camada1.metadata ?? {}), padroes } }
+      : camada1;
   cadeia.push({
     step: proximo(),
-    descricao: `Camada 1 (Diagn\u00f3stico Imediato): ${camada1.conteudo ? camada1.fontes.length + ' fontes citadas' : 'sem corpus suficiente'}.`,
-    fontes_usadas: camada1.fontes.map((f) => f.id),
+    descricao: `Camada 1 (Diagn\u00f3stico Imediato): ${camada1ComMetadata.conteudo ? camada1ComMetadata.fontes.length + ' fontes citadas' : 'sem corpus suficiente'}${padroes.length > 0 ? ' [padroes: ' + padroes.join(', ') + ']' : ''}.`,
+    fontes_usadas: camada1ComMetadata.fontes.map((f) => f.id),
   });
 
   // Step 4: gerar Camada 2.
@@ -155,7 +182,7 @@ export function sintetizar(
 
   return {
     camadas: {
-      'camada-1-diagnostico': camada1,
+      'camada-1-diagnostico': camada1ComMetadata,
       'camada-2-praticas-imediatas': camada2,
       'camada-3-tratamento-por-area': camada3,
       'camada-4-quisilas': camada4,

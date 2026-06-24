@@ -187,10 +187,11 @@ export function getByOrixa(orixa: string): EweLeaf[] {
 }
 
 /**
- * Returns leaves for "descarrego" (hot/cleansing) or "harmonizar" (cold/calming).
+ * Returns leaves by thermal nature — used for ritual composition
+ * ("descarrego" quente, "harmonizar" frio, "neutro" for balance).
  */
-export function getByNature(nature: 'quente' | 'frio'): EweLeaf[] {
-  return EWE_DATABASE.filter((e) => e.thermalNature === nature);
+export function getByNature(nature: 'quente' | 'frio' | 'neutro'): EweLeaf[] {
+ return EWE_DATABASE.filter((e) => e.thermalNature === nature);
 }
 
 /**

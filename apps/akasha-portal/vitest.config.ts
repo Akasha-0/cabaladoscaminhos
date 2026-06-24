@@ -102,11 +102,21 @@ export default defineConfig({
         test: {
           name: 'core-ui',
           environment: 'jsdom',
-          setupFiles: ['../../tests/setup.ts'],
+          // Wave 7.4 A.4: setup local do portal traz `@testing-library/jest-dom`
+          // matchers (toBeInTheDocument, toHaveTextContent, etc.). O setup
+          // global (../../tests/setup.ts) já faz cleanup(), mas o portal
+          // precisa dos matchers para componentes como TratamentoDashboard.
+          setupFiles: [
+            '../../tests/setup.ts',
+            './src/test-setup.ts',
+          ],
           include: [
             '../../tests/cockpit/**',
             '../../tests/components/**',
-            'src/components/**/hooks/**/*.test.ts',
+            // Wave 7.4 A.4: widened para incluir .tsx de components/
+            // (antes era só 'src/components/**/hooks/**/*.test.ts').
+            'src/components/**/*.test.ts',
+            'src/components/**/*.test.tsx',
           ],
           exclude: [
             '**/*.snap',

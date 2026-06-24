@@ -12,7 +12,7 @@ import type { CityResult } from '@/components/ui/city-autocomplete';
 
 // ─── Types ────────────────────────────────────────────────────────────────
 
-type Stage = 'selection' | 'confirm' | 'results' | 'details' | 'saved';
+export type Stage = 'selection' | 'confirm' | 'results' | 'details' | 'saved';
 
 interface UserProfile {
   name: string;
@@ -24,7 +24,7 @@ interface UserProfile {
   birthTimezone: string | null;
 }
 
-interface RawBirthData {
+export interface RawBirthData {
   name: string;
   birthDate: string;
   birthTime?: string;
@@ -37,7 +37,7 @@ interface NarrativeBlock {
   text: string;
 }
 
-interface ConexaoResult {
+export interface ConexaoResult {
   romantic: number;
   partnership: number;
   dominantType: 'romantic' | 'partnership' | 'both' | 'challenging';
@@ -68,7 +68,7 @@ interface BodySync {
   description: string;
 }
 
-interface SavedConnection {
+export interface SavedConnection {
   id: string;
   otherName: string;
   otherBirthDate: string;

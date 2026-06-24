@@ -6,6 +6,7 @@
 
 export type {
   PilarInput,
+  RespostaPergunta,
   TextSource,
   Camada,
   CadeiaPensamento,
