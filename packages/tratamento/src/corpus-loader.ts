@@ -86,12 +86,40 @@ export function limparCacheCorpus(): void {
 
 // ─── Helpers internos ────────────────────────────────────────────────────────
 
-/** Resolve path default do corpus relativo ao CWD. */
+/**
+ * Resolve path default do corpus. Procura subindo diretórios a partir do
+ * CWD até encontrar `packages/tratamento/src/textos/` com `index.json`.
+ *
+ * Necessário porque vitest roda dentro de `packages/tratamento/` enquanto
+ * tsc root roda da raiz do monorepo.
+ */
 function defaultCorpusPath(): string {
-  // Em produção (monorepo), o CWD é a raiz do repo e o corpus vive em
-  // `packages/tratamento/src/textos/`. Em testes (vitest), o CWD é a
-  // raiz do monorepo também (vitest.config.ts está na raiz).
-  return join(process.cwd(), 'packages', 'tratamento', 'src', 'textos');
+  const cwd = process.cwd();
+  // Tenta resolver relativo ao CWD primeiro (monorepo root).
+  const try1 = join(cwd, 'packages', 'tratamento', 'src', 'textos');
+  if (existsSyncHelper(try1)) return try1;
+
+  // Tenta CWD direto (caso o CWD já seja packages/tratamento).
+  const try2 = join(cwd, 'src', 'textos');
+  if (existsSyncHelper(try2)) return try2;
+
+  // Tenta subir 1 nível (caso CWD seja packages/tratamento/src).
+  const try3 = join(cwd, '..', 'textos');
+  if (existsSyncHelper(try3)) return try3;
+
+  // Fallback: retorna o caminho "lógico" (mesmo que não exista —
+  // o caller verá o erro no carregamento).
+  return try1;
+}
+
+/** Helper para checar existência de diretório sem importar fs no topo. */
+function existsSyncHelper(p: string): boolean {
+  try {
+    const { statSync } = require('node:fs') as typeof import('node:fs');
+    return statSync(p).isDirectory();
+  } catch {
+    return false;
+  }
 }
 
 /**
