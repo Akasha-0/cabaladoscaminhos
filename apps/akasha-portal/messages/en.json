@@ -198,5 +198,20 @@
     "naoAutorizado": "You must be logged in to access this page.",
     "creditosInsuficientes": "Insufficient credits for this query.",
     "rede": "Connection error. Try again."
+  },
+  "meuDia": {
+    "titulo": "My Day — Adaptive Hub",
+    "statePicker": {
+      "heading": "How are you today?",
+      "skip": "Skip for now"
+    },
+    "centrado": { "fallback": "Your map is silent today." },
+    "ansioso": {
+      "startBreath": "Start breathing",
+      "phraseFallback": "You don't need to solve anything right now."
+    },
+    "perdido": { "phraseFallback": "When there's no direction, start with the body." },
+    "curioso": { "heading": "Where does your curiosity pull?" },
+    "loading": "loading your map…"
   }
 }

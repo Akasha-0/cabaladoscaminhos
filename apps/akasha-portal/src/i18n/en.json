@@ -387,5 +387,85 @@
       "pergunta_clinica": "Clinical question",
       "camada_prompt": "Prompt layer"
     }
+  },
+  "meuDia": {
+    "titulo": "My Day — Adaptive Hub",
+    "statePicker": {
+      "eyebrow": "Wave 9 · One-Screen Hub",
+      "heading": "How are you today?",
+      "subtitle": "The page adapts to what you need right now. Choose once — we'll ask again only after 24h.",
+      "skip": "Skip for now",
+      "tile": {
+        "centrado": {
+          "label": "Centred",
+          "hint": "at peace",
+          "ariaLabel": "I am centred — at peace"
+        },
+        "ansioso": {
+          "label": "Anxious",
+          "hint": "need calm",
+          "ariaLabel": "I am anxious — need calm"
+        },
+        "perdido": {
+          "label": "Lost",
+          "hint": "no direction",
+          "ariaLabel": "I am lost — no direction"
+        },
+        "curioso": {
+          "label": "Curious",
+          "hint": "want to explore",
+          "ariaLabel": "I am curious — want to explore"
+        }
+      }
+    },
+    "changeState": "Change state",
+    "centrado": {
+      "climateLabel": "Day's climate",
+      "authorityLabel": "Your authority today",
+      "strategyLabel": "Strategy",
+      "practiceLabel": "Today's practice",
+      "synthesisLabel": "Synthesis",
+      "fallback": "Your map is silent today — that is also an answer. Enjoy the space."
+    },
+    "ansioso": {
+      "startBreath": "Start breathing",
+      "phraseFallback": "You don't need to solve anything right now. Just breathe.",
+      "mentorEyebrow": "Talk to the Mentor",
+      "mentorTitle": "Open a conversation about what I feel now",
+      "breathOrb": {
+        "phaseInhale": "Inhale (4)",
+        "phaseHold": "Hold (7)",
+        "phaseExhale": "Exhale (8)",
+        "idleHint": "Ready?",
+        "touchToStart": "Tap to start",
+        "reducedMotion": "Breathe",
+        "cycleCounter": "{done}/{total} cycles",
+        "idleHelpText": "When you're ready, tap to start. Inhale 4, hold 7, exhale 8.",
+        "reducedMotionHelpText": "Breathe at your pace. 4-7-8 technique: 4 seconds in, 7 holding, 8 out.",
+        "activeHelpText": "Follow the orb's rhythm. If a cycle feels too hard, stop and return to your natural tempo."
+      }
+    },
+    "perdido": {
+      "phraseFallback": "When there's no direction, start with the body.",
+      "practiceSilenceTitle": "5 minutes of silence",
+      "practiceSilenceDesc": "Sit. Just observe what appears. Don't correct.",
+      "practiceWriteTitle": "Write the first thing",
+      "practiceWriteDesc": "Without editing. The next word will come.",
+      "mentorEyebrow": "Ask for a path",
+      "mentorTitle": "Give me a path — open Mentor with today's mission"
+    },
+    "curioso": {
+      "eyebrow": "Explore the 5 Pillars",
+      "heading": "Where does your curiosity pull?",
+      "subtitle": "Tap a pillar to open its layer on your map.",
+      "pilar": {
+        "cabala": { "title": "Kabbalah", "subtitle": "Life path" },
+        "astrologia": { "title": "Astrology", "subtitle": "Ascendant + transits" },
+        "tantra": { "title": "Tantra", "subtitle": "Tantric bodies" },
+        "odu": { "title": "Odu", "subtitle": "Ancestral line" },
+        "iching": { "title": "I Ching", "subtitle": "Daily hexagram" }
+      }
+    },
+    "loading": "loading your map…"
   }
 }
