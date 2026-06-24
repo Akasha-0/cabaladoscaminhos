@@ -87,7 +87,7 @@ describe('searchGrimoireHybrid', () => {
       vi.mocked(prisma.grimoireEntry.findMany).mockResolvedValueOnce([
         SAMPLE_ENTRY('fallback-1'),
         SAMPLE_ENTRY('fallback-2'),
-      ]);
+      ] as never);
 
       const result = await searchGrimoireHybrid(
         { text: 'terra', tags: { elemento: 'terra' } }
