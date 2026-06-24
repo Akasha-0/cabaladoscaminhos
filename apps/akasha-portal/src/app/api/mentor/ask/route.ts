@@ -42,6 +42,32 @@ export async function POST(request: NextRequest) {
   if (authResult instanceof NextResponse) return authResult;
   const userId = authResult.id;
 
+  // Wave 8.4 B.2: try MCP server first, fallback to direct LLM.
+  // MCP server está stub (sem tool dispatch) — só logamos tools registradas
+  // e seguimos pelo caminho direct LLM. Quando Wave 9+ registrar tools reais,
+  // este bloco evoluirá para invocá-las.
+  let useMcp = false;
+  try {
+    const { mcpServer } = await import('@akasha/mcp');
+    const registry = mcpServer.getRegistry();
+    const mentorTools = Array.from(registry.tools.values()).filter(t =>
+      t.name.startsWith('mentor.')
+    );
+    if (mentorTools.length > 0) {
+      console.log(
+        `[mentor] found ${mentorTools.length} MCP tools, using direct LLM fallback (no tool impl yet)`
+      );
+      useMcp = true;
+    }
+  } catch (err) {
+    // @akasha/mcp não instalado ou import falhou → fallback to direct LLM
+    console.warn(
+      '[mentor] MCP server unavailable, using direct LLM:',
+      err instanceof Error ? err.message : err
+    );
+  }
+  // `useMcp` é flag para Wave 9+ saber se deveria usar tools registradas.
+
   try {
     // 1. Validate body
     let parsed: z.infer<typeof bodySchema>;
