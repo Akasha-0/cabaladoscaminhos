@@ -202,20 +202,36 @@
     "titulo": "Meu Dia — Hub Adaptativo",
     "statePicker": {
       "heading": "Como você está hoje?",
+      "subtitle": "A página se adapta ao que você precisa.",
       "skip": "Pular por agora"
     },
     "centrado": {
-      "fallback": "Seu mapa está silencioso hoje."
+      "fallback": "Seu mapa está silencioso hoje.",
+      "sectionClimate": "Clima",
+      "sectionAuthority": "Autoridade",
+      "sectionRitual": "Prática",
+      "sectionToday": "Hoje"
     },
     "ansioso": {
       "startBreath": "Começar respiração",
-      "phraseFallback": "Você não precisa resolver nada agora."
+      "phraseFallback": "Respire. Apenas isso, agora.",
+      "mentorCta": "Falar com Mentor agora"
     },
     "perdido": {
-      "phraseFallback": "Quando não há direção, comece pelo corpo."
+      "phraseFallback": "Quando não há direção, comece pelo corpo.",
+      "mentorCta": "Me dê um caminho",
+      "practiceSilence": {
+        "title": "5 min de silêncio",
+        "description": "Sente-se. Apenas observe."
+      },
+      "practiceWrite": {
+        "title": "Escreva a 1ª coisa",
+        "description": "Sem editar. A próxima vem."
+      }
     },
     "curioso": {
-      "heading": "Para onde sua curiosidade puxa?"
+      "heading": "Para onde sua curiosidade puxa?",
+      "subtitle": "Toque num pilar."
     },
     "loading": "carregando seu mapa…"
   },
