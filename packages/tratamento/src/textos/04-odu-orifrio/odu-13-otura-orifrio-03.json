@@ -1,0 +1,30 @@
+{
+  "id": "odu-13-otura-orifrio-03",
+  "categoria": "orifrio",
+  "odu": "Otura (13)",
+  "orixa": "Oxalá",
+  "elemento": "Fogo",
+  "chacra_referente": [
+    "Coronário"
+  ],
+  "caminhos_afetados": [
+    4,
+    7,
+    13,
+    17
+  ],
+  "camada_synthesis": [
+    "camada1_diagnostico",
+    "camada6_psicanalise"
+  ],
+  "padrao_orí": "frio",
+  "texto": "Melancolia sem causa clara há meses",
+  "grounding": {
+    "research_mtc_linha": 68,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos (Ori frio)",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.91,
+  "requires_professional_review": false
+}

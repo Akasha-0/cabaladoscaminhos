@@ -1,0 +1,17 @@
+{
+  "id": "caminho-15-magnetizador-essencia",
+  "categoria": "caminho_essencia",
+  "caminho_numero": 15,
+  "caminho_nome": "Magnetizador",
+  "arquetipo_jung": "Amante",
+  "estilo_terapeutico": "Gestalt (presença)",
+  "texto": "Irradie paixão e encantamento que materializa o que toca.",
+  "grounding": {
+    "research_np_linha": 40,
+    "research_np_secao": "§1 Caminho de Vida 1-22 × Arquétipo Junguiano × Estilo Terapêutico",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Numerologia_cabal%C3%ADstica"
+  },
+  "alucinacao_score": 0.94,
+  "requires_professional_review": false
+}

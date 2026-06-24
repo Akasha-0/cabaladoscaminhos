@@ -1,0 +1,18 @@
+{
+  "id": "chacra-2-sacral-pratica-03",
+  "categoria": "chakra_pratica",
+  "chacra": "Sacral (Svadhisthana)",
+  "chacra_numero": 2,
+  "tipo_pratica": "cristal",
+  "nome_pratica": "Pedra da Lua no ciclo",
+  "como_aplicar": "Use uma pedra da lua em corrente curta (próximo ao coração) durante a lua cheia; anote sonhos no caderno.",
+  "texto": "Pedra da Lua no ciclo: Use uma pedra da lua em corrente curta (próximo ao coração) durante a lua cheia; anote sonhos no caderno.",
+  "grounding": {
+    "research_mtc_linha": 89,
+    "research_mtc_secao": "§2 Cristais por Chácra",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": false
+}

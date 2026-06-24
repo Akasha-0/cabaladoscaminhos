@@ -1,0 +1,18 @@
+{
+  "id": "camada-4-quisilas",
+  "categoria": "camada_prompt",
+  "camada_numero": 4,
+  "camada_nome": "Quisilas",
+  "prompt_template": "Quando a pessoa tem 1+ sinal de orí quente ou orí frio, gere output de Quisilas no formato JSON {o_que_evitar: string[], por_que: string, alternativa_saudavel: string, janela_de_tempo: string} com 4 frases no máximo. Foco em 'menos é mais': 3 itens, não 10.",
+  "texto": "Quando a pessoa tem 1+ sinal de orí quente ou orí frio, gere output de Quisilas no formato JSON {o_que_evitar: string[], por_que: string, alternativa_saudavel: string, janela_de_tempo: string} com 4 frases no máximo. Foco em 'menos é mais': 3 itens, não 10.",
+  "grounding": {
+    "research_mtc_linha": 33,
+    "research_np_linha": 91,
+    "research_mtc_secao": "§4 Matriz Cross-Reference",
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão + §4 Detector de Padrões Emocionais",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md"
+  },
+  "alucinacao_score": 0.89,
+  "requires_professional_review": false
+}

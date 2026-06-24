@@ -1,0 +1,69 @@
+{
+  "total": 352,
+  "by_category": {
+    "01-odu-preceitos": 80,
+    "02-odu-quisilas": 80,
+    "03-odu-oriquente": 48,
+    "04-odu-orifrio": 48,
+    "05-chakra-praticas": 21,
+    "06-elemento-banhos": 8,
+    "07-caminho-essencia": 22,
+    "08-caminho-sombra": 22,
+    "09-camadas-7": 7,
+    "10-perguntas-clinicas": 16
+  },
+  "by_categoria_interna": {
+    "preceito": 80,
+    "quisila": 80,
+    "oriquente": 48,
+    "orifrio": 48,
+    "chakra_pratica": 21,
+    "elemento_banho": 8,
+    "caminho_essencia": 22,
+    "caminho_sombra": 22,
+    "camada_prompt": 7,
+    "pergunta_clinica": 16
+  },
+  "stats": {
+    "avg_alucinacao_score": 0.92,
+    "pct_professional_review": 0.0312,
+    "files_with_professional_review": 11
+  },
+  "by_odu": {
+    "Ogbe (1)": 16,
+    "Oyeku (2)": 16,
+    "Iwori (3)": 16,
+    "Odi (4)": 16,
+    "Irosun (5)": 16,
+    "Owonrin (6)": 16,
+    "Obara (7)": 16,
+    "Okanran (8)": 16,
+    "Ogunda (9)": 16,
+    "Osa (10)": 16,
+    "Ika (11)": 16,
+    "Oturupon (12)": 16,
+    "Otura (13)": 16,
+    "Irete (14)": 16,
+    "Ofun (15)": 16,
+    "Obe (16)": 16
+  },
+  "by_chacra": {
+    "Raiz (Muladhara)": 3,
+    "Sacral (Svadhisthana)": 3,
+    "Plexo Solar (Manipura)": 3,
+    "Cardíaco (Anahata)": 3,
+    "Laríngeo (Vishuddha)": 3,
+    "Terceiro Olho (Ajna)": 3,
+    "Coronário (Sahasrara)": 3
+  },
+  "research_sources": [
+    {
+      "file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+      "open_source": "https://pt.wikipedia.org/wiki/If%C3%A1"
+    },
+    {
+      "file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+      "open_source": "https://pt.wikipedia.org/wiki/Numerologia_cabal%C3%ADstica"
+    }
+  ]
+}

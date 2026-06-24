@@ -1,0 +1,22 @@
+{
+  "id": "pergunta-06-padrões",
+  "categoria": "pergunta_clinica",
+  "pergunta_numero": 6,
+  "grupo": "Padrões",
+  "pergunta": "Quando você começa algo novo, o que costuma te fazer desistir?",
+  "texto": "Quando você começa algo novo, o que costuma te fazer desistir?",
+  "grounding": {
+    "research_np_linha": 101,
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão (Protocolo de Entrevista)",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url": "https://www.who.int/publications/i/item/9789241549790"
+  },
+  "alucinacao_score": 0.96,
+  "requires_professional_review": false,
+  "como_interpretar": "Se 'sim, sempre' → investigar barreiras (tempo, dinheiro, motivação, medo). Se 'não, termino' → avaliar se há padrão de desistência ou se é sinal de assertividade saudável.",
+  "fontes": [
+    "https://www.who.int/publications/i/item/9789241549790",
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3913299",
+    "https://pubmed.ncbi.nlm.nih.gov/18072116"
+  ]
+}

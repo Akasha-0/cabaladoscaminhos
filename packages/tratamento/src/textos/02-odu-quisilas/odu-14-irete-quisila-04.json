@@ -1,0 +1,30 @@
+{
+  "id": "odu-14-irete-quisila-04",
+  "categoria": "quisila",
+  "odu": "Irete (14)",
+  "orixa": "Oxum/Oiá",
+  "elemento": "Água+Ar",
+  "chacra_referente": [
+    "Terceiro Olho",
+    "Cardíaco"
+  ],
+  "caminhos_afetados": [
+    6,
+    11,
+    14,
+    20
+  ],
+  "camada_synthesis": [
+    "camada4_quisilas"
+  ],
+  "aspecto": "fala",
+  "texto": "Evite prometer em vão com base em 'visões'; aterre a visão em palavra concreta.",
+  "grounding": {
+    "research_mtc_linha": 71,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.93,
+  "requires_professional_review": false
+}

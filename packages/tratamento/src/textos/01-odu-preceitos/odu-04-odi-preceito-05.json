@@ -1,0 +1,30 @@
+{
+  "id": "odu-04-odi-preceito-05",
+  "categoria": "preceito",
+  "odu": "Odi (4)",
+  "orixa": "Oxum",
+  "elemento": "Água",
+  "chacra_referente": [
+    "Cardíaco"
+  ],
+  "caminhos_afetados": [
+    2,
+    6,
+    9,
+    18
+  ],
+  "camada_synthesis": [
+    "camada2_praticas",
+    "camada5_alinhamento"
+  ],
+  "aspecto": "fala",
+  "texto": "Diga 'eu te amo' em voz alta pelo menos uma vez ao dia, mesmo em frente ao espelho.",
+  "grounding": {
+    "research_mtc_linha": 41,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.92,
+  "requires_professional_review": false
+}

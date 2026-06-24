@@ -1,0 +1,30 @@
+{
+  "id": "odu-07-obara-preceito-01",
+  "categoria": "preceito",
+  "odu": "Obara (7)",
+  "orixa": "Xangô",
+  "elemento": "Fogo",
+  "chacra_referente": [
+    "Laríngeo"
+  ],
+  "caminhos_afetados": [
+    1,
+    8,
+    14,
+    22
+  ],
+  "camada_synthesis": [
+    "camada2_praticas",
+    "camada5_alinhamento"
+  ],
+  "aspecto": "voz",
+  "texto": "Comece o dia com 3 minutos de canto entoado (vogal 'A' aberta); aquece a voz e a postura.",
+  "grounding": {
+    "research_mtc_linha": 50,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.92,
+  "requires_professional_review": false
+}

@@ -1,0 +1,17 @@
+{
+  "id": "caminho-01-iniciador-sombra",
+  "categoria": "caminho_sombra",
+  "caminho_numero": 1,
+  "caminho_nome": "Iniciador",
+  "arquetipo_jung": "Herói",
+  "estilo_terapeutico": "TCC (ativação comportamental)",
+  "texto": "Autoritarismo e incapacidade crônica de delegar tarefas ou confiar no coletivo.",
+  "grounding": {
+    "research_np_linha": 26,
+    "research_np_secao": "§1 Caminho de Vida 1-22 × Arquétipo Junguiano × Estilo Terapêutico",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url": "https://www.simplypsychology.org/carl-jung.html"
+  },
+  "alucinacao_score": 0.94,
+  "requires_professional_review": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": "elemento-ar-banho-01",
+  "categoria": "elemento_banho",
+  "elemento": "Ar",
+  "nome_banho": "Banho de eucalipto e sálvia para Ar",
+  "modo_preparo": "Ferva 1 colher de eucalipto e 1 de sálvia em 1 litro de água por 7 minutos; coe e adicione à água do banho morno; desobstrui respiração e clareia mente; ideal para início de terapia.",
+  "texto": "Ferva 1 colher de eucalipto e 1 de sálvia em 1 litro de água por 7 minutos; coe e adicione à água do banho morno; desobstrui respiração e clareia mente; ideal para início de terapia.",
+  "grounding": {
+    "research_mtc_linha": 120,
+    "research_mtc_secao": "§3 Ervas Medicinais, Banhos e Chás por Elemento",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://www.embrapa.br"
+  },
+  "alucinacao_score": 0.91,
+  "requires_professional_review": false
+}

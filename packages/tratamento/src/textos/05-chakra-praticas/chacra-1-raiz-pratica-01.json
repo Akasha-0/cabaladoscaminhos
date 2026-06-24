@@ -1,0 +1,18 @@
+{
+  "id": "chacra-1-raiz-pratica-01",
+  "categoria": "chakra_pratica",
+  "chacra": "Raiz (Muladhara)",
+  "chacra_numero": 1,
+  "tipo_pratica": "cristal",
+  "nome_pratica": "Aterramento com Hematita",
+  "como_aplicar": "Segure uma hematita na mão esquerda por 5 minutos ao acordar; sinta o peso na sola dos pés.",
+  "texto": "Aterramento com Hematita: Segure uma hematita na mão esquerda por 5 minutos ao acordar; sinta o peso na sola dos pés.",
+  "grounding": {
+    "research_mtc_linha": 88,
+    "research_mtc_secao": "§2 Cristais por Chácra",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": "elemento-ar-banho-02",
+  "categoria": "elemento_banho",
+  "elemento": "Ar",
+  "nome_banho": "Banho de alecrim e hortelã para Ar",
+  "modo_preparo": "Ferva 1 maço de alecrim fresco e 1 de hortelã em 1 litro de água por 10 minutos; coe e adicione ao banho; 'limpa a cabeça'; ideal antes de decisões.",
+  "texto": "Ferva 1 maço de alecrim fresco e 1 de hortelã em 1 litro de água por 10 minutos; coe e adicione ao banho; 'limpa a cabeça'; ideal antes de decisões.",
+  "grounding": {
+    "research_mtc_linha": 120,
+    "research_mtc_secao": "§3 Ervas Medicinais, Banhos e Chás por Elemento",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://www.embrapa.br"
+  },
+  "alucinacao_score": 0.91,
+  "requires_professional_review": false
+}

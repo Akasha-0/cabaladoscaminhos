@@ -1,0 +1,31 @@
+{
+  "id": "odu-10-osa-preceito-01",
+  "categoria": "preceito",
+  "odu": "Osa (10)",
+  "orixa": "Iansã",
+  "elemento": "Ar",
+  "chacra_referente": [
+    "Laríngeo",
+    "Terceiro Olho"
+  ],
+  "caminhos_afetados": [
+    3,
+    5,
+    15,
+    21
+  ],
+  "camada_synthesis": [
+    "camada2_praticas",
+    "camada5_alinhamento"
+  ],
+  "aspecto": "ritual",
+  "texto": "Ventile o quarto por 10 minutos todas as manhãs, mesmo no frio.",
+  "grounding": {
+    "research_mtc_linha": 59,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.92,
+  "requires_professional_review": false
+}

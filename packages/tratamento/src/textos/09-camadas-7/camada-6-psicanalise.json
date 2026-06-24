@@ -1,0 +1,18 @@
+{
+  "id": "camada-6-psicanalise",
+  "categoria": "camada_prompt",
+  "camada_numero": 6,
+  "camada_nome": "Psicanálise",
+  "prompt_template": "Quando a pessoa tem padrão repetitivo (mesmo nº em P1 + P4 + P5), gere output de Psicanálise no formato JSON {padrao_detectado: string, origem_provavel: string, pergunta_socratica: string, convite_de_insight: string, flag_profissional: boolean} com 4 frases no máximo. Acionar flag_profissional=true se houver indicação de trauma ou dissociação.",
+  "texto": "Quando a pessoa tem padrão repetitivo (mesmo nº em P1 + P4 + P5), gere output de Psicanálise no formato JSON {padrao_detectado: string, origem_provavel: string, pergunta_socratica: string, convite_de_insight: string, flag_profissional: boolean} com 4 frases no máximo. Acionar flag_profissional=true se houver indicação de trauma ou dissociação.",
+  "grounding": {
+    "research_mtc_linha": 132,
+    "research_np_linha": 127,
+    "research_mtc_secao": "§4 Matriz Cross-Reference",
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão + §4 Detector de Padrões Emocionais",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md"
+  },
+  "alucinacao_score": 0.89,
+  "requires_professional_review": true
+}

@@ -1,0 +1,18 @@
+{
+  "id": "chacra-1-raiz-pratica-02",
+  "categoria": "chakra_pratica",
+  "chacra": "Raiz (Muladhara)",
+  "chacra_numero": 1,
+  "tipo_pratica": "banho",
+  "nome_pratica": "Banho de arruda diluída",
+  "como_aplicar": "Ferva 1 colher de arruda em 1 litro de água por 5 minutos, coe e adicione ao banho de imersão morno; use uma vez por semana (atenção: evitar em gestação).",
+  "texto": "Banho de arruda diluída: Ferva 1 colher de arruda em 1 litro de água por 5 minutos, coe e adicione ao banho de imersão morno; use uma vez por semana (atenção: evitar em gestação).",
+  "grounding": {
+    "research_mtc_linha": 115,
+    "research_mtc_secao": "§3 Ervas Medicinais, Banhos e Chás por Elemento",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": false
+}

@@ -1,0 +1,18 @@
+{
+  "id": "chacra-4-cardiaco-pratica-02",
+  "categoria": "chakra_pratica",
+  "chacra": "Cardíaco (Anahata)",
+  "chacra_numero": 4,
+  "tipo_pratica": "banho",
+  "nome_pratica": "Banho de chá-de-rosa",
+  "como_aplicar": "Prepare 1 litro de chá forte de rosa branca, coe e adicione à água do banho de imersão morno; 20 minutos uma vez por semana.",
+  "texto": "Banho de chá-de-rosa: Prepare 1 litro de chá forte de rosa branca, coe e adicione à água do banho de imersão morno; 20 minutos uma vez por semana.",
+  "grounding": {
+    "research_mtc_linha": 109,
+    "research_mtc_secao": "§3 Ervas Medicinais, Banhos e Chás por Elemento",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": false
+}

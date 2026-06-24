@@ -1,0 +1,31 @@
+{
+  "id": "odu-06-owonrin-preceito-01",
+  "categoria": "preceito",
+  "odu": "Owonrin (6)",
+  "orixa": "Exu",
+  "elemento": "Ar",
+  "chacra_referente": [
+    "Laríngeo",
+    "Terceiro Olho"
+  ],
+  "caminhos_afetados": [
+    5,
+    7,
+    11,
+    16
+  ],
+  "camada_synthesis": [
+    "camada2_praticas",
+    "camada5_alinhamento"
+  ],
+  "aspecto": "meditação",
+  "texto": "Escreva em papel a verdade sobre uma situação que te incomoda; releia em 24h antes de agir.",
+  "grounding": {
+    "research_mtc_linha": 47,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.92,
+  "requires_professional_review": false
+}

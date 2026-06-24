@@ -1,0 +1,18 @@
+{
+  "id": "chacra-3-plexo-solar-pratica-03",
+  "categoria": "chakra_pratica",
+  "chacra": "Plexo Solar (Manipura)",
+  "chacra_numero": 3,
+  "tipo_pratica": "cristal",
+  "nome_pratica": "Citrino na prosperidade",
+  "como_aplicar": "Mantenha um citrino próximo ao local de trabalho; limpe-o sob água corrente uma vez por semana.",
+  "texto": "Citrino na prosperidade: Mantenha um citrino próximo ao local de trabalho; limpe-o sob água corrente uma vez por semana.",
+  "grounding": {
+    "research_mtc_linha": 90,
+    "research_mtc_secao": "§2 Cristais por Chácra",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": false
+}

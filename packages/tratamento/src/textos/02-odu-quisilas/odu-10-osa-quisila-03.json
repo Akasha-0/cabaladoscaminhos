@@ -1,0 +1,30 @@
+{
+  "id": "odu-10-osa-quisila-03",
+  "categoria": "quisila",
+  "odu": "Osa (10)",
+  "orixa": "Iansã",
+  "elemento": "Ar",
+  "chacra_referente": [
+    "Laríngeo",
+    "Terceiro Olho"
+  ],
+  "caminhos_afetados": [
+    3,
+    5,
+    15,
+    21
+  ],
+  "camada_synthesis": [
+    "camada4_quisilas"
+  ],
+  "aspecto": "emoção",
+  "texto": "Não tenha medo de sair; a estagnação sufoca Osa.",
+  "grounding": {
+    "research_mtc_linha": 59,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.93,
+  "requires_professional_review": false
+}

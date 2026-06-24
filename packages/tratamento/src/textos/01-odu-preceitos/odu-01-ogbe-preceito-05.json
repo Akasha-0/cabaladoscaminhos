@@ -1,0 +1,31 @@
+{
+  "id": "odu-01-ogbe-preceito-05",
+  "categoria": "preceito",
+  "odu": "Ogbe (1)",
+  "orixa": "Oxalá",
+  "elemento": "Fogo+Ar",
+  "chacra_referente": [
+    "Coronário",
+    "Laríngeo"
+  ],
+  "caminhos_afetados": [
+    1,
+    7,
+    11,
+    22
+  ],
+  "camada_synthesis": [
+    "camada2_praticas",
+    "camada5_alinhamento"
+  ],
+  "aspecto": "fala",
+  "texto": "Fale somente o necessário nas primeiras horas da manhã; deixe o silêncio organizar a mente.",
+  "grounding": {
+    "research_mtc_linha": 33,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.92,
+  "requires_professional_review": false
+}

@@ -1,0 +1,18 @@
+{
+  "id": "chacra-4-cardiaco-pratica-03",
+  "categoria": "chakra_pratica",
+  "chacra": "Cardíaco (Anahata)",
+  "chacra_numero": 4,
+  "tipo_pratica": "cristal",
+  "nome_pratica": "Aventurina Verde em luto",
+  "como_aplicar": "Carregue uma aventurina verde em corrente curta durante processos de luto; ajuda a equilibrar a abertura do peito.",
+  "texto": "Aventurina Verde em luto: Carregue uma aventurina verde em corrente curta durante processos de luto; ajuda a equilibrar a abertura do peito.",
+  "grounding": {
+    "research_mtc_linha": 91,
+    "research_mtc_secao": "§2 Cristais por Chácra",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": true
+}

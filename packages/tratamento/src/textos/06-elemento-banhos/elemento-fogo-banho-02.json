@@ -1,0 +1,16 @@
+{
+  "id": "elemento-fogo-banho-02",
+  "categoria": "elemento_banho",
+  "elemento": "Fogo",
+  "nome_banho": "Banho de gengibre fresco ralado para Fogo",
+  "modo_preparo": "Rale 1 colher de gengibre fresco, envolva em gaze e ferva em 1 litro de água por 5 minutos; coe e adicione ao banho morno; energizante, use em apatia; contraindicado em estados febris.",
+  "texto": "Rale 1 colher de gengibre fresco, envolva em gaze e ferva em 1 litro de água por 5 minutos; coe e adicione ao banho morno; energizante, use em apatia; contraindicado em estados febris.",
+  "grounding": {
+    "research_mtc_linha": 102,
+    "research_mtc_secao": "§3 Ervas Medicinais, Banhos e Chás por Elemento",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://www.embrapa.br"
+  },
+  "alucinacao_score": 0.91,
+  "requires_professional_review": false
+}

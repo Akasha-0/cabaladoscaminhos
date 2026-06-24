@@ -1,0 +1,31 @@
+{
+  "id": "odu-15-ofun-preceito-04",
+  "categoria": "preceito",
+  "odu": "Ofun (15)",
+  "orixa": "Oxum/Obá",
+  "elemento": "Água",
+  "chacra_referente": [
+    "Sacral",
+    "Terceiro Olho"
+  ],
+  "caminhos_afetados": [
+    7,
+    11,
+    16,
+    20
+  ],
+  "camada_synthesis": [
+    "camada2_praticas",
+    "camada5_alinhamento"
+  ],
+  "aspecto": "ritual",
+  "texto": "Escreva uma carta ao que ainda não nasceu; projeta sem apegar.",
+  "grounding": {
+    "research_mtc_linha": 74,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.92,
+  "requires_professional_review": false
+}

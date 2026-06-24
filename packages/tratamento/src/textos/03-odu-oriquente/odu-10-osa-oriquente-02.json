@@ -1,0 +1,31 @@
+{
+  "id": "odu-10-osa-oriquente-02",
+  "categoria": "oriquente",
+  "odu": "Osa (10)",
+  "orixa": "Iansã",
+  "elemento": "Ar",
+  "chacra_referente": [
+    "Laríngeo",
+    "Terceiro Olho"
+  ],
+  "caminhos_afetados": [
+    3,
+    5,
+    15,
+    21
+  ],
+  "camada_synthesis": [
+    "camada1_diagnostico",
+    "camada6_psicanalise"
+  ],
+  "padrao_orí": "quente",
+  "texto": "Conflitos recorrentes com figuras femininas",
+  "grounding": {
+    "research_mtc_linha": 59,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos (Ori quente)",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.91,
+  "requires_professional_review": false
+}

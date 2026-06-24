@@ -1,0 +1,17 @@
+{
+  "id": "caminho-07-sabio-sombra",
+  "categoria": "caminho_sombra",
+  "caminho_numero": 7,
+  "caminho_nome": "Sábio",
+  "arquetipo_jung": "Sábio",
+  "estilo_terapeutico": "Psicanálise (insight)",
+  "texto": "Isolamento intelectual, frieza afetiva e paranoia.",
+  "grounding": {
+    "research_np_linha": 32,
+    "research_np_secao": "§1 Caminho de Vida 1-22 × Arquétipo Junguiano × Estilo Terapêutico",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url": "https://www.simplypsychology.org/carl-jung.html"
+  },
+  "alucinacao_score": 0.94,
+  "requires_professional_review": false
+}

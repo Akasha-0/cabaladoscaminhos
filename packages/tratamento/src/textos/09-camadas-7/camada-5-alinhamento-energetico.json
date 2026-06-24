@@ -1,0 +1,18 @@
+{
+  "id": "camada-5-alinhamento-energetico",
+  "categoria": "camada_prompt",
+  "camada_numero": 5,
+  "camada_nome": "Alinhamento Energético",
+  "prompt_template": "Quando a pessoa tem sinais de 2+ chácras desequilibradas, gere output de Alinhamento Energético no formato JSON {chacras_desbalanceadas: string[], chacra_ancora: string, sequencia_pratica: string[], duracao_total: string} com 4 frases no máximo. Não usar termos proprietários; preferir nomes universais dos 7 chácras.",
+  "texto": "Quando a pessoa tem sinais de 2+ chácras desequilibradas, gere output de Alinhamento Energético no formato JSON {chacras_desbalanceadas: string[], chacra_ancora: string, sequencia_pratica: string[], duracao_total: string} com 4 frases no máximo. Não usar termos proprietários; preferir nomes universais dos 7 chácras.",
+  "grounding": {
+    "research_mtc_linha": 132,
+    "research_np_linha": 64,
+    "research_mtc_secao": "§4 Matriz Cross-Reference",
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão + §4 Detector de Padrões Emocionais",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md"
+  },
+  "alucinacao_score": 0.89,
+  "requires_professional_review": false
+}

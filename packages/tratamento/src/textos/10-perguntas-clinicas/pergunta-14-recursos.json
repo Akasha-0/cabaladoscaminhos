@@ -1,0 +1,26 @@
+{
+  "id": "pergunta-14-recursos",
+  "categoria": "pergunta_clinica",
+  "pergunta_numero": 14,
+  "grupo": "Recursos",
+  "pergunta": "Quem você ligaria se precisasse de ajuda agora, às 3 da manhã?",
+  "texto": "Quem você ligaria se precisasse de ajuda agora, às 3 da manhã?",
+  "grounding": {
+    "research_np_linha": 115,
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão (Protocolo de Entrevista)",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url": "https://www.who.int/publications/i/item/9789241549790"
+  },
+  "alucinacao_score": 0.96,
+  "requires_professional_review": true,
+  "como_interpretar": "⚠️ SAFETY: Se resposta for 'ninguém' → investigar ideação suicida/isolamento severo. Aplique protocolo de mhGAP. Se 'parceiro' único → avaliar co-dependência.",
+  "fontes": [
+    "https://www.who.int/publications/i/item/9789241549790",
+    "https://pubmed.ncbi.nlm.nih.gov/18482014",
+    "https://www.who.int/news-room/fact-sheets/detail/social-determinants-of-health"
+  ],
+  "safety_gates": [
+    "rastrear_ideacao_suicida",
+    "oferecer_CVV_188_se_necessario"
+  ]
+}

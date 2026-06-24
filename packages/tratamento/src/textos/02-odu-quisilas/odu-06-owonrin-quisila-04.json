@@ -1,0 +1,30 @@
+{
+  "id": "odu-06-owonrin-quisila-04",
+  "categoria": "quisila",
+  "odu": "Owonrin (6)",
+  "orixa": "Exu",
+  "elemento": "Ar",
+  "chacra_referente": [
+    "Laríngeo",
+    "Terceiro Olho"
+  ],
+  "caminhos_afetados": [
+    5,
+    7,
+    11,
+    16
+  ],
+  "camada_synthesis": [
+    "camada4_quisilas"
+  ],
+  "aspecto": "ritmo",
+  "texto": "Evite mudanças drásticas sem 7 dias de reflexão; Exu pede velocidade, não precipitação.",
+  "grounding": {
+    "research_mtc_linha": 47,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.93,
+  "requires_professional_review": false
+}

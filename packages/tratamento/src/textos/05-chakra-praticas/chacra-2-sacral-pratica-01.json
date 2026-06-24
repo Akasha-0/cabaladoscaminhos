@@ -1,0 +1,18 @@
+{
+  "id": "chacra-2-sacral-pratica-01",
+  "categoria": "chakra_pratica",
+  "chacra": "Sacral (Svadhisthana)",
+  "chacra_numero": 2,
+  "tipo_pratica": "cristal",
+  "nome_pratica": "Cornalina na criatividade",
+  "como_aplicar": "Coloque uma cornalina sobre o umbigo por 10 minutos ao iniciar trabalho criativo; respire pelo baixo-ventre.",
+  "texto": "Cornalina na criatividade: Coloque uma cornalina sobre o umbigo por 10 minutos ao iniciar trabalho criativo; respire pelo baixo-ventre.",
+  "grounding": {
+    "research_mtc_linha": 89,
+    "research_mtc_secao": "§2 Cristais por Chácra",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": false
+}

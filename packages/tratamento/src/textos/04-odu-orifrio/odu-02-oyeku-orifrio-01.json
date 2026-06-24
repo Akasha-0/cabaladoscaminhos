@@ -1,0 +1,30 @@
+{
+  "id": "odu-02-oyeku-orifrio-01",
+  "categoria": "orifrio",
+  "odu": "Oyeku (2)",
+  "orixa": "Obaluaiê/Omolu",
+  "elemento": "Terra",
+  "chacra_referente": [
+    "Raiz"
+  ],
+  "caminhos_afetados": [
+    2,
+    4,
+    8,
+    13
+  ],
+  "camada_synthesis": [
+    "camada1_diagnostico",
+    "camada6_psicanalise"
+  ],
+  "padrao_orí": "frio",
+  "texto": "Apatia profunda sem causa identificável",
+  "grounding": {
+    "research_mtc_linha": 35,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos (Ori frio)",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.91,
+  "requires_professional_review": false
+}

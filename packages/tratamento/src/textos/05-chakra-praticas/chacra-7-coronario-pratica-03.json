@@ -1,0 +1,18 @@
+{
+  "id": "chacra-7-coronario-pratica-03",
+  "categoria": "chakra_pratica",
+  "chacra": "Coronário (Sahasrara)",
+  "chacra_numero": 7,
+  "tipo_pratica": "cristal",
+  "nome_pratica": "Quartzo Transparente na integração",
+  "como_aplicar": "Segure um quartzo transparente sobre o topo da cabeça por 5 minutos ao final de sessões terapêuticas; integra o trabalho.",
+  "texto": "Quartzo Transparente na integração: Segure um quartzo transparente sobre o topo da cabeça por 5 minutos ao final de sessões terapêuticas; integra o trabalho.",
+  "grounding": {
+    "research_mtc_linha": 94,
+    "research_mtc_secao": "§2 Cristais por Chácra",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": false
+}

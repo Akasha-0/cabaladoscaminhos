@@ -1,0 +1,31 @@
+{
+  "id": "odu-12-oturupon-preceito-01",
+  "categoria": "preceito",
+  "odu": "Oturupon (12)",
+  "orixa": "Iemanjá",
+  "elemento": "Água",
+  "chacra_referente": [
+    "Cardíaco",
+    "Sacral"
+  ],
+  "caminhos_afetados": [
+    2,
+    6,
+    9,
+    18
+  ],
+  "camada_synthesis": [
+    "camada2_praticas",
+    "camada5_alinhamento"
+  ],
+  "aspecto": "banho",
+  "texto": "Tome banho de mar ou rio 4 vezes por ano, fora do horário de pico; água viva cura.",
+  "grounding": {
+    "research_mtc_linha": 65,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.92,
+  "requires_professional_review": false
+}

@@ -1,0 +1,22 @@
+{
+  "id": "pergunta-04-estado",
+  "categoria": "pergunta_clinica",
+  "pergunta_numero": 4,
+  "grupo": "Estado Atual",
+  "pergunta": "O que você mais quer que eu (Zelador) não faça nesta sessão?",
+  "texto": "O que você mais quer que eu (Zelador) não faça nesta sessão?",
+  "grounding": {
+    "research_np_linha": 96,
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão (Protocolo de Entrevista)",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url": "https://www.who.int/publications/i/item/9789241549790"
+  },
+  "alucinacao_score": 0.96,
+  "requires_professional_review": false,
+  "como_interpretar": "Se resposta for 'não sei', pode ser sobrecarga decisória (Pilar 1 caminho 7) ou falta de clareza. Se resposta for algo vago, ajudar a detalhar com 5W (o que, quando, onde, com quem, por quê).",
+  "fontes": [
+    "https://www.who.int/publications/i/item/9789241549790",
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3492503",
+    "https://link.springer.com/article/10.1007/s10459-007-9085-1"
+  ]
+}

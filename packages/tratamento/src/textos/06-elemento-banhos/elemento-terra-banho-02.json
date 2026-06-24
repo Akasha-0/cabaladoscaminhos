@@ -1,0 +1,16 @@
+{
+  "id": "elemento-terra-banho-02",
+  "categoria": "elemento_banho",
+  "elemento": "Terra",
+  "nome_banho": "Banho de boldo-do-chile para Terra",
+  "modo_preparo": "Ferva 2 folhas de boldo-do-chile em 1 litro de água por 5 minutos; coe e adicione ao banho morno; auxilia digestão emocional e sensação de 'pé no chão'; contraindicado em pós-operatório imediato.",
+  "texto": "Ferva 2 folhas de boldo-do-chile em 1 litro de água por 5 minutos; coe e adicione ao banho morno; auxilia digestão emocional e sensação de 'pé no chão'; contraindicado em pós-operatório imediato.",
+  "grounding": {
+    "research_mtc_linha": 114,
+    "research_mtc_secao": "§3 Ervas Medicinais, Banhos e Chás por Elemento",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://www.embrapa.br"
+  },
+  "alucinacao_score": 0.91,
+  "requires_professional_review": true
+}

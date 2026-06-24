@@ -1,0 +1,29 @@
+{
+  "id": "odu-05-irosun-quisila-04",
+  "categoria": "quisila",
+  "odu": "Irosun (5)",
+  "orixa": "Xangô/Ogum",
+  "elemento": "Fogo",
+  "chacra_referente": [
+    "Plexo Solar"
+  ],
+  "caminhos_afetados": [
+    5,
+    14,
+    19,
+    22
+  ],
+  "camada_synthesis": [
+    "camada4_quisilas"
+  ],
+  "aspecto": "relação",
+  "texto": "Evite fugir de conflitos justos; Xangô premia a coragem direta.",
+  "grounding": {
+    "research_mtc_linha": 44,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.93,
+  "requires_professional_review": false
+}

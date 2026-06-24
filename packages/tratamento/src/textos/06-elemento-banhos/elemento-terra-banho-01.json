@@ -1,0 +1,16 @@
+{
+  "id": "elemento-terra-banho-01",
+  "categoria": "elemento_banho",
+  "elemento": "Terra",
+  "nome_banho": "Banho de guiné e carqueja para Terra",
+  "modo_preparo": "Ferva 1 maço de guiné e 1 colher de carqueja em 2 litros de água por 10 minutos; coe e adicione à água do banho de imersão; firmeza e aterramento; use uma vez por semana.",
+  "texto": "Ferva 1 maço de guiné e 1 colher de carqueja em 2 litros de água por 10 minutos; coe e adicione à água do banho de imersão; firmeza e aterramento; use uma vez por semana.",
+  "grounding": {
+    "research_mtc_linha": 114,
+    "research_mtc_secao": "§3 Ervas Medicinais, Banhos e Chás por Elemento",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://www.embrapa.br"
+  },
+  "alucinacao_score": 0.91,
+  "requires_professional_review": false
+}

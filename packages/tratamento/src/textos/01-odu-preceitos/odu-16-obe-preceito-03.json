@@ -1,0 +1,29 @@
+{
+  "id": "odu-16-obe-preceito-03",
+  "categoria": "preceito",
+  "odu": "Obe (16)",
+  "orixa": "Todos (síntese)",
+  "elemento": "Fogo+Água+Terra+Ar",
+  "chacra_referente": [
+    "Coronário"
+  ],
+  "caminhos_afetados": [
+    11,
+    22,
+    33
+  ],
+  "camada_synthesis": [
+    "camada2_praticas",
+    "camada5_alinhamento"
+  ],
+  "aspecto": "meditação",
+  "texto": "Cultive presença total por 5 minutos ao dia; sem tela, sem agenda.",
+  "grounding": {
+    "research_mtc_linha": 77,
+    "research_mtc_secao": "§1 Catálogo dos 16 Odu Canônicos",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/If%C3%A1"
+  },
+  "alucinacao_score": 0.92,
+  "requires_professional_review": false
+}

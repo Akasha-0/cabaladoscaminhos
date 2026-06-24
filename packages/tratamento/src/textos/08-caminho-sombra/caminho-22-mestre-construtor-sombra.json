@@ -1,0 +1,17 @@
+{
+  "id": "caminho-22-mestre-construtor-sombra",
+  "categoria": "caminho_sombra",
+  "caminho_numero": 22,
+  "caminho_nome": "Mestre Construtor",
+  "arquetipo_jung": "Governante+Sábio",
+  "estilo_terapeutico": "Sistêmica + TCC (execução)",
+  "texto": "Perfeccionismo e procrastinação por medo de falhar em escala.",
+  "grounding": {
+    "research_np_linha": 47,
+    "research_np_secao": "§1 Caminho de Vida 1-22 × Arquétipo Junguiano × Estilo Terapêutico",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md",
+    "open_source_url": "https://www.simplypsychology.org/carl-jung.html"
+  },
+  "alucinacao_score": 0.94,
+  "requires_professional_review": false
+}

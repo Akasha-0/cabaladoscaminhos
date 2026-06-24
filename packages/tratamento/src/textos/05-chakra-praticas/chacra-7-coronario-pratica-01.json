@@ -1,0 +1,18 @@
+{
+  "id": "chacra-7-coronario-pratica-01",
+  "categoria": "chakra_pratica",
+  "chacra": "Coronário (Sahasrara)",
+  "chacra_numero": 7,
+  "tipo_pratica": "cristal",
+  "nome_pratica": "Selenita para limpeza espiritual",
+  "como_aplicar": "Mantenha uma selenita no quarto ou altar; passe outros cristais por ela uma vez por semana para limpar.",
+  "texto": "Selenita para limpeza espiritual: Mantenha uma selenita no quarto ou altar; passe outros cristais por ela uma vez por semana para limpar.",
+  "grounding": {
+    "research_mtc_linha": 94,
+    "research_mtc_secao": "§2 Cristais por Chácra",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "open_source_url": "https://pt.wikipedia.org/wiki/Chakra"
+  },
+  "alucinacao_score": 0.9,
+  "requires_professional_review": false
+}

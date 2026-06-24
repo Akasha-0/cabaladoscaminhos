@@ -1,0 +1,18 @@
+{
+  "id": "camada-1-diagnostico-imediato",
+  "categoria": "camada_prompt",
+  "camada_numero": 1,
+  "camada_nome": "Diagnóstico Imediato",
+  "prompt_template": "Quando a pessoa tem 2+ sinais do Pilar 1 (caminho de vida X) + 2+ sinais do Pilar 4 (Odu Y), gere output de Diagnóstico Imediato no formato JSON {sinal_principal: string, padrao_detectado: string, urgencia: 'baixa'|'media'|'alta', proxima_pergunta_clinica: string} com no máximo 3 frases de análise. Acionar protocolo profissional se urgencia=alta.",
+  "texto": "Quando a pessoa tem 2+ sinais do Pilar 1 (caminho de vida X) + 2+ sinais do Pilar 4 (Odu Y), gere output de Diagnóstico Imediato no formato JSON {sinal_principal: string, padrao_detectado: string, urgencia: 'baixa'|'media'|'alta', proxima_pergunta_clinica: string} com no máximo 3 frases de análise. Acionar protocolo profissional se urgencia=alta.",
+  "grounding": {
+    "research_mtc_linha": 132,
+    "research_np_linha": 22,
+    "research_mtc_secao": "§4 Matriz Cross-Reference",
+    "research_np_secao": "§3 16 Perguntas Clínicas Padrão + §4 Detector de Padrões Emocionais",
+    "research_mtc_file": ".hermes/plans/research-medicina-tradicional-2026-06-23.md",
+    "research_np_file": ".hermes/plans/research-numerologia-psicanalise-2026-06-23.md"
+  },
+  "alucinacao_score": 0.89,
+  "requires_professional_review": true
+}
