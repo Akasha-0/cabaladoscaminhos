@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@akasha/core": ["../../packages/akasha-core/src/index.ts"],
+      "@akasha/types": ["../../packages/types/src/index.ts"],
+      "@akasha/core-cabala": ["../../packages/core-cabala/src/index.ts"],
+      "@akasha/core-astrology": ["../../packages/core-astrology/src/index.ts"],
+      "@akasha/core-tantra": ["../../packages/core-tantra/src/index.ts"],
+      "@akasha/core-odus": ["../../packages/core-odus/src/index.ts"],
+      "@akasha/core-iching": ["../../packages/core-iching/src/index.ts"],
+      "@akasha/core-pilar6": ["../../packages/core-pilar6/src/index.ts"],
+      "@akasha/core-pilar7": ["../../packages/core-pilar7/src/index.ts"],
+      "@akasha/mentor/rag": ["../../packages/mentor/src/rag/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules"]
+}

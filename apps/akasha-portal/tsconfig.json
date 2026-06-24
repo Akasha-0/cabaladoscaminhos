@@ -19,7 +19,10 @@
       "@akasha/mentor/maps": ["../../packages/mentor/src/maps.ts"],
       "@akasha/mentor/correlation": ["../../packages/mentor/src/correlation.ts"],
       "@akasha/mentor/rag": ["../../packages/mentor/src/rag/index.ts"],
-      "@akasha/mcp": ["../../packages/mcp/src/index.ts"]
+      "@akasha/mentor/intent-detector": ["../../packages/mentor/src/intent-detector.ts"],
+      "@akasha/mentor/emotional-state": ["../../packages/mentor/src/emotional-state.ts"],
+      "@akasha/mentor/tool-dispatcher": ["../../packages/mentor/src/tool-dispatcher.ts"],
+      "@akasha/mcp": ["../../packages/mcp/src/index.ts"]           
     },
     "plugins": [
       {

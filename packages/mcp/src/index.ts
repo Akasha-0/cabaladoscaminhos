@@ -303,6 +303,7 @@ export interface AkashaMcpRegistry {
 export {
   AkashaMcpServer,
   mcpServer,
+  getMcpServer,
 } from './server';
 export type { AkashaMcpServerOptions } from './server';
 
