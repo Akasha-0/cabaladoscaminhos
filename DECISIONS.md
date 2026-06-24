@@ -459,3 +459,100 @@ Negative / accepted trade-offs:
 **Review trigger:**
 Adding a 5th state, switching to server-side persistence, or
 changing the staleness window.
+
+# ADR-010: Credit Gate Neutralized for Testing (Wave 10)
+
+**Date:** 2026-06-24
+**Status:** Accepted (temporary)
+**Wave:** 10
+
+## Context
+
+Wave 9.6 (commit 45e709df) added an automatic signup_grant of 10 free credits
+so new users could try the Mentor without paying. Wave 9.6 (commit 0fa1db66)
+also added admin/credits/grant and self-service claim-signup-bonus for
+pre-grant users.
+
+In practice, this created a 2-step dance for Gabriel to test:
+1. Login (or create account)
+2. Realize he has 0 credits
+3. Open DevTools console, run fetch('/api/akasha/credits/claim-signup-bonus', ...)
+4. Refresh /conta, see the balance
+5. Use the Mentor
+
+That's friction on every test cycle. The credit system exists to support
+future Stripe billing — but we have zero paying users. The complexity
+blocks testing without paying for it.
+
+## Decision
+
+Neutralize the credit gate at the application level while keeping the
+infrastructure intact:
+
+- `apps/akasha-portal/src/lib/application/mentor/credits.ts`:
+  Add `const CREDIT_GATE_ENABLED = false` feature flag.
+  `checkCredits()` always returns `hasCredits: true` when flag is false.
+  `deductCredit()` returns `999999` without writing to DB when flag is false.
+- `apps/akasha-portal/src/app/[locale]/(akasha)/conta/ContaClient.tsx`:
+  Replace `{balance}` with `∞` and update the subtitle to
+  "Período de testes — sistema de cobrança em breve".
+
+**Preserved (not deleted):**
+- `CreditEntry` schema in Prisma (no migration needed)
+- `signup_grant` in `/api/akasha/auth/register` (still fires on signup)
+- `/api/admin/credits/grant` (ready for support comping)
+- `/api/akasha/credits/claim-signup-bonus` (ready for retroactive grants)
+- `credits.ts` functions (kept callable; just no-op)
+- `CreditEntry` rows already written (ledger history preserved)
+
+## Consequences
+
+Positive:
+- Gabriel can test the full app flow without DevTools console workarounds.
+- `/conta` shows ∞ for all users; visually signals "testing mode".
+- All ledger entries remain queryable for when we re-enable billing.
+- One-line reactivation: flip `CREDIT_GATE_ENABLED = true` + restore
+  original logic from git history (commits 45e709df / 0fa1db66).
+
+Negative:
+- Anyone with the URL can spam the Mentor infinitely. Acceptable because:
+  (a) we have zero real users, (b) the LLM call cost is bounded by rate
+  limiting that already exists in `apps/akasha-portal/src/lib/infrastructure/rate-limit.ts`,
+  (c) we control access via auth — no anonymous calls.
+- Dashboard numbers (e.g. "X credits used") won't be meaningful until
+  we re-enable the gate.
+
+## Reactivation Plan (Wave 11+ when Stripe ships)
+
+1. Set `CREDIT_GATE_ENABLED = true` in `credits.ts` (or env-driven).
+2. Verify signup_grant still creates CreditEntry rows (already does).
+3. Wire `apps/akasha-portal/src/lib/application/akasha/stripe-akasha.ts` to
+   `/api/admin/credits/grant` for paid topups.
+4. Add "buy credits" CTA in `/conta` (already partially designed in
+   ContaClient's Upgrade to Pro section).
+5. Run `pnpm test:run` to verify Mentor 402 path still works.
+6. Restore the original `checkCredits`/`deductCredit` from git:
+   ```bash
+   git log --all --oneline -- apps/akasha-portal/src/lib/application/mentor/credits.ts
+   # find commit before ADR-010
+   git show <commit>:path/to/credits.ts > apps/akasha-portal/src/lib/application/mentor/credits.ts
+   ```
+
+## Alternatives Considered
+
+- **Drop the entire credit system**: requires migration to remove
+  CreditEntry table, drops audit trail, complicates Wave 11 reactivation.
+  Rejected.
+- **Comment out checkCredits/deductCredit call sites in mentor/ask/route.ts**:
+  preserves types but loses the centralized no-op pattern. Rejected —
+  current approach is more visible (anyone reading credits.ts sees the
+  flag).
+- **Add rate limiting only**: doesn't fix the "10 credits left" UX problem,
+  just adds another knob. Rejected.
+
+## Related
+
+- ADR-009: Adaptive UI by Emotional State (Wave 9)
+- commit 45e709df: signup_grant automatic
+- commit 0fa1db66: admin grant + claim-signup-bonus
+- commit <this ADR>: neutralize gate + hide balance

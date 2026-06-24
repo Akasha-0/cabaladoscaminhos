@@ -515,10 +515,12 @@ export default function ContaClient({
               className="text-3xl font-bold"
               style={{ color: '#F59E0B', fontFamily: 'var(--font-cinzel), serif' }}
             >
-              {balance}
+              {/* ADR-010: credit gate neutralized; see DECISIONS.md */}
+              ∞
             </span>
             <p className="text-xs" style={{ color: 'rgba(226,232,240,0.4)' }}>
-              1 crédito = 1 consulta simples · 3 = complexa
+              {/* ADR-010: 1 crédito = 1 consulta simples · 3 = complexa */}
+              Período de testes — sistema de cobrança em breve
             </p>
           </div>
         </div>
