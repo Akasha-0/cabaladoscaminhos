@@ -387,5 +387,85 @@
       "pergunta_clinica": "Pergunta clínica",
       "camada_prompt": "Camada de prompt"
     }
+  },
+  "meuDia": {
+    "titulo": "Meu Dia — Hub Adaptativo",
+    "statePicker": {
+      "eyebrow": "Wave 9 · One-Screen Hub",
+      "heading": "Como você está hoje?",
+      "subtitle": "A página se adapta ao que você precisa agora. Escolher uma vez — perguntamos de novo só depois de 24h.",
+      "skip": "Pular por agora",
+      "tile": {
+        "centrado": {
+          "label": "Centrado",
+          "hint": "em paz",
+          "ariaLabel": "Estou centrado — em paz"
+        },
+        "ansioso": {
+          "label": "Ansioso",
+          "hint": "preciso de calma",
+          "ariaLabel": "Estou ansioso — preciso de calma"
+        },
+        "perdido": {
+          "label": "Perdido",
+          "hint": "sem direção",
+          "ariaLabel": "Estou perdido — sem direção"
+        },
+        "curioso": {
+          "label": "Curioso",
+          "hint": "quero explorar",
+          "ariaLabel": "Estou curioso — quero explorar"
+        }
+      }
+    },
+    "changeState": "Trocar estado",
+    "centrado": {
+      "climateLabel": "Clima do dia",
+      "authorityLabel": "Sua autoridade hoje",
+      "strategyLabel": "Estratégia",
+      "practiceLabel": "Prática de hoje",
+      "synthesisLabel": "Síntese",
+      "fallback": "Seu mapa está silencioso hoje — isso também é resposta. Aproveite o espaço."
+    },
+    "ansioso": {
+      "startBreath": "Começar respiração",
+      "phraseFallback": "Você não precisa resolver nada agora. Apenas respire.",
+      "mentorEyebrow": "Conversar com o Mentor",
+      "mentorTitle": "Abrir uma conversa sobre o que sinto agora",
+      "breathOrb": {
+        "phaseInhale": "Inspire (4)",
+        "phaseHold": "Segure (7)",
+        "phaseExhale": "Expire (8)",
+        "idleHint": "Pronto?",
+        "touchToStart": "Toque para começar",
+        "reducedMotion": "Respire",
+        "cycleCounter": "{done}/{total} ciclos",
+        "idleHelpText": "Quando estiver pronto, toque para iniciar. Inspire por 4, segure 7, expire 8.",
+        "reducedMotionHelpText": "Respire no seu ritmo. A técnica 4-7-8: 4 segundos inspirando, 7 segurando, 8 expirando.",
+        "activeHelpText": "Siga o ritmo da orb. Se o ciclo ficar difícil, pare e volte ao seu tempo natural."
+      }
+    },
+    "perdido": {
+      "phraseFallback": "Quando não há direção, comece pelo corpo.",
+      "practiceSilenceTitle": "5 minutos de silêncio",
+      "practiceSilenceDesc": "Sente-se. Apenas observe o que aparece. Não corrija.",
+      "practiceWriteTitle": "Escreva a primeira coisa",
+      "practiceWriteDesc": "Sem editar. A próxima palavra virá.",
+      "mentorEyebrow": "Pedir um caminho",
+      "mentorTitle": "Me dê um caminho — abrir o Mentor com sua missão de hoje"
+    },
+    "curioso": {
+      "eyebrow": "Explore os 5 Pilares",
+      "heading": "Para onde sua curiosidade puxa?",
+      "subtitle": "Toque num pilar para abrir a camada correspondente no seu mapa.",
+      "pilar": {
+        "cabala": { "title": "Cabala", "subtitle": "Caminho de vida" },
+        "astrologia": { "title": "Astrologia", "subtitle": "Ascendente + trânsitos" },
+        "tantra": { "title": "Tantra", "subtitle": "Corpos tântricos" },
+        "odu": { "title": "Odu", "subtitle": "Linha ancestral" },
+        "iching": { "title": "I Ching", "subtitle": "Hexagrama do dia" }
+      }
+    },
+    "loading": "carregando seu mapa…"
   }
 }

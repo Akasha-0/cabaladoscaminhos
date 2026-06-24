@@ -198,5 +198,20 @@
     "naoAutorizado": "Você precisa estar logado para acessar esta página.",
     "creditosInsuficientes": "Créditos insuficientes para esta consulta.",
     "rede": "Erro de conexão. Tente novamente."
+  },
+  "meuDia": {
+    "titulo": "Meu Dia — Hub Adaptativo",
+    "statePicker": {
+      "heading": "Como você está hoje?",
+      "skip": "Pular por agora"
+    },
+    "centrado": { "fallback": "Seu mapa está silencioso hoje." },
+    "ansioso": {
+      "startBreath": "Começar respiração",
+      "phraseFallback": "Você não precisa resolver nada agora."
+    },
+    "perdido": { "phraseFallback": "Quando não há direção, comece pelo corpo." },
+    "curioso": { "heading": "Para onde sua curiosidade puxa?" },
+    "loading": "carregando seu mapa…"
   }
 }
