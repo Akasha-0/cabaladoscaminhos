@@ -173,3 +173,51 @@ blockers tecnicos + MCP server skeleton implementation. 3 fronts paralelos.
 - MCP server permanece STUB (sem stdio/http transport, sem multi-tenant
   context, sem tools reais) — esses sao Wave 9+ quando tools concretas
   forem registradas
+
+**Q4 + P0-1 fix (2026-06-24):**
+- 3 reviewers paralelos: schema/DB, code/security, ADR/alignment
+- Schema/DB: 0 P0, 3 P1, 3 P2 — READY FOR MERGE
+- Code/Security: 1 P0 (consent audit gap em /conexoes), 4 P1, 3 P2
+- ADR/Alignment: 0 P0, 0 P1, 3 P2 — READY FOR MERGE (95% spec compliance)
+- P0-1 fix aplicado: apps/akasha-portal/src/app/api/akasha/conexoes/route.ts
+  chama auditLog('conexao_third_party_consent_declarado') após
+  prisma.connection.create. Fecha gap LGPD Art. 37 entre UI disclaimer
+  e audit trail técnico.
+
+### Wave 8 — done 2026-06-24
+
+**Entregue:** 18 commits merged em `main @ 52422941` (4 sub-waves + 3 reviewers + P0-1 fix).
+
+**Resultado Wave 8:**
+- Typecheck errors: 0 (era 0 pós-Wave-7, mas estabilizou)
+- i18n parity: PARITY OK
+- Tratamento tests: 18/18 passing
+- Total test failures: 62 → 17 (-45, 73% redução)
+  - Wave 8.1: 62 → 29 (-33, test fixtures TooltipKey migration)
+  - Wave 8.2: 29 → 17 (-12, akasha-jwt +11 + middleware-auth +1)
+- LGPD/DPA: DELETE /profile (Art. 18), DPA Anthropic template (Art. 33),
+  Conexoes disclaimer + audit log (Art. 37) — todos cobertos com testes
+- MCP server skeleton: AkashaMcpServer stub + Mentor route integration
+  (ADR 0006). Stub permanece; transporte real em Wave 9+.
+
+**Documentos novos Wave 8:**
+- docs/legal/DPA_ANTHROPIC.md (14 cláusulas + checklist + auditoria rotas LLM)
+- apps/akasha-portal/src/lib/infrastructure/audit-log.ts (stub JSON-lines)
+- apps/akasha-portal/src/app/api/akasha/profile/[id]/route.ts (DELETE)
+- packages/mcp/src/server.ts (AkashaMcpServer)
+- .hermes/plans/2026-06-24_113000-wave-8-implementation.md (spec)
+- .hermes/plans/review-{schema,security,adr}-wave8-2026-06-24.md (3 reviews)
+
+**Pendencias para Wave 9:**
+- 17 test failures pre-existentes (prisma.test.ts 3, iching 2, calculators 3,
+  credit-reconciliation 4, package-boundaries 1, search 1, traducao-areas 1,
+  daily-transits-cron 1, DOX AGENTS.md 'test file' bug 1)
+- 6 P1/P2 do schema reviewer (ChatMessage count, double-count chain, snapshot
+  pós-delete, audit-log prisma sink, test unitário audit-log, indices Pilar6)
+- 4 P1 do security reviewer (DELETE rate limit, CSRF, audit log DB sink,
+  cascade counts)
+- 3 P2 ADR reviewer (docs/adrs/README.md legado, root AGENTS.md changelog,
+  packages/mcp AGENTS.md ausente)
+- MCP server stub → real transport (stdio/http) + tool registration
+- Advogado PI humano precisa revisar e assinar DPA Anthropic (R$ 2-5k)
+- Bitwarden credential storage setup (anotado na memoria)
