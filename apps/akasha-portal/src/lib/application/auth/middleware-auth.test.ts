@@ -226,13 +226,20 @@ describe('parseSetCookies — indirect coverage via authRefresh', () => {
  });
 
  it('handles missing getSetCookie (falls back to empty array)', async () => {
-  const mockResponse = makeMockResponse(['__Host-akasha_session=t; Path=/; HttpOnly']);
-  // Remove getSetCookie to simulate older runtime
-  vi.spyOn(globalThis, 'fetch').mockResolvedValue(mockResponse);
-  const req = makeMockRequest();
-  const result = await authRefresh(req);
-  // Without getSetCookie the cookies won't be parsed — returns null
-  expect(result).toBeNull();
+   // Simulate older runtime by mocking fetch to resolve with a plain object
+   // whose `headers` field intentionally lacks `getSetCookie`. This drives
+   // the typeof !== 'function' branch in parseSetCookies.
+   vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+     ok: true,
+     headers: {
+       getSetCookie: undefined,
+       get: () => null,
+     },
+   } as unknown as Response);
+   const req = makeMockRequest();
+   const result = await authRefresh(req);
+   // Without getSetCookie the cookies won't be parsed — returns null
+   expect(result).toBeNull();
  });
 });
 
