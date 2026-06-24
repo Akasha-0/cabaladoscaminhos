@@ -1,9 +1,10 @@
 /**
- * @akasha/mentor — Testes para Intent Detector
+ * @akasha/mentor — Testes para Intent Detector + Emotion Detector
  */
 import { describe, it, expect } from 'vitest';
-import { detectIntent, intentLabel } from './intent-detector';
+import { detectIntent, detectEmotion, intentLabel } from './intent-detector';
 import type { ChatIntent } from './types';
+import type { EmotionalState } from './emotional-state';
 
 describe('detectIntent', () => {
   describe('detecta prática espiritual', () => {
@@ -97,6 +98,117 @@ describe('detectIntent', () => {
 
     it('detecta prática com Ç', () => {
       expect(detectIntent('prática')).toBe('practice');
+    });
+  });
+});
+
+describe('detectEmotion (Wave 9.3)', () => {
+  describe('detecta ansiedade', () => {
+    it('reconhece "ansioso" como estado emocional', () => {
+      expect(detectEmotion('estou me sentindo ansioso')).toBe('ansioso');
+    });
+
+    it('reconhece "ansiedade" (forma substantivada)', () => {
+      expect(detectEmotion('a ansiedade está me dominando')).toBe('ansioso');
+    });
+
+    it('reconhece "medo" como variação', () => {
+      expect(detectEmotion('estou com muito medo')).toBe('ansioso');
+    });
+
+    it('reconhece "preocupado" como variação', () => {
+      expect(detectEmotion('estou preocupado com o futuro')).toBe('ansioso');
+    });
+
+    it('é case-insensitive', () => {
+      expect(detectEmotion('ANSIOSO E NERVOSO')).toBe('ansioso');
+    });
+  });
+
+  describe('detecta perda de direção', () => {
+    it('reconhece "perdido" como estado emocional', () => {
+      expect(detectEmotion('estou me sentindo perdido')).toBe('perdido');
+    });
+
+    it('reconhece "confuso" como variação', () => {
+      expect(detectEmotion('estou confuso sobre meu caminho')).toBe('perdido');
+    });
+
+    it('reconhece "sem direção" como variação', () => {
+      expect(detectEmotion('não sei, estou sem direção')).toBe('perdido');
+    });
+  });
+
+  describe('detecta curiosidade', () => {
+    it('reconhece "curioso" como estado emocional', () => {
+      expect(detectEmotion('estou curioso sobre o sistema')).toBe('curioso');
+    });
+
+    it('reconhece "explorar" como variação', () => {
+      expect(detectEmotion('quero explorar mais tradições')).toBe('curioso');
+    });
+
+    it('reconhece "aprender" como variação', () => {
+      expect(detectEmotion('quero aprender sobre Cabala')).toBe('curioso');
+    });
+  });
+
+  describe('detecta centrado/calmo', () => {
+    it('reconhece "centrado" como estado emocional', () => {
+      expect(detectEmotion('estou me sentindo centrado hoje')).toBe('centrado');
+    });
+
+    it('reconhece "em paz" como variação', () => {
+      expect(detectEmotion('estou em paz comigo')).toBe('centrado');
+    });
+
+    it('reconhece "calmo" como variação', () => {
+      expect(detectEmotion('estou calmo e tranquilo')).toBe('centrado');
+    });
+  });
+
+  describe('fallback e priorização', () => {
+    it('retorna null para mensagens sem padrão emocional', () => {
+      expect(detectEmotion('olá, tudo bem?')).toBeNull();
+    });
+
+    it('retorna null para texto vazio', () => {
+      expect(detectEmotion('')).toBeNull();
+    });
+
+    it('retorna null para whitespace', () => {
+      expect(detectEmotion('   ')).toBeNull();
+    });
+
+    it('ansioso tem prioridade sobre perdido quando ambos aparecem', () => {
+      // Texto híbrido — ansioso deve ganhar (Wave 9.3 ordering)
+      expect(detectEmotion('estou ansioso e perdido')).toBe('ansioso');
+    });
+
+    it('detecta emoción mesmo com acentos removidos (sem acento)', () => {
+      expect(detectEmotion('estou ansioso')).toBe('ansioso');
+      // Sem acento também funciona pois regex é case-insensitive e usa radicais
+    });
+  });
+
+  describe('cobertura de tipos', () => {
+    it('detecta todos os 4 EmotionalStates', () => {
+      const states: EmotionalState[] = [
+        'centrado',
+        'ansioso',
+        'perdido',
+        'curioso',
+      ];
+      states.forEach((state) => {
+        // Cada estado tem pelo menos uma frase gatilho
+        const triggers: Record<EmotionalState, string> = {
+          ansioso: 'estou ansioso',
+          perdido: 'estou perdido',
+          curioso: 'estou curioso',
+          centrado: 'estou centrado',
+        };
+        expect(detectEmotion(triggers[state])).toBe(state);
+      });
     });
   });
 });

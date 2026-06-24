@@ -16,6 +16,8 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run",
     "dev": "tsx src/cli/index.ts",
     "chat": "tsx src/cli/chat.ts",
     "login": "tsx src/cli/login.ts"
@@ -26,6 +28,7 @@
     "@akasha/core-odus": "workspace:*",
     "@akasha/core-tantra": "workspace:*",
     "@akasha/types": "workspace:*",
+    "@akasha/mcp": "workspace:*",
     "@supabase/supabase-js": "^2.39.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
