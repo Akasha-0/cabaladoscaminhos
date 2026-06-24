@@ -15,7 +15,8 @@
       "@akasha/core-pilar7": ["./packages/core-pilar7/src/index.ts"],
       "@akasha/tratamento": ["./packages/tratamento/src/index.ts"],
       "@akasha/mentor": ["./packages/mentor/src/index.ts"],
-      "@akasha/mentor/*": ["./packages/mentor/src/*"]
+      "@akasha/mentor/*": ["./packages/mentor/src/*"],
+      "@akasha/mcp": ["./packages/mcp/src/index.ts"]
     }
   },
   "include": [

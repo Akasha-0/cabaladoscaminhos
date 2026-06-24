@@ -18,7 +18,8 @@
       "@akasha/mentor/types": ["../../packages/mentor/src/types.ts"],
       "@akasha/mentor/maps": ["../../packages/mentor/src/maps.ts"],
       "@akasha/mentor/correlation": ["../../packages/mentor/src/correlation.ts"],
-      "@akasha/mentor/rag": ["../../packages/mentor/src/rag/index.ts"]
+      "@akasha/mentor/rag": ["../../packages/mentor/src/rag/index.ts"],
+      "@akasha/mcp": ["../../packages/mcp/src/index.ts"]
     },
     "plugins": [
       {
