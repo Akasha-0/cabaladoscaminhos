@@ -1,5 +1,6 @@
-import type { FrequencyLevel } from '@/lib/application/akasha/synthesis-engine/synthesis-types';
 'use client';
+
+import type { FrequencyLevel } from '@/lib/application/akasha/synthesis-engine/synthesis-types';
 
 import { TrendingUp, TrendingDown, Minus, Sparkles, Target, Calendar } from 'lucide-react';
 import { useMemo } from 'react';
