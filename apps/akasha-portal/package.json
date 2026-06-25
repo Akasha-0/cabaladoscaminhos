@@ -38,6 +38,7 @@
     "@akasha/core-tantra": "workspace:*",
     "@akasha/graphrag": "workspace:*",
     "@akasha/mentor": "workspace:*",
+    "@akasha/memory": "workspace:*",
     "@akasha/observability": "workspace:*",
     "@akasha/types": "workspace:*",
     "@base-ui/react": "^1.5.0",
