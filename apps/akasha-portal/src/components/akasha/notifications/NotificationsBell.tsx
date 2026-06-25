@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * NotificationsBell — D-046 (Wave 13.3) in-app notification badge + dropdown.
+ * NotificationsBell — D-046 (Wave 13.3) + SSE push (Wave 18.1).
  *
  * Visual:
  *   - Botão circular 40x40 com ícone Bell (lucide-react).
@@ -15,16 +15,24 @@
  *   - "Marcar todas como lidas" no footer do dropdown (PATCH bulk).
  *   - Estado vazio: ícone + texto i18n.
  *
- * Polling:
- *   - Refetch a cada 30s enquanto o componente está montado (aberto ou não).
- *   - Também refetch na focus da janela (UX: badge atualiza ao voltar).
- *   - Polling NÃO roda quando a aba está oculta (document.hidden)
- *     para economizar requests.
+ * Real-time updates (Wave 18.1):
+ *   - Conecta em /api/notifications/stream via EventSource (SSE).
+ *   - Servidor emite `event: snapshot` na conexão inicial → hidrata o state.
+ *   - Servidor emite `data: {...}\nid: <id>` quando nova notificação chega
+ *     → atualiza badge + prepend na lista.
+ *   - Suporta reconexão automática do browser (Last-Event-ID header
+ *     é reenviado automaticamente pelo EventSource).
  *
- * Por que polling e não SSE/WebSocket (Wave 13.3 defer):
- *   - O plano Wave 13 §13.3 explicita: "fica pra Wave 14".
- *   - 30s é suficiente para o caso de uso (notifications in-app são
- *     soft-engagement, não alertas urgentes — push web cobre os críticos).
+ * Fallback polling:
+ *   - Se SSE falhar 3× consecutivas (ex: proxy corporativo que mata
+ *     streaming), cai automaticamente para polling 30s.
+ *   - Polling também roda como safety net quando document.hidden.
+ *
+ * Por que SSE + polling (não SSE puro):
+ *   - Algumas redes (corp firewalls, school networks) matam conexões
+ *     longas. Manter o polling como fallback = UX consistente.
+ *   - Polling também serve como "freshness check" mesmo quando o SSE
+ *     está conectado (defense in depth contra drift de estado).
  *
  * Por que dropdown e não página /notificacoes:
  *   - 90% do uso é "ver badge → conferir 1 item → fechar". Página dedicada
@@ -68,6 +76,11 @@ interface ApiResponse {
 // ─── Constantes ──────────────────────────────────────────────────────
 const POLL_INTERVAL_MS = 30_000;
 const DROPDOWN_PREVIEW_COUNT = 5;
+const SSE_STREAM_URL = '/api/notifications/stream';
+// Quantas falhas consecutivas de SSE antes de cair pro polling puro.
+// 3 falhas = ~15s de instabilidade; acima disso, polling 30s é mais
+// eficiente que reconectar SSE a cada 5s.
+const SSE_MAX_FAILURES = 3;
 
 // i18n fallback (PT-BR). Usado quando useTranslations() não está no contexto
 // (testes unit, server-render isolado, etc). Componente PRECISA ser wrappeado
@@ -209,45 +222,138 @@ export function NotificationsBell({ locale, t }: NotificationsBellProps) {
     }
   }, []);
 
-  // ─── Polling lifecycle ─────────────────────────────────────────────
-  useEffect(() => {
-    // Fetch inicial imediato.
-    fetchNotifications();
+  // ─── SSE / polling lifecycle ───────────────────────────────────────
+  // Estratégia (Wave 18.1):
+  //   1. Tenta conectar EventSource.
+  //   2. Servidor envia `event: snapshot` → hidrata state, badge aparece.
+  //   3. Servidor envia `data: {...}\nid: <id>` → adiciona notificação nova.
+  //   4. Se EventSource der erro 3× seguidas (proxy matou, 401, etc),
+  //      cai pro polling 30s como fallback.
+  //   5. Polling 30s roda em paralelo como safety net (defense in depth
+  //      contra drift se SSE cair silenciosamente entre reconexões).
+  //
+  // Por que polling em paralelo com SSE não é desperdício:
+  //   - 30s é raro o suficiente pra não competir com SSE.
+  //   - SSE + polling = no pior caso, latência 30s em vez de ∞ se SSE
+  //     estiver desconectado silenciosamente.
+  //   - Sob carga, polling é cacheable, SSE não.
 
-    let intervalId: ReturnType<typeof setInterval> | null = null;
-    const start = () => {
-      if (intervalId !== null) return;
-      intervalId = setInterval(fetchNotifications, POLL_INTERVAL_MS);
+  // Helpers de merge — declarados fora do useEffect para satisfazer
+  // regras de hooks (não chamar hooks dentro de loops/conditions).
+  const mergeSnapshot = useCallback((snapshot: ApiResponse) => {
+    setData(snapshot);
+  }, []);
+
+  const appendNotification = useCallback((n: NotificationDTO) => {
+    setData((prev) => {
+      // Dedup por id (cliente pode receber a mesma via SSE + poll)
+      if (prev.notifications.some((x) => x.id === n.id)) return prev;
+      const unreadDelta = n.readAt === null ? 1 : 0;
+      return {
+        notifications: [n, ...prev.notifications].slice(0, 50),
+        unreadCount: prev.unreadCount + unreadDelta,
+      };
+    });
+  }, []);
+
+  useEffect(() => {
+    // SSE state (ref evita re-render do componente quando falha)
+    const esRef = { current: null as EventSource | null };
+    let sseFailures = 0;
+    let pollIntervalId: ReturnType<typeof setInterval> | null = null;
+    let cancelled = false;
+
+    // ─── SSE connection ───────────────────────────────────────────
+    const connectSSE = () => {
+      if (cancelled) return;
+      // EventSource nativo do browser. Envia cookies same-origin
+      // automaticamente; não precisa credentials.
+      // withCredentials: false é o default mas deixo explícito.
+      const es = new EventSource(SSE_STREAM_URL, { withCredentials: false });
+      esRef.current = es;
+
+      es.addEventListener('open', () => {
+        // Conexão aberta — reset failure counter
+        sseFailures = 0;
+      });
+
+      es.addEventListener('snapshot', (ev) => {
+        try {
+          const data = JSON.parse((ev as MessageEvent).data) as ApiResponse;
+          mergeSnapshot(data);
+        } catch {
+          // Payload malformado: ignora silenciosamente.
+        }
+      });
+
+      // Default message = evento SSE sem `event:` → cai aqui
+      es.addEventListener('message', (ev) => {
+        try {
+          const n = JSON.parse((ev as MessageEvent).data) as NotificationDTO;
+          appendNotification(n);
+        } catch {
+          // Ignora
+        }
+      });
+
+      es.addEventListener('error', () => {
+        // EventSource auto-reconnect é nativo do browser, mas se o
+        // servidor retornar 401 (cookie expirou) ou 5xx persistente,
+        // EventSource fica em loop. Contamos falhas e após N, fechamos
+        // definitivamente → polling cobre.
+        sseFailures += 1;
+        if (sseFailures >= SSE_MAX_FAILURES) {
+          es.close();
+          esRef.current = null;
+        }
+      });
     };
-    const stop = () => {
-      if (intervalId !== null) {
-        clearInterval(intervalId);
-        intervalId = null;
+
+    connectSSE();
+
+    // ─── Polling safety net ───────────────────────────────────────
+    // Roda em paralelo com SSE. SSE wins on latency; polling wins on
+    // reliability. Custo: 1 GET /30s por usuário ativo.
+    const startPolling = () => {
+      if (pollIntervalId !== null) return;
+      pollIntervalId = setInterval(() => {
+        if (!document.hidden) fetchNotifications();
+      }, POLL_INTERVAL_MS);
+    };
+    const stopPolling = () => {
+      if (pollIntervalId !== null) {
+        clearInterval(pollIntervalId);
+        pollIntervalId = null;
       }
     };
 
+    startPolling();
+
     const handleVisibility = () => {
       if (document.hidden) {
-        stop();
+        stopPolling();
       } else {
         fetchNotifications(); // refetch ao voltar
-        start();
+        startPolling();
       }
     };
     const handleFocus = () => {
       if (!document.hidden) fetchNotifications();
     };
 
-    start();
     document.addEventListener('visibilitychange', handleVisibility);
     window.addEventListener('focus', handleFocus);
 
     return () => {
-      stop();
+      cancelled = true;
+      stopPolling();
       document.removeEventListener('visibilitychange', handleVisibility);
       window.removeEventListener('focus', handleFocus);
+      // SSE cleanup — fecha EventSource pra liberar conexão TCP no server
+      esRef.current?.close();
+      esRef.current = null;
     };
-  }, [fetchNotifications]);
+  }, [fetchNotifications, mergeSnapshot, appendNotification]);
 
   // ─── Click outside / Escape to close ──────────────────────────────
   useEffect(() => {
