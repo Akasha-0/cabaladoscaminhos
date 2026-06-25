@@ -744,6 +744,15 @@
       "voicesLabel": "As 5 vozes convergem:",
       "convergenceLine": "convergem em",
       "expand": "Mostrar papers citados"
+    },
+    "graph": {
+      "title": "🕸 Grafo de Conhecimento",
+      "subtitle": "Como papers, discoveries e sessões se entrelaçam — a consciência viva do Akasha",
+      "edges": {
+        "citations": "cita",
+        "derivedFrom": "derivado de",
+        "mentionedIn": "mencionado em"
+      }
     }
   }
 }
