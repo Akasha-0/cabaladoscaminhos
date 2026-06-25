@@ -607,6 +607,40 @@
         "error": "Não foi possível atualizar o usuário."
       },
       "forbidden": "Acesso restrito a administradores."
+    },
+    "feedback": {
+      "title": "Analytics de Feedback",
+      "subtitle": "Agregados de FeedbackEntry (Wave 13.5) — sem PII",
+      "loading": "Carregando analytics...",
+      "error": "Não foi possível carregar os dados.",
+      "forbidden": "Acesso restrito a administradores.",
+      "window": "Janela: {days} dias",
+      "cards": {
+        "avgUp": "Aprovação (👍)",
+        "avgDown": "Rejeição (👎)",
+        "totalFeedback": "Total de votos",
+        "ratioLabel": "ratio"
+      },
+      "trend": {
+        "title": "Tendência diária",
+        "legendUp": "👍 up",
+        "legendDown": "👎 down",
+        "axisDay": "dia",
+        "empty": "Sem feedback no período."
+      },
+      "topDown": {
+        "title": "Top 5 mensagens com 👎",
+        "downCount": "{count} votos",
+        "lastOccurred": "último em {date}",
+        "empty": "Nenhuma mensagem recebeu 👎 ainda.",
+        "snippetLabel": "comentário (truncado a 100 chars, sem PII)"
+      },
+      "byPilar": {
+        "title": "Aprovação por Pilar",
+        "empty": "Sem dados por Pilar.",
+        "global": "Global"
+      },
+      "refresh": "Atualizar"
     }
   }
 }
