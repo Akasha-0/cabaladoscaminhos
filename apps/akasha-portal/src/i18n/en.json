@@ -13,19 +13,10 @@
   "nav": {
     "home": "Home",
     "mandala": "Mandala",
-    "diario": "Journal",
+    "diario": "Diary",
     "oraculo": "Oracle",
     "conta": "Account",
-    "manifesto": "Manifesto",
-    "sair": "Sign out",
-    "bottomNav": {
-      "ariaLabel": "Main navigation",
-      "meuDia": "My Day",
-      "mandala": "Mandala",
-      "diario": "Journal",
-      "mentor": "Mentor",
-      "conta": "Account"
-    }
+    "manifesto": "Manifesto"
   },
   "conta": {
     "title": "My Account",
@@ -36,18 +27,6 @@
     "welcome": "Welcome to Akasha",
     "start": "Start",
     "brand": "Akasha OS",
-    "tour": {
-      "step1Title": "Welcome to Akasha",
-      "step1Body": "To begin, choose how you are feeling right now. The portal adapts to what you need today — not tomorrow.",
-      "step2Title": "Breathe with me",
-      "step2Body": "If you choose \"anxious\", this orb guides you through 4-7-8 breathing: 4 seconds in, 7 held, 8 out. Three cycles calm the nervous system.",
-      "step3Title": "Talk to the Mentor",
-      "step3Body": "Anytime, open the Mentor — a symbolic guide that crosses Kabbalah, Astrology, Ifá, and Tantra to answer your deepest questions.",
-      "stepLabel": "Step {atual} of {total}",
-      "continue": "Continue",
-      "skip": "Skip for now",
-      "mentorCtaLabel": "Available at"
-    },
     "step1": {
       "title": "Welcome to Akasha OS",
       "description": "Your integrated spiritual self-knowledge system. Explore the four pillars: Kabbalah, Astrology, Ifá, and Tantra."
@@ -506,84 +485,15 @@
   },
   "mentor": {
     "emotion": {
-      "ansioso": "When you're anxious, I can suggest a breathing practice + the day's code.",
+      "ansioso": "When you're anxious, I can suggest a breathing practice + the code of the day.",
       "perdido": "When you feel lost, I can correlate I Ching with your map to illuminate paths.",
       "curioso": "When you want to explore, I can list the tools I have available.",
       "centrado": ""
     },
-    "dispatching": "Finding insights for you...",
+    "dispatching": "Looking for insights for you...",
     "toolInsights": {
-      "label": "Insights for state {emotion}"
-    },
-    "chat": {
-      "title": "Akashic Mentor",
-      "subtitle": "Talk to your map",
-      "inputPlaceholder": "Ask the Mentor...",
-      "inputPlaceholderNoCredits": "No credits for new questions",
-      "send": "Send message",
-      "stop": "Stop response",
-      "creditCounter": "{count} credit | {count} credits",
-      "creditCounterZero": "No credits",
-      "creditLowWarning": "{count} credit left | {count} credits left",
-      "starterQuestions": [
-        "How am I today, according to my maps?",
-        "What is my code of the day?",
-        "Suggest a ritual for this moment.",
-        "What does my astrology map mean?"
-      ],
-      "emptyHeading": "Start your conversation",
-      "emptySubheading": "Pick a question below or write your own.",
-      "suggestionsAriaLabel": "Suggested questions",
-      "error": {
-        "title": "Something went wrong",
-        "generic": "Try again in a few moments.",
-        "noCredits": "You don't have credits. Buy more to continue.",
-        "rateLimit": "Too many questions in a row. Wait a moment.",
-        "network": "Connection error. Check your internet."
-      },
-      "toolIndicator": {
-        "label": "TOOLS",
-        "calculating": "Calculating day's code",
-        "ritual": "Building ritual",
-        "correlations": "Finding correlations",
-        "interpretando": "Interpreting map",
-        "tools": "Listing tools"
-      },
-      "suggestionChips": {
-        "ansioso": [
-          "How to breathe now?",
-          "Calm me with a short ritual",
-          "What's my code of the day?",
-          "What's making me anxious?"
-        ],
-        "perdido": [
-          "Where am I stuck?",
-          "Correlate I Ching with my path",
-          "What does my life number mean?",
-          "How to find direction today?"
-        ],
-        "curioso": [
-          "What can you do for me?",
-          "What tools do you have?",
-          "How do the 5 Pillars work?",
-          "Show my Mandala"
-        ],
-        "centrado": [
-          "What can I deepen today?",
-          "Suggest an integration practice",
-          "Reflect on my moment",
-          "How to maintain this centering?"
-        ]
-      }
+      "label": "Insights for {emotion} state"
     }
-  },
-  "feedback": {
-    "up": "Helpful",
-    "down": "Not helpful",
-    "thanks": "Thanks for your feedback",
-    "error": "We couldn't send your feedback",
-    "submitting": "Sending...",
-    "commentPlaceholder": "Tell us what could be better (optional)"
   },
   "mcp": {
     "health": {
@@ -595,42 +505,26 @@
   },
   "pwa": {
     "install": {
-      "title": "Install Akasha System",
+      "title": "Install Sistema Akasha",
       "subtitle": "Quick access on your phone, works offline",
       "install": "Install",
       "dismiss": "Not now",
       "installed": "Installed ✓"
-    },
-    "installPrompt": {
-      "title": "Install for quick access",
-      "subtitle": "Opens in 1 tap, works without internet.",
-      "install": "Install now",
-      "installAria": "Install now",
-      "dismiss": "Not now",
-      "dismissAria": "Not now"
     }
   },
-  "search": {
-    "placeholder": "Search Akasha… (Mentor, Diary, Map)",
-    "hint": "Press ⌘K or Ctrl K to open",
-    "empty": {
-      "title": "Start typing",
-      "description": "Find Mentor conversations, Diary entries and your Akashic Map."
-    },
-    "loading": "Searching…",
-    "noResults": {
-      "title": "No results",
-      "description": "Try another keyword or type."
-    },
-    "error": "Something went wrong. Try again.",
-    "typeLabel": {
-      "chat": "Chat",
-      "diario": "Diary",
-      "manifesto": "Manifesto",
-      "mapa": "Map"
-    },
-    "shortcutHint": "⌘K",
-    "escHint": "Esc to close",
-    "navHint": "↑↓ navigate · Enter open"
+  "notification": {
+    "title": "Notifications",
+    "empty": "No notifications yet",
+    "markAllRead": "Mark all as read",
+    "viewAll": "View all",
+    "openBell": "Open notifications",
+    "unreadBadge": "{count} unread",
+    "types": {
+      "diario": "Journal",
+      "mentor": "Mentor",
+      "conexoes": "Connections",
+      "credits": "Credits",
+      "system": "System"
+    }
   }
 }
