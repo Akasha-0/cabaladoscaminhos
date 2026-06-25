@@ -222,8 +222,6 @@ async function loadDiscoveriesForPaper(
   //     citationContext: c.context ?? '',
   //   };
   // });
-  //
-  // eslint-disable-next-line @typescript-eslint/no-unreachable-code
   return null;
 }
 
