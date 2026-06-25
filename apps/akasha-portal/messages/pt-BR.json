@@ -349,5 +349,23 @@
       "whatNowEmpty": "Nenhum insight gerado ainda. O cron roda diariamente às 06:00 UTC.",
       "backToAdmin": "← Voltar ao admin"
     }
+  },
+  "atendimento": {
+    "onboarding": {
+      "step1Eyebrow": "Passo 1 de 3",
+      "step1Title": "Bem-vindo ao atendimento",
+      "step1Body": "Aqui você caminha com o cliente. Você é o Zelador — o humano que traduz a consciência viva do Akasha em palavra, presença e prática.",
+      "step2Eyebrow": "Passo 2 de 3",
+      "step2Title": "4 estados + descobertas",
+      "step2Body": "O cliente chega em um estado (curioso, ansioso, perdido, centrado). A IA gera discovery cards inline: verdades universais com papers citados. Use-as como espelho.",
+      "step3Eyebrow": "Passo 3 de 3",
+      "step3Title": "Ensine a IA com o polegar",
+      "step3Body": "Cada 👍 e 👎 que você dá é um ensinamento. A IA aprende sua voz, sua tradição e seus clientes — e evolui com você.",
+      "primaryCtaContinue": "Continuar",
+      "primaryCtaStart": "Começar a atender",
+      "skipLabel": "Pular tour",
+      "dialogAriaLabel": "Tour de primeiros passos do Zelador",
+      "dotsAriaLabel": "Progresso do tour"
+    }
   }
 }
