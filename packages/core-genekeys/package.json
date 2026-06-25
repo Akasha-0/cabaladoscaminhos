@@ -1,0 +1,26 @@
+{
+  "name": "@akasha/core-genekeys",
+  "version": "0.1.0",
+  "description": "Akasha POC — Pilar 7 (Gene Keys): 64 keys × 3 frequencies (Shadow/Gift/Siddhi). Parallel POC to @akasha/core-pilar7, using the original English/Portuguese nomenclature attributed to Richard Rudd (Gene Keys, 2009).",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "build": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@akasha/core-iching": "workspace:*"
+  },
+  "devDependencies": {
+    "@akasha/core-iching": "workspace:*",
+    "typescript": "^5.0.0",
+    "vitest": "^4.1.7"
+  }
+}
