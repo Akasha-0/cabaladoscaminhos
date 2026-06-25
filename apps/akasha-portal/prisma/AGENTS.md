@@ -9,14 +9,16 @@ billing.
 
 ## Ownership
 
-- `schema.prisma`: schema-fonte único. **25 models canonicos** (apos D-041 +
-  D-XXX Wave 3 + D-YYY/D-ZZZ Wave 4): `User`, `BirthChart`, `Subscription`,
-  `CreditEntry`, `Manifesto`, `DailyReading`, `RitualCompletion`,
-  `Consultation`, `ChatMessage`, `PushSubscription`, `GrimoireEntry`, `Connection`,
-  `CycleSnapshot`, `AreaHistoryEntry`, `ExerciseCompletion` (15 v3),
-  `Caminhante`, `Caminhada` (2 D-041), `Sessao`, `SessaoChunk`,
-  `GrimorioPessoal`, `NotasConsulente`, `MapaCalculo` (5 D-XXX),
-  `Pilar6Calculo`, `Pilar7Calculo`, `Pilar7Estagio` (3 D-YYY/D-ZZZ Wave 4).
+- `schema.prisma`: schema-fonte único. **26 models canonicos** (apos D-041 +
+  D-XXX Wave 3 + D-YYY/D-ZZZ Wave 4 + PrivacyConsent Wave 19.3): `User`,
+  `BirthChart`, `Subscription`, `CreditEntry`, `Manifesto`, `DailyReading`,
+  `RitualCompletion`, `Consultation`, `ChatMessage`, `PushSubscription`,
+  `GrimoireEntry`, `Connection`, `CycleSnapshot`, `AreaHistoryEntry`,
+  `ExerciseCompletion` (15 v3), `Caminhante`, `Caminhada` (2 D-041),
+  `Sessao`, `SessaoChunk`, `GrimorioPessoal`, `NotasConsulente`,
+  `MapaCalculo` (5 D-XXX), `Pilar6Calculo`, `Pilar7Calculo`, `Pilar7Estagio`
+  (3 D-YYY/D-ZZZ Wave 4), `PrivacyConsent` (1 Wave 19.3) + 1 enum novo
+  `PrivacyConsentType`.
 - `migrations/`: SQL versionado pelo Prisma Migrate. **NÃO** rodar
   `prisma migrate dev` sem aprovação humana (ver Work Guidance).
   - 7 migrations aplicadas: `20260611000000_init_akasha_v3/`,
@@ -99,8 +101,10 @@ Antes de qualquer mudança em `schema.prisma`, **ler este arquivo** +
 
 - Mínimo PII persistido. `User.birthDate`, `birthTime`, `birthCity`
   são birth data, não livre-arbítrio editável após cadastro.
-- `consentAt` é o único campo LGPD-explicit; tudo mais é herança
-  do escopo do produto.
+- `consentAt` é o consentimento mínimo (signup). Wave 19.3 adiciona
+  `PrivacyConsent` — audit trail granular per-type (LGPD Art. 7/8/37).
+  Ver `prisma/schema.prisma` (model PrivacyConsent + enum PrivacyConsentType)
+  e helper em `src/lib/application/privacy/consent.ts`.
 - `MandatoDiario.criseDetectada` (D-040 R4) — flag ainda não
   persistida, audit apenas em logs.
 
@@ -124,6 +128,16 @@ Antes de qualquer mudança em `schema.prisma`, **ler este arquivo** +
   Engines em `packages/core-pilar6/` (17 tests) e `packages/core-pilar7/`
   (63 tests + 192 placeholder texts). akasha-core orchestrator integrado.
   Status: `branch_wave_4_integration_awaiting_human_apply_and_merge`.
+- **Wave 19.3** — Privacy Controls UI (LGPD Art. 7/8/37). 1 model
+  `PrivacyConsent` (append-only, SEM FK para User, sem @@unique) +
+  1 enum `PrivacyConsentType` (MARKETING/ANALYTICS/AI_TRAINING/THIRD_PARTY_SHARING).
+  Migration: `20260625090000_privacy_consent/` (PROPOSAL — humano aplica).
+  Branch: `wave-19.3-privacy-ui` pushed (3 commits). Helper em
+  `src/lib/application/privacy/consent.ts` (recordConsentDecision é
+  append-only — NUNCA update). API: `/api/account/privacy` GET/PATCH.
+  UI: `/conta/privacidade` com toggles + audit trail histórico.
+  Tests: 46 passing (27 helper + 13 route + 6 register).
+  Compat: Wave 8.3 (User.consentAt) e Wave 19.2 (delete) preservados.
 
 ## Child DOX Index
 
