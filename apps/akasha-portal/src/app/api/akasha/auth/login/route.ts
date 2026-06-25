@@ -9,6 +9,7 @@ import {
   setAkashaRefreshCookie,
 } from '@/lib/application/auth/akasha-jwt';
 import { prisma } from '@/lib/infrastructure/prisma';
+import { checkStrictRateLimit, buildStrictRateLimitResponse } from '@/lib/infrastructure/security/rate-limit-strict';
 
 const loginSchema = z.object({
   email: z.preprocess(
@@ -19,6 +20,22 @@ const loginSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  // Wave 12.5 §12.5: anti-bruteforce — 5 tentativas/min por IP (hash LGPD-safe).
+  // Threshold baseado em UX aceitável (typo, esqueceu senha) vs ataque.
+  const rateLimit = await checkStrictRateLimit(request, 'AUTH_LOGIN', { preferUserId: false });
+  if (!rateLimit.allowed) {
+    const blocked = buildStrictRateLimitResponse('AUTH_LOGIN');
+    return NextResponse.json(blocked.body, {
+      status: blocked.status,
+      headers: {
+        'Retry-After': String(blocked.body.retryAfterSeconds),
+        // Resposta 429 inclui security headers — defesa em profundidade
+        // (CSP API + X-Frame-Options DENY mesmo em erros de auth).
+        'Content-Security-Policy': "default-src 'none'; frame-ancestors 'none'; base-uri 'none'",
+      },
+    });
+  }
+
   let body: z.infer<typeof loginSchema>;
   try {
     body = loginSchema.parse(await request.json());

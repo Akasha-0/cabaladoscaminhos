@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/infrastructure/prisma';
+import { checkStrictRateLimit, buildStrictRateLimitResponse } from '@/lib/infrastructure/security/rate-limit-strict';
 
 const registerSchema = z.object({
   email: z.preprocess(
@@ -23,6 +24,20 @@ const registerSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  // Wave 12.5 §12.5: anti-enumeração + anti-spam de contas — 3 cadastros/hora por IP.
+  // UX: usuário humano cria conta uma vez; >3/hora é claramente script.
+  const rateLimit = await checkStrictRateLimit(request, 'AUTH_REGISTER', { preferUserId: false });
+  if (!rateLimit.allowed) {
+    const blocked = buildStrictRateLimitResponse('AUTH_REGISTER');
+    return NextResponse.json(blocked.body, {
+      status: blocked.status,
+      headers: {
+        'Retry-After': String(blocked.body.retryAfterSeconds),
+        'Content-Security-Policy': "default-src 'none'; frame-ancestors 'none'; base-uri 'none'",
+      },
+    });
+  }
+
   let body: z.infer<typeof registerSchema>;
   try {
     body = registerSchema.parse(await request.json());

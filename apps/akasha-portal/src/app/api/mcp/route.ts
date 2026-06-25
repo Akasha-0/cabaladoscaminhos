@@ -7,9 +7,18 @@
  *
  * Wave 8.4 B.3 + Wave 9.3: uses AkashaMcpServer from @akasha/mcp.
  * Note: minimal inline JSON-RPC dispatcher (no transport-http.ts dependency).
+ *
+ * Wave 12.5 §12.5: rate limit strict por IP — 100 req/min.
+ * MCP é endpoint público (sem auth), então IP é o único identifier
+ * possível. O middleware.ts já aplica 100/min genérico para /api/*,
+ * mas adicionamos scope dedicado `MCP` para:
+ *   1. Monitoring granular (alertas separados)
+ *   2. Tuning independente (futuro: reduzir para 60/min se abuso)
+ *   3. Logs identificam scope sem precisar parsear pathname
  */
 import { NextRequest } from 'next/server';
 import { getMcpServer } from '@akasha/mcp';
+import { checkStrictRateLimit, buildStrictRateLimitResponse } from '@/lib/infrastructure/security/rate-limit-strict';
 
 // Singleton survives HMR
 const globalForMcp = globalThis as unknown as {
@@ -26,7 +35,31 @@ async function server() {
 // Eagerly initialize so tools are registered
 server().catch((err) => console.error('[mcp route] init failed:', err));
 
-export async function GET() {
+/**
+ * Wave 12.5: helper que aplica rate limit strict no MCP endpoint.
+ * Retorna NextResponse 429 se bloqueado, ou null se permitido.
+ *
+ * MCP é público (sem auth) → IP-only. O identifier já é HMAC-hashed
+ * (LGPD-safe) antes de virar chave Redis.
+ */
+async function enforceMcpRateLimit(request: NextRequest) {
+  const rateLimit = await checkStrictRateLimit(request, 'MCP', { preferUserId: false });
+  if (!rateLimit.allowed) {
+    const blocked = buildStrictRateLimitResponse('MCP');
+    return Response.json(blocked.body, {
+      status: blocked.status,
+      headers: {
+        'Retry-After': String(blocked.body.retryAfterSeconds),
+        'Content-Security-Policy': "default-src 'none'; frame-ancestors 'none'; base-uri 'none'",
+      },
+    });
+  }
+  return null;
+}
+
+export async function GET(request: NextRequest) {
+  const blocked = await enforceMcpRateLimit(request);
+  if (blocked) return blocked;
   try {
     const s = await server();
     return Response.json({
@@ -47,6 +80,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const blocked = await enforceMcpRateLimit(request);
+  if (blocked) return blocked;
   try {
     const body = await request.json();
     const { jsonrpc, id, method, params } = body ?? {};
