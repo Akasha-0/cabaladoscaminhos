@@ -513,85 +513,83 @@
     }
   },
   "notification": {
-      "title": "Notifications",
-      "empty": "No notifications yet",
-      "markAllRead": "Mark all as read",
-      "viewAll": "View all",
-      "openBell": "Open notifications",
-      "unreadBadge": "{count} unread",
-      "types": {
-        "diario": "Diary",
-        "mentor": "Mentor",
-        "conexoes": "Connections",
-        "credits": "Credits",
-        "system": "System"
-      }
-    },
-    "admin": {
-      "common": {
-        "titulo": "Administration",
-        "voltar": "← Back to Dashboard",
-        "carregando": "Loading…",
-        "salvar": "Save",
-        "cancelar": "Cancel",
-        "criar": "Create",
-        "editar": "Edit",
-        "desativar": "Deactivate",
-        "atribuir": "Assign",
-        "desatribuir": "Remove plan",
-        "acessoRestrito": "ADMIN-only access"
+    "title": "Notifications",
+    "empty": "No notifications yet",
+    "markAllRead": "Mark all as read",
+    "viewAll": "View all",
+    "openBell": "Open notifications",
+    "unreadBadge": "{count} unread",
+    "types": {
+      "diario": "Journal",
+      "mentor": "Mentor",
+      "conexoes": "Connections",
+      "credits": "Credits",
+      "system": "System"
+    }
+  },
+  "admin": {
+    "users": {
+      "title": "User Management",
+      "subtitle": "Paginated list of all Akasha users",
+      "searchPlaceholder": "Search by name or email...",
+      "searchAriaLabel": "Search users",
+      "roleFilter": {
+        "label": "Role",
+        "all": "All",
+        "MEMBER": "Member",
+        "ADMIN": "Admin"
       },
-      "plans": {
-        "titulo": "Plans",
-        "subtitulo": "Assignable plan catalog. Edit pricing, monthly credits and features. Soft-delete preserves history.",
-        "tabela": {
-          "colName": "Slug",
-          "colDisplay": "Display name",
-          "colPreco": "Price (cents)",
-          "colCreditos": "Credits/month",
-          "colFeatures": "Features",
-          "colAtivo": "Active?",
-          "colUsers": "Users",
-          "colOrdem": "Order",
-          "colAcoes": "Actions",
-          "vazio": "No plans registered yet.",
-          "precoFormatado": "$ {valor}",
-          "creditosIlimitados": "—",
-          "sim": "Yes",
-          "nao": "No"
-        },
-        "form": {
-          "criarTitulo": "Create new plan",
-          "editarTitulo": "Edit plan",
-          "labelName": "Slug (name)",
-          "labelDisplay": "Display name",
-          "labelPreco": "Price in cents",
-          "labelCreditos": "Credits per month",
-          "labelFeatures": "Features (one per line)",
-          "labelAtivo": "Active",
-          "labelOrdem": "Display order",
-          "placeholderFeatures": "e.g. Full Mandala + Astrology map",
-          "ajudaName": "Lowercase letters, numbers, _ or - only. Unique.",
-          "ajudaPreco": "e.g. 3900 = $39.00/month",
-          "ajudaCreditos": "Empty = no fixed credits (unlimited in manual plan).",
-          "salvo": "Plan saved.",
-          "erroSalvar": "Error saving plan.",
-          "desativado": "Plan deactivated.",
-          "erroDesativar": "Error deactivating plan.",
-          "atribuido": "Plan assigned.",
-          "desatribuido": "Plan removed from user.",
-          "erroAtribuir": "Error assigning plan.",
-          "atribuirTitulo": "Assign plan to user",
-          "labelUserId": "User ID",
-          "labelPlanId": "Plan",
-          "planoAtual": "(current)",
-          "nenhumPlano": "No plan"
-        },
-        "seedInfo": "Initial seed: freemium · pro · enterprise (via prisma seed)"
+      "statusFilter": {
+        "label": "Status",
+        "all": "All",
+        "ACTIVE": "Active",
+        "DISABLED": "Suspended"
       },
-      "dashboard": {
-        "titulo": "Dashboard",
-        "subtitulo": "Operational view of the product"
-      }
+      "table": {
+        "headers": {
+          "name": "Name",
+          "email": "Email",
+          "role": "Role",
+          "status": "Status",
+          "createdAt": "Created",
+          "lastLogin": "Last login"
+        },
+        "empty": "No users match these filters.",
+        "noResults": "No results for \"{q}\"."
+      },
+      "status": {
+        "ACTIVE": "Active",
+        "DISABLED": "Suspended"
+      },
+      "actions": {
+        "suspend": "Suspend",
+        "activate": "Reactivate",
+        "changeRole": "Change role",
+        "cancel": "Cancel",
+        "save": "Save",
+        "view": "View details"
+      },
+      "drawer": {
+        "title": "User details",
+        "loading": "Loading details...",
+        "error": "Could not load details.",
+        "createdAt": "Account created on {date}",
+        "confirmedRole": "Current role: {role}",
+        "confirmedStatus": "Current status: {status}",
+        "warning": "Suspending prevents the user from signing in. Use with care."
+      },
+      "pagination": {
+        "previous": "Previous",
+        "next": "Next",
+        "page": "Page {page} of {total}",
+        "total": "{count} users total",
+        "perPage": "{count} per page"
+      },
+      "mutation": {
+        "success": "User updated.",
+        "error": "Could not update the user."
+      },
+      "forbidden": "Restricted to administrators."
     }
   }
+}
