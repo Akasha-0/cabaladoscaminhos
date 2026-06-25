@@ -1,6 +1,6 @@
 # Cabala dos Caminhos
 
-[![CI](https://github.com/sujeito-programador/cabala-dos-caminhos/actions/workflows/ci.yml/badge.svg)](https://github.com/sujeito-programador/cabala-dos-caminhos/actions/workflows/ci.yml)
+[![CI](https://github.com/Akasha-0/cabaladoscaminhos/actions/workflows/ci.yml/badge.svg)](https://github.com/Akasha-0/cabaladoscaminhos/actions/workflows/ci.yml)
 
 Repositorio principal do Sistema Akasha.
 
