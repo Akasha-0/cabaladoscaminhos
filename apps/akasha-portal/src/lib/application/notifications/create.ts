@@ -32,6 +32,7 @@ import {
   NotificationDTO,
   NOTIFICATION_LIMITS,
 } from './types';
+import { isTypeEnabled } from './preferences';
 
 export class NotificationValidationError extends Error {
   constructor(message: string) {
@@ -44,6 +45,11 @@ export class NotificationValidationError extends Error {
  * Cria uma notificação para `userId`. Valida tamanho de title/body/href
  * antes de inserir. Retorna o DTO serializado (datas em ISO string).
  *
+ * **Opt-out check (Wave 18.2 / D-048):** antes do insert, checa a
+ * preferência do user para `input.type`. Se desativada (`enabled = false`),
+ * a função retorna `null` SEM inserir a notificação. Caller deve tolerar
+ * `null` como "skipped due to user preference".
+ *
  * Idempotência: NÃO é idempotente. Cada chamada cria uma linha nova.
  * Se o caller precisa dedup (ex: "novo diário" 1x por dia), deve
  * checar antes com `findFirst({ userId, type, readAt: null, createdAt: { gte: hoje } })`.
@@ -54,7 +60,7 @@ export class NotificationValidationError extends Error {
 export async function createNotification(
   userId: string,
   input: CreateNotificationInput
-): Promise<NotificationDTO> {
+): Promise<NotificationDTO | null> {
   // ─── Validação ─────────────────────────────────────────────────────
   if (!userId || typeof userId !== 'string') {
     throw new NotificationValidationError('userId é obrigatório');
@@ -90,6 +96,14 @@ export async function createNotification(
     throw new NotificationValidationError(
       'href deve começar com "/" (rota interna) ou "https://" (link externo)'
     );
+  }
+
+  // ─── Opt-out check (Wave 18.2 / D-048) ─────────────────────────────
+  // Se o user desativou este tipo via /conta/notifications, skip silenciosamente.
+  // Caller deve tolerar retorno `null` (skipped).
+  const enabled = await isTypeEnabled(userId, input.type);
+  if (!enabled) {
+    return null;
   }
 
   // ─── Inserção ──────────────────────────────────────────────────────

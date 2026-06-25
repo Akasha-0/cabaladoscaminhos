@@ -13,10 +13,15 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // Mock prisma ANTES de importar o módulo sob teste.
 const mockCreate = vi.fn();
+const mockPrefFindUnique = vi.fn();
 vi.mock('@/lib/infrastructure/prisma', () => ({
   prisma: {
     notification: {
       create: (...args: unknown[]) => mockCreate(...args),
+    },
+    notificationPreference: {
+      // Opt-out check (Wave 18.2 / D-048). Default: row não existe → habilitado.
+      findUnique: (...args: unknown[]) => mockPrefFindUnique(...args),
     },
   },
 }));
@@ -31,6 +36,9 @@ import { NotificationType } from '@prisma/client';
 describe('createNotification', () => {
   beforeEach(() => {
     mockCreate.mockReset();
+    mockPrefFindUnique.mockReset();
+    // Default: user tem preference habilitada (null = opt-out default).
+    mockPrefFindUnique.mockResolvedValue(null);
   });
 
   // ─── Validação ─────────────────────────────────────────────────────
@@ -92,7 +100,8 @@ describe('createNotification', () => {
         title,
         body: 'Y',
       });
-      expect(dto.title).toBe(title);
+      expect(dto).not.toBeNull();
+      expect(dto!.title).toBe(title);
     });
 
     it('rejects body > 500 chars', async () => {
@@ -143,7 +152,8 @@ describe('createNotification', () => {
         body: 'Y',
         href: '/pt-BR/diario/123',
       });
-      expect(dto.href).toBe('/pt-BR/diario/123');
+      expect(dto).not.toBeNull();
+      expect(dto!.href).toBe('/pt-BR/diario/123');
     });
 
     it('accepts external href starting with https://', async () => {
@@ -162,7 +172,8 @@ describe('createNotification', () => {
         body: 'Y',
         href: 'https://akasha.app/changelog',
       });
-      expect(dto.href).toBe('https://akasha.app/changelog');
+      expect(dto).not.toBeNull();
+      expect(dto!.href).toBe('https://akasha.app/changelog');
     });
   });
 
@@ -226,8 +237,9 @@ describe('createNotification', () => {
         href: '/pt-BR/conta/creditos',
       });
 
-      expect(dto.createdAt).toBe('2026-06-24T10:00:00.000Z');
-      expect(dto.readAt).toBe('2026-06-24T11:30:00.000Z');
+      expect(dto).not.toBeNull();
+      expect(dto!.createdAt).toBe('2026-06-24T10:00:00.000Z');
+      expect(dto!.readAt).toBe('2026-06-24T11:30:00.000Z');
     });
 
     it('returns readAt: null when unread', async () => {
@@ -245,7 +257,8 @@ describe('createNotification', () => {
         title: 'X',
         body: 'Y',
       });
-      expect(dto.readAt).toBeNull();
+      expect(dto).not.toBeNull();
+      expect(dto!.readAt).toBeNull();
     });
   });
 
@@ -276,6 +289,74 @@ describe('createNotification', () => {
         createdAt: new Date(),
       });
       expect(dto.href).toBe('/pt-BR/conexoes');
+    });
+  });
+
+  // ─── Opt-out check (Wave 18.2 / D-048) ─────────────────────────────
+  describe('opt-out preference check', () => {
+    it('creates notification when preference is enabled (no row)', async () => {
+      // Default beforeEach: mockPrefFindUnique.mockResolvedValue(null) → enabled.
+      mockCreate.mockResolvedValueOnce({
+        id: 'n1',
+        type: NotificationType.DIARIO,
+        title: 'X',
+        body: 'Y',
+        href: null,
+        readAt: null,
+        createdAt: new Date('2026-06-24T10:00:00Z'),
+      });
+      const dto = await createNotification('user-1', {
+        type: NotificationType.DIARIO,
+        title: 'X',
+        body: 'Y',
+      });
+      expect(dto).not.toBeNull();
+      expect(dto!.id).toBe('n1');
+      expect(mockCreate).toHaveBeenCalledOnce();
+    });
+
+    it('creates notification when preference row.enabled = true', async () => {
+      mockPrefFindUnique.mockResolvedValueOnce({ enabled: true });
+      mockCreate.mockResolvedValueOnce({
+        id: 'n1',
+        type: NotificationType.MENTOR,
+        title: 'X',
+        body: 'Y',
+        href: null,
+        readAt: null,
+        createdAt: new Date(),
+      });
+      const dto = await createNotification('user-1', {
+        type: NotificationType.MENTOR,
+        title: 'X',
+        body: 'Y',
+      });
+      expect(dto).not.toBeNull();
+      expect(mockCreate).toHaveBeenCalledOnce();
+    });
+
+    it('SKIPS creation and returns null when preference is disabled', async () => {
+      mockPrefFindUnique.mockResolvedValueOnce({ enabled: false });
+      const dto = await createNotification('user-1', {
+        type: NotificationType.DIARIO,
+        title: 'X',
+        body: 'Y',
+      });
+      expect(dto).toBeNull();
+      expect(mockCreate).not.toHaveBeenCalled();
+    });
+
+    it('opt-out check happens AFTER validation (invalid input still throws)', async () => {
+      mockPrefFindUnique.mockResolvedValueOnce({ enabled: false });
+      await expect(
+        createNotification('user-1', {
+          type: NotificationType.DIARIO,
+          title: '',
+          body: 'Y',
+        })
+      ).rejects.toThrow(NotificationValidationError);
+      // Preference mock nunca deve ser chamado se validação falhar antes.
+      // (validação vem antes do opt-out check por design — falha rápido.)
     });
   });
 });
