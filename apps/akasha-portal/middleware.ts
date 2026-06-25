@@ -6,6 +6,12 @@ import {
   log,
   REQUEST_ID_HEADER,
 } from '@/lib/shared/logging';
+// Wave 31.4 — Observability MVP. Importa logger pino + counter Prometheus.
+// Não interrompe o fluxo existente; apenas emite telemetria adicional.
+import {
+  getLogger as getObsLogger,
+  httpRequestsTotal,
+} from '@akasha/observability';
 import { checkApiRateLimit } from '@/middleware/rateLimit';
 
 // ============================================
@@ -252,6 +258,32 @@ export async function middleware(request: NextRequest) {
       method: request.method,
       path: pathname,
     });
+  }
+
+  // Wave 31.4 — Observability MVP: emite também em formato pino JSON
+  // para agregadores (Loki, Datadog, etc.) e bumpara contador Prometheus.
+  // Mantém o log legado acima intacto para retrocompatibilidade.
+  const obsLogger = getObsLogger('akasha.middleware');
+  if (isApiOrPage) {
+    obsLogger.info(
+      { requestId, method: request.method, path: pathname },
+      'middleware.request.passed'
+    );
+    // Métrica coarse-grained por path — augmentada nos routes individuais.
+    // Usa apenas o primeiro segmento (/api, /_next é exento) para evitar
+    // cardinalidade explodindo em Prometheus.
+    const routeBucket = pathname.startsWith('/api/')
+      ? `/api/${pathname.split('/')[2] ?? ''}`
+      : pathname;
+    try {
+      httpRequestsTotal.inc({
+        route: routeBucket,
+        method: request.method,
+        status: 'middleware',
+      });
+    } catch {
+      /* counter failure must never break the request */
+    }
   }
 
   // Locale detection — Doc 25 §9 / v0.0.4-T9
