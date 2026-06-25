@@ -1,16 +1,28 @@
 'use client';
 
 /**
- * FirstTimeTour — Wave 13.1 First-time user onboarding
+ * FirstTimeTour — Wave 13.1 First-time user onboarding + Wave 18.5
+ * persistence (resume mid-tour + skip from any step).
  *
  * Three full-screen steps that introduce the /meu-dia experience to a user
  * who has never picked an emotional state. The tour:
  *
- *   Step 1 — Welcome + how to pick an emotional state
- *   Step 2 — (Preview of the breathing orb, shown to *all* users — it's
+ *   Step 0 — Welcome + how to pick an emotional state
+ *   Step 1 — (Preview of the breathing orb, shown to *all* users — it's
  *            the most distinctive affordance of the Ansioso view)
- *   Step 3 — Mentor CTA: a friendly nudge toward the conversational AI
+ *   Step 2 — Mentor CTA: a friendly nudge toward the conversational AI
  *            that lives at /mentor.
+ *
+ * Wave 18.5 persistence changes:
+ *   - The current step is written to localStorage on every change. If the
+ *     user leaves and comes back, the tour resumes at the saved step
+ *     instead of restarting at step 0.
+ *   - A subtle "resuming from step X" banner appears when the tour mounts
+ *     with a persisted step > 0. Banner uses `prefers-reduced-motion`
+ *     (no animations) and is dismissable by any user interaction.
+ *   - "Pular tour" (skip-all) button is available on EVERY step, not just
+ *     step 1. Tapping it finalises the tour (same effect as advancing past
+ *     the last step).
  *
  * Why 3 steps (not 4+):
  *   - Gabriel's grill-me feedback (2026-06-24): "minimalista e objetiva".
@@ -55,20 +67,39 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 
 import { BreathOrb } from '@/components/akasha/my-day/ansioso/BreathOrb';
+import {
+  ONBOARDING_COMPLETED_STEP,
+  type OnboardingStep,
+  type AnyOnboardingStep,
+} from '@/lib/state/onboarding-state';
 
-export type TourStep = 0 | 1 | 2;
+export type { OnboardingStep };
 
 export interface FirstTimeTourProps {
-  /** Called when the user advances past the last step (or skips on step 1). */
+  /** Called when the user advances past the last step OR skips from any
+   *  step (the skip button is available on all 3 steps, not just step 1). */
   onComplete: () => void;
   /**
-   * Optional: called when the user clicks the "Pular" link on step 1.
-   * Defaults to `onComplete` — the spec says "skip no step 1" both
-   * finalize the tour.
+   * Optional: called when the user clicks the "Pular por agora" link on
+   * step 1. The skip-all button on steps 2/3 (Wave 18.5) always calls
+   * `onComplete`, never `onSkip`. The two skips are semantically distinct:
+   *   - step-1 skip = "I'm not ready, leave me alone"
+   *   - skip-all    = "I've seen enough, dismiss the tour"
    */
   onSkip?: () => void;
-  /** Optional override of the initial step (tests only). */
-  initialStep?: TourStep;
+  /**
+   * The starting step. Wave 18.5: callers pass `useOnboarding().currentStep`
+   * so the tour resumes mid-flight. Out-of-range values are clamped to 0.
+   * Defaults to 0 for fresh users.
+   */
+  initialStep?: AnyOnboardingStep;
+  /**
+   * Wave 18.5 — called whenever the step changes. The host (MeuDiaHub)
+   * forwards this to `useOnboarding().setStep` so progress is persisted.
+   * Receives `OnboardingStep` (0|1|2) for live steps and
+   * `ONBOARDING_COMPLETED_STEP` (3) when the user finalises the tour.
+   */
+  onStepChange?: (step: AnyOnboardingStep) => void;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -113,53 +144,120 @@ const STEPS: readonly StepContent[] = [
 ] as const;
 
 const SKIP_LABEL = 'Pular por agora';
+const SKIP_ALL_LABEL = 'Pular tour';
 const ARIA_LABEL = 'Tour de primeiros passos';
+
+/** Banner shown when the tour resumes from a non-zero persisted step. */
+function resumeBannerText(step: OnboardingStep): string {
+  // Wave 18.5 i18n keys live under `onboarding.tour.resume` in both locale
+  // files. We hardcode the template here to match the Wave 9.1/10 pattern
+  // used by every other my-day component — see the file header for the
+  // rationale.
+  const humanStep = step + 1;
+  return `Continuando do passo ${humanStep} de ${STEPS.length}`;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Component
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Clamp the persisted `currentStep` from the hook into a valid live
+ * step (0|1|2). `3` (the completed sentinel) is NOT a valid initial step —
+ * callers must not mount the tour when `completed=true`. We still defend
+ * against it here because Wave 18.5 widens the prop type to accept any
+ * step value (host may pass `currentStep` before the `!completed` guard
+ * settles in some race scenarios).
+ */
+function clampInitial(step: AnyOnboardingStep | undefined): OnboardingStep {
+  if (step === 1) return 1;
+  if (step === 2) return 2;
+  return 0;
+}
+
 export function FirstTimeTour({
   onComplete,
   onSkip,
   initialStep = 0,
+  onStepChange,
 }: FirstTimeTourProps) {
-  const [step, setStep] = useState<TourStep>(initialStep);
+  const [step, setStepLocal] = useState<OnboardingStep>(
+    clampInitial(initialStep)
+  );
+  // Wave 18.5 — show the "resuming from step X" banner when the persisted
+  // step is > 0 at mount. The banner auto-hides on first user interaction.
+  const [showResumeBanner, setShowResumeBanner] = useState<boolean>(
+    initialStep > 0 && initialStep < ONBOARDING_COMPLETED_STEP
+  );
+
   const total = STEPS.length;
+
+  /**
+   * Single mutation path for the live step. Persists via `onStepChange`
+   * if provided so the host's `useOnboarding` can mirror it. Also hides
+   * the resume banner on the first interaction.
+   */
+  const setStep = useCallback(
+    (next: OnboardingStep) => {
+      setStepLocal(next);
+      setShowResumeBanner(false);
+      if (onStepChange) onStepChange(next);
+    },
+    [onStepChange]
+  );
 
   const advance = useCallback(() => {
     if (step < total - 1) {
-      setStep((step + 1) as TourStep);
+      setStep((step + 1) as OnboardingStep);
     } else {
+      // Final advance — fire completion + step=3 sentinel.
+      if (onStepChange) onStepChange(ONBOARDING_COMPLETED_STEP);
       onComplete();
     }
-  }, [step, total, onComplete]);
+  }, [step, total, onComplete, onStepChange, setStep]);
 
-  const goTo = useCallback((next: TourStep) => {
-    setStep(next);
-  }, []);
+  const goTo = useCallback(
+    (next: OnboardingStep) => {
+      setStep(next);
+    },
+    [setStep]
+  );
 
   const handleSkip = useCallback(() => {
+    // Step-1 "Pular por agora" — semantically "I'm not ready", delegates
+    // to onSkip if provided so the host can distinguish it from a
+    // skip-all (which always finalises the tour).
+    if (onStepChange) onStepChange(ONBOARDING_COMPLETED_STEP);
     if (onSkip) onSkip();
     else onComplete();
-  }, [onSkip, onComplete]);
+  }, [onSkip, onComplete, onStepChange]);
 
-  // Keyboard support: Enter advances, Escape skips (consistent with the
-  // tap-to-advance mobile behaviour). We only attach the listener while
-  // the tour is mounted.
+  /**
+   * Wave 18.5 — skip-all from any step. Finalises the tour and fires
+   * `onComplete` directly. Distinct from `handleSkip` (step-1 only) which
+   * may call `onSkip` first.
+   */
+  const handleSkipAll = useCallback(() => {
+    if (onStepChange) onStepChange(ONBOARDING_COMPLETED_STEP);
+    onComplete();
+  }, [onComplete, onStepChange]);
+
+  // Keyboard support: Enter advances, Escape skips. Wave 18.5 — Escape
+  // skips from ANY step (not just step 1). Consistent with the new
+  // visible skip-all button.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Enter') {
         e.preventDefault();
         advance();
-      } else if (e.key === 'Escape' && step === 0) {
+      } else if (e.key === 'Escape') {
         e.preventDefault();
-        handleSkip();
+        handleSkipAll();
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [advance, handleSkip, step]);
+  }, [advance, handleSkipAll]);
 
   const current = STEPS[step];
   const isLast = step === total - 1;
@@ -186,21 +284,71 @@ export function FirstTimeTour({
       data-testid="first-time-tour"
       data-step={step}
     >
-      {/* Skip link — only on step 1 (per spec). After step 1 the user is
-          committed; advance or back are the only options. */}
-      <div className="w-full max-w-[var(--ak-container-narrow)] flex justify-end">
-        {step === 0 && (
-          <button
-            type="button"
-            onClick={handleSkip}
-            className="min-h-[44px] px-3 text-xs text-white/50 hover:text-white/80 underline-offset-2 hover:underline transition-colors"
-            data-testid="first-time-tour-skip"
-            aria-label={SKIP_LABEL}
-          >
-            {SKIP_LABEL}
-          </button>
+      {/* Top bar — skip-all button on EVERY step (Wave 18.5), step-1
+          "Pular por agora" on step 1 only. The skip-all is a small
+          text link so it doesn't compete with the primary CTA visually. */}
+      <div className="w-full max-w-[var(--ak-container-narrow)] flex justify-between items-start gap-2">
+        {step === 0 ? (
+          <>
+            <button
+              type="button"
+              onClick={handleSkip}
+              className="min-h-[44px] px-3 text-xs text-white/50 hover:text-white/80 underline-offset-2 hover:underline transition-colors"
+              data-testid="first-time-tour-skip"
+              aria-label={SKIP_LABEL}
+            >
+              {SKIP_LABEL}
+            </button>
+            <button
+              type="button"
+              onClick={handleSkipAll}
+              className="min-h-[44px] px-3 text-xs text-white/50 hover:text-white/80 underline-offset-2 hover:underline transition-colors"
+              data-testid="first-time-tour-skip-all"
+              aria-label={SKIP_ALL_LABEL}
+            >
+              {SKIP_ALL_LABEL}
+            </button>
+          </>
+        ) : (
+          <>
+            {/* Reserved slot on non-first steps so the layout doesn't
+                shift between steps when the skip link appears/disappears. */}
+            <span aria-hidden="true" />
+            <button
+              type="button"
+              onClick={handleSkipAll}
+              className="min-h-[44px] px-3 text-xs text-white/50 hover:text-white/80 underline-offset-2 hover:underline transition-colors"
+              data-testid="first-time-tour-skip-all"
+              aria-label={SKIP_ALL_LABEL}
+            >
+              {SKIP_ALL_LABEL}
+            </button>
+          </>
         )}
       </div>
+
+      {/* Resume banner — Wave 18.5. Shown when the tour reopens with a
+          persisted step > 0. Subtle, doesn't block the dialog, and
+          disappears on any step change. */}
+      <AnimatePresence>
+        {showResumeBanner && (
+          <motion.div
+            key="resume-banner"
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="w-full max-w-[var(--ak-container-narrow)] mt-2"
+            data-testid="first-time-tour-resume-banner"
+            role="status"
+            aria-live="polite"
+          >
+            <p className="text-[11px] uppercase tracking-[0.2em] text-white/45 text-center m-0">
+              {resumeBannerText(step)}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Main content area — flex-1 so the footer stays pinned to the
           bottom of the viewport. We do NOT use `mode="wait"` on the
@@ -279,7 +427,7 @@ export function FirstTimeTour({
                 role="tab"
                 aria-selected={active}
                 aria-label={`Ir para passo ${i + 1} de ${total}`}
-                onClick={() => goTo(i as TourStep)}
+                onClick={() => goTo(i as OnboardingStep)}
                 className="rounded-full transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
                 style={{
                   width: active ? 22 : 8,
