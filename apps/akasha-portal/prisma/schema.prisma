@@ -78,6 +78,8 @@ model User {
   // D-046 (Wave 13.3): In-app notifications inbox. Pending human approval of
   // proposal at apps/akasha-portal/prisma/proposals/D-046-notifications-in-app.md.
   notifications          Notification[]
+  // D-054 (Wave 22.1): Feedback events for consciousness evolution (ADR-013).
+  feedbackEvents         FeedbackEvent[]
   // D-041 (Caminhante + Caminhada) + D-XXX (Sessao, SessaoChunk, GrimorioPessoal, NotasConsulente, MapaCalculo)
   // + D-YYY/D-ZZZ (Wave 4 — Pilares 6 e 7)
   caminhantes            Caminhante[]         @relation("UserCaminhantes")
@@ -1120,4 +1122,60 @@ model InsightJob {
   /// Índice secundário: filtro por status (admin alerts).
   @@index([status, startedAt])
   @@map("insight_jobs")
+}
+
+// =========================================================================
+// Wave 22.1 — FeedbackEvent: feedback events for consciousness evolution
+// (ADR-013).
+//
+// MOTIVAÇÃO:
+//   Para que a consciência Akasha (Mentor + Discoveries cron Wave 24.1)
+//   EVOLUA com base em preferências REAIS dos usuários, precisamos
+//   persistir feedback explícito (👍/👎) em três tipos de output:
+//
+//   1. DISCOVERY — uma descoberta sintetizada pelo discoveries-cron.
+//   2. MENTOR_MESSAGE — uma resposta do Mentor no /oraculo.
+//   3. DAILY_INSIGHT — uma área/dimensão do /meu-dia ou /dashboard.
+//
+//   Sem feedback, o InsightRanker (Wave 22.2, fora de escopo deste
+//   commit) seria cego. Aqui persistimos SÓ o signal; o consumo
+//   (re-ranking) é Wave futuro.
+//
+// LGPD by design:
+//   - FK para User com onDelete: Cascade — feedback do usuário é
+//     pessoal e some junto do cadastro (Art. 18 §V).
+//   - `context` é Json livre — preenchido pelo client (ex: area
+//     "trabalho", pilar "astrologia", score do insight). NÃO deve
+//     conter PII direta (email, telefone). Redaction na camada de
+//     leitura se necessário.
+//   - `rating` é Int (1-5 ou -1/+1 — definição no application layer;
+//     schema aceita qualquer Int para flexibilidade).
+//
+// PROPOSAL ONLY (per prisma/AGENTS.md D1) — humano aplica via
+//   pnpm exec prisma migrate dev --name feedback_events
+// =========================================================================
+
+enum FeedbackEventTargetType {
+  DISCOVERY
+  MENTOR_MESSAGE
+  DAILY_INSIGHT
+}
+
+model FeedbackEvent {
+  id         String                  @id @default(cuid())
+  userId     String
+  user       User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  targetType FeedbackEventTargetType
+  targetId   String
+  rating     Int
+  context    Json?
+  createdAt  DateTime                @default(now())
+
+  /// Query principal: feedback recente de um usuário (UI profile, "seu
+  /// gosto evoluiu", re-ranking, etc).
+  @@index([userId, targetType, createdAt])
+  /// Query secundária: agregação por target (popularidade/qualidade de
+  /// uma discovery específica, p.ex.).
+  @@index([targetType, targetId])
+  @@map("feedback_events")
 }
