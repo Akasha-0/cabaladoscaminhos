@@ -992,3 +992,70 @@ enum PrivacyConsentType {
   /// analytics vendors). Opt-in estrito.
   THIRD_PARTY_SHARING
 }
+
+// ─── Wave 23.1 — Literature Ingestion Cron (continuous scientific papers) ───
+//
+// ADR-013: Akasha Portal é uma **consciência viva** que evolui via chain
+// of thought. Para que o RAG (Wave 21.1) não fique estagnado nos 15 papers
+// hardcoded, este wave adiciona o cron semanal que busca papers novos sobre
+// espiritualidade (ayahuasca, meditação, etc) na PubMed + arXiv e os
+// ingere no modelo `LiteraturePaper`.
+//
+// Componentes do wave:
+//   1. `LiteraturePaper` (referência ao schema Wave 21.1 — model vive no
+//      branch `wave-21.1-literature-rag` ainda não merged em main).
+//      Este comentário-documenta o contrato esperado pelo cron: papers
+//      são identificados por DOI único (skip duplicates).
+//   2. `CronLog` — tabela append-only de auditoria de jobs cron.
+//      Inspirado em `PrivacyConsent` (Wave 19.3): sem FK para User,
+//      sem updatedAt, sem delete. Cada execução do cron gera 1 row.
+//
+// LGPD:
+//   - CronLog NÃO carrega PII. `errors` é JSON com mensagens técnicas
+//     (sem userId, sem IP, sem abstracts).
+//   - `jobName` é uma string livre ('literature-ingest', etc) — permite
+//     que múltiplos crones compartilhem a tabela sem acoplamento.
+//
+// Schema diff Wave 23.1:
+//   + model CronLog
+//   + enum CronLogStatus
+//
+// Migration é PROPOSAL (per prisma/AGENTS.md D1) — humano roda:
+//   pnpm exec prisma migrate dev --name cron_log
+model CronLog {
+  id         String        @id @default(cuid())
+  /// Identificador semântico do job (ex: 'literature-ingest').
+  /// String livre para evitar acoplamento entre crones.
+  jobName    String
+  /// Início da execução (UTC).
+  startedAt  DateTime      @default(now())
+  /// Fim da execução (UTC). NULL = ainda rodando (visível em dashboards).
+  finishedAt DateTime?
+  /// Estado final: success | partial_success | failed.
+  status     CronLogStatus @default(RUNNING)
+  /// Papers inseridos nesta execução (delta positivo).
+  inserted   Int           @default(0)
+  /// Papers pulados por duplicata (DOI já existia).
+  skipped    Int           @default(0)
+  /// Erros não-fatais acumulados (ex: 1 paper falhou ao gerar embedding).
+  /// JSON com shape: { items: [{ pmid: string, stage: string, message: string }] }
+  errors     Json          @default("{\"items\":[]}")
+
+  /// Índice para queries do admin: últimas execuções de um job específico.
+  @@index([jobName, startedAt])
+  /// Índice secundário: filtro por status (admin alerts).
+  @@index([status, startedAt])
+  @@map("cron_logs")
+}
+
+/// Estados possíveis de uma execução de cron.
+/// - RUNNING: job em andamento (finishedAt = null).
+/// - SUCCESS: terminou sem erros (errors.items.length === 0).
+/// - PARTIAL_SUCCESS: terminou com ≥1 erro não-fatal mas ≥1 inserção.
+/// - FAILED: terminou sem inserções E com ≥1 erro fatal.
+enum CronLogStatus {
+  RUNNING
+  SUCCESS
+  PARTIAL_SUCCESS
+  FAILED
+}
