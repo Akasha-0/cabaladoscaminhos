@@ -310,62 +310,53 @@
       }
     }
   },
-  "discoveries": {
-    "chain": {
-      "title": "🔮 Como a IA chegou aqui",
-      "inputs": "① Inputs",
-      "inputsDesc": "Os pilares, trânsitos e chains anteriores que alimentaram esta síntese.",
-      "reasoning": "② Raciocínio",
-      "reasoningDesc": "Como a IA cruzou os inputs para chegar neste resultado.",
-      "papers": "③ Papers citados",
-      "papersDesc": "Literatura científica open-access que sustenta a síntese.",
-      "related": "④ Descobertas relacionadas",
-      "relatedDesc": "Chains anteriores que esta síntese crossou (retrieval).",
-      "convergence": "⑤ Convergência",
-      "convergenceDesc": "A verdade universal que os 5 Pilares estão dizendo juntos.",
-      "loading": "Carregando cadeia de pensamento…",
-      "error": "Não foi possível carregar a cadeia: {message}",
-      "emptyInputs": "Nenhum input registrado.",
-      "emptyPapers": "Nenhum paper citado.",
-      "emptyRelated": "Nenhuma chain anterior relacionada.",
-      "viewAll": "Ver todas as chains"
-    }
-  },
-  "admin": {
-    "consciousness": {
-      "title": "🧠 Dashboard de Consciência",
-      "subtitle": "Como a IA do Akasha está evoluindo — ADR-013",
-      "refreshing": "↻ Atualizar",
-      "lastRun": "Última execução",
-      "never": "Nunca",
-      "awaitingFirst": "Aguardando primeira execução do cron",
-      "totalDiscoveries": "Total de discoveries",
-      "papersCited": "Papers citados (únicos)",
-      "discoveriesPerDay30d": "Discoveries por dia (últimos 30d)",
-      "chainGrowth90d": "Crescimento da cadeia (90d)",
-      "topUpWeighted": "Top 5 — up-weighted",
-      "topUpWeightedEmpty": "Sem discoveries up-weighted ainda.",
-      "whatNow": "🤖 O que a IA está descobrindo AGORA",
-      "whatNowEmpty": "Nenhum insight gerado ainda. O cron roda diariamente às 06:00 UTC.",
-      "backToAdmin": "← Voltar ao admin"
-    }
-  },
   "atendimento": {
-    "onboarding": {
-      "step1Eyebrow": "Passo 1 de 3",
-      "step1Title": "Bem-vindo ao atendimento",
-      "step1Body": "Aqui você caminha com o cliente. Você é o Zelador — o humano que traduz a consciência viva do Akasha em palavra, presença e prática.",
-      "step2Eyebrow": "Passo 2 de 3",
-      "step2Title": "4 estados + descobertas",
-      "step2Body": "O cliente chega em um estado (curioso, ansioso, perdido, centrado). A IA gera discovery cards inline: verdades universais com papers citados. Use-as como espelho.",
-      "step3Eyebrow": "Passo 3 de 3",
-      "step3Title": "Ensine a IA com o polegar",
-      "step3Body": "Cada 👍 e 👎 que você dá é um ensinamento. A IA aprende sua voz, sua tradição e seus clientes — e evolui com você.",
-      "primaryCtaContinue": "Continuar",
-      "primaryCtaStart": "Começar a atender",
-      "skipLabel": "Pular tour",
-      "dialogAriaLabel": "Tour de primeiros passos do Zelador",
-      "dotsAriaLabel": "Progresso do tour"
+    "pageTitle": "Atendimento — Akasha OS",
+    "pageDescription": "Sessão ao vivo com seu cliente. Estados emocionais, chat com Mentor, insights da IA — tudo em uma tela feita para o celular do Zelador.",
+    "topBar": {
+      "greeting": "Atendimento · {zelador}",
+      "clientSummary": "{name} · {age}a · Sol em {sign}",
+      "sessionTag": "Sessão ao vivo"
+    },
+    "tabs": {
+      "cliente": "Cliente",
+      "insights": "Insights ({count})",
+      "chat": "Chat",
+      "ariaLabel": "Seções do atendimento"
+    },
+    "emotional": {
+      "centrado": "Centrado",
+      "ansioso": "Ansioso",
+      "perdido": "Perdido",
+      "curioso": "Curioso"
+    },
+    "empty": {
+      "insightsTitle": "Nenhum insight ainda",
+      "insightsBody": "Conforme a conversa avança, a IA mostra aqui cruzamentos dos 5 Pilares + literatura.",
+      "chatTitle": "Comece a sessão",
+      "chatBody": "Pergunte algo ao Mentor, ou cite um insight acima para aprofundar."
+    },
+    "actionBar": {
+      "save": "Salvar sessão",
+      "cite": "Citar",
+      "upvote": "Útil",
+      "downvote": "Não ajudou",
+      "saveAriaLabel": "Salvar a sessão inteira",
+      "citeAriaLabel": "Citar discovery no diário do consulente",
+      "chatPlaceholder": "Falar com Mentor…",
+      "sendAriaLabel": "Enviar mensagem ao Mentor",
+      "saveToast": "Sessão salva. Os insights e avaliações foram persistidos.",
+      "cited": "citadas",
+      "rated": "avaliados"
+    },
+    "discovery": {
+      "pillarLabel": "Pilar",
+      "cited": "Citada",
+      "upvoted": "Marcou como útil",
+      "downvoted": "Marcou como não útil"
+    },
+    "client": {
+      "emSession": "● Em sessão"
     }
   }
 }

@@ -17,6 +17,7 @@ Meu Dia, Minha Caixa, e 9 dimensões de vida. PWA-ready (F-228 mobile strategy).
     - `minha-caixa/`: 9 dimensões accordion (F-223, v0.0.19 spec)
     - `dashboard/`: Mandala + Daily synthesis + DailyDecisionCard
     - `diario/`: Mandato do Dia (F-235)
+    - `atendimento/`: Wave 22.2 Zelador Attendance UI (sessão ao vivo)
     - `significado-primeiro/`: First-time user flow
 - `src/components/`: Componentes React (akasha/_, ui/_, shared/\*)
   - `src/components/akasha/MandalaChart.tsx`: SVG do Mandala (5 camadas). Fase 3: 10 glifos de planetas com longitude absoluta + 12 casas numeradas + tooltips (F-206). Sem rotação contínua.
@@ -24,6 +25,7 @@ Meu Dia, Minha Caixa, e 9 dimensões de vida. PWA-ready (F-228 mobile strategy).
   - `src/components/akasha/AkashaAuthorityPrompt/`: F-227 decision card ("Paz vs Ansiedade")
   - `src/components/akasha/CaixaUnificada/`: F-223 9-dimensões accordion
   - `src/components/akasha/dashboard/`: AkashaLifeAreasDashboard (6 áreas Maslow)
+  - `src/components/akasha/attendance/`: Wave 22.2 (AttendanceClient + ClientCard + DiscoveryCard + ActionBar + EmotionalStateToggle). UI visceral mobile-first do Zelador em sessão.
 - `src/lib/`: Domain + application + infrastructure
   - `src/lib/grimoire/akasha-authority.ts`: F-227 framework (regra Corpo 3=paz, Corpo 4=ansiedade)
   - `src/lib/grimoire/synthesis/synthesizer.ts`: deriveAkashaAuthority + 9 dimensões
