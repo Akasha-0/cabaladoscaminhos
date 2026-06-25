@@ -37,7 +37,11 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { prisma } from '@/lib/infrastructure/prisma';
-import { auditLog } from '@/lib/infrastructure/audit-log';
+import { auditLog, hashIpForAudit, extractClientIp } from '@/lib/infrastructure/audit-log';
+import {
+  hardDeleteAccount,
+  countCascadedData,
+} from '@/lib/application/lgpd/delete-account';
 
 interface Params {
   params: Promise<{ id: string }>;
@@ -46,88 +50,12 @@ interface Params {
 /**
  * Conta quantos registros seriam deletados em cascata para o userId.
  *
- * IMPORTANTE: as models multi-tenant (Caminhante, Caminhada, Sessao, ...)
- * usam `zeladorId` (NÃO `userId`) — User é o zelador nestas relações
- * (D-XXX multi-tenant migration). Models diretas (BirthChart, Subscription,
- * Manifesto, etc.) usam `userId`.
- *
- * Cascade chain é User -> {direct models}, User -> Caminhante -> Caminhada
- * -> Sessao -> SessaoChunk. Cada nível tem `onDelete: Cascade` no schema.
+ * DEPRECATED (Wave 19.2): mantido como shim para Wave 8.3 callers que
+ * usavam o route handler Wave 8.3 para dry-run. Lógica foi movida para
+ * `countCascadedData` em `lib/application/lgpd/delete-account.ts`.
  */
 async function countCascaded(userId: string) {
-  const [
-    birthChart,
-    subscription,
-    manifesto,
-    creditEntries,
-    dailyReadings,
-    consultations,
-    ritualCompletions,
-    pushSubscriptions,
-    connections,
-    cycleSnapshots,
-    areaHistory,
-    exerciseCompletions,
-    // Multi-tenant (zeladorId — User = zelador)
-    caminhantes,
-    caminhadas,
-    sessoes,
-    sessaoChunks,
-    grimorioPessoal,
-    notasConsulentes,
-    mapasCalculo,
-    pilar6Calculos,
-    pilar7Calculos,
-    pilar7Estagios,
-  ] = await Promise.all([
-    prisma.birthChart.count({ where: { userId } }),
-    prisma.subscription.count({ where: { userId } }),
-    prisma.manifesto.count({ where: { userId } }),
-    prisma.creditEntry.count({ where: { userId } }),
-    prisma.dailyReading.count({ where: { userId } }),
-    prisma.consultation.count({ where: { userId } }),
-    prisma.ritualCompletion.count({ where: { userId } }),
-    prisma.pushSubscription.count({ where: { userId } }),
-    prisma.connection.count({ where: { userId } }),
-    prisma.cycleSnapshot.count({ where: { userId } }),
-    prisma.areaHistoryEntry.count({ where: { userId } }),
-    prisma.exerciseCompletion.count({ where: { userId } }),
-    prisma.caminhante.count({ where: { zeladorId: userId } }),
-    prisma.caminhada.count({ where: { zeladorId: userId } }),
-    prisma.sessao.count({ where: { zeladorId: userId } }),
-    prisma.sessaoChunk.count({ where: { zeladorId: userId } }),
-    prisma.grimorioPessoal.count({ where: { zeladorId: userId } }),
-    prisma.notasConsulente.count({ where: { zeladorId: userId } }),
-    prisma.mapaCalculo.count({ where: { zeladorId: userId } }),
-    prisma.pilar6Calculo.count({ where: { zeladorId: userId } }),
-    prisma.pilar7Calculo.count({ where: { zeladorId: userId } }),
-    prisma.pilar7Estagio.count({ where: { zeladorId: userId } }),
-  ]);
-
-  return {
-    birthChart,
-    subscription,
-    manifesto,
-    creditEntries,
-    dailyReadings,
-    consultations,
-    ritualCompletions,
-    pushSubscriptions,
-    connections,
-    cycleSnapshots,
-    areaHistory,
-    exerciseCompletions,
-    caminhantes,
-    caminhadas,
-    sessoes,
-    sessaoChunks,
-    grimorioPessoal,
-    notasConsulentes,
-    mapasCalculo,
-    pilar6Calculos,
-    pilar7Calculos,
-    pilar7Estagios,
-  };
+  return countCascadedData(userId);
 }
 
 export async function DELETE(request: NextRequest, { params }: Params) {
@@ -187,18 +115,6 @@ export async function DELETE(request: NextRequest, { params }: Params) {
 
   const dryRun = new URL(request.url).searchParams.get("dryRun") === "true";
 
-  // 5. Audit: requested (antes de qualquer coisa destrutiva)
-  auditLog({
-    action: 'profile_delete_requested',
-    userId: auth.id,
-    metadata: {
-      targetUserId,
-      targetEmail: targetUser.email,
-      dryRun,
-      isAdminOverride: !isOwner && isAdmin,
-    },
-  });
-
   // 5. DRY RUN: conta sem deletar (LGPD Art. 18 §2 — confirmação)
   if (dryRun) {
     const cascaded = await countCascaded(targetUserId);
@@ -211,49 +127,38 @@ export async function DELETE(request: NextRequest, { params }: Params) {
     });
   }
 
-  // 6. DELETE real: cascata via onDelete: Cascade no schema Prisma
+  // 6. DELETE real: delega para helper unificado (Wave 19.2).
+  // O helper cuida de snapshot ANTES do delete, audit log requested/completed,
+  // e cascade via onDelete: Cascade no schema Prisma.
+  const ipHash = hashIpForAudit(extractClientIp(request.headers));
+  const requestId = request.headers.get('x-request-id') ?? undefined;
+
   try {
-    await prisma.user.delete({ where: { id: targetUserId } });
-  } catch (err) {
-    auditLog({
-      action: 'profile_delete_failed',
-      userId: auth.id,
-      metadata: {
-        targetUserId,
-        reason: 'prisma_delete_error',
-        error: err instanceof Error ? err.message : String(err),
-      },
+    const result = await hardDeleteAccount({
+      auth,
+      actorRole,
+      targetUserId,
+      ipHash,
+      requestId,
     });
+    return NextResponse.json({
+      deleted: true,
+      cascaded: result.cascaded,
+      message:
+        'Perfil e todos os dados associados foram removidos em conformidade com a LGPD Art. 18.',
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    // Permissão negada → 403; perfil inexistente → 404; resto → 500.
+    if (message.includes('Acesso negado')) {
+      return NextResponse.json({ error: message }, { status: 403 });
+    }
+    if (message.includes('não encontrado')) {
+      return NextResponse.json({ error: message }, { status: 404 });
+    }
     return NextResponse.json(
       { error: 'Falha ao deletar perfil. Tente novamente.' },
       { status: 500 },
     );
   }
-
-  // Após delete, todos counts serão 0 (registros sumiram). Mantemos a
-  // chamada para reportar volume deletado via audit log.
-  // Como os registros já não existem, contamos via 0 — em produção, melhor
-  // abordagem seria snapshot dos counts ANTES do delete. Aceitável para
-  // escopo Wave 8.3 (ver commit message para follow-up Wave 9).
-  const cascaded = await countCascaded(targetUserId);
-
-  auditLog({
-    action: 'profile_delete_completed',
-    userId: auth.id,
-    metadata: {
-      targetUserId,
-      targetEmail: targetUser.email,
-      isAdminOverride: !isOwner && isAdmin,
-      // cascaded aqui é tudo zero; o volume real foi o snapshot que NÃO
-      // capturamos. Trade-off documentado.
-      cascaded,
-    },
-  });
-
-  return NextResponse.json({
-    deleted: true,
-    cascaded,
-    message:
-      'Perfil e todos os dados associados foram removidos em conformidade com a LGPD Art. 18.',
-  });
 }
