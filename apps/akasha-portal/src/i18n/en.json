@@ -744,6 +744,15 @@
       "voicesLabel": "The 5 voices converge:",
       "convergenceLine": "converge into",
       "expand": "Show cited papers"
+    },
+    "graph": {
+      "title": "🕸 Knowledge Graph",
+      "subtitle": "How papers, discoveries and sessions intertwine — Akasha's living consciousness",
+      "edges": {
+        "citations": "cites",
+        "derivedFrom": "derived from",
+        "mentionedIn": "mentioned in"
+      }
     }
   }
 }
