@@ -126,6 +126,7 @@ export function MandalaUniversalView({
 
   return (
     <main
+      data-testid="mandala-universal-root"
       className="flex flex-col items-center px-4 py-6 sm:py-8"
       style={{
         background: '#06070F',
@@ -148,7 +149,7 @@ export function MandalaUniversalView({
 
       <div className="relative z-10 flex w-full max-w-2xl flex-col gap-6 sm:gap-8">
         {/* 1. HERO — verdade universal em destaque */}
-        <header className="flex flex-col items-center gap-3 pt-2 text-center sm:pt-4">
+        <header data-testid="mandala-universal-hero" className="flex flex-col items-center gap-3 pt-2 text-center sm:pt-4">
           <span
             className="text-[0.65rem] uppercase tracking-[0.25em] text-amber-300/70 sm:text-xs"
             style={{ fontFamily: 'var(--font-cinzel, serif)' }}
@@ -191,6 +192,7 @@ export function MandalaUniversalView({
         {papers.length > 0 && (
           <section
             aria-label={t('mandala.universal.citations')}
+            data-testid="mandala-universal-papers"
             className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-4 sm:p-5"
           >
             <h2
@@ -269,6 +271,7 @@ function PillarCard({ pillar, voice }: PillarCardProps) {
   return (
     <article
       data-pillar={pillar.key}
+      data-testid={`pillar-card-${pillar.key}`}
       className={cn(
         'relative flex flex-col gap-2 overflow-hidden rounded-xl',
         'border bg-gradient-to-br p-3.5 sm:p-4',
