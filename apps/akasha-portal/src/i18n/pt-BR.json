@@ -236,6 +236,20 @@
       "3": "Corpo e Energia",
       "4": "Movimento Celeste",
       "5": "Mutação do Caminho"
+    },
+    "universal": {
+      "heading": "Mandala Universal",
+      "tagline": "Cinco línguas diferentes contam a mesma verdade — você.",
+      "subtitle": "Cabala · Astrologia · Tantra · Odu · I Ching convergem no seu agora.",
+      "pillar": {
+        "cabala": "Número de Vida: a direção da sua alma. Cabala decifra geometria interna — caminho 1 a 9, ano pessoal, expressão.",
+        "astrologia": "Os astros desenham seu céu de nascimento. Sol, Lua, ascendente — o teatro onde sua vida acontece.",
+        "tantra": "Onze corpos sutis, cinco koshas. Tantra mapeia a energia que você carrega — e a que te falta.",
+        "odu": "Ifá — 15 odus canônicos. Odu revela o destino inscrito antes do seu nascimento. Requer terreiro e consentimento.",
+        "iching": "64 hexagramas King Wen. I Ching mostra a mutação do momento — o que muda, o que permanece."
+      },
+      "citations": "Papers que sustentam",
+      "explore": "Explore cada pilar"
     }
   },
   "evolution": {
