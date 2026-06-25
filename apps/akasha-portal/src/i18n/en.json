@@ -513,18 +513,85 @@
     }
   },
   "notification": {
-    "title": "Notifications",
-    "empty": "No notifications yet",
-    "markAllRead": "Mark all as read",
-    "viewAll": "View all",
-    "openBell": "Open notifications",
-    "unreadBadge": "{count} unread",
-    "types": {
-      "diario": "Journal",
-      "mentor": "Mentor",
-      "conexoes": "Connections",
-      "credits": "Credits",
-      "system": "System"
+      "title": "Notifications",
+      "empty": "No notifications yet",
+      "markAllRead": "Mark all as read",
+      "viewAll": "View all",
+      "openBell": "Open notifications",
+      "unreadBadge": "{count} unread",
+      "types": {
+        "diario": "Diary",
+        "mentor": "Mentor",
+        "conexoes": "Connections",
+        "credits": "Credits",
+        "system": "System"
+      }
+    },
+    "admin": {
+      "common": {
+        "titulo": "Administration",
+        "voltar": "← Back to Dashboard",
+        "carregando": "Loading…",
+        "salvar": "Save",
+        "cancelar": "Cancel",
+        "criar": "Create",
+        "editar": "Edit",
+        "desativar": "Deactivate",
+        "atribuir": "Assign",
+        "desatribuir": "Remove plan",
+        "acessoRestrito": "ADMIN-only access"
+      },
+      "plans": {
+        "titulo": "Plans",
+        "subtitulo": "Assignable plan catalog. Edit pricing, monthly credits and features. Soft-delete preserves history.",
+        "tabela": {
+          "colName": "Slug",
+          "colDisplay": "Display name",
+          "colPreco": "Price (cents)",
+          "colCreditos": "Credits/month",
+          "colFeatures": "Features",
+          "colAtivo": "Active?",
+          "colUsers": "Users",
+          "colOrdem": "Order",
+          "colAcoes": "Actions",
+          "vazio": "No plans registered yet.",
+          "precoFormatado": "$ {valor}",
+          "creditosIlimitados": "—",
+          "sim": "Yes",
+          "nao": "No"
+        },
+        "form": {
+          "criarTitulo": "Create new plan",
+          "editarTitulo": "Edit plan",
+          "labelName": "Slug (name)",
+          "labelDisplay": "Display name",
+          "labelPreco": "Price in cents",
+          "labelCreditos": "Credits per month",
+          "labelFeatures": "Features (one per line)",
+          "labelAtivo": "Active",
+          "labelOrdem": "Display order",
+          "placeholderFeatures": "e.g. Full Mandala + Astrology map",
+          "ajudaName": "Lowercase letters, numbers, _ or - only. Unique.",
+          "ajudaPreco": "e.g. 3900 = $39.00/month",
+          "ajudaCreditos": "Empty = no fixed credits (unlimited in manual plan).",
+          "salvo": "Plan saved.",
+          "erroSalvar": "Error saving plan.",
+          "desativado": "Plan deactivated.",
+          "erroDesativar": "Error deactivating plan.",
+          "atribuido": "Plan assigned.",
+          "desatribuido": "Plan removed from user.",
+          "erroAtribuir": "Error assigning plan.",
+          "atribuirTitulo": "Assign plan to user",
+          "labelUserId": "User ID",
+          "labelPlanId": "Plan",
+          "planoAtual": "(current)",
+          "nenhumPlano": "No plan"
+        },
+        "seedInfo": "Initial seed: freemium · pro · enterprise (via prisma seed)"
+      },
+      "dashboard": {
+        "titulo": "Dashboard",
+        "subtitulo": "Operational view of the product"
+      }
     }
   }
-}
