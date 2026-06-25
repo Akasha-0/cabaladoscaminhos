@@ -17,6 +17,17 @@ model User {
   locale        String   @default("pt-BR")
   role          UserRole @default(MEMBER)
 
+  // Wave 31.2 — Multi-tenant foundation (ADR-016 WIP).
+  // workspaceId groups users into a tenant boundary. Every existing
+  // row is backfilled to 'personal' (default workspace for solo users).
+  // Broader scope than zeladorId (Wave 3, D-XXX) — a workspace can
+  // have multiple zeladores. See workspace-context.ts.
+  // Phase 2 (Wave 31.2.1) adds FK to Workspace.id for explicit
+  // org-style tenants (clinics, schools); for now the column is a free
+  // string (default 'personal') so the migration is zero-downtime and
+  // backward-compatible with the existing single-Zelador MVP.
+  workspaceId   String   @default("personal")
+
   // Wave 14.3 — Plan Management.
   // Nullable: null = plano FREEMIUM implícito (não persistido).
   // Plan é a "catálogo de planos" editável via /admin/plans; User.planId
@@ -101,6 +112,11 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // Wave 31.2 — workspaceId index for the proxy's hot path
+  // (`User.findMany({ where: { workspaceId } })` on every tenant-scoped
+  // request). Composite with id would be marginal — workspaceId alone
+  // is the common filter; userId lookups use the @unique constraint.
+  @@index([workspaceId])
   @@map("akasha_users")
 }
 
@@ -242,7 +258,15 @@ model DailyReading {
   hexagramLines Json?
   createdAt     DateTime @default(now())
 
+  // Wave 31.2 — workspaceId denormalized from User at insert time.
+  // Avoids a JOIN on every daily_readings SELECT inside the workspace
+  // proxy. The proxy enforces AND[workspaceId] on every query, so
+  // this column is the fast-path filter. The migration backfills
+  // existing rows from `User.workspaceId` (all = 'personal' today).
+  workspaceId   String   @default("personal")
+
   @@unique([userId, date])
+  @@index([workspaceId])
   @@map("daily_readings")
 }
 
