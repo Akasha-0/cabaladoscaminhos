@@ -726,3 +726,64 @@ model Notification {
   @@index([userId, createdAt])
   @@map("notifications")
 }
+
+/// D-047 — AuditAction enum (Wave 14.5)
+/// Movido de `lib/infrastructure/audit-log.ts` para o schema para que o DB
+/// enforçe a integridade (não é possível gravar actions "fantasma").
+/// Não é relacionado a nenhuma enum pré-existente — novo desde Wave 8.3.
+enum AuditAction {
+  /// Wave 8.3 — LGPD Art. 18 §V (direito ao esquecimento) — pedido recebido
+  profile_delete_requested
+  /// Wave 8.3 — LGPD Art. 18 §V — exclusão concluída (cascade Prisma)
+  profile_delete_completed
+  /// Wave 8.3 — LGPD Art. 18 §V — exclusão falhou (erro Prisma ou validação)
+  profile_delete_failed
+  /// Wave 8.3 — LGPD Art. 18 §IV (portabilidade) — export solicitado
+  profile_export_requested
+  /// Wave 8.3 — LGPD Art. 18 §IV — export concluído (PDF/JSON/CSV gerados)
+  profile_export_completed
+  /// Wave 8.3 — LGPD Art. 37 (uso compartilhado de dados com terceiros)
+  conexao_third_party_consent_declarado
+  /// Genérico — atualização de consentimento (LGPD Art. 8º)
+  consent_updated
+}
+
+/// D-047 — Audit log persistente (Wave 14.5)
+///
+/// LGPD Art. 37: demonstração de operações com dados pessoais.
+/// Armazena ações sensíveis para consulta pelo painel admin
+/// (/admin/audit-logs) e respondibilidade Art. 18 §7
+/// (informação sobre uso compartilhado de dados).
+///
+/// Decisões de design:
+///  - SEM relation para `User` — entries devem SOBREVIVER à exclusão
+///    do user (LGPD Art. 37 pede retenção; cascade apagaria o registro
+///    da própria exclusão, que é justamente o evento mais crítico).
+///  - `ipHash` é HMAC-SHA256(JWT_SECRET, IP) — NUNCA IP puro (LGPD Art. 33).
+///  - `metadata` é Json livre — doc no JSDoc: "NUNCA conter PII direta".
+///    Redaction acontece na camada de leitura (API /admin/audit-logs).
+///  - Índices cobrem os 3 filtros admin mais comuns (data, user, action).
+model AuditLog {
+  id        String      @id @default(cuid())
+  action    AuditAction
+  /// userId do ator (ou null para operações anônimas).
+  /// Intencionalmente SEM FK para User (sobrevivência ao delete — ver JSDoc).
+  userId    String?
+  /// SHA-256(IP) ou HMAC-SHA256(JWT_SECRET, IP). NUNCA IP em texto puro.
+  ipHash    String?
+  /// requestId correlaciona com structured logs (Wave 12.3) para tracing.
+  requestId String?
+  /// Metadata da ação. JSON estruturado. NÃO deve conter PII direta
+  /// (email, telefone, birthDate, etc) — redaction na camada de leitura.
+  metadata  Json?
+  createdAt DateTime    @default(now())
+
+  // Wave 14.5 — índices otimizados para o /admin/audit-logs viewer:
+  // - query paginada ordenada por mais recente
+  @@index([createdAt])
+  // - filtro "ações de um usuário específico"
+  @@index([userId, createdAt])
+  // - filtro "todas as ações de um tipo" (LGPD Art. 18 — demonstrabilidade)
+  @@index([action, createdAt])
+  @@map("audit_logs")
+}
