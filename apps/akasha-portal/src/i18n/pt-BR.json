@@ -609,5 +609,28 @@
       "dismiss": "Agora não",
       "dismissAria": "Agora não"
     }
+  },
+  "search": {
+    "placeholder": "Buscar no Akasha… (Mentor, Diário, Mapa)",
+    "hint": "Pressione ⌘K ou Ctrl K para abrir",
+    "empty": {
+      "title": "Comece a digitar",
+      "description": "Encontre conversas do Mentor, entradas do Diário e seu Mapa Akáshico."
+    },
+    "loading": "Buscando…",
+    "noResults": {
+      "title": "Nada encontrado",
+      "description": "Tente outra palavra-chave ou outro tipo."
+    },
+    "error": "Algo deu errado. Tente novamente.",
+    "typeLabel": {
+      "chat": "Conversa",
+      "diario": "Diário",
+      "manifesto": "Manifesto",
+      "mapa": "Mapa"
+    },
+    "shortcutHint": "⌘K",
+    "escHint": "Esc para fechar",
+    "navHint": "↑↓ navegar · Enter abrir"
   }
 }
