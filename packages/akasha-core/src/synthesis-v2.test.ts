@@ -127,11 +127,11 @@ describe('synthesizeV2 — prioritization', () => {
       makeInsight({ pilar: 'iching', weight: 0.7, summary: 'B' }),
       makeInsight({ pilar: 'tantra', weight: 0.5, summary: 'C' }),
     ]);
-    expect(result.primary.summary).toBe('A');
+    expect(result.primary.insight.summary).toBe('A');
     expect(result.secondary[0]?.rank).toBe(2);
-    expect(result.secondary[0]?.summary).toBe('B');
+    expect(result.secondary[0]?.insight.summary).toBe('B');
     expect(result.secondary[1]?.rank).toBe(3);
-    expect(result.secondary[1]?.summary).toBe('C');
+    expect(result.secondary[1]?.insight.summary).toBe('C');
   });
 });
 

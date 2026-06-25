@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { FadeInUp, pulse } from '../animations';
 import { CalendarDay } from './CalendarDay';
-import type { StreakDay } from './index';
+import type { StreakDay } from '@akasha/core';
 
 interface StreakCalendarProps {
   streak: StreakDay[];

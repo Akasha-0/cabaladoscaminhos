@@ -35,6 +35,7 @@
     "apps/akasha-portal/src/lib/quality/__evals_DISABLED__/**/*",
     "apps/**/node_modules",
     "packages/**/node_modules",
-    "traducao-areas.ts"
+    "traducao-areas.ts",
+    "docs-site"
   ]
 }

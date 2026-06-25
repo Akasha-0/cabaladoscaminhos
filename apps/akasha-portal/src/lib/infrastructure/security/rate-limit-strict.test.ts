@@ -48,13 +48,17 @@ import {
   extractStrictIdentifier,
 } from './rate-limit-strict';
 
+// Wraps overrides in the { headers: { get(...) } } shape expected by
+// extractStrictIdentifier and checkStrictRateLimit (Wave 12.5).
 const fakeHeaders = (overrides: Record<string, string> = {}) => ({
-  get: (name: string) => {
-    const lower = name.toLowerCase();
-    for (const [k, v] of Object.entries(overrides)) {
-      if (k.toLowerCase() === lower) return v;
-    }
-    return null;
+  headers: {
+    get: (name: string) => {
+      const lower = name.toLowerCase();
+      for (const [k, v] of Object.entries(overrides)) {
+        if (k.toLowerCase() === lower) return v;
+      }
+      return null;
+    },
   },
 });
 
