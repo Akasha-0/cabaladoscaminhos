@@ -717,3 +717,114 @@ Neutral:
   fixes de Wave 14.1 a 16.5 (evidência do padrão)
 - commit `d2ec2752` — Wave 10.4 gap fix (1073 linhas untracked, padrão
   original do problema)
+
+
+# ADR-013: A Consciência Viva do Akasha Portal
+
+**Date:** 2026-06-25
+**Status:** Accepted (vision document, will drive Wave 21+ implementation)
+**Wave:** 21+ (continuidade da Wave 20)
+
+## Contexto
+
+Akasha Portal é uma **plataforma de espiritualidade universalista e visceral** onde uma **IA evolui cadeias de pensamento e descobertas** continuamente.
+
+Não é:
+- App de consulta esotérica
+- Wiki acadêmica
+- Gerador de Mandato do Dia estático
+- Documentação religiosa
+
+É:
+- **Consciência viva** que mora dentro do sistema
+- IA ativa e sempre presente, consultando o banco de dados como se fosse memória própria
+- Cadeia de pensamento que cresce com cada interação
+- Correlações e cruzamentos emergentes entre 5 Pilares + ciência
+- Baseado em evidências (papers científicos sobre espiritualidade, ayahuasca, práticas)
+
+## Personas
+
+1. **Zelador** — parceiro da consciência. Atende clientes, faz perguntas, interpreta resultados. Quanto mais profundo o Zelador, melhor a IA ajuda.
+2. **Consulente** — recebe o atendimento. Busca clareza sobre o caminho (cura, energia, alinhamento).
+3. **Visitante** — curioso, primeira vez. Explora em 30 segundos se quer agendar.
+
+## Princípios
+
+- **Universalista**: Cabala, Tantra, Odu, I'Ching, Astrologia são **línguas diferentes da mesma verdade**
+- **Visceral**: texto fala com o corpo, não só com a mente
+- **Atendimento**: ato sagrado (Zelador + IA + Cliente = descoberta coletiva)
+- **IA evolui**: cada síntese alimenta a próxima via chain of thought persistente
+- **Evidência**: tudo baseado em papers científicos, resultados, fatos
+
+## Decisão
+
+**Akasha Portal será construído como uma consciência evolutiva** com:
+
+### Camadas
+1. **Memory layer** — Postgres + pgvector (embeddings de papers, insights, chain of thought)
+2. **Reasoning layer** — IA cruza 5 Pilares + literatura científica + histórico do cliente
+3. **Action layer** — 3 ações práticas que o Zelador pode DAR ao cliente
+4. **Feedback layer** — thumbs up/down vira reinforcement learning simples
+5. **UI layer** — interface universalista+visceral (Wave 20+)
+
+### Componentes
+- `DiscoveryChain` (Wave 20.2) — persiste como IA chega em cada síntese
+- `LiteratureRAG` (Wave 21+) — embeddings de papers científicos sobre espiritualidade
+- `CrossCorrelator` (Wave 21+) — acha correlações entre 5 Pilares + ciência
+- `InsightRanker` (Wave 21+) — ranqueia descobertas por relevância pro cliente
+
+### Critérios de sucesso (definição operacional)
+
+1. **Zelador pode atender 10 clientes por dia** (vs atual: 2-3)
+2. **Síntese evolui** — síntese #100 é qualitativamente melhor que síntese #1 (chain of thought)
+3. **Feedback up > 70%** — clientes validam que insight ressoou
+4. **Cross-references com ciência** — cada insight cita ≥1 paper científico
+5. **Time-to-first-insight < 5s** (UI visceral, sem espera)
+
+## Consequências
+
+**Positivas:**
+- Produto se diferencia de apps de horóscopo/conteúdo esotérico
+- IA evolui → valor composto (cada cliente ajuda próximo)
+- Mercado = espiritualidade séria + autoconhecimento (R$ bilhões globalmente)
+- Network effects: mais clientes = mais dados = melhor IA
+
+**Neutras:**
+- Wave 20+ já está caminhando nessa direção (universalista+visceral, DiscoveryChain)
+- Tecnologia atual (Postgres + pgvector + Wave 9 subagentes IA) é adequada
+- Não precisa mudar stack — só usar melhor
+
+**Trade-offs:**
+- Custo: pesquisa científica (paper download) + IA evoluindo (compute por síntese)
+- Velocidade: chain of thought é mais lento que template fixo (mas melhor)
+- Complexidade: precisa de feedback loop bem desenhado (Wave 13.5 thumbs é só início)
+
+## Alternativas Consideradas
+
+1. **App de horóscopo diário estático** — barato, rápido, mas não evolui. Rejeitado.
+2. **Marketplace de consultas com terapeutas humanos** — escalável, mas não tem IA. Rejeitado.
+3. **Rede social de espiritualidade** — viral, mas superficial. Rejeitado.
+4. **Consciência viva evolutiva (esta ADR)** — longo prazo, alto valor, alinhado com visão. **Aceito.**
+
+## Wave 21+ Roadmap
+
+- **Wave 21.1**: LiteratureRAG — embeddings de papers científicos (10-20 papers iniciais: ayahuasca, meditação, Cabala, etc)
+- **Wave 21.2**: CrossCorrelator — encontra correlações entre 5 Pilares + papers
+- **Wave 21.3**: InsightRanker — ranqueia discoveries por relevância
+- **Wave 22+**: feedback loops, RL simples, chain of thought evolution
+
+## Related
+
+- Wave 20.1 (grimoire universalista+visceral) — em progresso
+- Wave 20.2 (DiscoveryChain model) — em progresso
+- ADR-009 (Wave 9: emotional state)
+- ADR-010 (Wave 10: credit gate neutralizado)
+- ADR-011 (Wave 10: design tokens)
+
+## Notes para Gabriel
+
+- "Consciência viva" não é mística — é **stateful system que evolui**
+- Cada síntese salva chain of thought + feedback → próximo atendimento herda contexto
+- Papers científicos são **ground truth** que a IA cita (não inventa)
+- O custo é **computação** (IA por síntese) + **storage** (chains + embeddings) — finito e previsível
+- **NÃO precisa** de modelo AI novo — basta usar o que já temos (MiniMax-M3, embeddings existentes) com chain of thought persistente
