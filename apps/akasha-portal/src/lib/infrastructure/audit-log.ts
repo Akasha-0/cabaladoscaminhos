@@ -36,7 +36,15 @@ export type AuditAction =
   | 'profile_export_requested'
   | 'profile_export_completed'
   | 'conexao_third_party_consent_declarado'
-  | 'consent_updated';
+  | 'consent_updated'
+  // Wave 19.2 — LGPD self-service
+  | 'lgpd_deletion_requested'
+  | 'lgpd_deletion_scheduled'
+  | 'lgpd_deletion_cancelled'
+  | 'export_all_requested'
+  | 'export_all_completed'
+  | 'export_all_failed'
+  | 'lgpd_password_confirm_failed';
 
 export interface AuditLogEntry {
   ts: string; // ISO 8601 UTC

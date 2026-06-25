@@ -63,6 +63,15 @@ model User {
   // this field; once the migration lands, the action is live end-to-end.
   disabled Boolean @default(false)
 
+  // Wave 19.2 — LGPD self-service soft delete (Art. 18 §V).
+  // NULL = conta ativa. Set = conta em grace period (auto-eliminação).
+  // `deletedAt` é o instante do pedido; `deleteGracePeriodEndsAt` é o
+  // instante em que o cron de limpeza (Wave 19.2-followup) faz o hard
+  // delete + cascade dos dados via `prisma.user.delete`. 30 dias dá
+  // tempo do usuário cancelar (Art. 18 §3 — revogação).
+  deletedAt               DateTime?
+  deleteGracePeriodEndsAt DateTime?
+
   birthChart             BirthChart?
   subscription           Subscription?
   creditLedger           CreditEntry[]
@@ -852,6 +861,20 @@ enum AuditAction {
   conexao_third_party_consent_declarado
   /// Genérico — atualização de consentimento (LGPD Art. 8º)
   consent_updated
+  /// Wave 19.2 — LGPD Art. 18 §V — usuário solicitou auto-eliminação (self-service)
+  lgpd_deletion_requested
+  /// Wave 19.2 — LGPD Art. 18 §V — soft-delete aplicado (grace period 30 dias)
+  lgpd_deletion_scheduled
+  /// Wave 19.2 — LGPD Art. 18 §V — usuário CANCELOU antes do grace expirar
+  lgpd_deletion_cancelled
+  /// Wave 19.2 — LGPD Art. 18 §IV — export ALL (tar.gz) solicitado
+  export_all_requested
+  /// Wave 19.2 — LGPD Art. 18 §IV — export ALL (tar.gz) gerado + baixado
+  export_all_completed
+  /// Wave 19.2 — LGPD Art. 18 §IV/V — export ALL falhou
+  export_all_failed
+  /// Wave 19.2 — LGPD Art. 18 §V — confirmação de senha errada (auditoria)
+  lgpd_password_confirm_failed
 }
 
 /// D-047 — Audit log persistente (Wave 14.5)
