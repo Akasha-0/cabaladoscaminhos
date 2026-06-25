@@ -590,6 +590,40 @@
         "error": "Could not update the user."
       },
       "forbidden": "Restricted to administrators."
+    },
+    "feedback": {
+      "title": "Feedback Analytics",
+      "subtitle": "Aggregates from FeedbackEntry (Wave 13.5) — no PII",
+      "loading": "Loading analytics...",
+      "error": "Could not load analytics.",
+      "forbidden": "Restricted to administrators.",
+      "window": "Window: {days} days",
+      "cards": {
+        "avgUp": "Approval (👍)",
+        "avgDown": "Rejection (👎)",
+        "totalFeedback": "Total votes",
+        "ratioLabel": "ratio"
+      },
+      "trend": {
+        "title": "Daily trend",
+        "legendUp": "👍 up",
+        "legendDown": "👎 down",
+        "axisDay": "day",
+        "empty": "No feedback in this window."
+      },
+      "topDown": {
+        "title": "Top 5 messages with 👎",
+        "downCount": "{count} votes",
+        "lastOccurred": "last at {date}",
+        "empty": "No message has received 👎 yet.",
+        "snippetLabel": "comment (truncated to 100 chars, no PII)"
+      },
+      "byPilar": {
+        "title": "Approval by Pilar",
+        "empty": "No data per Pilar.",
+        "global": "Global"
+      },
+      "refresh": "Refresh"
     }
   }
 }
