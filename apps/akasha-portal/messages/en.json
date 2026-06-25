@@ -358,5 +358,19 @@
     "client": {
       "emSession": "● In session"
     }
+  },
+  "discoveries": {
+    "detail": {
+      "title": "Discovery Detail",
+      "subtitle": "Full chain-of-thought, papers, and actions",
+      "backToAttendance": "← Back to attendance",
+      "papersTitle": "Cited papers",
+      "papersDesc": "Scientific evidence backing this synthesis.",
+      "actionsTitle": "Zelador actions",
+      "actionsDesc": "What to do now with this discovery.",
+      "actionCite": "Cite in chat",
+      "actionSave": "Save",
+      "actionShare": "Share"
+    }
   }
 }

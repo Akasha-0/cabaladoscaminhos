@@ -358,5 +358,19 @@
     "client": {
       "emSession": "● Em sessão"
     }
+  },
+  "discoveries": {
+    "detail": {
+      "title": "Detalhe da Descoberta",
+      "subtitle": "Cadeia de pensamento completa, papers e ações",
+      "backToAttendance": "← Voltar ao atendimento",
+      "papersTitle": "Papers citados",
+      "papersDesc": "Evidências científicas que sustentam esta síntese.",
+      "actionsTitle": "Ações do Zelador",
+      "actionsDesc": "O que fazer agora com esta descoberta.",
+      "actionCite": "Citar no chat",
+      "actionSave": "Salvar",
+      "actionShare": "Compartilhar"
+    }
   }
 }
