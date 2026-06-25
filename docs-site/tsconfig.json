@@ -1,0 +1,19 @@
+{
+  "extends": "@docusaurus/tsconfig",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@site/*": ["./*"],
+      "@docusaurus/*": ["node_modules/@docusaurus/*"]
+    },
+    "jsx": "react-jsx",
+    "moduleResolution": "bundler"
+  },
+  "include": [
+    "src/**/*",
+    "docusaurus.config.ts",
+    "sidebars.ts",
+    "i18n/**/*"
+  ],
+  "exclude": ["node_modules", "build", ".docusaurus"]
+}

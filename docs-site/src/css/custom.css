@@ -1,0 +1,140 @@
+/**
+ * Akasha Portal Docs — custom CSS overrides.
+ * Mirrors the Akasha Portal app visual identity (deep ink + gold accent).
+ * See: apps/akasha-portal/src/styles/tokens.css (F-228 PWA-first).
+ *
+ * CSS variables defined here override Docusaurus's --ifm-* variables
+ * and are picked up automatically by the default theme.
+ */
+
+:root {
+  /* Akasha ink palette */
+  --akasha-bg: #0a0a14;
+  --akasha-bg-elevated: #11121f;
+  --akasha-bg-card: #161829;
+  --akasha-border: rgba(255, 255, 255, 0.08);
+  --akasha-text: #e6e6f0;
+  --akasha-text-muted: #9ca3af;
+  --akasha-accent: #d4af37; /* Akasha gold */
+  --akasha-accent-hover: #f0c651;
+  --akasha-accent-bg: rgba(212, 175, 55, 0.1);
+  --akasha-violet: #7c3aed;
+  --akasha-magenta: #c026d3;
+
+  /* Override Docusaurus's Infima variables for dark mode consistency */
+  --ifm-color-primary: var(--akasha-accent);
+  --ifm-color-primary-dark: #b8941f;
+  --ifm-color-primary-darker: #a8851a;
+  --ifm-color-primary-darkest: #876c14;
+  --ifm-color-primary-light: var(--akasha-accent-hover);
+  --ifm-color-primary-lighter: #f5d175;
+  --ifm-color-primary-lightest: #f9e199;
+
+  --ifm-background-color: var(--akasha-bg);
+  --ifm-background-surface-color: var(--akasha-bg-elevated);
+  --ifm-color-content: var(--akasha-text);
+  --ifm-color-content-secondary: var(--akasha-text-muted);
+
+  --ifm-navbar-background-color: rgba(10, 10, 20, 0.85);
+  --ifm-navbar-shadow: 0 1px 0 0 var(--akasha-border);
+  --ifm-footer-background-color: var(--akasha-bg-elevated);
+  --ifm-footer-color: var(--akasha-text-muted);
+  --ifm-footer-link-color: var(--akasha-text);
+  --ifm-footer-title-color: var(--akasha-accent);
+
+  --ifm-code-background: rgba(255, 255, 255, 0.05);
+  --ifm-code-color: #f9e199;
+  --ifm-code-font-size: 90%;
+
+  --ifm-link-color: var(--akasha-accent);
+  --ifm-link-hover-color: var(--akasha-accent-hover);
+
+  --ifm-table-border-color: var(--akasha-border);
+  --ifm-table-head-background: var(--akasha-bg-card);
+
+  --ifm-card-background-color: var(--akasha-bg-card);
+  --ifm-h1-font-size: 2.4rem;
+}
+
+/* Tighter heading hierarchy */
+h1 {
+  background: linear-gradient(90deg, #e6e6f0 0%, #d4af37 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+h2,
+h3 {
+  color: var(--akasha-text);
+  font-weight: 600;
+}
+
+/* Better code blocks */
+code {
+  border-radius: 4px;
+  padding: 0.15em 0.35em;
+  font-size: 0.9em;
+}
+
+pre {
+  border: 1px solid var(--akasha-border);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+}
+
+/* Tables — subtle borders + hover */
+table {
+  border-collapse: collapse;
+}
+
+table thead tr {
+  border-bottom: 1px solid var(--akasha-border);
+}
+
+table tbody tr:hover {
+  background: var(--akasha-bg-elevated);
+}
+
+/* Mermaid diagrams — blend with dark theme */
+.docusaurus-mermaid-container {
+  background: var(--akasha-bg-card);
+  border: 1px solid var(--akasha-border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1.5rem 0;
+}
+
+/* Admonitions — match Akasha palette */
+.admonition {
+  border-radius: 8px;
+  border-left-width: 4px;
+}
+
+.admonition.admonition-note {
+  border-left-color: var(--akasha-violet);
+}
+.admonition.admonition-tip {
+  border-left-color: var(--akasha-accent);
+}
+.admonition.admonition-warning {
+  border-left-color: #f59e0b;
+}
+.admonition.admonition-danger {
+  border-left-color: #ef4444;
+}
+
+/* Navbar logo + title */
+.navbar__title {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Hero/intro page tweaks */
+.hero {
+  background: linear-gradient(
+    135deg,
+    var(--akasha-bg) 0%,
+    var(--akasha-bg-elevated) 100%
+  );
+}
