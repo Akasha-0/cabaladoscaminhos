@@ -678,6 +678,20 @@
         "global": "Global"
       },
       "refresh": "Refresh"
+    },
+    "discoveries": {
+      "detail": {
+        "title": "🔍 Discovery Detail (ADMIN)",
+        "subtitle": "Full audit of the synthesis — chain of thought, papers, voices and feedback",
+        "backToList": "← Back to discoveries list",
+        "voicesTitle": "✦ The 5 voices (pilares that contributed)",
+        "voicesDesc": "No hierarchy — each pilar brings its own truth to the synthesis.",
+        "feedbackTitle": "📊 Feedback events",
+        "feedbackEmpty": "No feedback recorded for this discovery yet.",
+        "feedbackUp": "↑ Useful ({count})",
+        "feedbackDown": "↓ Not useful ({count})",
+        "notFound": "Discovery not found (id: {id})"
+      }
     }
   },
   "search": {

@@ -678,6 +678,20 @@
         "global": "Global"
       },
       "refresh": "Atualizar"
+    },
+    "discoveries": {
+      "detail": {
+        "title": "🔍 Detalhe da Descoberta (ADMIN)",
+        "subtitle": "Auditoria completa da síntese — chain of thought, papers, vozes e feedback",
+        "backToList": "← Voltar à lista de discoveries",
+        "voicesTitle": "✦ As 5 vozes (pilares que contribuíram)",
+        "voicesDesc": "Sem hierarquia — cada pilar traz sua verdade específica para a síntese.",
+        "feedbackTitle": "📊 Eventos de feedback",
+        "feedbackEmpty": "Nenhum feedback registrado para esta descoberta ainda.",
+        "feedbackUp": "↑ Útil ({count})",
+        "feedbackDown": "↓ Não útil ({count})",
+        "notFound": "Descoberta não encontrada (id: {id})"
+      }
     }
   },
   "search": {
