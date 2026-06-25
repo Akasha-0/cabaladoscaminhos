@@ -330,5 +330,24 @@
       "emptyRelated": "No related prior chains.",
       "viewAll": "View all chains"
     }
+  },
+  "admin": {
+    "consciousness": {
+      "title": "🧠 Consciousness Dashboard",
+      "subtitle": "How the Akasha AI is evolving — ADR-013",
+      "refreshing": "↻ Refresh",
+      "lastRun": "Last run",
+      "never": "Never",
+      "awaitingFirst": "Awaiting first cron execution",
+      "totalDiscoveries": "Total discoveries",
+      "papersCited": "Papers cited (unique)",
+      "discoveriesPerDay30d": "Discoveries per day (last 30d)",
+      "chainGrowth90d": "Chain growth (90d)",
+      "topUpWeighted": "Top 5 — up-weighted",
+      "topUpWeightedEmpty": "No up-weighted discoveries yet.",
+      "whatNow": "🤖 What the AI is discovering NOW",
+      "whatNowEmpty": "No insights generated yet. Cron runs daily at 06:00 UTC.",
+      "backToAdmin": "← Back to admin"
+    }
   }
 }
