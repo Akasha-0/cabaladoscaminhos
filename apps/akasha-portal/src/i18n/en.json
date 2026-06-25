@@ -526,5 +526,70 @@
       "credits": "Credits",
       "system": "System"
     }
+  },
+  "admin": {
+    "users": {
+      "title": "User Management",
+      "subtitle": "Paginated list of all Akasha users",
+      "searchPlaceholder": "Search by name or email...",
+      "searchAriaLabel": "Search users",
+      "roleFilter": {
+        "label": "Role",
+        "all": "All",
+        "MEMBER": "Member",
+        "ADMIN": "Admin"
+      },
+      "statusFilter": {
+        "label": "Status",
+        "all": "All",
+        "ACTIVE": "Active",
+        "DISABLED": "Suspended"
+      },
+      "table": {
+        "headers": {
+          "name": "Name",
+          "email": "Email",
+          "role": "Role",
+          "status": "Status",
+          "createdAt": "Created",
+          "lastLogin": "Last login"
+        },
+        "empty": "No users match these filters.",
+        "noResults": "No results for \"{q}\"."
+      },
+      "status": {
+        "ACTIVE": "Active",
+        "DISABLED": "Suspended"
+      },
+      "actions": {
+        "suspend": "Suspend",
+        "activate": "Reactivate",
+        "changeRole": "Change role",
+        "cancel": "Cancel",
+        "save": "Save",
+        "view": "View details"
+      },
+      "drawer": {
+        "title": "User details",
+        "loading": "Loading details...",
+        "error": "Could not load details.",
+        "createdAt": "Account created on {date}",
+        "confirmedRole": "Current role: {role}",
+        "confirmedStatus": "Current status: {status}",
+        "warning": "Suspending prevents the user from signing in. Use with care."
+      },
+      "pagination": {
+        "previous": "Previous",
+        "next": "Next",
+        "page": "Page {page} of {total}",
+        "total": "{count} users total",
+        "perPage": "{count} per page"
+      },
+      "mutation": {
+        "success": "User updated.",
+        "error": "Could not update the user."
+      },
+      "forbidden": "Restricted to administrators."
+    }
   }
 }

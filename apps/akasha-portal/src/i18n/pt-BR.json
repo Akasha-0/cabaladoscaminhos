@@ -526,5 +526,70 @@
       "credits": "Créditos",
       "system": "Sistema"
     }
+  },
+  "admin": {
+    "users": {
+      "title": "Gestão de Usuários",
+      "subtitle": "Lista paginada de todos os usuários do Akasha",
+      "searchPlaceholder": "Buscar por nome ou email...",
+      "searchAriaLabel": "Buscar usuários",
+      "roleFilter": {
+        "label": "Papel",
+        "all": "Todos",
+        "MEMBER": "Membro",
+        "ADMIN": "Admin"
+      },
+      "statusFilter": {
+        "label": "Status",
+        "all": "Todos",
+        "ACTIVE": "Ativo",
+        "DISABLED": "Suspenso"
+      },
+      "table": {
+        "headers": {
+          "name": "Nome",
+          "email": "Email",
+          "role": "Papel",
+          "status": "Status",
+          "createdAt": "Criado em",
+          "lastLogin": "Último login"
+        },
+        "empty": "Nenhum usuário encontrado com esses filtros.",
+        "noResults": "Nenhum resultado para \"{q}\"."
+      },
+      "status": {
+        "ACTIVE": "Ativo",
+        "DISABLED": "Suspenso"
+      },
+      "actions": {
+        "suspend": "Suspender",
+        "activate": "Reativar",
+        "changeRole": "Alterar papel",
+        "cancel": "Cancelar",
+        "save": "Salvar",
+        "view": "Ver detalhes"
+      },
+      "drawer": {
+        "title": "Detalhes do usuário",
+        "loading": "Carregando detalhes...",
+        "error": "Não foi possível carregar os detalhes.",
+        "createdAt": "Conta criada em {date}",
+        "confirmedRole": "Papel atual: {role}",
+        "confirmedStatus": "Status atual: {status}",
+        "warning": "Suspender impede o usuário de entrar. Use com cuidado."
+      },
+      "pagination": {
+        "previous": "Anterior",
+        "next": "Próxima",
+        "page": "Página {page} de {total}",
+        "total": "{count} usuários no total",
+        "perPage": "{count} por página"
+      },
+      "mutation": {
+        "success": "Usuário atualizado.",
+        "error": "Não foi possível atualizar o usuário."
+      },
+      "forbidden": "Acesso restrito a administradores."
+    }
   }
 }

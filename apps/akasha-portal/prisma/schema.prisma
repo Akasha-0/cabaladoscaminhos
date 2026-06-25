@@ -42,6 +42,17 @@ model User {
   // The actual endpoints live in `PushSubscription` (relation below).
   pushEnabled        Boolean         @default(false)
 
+  // D-047 (Wave 14.2): admin-controlled account suspension flag.
+  // When true, the user cannot authenticate or access any protected route
+  // (enforced by `requireAkashaApi` — see `src/lib/application/auth/akasha-guard.ts`).
+  // Migration NOT YET APPLIED — Gabriel runs `pnpm prisma migrate dev --name
+  // 047_admin_user_disabled` after reviewing this proposal.
+  // Before the migration, the column does not exist in `akasha_users` and
+  // any read/write through Prisma's generated `User.disabled` field will
+  // fail. The /admin/users UI ships a "suspend" action that writes through
+  // this field; once the migration lands, the action is live end-to-end.
+  disabled           Boolean         @default(false)
+
   birthChart         BirthChart?
   subscription       Subscription?
   creditLedger       CreditEntry[]
