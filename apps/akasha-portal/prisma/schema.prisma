@@ -46,11 +46,11 @@ model User {
 
   intentionProfile Json?
 
-  consentAt      DateTime?  // AD-T5-C: LGPD consent timestamp (min. persistence)
+  consentAt DateTime? // AD-T5-C: LGPD consent timestamp (min. persistence)
 
   // T7: opt-in flag for daily Web Push notifications.
   // The actual endpoints live in `PushSubscription` (relation below).
-  pushEnabled        Boolean         @default(false)
+  pushEnabled Boolean @default(false)
 
   // D-047 (Wave 14.2): admin-controlled account suspension flag.
   // When true, the user cannot authenticate or access any protected route
@@ -61,43 +61,44 @@ model User {
   // any read/write through Prisma's generated `User.disabled` field will
   // fail. The /admin/users UI ships a "suspend" action that writes through
   // this field; once the migration lands, the action is live end-to-end.
-  disabled           Boolean         @default(false)
+  disabled Boolean @default(false)
 
-  birthChart         BirthChart?
-  subscription       Subscription?
-  creditLedger       CreditEntry[]
-  manifesto          Manifesto?
-  dailyReadings      DailyReading[]
-  consultations      Consultation[]
-  ritualLog          RitualCompletion[]
-  pushSubscriptions  PushSubscription[]
-  connections        Connection[]
-  cycleSnapshots    CycleSnapshot[]
-  areaHistory       AreaHistoryEntry[]
-  exerciseCompletions ExerciseCompletion[]
+  birthChart             BirthChart?
+  subscription           Subscription?
+  creditLedger           CreditEntry[]
+  manifesto              Manifesto?
+  dailyReadings          DailyReading[]
+  consultations          Consultation[]
+  ritualLog              RitualCompletion[]
+  pushSubscriptions      PushSubscription[]
+  connections            Connection[]
+  cycleSnapshots         CycleSnapshot[]
+  areaHistory            AreaHistoryEntry[]
+  exerciseCompletions    ExerciseCompletion[]
   // D-046 (Wave 13.3): In-app notifications inbox. Pending human approval of
   // proposal at apps/akasha-portal/prisma/proposals/D-046-notifications-in-app.md.
-  notifications       Notification[]
+  notifications          Notification[]
   // D-041 (Caminhante + Caminhada) + D-XXX (Sessao, SessaoChunk, GrimorioPessoal, NotasConsulente, MapaCalculo)
   // + D-YYY/D-ZZZ (Wave 4 — Pilares 6 e 7)
-  caminhantes         Caminhante[]   @relation("UserCaminhantes")
-  caminhadas          Caminhada[]    @relation("UserCaminhadas")
-  sessoes             Sessao[]       @relation("UserSessoes")
-  sessaoChunks        SessaoChunk[]  @relation("UserSessaoChunks")
-  grimorioPessoal     GrimorioPessoal? @relation("UserGrimorioPessoal")
-  notasConsulentes    NotasConsulente[] @relation("UserNotasConsulentes")
-  mapasCalculo        MapaCalculo[]  @relation("UserMapasCalculo")
-  pilar6Calculos      Pilar6Calculo[]  @relation("UserPilar6Calculos")
-  pilar7Calculos      Pilar7Calculo[]  @relation("UserPilar7Calculos")
-  pilar7Estagios      Pilar7Estagio[]  @relation("UserPilar7Estagios")
+  caminhantes            Caminhante[]         @relation("UserCaminhantes")
+  caminhadas             Caminhada[]          @relation("UserCaminhadas")
+  sessoes                Sessao[]             @relation("UserSessoes")
+  sessaoChunks           SessaoChunk[]        @relation("UserSessaoChunks")
+  grimorioPessoal        GrimorioPessoal?     @relation("UserGrimorioPessoal")
+  notasConsulentes       NotasConsulente[]    @relation("UserNotasConsulentes")
+  mapasCalculo           MapaCalculo[]        @relation("UserMapasCalculo")
+  pilar6Calculos         Pilar6Calculo[]      @relation("UserPilar6Calculos")
+  pilar7Calculos         Pilar7Calculo[]      @relation("UserPilar7Calculos")
+  pilar7Estagios         Pilar7Estagio[]      @relation("UserPilar7Estagios")
   // Refresh token rotation — stores the jti of the current active refresh token.
   // When a refresh request arrives, its jti MUST match this field.
   // On successful refresh the old token's jti is replaced by the new one's — old token immediately invalid.
   // If jti doesn't match, the token has been rotated already → 401 (possible theft).
-  currentRefreshTokenJti String? @unique @map("current_refresh_token_jti")
+  currentRefreshTokenJti String?              @unique @map("current_refresh_token_jti")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
   @@map("akasha_users")
 }
 
@@ -121,24 +122,26 @@ model BirthChart {
   ichingMap     Json?
 
   incomplete Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
   @@map("birth_charts")
 }
 
 model Subscription {
-  id                   String    @id @default(cuid())
-  userId               String    @unique
-  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                   String               @id @default(cuid())
+  userId               String               @unique
+  user                 User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   plan                 SubscriptionPlanTier @default(FREEMIUM)
-  status               SubStatus @default(ACTIVE)
+  status               SubStatus            @default(ACTIVE)
   stripeCustomerId     String?
   stripeSubscriptionId String?
-  monthlyCreditQuota   Int       @default(0)
+  monthlyCreditQuota   Int                  @default(0)
   dashboardUntil       DateTime?
   currentPeriodEnd     DateTime?
-  createdAt            DateTime  @default(now())
-  updatedAt            DateTime  @updatedAt
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+
   @@map("subscriptions")
 }
 
@@ -164,17 +167,17 @@ enum SubscriptionPlanTier {
 // FONTE da verdade do catálogo; User.planId atribui qual catálogo o
 // usuário CONSOME (admin grant, comp, gift).
 model Plan {
-  id              String   @id @default(cuid())
+  id              String  @id @default(cuid())
   // slug único, lowercase, sem espaços: 'freemium' | 'pro' | 'enterprise'.
   // Diferencia de SubscriptionPlanTier (enum) — aqui é string livre pra
   // permitir admin criar planos custom sem migration.
-  name            String   @unique
+  name            String  @unique
   displayName     String
-  priceCents      Int      @default(0)
+  priceCents      Int     @default(0)
   creditsPerMonth Int?
-  features        Json     @default("[]")
-  isActive        Boolean  @default(true)
-  sortOrder       Int      @default(0)
+  features        Json    @default("[]")
+  isActive        Boolean @default(true)
+  sortOrder       Int     @default(0)
 
   // Back-relation ao User (1:N — vários usuários podem ter o mesmo plano).
   // User.planId nullable + onDelete: SetNull = deletar um plano só desassocia
@@ -184,6 +187,7 @@ model Plan {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
   @@map("plans")
 }
 
@@ -201,6 +205,7 @@ model CreditEntry {
   reason    String
   balance   Int
   createdAt DateTime @default(now())
+
   @@index([userId])
   @@map("credit_entries")
 }
@@ -214,35 +219,38 @@ model Manifesto {
   llmModel   String?
   tokensUsed Int?
   createdAt  DateTime @default(now())
+
   @@map("manifestos")
 }
 
 model DailyReading {
-  id           String   @id @default(cuid())
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  date         DateTime @db.Date
-  climate      String
-  ritual       Json
-  alert        String
-  tensionPoint Json
-  llmModel     String?
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date          DateTime @db.Date
+  climate       String
+  ritual        Json
+  alert         String
+  tensionPoint  Json
+  llmModel      String?
   // v0.0.5 T3 (Doc 14 §2): hexagrama do dia persistido no cronjob
   // `cabala-transits.service`. Estrutura binária (6 linhas) em
   // `hexagramLines` para o `MandalaChart` e o `/daily` exibirem.
   hexagram      String?
   hexagramLines Json?
-  createdAt    DateTime @default(now())
+  createdAt     DateTime @default(now())
+
   @@unique([userId, date])
   @@map("daily_readings")
 }
 
 model RitualCompletion {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   grimoireId String
-  date      DateTime @default(now())
+  date       DateTime @default(now())
+
   @@index([userId])
   @@map("ritual_completions")
 }
@@ -258,6 +266,7 @@ model Consultation {
   messages  ChatMessage[]
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
+
   @@index([userId])
   @@map("consultations")
 }
@@ -272,6 +281,7 @@ model ChatMessage {
   consultationId String
   consultation   Consultation @relation(fields: [consultationId], references: [id], onDelete: Cascade)
   createdAt      DateTime     @default(now())
+
   @@index([consultationId])
   @@map("chat_messages")
 }
@@ -286,6 +296,7 @@ model PushSubscription {
   userAgent String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
   @@index([userId])
   @@map("push_subscriptions")
 }
@@ -296,39 +307,42 @@ enum ChatRole {
 }
 
 model GrimoireEntry {
-  id         String  @id @default(cuid())
-  slug       String  @unique
+  id         String                      @id @default(cuid())
+  slug       String                      @unique
   categoria  String
   biblioteca String
   metadata   Json
   conteudo   String
   embedding  Unsupported("vector(768)")?
   sourcePath String
-  updatedAt  DateTime @updatedAt
+  updatedAt  DateTime                    @updatedAt
+
   @@index([categoria])
   @@index([biblioteca])
   @@map("grimoire")
 }
-model Connection {
-  id                String   @id @default(cuid())
-  userId            String
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  otherName         String
-  otherBirthDate    DateTime
-  otherBirthTime    String?
-  otherBirthCity    String?
+model Connection {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  otherName           String
+  otherBirthDate      DateTime
+  otherBirthTime      String?
+  otherBirthCity      String?
   otherBirthLatitude  Float?
   otherBirthLongitude Float?
   otherBirthTimezone  String?
 
-  romanticScore     Int
-  partnershipScore  Int
-  dominantType      String
-  authorityMatch    String
-  resultData        Json
+  romanticScore    Int
+  partnershipScore Int
+  dominantType     String
+  authorityMatch   String
+  resultData       Json
 
-  createdAt         DateTime @default(now())
+  createdAt DateTime @default(now())
+
   @@index([userId])
   @@map("connections")
 }
@@ -336,28 +350,28 @@ model Connection {
 // ─── Prioridade 6 (iter33): Agente Evolutivo — persistence layer ─────────────
 
 model CycleSnapshot {
-  id            String   @id @default(cuid())
-  userId        String
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  date          DateTime @db.Date
+  id     String   @id @default(cuid())
+  userId String
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date   DateTime @db.Date
 
-  personalDay   Json
-  personalMonth Json
-  personalYear  Json
-  universalYear Json
+  personalDay     Json
+  personalMonth   Json
+  personalYear    Json
+  universalYear   Json
   currentPinnacle Json
-  challenges    Json
-  karmicLessons Json
-  maturity      Json
+  challenges      Json
+  karmicLessons   Json
+  maturity        Json
 
-  modulation    Json
+  modulation Json
 
   synthesis     String?
   overallEnergy Int?
   exercisesJson Json?
 
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([userId, date])
   @@index([userId])
@@ -365,25 +379,25 @@ model CycleSnapshot {
 }
 
 model AreaHistoryEntry {
-  id               String   @id @default(cuid())
-  userId           String
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  date             DateTime @db.Date
+  id     String   @id @default(cuid())
+  userId String
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date   DateTime @db.Date
 
-  area             String
+  area              String
   dominantFrequency String
-  intensity        Int
+  intensity         Int
 
-  cycleBoost       String?
-  alignmentScore   Int?
-  dominantPillar   String?
+  cycleBoost        String?
+  alignmentScore    Int?
+  dominantPillar    String?
   ritualTitle       String?
   ritualInstruction String?
   ritualDuration    String?
   ritualElement     String?
-  ritualColor      String?
+  ritualColor       String?
 
-  createdAt        DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@unique([userId, date, area])
   @@index([userId])
@@ -392,21 +406,21 @@ model AreaHistoryEntry {
 }
 
 model ExerciseCompletion {
-  id              String   @id @default(cuid())
-  userId          String
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  exerciseId      String
-  area            String
-  title           String
+  exerciseId String
+  area       String
+  title      String
 
-  snapshotDate    DateTime @db.Date
-  snapshotId      String?
+  snapshotDate DateTime @db.Date
+  snapshotId   String?
 
-  completed       Boolean  @default(false)
-  completedAt     DateTime?
+  completed   Boolean   @default(false)
+  completedAt DateTime?
 
-  createdAt       DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@index([userId])
   @@index([userId, completed])
@@ -423,28 +437,28 @@ model ExerciseCompletion {
 // D-041 (applied 2026-06-22 via 20260622000000_041_caminhante_caminhada)
 
 model Caminhante {
-  id                          String   @id @default(cuid())
-  zeladorId                   String
-  zelador                     User     @relation("UserCaminhantes", fields: [zeladorId], references: [id], onDelete: Cascade)
-  nome                        String
-  nomeLowercaseNormalized     String
-  nomeCompleto                String?
-  dataNascimento              DateTime
-  horaNascimento              String?
-  localNascimentoCidade       String
-  localNascimentoEstado       String
-  localNascimentoPais         String
-  timezone                    String?
-  contato                     String?
-  saudeRelevante              String?
-  caminhadaEspiritualPrevia    String?
-  observacoes                 String?
-  consentimentoPilar4Dados    Json?
-  consentimentoLGPD           Json?
-  createdAt                   DateTime @default(now())
-  updatedAt                   DateTime @updatedAt
+  id                        String   @id @default(cuid())
+  zeladorId                 String
+  zelador                   User     @relation("UserCaminhantes", fields: [zeladorId], references: [id], onDelete: Cascade)
+  nome                      String
+  nomeLowercaseNormalized   String
+  nomeCompleto              String?
+  dataNascimento            DateTime
+  horaNascimento            String?
+  localNascimentoCidade     String
+  localNascimentoEstado     String
+  localNascimentoPais       String
+  timezone                  String?
+  contato                   String?
+  saudeRelevante            String?
+  caminhadaEspiritualPrevia String?
+  observacoes               String?
+  consentimentoPilar4Dados  Json?
+  consentimentoLGPD         Json?
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
 
-  caminhadas                  Caminhada[]
+  caminhadas Caminhada[]
 
   @@unique([zeladorId, dataNascimento, nomeLowercaseNormalized])
   @@index([zeladorId])
@@ -452,27 +466,27 @@ model Caminhante {
 }
 
 model Caminhada {
-  id                      String   @id @default(cuid())
-  zeladorId               String
-  zelador                 User     @relation("UserCaminhadas", fields: [zeladorId], references: [id], onDelete: Cascade)
-  caminhanteId            String
-  caminhante              Caminhante @relation(fields: [caminhanteId], references: [id], onDelete: Cascade)
-  status                  CaminhadaStatus @default(aberta)
-  intencaoInicial         String
-  zeladorLinhagem         String
-  consentimentoPilar4Uso  Json?
-  abertoEm                DateTime @default(now())
-  dataEncerramento        DateTime?
-  motivo                  String?
-  createdAt               DateTime @default(now())
-  updatedAt               DateTime @updatedAt
+  id                     String          @id @default(cuid())
+  zeladorId              String
+  zelador                User            @relation("UserCaminhadas", fields: [zeladorId], references: [id], onDelete: Cascade)
+  caminhanteId           String
+  caminhante             Caminhante      @relation(fields: [caminhanteId], references: [id], onDelete: Cascade)
+  status                 CaminhadaStatus @default(aberta)
+  intencaoInicial        String
+  zeladorLinhagem        String
+  consentimentoPilar4Uso Json?
+  abertoEm               DateTime        @default(now())
+  dataEncerramento       DateTime?
+  motivo                 String?
+  createdAt              DateTime        @default(now())
+  updatedAt              DateTime        @updatedAt
 
-  sessoes                 Sessao[]
-  notasConsulentes        NotasConsulente[]
-  mapasCalculo            MapaCalculo[]
+  sessoes          Sessao[]
+  notasConsulentes NotasConsulente[]
+  mapasCalculo     MapaCalculo[]
   // D-YYY/D-ZZZ (Wave 4 — Pilares 6 e 7)
-  pilar6Calculos          Pilar6Calculo[]
-  pilar7Calculos          Pilar7Calculo[]
+  pilar6Calculos   Pilar6Calculo[]
+  pilar7Calculos   Pilar7Calculo[]
 
   @@index([zeladorId, status])
   @@index([caminhanteId])
@@ -488,20 +502,20 @@ enum CaminhadaStatus {
 // D-XXX (Wave 3 — multi-tenant core)
 
 model Sessao {
-  id           String       @id @default(cuid())
-  zeladorId    String
-  zelador      User         @relation("UserSessoes", fields: [zeladorId], references: [id], onDelete: Cascade)
-  caminhadaId  String
-  caminhada    Caminhada    @relation(fields: [caminhadaId], references: [id], onDelete: Cascade)
-  tipo         TipoSessao
-  status       StatusSessao @default(aberta)
-  abertoEm     DateTime     @default(now())
-  fechadoEm    DateTime?
+  id          String       @id @default(cuid())
+  zeladorId   String
+  zelador     User         @relation("UserSessoes", fields: [zeladorId], references: [id], onDelete: Cascade)
+  caminhadaId String
+  caminhada   Caminhada    @relation(fields: [caminhadaId], references: [id], onDelete: Cascade)
+  tipo        TipoSessao
+  status      StatusSessao @default(aberta)
+  abertoEm    DateTime     @default(now())
+  fechadoEm   DateTime?
 
-  chunks       SessaoChunk[]
+  chunks SessaoChunk[]
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([zeladorId, caminhadaId, abertoEm])
   @@index([zeladorId, status])
@@ -522,16 +536,16 @@ enum StatusSessao {
 }
 
 model SessaoChunk {
-  id         String   @id @default(cuid())
-  zeladorId  String
-  zelador    User     @relation("UserSessaoChunks", fields: [zeladorId], references: [id], onDelete: Cascade)
-  sessaoId   String
-  sessao     Sessao   @relation(fields: [sessaoId], references: [id], onDelete: Cascade)
-  texto      String
-  embedding  Unsupported("vector(768)")?
-  origem     String
-  metadata   Json?
-  createdAt  DateTime @default(now())
+  id        String                      @id @default(cuid())
+  zeladorId String
+  zelador   User                        @relation("UserSessaoChunks", fields: [zeladorId], references: [id], onDelete: Cascade)
+  sessaoId  String
+  sessao    Sessao                      @relation(fields: [sessaoId], references: [id], onDelete: Cascade)
+  texto     String
+  embedding Unsupported("vector(768)")?
+  origem    String
+  metadata  Json?
+  createdAt DateTime                    @default(now())
 
   @@index([zeladorId, sessaoId])
   @@index([zeladorId])
@@ -552,18 +566,18 @@ model GrimorioPessoal {
 }
 
 model NotasConsulente {
-  id            String        @id @default(cuid())
-  zeladorId     String
-  zelador       User          @relation("UserNotasConsulentes", fields: [zeladorId], references: [id], onDelete: Cascade)
-  caminhadaId   String
-  caminhada     Caminhada     @relation(fields: [caminhadaId], references: [id], onDelete: Cascade)
-  categoria     CategoriaNota
-  titulo        String
-  conteudo      String
-  contexto      Json?
-  tags          String[]
-  criadoEm      DateTime      @default(now())
-  atualizadoEm  DateTime      @updatedAt
+  id           String        @id @default(cuid())
+  zeladorId    String
+  zelador      User          @relation("UserNotasConsulentes", fields: [zeladorId], references: [id], onDelete: Cascade)
+  caminhadaId  String
+  caminhada    Caminhada     @relation(fields: [caminhadaId], references: [id], onDelete: Cascade)
+  categoria    CategoriaNota
+  titulo       String
+  conteudo     String
+  contexto     Json?
+  tags         String[]
+  criadoEm     DateTime      @default(now())
+  atualizadoEm DateTime      @updatedAt
 
   @@index([zeladorId, caminhadaId, categoria])
   @@index([zeladorId, atualizadoEm])
@@ -579,22 +593,22 @@ enum CategoriaNota {
 }
 
 model MapaCalculo {
-  id              String    @id @default(cuid())
-  zeladorId       String
-  zelador         User      @relation("UserMapasCalculo", fields: [zeladorId], references: [id], onDelete: Cascade)
-  caminhadaId     String
-  caminhada       Caminhada @relation(fields: [caminhadaId], references: [id], onDelete: Cascade)
-  cabala          Json?
-  astrologia      Json?
-  tantra          Json?
-  odu             Json?
-  iching          Json?
-  pilar6          Json?
-  pilar7          Json?
-  setores         Json?
-  versaoCalculo   String
-  calculadoEm     DateTime  @default(now())
-  atualizadoEm    DateTime  @updatedAt
+  id            String    @id @default(cuid())
+  zeladorId     String
+  zelador       User      @relation("UserMapasCalculo", fields: [zeladorId], references: [id], onDelete: Cascade)
+  caminhadaId   String
+  caminhada     Caminhada @relation(fields: [caminhadaId], references: [id], onDelete: Cascade)
+  cabala        Json?
+  astrologia    Json?
+  tantra        Json?
+  odu           Json?
+  iching        Json?
+  pilar6        Json?
+  pilar7        Json?
+  setores       Json?
+  versaoCalculo String
+  calculadoEm   DateTime  @default(now())
+  atualizadoEm  DateTime  @updatedAt
 
   @@unique([zeladorId, caminhadaId])
   @@index([zeladorId, versaoCalculo])
@@ -616,24 +630,24 @@ model MapaCalculo {
 // D-YYY (Wave 4 — Pilar 6: Mapa Energetico Integrado)
 
 model Pilar6Calculo {
-  id                String   @id @default(cuid())
+  id String @id @default(cuid())
 
   // FKs (escopo multi-tenant — alinha D-XXX)
-  zeladorId         String
-  zelador           User     @relation("UserPilar6Calculos", fields: [zeladorId], references: [id], onDelete: Cascade)
-  caminhadaId       String
-  caminhada         Caminhada @relation(fields: [caminhadaId], references: [id], onDelete: Cascade)
+  zeladorId   String
+  zelador     User      @relation("UserPilar6Calculos", fields: [zeladorId], references: [id], onDelete: Cascade)
+  caminhadaId String
+  caminhada   Caminhada @relation(fields: [caminhadaId], references: [id], onDelete: Cascade)
 
   // Pilar 6 calculation result (D-YYY §3.1)
-  tipo              TipoEnergetico              // 4 tipos (iniciador | guia | iniciador_aberto | refletor)
-  estrategia        EstrategiaEnergetica        // 4 estrategias
-  autoridade        AutoridadeEnergetica?       // 6 autoridades (nullable se inconclusivo)
-  centrosDefinidos  CentroEnergetico[]          // subset dos 9 centros definidos
+  tipo             TipoEnergetico // 4 tipos (iniciador | guia | iniciador_aberto | refletor)
+  estrategia       EstrategiaEnergetica // 4 estrategias
+  autoridade       AutoridadeEnergetica? // 6 autoridades (nullable se inconclusivo)
+  centrosDefinidos CentroEnergetico[] // subset dos 9 centros definidos
 
   // Auditoria
-  versaoCalculo     String                     // ex: "v1"
-  calculadoEm       DateTime                   @default(now())
-  atualizadoEm      DateTime                   @updatedAt
+  versaoCalculo String // ex: "v1"
+  calculadoEm   DateTime @default(now())
+  atualizadoEm  DateTime @updatedAt
 
   @@unique([zeladorId, caminhadaId, versaoCalculo]) // cache: 1 calculo por versao
   @@index([zeladorId, caminhadaId, calculadoEm])
@@ -643,18 +657,18 @@ model Pilar6Calculo {
 
 // D-YYY §3.1: enums dos tipos renomeados (Guardrail 1 do ADR 0002).
 enum TipoEnergetico {
-  iniciador           // ex-Human Design Generator
-  guia                // ex-Human Design Projector
-  iniciador_aberto    // ex-Human Design Manifestor
-  refletor            // ex-Human Design Reflector
+  iniciador // ex-Human Design Generator
+  guia // ex-Human Design Projector
+  iniciador_aberto // ex-Human Design Manifestor
+  refletor // ex-Human Design Reflector
 }
 
 // D-YYY §3.1: estrategias funcionais.
 enum EstrategiaEnergetica {
-  esperar_convite         // ex-To Respond
-  informar                // ex-To Inform
-  iniciar                 // ex-To Initiate
-  esperar_ciclo_lunar     // ex-To Wait (lunar)
+  esperar_convite // ex-To Respond
+  informar // ex-To Inform
+  iniciar // ex-To Initiate
+  esperar_ciclo_lunar // ex-To Wait (lunar)
 }
 
 // D-YYY §3.1: 6 autoridades internas. Reusa Emocional/Esplenica/Cardiaca de D-041.
@@ -670,42 +684,42 @@ enum AutoridadeEnergetica {
 // D-YYY §3.1: 9 centros energeticos baseados em I Ching + Cabala + Tantra
 // (Guardrail 3 do ADR 0002: visualizacao propria).
 enum CentroEnergetico {
-  inspiracao          // Cabala (Keter)
-  mental              // Cabala (Hokhmah/Binah)
-  manifestacao        // I Ching (canal de expressao)
-  identidade          // Astrologia (Ascendente)
-  vontade             // Tantra (Anahata)
-  emocoes             // Tantra (Manipura)
-  vitalidade          // Tantra (Svadhisthana)
-  sobrevivencia       // Tantra (Muladhara, instinto)
-  fundamentacao       // Tantra (Muladhara, base)
+  inspiracao // Cabala (Keter)
+  mental // Cabala (Hokhmah/Binah)
+  manifestacao // I Ching (canal de expressao)
+  identidade // Astrologia (Ascendente)
+  vontade // Tantra (Anahata)
+  emocoes // Tantra (Manipura)
+  vitalidade // Tantra (Svadhisthana)
+  sobrevivencia // Tantra (Muladhara, instinto)
+  fundamentacao // Tantra (Muladhara, base)
 }
 
 // D-ZZZ (Wave 4 — Pilar 7: Espectro de Transformacao)
 
 model Pilar7Calculo {
-  id                String   @id @default(cuid())
+  id String @id @default(cuid())
 
   // FKs (escopo multi-tenant — alinha D-XXX)
-  zeladorId         String
-  zelador           User     @relation("UserPilar7Calculos", fields: [zeladorId], references: [id], onDelete: Cascade)
-  caminhadaId       String
-  caminhada         Caminhada @relation(fields: [caminhadaId], references: [id], onDelete: Cascade)
+  zeladorId   String
+  zelador     User      @relation("UserPilar7Calculos", fields: [zeladorId], references: [id], onDelete: Cascade)
+  caminhadaId String
+  caminhada   Caminhada @relation(fields: [caminhadaId], references: [id], onDelete: Cascade)
 
   // Pilar 7 calculation result (D-ZZZ §3.1)
   // 64 chaves (1-64 = I Ching) — cada uma com 3 estagios
-  estagios          Pilar7Estagio[]             // relation para os estagios desta chave
-  chaveNumero       Int                         // 1-64 (I Ching gate)
-  chaveNome         String                      // nome proprio (do zero — Guardrail 2)
-  estagioAtual      EstagioTransformacao        // Sombra | Dom | Siddhi (onde esta HOJE)
-  textoSombra       String                      // texto proprio (do zero — Guardrail 2)
-  textoDom          String
-  textoSiddhi       String
+  estagios     Pilar7Estagio[] // relation para os estagios desta chave
+  chaveNumero  Int // 1-64 (I Ching gate)
+  chaveNome    String // nome proprio (do zero — Guardrail 2)
+  estagioAtual EstagioTransformacao // Sombra | Dom | Siddhi (onde esta HOJE)
+  textoSombra  String // texto proprio (do zero — Guardrail 2)
+  textoDom     String
+  textoSiddhi  String
 
   // Auditoria
-  versaoCalculo     String                      // ex: "v1"
-  calculadoEm       DateTime                    @default(now())
-  atualizadoEm      DateTime                    @updatedAt
+  versaoCalculo String // ex: "v1"
+  calculadoEm   DateTime @default(now())
+  atualizadoEm  DateTime @updatedAt
 
   @@unique([zeladorId, caminhadaId, versaoCalculo])
   @@index([zeladorId, caminhadaId, calculadoEm])
@@ -724,23 +738,23 @@ enum EstagioTransformacao {
 // D-ZZZ §3.1: estagios de cada chave para cada consulente.
 // N chaves × 3 estagios = N × 3 linhas por calculo (se aplicavel).
 model Pilar7Estagio {
-  id                String   @id @default(cuid())
+  id String @id @default(cuid())
 
   // FKs
-  zeladorId         String
-  zelador           User     @relation("UserPilar7Estagios", fields: [zeladorId], references: [id], onDelete: Cascade)
-  calculoId         String
-  calculo           Pilar7Calculo @relation(fields: [calculoId], references: [id], onDelete: Cascade)
+  zeladorId String
+  zelador   User          @relation("UserPilar7Estagios", fields: [zeladorId], references: [id], onDelete: Cascade)
+  calculoId String
+  calculo   Pilar7Calculo @relation(fields: [calculoId], references: [id], onDelete: Cascade)
 
   // Identificacao da chave
-  chaveNumero       Int                         // 1-64 (corresponde a hexagrama I Ching)
-  chaveNome         String                      // nome proprio (do zero — Guardrail 2)
-  estagio           EstagioTransformacao        // qual dos 3 estagios esta chave representa no consulente
-  texto             String                      // texto proprio (do zero — Guardrail 2)
+  chaveNumero Int // 1-64 (corresponde a hexagrama I Ching)
+  chaveNome   String // nome proprio (do zero — Guardrail 2)
+  estagio     EstagioTransformacao // qual dos 3 estagios esta chave representa no consulente
+  texto       String // texto proprio (do zero — Guardrail 2)
 
   // Sequence position (D-ZZZ §3.1): Sequence Venusiana + Caminho Dourado renomeados
-  sequencePosition  Int?                        // 1-22 (Sequence Venusiana — 22 chaves)
-  pathwayPosition   Int?                        // 1-11 (Caminho Dourado — 11 chaves)
+  sequencePosition Int? // 1-22 (Sequence Venusiana — 22 chaves)
+  pathwayPosition  Int? // 1-11 (Caminho Dourado — 11 chaves)
 
   @@index([zeladorId, calculoId])
   @@index([zeladorId, chaveNumero])
@@ -775,10 +789,10 @@ model Notification {
   userId    String
   user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   type      NotificationType
-  title     String           // ≤120 chars (enforced em application layer)
-  body      String           // ≤500 chars (enforced em application layer)
-  href      String?          // deep link interno opcional (ex: /meu-dia, /diario/123)
-  readAt    DateTime?        // null = não lida (mostra no badge); set = timestamp de leitura
+  title     String // ≤120 chars (enforced em application layer)
+  body      String // ≤500 chars (enforced em application layer)
+  href      String? // deep link interno opcional (ex: /meu-dia, /diario/123)
+  readAt    DateTime? // null = não lida (mostra no badge); set = timestamp de leitura
   createdAt DateTime         @default(now())
 
   // Query principal: "notificações não-lidas do user X ordenadas por mais recente"
@@ -786,6 +800,37 @@ model Notification {
   // Query "últimas N do user X (lidas + não-lidas) para o dropdown"
   @@index([userId, createdAt])
   @@map("notifications")
+}
+
+/// D-048 — User notification preferences (Wave 18.2).
+///
+/// Por que existe (vs. flag único no User):
+///   - LGPD Art. 18 §VI (revogação granular): user pode desativar
+///     DIARIO mas manter MENTOR + CONEXOES. Flag único não dá granularidade.
+///   - UX: /conta/notifications mostra 5 toggles (um por tipo).
+///   - Storage: tabela esparsa — só cria row quando user opt-out (default =
+///     "all enabled" sem precisar de 5 rows por usuário novo).
+///
+/// Schema-decisions:
+///   - SEM relation explícita para User — join feito via userId na query
+///     (consistente com AuditLog que também opta por userId sem FK para
+///     sobrevivência à exclusão; aqui Cascade seria OK mas mantemos simples).
+///   - enabled @default(true) — opt-out model; "all on" é o default razoável.
+///   - @@unique([userId, type]) impede duplicatas e suporta upsert (PATCH).
+///   - Index em userId cobre a query principal ("todas prefs do user X").
+///
+/// Migration é aplicada por humano (per prisma/AGENTS.md D1):
+///   pnpm exec prisma migrate dev --name notification_preferences
+model NotificationPreference {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  enabled   Boolean          @default(true)
+  updatedAt DateTime         @updatedAt
+
+  @@unique([userId, type])
+  @@index([userId])
+  @@map("notification_preferences")
 }
 
 /// D-047 — AuditAction enum (Wave 14.5)

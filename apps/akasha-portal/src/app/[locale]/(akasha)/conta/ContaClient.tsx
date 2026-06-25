@@ -454,21 +454,30 @@ export default function ContaClient({
                 </p>
               )}
             </div>
-            <button
-              onClick={handlePushToggle}
-              disabled={pushBusy}
-              aria-pressed={pushOn}
-              className="px-5 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap disabled:opacity-50"
-              style={{
-                background: pushOn ? 'rgba(16,185,129,0.15)' : 'rgba(124,58,237,0.15)',
-                border: pushOn
-                  ? '1px solid rgba(16,185,129,0.4)'
-                  : '1px solid rgba(124,58,237,0.4)',
-                color: pushOn ? '#34D399' : '#A78BFA',
-              }}
-            >
-              {pushBusy ? 'Aguarde...' : pushOn ? 'Desativar' : 'Ativar'}
-            </button>
+            <div className="flex flex-col gap-2 items-end">
+              <button
+                onClick={handlePushToggle}
+                disabled={pushBusy}
+                aria-pressed={pushOn}
+                className="px-5 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap disabled:opacity-50"
+                style={{
+                  background: pushOn ? 'rgba(16,185,129,0.15)' : 'rgba(124,58,237,0.15)',
+                  border: pushOn
+                    ? '1px solid rgba(16,185,129,0.4)'
+                    : '1px solid rgba(124,58,237,0.4)',
+                  color: pushOn ? '#34D399' : '#A78BFA',
+                }}
+              >
+                {pushBusy ? 'Aguarde...' : pushOn ? 'Desativar' : 'Ativar'}
+              </button>
+              <a
+                href="/conta/notifications"
+                className="text-xs underline whitespace-nowrap"
+                style={{ color: '#A78BFA' }}
+              >
+                Preferências por tipo
+              </a>
+            </div>
           </div>
         </div>
 

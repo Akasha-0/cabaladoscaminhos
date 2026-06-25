@@ -525,6 +525,23 @@
       "conexoes": "Conexões",
       "credits": "Créditos",
       "system": "Sistema"
+    },
+    "prefs": {
+      "pageTitle": "Preferências de notificações",
+      "pageDescription": "Escolha quais tipos de notificação você quer receber. As alterações são salvas automaticamente.",
+      "intro": "Você pode desativar qualquer tipo de notificação. Se desativar um tipo, as notificações desse tipo não aparecerão no sino, mas continuam sendo geradas internamente — você pode reativar a qualquer momento.",
+      "lgpdNote": "Conforme a LGPD (Art. 18, VI), você tem direito à revogação granular do consentimento. Suas preferências são armazenadas de forma privada e não contêm dados pessoais.",
+      "savedSuccess": "Preferência salva.",
+      "saveError": "Não foi possível salvar a preferência. Tente novamente.",
+      "enabledLabel": "Ativado",
+      "disabledLabel": "Desativado",
+      "typeDescriptions": {
+        "diario": "Aviso quando o Mandato do Dia estiver pronto para você.",
+        "mentor": "Aviso quando o Mentor responder uma pergunta assíncrona.",
+        "conexoes": "Match de compatibilidade alta ou mensagem de outro usuário.",
+        "credits": "Alerta quando seu saldo ficar abaixo de 5 créditos.",
+        "system": "Avisos da plataforma (manutenção, atualizações importantes)."
+      }
     }
   },
   "admin": {
