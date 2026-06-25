@@ -54,6 +54,9 @@ model User {
   cycleSnapshots    CycleSnapshot[]
   areaHistory       AreaHistoryEntry[]
   exerciseCompletions ExerciseCompletion[]
+  // D-046 (Wave 13.3): In-app notifications inbox. Pending human approval of
+  // proposal at apps/akasha-portal/prisma/proposals/D-046-notifications-in-app.md.
+  notifications       Notification[]
   // D-041 (Caminhante + Caminhada) + D-XXX (Sessao, SessaoChunk, GrimorioPessoal, NotasConsulente, MapaCalculo)
   // + D-YYY/D-ZZZ (Wave 4 — Pilares 6 e 7)
   caminhantes         Caminhante[]   @relation("UserCaminhantes")
@@ -681,4 +684,45 @@ model Pilar7Estagio {
   @@index([zeladorId, calculoId])
   @@index([zeladorId, chaveNumero])
   @@map("pilar7_estagios")
+}
+
+// ──────────────────────────────────────────────────────────────────────
+// D-046 (Wave 13.3): In-app notifications inbox.
+// Schema ONLY — migration NÃO foi aplicada. Gabriel precisa rodar:
+//   pnpm exec prisma migrate dev --name notifications
+// Ver PROPOSAL completo em apps/akasha-portal/prisma/proposals/D-046-notifications-in-app.md
+// ──────────────────────────────────────────────────────────────────────
+
+/// Categoria da notificação. Usado para ícone/cor no bell + filtragem
+/// futura em preferences (Wave 14). NÃO enumera campos de negócio — só o
+/// "tipo de evento" que gerou a notificação.
+enum NotificationType {
+  /// Novo Mandato do Dia disponível no /diario
+  DIARIO
+  /// Resposta assíncrona do Mentor chegou em /oraculo
+  MENTOR
+  /// Match em Conexões (compatibilidade alta) ou mensagem de outro usuário
+  CONEXOES
+  /// Saldo de créditos baixo (<5 créditos)
+  CREDITS
+  /// Aviso da plataforma (manutenção, atualização, etc) — sem CTA por default
+  SYSTEM
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType
+  title     String           // ≤120 chars (enforced em application layer)
+  body      String           // ≤500 chars (enforced em application layer)
+  href      String?          // deep link interno opcional (ex: /meu-dia, /diario/123)
+  readAt    DateTime?        // null = não lida (mostra no badge); set = timestamp de leitura
+  createdAt DateTime         @default(now())
+
+  // Query principal: "notificações não-lidas do user X ordenadas por mais recente"
+  @@index([userId, readAt, createdAt])
+  // Query "últimas N do user X (lidas + não-lidas) para o dropdown"
+  @@index([userId, createdAt])
+  @@map("notifications")
 }
