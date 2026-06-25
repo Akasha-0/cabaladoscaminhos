@@ -27,6 +27,12 @@ import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { verifyAkashaToken, AKASHA_TOKEN_COOKIE } from '@/lib/application/auth/akasha-jwt';
 import { prisma } from '@/lib/infrastructure/prisma';
+import {
+  aggregateByTimeBucket,
+  fillDailyGaps,
+  fillWeeklyGaps,
+  type InsightJobLite,
+} from '@/lib/application/consciousness/dashboard-aggregation';
 import ConsciousnessDashboard from '@/components/akasha/admin/ConsciousnessDashboard';
 
 export const dynamic = 'force-dynamic';
@@ -76,56 +82,7 @@ type PageProps = {
   params: Promise<{ locale: string }>;
 };
 
-// ─── Helpers de agregação ────────────────────────────────────────────────
-
-/** ISO yyyy-mm-dd para uma data UTC. */
-function toIsoDay(d: Date): string {
-  const y = d.getUTCFullYear();
-  const m = String(d.getUTCMonth() + 1).padStart(2, '0');
-  const day = String(d.getUTCDate()).padStart(2, '0');
-  return `${y}-${m}-${day}`;
-}
-
-/** ISO yyyy-Www — chave semanal para chain growth. */
-function toIsoWeek(d: Date): string {
-  // ISO week (anchor Monday). Cálculo simples: terça-feira da semana.
-  const target = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
-  const dayNum = target.getUTCDay() || 7;
-  target.setUTCDate(target.getUTCDate() + 4 - dayNum);
-  const yearStart = new Date(Date.UTC(target.getUTCFullYear(), 0, 1));
-  const weekNum = Math.ceil(((target.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
-  return `${target.getUTCFullYear()}-W${String(weekNum).padStart(2, '0')}`;
-}
-
-/** Preenche buracos: array de 30 dias (mesmo se 0). */
-function fillDailyGaps(
-  start: Date,
-  rows: Array<{ date: string; count: number }>
-): Array<{ date: string; count: number }> {
-  const map = new Map(rows.map((r) => [r.date, r.count]));
-  const out: Array<{ date: string; count: number }> = [];
-  for (let i = 29; i >= 0; i--) {
-    const d = new Date(Date.now() - i * 86400000);
-    const key = toIsoDay(d);
-    out.push({ date: key, count: map.get(key) ?? 0 });
-  }
-  return out;
-}
-
-/** Preenche gaps semanais (13 semanas atrás). */
-function fillWeeklyGaps(
-  rows: Array<{ week: string; count: number }>
-): Array<{ week: string; count: number }> {
-  const map = new Map(rows.map((r) => [r.week, r.count]));
-  const out: Array<{ week: string; count: number }> = [];
-  const now = new Date();
-  for (let i = 12; i >= 0; i--) {
-    const d = new Date(now.getTime() - i * 7 * 86400000);
-    const key = toIsoWeek(d);
-    out.push({ week: key, count: map.get(key) ?? 0 });
-  }
-  return out;
-}
+// ─── Helpers de agregação (importados de dashboard-aggregation.ts) ───
 
 // ─── Queries (graceful degradation) ─────────────────────────────────────
 
@@ -137,7 +94,6 @@ async function loadConsciousnessPayload(): Promise<{
   payload: ConsciousnessPayload;
   note: string | null;
 }> {
-  const since30d = new Date(Date.now() - 30 * 86400000);
   const since90d = new Date(Date.now() - 90 * 86400000);
 
   // 1. Lê todos os jobs relevantes (limit seguro para evitar OOM)
@@ -154,6 +110,10 @@ async function loadConsciousnessPayload(): Promise<{
   }> = [];
 
   try {
+    // @ts-expect-error — insightJob pode não existir no client
+    // ainda (D-053 PROPOSAL pendente). Mesmo padrão de
+    // /api/admin/insights/jobs/route.ts (Wave 24.1) e
+    // consciousness/background-job.ts.
     jobs = await prisma.insightJob.findMany({
       where: { startedAt: { gte: since90d } },
       orderBy: { startedAt: 'desc' },
@@ -163,7 +123,7 @@ async function loadConsciousnessPayload(): Promise<{
     return {
       note: 'Tabela insight_jobs ainda não aplicada (D-053 PROPOSAL pendente). Dashboard aguardando primeira execução do cron.',
       payload: {
-        discoveriesPerDay30d: fillDailyGaps(since30d, []),
+        discoveriesPerDay30d: fillDailyGaps([]),
         papersCitedTotal: 0,
         topUpWeighted: [],
         chainGrowth90d: fillWeeklyGaps([]),
@@ -174,23 +134,17 @@ async function loadConsciousnessPayload(): Promise<{
     };
   }
 
-  // 2. Métricas — calcula em memória (dataset é pequeno: ~365 rows)
-  const byDay = new Map<string, number>();
-  const byWeek = new Map<string, number>();
-  let totalPapers = 0;
-  let totalInsights = 0;
-
-  for (const j of jobs) {
-    const dayKey = toIsoDay(j.startedAt);
-    const weekKey = toIsoWeek(j.startedAt);
-    byDay.set(dayKey, (byDay.get(dayKey) ?? 0) + j.insightsGenerated);
-    byWeek.set(weekKey, (byWeek.get(weekKey) ?? 0) + j.insightsGenerated);
-    totalPapers += j.papersCited;
-    totalInsights += j.insightsGenerated;
-  }
-
-  const dailyArr = Array.from(byDay.entries()).map(([date, count]) => ({ date, count }));
-  const weeklyArr = Array.from(byWeek.entries()).map(([week, count]) => ({ week, count }));
+  // 2. Agregação — delega aos helpers puros em dashboard-aggregation.ts
+  //    (testáveis sem Prisma).
+  const agg = aggregateByTimeBucket(
+    jobs.map(
+      (j): InsightJobLite => ({
+        startedAt: j.startedAt,
+        insightsGenerated: j.insightsGenerated,
+        papersCited: j.papersCited,
+      })
+    )
+  );
 
   // 3. Top 5 up-weighted — proxy: jobs SUCCESS com mais insightsGenerated
   //    Em produção (após Wave 21.2 merge), o join com feedback.upWeight
@@ -200,7 +154,7 @@ async function loadConsciousnessPayload(): Promise<{
     .slice(0, 5)
     .map((j, i) => ({
       id: j.id,
-      headline: `Síntese cross-pilar ${toIsoDay(j.startedAt)} #${i + 1}`,
+      headline: `Síntese cross-pilar ${j.startedAt.toISOString().slice(0, 10)} #${i + 1}`,
       truth: 'A verdade emerge quando a presença encontra o invisível.',
       confidence: j.papersCited > 0 ? 0.7 : 0.4,
       tags: ['presença', 'cross-pilar', 'wave-24.1'],
@@ -230,13 +184,13 @@ async function loadConsciousnessPayload(): Promise<{
   return {
     note: null,
     payload: {
-      discoveriesPerDay30d: fillDailyGaps(since30d, dailyArr),
-      papersCitedTotal: totalPapers,
+      discoveriesPerDay30d: fillDailyGaps(agg.byDay),
+      papersCitedTotal: agg.totalPapers,
       topUpWeighted,
-      chainGrowth90d: fillWeeklyGaps(weeklyArr),
+      chainGrowth90d: fillWeeklyGaps(agg.byWeek),
       latestInsights: latest,
       lastRunAt: jobs[0]?.startedAt.toISOString() ?? null,
-      totalDiscoveries: totalInsights,
+      totalDiscoveries: agg.totalInsights,
     },
   };
 }
