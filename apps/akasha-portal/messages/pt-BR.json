@@ -309,5 +309,54 @@
         "system": "Avisos da plataforma (manutenção, atualizações importantes)."
       }
     }
+  },
+  "atendimento": {
+    "pageTitle": "Atendimento — Akasha OS",
+    "pageDescription": "Sessão ao vivo com seu cliente. Estados emocionais, chat com Mentor, insights da IA — tudo em uma tela feita para o celular do Zelador.",
+    "topBar": {
+      "greeting": "Atendimento · {zelador}",
+      "clientSummary": "{name} · {age}a · Sol em {sign}",
+      "sessionTag": "Sessão ao vivo"
+    },
+    "tabs": {
+      "cliente": "Cliente",
+      "insights": "Insights ({count})",
+      "chat": "Chat",
+      "ariaLabel": "Seções do atendimento"
+    },
+    "emotional": {
+      "centrado": "Centrado",
+      "ansioso": "Ansioso",
+      "perdido": "Perdido",
+      "curioso": "Curioso"
+    },
+    "empty": {
+      "insightsTitle": "Nenhum insight ainda",
+      "insightsBody": "Conforme a conversa avança, a IA mostra aqui cruzamentos dos 5 Pilares + literatura.",
+      "chatTitle": "Comece a sessão",
+      "chatBody": "Pergunte algo ao Mentor, ou cite um insight acima para aprofundar."
+    },
+    "actionBar": {
+      "save": "Salvar sessão",
+      "cite": "Citar",
+      "upvote": "Útil",
+      "downvote": "Não ajudou",
+      "saveAriaLabel": "Salvar a sessão inteira",
+      "citeAriaLabel": "Citar discovery no diário do consulente",
+      "chatPlaceholder": "Falar com Mentor…",
+      "sendAriaLabel": "Enviar mensagem ao Mentor",
+      "saveToast": "Sessão salva. Os insights e avaliações foram persistidos.",
+      "cited": "citadas",
+      "rated": "avaliados"
+    },
+    "discovery": {
+      "pillarLabel": "Pilar",
+      "cited": "Citada",
+      "upvoted": "Marcou como útil",
+      "downvoted": "Marcou como não útil"
+    },
+    "client": {
+      "emSession": "● Em sessão"
+    }
   }
 }

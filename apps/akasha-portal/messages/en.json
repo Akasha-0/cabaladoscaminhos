@@ -309,5 +309,54 @@
         "system": "Platform notices (maintenance, important updates)."
       }
     }
+  },
+  "atendimento": {
+    "pageTitle": "Attendance — Akasha OS",
+    "pageDescription": "Live session with your client. Emotional states, Mentor chat, AI insights — all on one screen made for the Zelador's phone.",
+    "topBar": {
+      "greeting": "Attendance · {zelador}",
+      "clientSummary": "{name} · {age}yo · Sun in {sign}",
+      "sessionTag": "Live session"
+    },
+    "tabs": {
+      "cliente": "Client",
+      "insights": "Insights ({count})",
+      "chat": "Chat",
+      "ariaLabel": "Attendance sections"
+    },
+    "emotional": {
+      "centrado": "Centered",
+      "ansioso": "Anxious",
+      "perdido": "Lost",
+      "curioso": "Curious"
+    },
+    "empty": {
+      "insightsTitle": "No insights yet",
+      "insightsBody": "As the conversation unfolds, the AI surfaces 5-Pillar + literature cross-correlations here.",
+      "chatTitle": "Begin the session",
+      "chatBody": "Ask the Mentor something, or cite an insight above to dig deeper."
+    },
+    "actionBar": {
+      "save": "Save session",
+      "cite": "Cite",
+      "upvote": "Useful",
+      "downvote": "Not helpful",
+      "saveAriaLabel": "Save the entire session",
+      "citeAriaLabel": "Cite discovery in the client's journal",
+      "chatPlaceholder": "Talk to Mentor…",
+      "sendAriaLabel": "Send message to Mentor",
+      "saveToast": "Session saved. Insights and ratings have been persisted.",
+      "cited": "cited",
+      "rated": "rated"
+    },
+    "discovery": {
+      "pillarLabel": "Pillar",
+      "cited": "Cited",
+      "upvoted": "Marked as useful",
+      "downvoted": "Marked as not useful"
+    },
+    "client": {
+      "emSession": "● In session"
+    }
   }
 }
