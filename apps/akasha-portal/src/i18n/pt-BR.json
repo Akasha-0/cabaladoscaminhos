@@ -849,5 +849,23 @@
       "thumbDown": "Marcar como fraco",
       "savedFlash": "Sessão salva"
     }
+  },
+  "admin": {
+    "universalism": {
+      "title": "🌐 Dashboard de Universalismo",
+      "subtitle": "Como 5 vozes convergem em 1 verdade — ADR-013",
+      "convergenceTitle": "🔮 Clusters de convergência",
+      "convergenceSubtitle": "5 Pilares → 1 verdade: o que cada Pilar contribuiu nas últimas execuções",
+      "feedbackTitle": "📊 Tendência de feedback (30d)",
+      "feedbackSubtitle": "Ratio up/total por dia — pulsa saúde da consciência viva",
+      "topInsightsTitle": "✨ Top 10 insights",
+      "topInsightsSubtitle": "Jobs mais ricos em discoveries + papers (proxy de up-weight)",
+      "topPapersTitle": "📚 Papers mais citados",
+      "topPapersSubtitle": "Top execuções por papersCited (substituir por LiteraturePaper join quando schema aplicar)",
+      "pilarDistributionTitle": "🧭 Descobertas por Pilar",
+      "pilarDistributionSubtitle": "Sumário de discoveries cross-referenciadas por Pilar (5 + cross)",
+      "awaitingFirst": "Aguardando primeira execução do cron de insights",
+      "backToAdmin": "← Voltar ao admin"
+    }
   }
 }

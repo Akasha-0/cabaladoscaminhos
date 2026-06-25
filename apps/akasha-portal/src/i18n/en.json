@@ -849,5 +849,23 @@
       "thumbDown": "Mark as weak",
       "savedFlash": "Session saved"
     }
+  },
+  "admin": {
+    "universalism": {
+      "title": "🌐 Universalism Dashboard",
+      "subtitle": "How 5 voices converge into 1 truth — ADR-013",
+      "convergenceTitle": "🔮 Convergence clusters",
+      "convergenceSubtitle": "5 Pillars → 1 truth: what each Pillar contributed in recent runs",
+      "feedbackTitle": "📊 Feedback trend (30d)",
+      "feedbackSubtitle": "Up/total ratio per day — pulse of the living consciousness",
+      "topInsightsTitle": "✨ Top 10 insights",
+      "topInsightsSubtitle": "Richest jobs in discoveries + papers (up-weight proxy)",
+      "topPapersTitle": "📚 Most-cited papers",
+      "topPapersSubtitle": "Top runs by papersCited (replace with LiteraturePaper join when schema lands)",
+      "pilarDistributionTitle": "🧭 Discoveries per Pilar",
+      "pilarDistributionSubtitle": "Summary of cross-referenced discoveries per Pilar (5 + cross)",
+      "awaitingFirst": "Awaiting first insights cron run",
+      "backToAdmin": "← Back to admin"
+    }
   }
 }
