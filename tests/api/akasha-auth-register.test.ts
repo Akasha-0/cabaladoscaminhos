@@ -20,6 +20,30 @@ vi.mock('@/lib/infrastructure/prisma', () => ({
   },
 }));
 
+// Wave 12.5 §12.5: mock strict rate-limit for register tests (auth/register
+// now applies 3 req/hour limit). Tests of the rate-limit module itself
+// live in rate-limit-strict.test.ts.
+vi.mock('@/lib/infrastructure/security/rate-limit-strict', () => ({
+  STRICT_RATE_LIMIT_CONFIGS: {
+    AUTH_LOGIN: { windowMs: 60_000, maxRequests: 5 },
+    AUTH_REGISTER: { windowMs: 3_600_000, maxRequests: 3 },
+    AUTH_ME: { windowMs: 60_000, maxRequests: 30 },
+    MCP: { windowMs: 60_000, maxRequests: 100 },
+  },
+  checkStrictRateLimit: vi.fn(async () => ({
+    allowed: true,
+    remaining: 100,
+    resetIn: 60_000,
+    resetAt: new Date(Date.now() + 60_000),
+    limit: 100,
+  })),
+  buildStrictRateLimitResponse: vi.fn(() => ({
+    status: 429,
+    body: { error: 'rate limit', scope: 'AUTH_REGISTER', retryAfterSeconds: 3600 },
+  })),
+  extractStrictIdentifier: vi.fn(() => 'mock-id'),
+}));
+
 function makeJsonRequest(url: string, body: unknown): NextRequest {
   return new NextRequest(url, {
     method: 'POST',

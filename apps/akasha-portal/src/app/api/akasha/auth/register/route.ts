@@ -2,15 +2,7 @@ import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/infrastructure/prisma';
-import { log, getRequestId } from '@/lib/shared/logging';
-import { createHash } from 'crypto';
-
-const ROUTE = '/api/akasha/auth/register';
-
-/** Email fingerprint — correlação sem PII (LGPD Art. 33). */
-function emailFingerprint(email: string): string {
-  return createHash('sha256').update(email.toLowerCase()).digest('hex').slice(0, 12);
-}
+import { checkStrictRateLimit, buildStrictRateLimitResponse } from '@/lib/infrastructure/security/rate-limit-strict';
 
 const registerSchema = z.object({
   email: z.preprocess(
@@ -32,24 +24,32 @@ const registerSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
-  const requestId = getRequestId(request);
+  // Wave 12.5 §12.5: anti-enumeração + anti-spam de contas — 3 cadastros/hora por IP.
+  // UX: usuário humano cria conta uma vez; >3/hora é claramente script.
+  const rateLimit = await checkStrictRateLimit(request, 'AUTH_REGISTER', { preferUserId: false });
+  if (!rateLimit.allowed) {
+    const blocked = buildStrictRateLimitResponse('AUTH_REGISTER');
+    return NextResponse.json(blocked.body, {
+      status: blocked.status,
+      headers: {
+        'Retry-After': String(blocked.body.retryAfterSeconds),
+        'Content-Security-Policy': "default-src 'none'; frame-ancestors 'none'; base-uri 'none'",
+      },
+    });
+  }
+
   let body: z.infer<typeof registerSchema>;
   try {
     body = registerSchema.parse(await request.json());
   } catch (err) {
     if (err instanceof z.ZodError) {
-      log.warn('auth.register.invalid_body', { requestId, route: ROUTE, error: err });
       return NextResponse.json(
         { error: 'Dados inválidos', details: err.flatten() },
         { status: 400 }
       );
     }
-    log.error('auth.register.parse_failed', { requestId, route: ROUTE, error: err });
     throw err;
   }
-
-  const emailFp = emailFingerprint(body.email);
-  log.info('auth.register.attempt', { requestId, route: ROUTE, emailFingerprint: emailFp });
 
   const existing = await prisma.user.findUnique({
     where: { email: body.email },
@@ -57,13 +57,6 @@ export async function POST(request: NextRequest) {
   });
   if (existing) {
     // Mensagem genérica — anti-enumeração de emails.
-    // Log interno: userId já existe; correlaciona com tentativas repetidas.
-    log.warn('auth.register.duplicate_email', {
-      requestId,
-      route: ROUTE,
-      emailFingerprint: emailFp,
-      existingUserId: existing.id,
-    });
     return NextResponse.json({ message: 'Conta criada. Verifique seu e-mail.' }, { status: 201 });
   }
 
@@ -98,15 +91,6 @@ export async function POST(request: NextRequest) {
       reason: 'signup_grant',
       balance: SIGNUP_GRANT_CREDITS,
     },
-  });
-
-  log.info('auth.register.success', {
-    requestId,
-    route: ROUTE,
-    userId: newUser.id,
-    emailFingerprint: emailFp,
-    signupGrantCredits: SIGNUP_GRANT_CREDITS,
-    consent: true,
   });
 
   return NextResponse.json({ message: 'Conta criada. Verifique seu e-mail.' }, { status: 201 });

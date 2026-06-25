@@ -41,14 +41,21 @@ const jetbrainsMono = JetBrains_Mono({
 // Security Headers — CSP para rotas de página (não /api/*)
 // Middleware.ts já endurece /api/* com default-src 'none'.
 // Aqui adicionamos CSP funcional para páginas (Doc 18 §4).
+//
+// Wave 12.5: PAGE_CSP alinhada com a versão do middleware.ts.
+//   - Removido `'unsafe-eval'` (não necessário em prod).
+//   - `connect-src` reduzido a providers reais: MiniMax + Stripe.
+//   - `Permissions-Policy` ampliado (mais APIs sensíveis bloqueadas).
+// O middleware.ts seta o MESMO CSP em runtime; este export é fallback
+// para build-time/RSC streaming.
 // ============================================================
 const PAGE_CSP = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+  "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https:",
   "font-src 'self' data:",
-  "connect-src 'self' https://api.openai.com https://api.minimax.io https://api.stripe.com",
+  "connect-src 'self' https://api.minimaxi.chat https://api.minimax.io https://api.stripe.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -59,7 +66,16 @@ const PAGE_CSP = [
 export const headers = [
   {
     source: '/:path*',
-    headers: [{ key: 'Content-Security-Policy', value: PAGE_CSP }],
+    headers: [
+      { key: 'Content-Security-Policy', value: PAGE_CSP },
+      // Permissions-Policy ampliado (Wave 12.5): bloqueia também accelerometer,
+      // gyroscope, magnetometer, payment e usb.
+      {
+        key: 'Permissions-Policy',
+        value:
+          'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()',
+      },
+    ],
   },
 ];
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://akasha.cabaladoscaminhos.com';

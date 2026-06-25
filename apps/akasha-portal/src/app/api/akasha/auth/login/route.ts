@@ -9,16 +9,7 @@ import {
   setAkashaRefreshCookie,
 } from '@/lib/application/auth/akasha-jwt';
 import { prisma } from '@/lib/infrastructure/prisma';
-import { log, getRequestId } from '@/lib/shared/logging';
-
-const ROUTE = '/api/akasha/auth/login';
-// Email hash para correlação de tentativas sem logar PII (LGPD Art. 33).
-// SHA-256 truncado a 8 chars é suficiente para identificar tentativas
-// repetidas sem permitir enumeração reversa.
-import { createHash } from 'crypto';
-function emailFingerprint(email: string): string {
-  return createHash('sha256').update(email.toLowerCase()).digest('hex').slice(0, 12);
-}
+import { checkStrictRateLimit, buildStrictRateLimitResponse } from '@/lib/infrastructure/security/rate-limit-strict';
 
 const loginSchema = z.object({
   email: z.preprocess(
@@ -29,44 +20,45 @@ const loginSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
-  const requestId = getRequestId(request);
+  // Wave 12.5 §12.5: anti-bruteforce — 5 tentativas/min por IP (hash LGPD-safe).
+  // Threshold baseado em UX aceitável (typo, esqueceu senha) vs ataque.
+  const rateLimit = await checkStrictRateLimit(request, 'AUTH_LOGIN', { preferUserId: false });
+  if (!rateLimit.allowed) {
+    const blocked = buildStrictRateLimitResponse('AUTH_LOGIN');
+    return NextResponse.json(blocked.body, {
+      status: blocked.status,
+      headers: {
+        'Retry-After': String(blocked.body.retryAfterSeconds),
+        // Resposta 429 inclui security headers — defesa em profundidade
+        // (CSP API + X-Frame-Options DENY mesmo em erros de auth).
+        'Content-Security-Policy': "default-src 'none'; frame-ancestors 'none'; base-uri 'none'",
+      },
+    });
+  }
+
   let body: z.infer<typeof loginSchema>;
   try {
     body = loginSchema.parse(await request.json());
   } catch (err) {
     if (err instanceof z.ZodError) {
-      log.warn('auth.login.invalid_body', { requestId, route: ROUTE, error: err });
       return NextResponse.json(
         { error: 'Dados inválidos', details: err.flatten() },
         { status: 400 }
       );
     }
-    log.error('auth.login.parse_failed', { requestId, route: ROUTE, error: err });
     throw err;
   }
-
-  // Email fingerprint para correlação sem logar PII (LGPD Art. 33)
-  const emailFp = emailFingerprint(body.email);
 
   const user = await prisma.user.findUnique({
     where: { email: body.email },
   });
 
   if (!user || !user.passwordHash) {
-    log.warn('auth.login.user_not_found', { requestId, route: ROUTE, emailFingerprint: emailFp });
     return NextResponse.json({ error: 'Credenciais inválidas' }, { status: 401 });
   }
 
   const valid = await bcrypt.compare(body.password, user.passwordHash);
   if (!valid) {
-    // Wave 12.3: userId conhecido para correlação com brute-force alerts.
-    // NUNCA logar password ou hash.
-    log.warn('auth.login.bad_password', {
-      requestId,
-      route: ROUTE,
-      emailFingerprint: emailFp,
-      userId: user.id,
-    });
     return NextResponse.json({ error: 'Credenciais inválidas' }, { status: 401 });
   }
 
@@ -103,13 +95,5 @@ export async function POST(request: NextRequest) {
   const response = NextResponse.redirect(redirectUrl, 307);
   setAkashaSessionCookie(response, accessToken);
   setAkashaRefreshCookie(response, refreshToken);
-
-  log.info('auth.login.success', {
-    requestId,
-    route: ROUTE,
-    userId: user.id,
-    emailFingerprint: emailFp,
-    locale,
-  });
   return response;
 }

@@ -7,12 +7,14 @@ import { NextRequest, NextResponse } from 'next/server';
  */
 
 // Security headers that should be present in responses
+// Wave 12.5: Permissions-Policy ampliado para cobrir mais APIs sensíveis.
 const SECURITY_HEADERS = {
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
   'X-XSS-Protection': '1; mode=block',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
-  'Permissions-Policy': 'accelerometer=(), camera=(), microphone=(), geolocation=()',
+  'Permissions-Policy':
+    'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()',
   'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
 } as const;
 

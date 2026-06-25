@@ -2,8 +2,34 @@ import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { prisma } from '@/lib/infrastructure/prisma';
+import { checkStrictRateLimit, buildStrictRateLimitResponse } from '@/lib/infrastructure/security/rate-limit-strict';
+
+/**
+ * Wave 12.5 §12.5: anti-scraping — 30 req/min por userId.
+ *
+ * GET /api/akasha/auth/me retorna PII (email, nome, birthDate, birthCity).
+ * Scrapers poderiam drenar dados pessoais. Rate limit por userId
+ * (LGPD-safe, deterministic) bloqueia exfiltração em massa.
+ */
+async function enforceMeRateLimit(request: NextRequest) {
+  const rateLimit = await checkStrictRateLimit(request, 'AUTH_ME', { preferUserId: true });
+  if (!rateLimit.allowed) {
+    const blocked = buildStrictRateLimitResponse('AUTH_ME');
+    return NextResponse.json(blocked.body, {
+      status: blocked.status,
+      headers: {
+        'Retry-After': String(blocked.body.retryAfterSeconds),
+        'Content-Security-Policy': "default-src 'none'; frame-ancestors 'none'; base-uri 'none'",
+      },
+    });
+  }
+  return null;
+}
 
 export async function GET(request: NextRequest) {
+  const blocked = await enforceMeRateLimit(request);
+  if (blocked) return blocked;
+
   const userOrResponse = await requireAkashaApi(request);
   if (userOrResponse instanceof NextResponse) return userOrResponse;
 
@@ -47,6 +73,9 @@ const patchSchema = z.object({
 });
 
 export async function PATCH(request: NextRequest) {
+  const blocked = await enforceMeRateLimit(request);
+  if (blocked) return blocked;
+
   const userOrResponse = await requireAkashaApi(request);
   if (userOrResponse instanceof NextResponse) return userOrResponse;
 
