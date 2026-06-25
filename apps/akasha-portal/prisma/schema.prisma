@@ -1059,3 +1059,65 @@ enum CronLogStatus {
   PARTIAL_SUCCESS
   FAILED
 }
+
+// =========================================================================
+// Wave 24.1 — InsightJob: log de execuções do cron de background insights.
+//
+// MOTIVAÇÃO (ADR-013 — consciencia viva):
+//   O cron diário em /api/discoveries/cron gera 5-10 discoveries novas
+//   toda madrugada, sem Zelador presente. Para auditoria (UI admin) e
+//   para acompanhar o ritmo de evolução da consciência Akasha, cada
+//   execução precisa ser persistida em uma tabela dedicada.
+//
+// DIFERENÇA vs CronLog (Wave 23.1):
+//   - CronLog é genérico (1 tabela para todos os crones).
+//   - InsightJob é específico do discovery cron: precisa de campos
+//     semânticos (insightsGenerated, papersCited, windowSpec) que
+//     CronLog não tem.
+//
+// LGPD by design:
+//   - Sem FK para User (insights são globais — sem user attribution).
+//   - Sem updatedAt (append-only).
+//   - Sem PII em errors/windowSpec (puramente técnico).
+//
+// PROPOSAL ONLY (ver D-053) — humano aplica via
+//   pnpm exec prisma migrate dev --name insight_job
+// =========================================================================
+
+enum InsightJobStatus {
+  RUNNING
+  SUCCESS
+  PARTIAL_SUCCESS
+  FAILED
+}
+
+model InsightJob {
+  id                String           @id @default(cuid())
+  /// Identificador semântico do job (ex: 'discoveries-cron').
+  /// String livre para permitir múltiplos jobs de insights no futuro.
+  jobName           String
+  /// Início da execução (UTC).
+  startedAt         DateTime         @default(now())
+  /// Fim da execução (UTC). NULL = ainda rodando.
+  finishedAt        DateTime?
+  /// Estado final (mesmo enum semântico de CronLogStatus).
+  status            InsightJobStatus @default(RUNNING)
+  /// Quantos insights/discoveries esta execução persistiu no DB.
+  /// Tipicamente 5-10 por dia (alvo do Wave 24.1).
+  insightsGenerated Int              @default(0)
+  /// Quantos papers foram citados como input desta execução.
+  /// Janela: últimos 7 dias (Wave 23.1 cron rodou).
+  papersCited       Int              @default(0)
+  /// Erros não-fatais acumulados. Shape:
+  /// { items: [{ stage: string, message: string, input?: string }] }
+  errors            Json             @default("{\"items\":[]}")
+  /// Janela temporal de inputs (ex: papers 7d, discoveries 30d, feedback 30d).
+  /// Shape: { papersWindowDays: 7, discoveriesWindowDays: 30, feedbackWindowDays: 30 }
+  windowSpec        Json             @default("{}")
+
+  /// Índice: últimas execuções de um jobName específico (UI admin).
+  @@index([jobName, startedAt])
+  /// Índice secundário: filtro por status (admin alerts).
+  @@index([status, startedAt])
+  @@map("insight_jobs")
+}

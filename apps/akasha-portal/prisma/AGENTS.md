@@ -138,6 +138,22 @@ Antes de qualquer mudança em `schema.prisma`, **ler este arquivo** +
   UI: `/conta/privacidade` com toggles + audit trail histórico.
   Tests: 46 passing (27 helper + 13 route + 6 register).
   Compat: Wave 8.3 (User.consentAt) e Wave 19.2 (delete) preservados.
+- **Wave 24.1** — Background Insight Cron. 1 model `InsightJob`
+  (append-only, SEM FK para User, sem updatedAt) + 1 enum
+  `InsightJobStatus` (RUNNING/SUCCESS/PARTIAL_SUCCESS/FAILED).
+  Migration: D-053 PROPOSAL — humano aplica via
+  `pnpm exec prisma migrate dev --name insight_job`. Schema estendido
+  em `schema.prisma` (1 model + 1 enum). Engine em
+  `src/lib/application/consciousness/background-job.ts` (com
+  `runBackgroundInsights` + `generateInsights`). API:
+  `/api/discoveries/cron` (POST — service-role) e
+  `/api/admin/insights/jobs` (GET — auditoria). Wrapper bash
+  `scripts/discoveries-cron.sh` + GitHub Action `insights-cron.yml`
+  (daily 06:00 UTC = 03:00 BRT). LGPD: insights são GLOBAIS
+  (sem user attribution), `errors`/`windowSpec` são puramente
+  técnicos. Tests: 45 passing (20 engine + 13 cron route + 12 admin).
+  Compat: Wave 23.1 (CronLog), Wave 20.2/21.2 (Discovery/DiscoveryChain),
+  Wave 22.1 (FeedbackEvent) preservados quando mergeados em main.
 
 ## Child DOX Index
 
