@@ -26,6 +26,8 @@
     "fallow:all": "fallow",
     "dev:portal": "pnpm --filter akasha-portal dev",
     "build:portal": "pnpm --filter akasha-portal build",
+    "build:portal:analyze": "pnpm --filter akasha-portal build:analyze",
+    "budget:check": "pnpm --filter akasha-portal budget:check",
     "start:portal": "pnpm --filter akasha-portal start",
     "lint:portal": "pnpm --filter akasha-portal lint",
     "typecheck:portal": "pnpm --filter akasha-portal typecheck",
@@ -61,6 +63,7 @@
     "zustand": "^5.0.13"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.2.9",
     "@playwright/test": "^1.60.0",
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
