@@ -525,6 +525,23 @@
       "conexoes": "Connections",
       "credits": "Credits",
       "system": "System"
+    },
+    "prefs": {
+      "pageTitle": "Notification preferences",
+      "pageDescription": "Choose which types of notifications you want to receive. Changes are saved automatically.",
+      "intro": "You can disable any notification type. If you disable a type, notifications of that type won't appear in the bell, but they continue to be generated internally — you can re-enable them at any time.",
+      "lgpdNote": "Per LGPD (Art. 18, VI), you have the right to granular consent revocation. Your preferences are stored privately and contain no personal data.",
+      "savedSuccess": "Preference saved.",
+      "saveError": "Could not save preference. Please try again.",
+      "enabledLabel": "Enabled",
+      "disabledLabel": "Disabled",
+      "typeDescriptions": {
+        "diario": "Alert when the Daily Mandate is ready for you.",
+        "mentor": "Alert when the Mentor answers an async question.",
+        "conexoes": "High-compatibility match or message from another user.",
+        "credits": "Alert when your balance drops below 5 credits.",
+        "system": "Platform notices (maintenance, important updates)."
+      }
     }
   },
   "admin": {
