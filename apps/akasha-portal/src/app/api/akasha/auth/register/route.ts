@@ -3,6 +3,8 @@ import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/infrastructure/prisma';
 import { checkStrictRateLimit, buildStrictRateLimitResponse } from '@/lib/infrastructure/security/rate-limit-strict';
+import { recordDefaultConsents } from '@/lib/application/privacy/consent';
+import { getClientIpInfo } from '@/lib/infrastructure/security/ip-hash';
 
 const registerSchema = z.object({
   email: z.preprocess(
@@ -92,6 +94,33 @@ export async function POST(request: NextRequest) {
       balance: SIGNUP_GRANT_CREDITS,
     },
   });
+
+  // Wave 19.3 — LGPD Art. 7º (consentimento expresso): registrar os
+  // defaults de privacy consent no signup. Append-only audit trail (LGPD
+  // Art. 37) — cada uma das 4 categorias vira UMA row em `privacy_consents`.
+  // Defaults (ver DEFAULT_SIGNUP_CONSENTS):
+  //   - MARKETING = false (opt-in obrigatório)
+  //   - ANALYTICS = true  (legítimo interesse)
+  //   - AI_TRAINING = false (LGPD Art. 11 — opt-in estrito)
+  //   - THIRD_PARTY_SHARING = false (opt-in estrito)
+  //
+  // IP é hasheado (HMAC-SHA256, LGPD Art. 33) — NUNCA IP puro em logs.
+  // Se falhar, NÃO rollback o user creation — o consent default é "nice
+  // to have" para o audit trail (User.consentAt já foi persistido acima
+  // como consentimento mínimo obrigatório). Logamos o erro para o admin
+  // reportar e o user pode re-toggler via /conta/privacidade depois.
+  try {
+    const { hash: ipHash } = getClientIpInfo(request);
+    const userAgent = request.headers.get('user-agent') ?? 'unknown';
+    await recordDefaultConsents(newUser.id, { ipHash, userAgent });
+  } catch (consentErr) {
+    // Non-fatal: signup succeeded, consent audit trail failed.
+    // Logged but doesn't block the user.
+    console.error('[register] Failed to record default privacy consents', {
+      userId: newUser.id,
+      error: consentErr instanceof Error ? consentErr.message : String(consentErr),
+    });
+  }
 
   return NextResponse.json({ message: 'Conta criada. Verifique seu e-mail.' }, { status: 201 });
 }
