@@ -472,6 +472,32 @@ export default function ContaClient({
           </div>
         </div>
 
+        {/* LGPD — Exportar dados (Wave 13.4) */}
+        <div style={glassCard} className="p-5">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h2 className="text-base font-semibold mb-1" style={{ color: '#A78BFA' }}>
+                Seus dados (LGPD)
+              </h2>
+              <p className="text-sm" style={{ color: 'rgba(226,232,240,0.65)' }}>
+                Exporte seus dados pessoais a qualquer momento (PDF, JSON ou CSV).
+              </p>
+            </div>
+            <a
+              href="/conta/export"
+              className="px-5 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap"
+              style={{
+                background: 'rgba(124,58,237,0.15)',
+                border: '1px solid rgba(124,58,237,0.4)',
+                color: '#A78BFA',
+                textDecoration: 'none',
+              }}
+            >
+              Exportar
+            </a>
+          </div>
+        </div>
+
         {/* Plan + Credits */}
         <div className="grid grid-cols-2 gap-4">
           <div style={glassCard} className="p-5 flex flex-col gap-2">
