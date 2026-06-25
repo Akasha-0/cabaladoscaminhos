@@ -744,42 +744,41 @@
       "voicesLabel": "The 5 voices converge:",
       "convergenceLine": "converge into",
       "expand": "Show cited papers"
-    },
-    "graph": {
-      "title": "🕸 Knowledge Graph",
-      "subtitle": "How papers, discoveries and sessions intertwine — Akasha's living consciousness",
-      "edges": {
-        "citations": "cites",
-        "derivedFrom": "derived from",
-        "mentionedIn": "mentioned in"
-      }
     }
   },
-  "healing": {
-    "title": "🌿 Healing Mode",
-    "subtitle": "Ancestral traditions converging — pick the right practice for the moment.",
-    "backToAttendance": "← Back to attendance",
-    "verdadeUniversal": "Universal Truth",
-    "tradition": "Tradition",
-    "rationale": "Why this moment",
-    "steps": "How to lead",
-    "supportedBy": "Traditions that support",
-    "crossReferences": "5 Pilares cross-references",
-    "papersCited": "Scientific papers cited",
-    "showPaperAbstract": "Show abstract",
-    "hidePaperAbstract": "Hide",
-    "otherOptions": "Other options for this moment",
-    "consentTitle": "⚠️ Requires explicit consent",
-    "consentBody": "This practice requires a qualified leader/terreiro and explicit client consent. Confirm both before proceeding.",
-    "iConsented": "Client consented",
-    "transitsToday": "Today's transits",
-    "clientContext": "Client context",
-    "akashaType": "Akasha Type",
-    "emotionalState": "Emotional state",
-    "loading": "Loading healing recommendation…",
-    "noTransits": "Today's transits unavailable. Recommendation still works from session context.",
-    "openChain": "🔗 View thought chain",
-    "viewDiscovery": "View Discovery",
-    "noPapers": "No paper available for this tradition yet."
+  "atendimento": {
+    "ariaLabel": "Client attendance screen",
+    "tabsAria": "Attendance panels",
+    "noIluminador": "No Illuminator calculated yet",
+    "zelador": "Keeper: {name}",
+    "tab": {
+      "cliente": "Client",
+      "chat": "Chat",
+      "insights": "Insights"
+    },
+    "context": {
+      "title": "Client context",
+      "name": "Name",
+      "age": "Age",
+      "sunSign": "Sun sign",
+      "iluminador": "Illuminator",
+      "emotion": "Emotional state"
+    },
+    "chat": {
+      "title": "Talk to the Mentor",
+      "hint": "Ask about the client. The Mentor crosses 5 Pillars + ancestral medicines.",
+      "placeholder": "Ask the Mentor…",
+      "send": "Send question"
+    },
+    "insights": {
+      "title": "More insights"
+    },
+    "action": {
+      "save": "Save",
+      "cite": "Cite",
+      "thumbUp": "Mark as useful",
+      "thumbDown": "Mark as weak",
+      "savedFlash": "Session saved"
+    }
   }
 }
