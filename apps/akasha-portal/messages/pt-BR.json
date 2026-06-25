@@ -277,5 +277,20 @@
       "dismiss": "Agora não",
       "installed": "Instalado ✓"
     }
+  },
+  "notification": {
+    "title": "Notificações",
+    "empty": "Sem notificações por enquanto",
+    "markAllRead": "Marcar todas como lidas",
+    "viewAll": "Ver todas",
+    "openBell": "Abrir notificações",
+    "unreadBadge": "{count} não lidas",
+    "types": {
+      "diario": "Diário",
+      "mentor": "Mentor",
+      "conexoes": "Conexões",
+      "credits": "Créditos",
+      "system": "Sistema"
+    }
   }
 }

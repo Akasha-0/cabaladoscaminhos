@@ -14,7 +14,10 @@
  *     diretamente (facilita swapping do ORM em testes).
  */
 
-export { NotificationType } from '@prisma/client';
+import { NotificationType as PrismaNotificationType } from '@prisma/client';
+
+export type NotificationType = PrismaNotificationType;
+export const NotificationType = PrismaNotificationType;
 
 /**
  * DTO que a API retorna e a UI consome.

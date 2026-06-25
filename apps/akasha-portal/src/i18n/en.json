@@ -511,5 +511,20 @@
       "dismiss": "Not now",
       "installed": "Installed ✓"
     }
+  },
+  "notification": {
+    "title": "Notifications",
+    "empty": "No notifications yet",
+    "markAllRead": "Mark all as read",
+    "viewAll": "View all",
+    "openBell": "Open notifications",
+    "unreadBadge": "{count} unread",
+    "types": {
+      "diario": "Journal",
+      "mentor": "Mentor",
+      "conexoes": "Connections",
+      "credits": "Credits",
+      "system": "System"
+    }
   }
 }

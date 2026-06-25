@@ -4,6 +4,7 @@ import React from 'react';
 import { AkashaNavigation } from '@/components/akasha/AkashaNavigation';
 import { BottomNav } from '@/components/akasha/layout/BottomNav';
 import { PwaInstallPrompt } from '@/components/shared/PwaInstallPrompt';
+import { NotificationsBell } from '@/components/akasha/notifications/NotificationsBell';
 import { useCockpitStore } from '@/stores/cockpit-store';
 
 interface UserProfile {
@@ -31,6 +32,18 @@ export function AkashaLayoutClient({ children, locale, user }: AkashaLayoutClien
           sidebarCollapsed ? 'md:pl-16' : 'md:pl-64'
         }`}
       >
+        {/* Wave 13.3 — Notifications bell floating top-right.
+            Mobile: pt-14 reserve + top-3 right-3 (clear of status bar).
+            Desktop: pushed below sidebar header. The component handles
+            its own dropdown positioning (right-0 anchored to its own
+            container). */}
+        <div
+          className="fixed right-3 top-3 z-40 md:top-4 md:right-4"
+          data-testid="notifications-bell-slot"
+        >
+          <NotificationsBell locale={locale} />
+        </div>
+
         {/* Wave 10.5: extra bottom padding on mobile to clear the fixed
             BottomNav (height ~56px + safe-area-inset-bottom). Desktop is
             untouched because BottomNav is md:hidden. */}
