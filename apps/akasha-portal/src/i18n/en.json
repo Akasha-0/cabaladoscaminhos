@@ -754,5 +754,32 @@
         "mentionedIn": "mentioned in"
       }
     }
+  },
+  "healing": {
+    "title": "🌿 Healing Mode",
+    "subtitle": "Ancestral traditions converging — pick the right practice for the moment.",
+    "backToAttendance": "← Back to attendance",
+    "verdadeUniversal": "Universal Truth",
+    "tradition": "Tradition",
+    "rationale": "Why this moment",
+    "steps": "How to lead",
+    "supportedBy": "Traditions that support",
+    "crossReferences": "5 Pilares cross-references",
+    "papersCited": "Scientific papers cited",
+    "showPaperAbstract": "Show abstract",
+    "hidePaperAbstract": "Hide",
+    "otherOptions": "Other options for this moment",
+    "consentTitle": "⚠️ Requires explicit consent",
+    "consentBody": "This practice requires a qualified leader/terreiro and explicit client consent. Confirm both before proceeding.",
+    "iConsented": "Client consented",
+    "transitsToday": "Today's transits",
+    "clientContext": "Client context",
+    "akashaType": "Akasha Type",
+    "emotionalState": "Emotional state",
+    "loading": "Loading healing recommendation…",
+    "noTransits": "Today's transits unavailable. Recommendation still works from session context.",
+    "openChain": "🔗 View thought chain",
+    "viewDiscovery": "View Discovery",
+    "noPapers": "No paper available for this tradition yet."
   }
 }
