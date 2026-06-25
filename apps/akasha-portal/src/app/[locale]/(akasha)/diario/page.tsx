@@ -46,6 +46,8 @@ import { DiarioAuthorityBlock } from '@/components/akasha/diario/DiarioAuthority
 import { SignificadoSection } from '@/components/akasha/diario/SignificadoSection';
 import { AreasSection } from '@/components/akasha/diario/AreasSection';
 import { DiarioErrorBoundary } from '@/components/akasha/shared/DiarioErrorBoundary';
+import { DiarioUniversalSection } from '@/components/akasha/diario/DiarioUniversalSection';
+import { loadDiarioPapers } from '@/components/akasha/diario/DiarioPapersAdapter';
 
 export const metadata = {
   title: 'Diário Energético — Akasha',
@@ -195,6 +197,13 @@ export default async function DiarioPage({
 
   const significados = significadosEspecificos(pilares as unknown as PilaresDados);
 
+  // ── Wave 28.2 — Universalism: papers reais (Wave 21.1) relacionados ──
+  const papers = await loadDiarioPapers({
+    pilarPrincipal,
+    date,
+    locale,
+  });
+
   return (
     <DiarioErrorBoundary locale={locale}>
       <DiarioScrollContainer
@@ -243,9 +252,15 @@ export default async function DiarioPage({
         />
       </div>
 
-      <div data-section-index="5" className="max-w-xl mx-auto w-full px-5 py-4 pb-16">
+      <div data-section-index="5" className="max-w-xl mx-auto w-full px-5 py-4 pb-4">
         <AreasSection pilarPrincipal={pilarPrincipal} pilarInfo={pilarInfo} locale={locale} highlightAreas={highlightAreas} />
       </div>
+
+      <DiarioUniversalSection
+        pilarPrincipal={pilarPrincipal}
+        papers={papers}
+        locale={locale}
+      />
     </DiarioScrollContainer>
     </DiarioErrorBoundary>
   );
