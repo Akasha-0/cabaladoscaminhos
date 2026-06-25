@@ -519,6 +519,14 @@
       "install": "Instalar",
       "dismiss": "Agora não",
       "installed": "Instalado ✓"
+    },
+    "installPrompt": {
+      "title": "Instale para acesso rápido",
+      "subtitle": "Abre em 1 toque, funciona sem internet.",
+      "install": "Instalar agora",
+      "installAria": "Instalar agora",
+      "dismiss": "Agora não",
+      "dismissAria": "Agora não"
     }
   }
 }

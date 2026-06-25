@@ -519,6 +519,14 @@
       "install": "Install",
       "dismiss": "Not now",
       "installed": "Installed ✓"
+    },
+    "installPrompt": {
+      "title": "Install for quick access",
+      "subtitle": "Opens in 1 tap, works without internet.",
+      "install": "Install now",
+      "installAria": "Install now",
+      "dismiss": "Not now",
+      "dismissAria": "Not now"
     }
   }
 }
