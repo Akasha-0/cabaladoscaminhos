@@ -112,7 +112,7 @@ Resposta:
 Percebo um movimento de restrição agora — não é bloqueio, é convite a fundamentar. (Em produção, este parágrafo teria 2-5 frases com pergunta socrática de fechamento.)
 \`\`\`
 
-(Wik acima está propositalmente truncado como exemplo; em produção, o bloco `Raciocinio:` tem 2-4 frases e a resposta tem 2-5 parágrafos com pergunta socrática de fechamento.)
+(Wik acima está propositalmente truncado como exemplo; em produção, o bloco \`Raciocinio:\` tem 2-4 frases e a resposta tem 2-5 parágrafos com pergunta socrática de fechamento.)
 
 Estrutura sugerida:
 

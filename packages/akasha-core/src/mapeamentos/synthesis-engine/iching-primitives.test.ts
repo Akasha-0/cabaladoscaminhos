@@ -13,13 +13,13 @@ describe('compileIChingPrimitives', () => {
       1: {
         primitivos: [
           {
-            primitivo: 'Ancestralidade' as const,
+            primitivo: 'Integracao' as const,
             intensidade: 8,
             polaridade: 'luz' as const,
             fonte: 'I Ching — Hexagrama 1',
           },
           {
-            primitivo: 'Criatividade' as const,
+            primitivo: 'Movimento' as const,
             intensidade: 9,
             polaridade: 'luz' as const,
             fonte: 'I Ching — Hexagrama 1',
@@ -33,13 +33,13 @@ describe('compileIChingPrimitives', () => {
     expect(result).toHaveProperty('1');
     expect(result[1]).toHaveLength(2);
     expect(result[1][0]).toMatchObject({
-      primitivo: 'Ancestralidade',
+      primitivo: 'Integracao',
       intensidade: 8,
       polaridade: 'luz',
       fonte: 'I Ching — Hexagrama 1',
     });
     expect(result[1][1]).toMatchObject({
-      primitivo: 'Criatividade',
+      primitivo: 'Movimento',
       intensidade: 9,
       polaridade: 'luz',
     });
@@ -50,7 +50,7 @@ describe('compileIChingPrimitives', () => {
       42: {
         primitivos: [
           {
-            primitivo: 'Caminhada' as const,
+            primitivo: 'Expressao' as const,
             intensidade: 7,
             polaridade: 'ambas' as const,
             fonte: 'I Ching — Hexagrama 42',
@@ -63,7 +63,7 @@ describe('compileIChingPrimitives', () => {
 
     // Number(num) conversion inside compileIChingPrimitives ensures numeric key
     expect(Object.keys(result)).toContain('42');
-    expect(result).toHaveProperty(42);
+    expect(result).toHaveProperty('42');
     expect(result[42][0].intensidade).toBe(7);
     expect(result[42][0].polaridade).toBe('ambas');
   });
