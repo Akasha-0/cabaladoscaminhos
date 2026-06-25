@@ -33,7 +33,16 @@ export async function requireAkashaApi(
   try {
     const user = await prisma.user.findUnique({
       where: { id: payload.sub },
-      select: { id: true, email: true, name: true },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        // Wave 19.2 — bloqueia contas em soft-delete grace period.
+        // Usuário ainda pode logar UMA vez para CANCELAR (endpoint separado),
+        // mas todas as rotas que usam requireAkashaApi devem retornar 403.
+        // O check fino (permissão vs cancel-deletion) fica no caller.
+        deletedAt: true,
+      },
     });
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
