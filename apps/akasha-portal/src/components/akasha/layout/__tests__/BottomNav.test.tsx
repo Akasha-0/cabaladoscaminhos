@@ -18,6 +18,32 @@ import { render, screen, cleanup } from '@testing-library/react';
 
 import { BottomNav, isAuthRoute } from '../BottomNav';
 
+// ─── i18n mock ──────────────────────────────────────────────────────
+// Provides t() that returns the key itself for missing translations
+// (consistent with the production fallback chain in @/i18n).
+const I18N_MAP: Record<string, string> = {
+  'nav.bottomNav.ariaLabel': 'Navegação principal',
+  'nav.bottomNav.meuDia': 'Meu Dia',
+  'nav.bottomNav.mandala': 'Mandala',
+  'nav.bottomNav.diario': 'Diário',
+  'nav.bottomNav.mentor': 'Mentor',
+  'nav.bottomNav.conta': 'Conta',
+};
+
+vi.mock('@/i18n', () => ({
+  useTranslation: () => ({
+    t: (key: string, params?: Record<string, string | number>) => {
+      let value = I18N_MAP[key] ?? key;
+      if (params) {
+        value = value.replace(/\{(\w+)\}/g, (_, k) =>
+          Object.prototype.hasOwnProperty.call(params, k) ? String(params[k]) : `{${k}}`
+        );
+      }
+      return value;
+    },
+  }),
+}));
+
 // ─── next/navigation mock ────────────────────────────────────────────────
 // We control `pathname` per-test by reassigning the mock variable.
 let mockPathname = '/pt-BR/meu-dia';
