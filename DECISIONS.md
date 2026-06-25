@@ -828,3 +828,58 @@ Não é:
 - Papers científicos são **ground truth** que a IA cita (não inventa)
 - O custo é **computação** (IA por síntese) + **storage** (chains + embeddings) — finito e previsível
 - **NÃO precisa** de modelo AI novo — basta usar o que já temos (MiniMax-M3, embeddings existentes) com chain of thought persistente
+
+
+# ADR-014: Limite de Tool Calls em Subagentes (Worktree + WIP)
+
+**Date:** 2026-06-25
+**Status:** Accepted (operational learning)
+**Wave:** Continuo (process improvement)
+
+## Contexto
+
+Subagentes Hermes (via `delegate_task`) tem limite implícito de ~150 tool calls. Quando atingem, o runtime mata o subagente com `exit_reason=max_iterations` **sem warning, sem commit, sem push**.
+
+Padrão observado (5+ waves):
+- Subagente faz 100-200 chamadas
+- Começa a criar arquivos via `write_file`
+- Tool budget estoura antes de `git add` + `git commit`
+- Working tree fica "clean" mas arquivos não foram persistidos
+- Subagente reportou "completed" no status, mas trabalho foi perdido
+
+**Exemplo Wave 22.1**: subagente reportou sucesso mas working tree 100% clean, 0 arquivos novos (verificado via `ls`).
+
+## Decisão
+
+1. **Sempre validar working tree** antes de merge:
+   - `git status --short | grep -v node_modules | wc -l` — se 0, **suspeito**
+   - `ls` arquivos esperados diretamente
+2. **Se arquivos sumidos** mas subagente reportou sucesso: re-dispatchar com escopo menor
+3. **Dispatchar subagentes com escopo focado** (1 deliverable claro, não 3-4)
+4. **Limite seguro**: ~80-100 tool calls por subagente
+5. **Subagentes que fazem MUITO write_file** (>10 arquivos) são arriscados — dividir em 2
+
+## Consequências
+
+**Positivas:**
+- Não perdemos trabalho por max_iterations silencioso
+- Padrão documentado pra futuros subagentes
+
+**Negativas:**
+- Subagentes menores = mais chamadas = mais tokens consumidos
+- Mas tokens recuperados em quota reset (4h)
+
+## Alternatives Considered
+
+1. **Aumentar max_iterations** — não é configurável pelo subagente, só pelo runtime
+2. **Subagente com checkpoint** — cada N calls salva estado em arquivo .checkpoint — complexidade alta
+3. **Subagente com commit por arquivo** — não escala (cada write = commit)
+4. **Validação obrigatória no fim** (esta ADR) — escolhida, baixo overhead
+
+## Implementation
+
+Padrão operacional após cada subagente voltar:
+1. Verificar `git status --short | wc -l` (esperar > 0)
+2. Se 0: `git ls-remote origin <branch>` (esperar SHA ahead de main)
+3. Se SHA ahead mas working tree clean: re-dispatchar
+4. Se SHA = main: subagente esqueceu push (re-dispatchar com --force-push)
