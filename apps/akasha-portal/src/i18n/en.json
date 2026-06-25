@@ -745,5 +745,40 @@
       "convergenceLine": "converge into",
       "expand": "Show cited papers"
     }
+  },
+  "atendimento": {
+    "ariaLabel": "Client attendance screen",
+    "tabsAria": "Attendance panels",
+    "noIluminador": "No Illuminator calculated yet",
+    "zelador": "Keeper: {name}",
+    "tab": {
+      "cliente": "Client",
+      "chat": "Chat",
+      "insights": "Insights"
+    },
+    "context": {
+      "title": "Client context",
+      "name": "Name",
+      "age": "Age",
+      "sunSign": "Sun sign",
+      "iluminador": "Illuminator",
+      "emotion": "Emotional state"
+    },
+    "chat": {
+      "title": "Talk to the Mentor",
+      "hint": "Ask about the client. The Mentor crosses 5 Pillars + ancestral medicines.",
+      "placeholder": "Ask the Mentor…",
+      "send": "Send question"
+    },
+    "insights": {
+      "title": "More insights"
+    },
+    "action": {
+      "save": "Save",
+      "cite": "Cite",
+      "thumbUp": "Mark as useful",
+      "thumbDown": "Mark as weak",
+      "savedFlash": "Session saved"
+    }
   }
 }
