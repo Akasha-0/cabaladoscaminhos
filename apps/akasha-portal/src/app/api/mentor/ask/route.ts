@@ -28,6 +28,9 @@ import {
   checkRedisRateLimit,
   formatMentorRateLimitError,
 } from '@/lib/infrastructure/rate-limit';
+import { log, getRequestId } from '@/lib/shared/logging';
+
+const ROUTE = '/api/mentor/ask';
 
 // Header que carrega o estado emocional do consulente (mirror do cookie
 // Wave 9.1). Cliente pode setar `x-akasha-state: ansioso` etc.
@@ -54,6 +57,7 @@ const bodySchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  const requestId = getRequestId(request);
   // 0. Authenticate — userId from auth context, NOT from body
   const authResult = await requireAkashaApi(request);
   if (authResult instanceof NextResponse) return authResult;
@@ -71,13 +75,28 @@ export async function POST(request: NextRequest) {
       t.name.startsWith('mentor.')
     );
     if (mentorTools.length > 0) {
+      // Preservado: console.log legado é asserido em route.test.ts
+      // (expect.stringContaining('[mentor] emotion=...')) — não remover.
       console.log(
         `[mentor] found ${mentorTools.length} MCP tools, using direct LLM fallback (no tool impl yet)`
       );
+      log.info('mentor.mcp.tools_found', {
+        requestId,
+        userId,
+        route: ROUTE,
+        toolCount: mentorTools.length,
+      });
       useMcp = true;
     }
   } catch (err) {
     // @akasha/mcp não instalado ou import falhou → fallback to direct LLM
+    log.warn('mentor.mcp.unavailable', {
+      requestId,
+      userId,
+      route: ROUTE,
+      error: err,
+    });
+    // Legado: mantido para parity com grep de logs existentes
     console.warn(
       '[mentor] MCP server unavailable, using direct LLM:',
       err instanceof Error ? err.message : err
@@ -91,7 +110,8 @@ export async function POST(request: NextRequest) {
     try {
       const raw = await request.json();
       parsed = bodySchema.parse(raw);
-    } catch {
+    } catch (err) {
+      log.warn('mentor.ask.invalid_body', { requestId, userId, route: ROUTE, error: err });
       return NextResponse.json({ error: 'question is required' }, { status: 400 });
     }
 
@@ -113,9 +133,18 @@ export async function POST(request: NextRequest) {
         // Só logamos quando detecta — para confirmar o caminho automático.
         const detected = detectEmotion(question);
         if (detected) {
+          // IMPORTANTE: route.test.ts asserem este literal
+          //   expect.stringContaining('[mentor] emotion=... auto-detected from question')
+          // Mantido por compatibilidade — paralelo ao log estruturado abaixo.
           console.log(
             `[mentor] emotion=${detected} auto-detected from question`
           );
+          log.debug('mentor.emotion.auto_detected', {
+            requestId,
+            userId,
+            route: ROUTE,
+            emotion: detected,
+          });
           resolvedEmotion = detected;
         }
       }
@@ -128,12 +157,19 @@ export async function POST(request: NextRequest) {
       Math.ceil(MENTOR_RATE_LIMIT_CONFIG.windowMs / 1000)
     );
     if (!rateLimit.allowed) {
+      log.warn('mentor.ask.rate_limited', {
+        requestId,
+        userId,
+        route: ROUTE,
+        remaining: rateLimit.remaining,
+      });
       return NextResponse.json({ error: formatMentorRateLimitError() }, { status: 429 });
     }
 
     // 3. Credits check — uses authenticated userId
     const credits = await checkCredits(userId);
     if (!credits.hasCredits) {
+      log.info('mentor.ask.no_credits', { requestId, userId, route: ROUTE });
       return NextResponse.json({ error: noCreditsMessage() }, { status: 402 });
     }
 
@@ -142,7 +178,12 @@ export async function POST(request: NextRequest) {
     try {
       maps = await loadUserMaps({ prisma, userId });
     } catch (error) {
-      console.error('Failed to load user maps:', error);
+      log.error('mentor.maps.load_failed', {
+        requestId,
+        userId,
+        route: ROUTE,
+        error,
+      });
       return NextResponse.json(
         { error: 'Não foi possível carregar os mapas do usuário' },
         { status: 400 }
@@ -156,6 +197,14 @@ export async function POST(request: NextRequest) {
       content: m.content,
       createdAt: new Date(),
     }));
+    const startedAt = Date.now();
+    log.info('mentor.ask.stream_start', {
+      requestId,
+      userId,
+      route: ROUTE,
+      emotion: resolvedEmotion,
+      historyLength: history.length,
+    });
     // 6. Stream response — uses authenticated userId
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
@@ -179,8 +228,22 @@ export async function POST(request: NextRequest) {
           // Deduct credit after successful response
           await deductCredit(userId);
 
+          log.info('mentor.ask.stream_done', {
+            requestId,
+            userId,
+            route: ROUTE,
+            status: 200,
+            durationMs: Date.now() - startedAt,
+          });
           controller.close();
         } catch (error) {
+          log.error('mentor.ask.stream_failed', {
+            requestId,
+            userId,
+            route: ROUTE,
+            error,
+            durationMs: Date.now() - startedAt,
+          });
           const message = error instanceof Error ? error.message : 'Erro interno do mentor';
           try {
             controller.enqueue(encoder.encode(`\n\n[Erro: ${message}]`));
@@ -201,7 +264,12 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('Mentor ask error:', error);
+    log.error('mentor.ask.unhandled_error', {
+      requestId,
+      userId,
+      route: ROUTE,
+      error,
+    });
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
