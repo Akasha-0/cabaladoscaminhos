@@ -110,19 +110,47 @@ function isPrivateIPv6(ip: string): boolean {
   }
   if (lower.startsWith('fc') || lower.startsWith('fd')) return true; // fc00::/7 ULA
   if (lower === '::') return true; // unspecified
-  // IPv4-mapped: extrair e checar como IPv4
-  const mapped = extractMappedIPv4(ip);
-  if (mapped) return isPrivateIPv4(mapped);
+  // IPv4-mapped IPv6: ::ffff:X:Y (hex) OR ::ffff:dotted-quad.
+  // Node URL parser canônico: "::ffff:127.0.0.1" → "::ffff:7f00:1"
+  // (hex IPv4 groups). Detectamos o prefixo e extraímos os 2 últimos
+  // grupos hex (little-endian IPv4), convertendo para dotted IPv4.
+  if (lower.startsWith('::ffff:')) {
+    const rest = lower.slice(7); // após '::ffff:'
+    const groups = rest.split(':');
+    if (groups.length === 2) {
+      const hi = parseInt(groups[0], 16);
+      const lo = parseInt(groups[1], 16);
+      if (!isNaN(hi) && !isNaN(lo)) {
+        const a = (hi >> 8) & 0xff;
+        const b = hi & 0xff;
+        const c = (lo >> 8) & 0xff;
+        const d = lo & 0xff;
+        const dotted = `${a}.${b}.${c}.${d}`;
+        return isPrivateIPv4(dotted);
+      }
+    }
+    // Fallback: formato dotted (raro, mas possível se passar manualmente)
+    const mapped = extractMappedIPv4(ip);
+    if (mapped) return isPrivateIPv4(mapped);
+  }
   return false;
 }
 
 /**
  * Verifica se um IP (string) é privado/loopback/link-local.
+ *
+ * Detecta formato:
+ *   - IPv4 puro: "127.0.0.1" (só dígitos e pontos, exatamente 3 dots)
+ *   - IPv6 puro: "::1", "fe80::1", "fc00::1" (contém ":" e não tem dots,
+ *     OU tem dots mas não está em formato IPv4 válido)
+ *   - IPv4-mapped IPv6: "::ffff:127.0.0.1" (formato especial)
  */
 export function isPrivateIp(ip: string): boolean {
-  // IPv4
-  if (ip.includes('.')) return isPrivateIPv4(ip);
-  // IPv6
+  // IPv4 puro: 4 grupos de 1-3 dígitos separados por ponto, sem dois-pontos.
+  // O teste `!ip.includes(':')` distingue de IPv4-mapped (que tem `:`).
+  const isPureIPv4 = !ip.includes(':') && /^\d+\.\d+\.\d+\.\d+$/.test(ip);
+  if (isPureIPv4) return isPrivateIPv4(ip);
+  // IPv6 ou IPv4-mapped IPv6
   return isPrivateIPv6(ip);
 }
 
