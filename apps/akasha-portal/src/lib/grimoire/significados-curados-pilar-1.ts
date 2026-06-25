@@ -18,7 +18,7 @@
  * Pilar 1 é o eixo — o número sintetiza todos os outros Pilares
  * (ver `significados-curados-helpers.ts`).
  */
-import type { SignificadoCurado } from './significados-curados';
+import type { PilarVisaoUniversal, SignificadoCurado } from './significados-curados';
 
 const PILAR_1: SignificadoCurado[] = [
   // ── Life Path (Caminho de Vida) — 1-9, 11, 22, 33
@@ -218,3 +218,46 @@ export const PILAR_1_SERIES: SignificadoCurado[] = [
   ...PILAR_1_EXPRESSION,
   ...PILAR_1_ANO_PESSOAL,
 ];
+
+// ─── Wave 20.1 — Visão Universal do Pilar 1 (Cabala) ────────────────────
+//
+// Pilar 1 (Cabala) responde à pergunta **"quem você veio ser"**.
+// Mispar Hechrachi + Sefer Yetzirah codificam o caminho numerológico como
+// espinha dorsal da jornada. Aqui reformulamos o tema em chave universalista
+// (as 5 tradições falando da mesma verdade) e visceral (fala com corpo).
+//
+// expandableDetails preserva TODO o conteúdo detalhado (39 entradas
+// Life Path + Birthday + Expression + Ano Pessoal) — zero info loss.
+
+export const PILAR_1_VISAO_UNIVERSAL: PilarVisaoUniversal = {
+  pilar: 'cabala',
+  verdadeUniversal:
+    'Propósito é direção, não destino — vá onde o corpo sente medo.',
+  vozesPorTradicao: {
+    cabala:
+      'O número do Caminho de Vida (Mispar Hechrachi) é o eixo. Não carreira: é prática diária de alinhamento.',
+    astrologia:
+      'Sol + Nodo Norte mostram o veio. A alma puxa onde a mente hesita. Siga o ímpeto que assusta.',
+    tantra:
+      'Corpo 1 (Alma) é o centro. Decisão vem dali — não da cabeça nem da opinião dos outros.',
+    odu:
+      'Odu natal carrega o ípínlà — o arco que o Ori veio percorrer. Babalaô confirma, você encarna.',
+    iching:
+      'Hexagrama 50 (Ding · Oferecer) e 1 (Qian · Criar) marcam o começo: você sustenta o que serve.',
+  },
+  acoesParaCliente: [
+    'Confie na primeira impressão ao acordar.',
+    'Escolha 1 ofício e domine-o por 12 meses.',
+    'Ofereça 1 nutrição sutil hoje, sem esperar retorno.',
+  ],
+  expandableDetails: PILAR_1_SERIES.map(
+    (s) =>
+      `[${s.pilar}|${s.id}] ${s.titulo}\n` +
+      `  Essência: ${s.essencia}\n` +
+      `  Missão: ${s.missao}\n` +
+      `  Sombra: ${s.sombra}\n` +
+      `  Prática: ${s.pratica}\n` +
+      `  Conexão: ${s.conexao}\n` +
+      `  Fonte: ${s.fonte}`
+  ).join('\n\n'),
+};

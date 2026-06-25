@@ -16,7 +16,7 @@
  * - Cada `essencia` ≤22 palavras. Cada `pratica` 1 linha de UI.
  * - Citação obrigatória (Axioma 4).
  */
-import type { SignificadoCurado } from './significados-curados';
+import type { PilarVisaoUniversal, SignificadoCurado } from './significados-curados';
 
 const PILAR_3_CORPOS: SignificadoCurado[] = [
   {
@@ -230,3 +230,46 @@ export const PILAR_3_SERIES: SignificadoCurado[] = [
   ...PILAR_3_TRIGEMEO,
   ...PILAR_3_TEMPERAMENTO,
 ];
+
+// ─── Wave 20.1 — Visão Universal do Pilar 3 (Tântrica) ──────────────────
+//
+// Pilar 3 (Tântrica) responde à pergunta **"que corpo te sustenta"**.
+// Yogi Bhajan (KRI 2007) + Hipócrates/Kant mapeiam 11 corpos, 3 trigêmeos
+// e 4 temperamentos como anatomia sutil cotidiana. Aqui reformulamos em
+// chave universalista (5 tradições falando do mesmo) e visceral.
+//
+// expandableDetails preserva TODO o conteúdo (11 corpos + 3 trigêmeos +
+// 4 temperamentos = 18 entradas) — zero info loss.
+
+export const PILAR_3_VISAO_UNIVERSAL: PilarVisaoUniversal = {
+  pilar: 'tantrica',
+  verdadeUniversal:
+    'Você tem 11 corpos — usar só 1 é viver com 10 canais fechados.',
+  vozesPorTradicao: {
+    cabala:
+      'Os 11 corpos correspondem às 10 sefirot + Daat (a mente que unifica). Corpo 11 é a coroa.',
+    astrologia:
+      'Cada corpo rege um signo. Corpo 1 (Alma) = Áries; Corpo 5 (Físico) = Touro; Corpo 10 (Radiante) = Leão.',
+    tantra:
+      'Kundalini sobe do Corpo 1 (Alma) ao 11 (Mente Divina). Sinta qual corpo fala AGORA em você.',
+    odu:
+      'Os Ori-don equilibram os corpos. Sem oferenda, o corpo sutil adoece — terreiro sustenta.',
+    iching:
+      '64 hexagramas = movimento dos corpos. Corpo Físico (5) = hex. 1 (Criar); Radiante (10) = hex. 30 (Aderir).',
+  },
+  acoesParaCliente: [
+    'Pare 1 min hoje. Pergunte qual corpo fala AGORA.',
+    'Respire 3 vezes devagar antes de decidir algo.',
+    'Mexa o corpo 15 min hoje. Sem tela, sem fone.',
+  ],
+  expandableDetails: PILAR_3_SERIES.map(
+    (s) =>
+      `[${s.pilar}|${s.id}] ${s.titulo}\n` +
+      `  Essência: ${s.essencia}\n` +
+      `  Missão: ${s.missao}\n` +
+      `  Sombra: ${s.sombra}\n` +
+      `  Prática: ${s.pratica}\n` +
+      `  Conexão: ${s.conexao}\n` +
+      `  Fonte: ${s.fonte}`
+  ).join('\n\n'),
+};

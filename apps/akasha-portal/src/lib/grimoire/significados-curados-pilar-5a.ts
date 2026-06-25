@@ -13,7 +13,7 @@
  * - Cada `essencia` ≤22 palavras. Cada `pratica` 1 linha de UI.
  * - Citação obrigatória (Axioma 4).
  */
-import type { SignificadoCurado } from './significados-curados';
+import type { PilarVisaoUniversal, SignificadoCurado } from './significados-curados';
 
 export const PILAR_5_HEXAGRAMAS_1_32: SignificadoCurado[] = [
   {
@@ -369,3 +369,45 @@ export const PILAR_5_HEXAGRAMAS_1_32: SignificadoCurado[] = [
     fonte: 'Wilhelm/Baynes 1950',
   },
 ];
+
+// ─── Wave 20.1 — Visão Universal do Pilar 5a (I Ching · Hex. 1-32) ──────
+//
+// Pilar 5 (I Ching) responde à pergunta **"que mutação te atravessa agora"**.
+// Wilhelm/Baynes 1950 + King Wen mapeiam 64 hexagramas como espelho da
+// mudança. Aqui registramos a primeira metade (hex. 1-32: Céu-Terra +
+// Nascimento + Desenvolvimento).
+//
+// expandableDetails preserva TODO o conteúdo (32 hexagramas) — zero info loss.
+
+export const PILAR_5A_VISAO_UNIVERSAL: PilarVisaoUniversal = {
+  pilar: 'iching',
+  verdadeUniversal:
+    'Nada é fixo. O hexagrama é o espelho do que muda — não previsão, escuta.',
+  vozesPorTradicao: {
+    cabala:
+      '64 hexagramas ecoam as 32 Caminhos da Árvore da Vida + suas inversões. Mudança = caminho.',
+    astrologia:
+      'Cada hexagrama ressoa um signo/transito. Hex. 1 (Criar) = Áries; Hex. 11 (Paz) = Touro.',
+    tantra:
+      'O hexagrama mostra qual corpo está em mutação HOJE. Trigrama superior = corpo sutil; inferior = físico.',
+    odu:
+      'Os 16 Odu maiores correspondem aos 16 hexagramas "puros" (8 trigramas combinados sem inversão).',
+    iching:
+      'Lance 3 moedas 6 vezes. O hexagrama que emerge é o espelho da mutação. Releia em 7 dias.',
+  },
+  acoesParaCliente: [
+    'Sente 5 min em silêncio antes de consultar.',
+    'Lance 1 hexagrama hoje. Sem forçar a resposta.',
+    'Releia seu hexagrama em 7 dias.',
+  ],
+  expandableDetails: PILAR_5_HEXAGRAMAS_1_32.map(
+    (s) =>
+      `[${s.pilar}|${s.id}] ${s.titulo}\n` +
+      `  Essência: ${s.essencia}\n` +
+      `  Missão: ${s.missao}\n` +
+      `  Sombra: ${s.sombra}\n` +
+      `  Prática: ${s.pratica}\n` +
+      `  Conexão: ${s.conexao}\n` +
+      `  Fonte: ${s.fonte}`
+  ).join('\n\n'),
+};
