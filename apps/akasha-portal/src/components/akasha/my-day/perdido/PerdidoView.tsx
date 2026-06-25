@@ -25,12 +25,14 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Compass, Sparkles, Eye } from 'lucide-react';
 
+import { useTranslation } from '@/i18n';
 import type { AdaptiveViewProps } from '../shared';
 
 export interface PerdidoViewProps extends AdaptiveViewProps {}
 
 export function PerdidoView({ data, loading, locale }: AdaptiveViewProps) {
-  const phrase = data?.climate ?? 'Quando não há direção, comece pelo corpo.';
+  const { t } = useTranslation();
+  const phrase = data?.climate ?? t('meuDia.perdido.phraseFallback');
   const practice = data?.ritual;
 
   return (
@@ -120,15 +122,15 @@ export function PerdidoView({ data, loading, locale }: AdaptiveViewProps) {
         <PracticeCard
           icon={Eye}
           color="#A78BFA"
-          title="5 min de silêncio"
-          description="Sente-se. Apenas observe."
+          title={t('meuDia.perdido.practiceSilenceTitle')}
+          description={t('meuDia.perdido.practiceSilenceDesc')}
           testid="perdido-practice-silence"
         />
         <PracticeCard
           icon={Compass}
           color="#34D399"
-          title="Escreva a 1ª coisa"
-          description="Sem editar. A próxima vem."
+          title={t('meuDia.perdido.practiceWriteTitle')}
+          description={t('meuDia.perdido.practiceWriteDesc')}
           testid="perdido-practice-write"
         />
       </div>
@@ -148,12 +150,12 @@ export function PerdidoView({ data, loading, locale }: AdaptiveViewProps) {
       >
         <Compass size={22} className="text-white" aria-hidden="true" />
         <span className="text-base font-bold text-white tracking-wide">
-          Me dê um caminho
+          {t('meuDia.perdido.mentorTitle')}
         </span>
       </Link>
 
       {loading && (
-        <p className="text-[10px] text-white/35 text-center">carregando seu mapa…</p>
+        <p className="text-[10px] text-white/35 text-center">{t('meuDia.loading')}</p>
       )}
     </motion.div>
   );

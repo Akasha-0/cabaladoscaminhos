@@ -39,15 +39,14 @@ import {
   Hexagon,
 } from 'lucide-react';
 
+import { useTranslation } from '@/i18n';
 import type { AdaptiveViewProps } from '../shared';
 
 export interface CuriosoViewProps extends AdaptiveViewProps {}
 
 interface PilarCard {
-  key: string;
+  key: 'cabala' | 'astrologia' | 'tantra' | 'odu' | 'iching';
   icon: typeof CircleDot;
-  title: string;
-  subtitle: string;
   href: (locale: string) => string;
   color: string;
   glow: string;
@@ -57,8 +56,6 @@ const PILARES: readonly PilarCard[] = [
   {
     key: 'cabala',
     icon: CircleDot,
-    title: 'Cabala',
-    subtitle: 'Caminho de vida',
     href: (l) => `/${l}/mandala?layer=2`,
     color: '#A78BFA',
     glow: 'rgba(167,139,250,0.35)',
@@ -66,8 +63,6 @@ const PILARES: readonly PilarCard[] = [
   {
     key: 'astrologia',
     icon: Star,
-    title: 'Astrologia',
-    subtitle: 'Ascendente + trânsitos',
     href: (l) => `/${l}/mandala?layer=4`,
     color: '#60A5FA',
     glow: 'rgba(96,165,250,0.35)',
@@ -75,8 +70,6 @@ const PILARES: readonly PilarCard[] = [
   {
     key: 'tantra',
     icon: Zap,
-    title: 'Tantra',
-    subtitle: 'Corpos tântricos',
     href: (l) => `/${l}/mandala?layer=3`,
     color: '#F472B6',
     glow: 'rgba(244,114,182,0.35)',
@@ -84,8 +77,6 @@ const PILARES: readonly PilarCard[] = [
   {
     key: 'odu',
     icon: Layers,
-    title: 'Odu',
-    subtitle: 'Linha ancestral',
     href: (l) => `/${l}/diario?intencao=explorar-odu`,
     color: '#FB923C',
     glow: 'rgba(251,146,60,0.35)',
@@ -93,8 +84,6 @@ const PILARES: readonly PilarCard[] = [
   {
     key: 'iching',
     icon: Hexagon,
-    title: 'I Ching',
-    subtitle: 'Hexagrama do dia',
     href: (l) => `/${l}/mandala?layer=5`,
     color: '#34D399',
     glow: 'rgba(52,211,153,0.35)',
@@ -102,6 +91,7 @@ const PILARES: readonly PilarCard[] = [
 ];
 
 export function CuriosoView({ data: _data, loading, locale }: AdaptiveViewProps) {
+  const { t } = useTranslation();
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
@@ -112,16 +102,18 @@ export function CuriosoView({ data: _data, loading, locale }: AdaptiveViewProps)
     >
       <header className="px-1">
         <h3 className="text-lg font-bold text-white m-0">
-          Para onde sua curiosidade puxa?
+          {t('meuDia.curioso.heading')}
         </h3>
         <p className="text-xs text-white/55 leading-snug mt-1 m-0">
-          Toque num pilar.
+          {t('meuDia.curioso.subtitle')}
         </p>
       </header>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {PILARES.map((p, i) => {
           const Icon = p.icon;
+          const title = t(`meuDia.curioso.pilar.${p.key}.title`);
+          const subtitle = t(`meuDia.curioso.pilar.${p.key}.subtitle`);
           return (
             <motion.div
               key={p.key}
@@ -152,8 +144,8 @@ export function CuriosoView({ data: _data, loading, locale }: AdaptiveViewProps)
                     <Icon size={22} style={{ color: p.color }} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-base font-bold text-white leading-tight">{p.title}</p>
-                    <p className="text-xs text-white/60 leading-tight mt-0.5">{p.subtitle}</p>
+                    <p className="text-base font-bold text-white leading-tight">{title}</p>
+                    <p className="text-xs text-white/60 leading-tight mt-0.5">{subtitle}</p>
                   </div>
                 </div>
               </Link>
@@ -163,7 +155,7 @@ export function CuriosoView({ data: _data, loading, locale }: AdaptiveViewProps)
       </div>
 
       {loading && (
-        <p className="text-[10px] text-white/35 text-center">carregando seu mapa…</p>
+        <p className="text-[10px] text-white/35 text-center">{t('meuDia.loading')}</p>
       )}
     </motion.div>
   );
