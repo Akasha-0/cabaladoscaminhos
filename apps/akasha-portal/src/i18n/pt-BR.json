@@ -591,5 +591,43 @@
       },
       "forbidden": "Acesso restrito a administradores."
     }
+  },
+  "search": {
+    "placeholder": "Buscar no Akasha...",
+    "escHint": "Fechar (Esc)",
+    "error": "Não foi possível buscar. Tente novamente.",
+    "loading": "Buscando...",
+    "empty": {
+      "title": "Comece a digitar",
+      "description": "Digite ao menos 2 caracteres para buscar nas suas mensagens, diário, manifesto e mapa."
+    },
+    "noResults": {
+      "title": "Nenhum resultado",
+      "description": "Tente outras palavras ou ajuste os filtros."
+    },
+    "navHint": "↑↓ navegar · Enter abrir · Esc fechar",
+    "shortcutHint": "Cmd/Ctrl + K",
+    "typeLabel": {
+      "chat": "Conversa",
+      "diario": "Diário",
+      "manifesto": "Manifesto",
+      "mapa": "Mapa"
+    },
+    "filters": {
+      "title": "Filtros",
+      "type": "Tipo",
+      "typeAll": "Todos",
+      "dateFrom": "De",
+      "dateTo": "Até",
+      "pilar": "Pilar",
+      "pilarAll": "Todos os pilares",
+      "pilarAstrologia": "Astrologia",
+      "pilarCabala": "Cabala",
+      "pilarTantrica": "Tântrica",
+      "pilarOdu": "Odu",
+      "clear": "Limpar filtros",
+      "ariaLabel": "Filtros avançados de busca"
+    },
+    "score": "Relevância: {score}%"
   }
 }
