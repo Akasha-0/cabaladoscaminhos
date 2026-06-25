@@ -1,0 +1,73 @@
+name: Insights Cron
+
+# Wave 24.1 — Background Insight Cron
+#
+# Roda 1x/dia às 03:00 BRT (= 06:00 UTC, horário padrão sem DST).
+# Em horário de verão BRT (UTC-2), ajustar para 05:00 UTC.
+# Para simplificar: usamos UTC fixo (06:00) — pequena variação sazonal
+# é aceitável (cron noturno em horário de baixo tráfego).
+#
+# O que faz:
+#   POST /api/discoveries/cron com CRON_SECRET — gera 5-10 insights
+#   novos em background (sem Zelador presente), alimentando a base
+#   de conhecimento do Akasha.
+#
+# Trigger:
+#   - schedule: diariamente às 06:00 UTC (03:00 BRT)
+#   - workflow_dispatch: manual (debugging, re-run após outage)
+#
+# LGPD:
+#   - Não toca em PII. CRON_SECRET é repo-level secret (não user data).
+#   - Logs não incluem conteúdo de insights.
+
+on:
+  schedule:
+    # 06:00 UTC = 03:00 BRT (UTC-3). Vercel cron NÃO roda em free tier,
+    # GitHub Actions free tier permite isso (2000min/mês, ~1min/cron = OK).
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+# Sem concurrency limit — execuções diárias independentes.
+# Se o job anterior ainda roda (raro), esta execução sobrescreve apenas
+# a row InsightJob (que é append-only — duas rows são criadas).
+
+permissions:
+  contents: read
+
+jobs:
+  insights:
+    name: Generate background insights
+    runs-on: ubuntu-latest
+    timeout-minutes: 6 # 5min job + buffer
+    env:
+      BASE_URL: ${{ secrets.AKASHA_BASE_URL || 'http://localhost:3000' }}
+      CRON_SECRET: ${{ secrets.CRON_SECRET }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Run discoveries cron
+        run: bash scripts/discoveries-cron.sh
+        env:
+          BASE_URL: ${{ env.BASE_URL }}
+          CRON_SECRET: ${{ env.CRON_SECRET }}
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "::notice::Insights cron finished at $(date -u)"
+          echo "Status: ${{ job.status }}"
