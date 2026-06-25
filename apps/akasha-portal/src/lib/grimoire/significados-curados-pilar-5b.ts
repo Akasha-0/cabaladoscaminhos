@@ -13,7 +13,7 @@
  * - Cada `essencia` ≤22 palavras. Cada `pratica` 1 linha de UI.
  * - Citação obrigatória (Axioma 4).
  */
-import type { SignificadoCurado } from './significados-curados';
+import type { PilarVisaoUniversal, SignificadoCurado } from './significados-curados';
 
 export const PILAR_5_HEXAGRAMAS_33_64: SignificadoCurado[] = [
   {
@@ -369,3 +369,43 @@ export const PILAR_5_HEXAGRAMAS_33_64: SignificadoCurado[] = [
     fonte: 'Wilhelm/Baynes 1950',
   },
 ];
+
+// ─── Wave 20.1 — Visão Universal do Pilar 5b (I Ching · Hex. 33-64) ────
+//
+// Segunda metade do Pilar 5 (hex. 33-64: Recuo + Comunidade +
+// Transição + Conclusão). Combina com pilar-5a em `significados-curados.ts`.
+//
+// expandableDetails preserva TODO o conteúdo (32 hexagramas) — zero info loss.
+
+export const PILAR_5B_VISAO_UNIVERSAL: PilarVisaoUniversal = {
+  pilar: 'iching',
+  verdadeUniversal:
+    'Nada é fixo. O hexagrama é o espelho do que muda — não previsão, escuta.',
+  vozesPorTradicao: {
+    cabala:
+      'Hex. 33-64 correspondem à descida da Árvore (Binah → Malkuth). Recuo e conclusão.',
+    astrologia:
+      'Hex. 33-64 ecoam signos de transição (Escorpião, Sagitário, Capricórnio, Aquário, Peixes).',
+    tantra:
+      'Hex. 33-64 movem os corpos superiores (7=Aura ao 11=Mente Divina). Recuo do sutil.',
+    odu:
+      'Hex. 33-64 = Odu de batalha, transição, conclusão. Onde o Ori-don encontra o fim do ciclo.',
+    iching:
+      'Hex. 33-64 = a parte da mutação que pede retorno, comunidade, preparo do novo ciclo.',
+  },
+  acoesParaCliente: [
+    'Sente 5 min em silêncio antes de consultar.',
+    'Lance 1 hexagrama hoje. Sem forçar a resposta.',
+    'Releia seu hexagrama em 7 dias.',
+  ],
+  expandableDetails: PILAR_5_HEXAGRAMAS_33_64.map(
+    (s) =>
+      `[${s.pilar}|${s.id}] ${s.titulo}\n` +
+      `  Essência: ${s.essencia}\n` +
+      `  Missão: ${s.missao}\n` +
+      `  Sombra: ${s.sombra}\n` +
+      `  Prática: ${s.pratica}\n` +
+      `  Conexão: ${s.conexao}\n` +
+      `  Fonte: ${s.fonte}`
+  ).join('\n\n'),
+};

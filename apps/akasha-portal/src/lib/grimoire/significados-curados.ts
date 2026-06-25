@@ -1,11 +1,29 @@
 // ─── Imports por Pilar (curadoria externa) ───────────────────────────────
 import { ESCALA_TEMPORAL } from './significados-curados-escala-temporal';
-import { PILAR_1_SERIES } from './significados-curados-pilar-1';
-import { PILAR_2_SERIES } from './significados-curados-pilar-2';
-import { PILAR_3_SERIES } from './significados-curados-pilar-3';
-import { PILAR_4_SERIES } from './significados-curados-pilar-4';
-import { PILAR_5_HEXAGRAMAS_1_32 } from './significados-curados-pilar-5a';
-import { PILAR_5_HEXAGRAMAS_33_64 } from './significados-curados-pilar-5b';
+import {
+  PILAR_1_SERIES,
+  PILAR_1_VISAO_UNIVERSAL,
+} from './significados-curados-pilar-1';
+import {
+  PILAR_2_SERIES,
+  PILAR_2_VISAO_UNIVERSAL,
+} from './significados-curados-pilar-2';
+import {
+  PILAR_3_SERIES,
+  PILAR_3_VISAO_UNIVERSAL,
+} from './significados-curados-pilar-3';
+import {
+  PILAR_4_SERIES,
+  PILAR_4_VISAO_UNIVERSAL,
+} from './significados-curados-pilar-4';
+import {
+  PILAR_5_HEXAGRAMAS_1_32,
+  PILAR_5A_VISAO_UNIVERSAL,
+} from './significados-curados-pilar-5a';
+import {
+  PILAR_5_HEXAGRAMAS_33_64,
+  PILAR_5B_VISAO_UNIVERSAL,
+} from './significados-curados-pilar-5b';
 
 /**
  * Significados Curados — Camada de Significado do Grimório (F-219, F-220)
@@ -70,6 +88,64 @@ export interface SignificadoCurado {
   requer_terreiro?: boolean;
 }
 
+// ─── Wave 20.1 — Visão Universal (universalista + visceral) ────────────────
+
+/**
+ * Voz de UMA tradição específica sobre o tema do Pilar.
+ * Limite editorial: ≤25 palavras. Linguagem visceral (fala com corpo).
+ * NÃO é tradução técnica — é como Cabala/Astrologia/Tantra/Odu/I'Ching
+ * falam do MESMO tema com PALAVRAS DIFERENTES. (Wave 20.1 §20.1)
+ */
+export interface VozDaTradicao {
+  cabala: string;
+  astrologia: string;
+  tantra: string;
+  odu: string;
+  iching: string;
+}
+
+/**
+ * PilarVisaoUniversal — Wave 20.1 (Gabriel 25/06)
+ *
+ * Camada agregada do Grimório em chave **universalista** (as 5 tradições
+ * falando da mesma verdade em linguagens diferentes) e **visceral**
+ * (texto que fala com corpo, não só com mente).
+ *
+ * Substitui o antigo "textão acadêmico" por uma estrutura que serve
+ * três personas:
+ *  - **Zelador** (atendente): recebe a verdadeUniversal + vozes e conduz
+ *    a sessão com o consulente
+ *  - **Consulente** (cliente): recebe headline + acoesParaCliente
+ *    na UI default — encosta o corpo na prática
+ *  - **Visitante** (curioso): recebe expandableDetails sob demanda
+ *    ("Mostrar mais") — preserva toda informação curada
+ *
+ * Princípios editoriais (Wave 20.1 §20.1):
+ *  - verdadeUniversal: ≤15 palavras, visceral
+ *  - vozesPorTradicao[*]: ≤25 palavras cada, voz viva da tradição
+ *  - acoesParaCliente: 3 ações, ≤12 palavras cada, executáveis HOJE
+ *  - expandableDetails: TODO o conteúdo detalhado (PILAR_N_SERIES
+ *    serializado) — ZERO perda de informação
+ *
+ * Invariante R-022 §4.4: Pilar 4 (Odu) ainda exige terreiro; a voz
+ * da tradição iorubá carrega `requer_terreiro: true` e o campo
+ * `vozesPorTradicao.odu` jamais substitui orientação de babalaô/yaô.
+ */
+export interface PilarVisaoUniversal {
+  /** Pilar a que pertence esta visão universal. */
+  pilar: Pilar;
+  /** Verdade universal — 1 frase visceral, ≤15 palavras, comum às 5 vozes. */
+  verdadeUniversal: string;
+  /** Como cada uma das 5 tradições fala deste mesmo tema (≤25 palavras). */
+  vozesPorTradicao: VozDaTradicao;
+  /** 3 ações práticas e executáveis hoje (≤12 palavras cada). */
+  acoesParaCliente: [string, string, string];
+  /** Conteúdo detalhado preservado — PILAR_N_SERIES serializado. */
+  expandableDetails: string;
+  /** Apenas Pilar 4 (Odu). Veja R-022 §4.4. */
+  requer_terreiro?: boolean;
+}
+
 // ─── Agregação indexada para busca ──────────────────────────────────────
 
 const SIGNIFICADOS: SignificadoCurado[] = [
@@ -106,6 +182,50 @@ export function coberturaSignificados(): Record<Pilar, number> {
     odu: SIGNIFICADOS.filter((s) => s.pilar === 'odu').length,
     iching: SIGNIFICADOS.filter((s) => s.pilar === 'iching').length,
   };
+}
+
+/** Estatísticas para visões universais Wave 20.1. */
+export function coberturaVisoesUniversais(): Record<Pilar, number> {
+  return {
+    cabala: PILAR_VISOES_UNIVERSAIS.cabala ? 1 : 0,
+    astrologia: PILAR_VISOES_UNIVERSAIS.astrologia ? 1 : 0,
+    tantrica: PILAR_VISOES_UNIVERSAIS.tantrica ? 1 : 0,
+    odu: PILAR_VISOES_UNIVERSAIS.odu ? 1 : 0,
+    iching: PILAR_VISOES_UNIVERSAIS.iching ? 1 : 0,
+  };
+}
+
+// ─── Wave 20.1 — Visões universais agregadas ─────────────────────────────
+
+/**
+ * Combina as duas metades do Pilar 5 (I'Ching) em uma única visão universal.
+ * A verdade / vozes / ações são as mesmas; expandableDetails une ambos arrays.
+ */
+function mergePilar5VisaoUniversal(): PilarVisaoUniversal {
+  return {
+    ...PILAR_5A_VISAO_UNIVERSAL,
+    expandableDetails: [
+      PILAR_5A_VISAO_UNIVERSAL.expandableDetails,
+      PILAR_5B_VISAO_UNIVERSAL.expandableDetails,
+    ].join('\n\n---\n\n'),
+  };
+}
+
+/**
+ * Visão universal agregada por Pilar — chave universalista + visceral.
+ * Invariante: 5 entradas (uma por Pilar); `pilar` é a chave de fora.
+ */
+export const PILAR_VISOES_UNIVERSAIS: Record<Pilar, PilarVisaoUniversal> = {
+  cabala: PILAR_1_VISAO_UNIVERSAL,
+  astrologia: PILAR_2_VISAO_UNIVERSAL,
+  tantrica: PILAR_3_VISAO_UNIVERSAL,
+  odu: PILAR_4_VISAO_UNIVERSAL,
+  iching: mergePilar5VisaoUniversal(),
+};
+
+/** Atalho: devolve a visão universal de um Pilar. */
+export function pilarVisaoUniversal(pilar: Pilar): PilarVisaoUniversal {
+  return PILAR_VISOES_UNIVERSAIS[pilar];
 }
 
 // ─── Re-exports para compatibilidade (F-219, F-220, F-222) ──────────────

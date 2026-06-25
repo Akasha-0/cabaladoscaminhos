@@ -19,7 +19,7 @@
  * - Citação obrigatória (Axioma 4).
  * - Ética Ifá: jamais substituir terreiro/babalaô (R-022 §4.4).
  */
-import type { SignificadoCurado } from './significados-curados';
+import type { PilarVisaoUniversal, SignificadoCurado } from './significados-curados';
 
 const PILAR_4: SignificadoCurado[] = [
   {
@@ -217,3 +217,53 @@ const PILAR_4: SignificadoCurado[] = [
 ];
 
 export const PILAR_4_SERIES: SignificadoCurado[] = PILAR_4;
+
+// ─── Wave 20.1 — Visão Universal do Pilar 4 (Odu) ───────────────────────
+//
+// Pilar 4 (Odu) responde à pergunta **"que Ori você carrega"**.
+// Verger 1973 + Mbiti 1969 + tradição iorubá mapeiam os 16 Odu como
+// espelho do Ori. Aqui reformulamos em chave universalista + visceral.
+//
+// ⚠️ R-022 §4.4 — ÉTICA IFÁ: interpretação profunda REQUER terreiro +
+// babalaô/yaô + consentimento. Esta visão universal é APENAS PONTO DE
+// PARTIDA — jamais substitui a orientação ancestral. requer_terreiro=true
+// mantido como invariante.
+//
+// expandableDetails preserva TODO o conteúdo (16 Odu principais) —
+// zero info loss. Cada Odu é porta de entrada para terreiro, não
+// diagnóstico fechado.
+
+export const PILAR_4_VISAO_UNIVERSAL: PilarVisaoUniversal = {
+  pilar: 'odu',
+  requer_terreiro: true,
+  verdadeUniversal:
+    'Seu Ori carrega ípínlà — um arco ancestral, não uma escolha individual.',
+  vozesPorTradicao: {
+    cabala:
+      'Os 16 Odu ecoam as 32 Caminhos da Árvore da Vida. Cada Odu é uma sefirá dupla — luz e sombra.',
+    astrologia:
+      'Odu regem posições planetárias na tradição iorubá. Cada orixá rege um astro que rege um Odu.',
+    tantra:
+      'O Ori é o Corpo 1 (Alma). Sem oferenda, o Ori enfraquece — corpo sutil adoece.',
+    odu:
+      'Odu natal carrega ípínlà, o arco que o Ori veio percorrer. Babalaô confirma — terreiro encarna.',
+    iching:
+      '16 Odu maiores + 240 Odu menores = 256 estados. Espelho iorubano dos 64 hexagramas × 4 linhas.',
+  },
+  acoesParaCliente: [
+    'Procure um terreiro de sua confiança esta semana.',
+    'Pergunte ao seu mais velho sobre o Odu da família.',
+    'Ofereça 1 ebó simples hoje: água, vela, palavra.',
+  ],
+  expandableDetails: PILAR_4_SERIES.map(
+    (s) =>
+      `[${s.pilar}|${s.id}] ${s.titulo}\n` +
+      `  Essência: ${s.essencia}\n` +
+      `  Missão: ${s.missao}\n` +
+      `  Sombra: ${s.sombra}\n` +
+      `  Prática: ${s.pratica}\n` +
+      `  Conexão: ${s.conexao}\n` +
+      `  Fonte: ${s.fonte}\n` +
+      `  ⚠️ requer_terreiro: true`
+  ).join('\n\n'),
+};

@@ -15,7 +15,7 @@
  * - Cada `essencia` ≤22 palavras. Cada `pratica` 1 linha de UI.
  * - Citação obrigatória (Axioma 4).
  */
-import type { SignificadoCurado } from './significados-curados';
+import type { PilarVisaoUniversal, SignificadoCurado } from './significados-curados';
 
 const PILAR_2_SIGNOS: SignificadoCurado[] = [
   {
@@ -241,3 +241,46 @@ export const PILAR_2_SERIES: SignificadoCurado[] = [
   ...PILAR_2_FASES_LUA,
   ...PILAR_2_TRINITY,
 ];
+
+// ─── Wave 20.1 — Visão Universal do Pilar 2 (Astrologia) ────────────────
+//
+// Pilar 2 (Astrologia) responde à pergunta **"que céu você trouxe consigo"**.
+// Brennan + R-015 mapeiam Sol/Lua/Ascendente/fases/tríade como espelho
+// do cosmos no seu primeiro suspiro. Aqui reformulamos em chave
+// universalista (5 tradições falando do mesmo) e visceral (fala com corpo).
+//
+// expandableDetails preserva TODO o conteúdo (12 signos + 4 fases + 3 tríade
+// = 19 entradas) — zero info loss.
+
+export const PILAR_2_VISAO_UNIVERSAL: PilarVisaoUniversal = {
+  pilar: 'astrologia',
+  verdadeUniversal:
+    'O céu é espelho, não destino — o mapa mostra o que você pode cultivar.',
+  vozesPorTradicao: {
+    cabala:
+      'O zodíaco é a Árvore da Vida projetada no tempo. Cada signo, uma sefirá do corpo que você veste.',
+    astrologia:
+      'Sol, Lua, Ascendente, fases, tríade — o cosmos fotografado no primeiro suspiro convida ao livre-arbítrio.',
+    tantra:
+      'Lua Nova = Corpo 1 (Alma). Lua Cheia = Corpo 10 (Radiante). O zodíaco rege os 11 corpos.',
+    odu:
+      'As fases da Lua regem ebós e oferendas. Cada lua pede um Ori-don diferente — terreiro confirma.',
+    iching:
+      '64 hexagramas = 4 fases × 16 estados. A Lua mostra em que fase você respira AGORA.',
+  },
+  acoesParaCliente: [
+    'Olhe o céu hoje. Sem medir, sem julgar.',
+    'Siga o trânsito como convite, não como sentença.',
+    'Honre a Lua do mês com 1 gesto simples.',
+  ],
+  expandableDetails: PILAR_2_SERIES.map(
+    (s) =>
+      `[${s.pilar}|${s.id}] ${s.titulo}\n` +
+      `  Essência: ${s.essencia}\n` +
+      `  Missão: ${s.missao}\n` +
+      `  Sombra: ${s.sombra}\n` +
+      `  Prática: ${s.pratica}\n` +
+      `  Conexão: ${s.conexao}\n` +
+      `  Fonte: ${s.fonte}`
+  ).join('\n\n'),
+};
