@@ -38,7 +38,7 @@ function buildCorsHeaders(origin: string | null): Record<string, string> {
 }
 
 // ============================================
-// Security Headers (Fase 18 — endurecido)
+// Security Headers (Fase 18 — endurecido / Wave 12.5 CSP)
 // ============================================
 // HSTS (Strict-Transport-Security): força HTTPS por 1 ano, com
 //   includeSubDomains e preload. Só é enviado em produção (HTTPS);
@@ -49,16 +49,22 @@ function buildCorsHeaders(origin: string | null): Record<string, string> {
 //   completa para terceiros.
 // Permissions-Policy: desabilita APIs sensíveis (geolocation etc).
 //
-// CSP para APIs: default-src 'none' — APIs não devem servir HTML/JS.
-//   Para páginas, CSP fica no Next.js metadata / response headers;
-//   aqui só endurecemos as rotas /api (que é onde ele tem efeito
-//   bloqueante: se um atacante fizer upload de HTML, 'none' bloqueia).
+// CSP (Content-Security-Policy, Wave 12.5):
+//   - API: `default-src 'none'; frame-ancestors 'none'` — APIs não devem
+//     servir HTML/JS. Se atacante fizer upload de HTML, 'none' bloqueia.
+//   - Páginas: CSP funcional estrito. `script-src 'self' 'unsafe-inline'`
+//     é necessário porque Next.js injeta scripts inline para hidratação
+//     de RSC e chunks críticos. Removemos `'unsafe-eval'` (não é
+//     necessário em produção; dev usa webpack hot-reload que não
+//     precisa de eval). `connect-src` libera apenas LLM providers
+//     reais (MiniMax + Stripe).
 const SECURITY_HEADERS = {
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
   'X-XSS-Protection': '1; mode=block',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
-  'Permissions-Policy': 'geolocation=(), microphone=(), camera=()',
+  'Permissions-Policy':
+    'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()',
   // HSTS só faz sentido em produção com HTTPS. Em dev (http://localhost)
   // o browser ignora; mesmo assim, devolvemos o header para que
   // qualquer proxy reverso de dev também já esteja condicionado.
@@ -66,7 +72,49 @@ const SECURITY_HEADERS = {
 };
 
 /** CSP strict para rotas API (não servem conteúdo navegável). */
-const API_CSP = "default-src 'none'; frame-ancestors 'none'";
+const API_CSP = "default-src 'none'; frame-ancestors 'none'; base-uri 'none'";
+
+/**
+ * CSP para páginas — Wave 12.5 endurecido.
+ *
+ * Diretivas:
+ *   - `default-src 'self'` — bloqueia tudo que não seja same-origin.
+ *   - `script-src 'self' 'unsafe-inline'` — Next.js injeta inline scripts
+ *     para RSC payload, nonce-less hydration e chunks críticos. Hash-based
+ *     nonces exigiriam overhaul profundo de `next/script` + todos os
+ *     componentes de cliente; trade-off aceito com `'unsafe-inline'`.
+ *     `'unsafe-eval'` REMOVIDO (não é necessário em produção).
+ *   - `style-src 'self' 'unsafe-inline'` — Tailwind e CSS-in-JS injetam
+ *     styles inline; necessário.
+ *   - `img-src 'self' data: https:` — Supabase storage + Unsplash para
+ *     imagens do Mandala. `data:` permite data URIs (manifest icons).
+ *   - `font-src 'self' data:` — next/font usa data URIs em dev.
+ *   - `connect-src` — apenas MiniMax (provider primário do Mentor) e
+ *     Stripe (checkout). OpenAI removido (não é provider ativo).
+ *   - `frame-ancestors 'none'` — defesa em profundidade (já temos
+ *     X-Frame-Options: DENY).
+ *   - `base-uri 'self'` — bloqueia `<base>` injection.
+ *   - `form-action 'self'` — bloqueia form action pointing off-origin.
+ *   - `object-src 'none'` — bloqueia `<object>`, `<embed>`, `<applet>`.
+ *   - `upgrade-insecure-requests` — força HTTPS para sub-resources.
+ *
+ * IMPORTANTE (LGPD Art. 33): este header não vaza PII. Logs de CSP
+ * violation são enviados para `/api/csp-report` (se existir); quando
+ * implementarmos, NUNCA logar IPs em texto puro — usar `hashIp()`.
+ */
+const PAGE_CSP = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: https:",
+  "font-src 'self' data:",
+  "connect-src 'self' https://api.minimaxi.chat https://api.minimax.io https://api.stripe.com",
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "object-src 'none'",
+  'upgrade-insecure-requests',
+].join('; ');
 // ============================================
 // Auth Token Refresh via Internal Fetch (Edge Runtime)
 // ============================================
@@ -224,6 +272,8 @@ export async function middleware(request: NextRequest) {
     Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
       redirectResponse.headers.set(key, value);
     });
+    // Wave 12.5: harden page CSP even on redirect responses (defense in depth).
+    redirectResponse.headers.set('Content-Security-Policy', PAGE_CSP);
     redirectResponse.headers.set('X-Request-Id', requestId);
     return redirectResponse;
   }
@@ -235,6 +285,13 @@ export async function middleware(request: NextRequest) {
   Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
     response.headers.set(key, value);
   });
+  // Wave 12.5: apply hardened page CSP to all page responses at middleware level.
+  // (The same PAGE_CSP is exported via `headers()` in layout.tsx for build-time,
+  // but Next.js headers() runs only at edge build; applying here guarantees
+  // coverage on RSC streaming responses and middleware-rewritten paths.)
+  if (!pathname.startsWith('/api/')) {
+    response.headers.set('Content-Security-Policy', PAGE_CSP);
+  }
 
   // Skip rate limiting for excluded paths
   const EXCLUDED_PATHS = ['/_next', '/favicon.ico', '/api/health'];
