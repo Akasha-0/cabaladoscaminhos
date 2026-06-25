@@ -42,6 +42,10 @@
     "step4": {
       "title": "Begin Your Journey",
       "description": "Do your first recommended practice based on your personal code."
+    },
+    "tour": {
+      "resume": "Resuming from step {atual} of {total}",
+      "skipAll": "Skip tour"
     }
   },
   "mandala": {

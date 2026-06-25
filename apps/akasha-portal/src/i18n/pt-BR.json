@@ -42,6 +42,10 @@
     "step4": {
       "title": "Comece sua Jornada",
       "description": "Faça sua primeira prática recomendada baseada no seu código pessoal."
+    },
+    "tour": {
+      "resume": "Continuando do passo {atual} de {total}",
+      "skipAll": "Pular tour"
     }
   },
   "mandala": {

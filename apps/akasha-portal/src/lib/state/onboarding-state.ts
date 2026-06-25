@@ -1,31 +1,29 @@
 /**
- * onboarding-state.ts — Wave 13.1 FirstTimeTour
+ * onboarding-state.ts — Wave 13.1 FirstTimeTour + Wave 18.5 persistence
  *
- * Persists whether the new-user onboarding tour has been completed.
+ * Persists the new-user onboarding tour state across visits. Two flags:
  *
- * Trigger contract (per Wave 13.1 plan §13.1):
- *   - The tour appears if `akasha.onboarding.completed` !== 'true' in localStorage.
- *   - The tour is marked complete the FIRST time the user either:
- *       (a) picks an emotional state (ansioso | centrado | perdido | curioso)
- *           via the StatePicker, OR
- *       (b) taps "Pular" on step 1.
- *   - The flag is sticky — once set, it stays for the lifetime of the browser
- *     profile. We intentionally do NOT auto-reset on logout; the tour is
- *     scoped to "first-time experience", not "first-time per session".
+ *   1. `akasha.onboarding.completed`  — Wave 13.1 "true"/absent boolean.
+ *      Backwards compatible: any Wave 13.1 reader that only checks this
+ *      key continues to work. We keep writing it on every finalization
+ *      (advance past last step, skip step 1, skip from any step).
  *
- * Why a separate flag from `akasha.emotionalState`:
- *   - The picker can be skipped (Pular por agora) without the emotional
- *     state being set. We still want to consider onboarding "done" so the
- *     user isn't pestered every visit.
- *   - Conversely, a returning user might have an old/stale state but never
- *     have seen the tour (e.g. Wave 9.1 user upgrading to Wave 13.1).
- *     We treat the flag as authoritative — if it's not 'true', show the
- *     tour (one screen, then dismiss).
+ *   2. `akasha.onboarding.step`       — Wave 18.5. Stores the current
+ *      step (0, 1, or 2) so the tour resumes mid-flight if the user
+ *      leaves / refreshes / closes the tab. Written on EVERY step change.
+ *
+ * Wave 18.5 step semantics:
+ *   - Step values are the live tour indices: 0, 1, 2.
+ *   - When the tour is finished (advanced past step 2 OR skipped from any
+ *     step), we store step = "3" — a sentinel value meaning "complete"
+ *     that is a strict superset of the Wave 13.1 boolean. We also write
+ *     the legacy `completed` flag so any pre-18.5 reader stays correct.
  *
  * SSR safety:
- *   - All `localStorage` access is guarded. The hook returns `completed: false`
- *     on the first render and only resolves client-side after mount. This
- *     keeps React hydration stable — the tour never appears on the server.
+ *   - All `localStorage` access is guarded. The hook returns
+ *     `{ hydrated: false, completed: false, currentStep: 0 }` on the first
+ *     render and only resolves client-side after mount. This keeps React
+ *     hydration stable — the tour never appears on the server.
  *
  * Single source of truth: this file. Components MUST import from here.
  */
@@ -35,32 +33,81 @@
 import { useCallback, useEffect, useState } from 'react';
 
 export const ONBOARDING_STORAGE_KEY = 'akasha.onboarding.completed';
+/** Wave 18.5 — current step (0|1|2|3) sentinel for completion. */
+export const ONBOARDING_STEP_KEY = 'akasha.onboarding.step';
 
-function readFlag(): boolean {
+/** Step values the live tour uses. */
+export type OnboardingStep = 0 | 1 | 2;
+/** Sentinel for "tour is complete" (>= total steps). */
+export const ONBOARDING_COMPLETED_STEP: 3 = 3 as const;
+/** Default starting step (Wave 13.1 behaviour: always begin at step 0). */
+export const ONBOARDING_DEFAULT_STEP: OnboardingStep = 0;
+/** Union of all step values the storage layer may surface, including the
+ *  completed sentinel. Callers that need a live tour step should narrow
+ *  with `clampInitialStep` (re-exported from FirstTimeTour) or by
+ *  checking `step < ONBOARDING_COMPLETED_STEP`. */
+export type AnyOnboardingStep = OnboardingStep | typeof ONBOARDING_COMPLETED_STEP;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Storage I/O
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Validates a step value loaded from localStorage. */
+function parseStep(raw: string | null): AnyOnboardingStep {
+  if (raw === null) return ONBOARDING_DEFAULT_STEP;
+  // '3' is the "complete" sentinel — never returns as a live step.
+  if (raw === '3') return ONBOARDING_COMPLETED_STEP;
+  if (raw === '0' || raw === '1' || raw === '2') {
+    return Number(raw) as OnboardingStep;
+  }
+  // Garbage in storage — treat as fresh start. Don't throw; this is
+  // best-effort persistence, not a security boundary.
+  return ONBOARDING_DEFAULT_STEP;
+}
+
+function readCompleted(): boolean {
   if (typeof window === 'undefined') return false;
   try {
     return window.localStorage.getItem(ONBOARDING_STORAGE_KEY) === 'true';
   } catch {
-    // localStorage may be disabled (private mode quota, etc.). Treat as
-    // "not yet completed" — the tour will be shown on next mount.
     return false;
   }
 }
 
-function writeFlag(): void {
+function readStep(): AnyOnboardingStep {
+  if (typeof window === 'undefined') return ONBOARDING_DEFAULT_STEP;
+  try {
+    return parseStep(window.localStorage.getItem(ONBOARDING_STEP_KEY));
+  } catch {
+    return ONBOARDING_DEFAULT_STEP;
+  }
+}
+
+function writeStep(step: AnyOnboardingStep): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(ONBOARDING_STEP_KEY, String(step));
+  } catch {
+    // Ignore quota / disabled storage — the tour simply won't resume,
+    // which is the safe failure mode (user sees the tour again, no data
+    // loss).
+  }
+}
+
+function writeCompletedFlag(): void {
   if (typeof window === 'undefined') return;
   try {
     window.localStorage.setItem(ONBOARDING_STORAGE_KEY, 'true');
   } catch {
-    // Ignore quota / disabled storage — the tour simply won't re-trigger,
-    // which is the desired safe behaviour.
+    // Ignore quota / disabled storage.
   }
 }
 
-function clearFlag(): void {
+function clearBothFlags(): void {
   if (typeof window === 'undefined') return;
   try {
     window.localStorage.removeItem(ONBOARDING_STORAGE_KEY);
+    window.localStorage.removeItem(ONBOARDING_STEP_KEY);
   } catch {
     // ignore
   }
@@ -70,16 +117,58 @@ function clearFlag(): void {
 // Imperative API (for non-React callers; tests too)
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * @deprecated Use {@link isOnboardingCompleted} for the boolean read,
+ * {@link getOnboardingStep} for the step read. Kept for backwards
+ * compatibility with Wave 13.1 callers.
+ */
 export function isOnboardingCompleted(): boolean {
-  return readFlag();
+  return readCompleted();
 }
 
+/**
+ * Returns the persisted current step. Returns {@link ONBOARDING_DEFAULT_STEP}
+ * (0) when storage is empty or unreadable. Returns
+ * {@link ONBOARDING_COMPLETED_STEP} (3) when the tour was already finished
+ * (either via the legacy boolean or via the step sentinel).
+ */
+export function getOnboardingStep(): AnyOnboardingStep {
+  if (readCompleted()) return ONBOARDING_COMPLETED_STEP;
+  return readStep();
+}
+
+/**
+ * Write the current step without finalising the tour. Called by the
+ * FirstTimeTour on every step change.
+ *
+ * NOTE: passing {@link ONBOARDING_COMPLETED_STEP} (3) is treated as a
+ * completion signal — both the step key AND the legacy completed flag
+ * are written, so any Wave 13.1 reader stays consistent. Most callers
+ * should prefer {@link markOnboardingCompleted} for the explicit
+ * finalise path; this overload exists so that a unified `setStep(n)`
+ * API can be used in either direction.
+ */
+export function setOnboardingStep(step: AnyOnboardingStep): void {
+  if (step === ONBOARDING_COMPLETED_STEP) {
+    writeCompletedFlag();
+  }
+  writeStep(step);
+}
+
+/**
+ * Mark the tour as completed. Writes both:
+ *   - the legacy `completed = 'true'` flag (Wave 13.1 contract), AND
+ *   - the step sentinel = 3 (Wave 18.5 contract).
+ * Idempotent. Safe to call from anywhere.
+ */
 export function markOnboardingCompleted(): void {
-  writeFlag();
+  writeCompletedFlag();
+  writeStep(ONBOARDING_COMPLETED_STEP);
 }
 
+/** Clear both flags. Used by tests + the "Replay onboarding" affordance. */
 export function resetOnboarding(): void {
-  clearFlag();
+  clearBothFlags();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -88,9 +177,8 @@ export function resetOnboarding(): void {
 
 export interface UseOnboardingReturn {
   /**
-   * `true` once we've resolved the localStorage flag on the client. Until
-   * then the consumer should not render the tour (or should render a
-   * skeleton) — see `MeuDiaHub` for the canonical pattern.
+   * `true` once we've resolved localStorage on the client. Until then the
+   * consumer should not render the tour (or should render a skeleton).
    */
   hydrated: boolean;
   /**
@@ -99,12 +187,26 @@ export interface UseOnboardingReturn {
    */
   completed: boolean;
   /**
+   * Wave 18.5 — the persisted current step (0, 1, or 2). When `completed`
+   * is `true`, this is {@link ONBOARDING_COMPLETED_STEP} (3). Pass this
+   * to `<FirstTimeTour initialStep={...}>` so the tour resumes at the
+   * saved step rather than restarting.
+   */
+  currentStep: AnyOnboardingStep;
+  /**
+   * Wave 18.5 — persist a new live step (0|1|2). Calling with
+   * {@link ONBOARDING_COMPLETED_STEP} (3) is equivalent to
+   * {@link markCompleted}.
+   */
+  setStep: (step: AnyOnboardingStep) => void;
+  /**
    * Mark the tour as completed. Safe to call from anywhere — idempotent.
+   * Writes BOTH the legacy flag and the new step sentinel.
    */
   markCompleted: () => void;
   /**
-   * Clear the flag. Used by tests + the dev "Replay onboarding" affordance
-   * (out of scope for Wave 13.1, but the hook leaves room for it).
+   * Clear both flags. Used by tests + the dev "Replay onboarding"
+   * affordance.
    */
   reset: () => void;
 }
@@ -112,36 +214,78 @@ export interface UseOnboardingReturn {
 /**
  * useOnboarding — canonical consumer for the tour visibility flag.
  *
- * Mirrors the SSR-safe pattern of `useEmotionalState`:
- *   - First render returns `{ hydrated: false, completed: false }` so the
- *     server-rendered HTML matches the first client paint (no hydration
- *     mismatch). The tour is rendered behind a `hydrated` gate.
+ * Wave 18.5 additions:
+ *   - `currentStep` — persisted step, suitable as the `initialStep` prop
+ *     for `<FirstTimeTour>` so the tour resumes instead of restarting.
+ *   - `setStep(n)` — called by `<FirstTimeTour>` on every step change
+ *     to persist progress.
+ *
+ * SSR safety mirrors `useEmotionalState`:
+ *   - First render returns `{ hydrated: false, completed: false,
+ *     currentStep: 0 }` so the server-rendered HTML matches the first
+ *     client paint (no hydration mismatch).
  *   - After mount, we read localStorage and resolve.
- *   - `markCompleted` writes the flag, then triggers a re-render via a
- *     version bump so the tour disappears on the same tick.
+ *   - `markCompleted` writes both flags, then bumps a version so the
+ *     tour disappears on the same tick.
  */
 export function useOnboarding(): UseOnboardingReturn {
   const [completed, setCompleted] = useState(false);
+  const [currentStep, setCurrentStepState] =
+    useState<AnyOnboardingStep>(ONBOARDING_DEFAULT_STEP);
   const [hydrated, setHydrated] = useState(false);
   // Bump-key: incrementing this after a mutation forces a re-read so
-  // consumers that depend on `completed` stay fresh without recomputing
-  // on every render. Mirrors `useEmotionalState`.
+  // consumers that depend on `completed`/`currentStep` stay fresh without
+  // recomputing on every render. Mirrors `useEmotionalState`.
   const [version, setVersion] = useState(0);
 
   useEffect(() => {
-    setCompleted(readFlag());
+    const completed = readCompleted();
+    setCompleted(completed);
+    // Wave 18.5 — if the legacy `completed` flag is set, the step is
+    // effectively the completed sentinel. This matches the imperative
+    // `getOnboardingStep()` precedence and keeps the hook consistent
+    // regardless of which key a Wave 13.1 reader last wrote.
+    setCurrentStepState(completed ? ONBOARDING_COMPLETED_STEP : readStep());
     setHydrated(true);
   }, [version]);
 
+  const setStep = useCallback((step: AnyOnboardingStep) => {
+      if (step === ONBOARDING_COMPLETED_STEP) {
+        // Setting step = 3 implies completion — write both flags.
+        writeCompletedFlag();
+        writeStep(ONBOARDING_COMPLETED_STEP);
+        setCompleted(true);
+      } else {
+        writeStep(step);
+      }
+      setCurrentStepState(step);
+      // No version bump for live step changes — the parent re-renders
+      // naturally because `currentStep` already changed.
+    },
+    []
+  );
+
   const markCompleted = useCallback(() => {
-    writeFlag();
+    writeCompletedFlag();
+    writeStep(ONBOARDING_COMPLETED_STEP);
+    setCompleted(true);
+    setCurrentStepState(ONBOARDING_COMPLETED_STEP);
     setVersion((v) => v + 1);
   }, []);
 
   const reset = useCallback(() => {
-    clearFlag();
+    clearBothFlags();
+    setCompleted(false);
+    setCurrentStepState(ONBOARDING_DEFAULT_STEP);
     setVersion((v) => v + 1);
   }, []);
 
-  return { hydrated, completed, markCompleted, reset };
+  return {
+    hydrated,
+    completed,
+    currentStep,
+    setStep,
+    markCompleted,
+    reset,
+  };
 }

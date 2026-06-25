@@ -59,6 +59,8 @@ export function MeuDiaHub({ locale, userName }: MeuDiaHubProps) {
   const {
     hydrated: onboardingHydrated,
     completed: onboardingCompleted,
+    currentStep: onboardingCurrentStep,
+    setStep: setOnboardingStep,
     markCompleted: markOnboardingCompleted,
   } = useOnboarding();
   const { data, loading } = useAkashaSynthesis({ userId: 'me' });
@@ -89,9 +91,16 @@ export function MeuDiaHub({ locale, userName }: MeuDiaHubProps) {
       {/* Wave 13.1 — FirstTimeTour. Shown over the hub until the user
           completes (advances) or skips (step 1). Gated by the
           `useOnboarding` hydrated flag so the SSR HTML stays a clean
-          match for the first client paint. */}
+          match for the first client paint. Wave 18.5 — pass the
+          persisted `currentStep` so the tour resumes mid-flight instead
+          of restarting, and forward `onStepChange` so progress is
+          written back on every step change. */}
       {onboardingHydrated && !onboardingCompleted && (
-        <FirstTimeTour onComplete={markOnboardingCompleted} />
+        <FirstTimeTour
+          onComplete={markOnboardingCompleted}
+          initialStep={onboardingCurrentStep}
+          onStepChange={setOnboardingStep}
+        />
       )}
 
       <main
