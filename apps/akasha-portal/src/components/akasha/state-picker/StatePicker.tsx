@@ -30,6 +30,7 @@
 
 import { motion } from 'framer-motion';
 import { Sprout, Waves, Compass, Sparkles } from 'lucide-react';
+import { useState } from 'react';
 
 import {
   EMOTIONAL_STATES,
@@ -43,6 +44,15 @@ export interface StatePickerProps {
   onSkip?: () => void;
   /** Optional heading override (defaults to a PT-BR fallback). */
   heading?: string;
+  /**
+   * Pre-selected state. The caller can pass this when the picker is shown
+   * in a confirm/edit context. When unset, no tile is marked as checked.
+   * NOTE: selection state is *local* to the component on purpose — the
+   * authoritative state lives in the caller (useEmotionalState). This
+   * avoids a flash of "no selection" on first render when a state is
+   * already persisted.
+   */
+  selected?: EmotionalState | null;
 }
 
 interface TileConfig {
@@ -94,10 +104,17 @@ const TILES: readonly TileConfig[] = [
   },
 ] as const;
 
-export function StatePicker({ onSelect, onSkip, heading }: StatePickerProps) {
+export function StatePicker({ onSelect, onSkip, heading, selected = null }: StatePickerProps) {
   const resolvedHeading = heading ?? 'Como você está hoje?';
   const subtitle = 'A página se adapta ao que você precisa.';
   const skipLabel = 'Pular por agora';
+
+  // Local selection state — mirrors the caller-passed `selected` initially
+  // and is updated when the user picks a tile. We surface this via
+  // aria-checked on each radio so screen readers announce the active
+  // selection. The caller is still authoritative via onSelect.
+  const [picked, setPicked] = useState<EmotionalState | null>(selected);
+  const activeState = picked ?? selected;
 
   // Touch-keyboard accessibility: tiles are real <button>s so they're
   // tab-focusable by default. `role="radiogroup"` lets AT announce the
@@ -129,14 +146,18 @@ export function StatePicker({ onSelect, onSkip, heading }: StatePickerProps) {
         {TILES.map((tile, i) => {
           const Icon = tile.icon;
           const ariaLabel = stateAriaLabel(tile.state);
+          const isSelected = activeState === tile.state;
           return (
             <motion.button
               key={tile.state}
               type="button"
               role="radio"
-              aria-checked={false}
+              aria-checked={isSelected}
               aria-label={ariaLabel}
-              onClick={() => onSelect(tile.state)}
+              onClick={() => {
+                setPicked(tile.state);
+                onSelect(tile.state);
+              }}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.05 + i * 0.04, duration: 0.25 }}
@@ -148,6 +169,14 @@ export function StatePicker({ onSelect, onSkip, heading }: StatePickerProps) {
                 border: `1px solid ${tile.border}`,
                 minHeight: 120,
                 minWidth: 120,
+                // Per-tile focus ring colour keeps the design language:
+                // each emotional state tints its own focus indicator.
+                // Outline is drawn with outlineColor + box-shadow ring
+                // fallback for older Safari.
+                outlineColor: tile.color,
+                boxShadow: isSelected
+                  ? `0 0 0 2px ${tile.color} inset, 0 0 18px -4px ${tile.glow}`
+                  : undefined,
               }}
               data-state={tile.state}
               data-testid={`state-picker-tile-${tile.state}`}
@@ -191,7 +220,7 @@ export function StatePicker({ onSelect, onSkip, heading }: StatePickerProps) {
           <button
             type="button"
             onClick={onSkip}
-            className="min-h-[44px] px-4 text-xs text-white/50 hover:text-white/80 underline-offset-2 hover:underline transition-colors"
+            className="min-h-[48px] px-4 text-xs text-white/50 hover:text-white/80 underline-offset-2 hover:underline transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60 rounded"
             data-testid="state-picker-skip"
           >
             {skipLabel}
