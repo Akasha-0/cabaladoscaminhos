@@ -548,6 +548,39 @@
       }
     }
   },
+  "privacy": {
+    "title": "Privacidade e Consentimento",
+    "desc": "Gerencie como seus dados são usados. Conforme a LGPD, seu consentimento deve ser livre, informado e inequívoco. Você pode revogar qualquer consentimento a qualquer momento. Mantemos um histórico completo de auditoria de cada decisão.",
+    "lgpdArticle7": "Art. 7 — O consentimento para tratamento de dados pessoais deve ser dado para finalidades específicas, com informação prévia e explícita sobre o tratamento.",
+    "lgpdArticle8": "Art. 8 — O consentimento pode ser revogado a qualquer tempo, mediante manifestação expressa do titular. A revogação não afeta a licitude do tratamento realizado anteriormente.",
+    "consentTypes": {
+      "MARKETING": "E-mails de marketing e promoções",
+      "ANALYTICS": "Métricas anônimas de uso",
+      "AI_TRAINING": "Uso dos meus dados para treinar IA",
+      "THIRD_PARTY_SHARING": "Compartilhar dados com terceiros"
+    },
+    "consentDescriptions": {
+      "MARKETING": "Receber newsletters, novidades do produto e conteúdo promocional. Opt-in obrigatório (LGPD Art. 7º, I).",
+      "ANALYTICS": "Coletamos métricas anônimas e agregadas (visualizações de página, uso de features) para melhorar o produto. Sem dados pessoalmente identificáveis. Base legal: legítimo interesse.",
+      "AI_TRAINING": "Permitir que inputs anonimizados sejam usados para treinar e ajustar modelos de IA. Categoria sensível (LGPD Art. 11) — opt-in estrito.",
+      "THIRD_PARTY_SHARING": "Compartilhar seus dados com parceiros de integração (analytics vendors, plataformas parceiras). Opt-in estrito."
+    },
+    "history": "Histórico de decisões",
+    "historyEmpty": "Nenhuma decisão registrada ainda — seu estado atual reflete os defaults de cadastro.",
+    "historyDecision": "{action} em {date}",
+    "historyAction": {
+      "grant": "Concedido",
+      "revoke": "Revogado"
+    },
+    "lgpdNote": "Todas as decisões são registradas com timestamp, hash de IP e fingerprint do navegador (LGPD Art. 37). Você pode solicitar a exclusão completa a qualquer momento.",
+    "savedSuccess": "Consentimento salvo.",
+    "saveError": "Não foi possível salvar a decisão. Tente novamente.",
+    "enabledLabel": "Ativado",
+    "disabledLabel": "Desativado",
+    "loadingState": "Carregando…",
+    "loadingHistory": "Carregando histórico de decisões…",
+    "fetchError": "Não foi possível carregar suas preferências de privacidade. Atualize a página."
+  },
   "admin": {
     "users": {
       "title": "Gestão de Usuários",

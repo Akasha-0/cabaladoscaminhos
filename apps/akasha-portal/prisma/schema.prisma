@@ -893,3 +893,102 @@ model AuditLog {
   @@index([action, createdAt])
   @@map("audit_logs")
 }
+
+// ─── Wave 19.3 — Privacy Controls UI (LGPD Art. 7 / 8) ────────────────────
+//
+// Audit trail IMUTÁVEL das decisões de consentimento do usuário. Diferente
+// de `NotificationPreference` (que é um upsert mutável), aqui cada decisão
+// gera um NOVO registro. O histórico completo é preservado para fins de
+// demonstrabilidade (LGPD Art. 37 — registro das operações de tratamento).
+//
+// LGPD:
+//   - Art. 7º — consentimento deve ser livre, informado e inequívoco.
+//   - Art. 8º — é vedado o tratamento de dados sem consentimento OU
+//               mediante revogação. Cada decisão (grant ou revoke) precisa
+//               ser registrada com timestamp + identificação do titular +
+//               contexto da coleta (IP hash + user agent).
+//   - Art. 37º — controlador deve manter registro das operações de
+//               tratamento (audit trail).
+//
+// Wave 8.3 já persiste `User.consentAt` (timestamp mínimo). Wave 19.2
+// adiciona o direito de eliminação (delete cascade). Wave 19.3 fecha o
+// ciclo de LGPD self-service: o usuário pode consultar E REVOGAR cada
+// categoria de consentimento individualmente, com trilha de auditoria.
+//
+// Decisões de design:
+//   1. `userId` SEM FK para User — mesmo padrão de `AuditLog.userId` (LGPD
+//      Art. 37: trilha precisa sobreviver ao delete do usuário).
+//   2. `ipHash` (não IP puro) — `IpHash` tipo exportado por
+//      `src/lib/infrastructure/security/ip-hash.ts` (HMAC-SHA256 com JWT_SECRET).
+//      LGPD Art. 33: IP é PII; hash unidirecional é o mínimo necessário
+//      para auditoria sem re-identificação.
+//   3. `userAgent` é String (não enum) — diversidade legítima de browsers
+//      e versões; capturar para evidência forense caso necessário.
+//   4. SEM `updatedAt` — registros são append-only. Para "última decisão"
+//      consultar `MAX(grantedAt)` por (userId, type).
+//   5. SEM `@@unique([userId, type])` — múltiplas rows por type são
+//      ESPERADAS (cada toggle = nova row). Mantemos apenas índice
+//      `(userId, grantedAt)` para ordenação cronológica eficiente.
+//
+// `grantedAt` é obrigatório (sempre há um momento da decisão). Não há
+// `revokedAt` separado: quando o usuário revoga, gravamos uma NOVA row
+// com `granted = false`. O histórico completo (grants + revokes) é
+// preservado.
+//
+// Migration é PROPOSAL (per prisma/AGENTS.md D1) — humano roda:
+//   pnpm exec prisma migrate dev --name privacy_consent
+model PrivacyConsent {
+  id        String            @id @default(cuid())
+  /// userId do titular. SEM FK para User (sobrevivência ao delete — ver JSDoc).
+  userId    String
+  /// Categoria de consentimento. Ver enum `PrivacyConsentType` abaixo.
+  type      PrivacyConsentType
+  /// Decisão do titular: `true` = concedeu, `false` = revogou.
+  /// Para "última decisão", filtrar por `grantedAt` mais recente por (userId, type).
+  granted   Boolean
+  /// Momento da decisão. Sempre presente.
+  grantedAt DateTime          @default(now())
+  /// Contexto da coleta: IP hasheado (HMAC-SHA256, LGPD-compliant).
+  /// Mesmo padrão de `AuditLog.ipHash`.
+  ipHash    String
+  /// User-Agent do browser no momento da decisão (evidência forense).
+  userAgent String
+
+  /// Índice principal: histórico cronológico por usuário. Cobertura da
+  /// query "últimas N decisões do user X" (UI /conta/privacidade).
+  @@index([userId, grantedAt])
+  /// Índice secundário: filtro por categoria (admin reports).
+  @@index([type, grantedAt])
+  @@map("privacy_consents")
+}
+
+/// Categorias de consentimento suportadas (Wave 19.3).
+///
+/// 4 tipos — cada um com finalidade específica, base legal diferente
+/// (LGPD Art. 7º, I — execução de contrato; II — tutela da saúde; etc).
+///
+/// Trade-offs de modelagem:
+///   - Enum dedicado (vs Json livre) garante que a categoria é estável
+///     e indexável. Adicionar uma categoria = migration.
+///   - Mantemos os 4 tipos principais. Categorias mais granulares
+///     (ex: marketing por canal) seriam Wave futuro.
+///
+/// Defaults no signup (LGPD Art. 7º, I — consentimento expresso):
+///   - MARKETING = false           (opt-in obrigatório)
+///   - ANALYTICS = true            (legítimo interesse, padrão de mercado)
+///   - AI_TRAINING = false         (opt-in obrigatório — LGPD Art. 11)
+///   - THIRD_PARTY_SHARING = false (opt-in obrigatório)
+enum PrivacyConsentType {
+  /// Newsletters, promoções, conteúdo de marketing geral.
+  MARKETING
+  /// Métricas agregadas anônimas para melhoria do produto
+  /// (Plausible/PostHog-style, sem PII).
+  ANALYTICS
+  /// Uso de inputs do usuário (anonimizados ou não) para treinar /
+  /// fine-tunar modelos de IA. LGPD Art. 11 (dados sensíveis) →
+  /// opt-in estrito.
+  AI_TRAINING
+  /// Compartilhamento de dados com terceiros (parceiros, integrações,
+  /// analytics vendors). Opt-in estrito.
+  THIRD_PARTY_SHARING
+}
