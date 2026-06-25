@@ -497,6 +497,18 @@
     "dispatching": "Buscando insights para você...",
     "toolInsights": {
       "label": "Insights para estado {emotion}"
+    },
+    "unified": {
+      "title": "Mentor Akasha — chat com evidências",
+      "subtitle": "5 Pilares convergem. Cada resposta vem com os papers que a sustentam.",
+      "papersTitle": "Papers que sustentam isso",
+      "papersDesc": "Literatura científica open-access que fundamenta a última resposta do Mentor.",
+      "papersEmpty": "Sem papers ainda. Faça uma pergunta e veja as evidências aparecerem aqui.",
+      "papersLoading": "Buscando evidências…",
+      "openChat": "Abrir chat completo",
+      "backToMentor": "← Voltar ao chat",
+      "discoverLink": "Ver cadeia completa",
+      "evidenceBadge": "Evidência científica"
     }
   },
   "mcp": {
