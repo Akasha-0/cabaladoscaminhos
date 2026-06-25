@@ -737,6 +737,13 @@
       "emptyPapers": "Nenhum paper citado.",
       "emptyRelated": "Nenhuma chain anterior relacionada.",
       "viewAll": "Ver todas as chains"
+    },
+    "convergence": {
+      "title": "✦ Convergência das vozes",
+      "universalTruth": "Verdade Universal",
+      "voicesLabel": "As 5 vozes convergem:",
+      "convergenceLine": "convergem em",
+      "expand": "Mostrar papers citados"
     }
   }
 }

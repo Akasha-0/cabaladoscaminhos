@@ -737,6 +737,13 @@
       "emptyPapers": "No papers cited.",
       "emptyRelated": "No related prior chains.",
       "viewAll": "View all chains"
+    },
+    "convergence": {
+      "title": "✦ Convergence of voices",
+      "universalTruth": "Universal Truth",
+      "voicesLabel": "The 5 voices converge:",
+      "convergenceLine": "converge into",
+      "expand": "Show cited papers"
     }
   }
 }
