@@ -556,3 +556,164 @@ Negative:
 - commit 45e709df: signup_grant automatic
 - commit 0fa1db66: admin grant + claim-signup-bonus
 - commit <this ADR>: neutralize gate + hide balance
+
+# ADR-012: AkashaLoop Daemon Self-Improvement (Wave 17.1)
+
+**Date:** 2026-06-24
+**Status:** Accepted (audit complete; patches deferred)
+**Wave:** 17.1
+
+## Context
+
+Após 5 waves massivas (Waves 11–16), 28+ subagentes dispatchados, 50+ merges,
+um padrão operacional recorrente emergiu com **100% de prevalência** nas ondas
+modernas:
+
+> Toda onda que despacha subagentes em worktrees paralelos (Wave 14.1+) deixa
+> trabalho não-committado que precisa ser recuperado por um commit manual
+> subsequente do orquestrador humano.
+
+Evidência direta no git log (todos commits entre 2026-06-22 e 2026-06-24):
+
+| Wave | Merge | Gap fix commit | Linhas recuperadas |
+|------|-------|----------------|--------------------|
+| 14.1 | `5f77569d` | `91de152d` | AdminSidebar + MetricCard + i18n (~350 linhas) |
+| 14.3 | `ac89e5b8` | `0e6e32ef` | Plan model + CRUD + UI |
+| 14.5 | `9a7860f0` | `2dea3328` | Audit log viewer |
+| 15.1 | `1ccbe4d5` | `0c8af420` | docs-site inteiro (14+ arquivos) |
+| 15.3 | `9087639a` | `21172a97` | API reference docs |
+| 15.5 | `f6d8c8db` | `64ab1d8a` | changelog auto-generated |
+| 16.1 | `36a6c1e4` | `930a0e08` | packages/core-humandesign (542 linhas) |
+| 16.2 | `254fb499` | `121677b4` | core-genekeys |
+| 16.4 | `2dfb973c` | `98d53a2c` | numerology comparison |
+| 16.5 | `c6ae306a` | `cf162d5b` | synthesis-v2.ts + .test.ts (982 linhas) |
+
+10 de 10 ondas com gap (100%). Padrão já existia em Wave 10.4 (`d2ec2752 feat(mentor-chat): Wave 10.4 wip — MentorChat component + /mentor page (untracked from subagent)` — 1073 linhas untracked).
+
+Auditoria do daemon `akasha-loop-daemon.py` (v9, 2372 linhas, agora arquivado
+em `d3d1f674 chore(cleanup): remove speculative test domains + harness runtime`)
+identificou 8 gaps. Os dois mais críticos respondem por ~80% do overhead:
+
+1. **`phase_release` (linhas 1862–1885) executa `git add -A` + `git commit` mas
+   nunca `git push`.** Push é responsabilidade do orquestrador humano. Subagentes
+   que trabalham em worktrees separados do `ROOT` do daemon commitam em worktree
+   local que o daemon nunca enxerga.
+
+2. **`git add -A` é demasiado amplo.** Captura `node_modules/.bin/*`,
+   `.omp/state/*.log`, `.autonomous/.autonomous/multi-agent/*.json` se o
+   `.gitignore` do worktree divergir do main. Não há defense em runtime.
+
+Outros gaps (worktree detection, approval-gated orphan recovery, merge sequence
+padronizada, changelog lock, métricas de gap rate) contribuem para o restante.
+
+## Decision
+
+**Esta ADR documenta a auditoria e os patches propostos, mas NÃO aplica os
+patches.** O daemon foi removido do repo em `d3d1f674` como parte do cleanup de
+runtime especulativo. A re-introdução + patching fica para uma wave dedicada
+(`wave-17.6-daemon-patches` ou Wave 18.1) com revisão humana.
+
+Decisões concretas:
+
+1. **Auditoria documentada** em `.hermes/reports/wave-17.1-akashaloop-gaps.md`
+   com 8 gaps priorizados, evidências reais (commits do git log), e 5 patches
+   completos (A–E) prontos para aplicação futura.
+
+2. **Patches propostos (não aplicados):**
+   - **Patch A** — `_run_cmd_safe(["git", "push", "origin", "HEAD"])` ao final
+     do RELEASE, com log de erro e tracking em `state["push_gaps"]`.
+   - **Patch B** — `_git_add_clean()` helper que filtra `node_modules/`,
+     `.omp/`, `.autonomous/.autonomous/`, `.cache/`, `.local/` antes de
+     `git add`.
+   - **Patch C** — Post-IMPLEMENTATION working tree audit (`git status
+     --short`) com contagem de untracked/modified em state.
+   - **Patch D** — Standard merge sequence no state (`merge_strategy`,
+     `last_gap_commits`, `push_gaps`).
+   - **Patch E** — Approval-gated orphan rollback (`git stash
+     --include-untracked`) em vez de SIGKILL seco.
+
+3. **Métricas de sucesso** definidas para Wave 18+ validar efetividade:
+   - Gap rate: 100% (atual) → 0% (alvo).
+   - Push success rate: n/a → ≥95% (alvo).
+   - Noise commits: variável → 0 (alvo).
+   - Orphan recovery: variável → ≤10% (alvo).
+
+4. **Recomendações de processo** (não-código) documentadas no relatório
+   (R1–R5): checklist `git push origin HEAD` do orquestrador, audit step
+   `git status --short | grep -v node_modules`, worktrees separados, etc.
+
+5. **Não-acoplamento a worktree de patches:** se os patches forem aplicados
+   em uma wave futura, devem entrar via branch dedicada `wave-17.6-daemon-
+   patches` (não no main), validados em 1–2 waves controladas antes de
+   promover.
+
+## Consequences
+
+Positive:
+
+- Decisão registrada de forma auditável. Próximo wave que mexer no daemon
+  tem o relatório como ponto de partida.
+- Padrão "Wave wip — uncommitted work from subagent" agora tem explicação
+  causal documentada (linhas 1862-1885 do daemon v9 + ausência de push).
+- Patches ficam versionados no git (relatório commitado), não perdidos em
+  issue tracker efêmero.
+- Métricas definidas dão critério objetivo para validar ou refutar patches.
+
+Negative:
+
+- Decisão sem efeito imediato — os gaps continuam existindo até Wave 18+.
+  Aceitável porque (a) o daemon está arquivado, (b) o orquestrador humano
+  já tem workflow que mitiga (`git status --short` + commit gap fix), (c)
+  re-introduzir daemon requer trabalho de validação separado.
+- Custo de reportar: ~20KB de markdown para gaps que talvez nunca sejam
+  fechados. Aceitável porque (a) custo de NÃO documentar é repetir auditoria
+  do zero quando voltar ao tema, (b) relatório é referência para qualquer
+  discussão futura sobre o daemon.
+
+Neutral:
+
+- Nenhuma mudança em código de produção nesta onda.
+- Nenhuma mudança em `.autonomous/multi-agent/` (constraint respeitada).
+- DECISIONS.md cresce em ~3.5KB (de 558 para ~620 linhas).
+
+## Alternatives Considered
+
+- **Aplicar os patches agora no daemon arquivado:** rejeitado. O daemon está
+  em cleanup branch e re-introduzir + patchear + re-arquivar é mais trabalho
+  do que documentar e diferir. Risco de introduzir regressão em código que
+  não roda mais.
+- **Criar issue tracker em vez de ADR:** rejeitado. ADRs são a fonte canônica
+  de decisões arquiteturais neste repo (ADR-009, ADR-010 confirmados).
+  Issue tracker seria redundante.
+- **Não documentar e confiar na memória do agente:** rejeitado. O agente
+  responsável por esta auditoria é descartável entre sessões. A documentação
+  é a única transferência confiável para waves futuras.
+
+## Reactivation Plan (Wave 17.6 ou Wave 18.1)
+
+1. Criar branch `wave-17.6-daemon-patches` baseada em `d3d1f674^` (último
+   commit onde daemon existia).
+2. Restaurar `.autonomous/multi-agent/akasha-loop-daemon.py` do Trash
+   (`/home/skynet/.local/share/Trash/files/.autonomous/multi-agent/akasha-
+   loop-daemon.py`) ou do commit `9d229bb5^`.
+3. Aplicar Patches A–E do relatório `.hermes/reports/wave-17.1-akashaloop-
+   gaps.md`.
+4. Validar em 1–2 waves controladas (Wave 18.1 + 18.2) com métricas de
+   gap rate, push success rate, noise commits, orphan recovery.
+5. Se métricas atingirem alvos, promover para main. Caso contrário,
+   iterar nos patches.
+6. Atualizar esta ADR com resultados: status "Validated" + métricas reais.
+
+## Related
+
+- `.hermes/reports/wave-17.1-akashaloop-gaps.md` — auditoria completa com
+  patches A–E prontos para aplicação.
+- ADR-009: Adaptive UI by Emotional State (Wave 9)
+- ADR-010: Credit Gate Neutralized for Testing (Wave 10)
+- commit `d3d1f674` — daemon removido do repo (cleanup)
+- commit `9d229bb5` — daemon pré-cleanup
+- commits `91de152d`, `0e6e32ef`, `2dea3328`, `0c8af420`, `21172a97`,
+  `64ab1d8a`, `930a0e08`, `121677b4`, `98d53a2c`, `cf162d5b` — 10 gap
+  fixes de Wave 14.1 a 16.5 (evidência do padrão)
+- commit `d2ec2752` — Wave 10.4 gap fix (1073 linhas untracked, padrão
+  original do problema)
