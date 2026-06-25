@@ -528,6 +528,18 @@
     "dispatching": "Looking for insights for you...",
     "toolInsights": {
       "label": "Insights for {emotion} state"
+    },
+    "unified": {
+      "title": "Akasha Mentor — chat with evidence",
+      "subtitle": "5 Pillars converge. Each response comes with the papers that support it.",
+      "papersTitle": "Papers that support this",
+      "papersDesc": "Open-access scientific literature backing the Mentor's latest answer.",
+      "papersEmpty": "No papers yet. Ask a question and watch the evidence appear here.",
+      "papersLoading": "Looking for evidence…",
+      "openChat": "Open full chat",
+      "backToMentor": "← Back to chat",
+      "discoverLink": "View full chain",
+      "evidenceBadge": "Scientific evidence"
     }
   },
   "mcp": {
