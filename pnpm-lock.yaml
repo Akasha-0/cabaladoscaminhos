@@ -485,6 +485,9 @@ importers:
       '@akasha/core-tantra':
         specifier: workspace:*
         version: link:../core-tantra
+      '@akasha/mcp':
+        specifier: workspace:*
+        version: link:../mcp
       '@akasha/types':
         specifier: workspace:*
         version: link:../types
