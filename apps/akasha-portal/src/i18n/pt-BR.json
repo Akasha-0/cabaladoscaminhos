@@ -353,6 +353,23 @@
       "titulo": "Áreas da Vida",
       "descricao": "Pilar {pilar} traduzido para cada área.",
       "leiaInstrucao": "Leia da esquerda para direita — do profissional ao íntimo."
+    },
+    "universal": {
+      "sectionTitle": "Mandato Universalista",
+      "sectionSubtitle": "Seu dia visto pelas 5 vozes da sabedoria.",
+      "crossRefTitle": "5 Pilares em diálogo",
+      "crossRefDesc": "Cada Pilar ilumina um ângulo. Veja os 5 em conjunto.",
+      "crossRefViewAll": "Ver Mandala completa",
+      "papersTitle": "Papers que sustentam este Mandato",
+      "papersDesc": "Pesquisa acadêmica publicada, revisada por pares.",
+      "papersCount": "{count} papers",
+      "papersCitations": "citado em {count} outros insights",
+      "papersOpen": "Ler paper",
+      "papersNone": "Nenhum paper indexado para este Pilar ainda.",
+      "papersBadge": "Evidência científica",
+      "pilarConvergence": "convergem",
+      "pilarActive": "ativo",
+      "pilarRelated": "relacionado"
     }
   },
   "tratamento": {

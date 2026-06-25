@@ -353,6 +353,23 @@
       "titulo": "Areas of Life",
       "descricao": "Pillar {pilar} translated for each area.",
       "leiaInstrucao": "Read from left to right — from professional to intimate."
+    },
+    "universal": {
+      "sectionTitle": "Universalist Mandate",
+      "sectionSubtitle": "Your day seen through the 5 voices of wisdom.",
+      "crossRefTitle": "5 Pillars in dialogue",
+      "crossRefDesc": "Each Pillar illuminates an angle. See all 5 together.",
+      "crossRefViewAll": "View full Mandala",
+      "papersTitle": "Papers supporting this Mandate",
+      "papersDesc": "Peer-reviewed academic research.",
+      "papersCount": "{count} papers",
+      "papersCitations": "cited in {count} other insights",
+      "papersOpen": "Read paper",
+      "papersNone": "No papers indexed for this Pillar yet.",
+      "papersBadge": "Scientific evidence",
+      "pilarConvergence": "converge",
+      "pilarActive": "active",
+      "pilarRelated": "related"
     }
   },
   "tratamento": {
