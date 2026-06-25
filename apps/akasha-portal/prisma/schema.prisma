@@ -893,3 +893,72 @@ model AuditLog {
   @@index([action, createdAt])
   @@map("audit_logs")
 }
+
+/// D-049 — User webhooks (Wave 19.1).
+///
+/// Outgoing webhooks (Zapier, Make, n8n, custom integrations). Permite ao
+/// usuário registrar uma URL HTTPS que recebe POSTs sempre que um dos
+/// eventos subscritos ocorre no seu próprio tenant (LGPD: userId-only —
+/// zero cross-user, zero broadcast).
+///
+/// Schema-decisions:
+///   - SEM FK explícita para `User` (consistente com AuditLog e
+///     NotificationPreference — webhook sobrevive logicamente ao user via
+///     ON DELETE CASCADE no nível de DB, mas o app-layer SEMPRE filtra
+///     por `userId` antes de qualquer read/update/delete).
+///   - `events` é `String[]` (Postgres native array) — não usamos tabela
+///     pivô `WebhookSubscription` porque o conjunto de eventos é
+///     conhecido e pequeno (≤ 10 eventos), e o `String[]` cobre o caso
+///     sem JOIN. Performance: 1 row por webhook, sem N+1.
+///   - `secret` é String NÃO-nulo — geramos no POST (HMAC-SHA256 random
+///     32 bytes → hex 64). Retornamos ao user **UMA ÚNICA VEZ** no POST.
+///     Nas responses seguintes, expomos apenas a impressão digital
+///     (sha256 prefix) para o user identificar o secret sem vê-lo.
+///   - `isActive` permite pause sem deletar (preserva histórico de
+///     `lastCalledAt` para debugging do user).
+///   - `lastCalledAt` é nullable — null = nunca chamado.
+///   - `lastError` (opcional, mas adicionado agora) guarda o último erro
+///     de delivery para debugging — string pequena (≤ 500 chars) ou null.
+///
+/// LGPD (Art. 18 §VI + Art. 33):
+///   - Webhooks são userId-only — NUNCA há broadcast/cross-user access.
+///   - O secret é gerado server-side, NUNCA derivado de dado pessoal do
+///     user (não vaza PII mesmo se o user revogar consentimento).
+///   - Não persistimos o body do payload entregue (apenas metadata de
+///     status) — minimização de dados (Art. 33 §II).
+///
+/// Migration é aplicada por humano (per prisma/AGENTS.md D1):
+///   pnpm exec prisma migrate dev --name webhooks
+model Webhook {
+  id           String    @id @default(cuid())
+  userId       String
+  /// URL HTTPS pública que recebe os POSTs.
+  /// Validação (https-only, não-localhost, não-IP-privado) é
+  /// responsabilidade da camada de aplicação (api/webhooks POST).
+  url          String
+  /// Lista de eventos subscritos. Ex: ["notification.created", "diario.published"].
+  /// Validado contra `WebhookEventType` na API.
+  events       String[]
+  /// HMAC-SHA256 secret (64 hex chars) — gerado no POST.
+  /// NUNCA exposto em GET/PATCH após criação. Identificado por
+  /// `secretFingerprint` (sha256 prefix 8 chars) em responses.
+  secret       String
+  /// sha256(secret).slice(0, 8) — fingerprint não-reversível para o
+  /// user identificar qual secret está em uso sem expor o valor.
+  secretFingerprint String
+  isActive     Boolean   @default(true)
+  /// Última tentativa de delivery. null = nunca tentado.
+  lastCalledAt DateTime?
+  /// Última mensagem de erro (≤ 500 chars), null se última tentativa OK.
+  /// Usado pelo /api/webhooks/[id]/test e pelo dispatcher para debugging.
+  lastError    String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Query principal: "todos webhooks do user X"
+  @@index([userId])
+  // Query do dispatcher: "todos webhooks ativos que subscrevem o evento Y"
+  // (filtramos isActive primeiro, depois events && ARRAY[event])
+  @@index([isActive])
+  @@map("webhooks")
+}
