@@ -114,12 +114,6 @@ export interface TraducaoAreaDetalhada {
 
 // ─── Pilar Data (micro-modules) ──────────────────────────────────────────────
 
-export { CABALA } from './traducao-areas.cabala';
-export { ASTROLOGIA } from './traducao-areas.astrologia';
-export { TANTRICA } from './traducao-areas.tantrica';
-export { ODU } from './traducao-areas.odu';
-export { ICHING } from './traducao-areas.iching';
-
 import { CABALA } from './traducao-areas.cabala';
 import { ASTROLOGIA } from './traducao-areas.astrologia';
 import { TANTRICA } from './traducao-areas.tantrica';
@@ -158,7 +152,6 @@ export function coberturaTraducaoAreas() {
 
 // ─── Conteúdo Detalhado (micro-module) ───────────────────────────────────────
 
-export { TRADUCOES_DETALHADO } from './traducao-areas.matrix';
 import { TRADUCOES_DETALHADO } from './traducao-areas.matrix';
 
 // ─── Helpers de Conteúdo Detalhado ──────────────────────────────────────────

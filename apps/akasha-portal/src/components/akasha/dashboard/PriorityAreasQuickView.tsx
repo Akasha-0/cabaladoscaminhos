@@ -11,8 +11,6 @@ type CycleModulationEntry = { alignmentScore: number; suggestedBoost: string; ra
 
 const FREQUENCY_SORT: Record<string, number> = { siddhi: 3, gift: 2, shadow: 1 };
 
-export { FREQUENCY_SORT };
-
 export function PriorityAreasQuickView({
   areas,
   modulationMap,

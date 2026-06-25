@@ -304,7 +304,7 @@ const StrategyBadge = memo(function StrategyBadge({ strategy }: { strategy: stri
   );
 });
 
-export const DailyDecisionCard = memo(function DailyDecisionCard({ decision }: { decision: DailyDecisionUI }) {
+const DailyDecisionCard = memo(function DailyDecisionCard({ decision }: { decision: DailyDecisionUI }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-[#1C1C1E] to-[#2C2C2E] p-5 space-y-4">
       <div className="flex items-center justify-between">
@@ -345,7 +345,7 @@ const AUTHORITY_LABELS: Record<string, string> = {
   mental: 'Autoridade Mental',
 };
 
-export const OneProfileCard = memo(function OneProfileCard({
+const OneProfileCard = memo(function OneProfileCard({
   profile,
   narrativaCentral,
 }: {

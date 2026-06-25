@@ -481,7 +481,3 @@ export function getOduByName(name: string): OduData | undefined {
   }
   return undefined;
 }
-
-export function getOduByNumber(number: number): OduData | undefined {
-  return Object.values(ODU_DATABASE).find((odu) => odu.number === number);
-}

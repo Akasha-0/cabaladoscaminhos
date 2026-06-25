@@ -15,7 +15,3 @@ export function getRitualConfig(userId: string): RitualConfig | undefined {
 export function setRitualConfig(userId: string, config: RitualConfig): void {
   ritualConfigs.set(userId, config);
 }
-
-export function deleteRitualConfig(userId: string): boolean {
-  return ritualConfigs.delete(userId);
-}

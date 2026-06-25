@@ -1,6 +1,6 @@
 import { locales } from '@/i18n/config';
 
-export const PROTECTED_PATH_PREFIXES = [
+const PROTECTED_PATH_PREFIXES = [
   '/dashboard',
   '/conta',
   '/diario',

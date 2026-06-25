@@ -7,6 +7,16 @@ const config: KnipConfig = {
     '!_index.js',
     '**/*.{ts,tsx,js,jsx,mjs,cjs}',
   ],
+  // Build artifacts & harness dirs — not source code
+  ignore: [
+    'apps/akasha-portal/out/**',
+    'apps/akasha-portal/.next/**',
+    '.omp/**',
+    'apps/akasha-portal/cap-build.sh',
+    'scripts/add-en-sections.mjs',
+    'scripts/translate-en-sections.mjs',
+    'traducao-areas.ts',
+  ],
   ignoreDependencies: ['knip-config'],
 };
 

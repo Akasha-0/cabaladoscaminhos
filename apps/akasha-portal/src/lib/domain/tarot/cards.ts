@@ -798,21 +798,6 @@ const PENTACLES: TarotCard[] = [
 // All cards combined
 const ALL_CARDS: TarotCard[] = [...MAJOR_ARCANA, ...WANDS, ...CUPS, ...SWORDS, ...PENTACLES];
 
-// Fisher-Yates shuffle
-function shuffle<T>(array: T[]): T[] {
-  const result = [...array];
-  for (let i = result.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [result[i], result[j]] = [result[j], result[i]];
-  }
-  return result;
-}
-
-export function drawCards(n: number): TarotCard[] {
-  return shuffle(ALL_CARDS).slice(0, n);
-}
-
 export const TAROT_DECK: TarotDeck = { cards: ALL_CARDS };
 
-// Export MINOR_ARCANA as a combined array for compatibility
-export const MINOR_ARCANA: TarotCard[] = [...WANDS, ...CUPS, ...SWORDS, ...PENTACLES];
+// MINOR_ARCANA / drawCards removed (Wave 11.5) — zero importers.
