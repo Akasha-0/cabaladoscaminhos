@@ -502,6 +502,67 @@
     "dispatching": "Buscando insights para você...",
     "toolInsights": {
       "label": "Insights para estado {emotion}"
+    },
+    "chat": {
+      "title": "Mentor Akáshico",
+      "subtitle": "Converse com seu mapa",
+      "inputPlaceholder": "Pergunte ao Mentor...",
+      "inputPlaceholderNoCredits": "Sem créditos para novas perguntas",
+      "send": "Enviar mensagem",
+      "stop": "Parar resposta",
+      "creditCounter": "{count} crédito | {count} créditos",
+      "creditCounterZero": "Sem créditos",
+      "creditLowWarning": "Restam {count} crédito | Restam {count} créditos",
+      "starterQuestions": [
+        "Como estou hoje, segundo meus mapas?",
+        "Qual é meu código do dia?",
+        "Sugira um ritual para este momento.",
+        "O que significa meu mapa astrológico?"
+      ],
+      "emptyHeading": "Comece sua conversa",
+      "emptySubheading": "Escolha uma pergunta abaixo ou escreva a sua.",
+      "suggestionsAriaLabel": "Perguntas sugeridas",
+      "error": {
+        "title": "Algo deu errado",
+        "generic": "Tente novamente em alguns instantes.",
+        "noCredits": "Você não tem créditos. Compre mais para continuar.",
+        "rateLimit": "Muitas perguntas em sequência. Espere um momento.",
+        "network": "Erro de conexão. Verifique sua internet."
+      },
+      "toolIndicator": {
+        "label": "FERRAMENTAS",
+        "calculating": "Calculando código do dia",
+        "ritual": "Montando ritual",
+        "correlations": "Buscando correlações",
+        "interpretando": "Interpretando mapa",
+        "tools": "Listando ferramentas"
+      },
+      "suggestionChips": {
+        "ansioso": [
+          "Como respirar agora?",
+          "Me acalme com um ritual curto",
+          "Qual meu código do dia?",
+          "O que está me deixando ansioso?"
+        ],
+        "perdido": [
+          "Onde estou parado?",
+          "Correlacione I Ching com meu caminho",
+          "Qual meu número de vida significa?",
+          "Como achar direção hoje?"
+        ],
+        "curioso": [
+          "O que você pode fazer por mim?",
+          "Quais ferramentas você tem?",
+          "Como funcionam os 5 Pilares?",
+          "Mostre minha Mandala"
+        ],
+        "centrado": [
+          "O que posso aprofundar hoje?",
+          "Sugira uma prática para integrar",
+          "Reflita sobre meu momento",
+          "Como manter esse centramento?"
+        ]
+      }
     }
   },
   "mcp": {
