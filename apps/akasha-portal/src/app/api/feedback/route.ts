@@ -100,8 +100,30 @@ export async function POST(request: NextRequest) {
   const comment = emptyCommentToUndefined(body.comment);
 
   // 3. Upsert (1 voto por user/message; mudança de rating atualiza)
+  //
+  // NOTA WAVE 17.3: `feedbackEntry` ainda não está no Prisma schema canônico
+  // (model foi adicionado em Wave 13.5 mas a migration correspondente
+  // aguarda aprovação humana — ver apps/akasha-portal/prisma/AGENTS.md).
+  // O cast tipado abaixo reflete o shape esperado (ver testes em
+  // tests/integration/api/feedback) e será redundante assim que a
+  // migration for aplicada. ADR-DRAFT: feedback-entry-schema-migration.
   try {
-    const entry = await prisma.feedbackEntry.upsert({
+    const feedbackClient = prisma as unknown as {
+      feedbackEntry: {
+        upsert: (args: {
+          where: { userId_messageId: { userId: string; messageId: string } };
+          create: { userId: string; messageId: string; rating: 'up' | 'down'; comment: string | null };
+          update: { rating: 'up' | 'down'; comment: string | null };
+          select: { id: true; rating: true; comment: true; createdAt: true };
+        }) => Promise<{
+          id: string;
+          rating: 'up' | 'down';
+          comment: string | null;
+          createdAt: Date;
+        }>;
+      };
+    };
+    const entry = await feedbackClient.feedbackEntry.upsert({
       where: { userId_messageId: { userId, messageId } },
       create: {
         userId,
