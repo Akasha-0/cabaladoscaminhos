@@ -1,6 +1,11 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { defaultLocale, locales, type Locale } from '@/i18n/config';
-import { generateRequestId } from '@/lib/shared/logging';
+import {
+  generateRequestId,
+  getRequestId,
+  log,
+  REQUEST_ID_HEADER,
+} from '@/lib/shared/logging';
 import { checkApiRateLimit } from '@/middleware/rateLimit';
 
 // ============================================
@@ -172,8 +177,34 @@ function shouldRefreshAuth(pathname: string): boolean {
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  // Generate request ID for tracing
-  const requestId = generateRequestId();
+  // Generate request ID for tracing.
+  // Wave 12.3 — distributed tracing: se o cliente enviou X-Request-Id,
+  // propagamos o mesmo ID (preserva correlação em traces multi-hop).
+  // Caso contrário, geramos localmente.
+  const incomingRequestId = request.headers.get(REQUEST_ID_HEADER);
+  const requestId = incomingRequestId ?? generateRequestId();
+
+  // Log estruturado (Edge-safe: usa process.stdout.write via emit()).
+  // Não logamos em rotas exentas (assets, _next, manifest) para não
+  // poluir os logs com request de PWA shell.
+  const isApiOrPage =
+    pathname.startsWith('/api/') ||
+    (!pathname.startsWith('/_next') &&
+      !pathname.startsWith('/icons') &&
+      pathname !== '/sw.js' &&
+      pathname !== '/manifest.json' &&
+      pathname !== '/favicon.ico' &&
+      pathname !== '/robots.txt' &&
+      pathname !== '/sitemap.xml' &&
+      pathname !== '/og-default.svg');
+  if (isApiOrPage) {
+    log.info('request.received', {
+      requestId,
+      route: 'middleware',
+      method: request.method,
+      path: pathname,
+    });
+  }
 
   // Locale detection — Doc 25 §9 / v0.0.4-T9
   // Cookie takes priority; fallback to Accept-Language; default pt-BR.
