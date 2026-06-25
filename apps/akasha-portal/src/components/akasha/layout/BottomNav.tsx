@@ -176,7 +176,7 @@ export function BottomNav({ locale }: BottomNavProps) {
                 data-active={isActive ? 'true' : 'false'}
                 aria-current={isActive ? 'page' : undefined}
                 aria-label={label}
-                className="group flex h-full min-h-[48px] flex-col items-center justify-center gap-0.5 px-1 py-1.5 text-[10px] font-medium tracking-wide transition-colors"
+                className="group flex h-full min-h-[48px] flex-col items-center justify-center gap-0.5 px-1 py-1.5 text-[10px] font-medium tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#06070F] rounded-sm"
                 style={{
                   // 48px touch target (WCAG 2.5.5)
                   minHeight: 48,

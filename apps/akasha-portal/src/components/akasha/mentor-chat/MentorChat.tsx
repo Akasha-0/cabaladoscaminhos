@@ -491,7 +491,9 @@ export function MentorChat({ locale: _locale }: MentorChatProps) {
           className="mx-auto flex w-full max-w-2xl items-end gap-2 px-4 py-3"
         >
           <label htmlFor="mentor-input" className="sr-only">
-            {t('mentor.chat.inputPlaceholder')}
+            {noCredits
+              ? t('mentor.chat.inputPlaceholderNoCredits')
+              : t('mentor.chat.inputPlaceholder')}
           </label>
           <textarea
             id="mentor-input"
@@ -724,9 +726,27 @@ function MessageBubble({ message, t, isStreaming }: MessageBubbleProps) {
         style={isUser ? { fontFamily: 'inherit' } : undefined}
       >
         {isUser ? (
-          message.content
+          <span>{message.content}</span>
         ) : (
           <TypewriterText content={message.content} active={isStreaming} />
+        )}
+        {/* Screen reader companion: full text in a polite live region.
+            The visible typewriter is decorative (aria-hidden) — the
+            live region carries the canonical, untruncated content.
+            aria-atomic=false so SRs announce only the diff between
+            updates, not the whole buffer (which would be cacophony
+            during streaming). aria-relevant="additions" tells AT
+            that only new text needs announcing. */}
+        {!isUser && (
+          <span
+            className="sr-only"
+            aria-live="polite"
+            aria-atomic="false"
+            aria-relevant="additions"
+            data-testid="mentor-chat-sr-stream"
+          >
+            {message.content}
+          </span>
         )}
       </div>
     </motion.article>
@@ -787,7 +807,7 @@ function TypewriterText({
   }, [content, active]);
 
   return (
-    <span data-testid="mentor-chat-typewriter">
+    <span data-testid="mentor-chat-typewriter" aria-hidden="true">
       {revealed}
       {active && content.length > revealed.length && (
         <span
