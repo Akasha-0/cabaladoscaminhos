@@ -565,6 +565,14 @@
       }
     }
   },
+  "feedback": {
+    "up": "Útil",
+    "down": "Não útil",
+    "thanks": "Obrigado pelo feedback",
+    "error": "Não conseguimos enviar seu feedback",
+    "submitting": "Enviando...",
+    "commentPlaceholder": "Conte o que poderia ser melhor (opcional)"
+  },
   "mcp": {
     "health": {
       "status": "MCP operacional"

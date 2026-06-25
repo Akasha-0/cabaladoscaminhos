@@ -66,6 +66,10 @@ model User {
   pilar6Calculos      Pilar6Calculo[]  @relation("UserPilar6Calculos")
   pilar7Calculos      Pilar7Calculo[]  @relation("UserPilar7Calculos")
   pilar7Estagios      Pilar7Estagio[]  @relation("UserPilar7Estagios")
+  // Wave 13.5 — thumbs up/down em respostas do Mentor (LGPD: feedback
+  // payload é anônimo; userId fica só no banco para evitar voto duplicado
+  // + auditoria interna. Sem PII no payload.)
+  feedbackEntries    FeedbackEntry[]
   // Refresh token rotation — stores the jti of the current active refresh token.
   // When a refresh request arrives, its jti MUST match this field.
   // On successful refresh the old token's jti is replaced by the new one's — old token immediately invalid.
@@ -681,4 +685,34 @@ model Pilar7Estagio {
   @@index([zeladorId, calculoId])
   @@index([zeladorId, chaveNumero])
   @@map("pilar7_estagios")
+}
+
+// Wave 13.5 — FeedbackEntry (LGPD by design: payload anônimo, userId no banco)
+// Wave 13.5 spec: thumbs up/down em respostas do Mentor. Cada registro
+// carrega apenas `messageId` (string opaca do client — pode ser um uuid
+// local da mensagem) + `rating` + `comment?`. O `userId` (FK do User)
+// garante auditoria interna e previne votos duplicados via
+// `@@unique([userId, messageId])`. Nenhum dado sensível vai no payload
+// (sem conteúdo da mensagem — só o id opaco). Comentários livres são
+// opcionais e limitados a 500 chars.
+model FeedbackEntry {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messageId String                                 // id opaco da mensagem do Mentor (client-side)
+  rating    FeedbackRating
+  comment   String?                                // opcional, ≤500 chars
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, messageId])                   // 1 voto por user/message
+  @@index([userId])
+  @@index([messageId])
+  @@index([createdAt])
+  @@map("feedback_entries")
+}
+
+enum FeedbackRating {
+  up
+  down
 }

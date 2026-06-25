@@ -46,6 +46,8 @@ import {
   Wind,
   Compass,
   Sprout,
+  CheckCircle2,
+  XCircle,
 } from 'lucide-react';
 import {
   useCallback,
@@ -61,6 +63,10 @@ import {
   EMOTION_TOOLS,
 } from '@akasha/mentor/tool-dispatcher';
 import { useEmotionalState } from '@/lib/state/emotional-state';
+import {
+  MessageRating,
+  type FeedbackRating as RatingValue,
+} from './MessageRating';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -138,6 +144,15 @@ export function MentorChat({ locale: _locale }: MentorChatProps) {
   const [input, setInput] = useState('');
   const [status, setStatus] = useState<StreamStatus>('idle');
   const [errorInfo, setErrorInfo] = useState<ErrorInfo | null>(null);
+
+  // Wave 13.5 — Feedback toast (transient, auto-dismiss em 3s).
+  // Diferente do errorInfo (que é banner inline de erro de streaming),
+  // este toast é para confirmação de feedback enviado ou erro do POST
+  // /api/feedback (roll-back do widget).
+  const [feedbackToast, setFeedbackToast] = useState<
+    { kind: 'success' | 'error'; message: string; key: number } | null
+  >(null);
+  const feedbackToastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Credit counter
   const [credits, setCredits] = useState<number | null>(null);
@@ -361,6 +376,54 @@ export function MentorChat({ locale: _locale }: MentorChatProps) {
     }
   }, [messages, handleSend]);
 
+  // ─── Wave 13.5 — Feedback handlers (toast feedback) ───
+  // Auto-dismiss após 3s. O timer é resetado se um novo toast chegar
+  // (key monotonic).
+  const handleFeedbackThanks = useCallback(
+    (_rating: RatingValue) => {
+      if (feedbackToastTimerRef.current) {
+        clearTimeout(feedbackToastTimerRef.current);
+      }
+      setFeedbackToast({
+        kind: 'success',
+        message: t('feedback.thanks'),
+        key: Date.now(),
+      });
+      feedbackToastTimerRef.current = setTimeout(() => {
+        setFeedbackToast(null);
+        feedbackToastTimerRef.current = null;
+      }, 3000);
+    },
+    [t]
+  );
+
+  const handleFeedbackError = useCallback(
+    (errMsg: string) => {
+      if (feedbackToastTimerRef.current) {
+        clearTimeout(feedbackToastTimerRef.current);
+      }
+      setFeedbackToast({
+        kind: 'error',
+        message: `${t('feedback.error')}: ${errMsg}`,
+        key: Date.now(),
+      });
+      feedbackToastTimerRef.current = setTimeout(() => {
+        setFeedbackToast(null);
+        feedbackToastTimerRef.current = null;
+      }, 4000);
+    },
+    [t]
+  );
+
+  // Cleanup do timer no unmount.
+  useEffect(() => {
+    return () => {
+      if (feedbackToastTimerRef.current) {
+        clearTimeout(feedbackToastTimerRef.current);
+      }
+    };
+  }, []);
+
   // ─── Render ───
   const isEmpty = messages.length === 0 && status === 'idle';
 
@@ -450,6 +513,8 @@ export function MentorChat({ locale: _locale }: MentorChatProps) {
                 status === 'streaming' &&
                 !msg.completedAt
               }
+              onFeedbackThanks={handleFeedbackThanks}
+              onFeedbackError={handleFeedbackError}
             />
           ))}
         </AnimatePresence>
@@ -545,6 +610,44 @@ export function MentorChat({ locale: _locale }: MentorChatProps) {
           )}
         </form>
       </footer>
+
+      {/* ─── Wave 13.5 — Feedback toast (transient) ─────────────── */}
+      <AnimatePresence>
+        {feedbackToast && (
+          <motion.div
+            key={feedbackToast.key}
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            role={feedbackToast.kind === 'error' ? 'alert' : 'status'}
+            aria-live={feedbackToast.kind === 'error' ? 'assertive' : 'polite'}
+            data-testid="mentor-chat-feedback-toast"
+            data-toast-kind={feedbackToast.kind}
+            className="pointer-events-none fixed inset-x-0 z-30 flex justify-center"
+            style={{
+              bottom: 'calc(env(safe-area-inset-bottom, 0px) + 96px)',
+            }}
+          >
+            <div
+              className={[
+                'pointer-events-auto flex items-center gap-2 rounded-full px-4 py-2 backdrop-blur-md',
+                'text-xs font-semibold shadow-lg',
+                feedbackToast.kind === 'success'
+                  ? 'border border-emerald-400/40 bg-emerald-500/15 text-emerald-100'
+                  : 'border border-rose-400/40 bg-rose-500/15 text-rose-100',
+              ].join(' ')}
+            >
+              {feedbackToast.kind === 'success' ? (
+                <CheckCircle2 size={14} aria-hidden />
+              ) : (
+                <XCircle size={14} aria-hidden />
+              )}
+              <span>{feedbackToast.message}</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
@@ -690,9 +793,18 @@ interface MessageBubbleProps {
   message: ChatMessage;
   t: (key: string) => string;
   isStreaming: boolean;
+  /** Wave 13.5 — feedback widget callbacks (only used for mentor messages). */
+  onFeedbackThanks?: (rating: RatingValue) => void;
+  onFeedbackError?: (message: string) => void;
 }
 
-function MessageBubble({ message, t, isStreaming }: MessageBubbleProps) {
+function MessageBubble({
+  message,
+  t,
+  isStreaming,
+  onFeedbackThanks,
+  onFeedbackError,
+}: MessageBubbleProps) {
   const isUser = message.role === 'user';
 
   // Tool indicator is shown only for mentor messages that haven't
@@ -702,6 +814,11 @@ function MessageBubble({ message, t, isStreaming }: MessageBubbleProps) {
     isStreaming &&
     Array.isArray(message.toolsDispatched) &&
     message.toolsDispatched.length > 0;
+
+  // Wave 13.5 — feedback widget aparece somente DEPOIS que a mensagem
+  // do mentor terminou de streamar. Antes disso o usuário ainda está
+  // lendo e não deve avaliar. Não aparece em mensagens do user.
+  const showFeedbackWidget = !isUser && Boolean(message.completedAt);
 
   return (
     <motion.article
@@ -749,6 +866,18 @@ function MessageBubble({ message, t, isStreaming }: MessageBubbleProps) {
           </span>
         )}
       </div>
+      {showFeedbackWidget && (
+        <MessageRating
+          messageId={message.id}
+          labels={{
+            up: t('feedback.up'),
+            down: t('feedback.down'),
+            submitting: t('feedback.submitting'),
+          }}
+          onThanks={onFeedbackThanks}
+          onError={onFeedbackError}
+        />
+      )}
     </motion.article>
   );
 }
