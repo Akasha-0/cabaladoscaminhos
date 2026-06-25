@@ -17,6 +17,12 @@
  *   - "Pular" stays low-emphasis but is now a real link with min 44px hit
  *     area (was a 11px text node).
  *
+ * Wave 11.4 — i18n:
+ *   All user-facing copy now flows through the `meuDia.statePicker.*`
+ *   namespace (heading, subtitle, skip, tile.<state>.{label,hint,ariaLabel}).
+ *   The optional `heading` prop still wins for callers that want a custom
+ *   message (e.g. A/B tests).
+ *
  * Accessibility (preserved from Wave 9.1):
  *   - role="radiogroup" + role="radio" + aria-checked.
  *   - aria-label per tile spells the full sentence for screen readers.
@@ -35,13 +41,14 @@ import {
   EMOTIONAL_STATES,
   type EmotionalState,
 } from '@/lib/state/emotional-state';
+import { useTranslation } from '@/i18n';
 
 export interface StatePickerProps {
   /** Called when the user picks a state — already persisted by the caller. */
   onSelect: (state: EmotionalState) => void;
   /** Called when the user clicks "pular" — no state is persisted. */
   onSkip?: () => void;
-  /** Optional heading override (defaults to a PT-BR fallback). */
+  /** Optional heading override (defaults to i18n `meuDia.statePicker.heading`). */
   heading?: string;
 }
 
@@ -95,9 +102,12 @@ const TILES: readonly TileConfig[] = [
 ] as const;
 
 export function StatePicker({ onSelect, onSkip, heading }: StatePickerProps) {
-  const resolvedHeading = heading ?? 'Como você está hoje?';
-  const subtitle = 'A página se adapta ao que você precisa.';
-  const skipLabel = 'Pular por agora';
+  const { t } = useTranslation();
+  // `heading` prop still wins — preserved for callers that need a
+  // custom heading (A/B tests, marketing surfaces, etc).
+  const resolvedHeading = heading ?? t('meuDia.statePicker.heading');
+  const subtitle = t('meuDia.statePicker.subtitle');
+  const skipLabel = t('meuDia.statePicker.skip');
 
   // Touch-keyboard accessibility: tiles are real <button>s so they're
   // tab-focusable by default. `role="radiogroup"` lets AT announce the
@@ -128,7 +138,7 @@ export function StatePicker({ onSelect, onSkip, heading }: StatePickerProps) {
       <div className="grid grid-cols-2 gap-3" data-testid="state-picker-grid">
         {TILES.map((tile, i) => {
           const Icon = tile.icon;
-          const ariaLabel = stateAriaLabel(tile.state);
+          const ariaLabel = stateAriaLabel(t, tile.state);
           return (
             <motion.button
               key={tile.state}
@@ -167,11 +177,11 @@ export function StatePicker({ onSelect, onSkip, heading }: StatePickerProps) {
                     className="text-sm font-bold uppercase tracking-wider"
                     style={{ color: tile.color }}
                   >
-                    {stateLabel(tile.state)}
+                    {stateLabel(t, tile.state)}
                   </span>
                 </div>
                 <div className="text-[11px] text-white/65 leading-tight">
-                  {stateHint(tile.state)}
+                  {stateHint(t, tile.state)}
                 </div>
               </div>
             </motion.button>
@@ -203,49 +213,22 @@ export function StatePicker({ onSelect, onSkip, heading }: StatePickerProps) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Localised label helpers — keyed off the EmotionalState enum.
-// Keep these tiny (no i18n lookup needed for the four canonical words).
-// The full copy lives in messages/*.json for richer translations; this is
-// the at-least-something-readable fallback.
+// i18n-backed label helpers — keyed off the EmotionalState enum.
+// Reads from `meuDia.statePicker.tile.<state>.<label|hint|ariaLabel>`.
+// Returns the key itself as last-resort fallback so missing translations
+// surface visibly in the UI rather than crashing the picker.
 // ─────────────────────────────────────────────────────────────────────────────
 
-function stateLabel(s: EmotionalState): string {
-  switch (s) {
-    case 'centrado':
-      return 'Centrado';
-    case 'ansioso':
-      return 'Ansioso';
-    case 'perdido':
-      return 'Perdido';
-    case 'curioso':
-      return 'Curioso';
-  }
+function stateLabel(t: (key: string) => string, s: EmotionalState): string {
+  return t(`meuDia.statePicker.tile.${s}.label`);
 }
 
-function stateHint(s: EmotionalState): string {
-  switch (s) {
-    case 'centrado':
-      return 'em paz';
-    case 'ansioso':
-      return 'preciso de calma';
-    case 'perdido':
-      return 'sem direção';
-    case 'curioso':
-      return 'quero explorar';
-  }
+function stateHint(t: (key: string) => string, s: EmotionalState): string {
+  return t(`meuDia.statePicker.tile.${s}.hint`);
 }
 
-function stateAriaLabel(s: EmotionalState): string {
-  switch (s) {
-    case 'centrado':
-      return 'Estou centrado — em paz';
-    case 'ansioso':
-      return 'Estou ansioso — preciso de calma';
-    case 'perdido':
-      return 'Estou perdido — sem direção';
-    case 'curioso':
-      return 'Estou curioso — quero explorar';
-  }
+function stateAriaLabel(t: (key: string) => string, s: EmotionalState): string {
+  return t(`meuDia.statePicker.tile.${s}.ariaLabel`);
 }
 
 export default StatePicker;

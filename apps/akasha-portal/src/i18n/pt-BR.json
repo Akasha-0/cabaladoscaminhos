@@ -16,7 +16,16 @@
     "diario": "Diário",
     "oraculo": "Oráculo",
     "conta": "Conta",
-    "manifesto": "Manifesto"
+    "manifesto": "Manifesto",
+    "sair": "Sair",
+    "bottomNav": {
+      "ariaLabel": "Navegação principal",
+      "meuDia": "Meu Dia",
+      "mandala": "Mandala",
+      "diario": "Diário",
+      "mentor": "Mentor",
+      "conta": "Conta"
+    }
   },
   "conta": {
     "title": "Minha Conta",

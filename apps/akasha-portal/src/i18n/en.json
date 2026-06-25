@@ -13,10 +13,19 @@
   "nav": {
     "home": "Home",
     "mandala": "Mandala",
-    "diario": "Diary",
+    "diario": "Journal",
     "oraculo": "Oracle",
     "conta": "Account",
-    "manifesto": "Manifesto"
+    "manifesto": "Manifesto",
+    "sair": "Sign out",
+    "bottomNav": {
+      "ariaLabel": "Main navigation",
+      "meuDia": "My Day",
+      "mandala": "Mandala",
+      "diario": "Journal",
+      "mentor": "Mentor",
+      "conta": "Account"
+    }
   },
   "conta": {
     "title": "My Account",
