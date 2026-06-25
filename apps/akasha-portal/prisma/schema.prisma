@@ -17,6 +17,16 @@ model User {
   locale        String   @default("pt-BR")
   role          UserRole @default(MEMBER)
 
+  // Wave 14.3 — Plan Management.
+  // Nullable: null = plano FREEMIUM implícito (não persistido).
+  // Plan é a "catálogo de planos" editável via /admin/plans; User.planId
+  // é a atribuição (qual catálogo o usuário CONSOME). Subscription.plan
+  // é o tier pago real (Stripe) — entidades distintas, ambas necessárias:
+  // Subscription.plan = estado Stripe-pago, User.planId = plano atribuído
+  // (manual, comp, gift, admin grant).
+  planId String?
+  plan   Plan?   @relation(fields: [planId], references: [id], onDelete: SetNull)
+
   birthDate      DateTime?
   birthTime      String?
   birthCity      String?
@@ -109,7 +119,7 @@ model Subscription {
   id                   String    @id @default(cuid())
   userId               String    @unique
   user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  plan                 Plan      @default(FREEMIUM)
+  plan                 SubscriptionPlanTier @default(FREEMIUM)
   status               SubStatus @default(ACTIVE)
   stripeCustomerId     String?
   stripeSubscriptionId String?
@@ -121,9 +131,49 @@ model Subscription {
   @@map("subscriptions")
 }
 
-enum Plan {
+// Wave 14.3: enum renomeado de `Plan` → `SubscriptionPlanTier` para liberar
+// o nome `Plan` para o novo model abaixo (catálogo editável de planos).
+// Stripe webhook e tests usam strings literais 'FREEMIUM'/'AKASHA_PRO'
+// (não tipos Prisma), portanto a renomeação é transparente para o código
+// de aplicação. Migration `plans` deve rodar:
+//   ALTER TYPE "Plan" RENAME TO "SubscriptionPlanTier";
+//   ALTER TABLE "subscriptions" ALTER COLUMN "plan" DROP DEFAULT;
+//   ALTER TABLE "subscriptions" ALTER COLUMN "plan" TYPE "SubscriptionPlanTier" USING "plan"::text::"SubscriptionPlanTier";
+//   ALTER TABLE "subscriptions" ALTER COLUMN "plan" SET DEFAULT 'FREEMIUM';
+enum SubscriptionPlanTier {
   FREEMIUM
   AKASHA_PRO
+}
+
+// Wave 14.3 — Plan (catálogo de planos).
+//
+// Model editável via /admin/plans (CRUD). Cada Plan representa um tier do
+// produto (FREEMIUM, PRO, ENTERPRISE) com pricing + créditos mensais + features.
+// Não confundir com SubscriptionPlanTier (enum fixo de Stripe) — Plan é a
+// FONTE da verdade do catálogo; User.planId atribui qual catálogo o
+// usuário CONSOME (admin grant, comp, gift).
+model Plan {
+  id              String   @id @default(cuid())
+  // slug único, lowercase, sem espaços: 'freemium' | 'pro' | 'enterprise'.
+  // Diferencia de SubscriptionPlanTier (enum) — aqui é string livre pra
+  // permitir admin criar planos custom sem migration.
+  name            String   @unique
+  displayName     String
+  priceCents      Int      @default(0)
+  creditsPerMonth Int?
+  features        Json     @default("[]")
+  isActive        Boolean  @default(true)
+  sortOrder       Int      @default(0)
+
+  // Back-relation ao User (1:N — vários usuários podem ter o mesmo plano).
+  // User.planId nullable + onDelete: SetNull = deletar um plano só desassocia
+  // os usuários (não cascateia delete). Soft-delete via isActive=false é
+  // o caminho preferido; DELETE real é escape hatch.
+  users User[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("plans")
 }
 
 enum SubStatus {
