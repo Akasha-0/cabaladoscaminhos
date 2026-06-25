@@ -1,90 +1,145 @@
 name: CI
 
+# ---------------------------------------------------------------------------
+# Wave 12.1 — CI/CD pipeline
+#
+# Triggers:
+#   - pull_request (open, synchronize, reopened) on every PR
+#   - push to main (post-merge smoke)
+#   - workflow_dispatch (manual run from Actions tab)
+#
+# Jobs (parallel where independent, sequential where needed):
+#   1. lint          — pnpm lint (ESLint, warnings allowed)
+#   2. typecheck     — pnpm typecheck (root tsc --noEmit + portal tsc --noEmit)
+#   3. i18n-check    — pnpm --filter akasha-portal i18n:check (F-231 parity gate)
+#   4. test          — pnpm test:run (Vitest, full suite incl. Wave 9 + Wave 11)
+#   5. build         — pnpm build (Next.js production build; needs: lint, typecheck, i18n-check, test)
+#
+# Notes:
+#   - Uses composite action ./.github/actions/setup-environment for shared
+#     pnpm + Node 22 + pnpm-store cache (reduces install from ~90s to ~15s).
+#   - Concurrency cancels in-progress runs on the same PR ref so we don't
+#     burn minutes on superseded pushes.
+#   - JWT_SECRET / DATABASE_URL envs are required by tests/setup.ts
+#     (vitest config defines defaults; explicit here for safety).
+# ---------------------------------------------------------------------------
+
 on:
-  push:
-    branches: [main, develop]
   pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Cancel in-progress run for same PR ref / branch on new push.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 env:
-  DATABASE_URL: postgresql://test:test@localhost:5432/test
   NODE_ENV: test
+  DATABASE_URL: postgresql://test:***@localhost:5432/test
+  JWT_SECRET: ci-test-secret-key-that-is-at-least-32-bytes-long
 
 jobs:
   lint:
-    name: Lint
+    name: Lint (ESLint)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: '9'
+      - name: Setup Environment
+        uses: ./.github/actions/setup-environment
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Lint
+      - name: Run ESLint
         run: pnpm run lint
 
-  test:
-    name: Test
+  typecheck:
+    name: Typecheck (tsc)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: '9'
+      - name: Setup Environment
+        uses: ./.github/actions/setup-environment
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run core tests
-        run: pnpm run test:core
-
+      # Root tsc --noEmit covers packages/* + apps/akasha-portal/src via
+      # the root tsconfig.json project references.
       - name: Generate Prisma client
         run: pnpm exec prisma generate
 
-      - name: Typecheck
-        run: pnpm exec tsc --noEmit
+      - name: Typecheck (root + packages)
+        run: pnpm run typecheck
 
-  build:
-    name: Build
+      # Portal also has its own tsc; catches anything the root reference
+      # misses (Next.js-specific paths, middleware types, etc).
+      - name: Typecheck (portal)
+        run: pnpm run typecheck:portal
+
+  i18n-check:
+    name: i18n Parity (en ↔ pt-BR)
     runs-on: ubuntu-latest
-    needs: [lint, test]
+    timeout-minutes: 5
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: '9'
+      - name: Setup Environment
+        uses: ./.github/actions/setup-environment
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
+      # F-231 Fase C gate: refuses to merge if messages/en.json and
+      # messages/pt-BR.json drift. Runs the pure-Node parity checker.
+      - name: Check i18n parity
+        run: pnpm --filter akasha-portal i18n:check
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+  test:
+    name: Test (Vitest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Build
+      - name: Setup Environment
+        uses: ./.github/actions/setup-environment
+
+      # Prisma client must exist for any code that imports @prisma/client.
+      - name: Generate Prisma client
+        run: pnpm exec prisma generate
+
+      # Full suite (Wave 9 baseline 132 tests + Wave 11 additions).
+      # Uses test:run (not test) so vitest exits instead of watch-looping.
+      - name: Run test suite
+        run: pnpm run test:run
+
+  build:
+    name: Build (Next.js production)
+    runs-on: ubuntu-latest
+    needs: [lint, typecheck, i18n-check, test]
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Environment
+        uses: ./.github/actions/setup-environment
+
+      # Prisma must generate before next build (otherwise @prisma/client
+      # imports in API routes fail to resolve at build time).
+      - name: Generate Prisma client
+        run: pnpm exec prisma generate
+
+      # Build with the same NODE_OPTIONS bump the portal uses locally
+      # (apps/akasha-portal/package.json sets --max-old-space-size=4096
+      # for the react-three/fiber + PDF renderer memory profile).
+      - name: Build akasha-portal
         run: pnpm run build
+        env:
+          NODE_OPTIONS: '--max-old-space-size=4096'

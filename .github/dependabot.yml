@@ -1,17 +1,28 @@
 version: 2
 updates:
+  # npm/pnpm ecosystem — root + every workspace package
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "06:00"
     open-pull-requests-limit: 10
     groups:
       production-dependencies:
         dependency-type: "production"
       development-dependencies:
         dependency-type: "development"
+      # Workspace packages are local symlinks; Dependabot cannot bump
+      # them, so ignore the noise.
+      ignore:
+        - dependency-name: "@akasha/*"
 
+  # GitHub Actions — keep workflow references current
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 5
