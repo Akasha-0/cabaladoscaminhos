@@ -507,6 +507,37 @@ export default function ContaClient({
           </div>
         </div>
 
+        {/* LGPD — Privacy Controls (Wave 19.3) */}
+        <div style={glassCard} className="p-5">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h2 className="text-base font-semibold mb-1" style={{ color: '#A78BFA' }}>
+                Privacidade & Consentimento (LGPD)
+              </h2>
+              <p className="text-sm" style={{ color: 'rgba(226,232,240,0.65)' }}>
+                Gerencie consentimentos granulares (marketing, analytics, IA, terceiros) com
+                audit trail completo de cada decisão.
+              </p>
+              <p className="text-xs mt-1" style={{ color: 'rgba(226,232,240,0.4)' }}>
+                Conforme LGPD Art. 7 e Art. 8 — você pode revogar qualquer consentimento a qualquer
+                momento.
+              </p>
+            </div>
+            <a
+              href="/conta/privacidade"
+              className="px-5 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap"
+              style={{
+                background: 'rgba(124,58,237,0.15)',
+                border: '1px solid rgba(124,58,237,0.4)',
+                color: '#A78BFA',
+                textDecoration: 'none',
+              }}
+            >
+              Gerenciar
+            </a>
+          </div>
+        </div>
+
         {/* Plan + Credits */}
         <div className="grid grid-cols-2 gap-4">
           <div style={glassCard} className="p-5 flex flex-col gap-2">

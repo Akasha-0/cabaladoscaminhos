@@ -548,6 +548,39 @@
       }
     }
   },
+  "privacy": {
+    "title": "Privacy & Consent",
+    "desc": "Manage how your data is used. Per LGPD (Brazilian General Data Protection Law), your consent must be free, informed, and unequivocal. You may revoke any consent at any time. We keep a full audit trail of every decision.",
+    "lgpdArticle7": "Art. 7 — Consent for personal data processing must be given for specific purposes, with prior and explicit information about the treatment.",
+    "lgpdArticle8": "Art. 8 — The consent may be revoked at any time, by express manifestation of the data subject. Revocation does not affect the lawfulness of processing carried out prior to it.",
+    "consentTypes": {
+      "MARKETING": "Marketing emails & promotions",
+      "ANALYTICS": "Anonymous usage analytics",
+      "AI_TRAINING": "Use of my data for AI training",
+      "THIRD_PARTY_SHARING": "Sharing data with third parties"
+    },
+    "consentDescriptions": {
+      "MARKETING": "Receive newsletters, product news, and promotional content. Opt-in required (LGPD Art. 7, I).",
+      "ANALYTICS": "We collect anonymous, aggregate metrics (page views, feature usage) to improve the product. No personally identifiable information. Legitimate interest basis.",
+      "AI_TRAINING": "Allow anonymized inputs to be used to train and fine-tune AI models. Sensitive category (LGPD Art. 11) — strict opt-in.",
+      "THIRD_PARTY_SHARING": "Share your data with integration partners (analytics vendors, partner platforms). Strict opt-in."
+    },
+    "history": "Decision history",
+    "historyEmpty": "No decisions recorded yet — your current state reflects signup defaults.",
+    "historyDecision": "{action} on {date}",
+    "historyAction": {
+      "grant": "Granted",
+      "revoke": "Revoked"
+    },
+    "lgpdNote": "All decisions are recorded with timestamp, IP hash, and browser fingerprint (LGPD Art. 37). You can request full deletion at any time.",
+    "savedSuccess": "Consent saved.",
+    "saveError": "Could not save the decision. Please try again.",
+    "enabledLabel": "Enabled",
+    "disabledLabel": "Disabled",
+    "loadingState": "Loading…",
+    "loadingHistory": "Loading decision history…",
+    "fetchError": "Could not load your privacy preferences. Please refresh the page."
+  },
   "admin": {
     "users": {
       "title": "User Management",
