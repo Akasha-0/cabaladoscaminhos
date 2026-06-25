@@ -505,11 +505,34 @@
   },
   "pwa": {
     "install": {
-      "title": "Install Sistema Akasha",
+      "title": "Install Akasha System",
       "subtitle": "Quick access on your phone, works offline",
       "install": "Install",
       "dismiss": "Not now",
       "installed": "Installed ✓"
     }
+  },
+  "search": {
+    "placeholder": "Search Akasha… (Mentor, Diary, Map)",
+    "hint": "Press ⌘K or Ctrl K to open",
+    "empty": {
+      "title": "Start typing",
+      "description": "Find Mentor conversations, Diary entries and your Akashic Map."
+    },
+    "loading": "Searching…",
+    "noResults": {
+      "title": "No results",
+      "description": "Try another keyword or type."
+    },
+    "error": "Something went wrong. Try again.",
+    "typeLabel": {
+      "chat": "Chat",
+      "diario": "Diary",
+      "manifesto": "Manifesto",
+      "mapa": "Map"
+    },
+    "shortcutHint": "⌘K",
+    "escHint": "Esc to close",
+    "navHint": "↑↓ navigate · Enter open"
   }
 }
