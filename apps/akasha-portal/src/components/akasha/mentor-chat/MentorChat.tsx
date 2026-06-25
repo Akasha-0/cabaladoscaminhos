@@ -629,14 +629,9 @@ function EmptyState({ t, onSelect }: EmptyStateProps) {
         return parsed.filter((x): x is string => typeof x === 'string');
       }
     } catch {
-      // ignore — fall back to hardcoded
+      // not JSON → falls through to empty list (the JSON has the real strings)
     }
-    return [
-      'Como estou hoje, segundo meus mapas?',
-      'Qual é meu código do dia?',
-      'Sugira um ritual para este momento.',
-      'O que significa meu mapa astrológico?',
-    ];
+    return [];
   }, [t]);
 
   return (
@@ -929,33 +924,6 @@ interface SuggestionChipsProps {
   onSelect: (q: string) => void;
 }
 
-const FALLBACK_CHIPS: Record<string, string[]> = {
-  ansioso: [
-    'Como respirar agora?',
-    'Me acalme com um ritual curto',
-    'Qual meu código do dia?',
-    'O que está me deixando ansioso?',
-  ],
-  perdido: [
-    'Onde estou parado?',
-    'Correlacione I Ching com meu caminho',
-    'Qual meu número de vida significa?',
-    'Como achar direção hoje?',
-  ],
-  curioso: [
-    'O que você pode fazer por mim?',
-    'Quais ferramentas você tem?',
-    'Como funcionam os 5 Pilares?',
-    'Mostre minha Mandala',
-  ],
-  centrado: [
-    'O que posso aprofundar hoje?',
-    'Sugira uma prática para integrar',
-    'Reflita sobre meu momento',
-    'Como manter esse centramento?',
-  ],
-};
-
 function SuggestionChips({ emotion, t, disabled, onSelect }: SuggestionChipsProps) {
   const chips = useMemo<string[]>(() => {
     const raw = t(`mentor.chat.suggestionChips.${emotion}`);
@@ -966,9 +934,9 @@ function SuggestionChips({ emotion, t, disabled, onSelect }: SuggestionChipsProp
         if (filtered.length > 0) return filtered;
       }
     } catch {
-      // not JSON → falls through to fallback below
+      // not JSON → empty list (the JSON has the real chips)
     }
-    return FALLBACK_CHIPS[emotion] ?? [];
+    return [];
   }, [emotion, t]);
 
   if (chips.length === 0) return null;
@@ -980,7 +948,7 @@ function SuggestionChips({ emotion, t, disabled, onSelect }: SuggestionChipsProp
       transition={{ duration: 0.25 }}
       className="flex flex-wrap gap-2"
       role="group"
-      aria-label="Perguntas sugeridas"
+      aria-label={t('mentor.chat.suggestionsAriaLabel')}
       data-testid="mentor-chat-suggestion-chips"
       data-emotion={emotion}
     >

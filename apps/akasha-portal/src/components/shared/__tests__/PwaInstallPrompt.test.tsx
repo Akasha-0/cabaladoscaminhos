@@ -18,6 +18,32 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { PwaInstallPrompt, useInstallPrompt, PWA_INSTALL_MIN_DELAY_MS } from '../PwaInstallPrompt';
 
+// ─── i18n mock ──────────────────────────────────────────────────────
+// Provides t() that returns the key itself for missing translations.
+// (PwaInstallPrompt copy is short and stable; tests assert specific PT-BR.)
+const I18N_MAP: Record<string, string> = {
+  'pwa.installPrompt.title': 'Instale para acesso rápido',
+  'pwa.installPrompt.subtitle': 'Abre em 1 toque, funciona sem internet.',
+  'pwa.installPrompt.install': 'Instalar agora',
+  'pwa.installPrompt.installAria': 'Instalar agora',
+  'pwa.installPrompt.dismiss': 'Agora não',
+  'pwa.installPrompt.dismissAria': 'Agora não',
+};
+
+vi.mock('@/i18n', () => ({
+  useTranslation: () => ({
+    t: (key: string, params?: Record<string, string | number>) => {
+      let value = I18N_MAP[key] ?? key;
+      if (params) {
+        value = value.replace(/\{(\w+)\}/g, (_, k) =>
+          Object.prototype.hasOwnProperty.call(params, k) ? String(params[k]) : `{${k}}`
+        );
+      }
+      return value;
+    },
+  }),
+}));
+
 interface FakePromptEvent {
   prompt: ReturnType<typeof vi.fn>;
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;

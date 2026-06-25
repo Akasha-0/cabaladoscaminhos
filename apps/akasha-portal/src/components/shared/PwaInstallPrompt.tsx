@@ -46,6 +46,8 @@
 import { Download, X, Smartphone } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 
+import { useTranslation } from '@/i18n';
+
 const DISMISS_KEY = 'akasha.pwa.install.dismissedAt';
 const DISMISS_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
@@ -190,6 +192,7 @@ export function useInstallPrompt() {
 }
 
 export function PwaInstallPrompt() {
+  const { t } = useTranslation();
   const { state, prompt, dismiss, hasDeferredPrompt } = useInstallPrompt();
 
   // Wave 10.5: only render once the 30s delay has elapsed AND a real
@@ -234,19 +237,19 @@ export function PwaInstallPrompt() {
             id="pwa-install-title"
             className="text-sm font-bold text-white leading-snug"
           >
-            Instale para acesso rápido
+            {t('pwa.installPrompt.title')}
           </p>
           <p
             id="pwa-install-subtitle"
             className="text-xs text-white/65 leading-relaxed mt-1"
           >
-            Abre em 1 toque, funciona sem internet.
+            {t('pwa.installPrompt.subtitle')}
           </p>
         </div>
         <button
           type="button"
           onClick={dismiss}
-          aria-label="Agora não"
+          aria-label={t('pwa.installPrompt.dismissAria')}
           className="shrink-0 rounded-lg p-1 text-white/40 hover:text-white/80 hover:bg-white/5 transition-colors"
           data-testid="pwa-install-dismiss"
         >
@@ -260,7 +263,7 @@ export function PwaInstallPrompt() {
           onClick={() => {
             void prompt();
           }}
-          aria-label="Instalar agora"
+          aria-label={t('pwa.installPrompt.installAria')}
           className="flex-1 rounded-xl px-4 py-2.5 text-sm font-semibold text-white/95 transition-transform active:scale-[0.98] flex items-center justify-center gap-2"
           style={{
             background:
@@ -270,12 +273,12 @@ export function PwaInstallPrompt() {
           data-testid="pwa-install-button"
         >
           <Download size={14} aria-hidden="true" />
-          Instalar agora
+          {t('pwa.installPrompt.install')}
         </button>
         <button
           type="button"
           onClick={dismiss}
-          aria-label="Agora não"
+          aria-label={t('pwa.installPrompt.dismissAria')}
           className="rounded-xl px-4 py-2.5 text-sm font-medium text-white/65 hover:text-white/90 transition-colors"
           style={{
             background: 'rgba(255,255,255,0.04)',
@@ -283,7 +286,7 @@ export function PwaInstallPrompt() {
           }}
           data-testid="pwa-install-decline"
         >
-          Agora não
+          {t('pwa.installPrompt.dismiss')}
         </button>
       </div>
     </div>

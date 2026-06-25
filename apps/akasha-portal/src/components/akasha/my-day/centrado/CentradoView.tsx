@@ -29,9 +29,11 @@
 import { motion } from 'framer-motion';
 import { Sparkles, Compass, BookOpen } from 'lucide-react';
 
+import { useTranslation } from '@/i18n';
 import type { AdaptiveViewProps } from '../shared';
 
 export function CentradoView({ data, loading }: AdaptiveViewProps) {
+  const { t } = useTranslation();
   if (loading) {
     return (
       <div className="space-y-3" data-testid="centrado-loading">
@@ -64,7 +66,7 @@ export function CentradoView({ data, loading }: AdaptiveViewProps) {
           <div className="flex items-center gap-2 mb-1.5">
             <Sparkles size={14} className="text-emerald-300" aria-hidden />
             <span className="text-[11px] text-emerald-300 font-bold">
-              Clima
+              {t('meuDia.centrado.climateLabel')}
             </span>
           </div>
           <p className="text-base text-white/90 leading-snug">{climate}</p>
@@ -83,13 +85,13 @@ export function CentradoView({ data, loading }: AdaptiveViewProps) {
           <div className="flex items-center gap-2 mb-1.5">
             <Compass size={14} className="text-emerald-300" aria-hidden />
             <span className="text-[11px] text-emerald-300 font-bold">
-              Autoridade
+              {t('meuDia.centrado.authorityLabel')}
             </span>
           </div>
           <p className="text-lg font-bold text-white leading-tight">{profile.authority}</p>
           {profile.strategy && (
             <p className="text-xs text-white/65 mt-1">
-              Estratégia: <span className="text-white/90 font-medium">{profile.strategy}</span>
+              {t('meuDia.centrado.strategyLabel')}: <span className="text-white/90 font-medium">{profile.strategy}</span>
             </p>
           )}
           {profile.dailyDirective && (
@@ -115,7 +117,7 @@ export function CentradoView({ data, loading }: AdaptiveViewProps) {
               className="text-[11px] font-bold"
               style={{ color: ritual.cor }}
             >
-              Prática
+              {t('meuDia.centrado.practiceLabel')}
             </span>
           </div>
           <p className="text-base font-bold text-white leading-tight">{ritual.titulo}</p>
@@ -129,7 +131,7 @@ export function CentradoView({ data, loading }: AdaptiveViewProps) {
           <div className="flex items-center gap-2 mb-1.5">
             <BookOpen size={14} className="text-white/60" aria-hidden />
             <span className="text-[11px] text-white/70 font-bold">
-              Hoje
+              {t('meuDia.centrado.synthesisLabel')}
             </span>
           </div>
           <p className="text-sm text-white/80 leading-relaxed italic">{paragraph}</p>
@@ -140,7 +142,7 @@ export function CentradoView({ data, loading }: AdaptiveViewProps) {
       {!climate && !profile && !ritual && !paragraph && (
         <div className="rounded-2xl border border-white/10 p-4 bg-white/[0.03] text-center">
           <p className="text-sm text-white/70 leading-relaxed">
-            Seu mapa está silencioso hoje — isso também é resposta. Aproveite o espaço.
+            {t('meuDia.centrado.fallback')}
           </p>
         </div>
       )}

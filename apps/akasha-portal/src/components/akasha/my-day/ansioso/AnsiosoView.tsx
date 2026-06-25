@@ -27,6 +27,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { MessageCircle } from 'lucide-react';
 
+import { useTranslation } from '@/i18n';
 import { BreathOrb } from './BreathOrb';
 import type { AdaptiveViewProps } from '../shared';
 
@@ -47,6 +48,7 @@ function trimPhrase(text: string, maxWords: number): string {
 }
 
 export function AnsiosoView({ data, loading, locale }: AnsiosoViewProps) {
+  const { t } = useTranslation();
   const [orbStarted, setOrbStarted] = useState(false);
 
   // Pick the shortest, most calming sentence from the synthesis. If we have
@@ -55,7 +57,7 @@ export function AnsiosoView({ data, loading, locale }: AnsiosoViewProps) {
   // the user in anxiety doesn't need a "aja agora" prompt.
   // Wave 10.3: cap at 8 words so it fits one line on 360px wide.
   const phrase = trimPhrase(
-    data?.synthesisParagraph ?? data?.climate ?? 'Respire. Apenas isso, agora.',
+    data?.synthesisParagraph ?? data?.climate ?? t('meuDia.ansioso.phraseFallback'),
     8
   );
 
@@ -91,7 +93,7 @@ export function AnsiosoView({ data, loading, locale }: AnsiosoViewProps) {
             }}
             data-testid="ansioso-start-breath"
           >
-            Começar respiração
+            {t('meuDia.ansioso.startBreath')}
           </button>
         )}
       </div>
@@ -121,13 +123,13 @@ export function AnsiosoView({ data, loading, locale }: AnsiosoViewProps) {
       >
         <MessageCircle size={22} className="text-white" aria-hidden="true" />
         <span className="text-base font-bold text-white tracking-wide">
-          Falar com Mentor agora
+          {t('meuDia.ansioso.mentorTitle')}
         </span>
       </Link>
 
       {loading && (
         <p className="text-[10px] text-white/35 text-center">
-          carregando seu mapa…
+          {t('meuDia.loading')}
         </p>
       )}
     </motion.div>

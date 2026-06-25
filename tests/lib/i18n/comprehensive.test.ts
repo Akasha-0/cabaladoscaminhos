@@ -34,7 +34,9 @@ describe('i18n dictionaries comprehensive', () => {
       if (v && typeof v === 'object' && !Array.isArray(v)) {
         Object.assign(out, flatten(v as Dict, key));
       } else {
-        out[key] = v;
+        // Arrays are stringified so leaf-value checks (string type, non-empty)
+        // still hold for pluralised message lists.
+        out[key] = Array.isArray(v) ? v.join('|') : v;
       }
     }
     return out;

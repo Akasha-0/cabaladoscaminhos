@@ -26,8 +26,14 @@
  *     is desktop-oriented; Headless UI's Tabs would need significant glue.
  *   - This pattern is small enough (~100 LOC) to own directly.
  *
+ * Wave 11.4 — i18n:
+ *   All user-facing copy flows through the `nav.bottomNav.*` namespace.
+ *   The previous `FALLBACK_LABELS` object (PT-BR hardcoded) is gone — the
+ *   t() helper now provides the value, falling back to the key string
+ *   itself when a translation is missing (visible in dev).
+ *
  * Accessibility:
- *   - <nav aria-label="Navegação principal">.
+ *   - <nav aria-label="..."> from nav.bottomNav.ariaLabel.
  *   - Each link is an <a> with aria-current="page" when active.
  *   - 48px tap target on every item (WCAG 2.5.5).
  *   - prefers-reduced-motion: no slide animation.
@@ -36,6 +42,8 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Sun, Compass, BookOpen, MessageCircle, CircleUser } from 'lucide-react';
+
+import { useTranslation } from '@/i18n';
 
 interface BottomNavItem {
   /** Path-prefix used to decide `active` (we match startsWith on pathname). */
@@ -57,20 +65,12 @@ interface BottomNavProps {
 }
 
 const NAV_LABEL_KEYS = {
-  meuDia: 'bottomNav.meuDia',
-  mandala: 'bottomNav.mandala',
-  diario: 'bottomNav.diario',
-  mentor: 'bottomNav.mentor',
-  conta: 'bottomNav.conta',
+  meuDia: 'nav.bottomNav.meuDia',
+  mandala: 'nav.bottomNav.mandala',
+  diario: 'nav.bottomNav.diario',
+  mentor: 'nav.bottomNav.mentor',
+  conta: 'nav.bottomNav.conta',
 } as const;
-
-const FALLBACK_LABELS: Record<(typeof NAV_LABEL_KEYS)[keyof typeof NAV_LABEL_KEYS], string> = {
-  'bottomNav.meuDia': 'Meu Dia',
-  'bottomNav.mandala': 'Mandala',
-  'bottomNav.diario': 'Diário',
-  'bottomNav.mentor': 'Mentor',
-  'bottomNav.conta': 'Conta',
-};
 
 /**
  * Routes where the bottom nav MUST NOT appear (auth flows).
@@ -88,11 +88,12 @@ const FALLBACK_LABELS: Record<(typeof NAV_LABEL_KEYS)[keyof typeof NAV_LABEL_KEY
  */
 export function isAuthRoute(pathname: string | null | undefined): boolean {
   if (!pathname) return false;
-  return /\/login(?:\/|$)/.test(pathname) || /\/register(?:\/|$)/.test(pathname);
+  return /\/(login|register)(?:\/|$)/.test(pathname);
 }
 
 export function BottomNav({ locale }: BottomNavProps) {
   const pathname = usePathname();
+  const { t } = useTranslation();
 
   // Hide on /login and /register.
   if (isAuthRoute(pathname)) return null;
@@ -137,7 +138,7 @@ export function BottomNav({ locale }: BottomNavProps) {
 
   return (
     <nav
-      aria-label="Navegação principal"
+      aria-label={t('nav.bottomNav.ariaLabel')}
       data-testid="bottom-nav"
       className="md:hidden fixed bottom-0 left-0 right-0 z-30 border-t border-white/10 bg-[#06070F]/92 backdrop-blur-md"
       style={{
@@ -165,7 +166,7 @@ export function BottomNav({ locale }: BottomNavProps) {
           const isActive =
             pathWithoutLocale === hrefBase ||
             pathWithoutLocale.startsWith(hrefBase + '/');
-          const label = FALLBACK_LABELS[labelKey as keyof typeof FALLBACK_LABELS];
+          const label = t(labelKey);
 
           return (
             <li key={hrefBase} className="flex-1 min-w-0">

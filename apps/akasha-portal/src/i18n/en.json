@@ -13,10 +13,19 @@
   "nav": {
     "home": "Home",
     "mandala": "Mandala",
-    "diario": "Diary",
+    "diario": "Journal",
     "oraculo": "Oracle",
     "conta": "Account",
-    "manifesto": "Manifesto"
+    "manifesto": "Manifesto",
+    "sair": "Sign out",
+    "bottomNav": {
+      "ariaLabel": "Main navigation",
+      "meuDia": "My Day",
+      "mandala": "Mandala",
+      "diario": "Journal",
+      "mentor": "Mentor",
+      "conta": "Account"
+    }
   },
   "conta": {
     "title": "My Account",
@@ -485,14 +494,75 @@
   },
   "mentor": {
     "emotion": {
-      "ansioso": "When you're anxious, I can suggest a breathing practice + the code of the day.",
+      "ansioso": "When you're anxious, I can suggest a breathing practice + the day's code.",
       "perdido": "When you feel lost, I can correlate I Ching with your map to illuminate paths.",
       "curioso": "When you want to explore, I can list the tools I have available.",
       "centrado": ""
     },
-    "dispatching": "Looking for insights for you...",
+    "dispatching": "Finding insights for you...",
     "toolInsights": {
-      "label": "Insights for {emotion} state"
+      "label": "Insights for state {emotion}"
+    },
+    "chat": {
+      "title": "Akashic Mentor",
+      "subtitle": "Talk to your map",
+      "inputPlaceholder": "Ask the Mentor...",
+      "inputPlaceholderNoCredits": "No credits for new questions",
+      "send": "Send message",
+      "stop": "Stop response",
+      "creditCounter": "{count} credit | {count} credits",
+      "creditCounterZero": "No credits",
+      "creditLowWarning": "{count} credit left | {count} credits left",
+      "starterQuestions": [
+        "How am I today, according to my maps?",
+        "What is my code of the day?",
+        "Suggest a ritual for this moment.",
+        "What does my astrology map mean?"
+      ],
+      "emptyHeading": "Start your conversation",
+      "emptySubheading": "Pick a question below or write your own.",
+      "suggestionsAriaLabel": "Suggested questions",
+      "error": {
+        "title": "Something went wrong",
+        "generic": "Try again in a few moments.",
+        "noCredits": "You don't have credits. Buy more to continue.",
+        "rateLimit": "Too many questions in a row. Wait a moment.",
+        "network": "Connection error. Check your internet."
+      },
+      "toolIndicator": {
+        "label": "TOOLS",
+        "calculating": "Calculating day's code",
+        "ritual": "Building ritual",
+        "correlations": "Finding correlations",
+        "interpretando": "Interpreting map",
+        "tools": "Listing tools"
+      },
+      "suggestionChips": {
+        "ansioso": [
+          "How to breathe now?",
+          "Calm me with a short ritual",
+          "What's my code of the day?",
+          "What's making me anxious?"
+        ],
+        "perdido": [
+          "Where am I stuck?",
+          "Correlate I Ching with my path",
+          "What does my life number mean?",
+          "How to find direction today?"
+        ],
+        "curioso": [
+          "What can you do for me?",
+          "What tools do you have?",
+          "How do the 5 Pillars work?",
+          "Show my Mandala"
+        ],
+        "centrado": [
+          "What can I deepen today?",
+          "Suggest an integration practice",
+          "Reflect on my moment",
+          "How to maintain this centering?"
+        ]
+      }
     }
   },
   "mcp": {
@@ -510,6 +580,14 @@
       "install": "Install",
       "dismiss": "Not now",
       "installed": "Installed ✓"
+    },
+    "installPrompt": {
+      "title": "Install for quick access",
+      "subtitle": "Opens in 1 tap, works without internet.",
+      "install": "Install now",
+      "installAria": "Install now",
+      "dismiss": "Not now",
+      "dismissAria": "Not now"
     }
   }
 }
