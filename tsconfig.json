@@ -16,11 +16,7 @@
       "@akasha/tratamento": ["./packages/tratamento/src/index.ts"],
       "@akasha/mentor": ["./packages/mentor/src/index.ts"],
       "@akasha/mentor/*": ["./packages/mentor/src/*"],
-      "@akasha/mcp": ["./packages/mcp/src/index.ts"],
-      "@akasha/graphrag": ["./packages/graphrag/src/index.ts"],
-      "@akasha/graphrag/retriever": ["./packages/graphrag/src/retriever/index.ts"],
-      "@akasha/graphrag/seed": ["./packages/graphrag/src/seed/index.ts"],
-      "@akasha/graphrag/types": ["./packages/graphrag/src/types/index.ts"]    
+      "@akasha/mcp": ["./packages/mcp/src/index.ts"]     
     }
   },
   "include": [

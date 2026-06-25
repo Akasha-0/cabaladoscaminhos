@@ -195,7 +195,7 @@ const SCOPED_MODELS: ReadonlySet<string> = new Set<string>([
  */
 export async function resolveWorkspaceForUser(
   userId: string,
-  _jwtWorkspaceIdClaim?: string,
+  jwtWorkspaceIdClaim?: string,
 ): Promise<WorkspaceResolution> {
   const user = await rawPrisma.user.findUnique({
     where: { id: userId },
@@ -213,38 +213,6 @@ export async function resolveWorkspaceForUser(
     kind: 'ok',
     context: { userId: user.id, workspaceId: user.workspaceId },
   };
-}
-
-/**
- * Lightweight access check for code paths that get userId + workspaceId
- * separately (server actions, websocket auth, batch jobs, queued
- * messages). Returns true if the user exists AND belongs to the
- * claimed workspace.
- *
- * This is a CONVENIENCE for callers that bypass the HTTP wrapper
- * (which would have already activated a WorkspaceContext). The strong
- * guarantee is still the Prisma proxy — even if a caller mistakenly
- * grants access here, the proxy auto-injects `where.workspaceId` and
- * denies cross-workspace reads at the DB layer.
- *
- * Fail-closed: empty/whitespace workspaceId → false (a missing scope
- * is treated as a cross-tenant attack vector, not a benign default).
- */
-export async function requireWorkspaceAccess(
-  userId: string,
-  workspaceId: string,
-): Promise<boolean> {
-  if (!userId || userId.trim() === '') return false;
-  if (!workspaceId || workspaceId.trim() === '') return false;
-
-  const user = await rawPrisma.user.findUnique({
-    where: { id: userId },
-    select: { id: true, workspaceId: true },
-  });
-  if (!user) return false;
-  if (!user.workspaceId || user.workspaceId.trim() === '') return false;
-
-  return user.workspaceId === workspaceId;
 }
 
 // ============================================================================

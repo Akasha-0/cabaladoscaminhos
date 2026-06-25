@@ -1,3 +1,0 @@
-# Wave 31.1 — graphrag migration lock (proposal)
-# Per apps/akasha-portal/prisma/AGENTS.md Work Guidance §1.
-provider = "postgresql"
