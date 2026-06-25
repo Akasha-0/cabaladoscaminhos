@@ -642,5 +642,43 @@
       },
       "refresh": "Refresh"
     }
+  },
+  "search": {
+    "placeholder": "Search Akasha...",
+    "escHint": "Close (Esc)",
+    "error": "Search failed. Please try again.",
+    "loading": "Searching...",
+    "empty": {
+      "title": "Start typing",
+      "description": "Type at least 2 characters to search your messages, journal, manifesto and map."
+    },
+    "noResults": {
+      "title": "No results",
+      "description": "Try different words or adjust the filters."
+    },
+    "navHint": "↑↓ navigate · Enter open · Esc close",
+    "shortcutHint": "Cmd/Ctrl + K",
+    "typeLabel": {
+      "chat": "Chat",
+      "diario": "Journal",
+      "manifesto": "Manifesto",
+      "mapa": "Map"
+    },
+    "filters": {
+      "title": "Filters",
+      "type": "Type",
+      "typeAll": "All",
+      "dateFrom": "From",
+      "dateTo": "To",
+      "pilar": "Pillar",
+      "pilarAll": "All pillars",
+      "pilarAstrologia": "Astrology",
+      "pilarCabala": "Kabbalah",
+      "pilarTantrica": "Tantra",
+      "pilarOdu": "Odu",
+      "clear": "Clear filters",
+      "ariaLabel": "Advanced search filters"
+    },
+    "score": "Relevance: {score}%"
   }
 }

@@ -470,6 +470,182 @@ describe('SearchPalette', () => {
     await new Promise((r) => setTimeout(r, 400));
     expect(fetchMock).toHaveBeenCalled();
     const url = fetchMock.mock.calls[0][0] as string;
-    expect(url).toContain('q=cabal%C3%A1%20%C3%A1rvore');
+    // URLSearchParams encodes space as '+' (form-encoding). The accents
+    // (á) MUST be percent-encoded. We assert the query string is
+    // present and that the accents are encoded.
+    expect(url).toContain('/api/akasha/search?');
+    expect(url).toContain('q=cabal%C3%A1');
+    // Whitespace is encoded — either as '+' (URLSearchParams default) or
+    // '%20' (encodeURIComponent). We accept either, but no raw space.
+    expect(url).not.toMatch(/q=cabal[^?]* /);
+  });
+
+  // ── Wave 18.4 — Filter UI ───────────────────────────────────────────────
+
+  it('does NOT render the filters panel by default (collapsed)', () => {
+    renderPalette();
+    fireKey(window, 'k', { metaKey: true });
+    expect(screen.queryByTestId('search-filters-panel')).toBeNull();
+  });
+
+  it('opens the filters panel when the filter toggle is clicked', () => {
+    renderPalette();
+    fireKey(window, 'k', { metaKey: true });
+    fireEvent.click(screen.getByTestId('search-filters-toggle'));
+    expect(screen.getByTestId('search-filters-panel')).toBeInTheDocument();
+    expect(screen.getByTestId('search-filter-type')).toBeInTheDocument();
+    expect(screen.getByTestId('search-filter-since')).toBeInTheDocument();
+    expect(screen.getByTestId('search-filter-until')).toBeInTheDocument();
+    expect(screen.getByTestId('search-filter-pilar')).toBeInTheDocument();
+  });
+
+  it('passes `type=chat` in the URL when type filter is set to chat', async () => {
+    renderPalette();
+    fireKey(window, 'k', { metaKey: true });
+    fireEvent.click(screen.getByTestId('search-filters-toggle'));
+    fireEvent.change(screen.getByTestId('search-filter-type'), {
+      target: { value: 'chat' },
+    });
+    fireEvent.change(screen.getByTestId('search-input'), {
+      target: { value: 'cabala' },
+    });
+    await new Promise((r) => setTimeout(r, 400));
+    expect(fetchMock).toHaveBeenCalled();
+    const url = fetchMock.mock.calls[0][0] as string;
+    expect(url).toContain('type=chat');
+    // limit default 20, q, type
+    expect(url).toContain('q=cabala');
+    expect(url).toContain('limit=20');
+  });
+
+  it('does NOT include `type` in URL when filter is `all` (default)', async () => {
+    renderPalette();
+    fireKey(window, 'k', { metaKey: true });
+    fireEvent.click(screen.getByTestId('search-filters-toggle'));
+    fireEvent.change(screen.getByTestId('search-input'), {
+      target: { value: 'cabala' },
+    });
+    await new Promise((r) => setTimeout(r, 400));
+    const url = fetchMock.mock.calls[0][0] as string;
+    expect(url).not.toContain('type=');
+  });
+
+  it('passes `since` and `until` date filters in the URL', async () => {
+    renderPalette();
+    fireKey(window, 'k', { metaKey: true });
+    fireEvent.click(screen.getByTestId('search-filters-toggle'));
+    fireEvent.change(screen.getByTestId('search-filter-since'), {
+      target: { value: '2026-01-01' },
+    });
+    fireEvent.change(screen.getByTestId('search-filter-until'), {
+      target: { value: '2026-06-30' },
+    });
+    fireEvent.change(screen.getByTestId('search-input'), {
+      target: { value: 'cabala' },
+    });
+    await new Promise((r) => setTimeout(r, 400));
+    const url = fetchMock.mock.calls[0][0] as string;
+    expect(url).toContain('since=2026-01-01');
+    expect(url).toContain('until=2026-06-30');
+  });
+
+  it('passes `pilar` filter in the URL', async () => {
+    renderPalette();
+    fireKey(window, 'k', { metaKey: true });
+    fireEvent.click(screen.getByTestId('search-filters-toggle'));
+    fireEvent.change(screen.getByTestId('search-filter-pilar'), {
+      target: { value: 'cabala' },
+    });
+    fireEvent.change(screen.getByTestId('search-input'), {
+      target: { value: 'kether' },
+    });
+    await new Promise((r) => setTimeout(r, 400));
+    const url = fetchMock.mock.calls[0][0] as string;
+    expect(url).toContain('pilar=cabala');
+  });
+
+  it('shows an active filter count badge when filters are set', () => {
+    renderPalette();
+    fireKey(window, 'k', { metaKey: true });
+    fireEvent.click(screen.getByTestId('search-filters-toggle'));
+    // No active filters yet — no count badge.
+    expect(screen.queryByTestId('search-filters-count')).toBeNull();
+    // Set type filter.
+    fireEvent.change(screen.getByTestId('search-filter-type'), {
+      target: { value: 'chat' },
+    });
+    const badge = screen.getByTestId('search-filters-count');
+    expect(badge).toBeInTheDocument();
+    expect(badge).toHaveTextContent('1');
+  });
+
+  it('clears all filters when "Limpar filtros" is clicked', () => {
+    renderPalette();
+    fireKey(window, 'k', { metaKey: true });
+    fireEvent.click(screen.getByTestId('search-filters-toggle'));
+    fireEvent.change(screen.getByTestId('search-filter-type'), {
+      target: { value: 'chat' },
+    });
+    fireEvent.change(screen.getByTestId('search-filter-since'), {
+      target: { value: '2026-01-01' },
+    });
+    // The clear button should be visible now (filters are active).
+    const clearBtn = screen.getByTestId('search-filters-clear');
+    expect(clearBtn).toBeInTheDocument();
+    fireEvent.click(clearBtn);
+    // Filters should be back to empty.
+    expect((screen.getByTestId('search-filter-type') as HTMLSelectElement).value).toBe('all');
+    expect((screen.getByTestId('search-filter-since') as HTMLInputElement).value).toBe('');
+  });
+
+  it('resets filters when palette is reopened', async () => {
+    renderPalette();
+    fireKey(window, 'k', { metaKey: true });
+    fireEvent.click(screen.getByTestId('search-filters-toggle'));
+    fireEvent.change(screen.getByTestId('search-filter-type'), {
+      target: { value: 'chat' },
+    });
+    fireKey(screen.getByTestId('search-input'), 'Escape');
+    expect(screen.queryByTestId('search-palette')).toBeNull();
+    fireKey(window, 'k', { metaKey: true });
+    // Reopen — filter panel is collapsed by default, so expand it to verify.
+    fireEvent.click(screen.getByTestId('search-filters-toggle'));
+    expect((screen.getByTestId('search-filter-type') as HTMLSelectElement).value).toBe('all');
+  });
+
+  it('renders the score badge in the result row', async () => {
+    fetchResponse = {
+      ok: true,
+      status: 200,
+      json: () =>
+        Promise.resolve({
+          results: [
+            {
+              type: 'chat',
+              id: 'm-1',
+              title: 'High score',
+              snippet: 'snip',
+              score: 87,
+              href: '/pt-BR/oraculo',
+              createdAt: '2026-06-24T12:00:00Z',
+            },
+          ],
+          tookMs: 1,
+          query: 'q',
+          types: ['chat'],
+          lang: 'portuguese',
+        }),
+    };
+    renderPalette();
+    fireKey(window, 'k', { metaKey: true });
+    fireEvent.change(screen.getByTestId('search-input'), {
+      target: { value: 'query' },
+    });
+    await new Promise((r) => setTimeout(r, 400));
+    await waitFor(
+      () => expect(screen.queryByTestId('search-result-0')).toBeInTheDocument(),
+      { timeout: 3000 }
+    );
+    expect(screen.getByTestId('search-result-score-0')).toHaveTextContent('87%');
   });
 });
