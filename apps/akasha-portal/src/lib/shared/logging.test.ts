@@ -155,23 +155,23 @@ describe('logging — emit (stdout)', () => {
     const originalLogLevel = process.env.LOG_LEVEL;
     const originalNodeEnv = process.env.NODE_ENV;
 
-    process.env.NODE_ENV = 'production';
-    process.env.LOG_LEVEL = 'info';
+    (process.env as Record<string, string>).NODE_ENV = 'production';
+    (process.env as Record<string, string>).LOG_LEVEL = 'info';
     log.debug('d.test');
     expect(writeSpy).not.toHaveBeenCalled();
 
-    process.env.NODE_ENV = 'development';
+    (process.env as Record<string, string>).NODE_ENV = 'development';
     log.debug('d.test');
     expect(writeSpy).toHaveBeenCalledTimes(1);
 
-    process.env.NODE_ENV = 'production';
-    process.env.LOG_LEVEL = 'debug';
+    (process.env as Record<string, string>).NODE_ENV = 'production';
+    (process.env as Record<string, string>).LOG_LEVEL = 'debug';
     log.debug('d.test');
     expect(writeSpy).toHaveBeenCalledTimes(2);
 
     // Restore
-    process.env.LOG_LEVEL = originalLogLevel;
-    process.env.NODE_ENV = originalNodeEnv;
+    (process.env as Record<string, string>).LOG_LEVEL = originalLogLevel ?? '';
+    (process.env as Record<string, string>).NODE_ENV = originalNodeEnv ?? '';
   });
 
   it('emit não quebra com objetos circulares', () => {
