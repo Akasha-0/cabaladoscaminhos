@@ -236,6 +236,20 @@
       "3": "Body and Energy",
       "4": "Celestial Movement",
       "5": "Path Mutation"
+    },
+    "universal": {
+      "heading": "Universal Mandala",
+      "tagline": "Five different languages tell the same truth — you.",
+      "subtitle": "Kabbalah · Astrology · Tantra · Odu · I Ching converge in your now.",
+      "pillar": {
+        "cabala": "Life Path: the direction of your soul. Kabbalah deciphers inner geometry — path 1 to 9, personal year, expression.",
+        "astrologia": "The stars draw your birth sky. Sun, Moon, ascendant — the theatre where your life unfolds.",
+        "tantra": "Eleven subtle bodies, five koshas. Tantra maps the energy you carry — and what you lack.",
+        "odu": "Ifá — 15 canonical odus. Odu reveals destiny inscribed before your birth. Requires terreiro and consent.",
+        "iching": "64 King Wen hexagrams. I Ching shows the mutation of the moment — what changes, what remains."
+      },
+      "citations": "Papers cited",
+      "explore": "Explore each pillar"
     }
   },
   "evolution": {
