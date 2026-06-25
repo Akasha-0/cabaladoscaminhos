@@ -38,6 +38,30 @@ vi.mock('jsonwebtoken', () => ({
   decode: (...args: unknown[]) => mockDecode(...args),
 }));
 
+// Wave 12.5 §12.5: mock strict rate-limit so login tests don't hit the 5/min
+// limit while iterating through scenarios. Tests of the rate-limit module
+// itself live in rate-limit-strict.test.ts and have their own setup.
+vi.mock('@/lib/infrastructure/security/rate-limit-strict', () => ({
+  STRICT_RATE_LIMIT_CONFIGS: {
+    AUTH_LOGIN: { windowMs: 60_000, maxRequests: 5 },
+    AUTH_REGISTER: { windowMs: 3_600_000, maxRequests: 3 },
+    AUTH_ME: { windowMs: 60_000, maxRequests: 30 },
+    MCP: { windowMs: 60_000, maxRequests: 100 },
+  },
+  checkStrictRateLimit: vi.fn(async () => ({
+    allowed: true,
+    remaining: 100,
+    resetIn: 60_000,
+    resetAt: new Date(Date.now() + 60_000),
+    limit: 100,
+  })),
+  buildStrictRateLimitResponse: vi.fn(() => ({
+    status: 429,
+    body: { error: 'rate limit', scope: 'AUTH_LOGIN', retryAfterSeconds: 60 },
+  })),
+  extractStrictIdentifier: vi.fn(() => 'mock-id'),
+}));
+
 function makeJsonRequest(url: string, body: unknown): NextRequest {
   return new NextRequest(url, {
     method: 'POST',
