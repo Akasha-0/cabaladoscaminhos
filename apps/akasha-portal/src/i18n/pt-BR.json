@@ -849,5 +849,35 @@
       "thumbDown": "Marcar como fraco",
       "savedFlash": "Sessão salva"
     }
+  },
+  "literature": {
+    "pageTitle": "Biblioteca Viva",
+    "pageSubtitle": "Pesquisa revisada por pares, indexada por Pilar.",
+    "pageDescription": "Cada paper ancora uma verdade universal em evidência científica.",
+    "filtersTitle": "Filtros",
+    "filterYear": "Ano",
+    "filterPilar": "Pilar",
+    "filterJournal": "Journal",
+    "filterHasPractice": "Com prática relacionada",
+    "filterAll": "Todos",
+    "filterClear": "Limpar filtros",
+    "resultsCount": "{count} papers",
+    "emptyState": "Nenhum paper combina com os filtros ativos.",
+    "paperAuthors": "Autores",
+    "paperYear": "Ano",
+    "paperJournal": "Journal",
+    "paperOpenAccess": "Open access",
+    "paperAbstract": "Abstract",
+    "paperHasPractice": "Prática disponível",
+    "paperNoPractice": "Sem prática específica",
+    "paperViewSource": "Ver fonte original",
+    "paperRelatedDiscoveries": "Descobertas relacionadas",
+    "paperRelatedSessions": "Sessões em que apareceu",
+    "paperDiscoveriesEmpty": "Nenhuma descoberta citou este paper ainda.",
+    "paperSessionsEmpty": "Este paper ainda não apareceu em sessões.",
+    "loadingDetails": "Carregando detalhes…",
+    "openDetails": "Abrir detalhes",
+    "closeDetails": "Fechar",
+    "badgePeerReviewed": "Revisado por pares"
   }
 }

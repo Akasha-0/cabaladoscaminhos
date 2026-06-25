@@ -849,5 +849,35 @@
       "thumbDown": "Mark as weak",
       "savedFlash": "Session saved"
     }
+  },
+  "literature": {
+    "pageTitle": "Living Library",
+    "pageSubtitle": "Peer-reviewed research, indexed by Pillar.",
+    "pageDescription": "Each paper anchors a universal truth in scientific evidence.",
+    "filtersTitle": "Filters",
+    "filterYear": "Year",
+    "filterPilar": "Pillar",
+    "filterJournal": "Journal",
+    "filterHasPractice": "Has related practice",
+    "filterAll": "All",
+    "filterClear": "Clear filters",
+    "resultsCount": "{count} papers",
+    "emptyState": "No papers match the active filters.",
+    "paperAuthors": "Authors",
+    "paperYear": "Year",
+    "paperJournal": "Journal",
+    "paperOpenAccess": "Open access",
+    "paperAbstract": "Abstract",
+    "paperHasPractice": "Practice available",
+    "paperNoPractice": "No specific practice",
+    "paperViewSource": "View original source",
+    "paperRelatedDiscoveries": "Related discoveries",
+    "paperRelatedSessions": "Sessions where it appeared",
+    "paperDiscoveriesEmpty": "No discovery has cited this paper yet.",
+    "paperSessionsEmpty": "This paper has not appeared in sessions yet.",
+    "loadingDetails": "Loading details…",
+    "openDetails": "Open details",
+    "closeDetails": "Close",
+    "badgePeerReviewed": "Peer-reviewed"
   }
 }
