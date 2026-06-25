@@ -27,6 +27,18 @@
     "welcome": "Welcome to Akasha",
     "start": "Start",
     "brand": "Akasha OS",
+    "tour": {
+      "step1Title": "Welcome to Akasha",
+      "step1Body": "To begin, choose how you are feeling right now. The portal adapts to what you need today — not tomorrow.",
+      "step2Title": "Breathe with me",
+      "step2Body": "If you choose \"anxious\", this orb guides you through 4-7-8 breathing: 4 seconds in, 7 held, 8 out. Three cycles calm the nervous system.",
+      "step3Title": "Talk to the Mentor",
+      "step3Body": "Anytime, open the Mentor — a symbolic guide that crosses Kabbalah, Astrology, Ifá, and Tantra to answer your deepest questions.",
+      "stepLabel": "Step {atual} of {total}",
+      "continue": "Continue",
+      "skip": "Skip for now",
+      "mentorCtaLabel": "Available at"
+    },
     "step1": {
       "title": "Welcome to Akasha OS",
       "description": "Your integrated spiritual self-knowledge system. Explore the four pillars: Kabbalah, Astrology, Ifá, and Tantra."
