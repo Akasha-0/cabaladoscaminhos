@@ -104,6 +104,25 @@ export function BreathOrb({ paused = false, cycles = 3, size = 200 }: BreathOrbP
         role="img"
         aria-label={`Orb de respiração 4-7-8 — ${label}`}
       >
+        {/* Screen reader live region — separate from the role="img"
+            aria-label (which is static-ish for AT). Polite, atomic,
+            and tied to the phase. With cycle=3 and 19s per cycle, the
+            region announces 3 times per cycle (inhale/hold/exhale)
+            which is the *desired* cadence for guided breathing — the
+            user is meant to follow the rhythm, not get a constant
+            description. */}
+        <span
+          className="sr-only"
+          aria-live="polite"
+          aria-atomic="true"
+          data-testid="breath-orb-sr-phase"
+        >
+          {paused
+            ? 'Toque para começar a respirar.'
+            : reducedMotion
+              ? 'Respire no seu ritmo. Inspire por 4, segure 7, expire 8.'
+              : `${label}. Ciclo ${Math.min(completed + 1, cycles)} de ${cycles}.`}
+        </span>
         <svg
           width={size}
           height={size}
