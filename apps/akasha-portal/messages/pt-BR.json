@@ -309,5 +309,26 @@
         "system": "Avisos da plataforma (manutenção, atualizações importantes)."
       }
     }
+  },
+  "discoveries": {
+    "chain": {
+      "title": "🔮 Como a IA chegou aqui",
+      "inputs": "① Inputs",
+      "inputsDesc": "Os pilares, trânsitos e chains anteriores que alimentaram esta síntese.",
+      "reasoning": "② Raciocínio",
+      "reasoningDesc": "Como a IA cruzou os inputs para chegar neste resultado.",
+      "papers": "③ Papers citados",
+      "papersDesc": "Literatura científica open-access que sustenta a síntese.",
+      "related": "④ Descobertas relacionadas",
+      "relatedDesc": "Chains anteriores que esta síntese crossou (retrieval).",
+      "convergence": "⑤ Convergência",
+      "convergenceDesc": "A verdade universal que os 5 Pilares estão dizendo juntos.",
+      "loading": "Carregando cadeia de pensamento…",
+      "error": "Não foi possível carregar a cadeia: {message}",
+      "emptyInputs": "Nenhum input registrado.",
+      "emptyPapers": "Nenhum paper citado.",
+      "emptyRelated": "Nenhuma chain anterior relacionada.",
+      "viewAll": "Ver todas as chains"
+    }
   }
 }

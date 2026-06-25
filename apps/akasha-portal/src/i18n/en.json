@@ -717,5 +717,26 @@
       "ariaLabel": "Advanced search filters"
     },
     "score": "Relevance: {score}%"
+  },
+  "discoveries": {
+    "chain": {
+      "title": "🔮 How the AI got here",
+      "inputs": "① Inputs",
+      "inputsDesc": "The pillars, transits and prior chains that fed this synthesis.",
+      "reasoning": "② Reasoning",
+      "reasoningDesc": "How the AI crossed the inputs to reach this result.",
+      "papers": "③ Papers cited",
+      "papersDesc": "Open-access scientific literature supporting this synthesis.",
+      "related": "④ Related discoveries",
+      "relatedDesc": "Prior chains this synthesis crossed (retrieval).",
+      "convergence": "⑤ Convergence",
+      "convergenceDesc": "The universal truth the 5 Pillars are saying together.",
+      "loading": "Loading thought chain…",
+      "error": "Could not load the chain: {message}",
+      "emptyInputs": "No inputs recorded.",
+      "emptyPapers": "No papers cited.",
+      "emptyRelated": "No related prior chains.",
+      "viewAll": "View all chains"
+    }
   }
 }
