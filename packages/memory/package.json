@@ -1,0 +1,24 @@
+{
+  "name": "@akasha/memory",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Wave 31.5 — Long-term Memory Distillation (heuristic MVP)",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./distillation": "./src/distillation.ts",
+    "./storage": "./src/storage.ts",
+    "./consolidator": "./src/consolidator.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5",
+    "vitest": "^4.1.7"
+  }
+}
