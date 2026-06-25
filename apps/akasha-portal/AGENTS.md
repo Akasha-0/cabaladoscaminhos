@@ -83,7 +83,38 @@ Meu Dia, Minha Caixa, e 9 dimensões de vida. PWA-ready (F-228 mobile strategy).
 | F-225 Sexualidade Deep    | ✅ Done     | `lib/application/akasha/synthesis-engine.ts:deriveSexualArchetype`              |
 | F-226 Narrative Generator | ✅ Done     | `lib/application/akasha/narrative-generator.ts`                                 |
 | F-227 Akasha Authority    | ✅ Done     | `lib/grimoire/akasha-authority.ts` + `components/akasha/AkashaAuthorityPrompt/` |
-| F-228 Mobile Strategy     | ✅ Doc done | `.trae/specs/akasha-v0.0.19/mobile-strategy.md` (PWA-first)                    |
+- F-228 Mobile Strategy     | ✅ Doc done | `.trae/specs/akasha-v0.0.19/mobile-strategy.md` (PWA-first)                    |
+| Wave 23.2 UI Cadeia Viva   | ✅ Done     | `components/akasha/discoveries/ThoughtChainView.tsx` + `[locale]/(akasha)/discoveries/[id]/` + `api/discoveries/[id]/` |
+
+## Wave 23.2 — UI Cadeia Viva (ADR-013)
+
+ADR-013 aceito 25/06: Akasha Portal = **consciência viva** que **sempre
+evolui**. Para Zelador **VER** a IA raciocinando (não só o resultado),
+a UI mostra a cadeia de pensamento em 5 steps:
+
+  ① Inputs (chips dos 5 Pilares + transit + chain IDs anteriores)
+  ② Reasoning (chain-of-thought textual, 2-3 frases, visceral)
+  ③ Papers cited (LiteraturePaper Wave 21.1 + abstract preview)
+  ④ Related discoveries (retrieval Wave 20.2 — cap 5)
+  ⑤ Convergence (verdade universal destacada — ConvergenceBadge)
+
+- `components/akasha/discoveries/ThoughtChainView.tsx`: client island raiz.
+  Modo fetch (`GET /api/discoveries/[id]`) OU modo SSR (`model` prop).
+- `components/akasha/discoveries/PaperChip.tsx`: chip de paper + abstract toggle.
+- `components/akasha/discoveries/ConvergenceBadge.tsx`: destaque visual da
+  verdade universal + label de confiança.
+- `api/discoveries/[id]/route.ts`: serve view-model. Auth via
+  `requireAkashaApi` (cookie JWT). LGPD-safe (sem PII na response).
+- Adapter `lib/application/discoveries/adapter.ts`: hoje mock determinístico
+  (`USE_REAL_DB=false`); quando Wave 20.2/21.1/21.2 mergearem, trocar
+  flag + implementar `loadFromDatabase()` (queries Prisma reais).
+- Integração MandalaAuthorityBlock: lê `synthesis.discoveryId` do
+  `/api/akasha/daily` e renderiza `<ThoughtChainView>` inline. Retrocompatível.
+- Mobile-first: stack vertical, 360px, conectores verticais entre steps.
+- i18n: namespace `discoveries.chain.*` (17 chaves: title, inputs,
+  reasoning, papers, related, convergence, loading, error, etc).
+- Integration points: `/atendimento/[sessionId]` (Wave 22.2),
+  `/admin/discoveries` (Wave 21.2), MandalaAuthorityBlock.
 
 ## Child DOX Index
 
