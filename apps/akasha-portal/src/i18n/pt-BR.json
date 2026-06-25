@@ -745,5 +745,32 @@
       "convergenceLine": "convergem em",
       "expand": "Mostrar papers citados"
     }
+  },
+  "healing": {
+    "title": "🌿 Modo Cura",
+    "subtitle": "Tradições ancestrais convergindo — escolha a prática certa pro momento.",
+    "backToAttendance": "← Voltar ao atendimento",
+    "verdadeUniversal": "Verdade Universal",
+    "tradition": "Tradição",
+    "rationale": "Por que este momento",
+    "steps": "Como conduzir",
+    "supportedBy": "Tradições que sustentam",
+    "crossReferences": "Cross-references dos 5 Pilares",
+    "papersCited": "Papers científicos citados",
+    "showPaperAbstract": "Ver abstract",
+    "hidePaperAbstract": "Ocultar",
+    "otherOptions": "Outras opções pra este momento",
+    "consentTitle": "⚠️ Requer consentimento explícito",
+    "consentBody": "Esta prática exige terreiro/líder habilitado e consentimento explícito do cliente. Confirme ambos antes de prosseguir.",
+    "iConsented": "Cliente consentiu",
+    "transitsToday": "Trânsitos de hoje",
+    "clientContext": "Contexto do cliente",
+    "akashaType": "Tipo Akasha",
+    "emotionalState": "Estado emocional",
+    "loading": "Carregando recomendação de cura…",
+    "noTransits": "Trânsitos de hoje indisponíveis. A recomendação ainda funciona com base no contexto da sessão.",
+    "openChain": "🔗 Ver cadeia de pensamento",
+    "viewDiscovery": "Ver Discovery",
+    "noPapers": "Nenhum paper disponível pra esta tradição ainda."
   }
 }
