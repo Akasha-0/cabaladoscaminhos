@@ -66,3 +66,15 @@ next-env.d.ts
 **/*.skip
 **/*.test.disabled
 **/*.disabled
+**/*.bak
+**/*.old
+**/*.backup
+**/*.tmp
+
+# Runtime/agent state
+/.mavis/
+/.swarm/
+
+# Local-only override
+/.vscode/
+/.idea/
