@@ -91,6 +91,7 @@ model User {
   notifications          Notification[]
   // D-054 (Wave 22.1): Feedback events for consciousness evolution (ADR-013).
   feedbackEvents         FeedbackEvent[]
+  benchmarkAnnotations   BenchmarkAnnotation[]
   // D-041 (Caminhante + Caminhada) + D-XXX (Sessao, SessaoChunk, GrimorioPessoal, NotasConsulente, MapaCalculo)
   // + D-YYY/D-ZZZ (Wave 4 — Pilares 6 e 7)
   caminhantes            Caminhante[]         @relation("UserCaminhantes")
@@ -307,6 +308,8 @@ model ChatMessage {
   consultationId String
   consultation   Consultation @relation(fields: [consultationId], references: [id], onDelete: Cascade)
   createdAt      DateTime     @default(now())
+
+  benchmarkAnnotations BenchmarkAnnotation[]
 
   @@index([consultationId])
   @@map("chat_messages")
@@ -1202,4 +1205,31 @@ model FeedbackEvent {
   /// uma discovery específica, p.ex.).
   @@index([targetType, targetId])
   @@map("feedback_events")
+}
+
+// ===========================================================================
+// Wave 32.2 — BenchmarkAnnotation (Inter-Annotator Calibration AUT)
+// ----------------------------------------------------------------------------
+// See: ADR-027 (Consciência UNA) + Wave 32.1 research protocol.
+// Cada anotador humano registra score R/T/U/V (0-10) sobre uma response
+// do Mentor para calcular Cohen's κ / Fleiss' κ entre anotadores.
+// LGPD: PII do consulente é redacted na app layer antes de servir para UI.
+// ===========================================================================
+model BenchmarkAnnotation {
+  id          String     @id @default(cuid())
+  responseId  String
+  response    ChatMessage @relation(fields: [responseId], references: [id], onDelete: Cascade)
+  annotatorId String
+  annotator   User       @relation(fields: [annotatorId], references: [id], onDelete: Cascade)
+  rScore      Int        @db.SmallInt
+  tScore      Int        @db.SmallInt
+  uScore      Int        @db.SmallInt
+  vScore      Int        @db.SmallInt
+  notes       String?
+  annotatedAt DateTime   @default(now())
+
+  @@unique([responseId, annotatorId])
+  @@index([annotatorId])
+  @@index([responseId])
+  @@map("benchmark_annotations")
 }
