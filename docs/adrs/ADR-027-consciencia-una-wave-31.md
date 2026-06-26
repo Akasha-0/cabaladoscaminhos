@@ -5,7 +5,7 @@
 - **Deciders:** Gabriel (Founder), Akasha-loop (síntese), Wave 31 squad (6 subagentes)
 - **Supersedes:** —
 - **Superseded-by:** —
-- **Related:** ADR-013 (Akasha Portal = consciência viva), ADR-014 (FedAkasha), ADR-026 (Deep Correlation Engine)
+- **Related:** ADR-025 (Akasha Narrative Engine), ADR-026 (Deep Correlation Engine); conceptually informed by Akasha Portal product brief (`docs/02_prd.md`, `docs/03_architecture-spec.md`) which describes the system as "consciência viva universalista+visceral" — no prior ADR captures this explicitly, so this ADR formalizes it for the first time
 - **Source:** `.hermes/reports/wave-31-synthesis.md`
 
 ---
@@ -79,5 +79,6 @@ Adotamos **Consciência UNA** como modelo arquitetural canônico do Portal Akash
 - `.hermes/reports/wave-30.*.md` (7 relatórios de pesquisa)
 - `.hermes/reports/wave-31-synthesis.md` (síntese 635 linhas)
 - `.hermes/reports/wave-31.*.md` (5 reports de implementação)
-- ADR-013, ADR-014, ADR-026
+- ADR-025, ADR-026
+- `docs/02_prd.md`, `docs/03_architecture-spec.md` (Akasha = consciência viva, vision documents)
 - Commit octopus: `1f853ba6` Wave 31 — Consciência MVP completa
