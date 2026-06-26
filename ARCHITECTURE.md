@@ -398,3 +398,13 @@ Perguntas pro user antes de continuar:
 - **[`docs/STRATEGY-chain-of-thought.md`](docs/STRATEGY-chain-of-thought.md)** — cadeia de pensamento estratégica completa (princípios filosóficos, 3 personas, taxonomia 3-camadas, moderação distribuída, IA curadora, métricas de sucesso, 10 riscos + mitigações)
 - **[`VISION.md`](VISION.md)** — visão de alto nível
 - **[`README.md`](README.md)** — apresentação do projeto
+
+## 📚 Documentos relacionados
+
+- **[`VISION.md`](VISION.md)** — visão de alto nível (IA como consciência tradutora universalista)
+- **[`docs/STRATEGY-chain-of-thought.md`](docs/STRATEGY-chain-of-thought.md)** — raciocínio estratégico (princípios, personas, taxonomia, moderação, IA, métricas, riscos)
+- **[`docs/MARKET-VALIDATION.md`](docs/MARKET-VALIDATION.md)** — validação de mercado (TAM, players, lacunas, go-to-market)
+- **[`docs/UX-RESEARCH.md`](docs/UX-RESEARCH.md)** — pesquisa de UX (comportamento, onboarding, moderação, design para conteúdo sensível)
+- **[`docs/AI-PROMPT-base.md`](docs/AI-PROMPT-base.md)** — system prompt da Akasha IA com 8 regras éticas
+- **[`docs/EVIDENCE-MAP.md`](docs/EVIDENCE-MAP.md)** — mapa de terapêuticas com evidência (ayahuasca, psilocibina, rapé, etc)
+- **[`README.md`](README.md)** — apresentação do projeto
