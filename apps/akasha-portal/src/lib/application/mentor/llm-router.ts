@@ -108,14 +108,24 @@ export async function* streamMentorResponse(
   ];
 
   // Priority: provider explícito → env detection
+  // Ordem: anthropic (MiniMax via interface Anthropic, se setado) → minimax → openai → ollama
   const provider =
     config.provider ??
-    (process.env.MINIMAX_API_TOKEN ? 'minimax' : process.env.OPENAI_API_KEY ? 'openai' : 'ollama');
+    (process.env.ANTHROPIC_AUTH_TOKEN || process.env.ANTHROPIC_BASE_URL
+      ? 'anthropic'
+      : process.env.MINIMAX_API_TOKEN
+        ? 'minimax'
+        : process.env.OPENAI_API_KEY
+          ? 'openai'
+          : 'ollama');
 
   try {
     switch (provider) {
       case 'minimax':
         yield await streamWithMiniMax(messages, config);
+        return;
+      case 'anthropic':
+        yield* streamWithAnthropic(messages, config);
         return;
       case 'openai':
         yield* streamWithOpenAI(messages, config);
@@ -172,6 +182,77 @@ async function streamWithMiniMax(
     choices?: Array<{ message?: { content?: string } }>;
   };
   return data.choices?.[0]?.message?.content ?? '';
+}
+
+async function* streamWithAnthropic(
+  messages: { role: string; content: string }[],
+  config: LLMConfig
+): AsyncGenerator<string> {
+  // Suporta tanto Anthropic nativo quanto proxies Anthropic-compatíveis
+  // (ex: MiniMax via interface Anthropic em https://api.minimax.io/anthropic).
+  const key = process.env.ANTHROPIC_API_KEY ?? process.env.ANTHROPIC_AUTH_TOKEN ?? '';
+  const baseUrl = process.env.ANTHROPIC_BASE_URL;
+  const isAnthropicNative = !baseUrl;
+  const endpoint = baseUrl
+    ? `${baseUrl.replace(/\/$/, '')}/v1/messages`
+    : 'https://api.anthropic.com/v1/messages';
+  const authHeaders = isAnthropicNative ? { 'x-api-key': key } : { Authorization: `Bearer ${key}` };
+
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        ...authHeaders,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: config.model,
+        messages: messages
+          .filter((m) => m.role !== 'system')
+          .map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content })),
+        system: messages.find((m) => m.role === 'system')?.content,
+        max_tokens: config.maxTokens,
+        temperature: config.temperature,
+        stream: true,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Anthropic/MiniMax ${response.status}: ${(await response.text()).slice(0, 200)}`);
+    }
+    if (!response.body) throw new Error('Response body is null');
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() ?? '';
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed || !trimmed.startsWith('data: ')) continue;
+          try {
+            const parsed = JSON.parse(trimmed.slice(6).trim());
+            if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
+              yield parsed.delta.text;
+            }
+          } catch {
+            /* ignore malformed JSON */
+          }
+        }
+      }
+    } finally {
+      reader.releaseLock();
+    }
+  } catch (err) {
+    throw new Error(err instanceof Error ? err.message : 'Erro no stream Anthropic/MiniMax');
+  }
 }
 
 async function* streamWithOpenAI(

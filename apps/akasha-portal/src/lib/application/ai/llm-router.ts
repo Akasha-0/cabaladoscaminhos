@@ -30,6 +30,7 @@ export interface LlmConfig {
   minimaxModel: string;
   anthropicKey: string | null;
   anthropicModel: string;
+  anthropicBaseUrl: string;
   localEndpoint: string;
   localModel: string;
 
@@ -58,6 +59,7 @@ const DEFAULT_CONFIG: LlmConfig = {
   minimaxModel: 'minimax/m3',
   anthropicKey: null,
   anthropicModel: 'claude-3-5-sonnet',
+  anthropicBaseUrl: '',
   localEndpoint: 'http://localhost:1234/v1',
   localModel: 'meta-llama-3-8b-instruct',
 
@@ -86,6 +88,7 @@ export async function getLlmConfig(): Promise<LlmConfig> {
     minimaxModel: process.env.MINIMAX_MODEL || DEFAULT_CONFIG.minimaxModel,
     anthropicKey: process.env.ANTHROPIC_API_KEY || null,
     anthropicModel: process.env.ANTHROPIC_MODEL || DEFAULT_CONFIG.anthropicModel,
+    anthropicBaseUrl: process.env.ANTHROPIC_BASE_URL || '',
     localEndpoint: process.env.LOCAL_LLM_ENDPOINT || DEFAULT_CONFIG.localEndpoint,
     localModel: process.env.LOCAL_LLM_MODEL || DEFAULT_CONFIG.localModel,
 
@@ -224,13 +227,24 @@ export async function generateCompletion(options: RouterCompletionOptions): Prom
   }
 
   if (config.provider === 'anthropic') {
-    const key = config.anthropicKey ?? process.env.ANTHROPIC_API_KEY ?? '';
+    const key =
+      config.anthropicKey ?? process.env.ANTHROPIC_API_KEY ?? process.env.ANTHROPIC_AUTH_TOKEN ?? '';
     const model = options.model ?? config.anthropicModel;
+    // Base URL: ANTHROPIC_BASE_URL permite redirecionar para endpoints
+    // Anthropic-compatíveis (ex: MiniMax via interface Anthropic).
+    const endpoint = config.anthropicBaseUrl
+      ? `${config.anthropicBaseUrl.replace(/\/$/, '')}/v1/messages`
+      : 'https://api.anthropic.com/v1/messages';
+    // Auth: x-api-key para Anthropic nativo, Bearer para proxies Anthropic-compatíveis.
+    const isAnthropicNative = !config.anthropicBaseUrl;
+    const authHeaders = isAnthropicNative
+      ? { 'x-api-key': key }
+      : { Authorization: `Bearer ${key}` };
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
-        'x-api-key': key,
+        ...authHeaders,
         'anthropic-version': '2023-06-01',
         'content-type': 'application/json',
       },
@@ -371,14 +385,22 @@ export async function* streamCompletion(
   }
 
   if (config.provider === 'anthropic') {
-    const key = config.anthropicKey ?? process.env.ANTHROPIC_API_KEY ?? '';
+    const key =
+      config.anthropicKey ?? process.env.ANTHROPIC_API_KEY ?? process.env.ANTHROPIC_AUTH_TOKEN ?? '';
     const model = options.model ?? config.anthropicModel;
+    const endpoint = config.anthropicBaseUrl
+      ? `${config.anthropicBaseUrl.replace(/\/$/, '')}/v1/messages`
+      : 'https://api.anthropic.com/v1/messages';
+    const isAnthropicNative = !config.anthropicBaseUrl;
+    const authHeaders = isAnthropicNative
+      ? { 'x-api-key': key }
+      : { Authorization: `Bearer ${key}` };
 
     try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
-          'x-api-key': key,
+          ...authHeaders,
           'anthropic-version': '2023-06-01',
           'content-type': 'application/json',
         },
