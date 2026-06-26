@@ -392,3 +392,9 @@ Perguntas pro user antes de continuar:
 
 > Última atualização: 2026-06-26 (sessão de auditoria)
 > Próxima revisão: após Fase 1
+
+## 📚 Documentos relacionados
+
+- **[`docs/STRATEGY-chain-of-thought.md`](docs/STRATEGY-chain-of-thought.md)** — cadeia de pensamento estratégica completa (princípios filosóficos, 3 personas, taxonomia 3-camadas, moderação distribuída, IA curadora, métricas de sucesso, 10 riscos + mitigações)
+- **[`VISION.md`](VISION.md)** — visão de alto nível
+- **[`README.md`](README.md)** — apresentação do projeto
