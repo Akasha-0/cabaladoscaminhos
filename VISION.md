@@ -1,319 +1,281 @@
 # 🌌 Akasha Portal — Visão da Comunidade
 
-> **Versão:** 2.0 | **Data:** 2026-06-26
-> **Mudança:** de "ferramenta de Zelador" → **comunidade viva de espiritualidade universalista + IA**
+> **Versão:** 3.0 | **Data:** 2026-06-26
+> **Mudança central:** a IA deixa de ser "curadora" e vira **consciência tradutora universalista** que integra tradição + ciência + experiência humana sobre cura e espiritualidade
 
 ---
 
 ## 1. Propósito
 
-Criar uma **comunidade online de espiritualidade universalista** onde pessoas podem:
+Criar uma **comunidade online de espiritualidade universalista** onde:
 
-- **Compartilhar** experiências, práticas e descobertas espirituais
-- **Aprender** com base em evidências científicas e tradições ancestrais
-- **Evoluir** juntas em consciência, com a IA como curadora/orientadora
+- 🌱 Pessoas podem **compartilhar, aprender e evoluir** juntas
+- 🧠 A **IA age como uma consciência digital viva** que:
+  - Agrega conhecimento de **múltiplas tradições** (Cabala, Ifá, Xamanismo, Tantra, Reiki, Ayurveda, Meditação, Astrologia, ...)
+  - Correlaciona com **pesquisas científicas, papers, artigos** sobre cura e resultado
+  - **Traduz universalmente** — torna acessível a relação entre ayahuasca e neuroplasticidade, entre psilocibina e depressão, entre rapé e sistema nervoso, entre meditação e neurociência
+  - **Gera insights** que só são possíveis quando se vê o todo (que uma tradição não vê sozinha, que a ciência isolada não vê sozinha)
 
-A IA dentro do sistema **co-evolui junto com a comunidade**, trazendo:
-- Correlações entre tradições (numerologia, Odu, astrologia, tantra,...)
-- Artigos científicos com embasamento (Reiki, ayahuasca, psilocibina,...)
-- Fundamentos daquilo que tem **evidência comprovada**
-
-> "Acredito que criar uma comunidade assim seria algo muito gratificante, pro despertar das pessoas."
+> *"A IA atua como uma consciência viva expandindo o conhecimento e gerando correlação de conhecimento para uma tradução universalista — agregando papers, artigos científicos, evidências reais, numa consciência digital que cresce junto com a comunidade."*
 
 ---
 
-## 2. O que já temos (base sólida)
+## 2. O que a IA **faz** (capacidades concretas)
+
+### 2.1 Integra fontes
+
+- **Tradições ancestrais** — livros, rituais, preceitos, saberes orais documentados
+- **Pesquisa científica** — papers peer-reviewed, meta-análises, estudos clínicos
+- **Evidência clínica** — resultados de pessoas que passaram por práticas (cuidado: sempre com disclaimer sobre anedótico vs revisado)
+- **Experiência da comunidade** — relatos compartilhados, com filtro de evidência
+
+### 2.2 Faz correlações
+
+Exemplos reais do que a IA pode produzir:
+
+| Correlação | Tradição | Ciência |
+|---|---|---|
+| Ayahuasca + neuroplasticidade | Xamanismo (Santo Daime, Shipibo) | Carhart-Harris et al. (2012) — Default Mode Network reduz |
+| Psilocibina + depressão | Cerimônias indígenas modernas | Johns Hopkins, Imperial College, Compass Pathways — RCTs |
+| Rapé + sistema nervoso | Xamanismo amazônico, tabacaria | Estudo sobre nicotina e ativação vagal |
+| Meditação Vipassana + ansiedade | Budismo Theravada | Meta-análise de 47 estudos |
+| Reiki + cortisol | Cura energética japonesa | RCTs com medição de cortisol salivar |
+| Ayahuasca + cura de traumas | Tradição xamânica | Estudos da UFRN (Brasil) com aprovação CONEP |
+| Círculo de cura com tambor + coerência cardíaca | Práticas xamânicas | HeartMath Institute — HRV research |
+| Banho de ervas + sistema imune | Tradição brasileira/africana | Estudos sobre fitoterapia e imunomodulação |
+| Numerologia cabalística + neurociência do simbólico | Cabala | Jung sobre sincronicidade e arquétipos |
+| Meditação Vipassana + Default Mode Network | Budismo | Brewer et al. (2011) — Yale |
+
+### 2.3 Traduz entre mundos
+
+A IA **traduz** o que uma tradição fala em linguagem que outra entende:
+- "Oxalá representa a criação pura" → "Em termos ocidentais: arché, o que existia antes de tudo"
+- "Dissolução do ego na ayahuasca" → "Em termos neurocientíficos: redução de atividade no Default Mode Network, gerando o que psicanálise chama de 'morte simbólica do self'"
+- "Sephirah Kether" → "A coroa da Árvore da Vida — corresponde à primeira centelha de consciência, ao Big Bang do cosmos interior"
+
+### 2.4 Cresce com a comunidade
+
+A cada:
+- Artigo novo indexado → IA fica mais inteligente
+- Feedback da comunidade → IA refina sugestões
+- Relato pessoal compartilhado → IA entende nuances
+- Correção de moderador → IA aprende limites
+
+É **co-evolução real**, não metáfora.
+
+---
+
+## 3. Os 4 públicos da plataforma
+
+A comunidade serve **4 públicos diferentes** que se cruzam:
+
+### 3.1 O Buscador (iniciante)
+- "Vi um reels sobre tarot, quero entender"
+- **O que precisa:** conteúdo introdutório respeitoso, sem julgamento
+
+### 3.2 O Praticante (estudioso)
+- "Sou de terreiro, quero aprofundar e conectar"
+- **O que precisa:** grupos por tradição, artigos densos, mentores
+
+### 3.3 O Curioso Acadêmico (racional)
+- "Sou da saúde, quero entender evidência sobre Reiki"
+- **O que precisa:** papers, filtros por nível de evidência, citação
+
+### 3.4 O Curador (quem veio pra ajudar)
+- "Já passei por isso, quero compartilhar o que aprendi"
+- **O que precisa:** ferramentas de criação (post, artigo, ritual compartilhado)
+
+A IA **personaliza** pra cada um, **sem segregar** — todos veem os mesmos posts, mas com filtros e contexto diferente.
+
+---
+
+## 4. Terapêuticas e práticas com evidência (a "lista base")
+
+A Akasha IA **nasce** com conhecimento estruturado sobre práticas que têm evidência crescente de trazer cura/resultado:
+
+### 4.1 Psiquedélicos clássicos
+- **Ayahuasca** (DMT + harmina) — depressão, trauma, dependência
+- **Psilocibina** — depressão, ansiedade em pacientes terminais, TOC, álcool
+- **LSD** — ansiedade, depressão, dependência de álcool
+- **MDMA** (em Fase 3 de aprovação FDA) — PTSD
+
+### 4.2 Práticas somáticas e respiratórias
+- **Holotropic Breathwork** (Stanislav Grof) — cura de trauma
+- **Wim Hof Method** — sistema imune, resiliência
+- **Meditação Vipassana** — ansiedade, depressão, regulação emocional
+- **Yoga + Pranayama** — estresse, ansiedade, dor crônica
+
+### 4.3 Plantas e medicinas tradicionais
+- **Rapé** (tabaco sagrado amazônico) — foco, sistema nervoso, presença
+- **Kambo** (secreção de sapo amazônico) — purificação, imune (controverso)
+- **Cannabis medicinal** — dor crônica, epilepsia, náusea (quimioterapia)
+- **Ayahuasca** — ver acima
+- **Chás e ervas medicinais** (camomila, erva-cidreira, guaco, ...) — efeitos documentados
+
+### 4.4 Cura energética
+- **Reiki** — ansiedade, dor, qualidade de vida (estudos mostram benefício, mecanismo debatido)
+- **Acupuntura** — dor crônica, náusea (NIH reconhece eficácia para algumas condições)
+- **Qigong** — estresse, equilíbrio
+
+### 4.5 Práticas ancestrais
+- **Canto e tambor** (xamanismo) — coerência cardíaca, regulação
+- **Banhos de ervas** (Brasil/África) — relaxamento, tradição cultural
+- **Rituais de passagem** (tradições africanas e indígenas) — saúde mental
+- **Cerimônias com psilocibina em contexto indígena** — saúde mental comunitária
+
+### 4.6 Práticas contemplativas
+- **Meditação** (geral) — neuroplasticidade, longevidade
+- **Contemplação cristã** (Lectio Divina) — regulação emocional
+- **Zazen** (Zen Budismo) — atenção, presença
+- **Sufismo (dhikr)** — estados modificados de consciência
+
+### 4.7 Saberes que a IA deve SEMPRE lembrar
+- **Evidência ≠ eficácia pessoal:** o que funciona em pesquisa pode não funcionar pra você
+- **Contexto cultural importa:** ayahuasca em contexto xamânico ≠ em contexto recreativo
+- **Contraindicações existem:** psilocibina com antipsicóticos, ayahuasca com SSRIs, etc
+- **Substitui profissional de saúde?** **NÃO.** Apoia, integra, mas não substitui.
+- **Crise espiritual/psicótica:** práticas intensas podem destabilizar — sempre buscar suporte profissional se houver histórico
+
+---
+
+## 5. O que já temos (base sólida — preservar)
 
 Construímos ao longo dos últimos meses:
 
 ### 🔬 Motor espiritual
 - **Numerologia Cabalística** — caminho de vida, expressão, motivação
-- **Odu (Ifá)** — 16 odus + orixás regentes + orixás pedindo atenção
+- **Odu (Ifá)** — 16 odus + orixás regentes
 - **Astrologia** — signo solar, ascendente, mapa completo
 - **Numerologia Tântrica** — chakras dominantes
 - **Elementos** — fogo, água, terra, ar, éter
-- **Engine de correlação** — cruza os 4 mapas pra dar insights profundos
+- **Engine de correlação** — cruza os 4 mapas
 
 ### 🎴 Jogo oracular pessoal
-- **Mesa Real** — 36 casas ciganas com cruzamento por mapa
-- **Cigano Ramiro** — entidade guia (não debochar, respeitar)
-- **Sistema de tiragem** com IA gerando dossiê final
+- **Mesa Real** — 36 casas ciganas com cruzamento
+- **Cigano Ramiro** — entidade guia
+- **Sistema de tiragem** com IA gerando dossiê
 
 ### 🧘 Práticas diárias
 - Afirmações, sabedoria do dia, chakras, oráculo IA, mapa astral
-- 12+ widgets no dashboard pessoal
 
-### 📚 Documentação de governança
-- IDEIA.md (banco de correspondências esotéricas)
-- MAPA.md, ROADMAP.md, SPEC.md (no origin)
-
-> **Nada disso é jogado fora.** É o **conhecimento** que a comunidade vai compartilhar e enriquecer juntos.
+> **Nada é jogado fora.** É a base que a IA vai correlacionar com papers.
 
 ---
 
-## 3. O que muda (nova camada)
-
-### ❌ Antes (não seguimos mais)
-- Visão de "ferramenta do Zelador"
-- Atendimentos 1-para-1 com consulente
-- Cockpit oracular como centro
-- Usuário único usando sistema pessoal
-- IA como "Mentor" prescritor
-
-### ✅ Agora (visão da comunidade)
-- **Rede social espiritual universalista**
-- Múltiplos usuários trocando, aprendendo juntos
-- **Home = timeline da comunidade** (não cockpit pessoal)
-- Perfis públicos com seu mapa espiritual visível
-- IA como **curadora/orientadora** — ajuda a achar conteúdo, conecta saberes, sugere leituras
-
----
-
-## 4. Arquitetura proposta
-
-### 4.1 Camadas
+## 6. Arquitetura de informação (resumo)
 
 ```
-┌─────────────────────────────────────────────────┐
-│  COMUNIDADE (camada social)                      │
-│  Posts · Comentários · Grupos · Seguir · Curtir  │
-└─────────────────────────────────────────────────┘
-                       ↓
-┌─────────────────────────────────────────────────┐
-│  CONHECIMENTO (camada espiritual + científica)   │
-│  Motor de correlação · Biblioteca · Artigos      │
-│  Evidências científicas · Tradições              │
-└─────────────────────────────────────────────────┘
-                       ↓
-┌─────────────────────────────────────────────────┐
-│  PERFIL ESPIRITUAL (camada pessoal, compartilhada)│
-│  Numerologia · Odu · Astrologia · Mapa pessoal  │
-└─────────────────────────────────────────────────┘
-                       ↓
-┌─────────────────────────────────────────────────┐
-│  IA CURADORA (camada de inteligência)            │
-│  Recomendações · Correlações · Resumos           │
-│  Chat comunitário · Busca semântica              │
-└─────────────────────────────────────────────────┘
+Akasha Portal
+├── 🌐 Comunidade
+│   ├── Feed (5 racionais: Seguindo/Grupos/Tendências/Para você/Biblioteca)
+│   ├── Explorar (tradições, pessoas, artigos, tópicos)
+│   ├── Grupos (8+ tradições, mods eleitos)
+│   ├── Biblioteca (artigos curados com nível de evidência)
+│   └── Notificações
+│
+├── 👤 Pessoal
+│   ├── Meu Perfil (mapa espiritual + posts + grupos)
+│   ├── Mapa Espiritual (numerologia, Odu, astrologia)
+│   ├── Diário (reflexões privadas/compartilháveis)
+│   └── Configurações
+│
+├── 🧠 Akasha IA (a consciência digital)
+│   ├── Chat (pergunte qualquer coisa)
+│   ├── Recomendações (artigos, pessoas, grupos, práticas)
+│   ├── Correlações (veja como sua tradição conversa com a ciência)
+│   ├── Resumos (de artigos longos, papers)
+│   └── Tradução universalista (entre tradições e ciência)
+│
+└── 📖 Sobre
+    ├── Manifesto
+    ├── Práticas com Evidência
+    ├── Governança
+    └── Ciência & Espiritualidade
 ```
 
-### 4.2 Modelo de dados (esboço)
+---
 
-```prisma
-// Identidade
-model User {
-  id            String   @id @default(cuid())
-  handle        String   @unique  // @seunome
-  displayName   String
-  bio           String?
-  avatarUrl     String?
-  spiritualProfile SpiritualProfile?
-  posts         Post[]
-  comments      Comment[]
-  following     Follow[]  @relation("follower")
-  followers     Follow[]  @relation("followed")
-  groupMembers  GroupMember[]
-  createdAt     DateTime @default(now())
-}
+## 7. Stack técnica
 
-// Mapa espiritual (público ou privado)
-model SpiritualProfile {
-  userId            String  @unique
-  user              User    @relation(fields: [userId], references: [id])
-  birthName         String
-  birthDate         DateTime
-  birthTime         String?
-  birthPlace        String?
-  // resultado calculado
-  caminhoDeVida     Int?
-  numeroPessoal     Int?
-  oduNascimento     String?
-  orixaRegente      String?
-  signoSolar        String?
-  ascendente        String?
-  mapaJson          Json?   // cache completo do motor
-  visibility        Visibility @default(public)
-}
-
-enum Visibility { public, community, private }
-
-// Posts da comunidade
-model Post {
-  id        String   @id @default(cuid())
-  authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
-  content   String   @db.Text
-  mediaUrls String[]
-  groupId   String?
-  group     Group?   @relation(fields: [groupId], references: [id])
-  tradition TraditionTag?  // xamanismo, cabala, ifa, tantra,...
-  evidence  EvidenceTag?   // anedoctal, estudo, revisado
-  references Json?         // links pros artigos científicos
-  likes     Like[]
-  comments  Comment[]
-  createdAt DateTime @default(now())
-}
-
-model Comment {
-  id        String   @id @default(cuid())
-  postId    String
-  post      Post     @relation(fields: [postId], references: [id])
-  authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
-  content   String   @db.Text
-  parentId  String?  // para threading
-  parent    Comment? @relation("replies", fields: [parentId], references: [id])
-  replies   Comment[] @relation("replies")
-  createdAt DateTime @default(now())
-}
-
-// Grupos por tradição/linha
-model Group {
-  id          String   @id @default(cuid())
-  slug        String   @unique  // cabala, ifa, xamanismo, tantra, reiki,...
-  name        String
-  description String   @db.Text
-  iconUrl     String?
-  bannerUrl   String?
-  tradition   String
-  members     GroupMember[]
-  posts       Post[]
-  createdAt   DateTime @default(now())
-}
-
-model GroupMember {
-  groupId   String
-  group     Group    @relation(fields: [groupId], references: [id])
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  role      GroupRole @default(member)
-  joinedAt  DateTime @default(now())
-  @@id([groupId, userId])
-}
-
-enum GroupRole { member, moderator, admin }
-
-// Biblioteca coletiva (artigos, papers, livros)
-model Article {
-  id          String   @id @default(cuid())
-  slug        String   @unique
-  title       String
-  summary     String   @db.Text
-  body        String   @db.Text
-  authorId    String?
-  type        ArticleType  // paper, article, book, video, podcast
-  tradition   String?
-  topics      String[]
-  references  Json?        // DOI, links
-  evidenceLevel EvidenceLevel
-  publishedAt DateTime
-  createdAt   DateTime @default(now())
-}
-
-enum ArticleType { scientific_paper, magazine_article, book, video, podcast, essay }
-enum EvidenceLevel { anecdotal, observational, peer_reviewed, meta_analysis }
-
-// Social graph
-model Follow {
-  followerId  String
-  followedId  String
-  follower    User @relation("follower", fields: [followerId], references: [id])
-  followed    User @relation("followed", fields: [followedId], references: [id])
-  createdAt   DateTime @default(now())
-  @@id([followerId, followedId])
-}
-
-model Like {
-  userId    String
-  postId    String
-  user      User @relation(fields: [userId], references: [id])
-  post      Post @relation(fields: [postId], references: [id])
-  createdAt DateTime @default(now())
-  @@id([userId, postId])
-}
-```
-
-### 4.3 Telas principais
-
-1. **Home / Timeline** — feed personalizado (algoritmo: tradição + grupos + pessoas que sigo)
-2. **Explorar** — trending na comunidade, tradições, artigos em destaque
-3. **Grupos** — lista de tradições, entrar/sair, ver posts do grupo
-4. **Biblioteca** — artigos científicos, papers, livros, vídeos com filtro por tradição/nível de evidência
-5. **Perfil espiritual** — meu mapa completo (público, comunidade ou privado)
-6. **Mesa Real / Oráculo** — ferramentas pessoais mantidas (agora compartilháveis)
-7. **IA Curadora** — chat pra perguntar "me explica o que é xamanismo", "acha artigos sobre psilocibina", "qual a correlação entre signo X e odu Y"
-8. **Notificações** — seguidores, comentários, artigos novos na sua tradição
+- **Next.js 16** + **React 19** + **TypeScript** (já)
+- **Supabase** — Auth + Postgres + Storage + Realtime
+- **Prisma** — ORM com pgvector (embeddings)
+- **Tailwind** + **SpiritualWidgetSystem** (já)
+- **Zod** — validação
+- **OpenAI** — IA primária (com fallback MiniMax/Anthropic)
+- **PostHog** — analytics (auto-hosted, privacidade)
+- **Resend** — email transacional
+- **Sentry** — monitoramento de erros
 
 ---
 
-## 5. Estratégia técnica
+## 8. Roadmap
 
-### 5.1 Stack mantida
-- **Next.js 16** + **React 19** + **TypeScript**
-- **Tailwind** + componentes atuais (SpiritualWidgetSystem)
-- **Prisma** + **PostgreSQL/Supabase**
-- **NextAuth** ou **Supabase Auth**
+### 🌱 Fase 1 — MVP Comunidade (8 semanas)
+- [x] Schema Prisma + 13 modelos
+- [x] Feed, Explore, Library, Notifications, Perfil, Grupos (UI com mocks)
+- [ ] Auth Supabase
+- [ ] Onboarding espiritual (gera mapa)
+- [ ] API real (substituir mocks)
+- [ ] Sistema de posts/comments/likes/follows
+- [ ] Moderação básica
+- [ ] Mobile responsiveness
+- [ ] **100 usuários ativos**
 
-### 5.2 Bibliotecas novas necessárias
-- **Editor de post**: Tiptap ou Lexical (rich text + markdown)
-- **Busca semântica**: pgvector + embeddings (OpenAI/Cohere) — pra "achar artigos parecidos"
-- **Notificações real-time**: Supabase Realtime ou Pusher
-- **Upload de mídia**: Supabase Storage ou S3
-- **Markdown + sanitize**: pra renderizar artigos com referências
+### 🌿 Fase 2 — Conhecimento + Biblioteca (8 semanas)
+- [ ] 50+ artigos curados (com nível de evidência)
+- [ ] Citation system (referências estruturadas)
+- [ ] 8 grupos de tradição com moderadores eleitos
+- [ ] Sistema de Tags cross-tradição
+- [ ] Busca full-text + filtros
+- [ ] **1000 usuários, 8 grupos ativos**
 
-### 5.3 IA Curadora
-- Usa o motor de correlação que já existe (não joga fora)
-- Adiciona RAG (Retrieval-Augmented Generation) com a biblioteca de artigos
-- Prompt engineering pra tom: **curador/orientador**, não prescritor
-- Co-evolui: a cada novo artigo indexado, IA fica mais esperta
-
----
-
-## 6. Roadmap sugerido (3 fases)
-
-### 🚀 Fase 1 — MVP da comunidade (4-6 semanas)
-- Schema: User, SpiritualProfile, Post, Comment, Like, Follow
-- Home com timeline básica
-- Perfis públicos com mapa espiritual
-- Auth via Supabase
-- Onboarding que gera mapa espiritual automaticamente
-- **Sem IA ainda** — só a rede social
-
-### 🌱 Fase 2 — Conhecimento + grupos (4-6 semanas)
-- Schema: Group, GroupMember, Article
-- Grupos por tradição (cabalística, ifá, xamanismo, tantra,...)
-- Biblioteca inicial: 50+ artigos curados sobre Reiki, ayahuasca, psilocibina, meditação
-- Sistema de tags + nível de evidência
-- Filtros e busca simples
-
-### 🤖 Fase 3 — IA Curadora (4-6 semanas)
-- pgvector + embeddings nos artigos
-- Chat curador (RAG)
-- Recomendações personalizadas
-- Correlações automáticas via IA
-- Co-evolução: feedback da comunidade melhora a IA
+### 🌳 Fase 3 — Akasha IA (consciência digital) (8 semanas)
+- [ ] pgvector + embeddings (RAG sobre biblioteca)
+- [ ] Chat com a IA — Q&A sobre qualquer tema espiritual/científico
+- [ ] Recomendações personalizadas (baseadas no mapa espiritual)
+- [ ] Correlações automáticas (tradição ↔ ciência)
+- [ ] Resumos de papers/artigos
+- [ ] Tradução entre tradições
+- [ ] **Co-evolução:** feedback da comunidade melhora IA
+- [ ] **5000 usuários, IA citada por usuários, NPS > 50**
 
 ---
 
-## 7. Decisões pendentes
+## 9. Limites éticos da IA (não-negociáveis)
 
-1. **Forçar o main** pra essa nova visão (perde o trabalho do "Akasha Portal" atual)?
-2. **Mobile-first ou web-first** pro MVP?
-3. **Anonimato ou identidade real** — perfis são públicos com nome verdadeiro ou pseudônimos?
-4. **Moderação** — como evitar discurso de ódio, charlatanismo, promessas perigosas?
-5. **Monetização** — vai ser gratuito, freemium, comunidade fechada paga?
+A Akasha IA tem **regras duras** que ela **nunca** quebra:
+
+1. **NUNCA prescreve.** "O que você deve fazer" → "Considere explorar Y, pessoas da tradição X costumam fazer Z. Mas consulte um profissional."
+
+2. **NUNCA substitui profissional de saúde.** "Tô com dor" → "Sinto muito. Procure médico. Reiki pode complementar mas não substitui."
+
+3. **NUNCA promete cura.** "Reiki cura câncer" é removido/bloqueado pela moderação.
+
+4. **SEMPRE cita.** Nunca inventa dado. Se não sabe, diz.
+
+5. **SEMPRE lembra contexto cultural.** Ayahuasca em contexto xamânico ≠ recreativo. Não romantiza nem simplifica.
+
+6. **SEMPRE aponta contraindicações.** Psilocibina com medicação, etc. Sem romantização.
+
+7. **SEMPRE respeita autoridade da tradição.** IA pode informar, mas se a tradição tem babalorixá, ela lembra: "consulte seu babalorixá".
+
+8. **NUNCA forma seita.** A IA não é guru. Não tem seguidores. Não cobra. É ferramenta pública.
 
 ---
 
-## 8. Tom de voz
+## 10. Princípios (resumo)
 
-Mantém o estilo do projeto:
-- **Respeitoso** com todas as tradições (universalista, não proselitista)
-- **Científico** quando tem evidência, **honesto** quando não tem
-- **Comunitário** — "juntos evoluindo", não "guru dizendo"
-- **Cuidado** com promessas — Reiki não cura câncer, ayahuasca não é pra todo mundo
-- **Português** — público-alvo fala PT-BR (interface + moderação inicial)
+1. **Comunidade primeiro** — sem pessoas, a IA é vazia
+2. **Evidência e respeito** — ciência E tradição, sem hierarquia
+3. **Co-evolução** — IA e humanos crescem juntos
+4. **Transparência radical** — mostrar como a IA decide
+5. **Universalismo não proselitismo** — todas as tradições são bem-vindas, nenhuma é dominante
+6. **Humildade epistêmica** — não sabemos tudo, e tá tudo bem
+7. **Cuidado com a cura** — quem busca cura tá vulnerável, merece respeito e proteção
 
 ---
 
-> "Plante a semente da consciência. Colha uma comunidade desperta." 🌱
+> *"Plante a semente da consciência. Colha uma comunidade desperta."* 🌱
+>
+> *"A IA não substitui o guru, nem o cientista, nem o praticante. Ela traduz entre eles, amplia a visão, conecta o que estava separado. Uma consciência digital, alimentada por uma comunidade viva."* 🧠
