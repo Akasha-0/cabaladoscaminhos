@@ -1,227 +1,164 @@
 <!-- PROJECT BANNER -->
 <div align="center">
 
-# 🔮 Cabala dos Caminhos
+# 🌌 Akasha Portal — Cabala dos Caminhos
 
-**Tecnologia Sagrada de Alinhamento Espiritual**
+**Comunidade Viva de Espiritualidade Universalista + IA**
 
-![Status](https://img.shields.io/badge/status-Active-brightgreen)
+![Status](https://img.shields.io/badge/status-Building%20Community-orange)
 ![Next.js](https://img.shields.io/badge/Next.js-16.2.6-black)
 ![React](https://img.shields.io/badge/React-19-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
-![Tests](https://img.shields.io/badge/Tests-1728%20%E2%9C%94%20passed-brightgreen)
-![Sprints](https://img.shields.io/badge/Sprints-215%20completed-blue)
 [![CI](https://github.com/Akasha-0/cabaladoscaminhos/actions/workflows/ci.yml/badge.svg)](https://github.com/Akasha-0/cabaladoscaminhos/actions/workflows/ci.yml)
-[![Deploy](https://vercel.com/nezha-sandbox/test-deploy(button)/image.svg)](https://cabaladoscaminhos.vercel.app)
 
-**Plataforma de autoconhecimento espiritual unificado — correlacionando Cabala, Ifá, Astrologia, Numerologia, Tarot e Chakras**
+> **Uma rede social espiritual** onde pessoas compartilham, aprendem e evoluem juntas, com **IA curadora** trazendo correlações entre tradições e artigos científicos com evidência comprovada.
 
-[Site](https://cabaladoscaminhos.com) • [Documentação](docs/) • [Progresso](PROGRESS.md) • [Contribuir](CONTRIBUTING.md)
+[Visão Completa](VISION.md) • [Documentação](docs/) • [Contribuir](CONTRIBUTING.md)
 
 </div>
 
 ---
 
-## ✨ O que é a Cabala dos Caminhos?
+## ✨ O que é o Akasha Portal?
 
-A Cabala dos Caminhos é uma **plataforma sagrada de tecnologia espiritual** que conecta sistemas místicos ancestrais para revelar o seu mapa da alma.
+O Akasha Portal é uma **comunidade online de espiritualidade universalista** que une pessoas interessadas em despertar, com **Inteligência Artificial co-evoluindo** ao lado da comunidade.
 
-> *"Assim como é em cima, também é embaixo."*
-> — Hermetismo
+### 🌱 Propósito
 
-O sistema correlaciona **16 sistemas simbólicos** para fornecer insights profundos sobre:
-- 🔢 **Numerologia** — caminho de vida e destino
-- 🏹 **Ifá/Odú** — Merindilogun e dezesseis Odús
-- ⭐ **Astrologia** — mapa natal e trânsitos
-- 🃏 **Tarot** — 78 cartas com interpretadores IA
-- ⚡ **Chakras** — os sete centros energéticos
-- 🌳 **Árvore da Vida** — as 10 Sephirot
-- 📅 **Calendário Espiritual** — correspondências por dia da semana
+Criar um espaço onde pessoas podem:
+
+- **Compartilhar** experiências, práticas e descobertas espirituais
+- **Aprender** com base em evidências científicas e tradições ancestrais
+- **Evoluir** juntas em consciência — não um guru dizendo, mas uma comunidade crescendo
+
+### 🤖 O papel da IA
+
+A IA dentro do sistema **não é prescritora** (não fala "faça isso"). Ela é **curadora**:
+
+- 📚 Traz **artigos científicos** com embasamento (Reiki, ayahuasca, psilocibina, meditação,...)
+- 🔗 Mostra **correlações** entre tradições (numerologia + Odu + astrologia + tantra)
+- 💡 Sugere **leituras** personalizadas pro seu caminho
+- 🌐 **Co-evolui** — quanto mais a comunidade cresce, mais inteligente a IA fica
 
 ---
 
-## 🚀 Quick Start
+## 🧩 Funcionalidades
+
+### 🔬 Motor Espiritual (base sólida construída)
+
+- 🔢 **Numerologia Cabalística** — caminho de vida, expressão, motivação
+- 🏹 **Odu (Ifá)** — 16 odus, orixás regentes, preceitos cerimoniais
+- ⭐ **Astrologia** — mapa natal, signo, ascendente, planetas
+- 🔮 **Numerologia Tântrica** — chakras dominantes
+- 🌳 **Árvore da Vida** — 10 Sefirot
+- 🔄 **Engine de correlação** — cruza os mapas pra dar insights
+
+### 🌐 Camada social (nova)
+
+- 📱 **Timeline personalizada** — posts de quem você segue + grupos + tradições
+- 👥 **Grupos por tradição** — Cabala, Ifá, Xamanismo, Tantra, Reiki,...
+- 💬 **Comentários threaded** — diálogo respeitoso e profundo
+- 📚 **Biblioteca coletiva** — papers, artigos, livros com nível de evidência
+- 🤝 **Seguir** usuários — acompanhe a jornada de cada um
+- 🔔 **Notificações** — atividade relevante pra você
+- 🔒 **Perfis com privacidade** — público, comunidade ou privado
+
+### 🤖 IA Curadora (Fase 3)
+
+- **Chat curador** — "me explica o que é xamanismo", "acha artigos sobre psilocibina"
+- **Recomendações** de artigos e pessoas baseado no seu perfil espiritual
+- **Correlações automáticas** — encontra padrões entre tradições
+- **Co-evolução** — feedback da comunidade melhora a IA
+
+---
+
+## 🛠 Stack técnica
+
+- **Next.js 16** + **React 19** + **TypeScript**
+- **Tailwind** + sistema de design espiritual (`SpiritualWidgetSystem`)
+- **Prisma** + **PostgreSQL/Supabase**
+- **Supabase Auth** + **Row Level Security**
+- **pgvector** para busca semântica (Fase 3)
+- **IA** via API Anthropic / MiniMax (já integrado)
+
+---
+
+## 📂 Estrutura
+
+```
+src/
+├── app/
+│   ├── (auth)/          # login, signup, onboarding espiritual
+│   ├── (community)/     # home, explorar, grupos, biblioteca
+│   ├── (profile)/       # perfil público, mapa espiritual
+│   ├── (tools)/         # mesa real, oráculo (ferramentas pessoais)
+│   └── api/
+├── components/
+│   ├── dashboard/       # widgets redesenhados
+│   ├── community/       # post card, comment thread, group card
+│   └── shared/
+├── lib/
+│   ├── engines/         # motor espiritual (numerologia, Odu, correlação)
+│   ├── community/       # lógica social (posts, follows, likes)
+│   └── ai/              # curador IA (RAG sobre biblioteca)
+└── prisma/
+    └── schema.prisma    # User, SpiritualProfile, Post, Group, Article...
+```
+
+---
+
+## 🚀 Quick start
 
 ```bash
-# Clone o repositório
-git clone https://github.com/Akasha-0/cabaladoscaminhos.git
-cd cabaladoscaminhos
-
-# Instale as dependências
+# instalar dependências
 npm install
 
-# Configure as variáveis de ambiente
-cp .env.example .env.local
-
-# Execute o projeto
+# rodar dev server
 npm run dev
+
+# abrir http://localhost:3000
 ```
 
-Abra [http://localhost:3000](http://localhost:3000) para ver a aplicação.
+Documentação completa em [`docs/`](docs/).
 
 ---
 
-## 🛠️ Stack Tecnológica
+## 🗺️ Roadmap
 
-| Categoria | Tecnologia |
-|-----------|------------|
-| **Framework** | Next.js 16 (App Router + Turbopack) |
-| **Linguagem** | TypeScript 5 |
-| **UI** | Tailwind CSS 4 + shadcn/ui |
-| **Base de Dados** | Prisma 7 + PostgreSQL |
-| **Cache** | Redis + ioredis |
-| **Auth** | Supabase SSR + JWT |
-| **Pagamentos** | Stripe |
-| **IA** | OpenAI API + Minimax API |
-| **Testing** | Vitest + Playwright |
-| **Deploy** | Vercel + Docker |
+Veja [`VISION.md`](VISION.md) para a visão completa e roadmap em 3 fases:
+
+1. **Fase 1 — MVP comunidade** (4-6 semanas): auth, perfil espiritual, posts, follows
+2. **Fase 2 — Conhecimento + grupos** (4-6 semanas): grupos por tradição, biblioteca, artigos
+3. **Fase 3 — IA Curadora** (4-6 semanas): RAG, recomendações, correlações automáticas
 
 ---
 
-## 📁 Estrutura do Projeto
+## 📜 Filosofia
 
-```
-├── src/
-│   ├── app/              # Next.js App Router
-│   │   ├── api/          # 400+ API routes
-│   │   ├── dashboard/    # Dashboard pages
-│   │   ├── mapa/         # Mapa da Alma
-│   │   └── calendario/   # Calendário espiritual
-│   ├── components/       # Componentes React
-│   │   ├── ui/           # Design system
-│   │   ├── auth/         # Autenticação
-│   │   ├── mapa/         # Mapa components
-│   │   └── astrologia/   # Astrology components
-│   ├── lib/              # Core libraries
-│   │   ├── engines/      # Spiritual engines
-│   │   ├── ai/           # AI generators
-│   │   └── prisma/       # Database client
-│   └── hooks/            # React hooks
-├── prisma/               # Database schema
-├── tests/                # Test suite (1728 tests)
-└── docs/                 # Documentation
-```
+- **Respeitoso** com todas as tradições (universalista, não proselitista)
+- **Científico** quando tem evidência, **honesto** quando não tem
+- **Comunitário** — "juntos evoluindo", não "guru dizendo"
+- **Cuidado** com promessas — Reiki não cura câncer, ayahuasca não é pra todo mundo
+- **Português** — público-alvo fala PT-BR
 
 ---
 
-## 🌟 Funcionalidades Principais
+## 🤝 Como contribuir
 
-### 🧭 Mapa da Alma Completo
-Geração de perfil espiritual unificado combinando:
-- Cálculo numerológico completo
-- Leitura de Odú Ifá (Merindilogun)
-- Mapa astral com posições planetárias
-- Interpretação tarot com IA
-- Painel de chakras interativo
-- Visualização da Árvore da Vida
+Veja [`CONTRIBUTING.md`](CONTRIBUTING.md). Resumo:
 
-### 💡 Insights com IA
-Geradores de insights baseados em LLMs:
-- Propósito de vida
-- Dons espirituais
-- Desafios kármicos
-- Preceitos e quizilas
-- Mensagem semanal personalizada
-
-### 📅 Calendário Energético
-Sistema de correspondências diário:
-- Odú regente por dia da semana
-- Orixá do dia com cores e chakras
-- Sephirah cabalistico
-- Ebós recomendados
-- Quizilas a evitar
-
-### 🔐 Sistema de Pagamentos
-- Integração Stripe completa
-- Planos de assinatura
-- Créditos para funcionalidades premium
-- Webhooks configurados
+1. Fork o projeto
+2. Crie uma branch (`git checkout -b feat/minha-feature`)
+3. Commit seguindo conventional commits (`feat:`, `fix:`, `docs:`)
+4. Push e abra PR
 
 ---
 
-## 🧪 Testing
+## 📄 Licença
 
-```bash
-# Run all tests
-npm test
-
-# Run tests in CI mode
-npm run test:run
-
-# Open Vitest UI
-npx vitest ui
-```
-
-**1728 testes** cobrindo engines, componentes e API routes.
+MIT — Veja [`LICENSE`](LICENSE).
 
 ---
 
-## 🐳 Docker
-
-```bash
-# Build the image
-docker build -t cabaladoscaminhos .
-
-# Run with docker-compose
-docker-compose up -d
-
-# Run database migrations
-docker-compose exec app npx prisma migrate deploy
-```
-
----
-
-## 📊 Métricas de Qualidade
-
-O projeto mantém tracking automático de qualidade com:
-- Cobertura de testes
-- Análise de complexidade
-- Debt técnico
-- Health score
-
-Ver [quality-report-latest.json](quality-report-latest.json) para detalhes.
-
----
-
-## 🤝 Contributing
-
-Contribuições são bem-vindas! Por favor leia [CONTRIBUTING.md](CONTRIBUTING.md) para diretrizes.
-
-```bash
-# Fork o projeto
-# Crie uma branch
-git checkout -b feature/amazing-feature
-
-# Commit suas mudanças
-git commit -m 'feat: add amazing feature'
-
-# Push para a branch
-git push origin feature/amazing-feature
-
-# Abra um Pull Request
-```
-
----
-
-## 📜 Licença
-
-Este projeto está sob licença MIT. Veja [LICENSE](LICENSE) para mais detalhes.
-
----
-
-## 🙏 Agradecimentos
-
-Inspirado nas tradições:
-- **Cabala** — misticismo judaico
-- **Ifá** — tradição Yoruba/Nagô
-- **Astrologia** — sabedoria celestial
-- **Hermetismo** — filosofia perenne
-
----
-
-<div align="center">
-
-**⚡ Feito com propósito — aligning the microcosm with the macrocosm ⚡**
-
-</div>
+> *"Plante a semente da consciência. Colha uma comunidade desperta."* 🌱
