@@ -4,8 +4,8 @@
 
 Camada de persistência do Portal Akasha — Prisma ORM 7 sobre PostgreSQL
 (com extensão `pgvector` para RAG do Mentor). Define o schema canônico dos
-25 models que sustentam Mandala, Mandato, Mentor, Diário Energético e
-billing.
+26 models que sustentam Mandala, Mandato, Mentor, Diário Energético,
+billing e calibração humana AUT.
 
 ## Ownership
 
@@ -17,8 +17,8 @@ billing.
   `ExerciseCompletion` (15 v3), `Caminhante`, `Caminhada` (2 D-041),
   `Sessao`, `SessaoChunk`, `GrimorioPessoal`, `NotasConsulente`,
   `MapaCalculo` (5 D-XXX), `Pilar6Calculo`, `Pilar7Calculo`, `Pilar7Estagio`
-  (3 D-YYY/D-ZZZ Wave 4), `PrivacyConsent` (1 Wave 19.3) + 1 enum novo
-  `PrivacyConsentType`.
+  `PrivacyConsent` (1 Wave 19.3), `BenchmarkAnnotation` (1 Wave 32.2)
+  + 1 enum novo `PrivacyConsentType`.
 - `migrations/`: SQL versionado pelo Prisma Migrate. **NÃO** rodar
   `prisma migrate dev` sem aprovação humana (ver Work Guidance).
   - 7 migrations aplicadas: `20260611000000_init_akasha_v3/`,
