@@ -35,3 +35,22 @@ export type {
 export { SYNTHETIC_DATASET, runDataset } from './datasets/synthetic';
 
 export type { AutExample, AutExpected } from './datasets/synthetic';
+
+// Wave 32.3 — Inter-annotator agreement (Cohen's κ, Fleiss' κ, percent agreement).
+export {
+  calculateAgreement,
+  cohensKappaWeighted,
+  fleissKappa,
+  fleissKappaWeighted,
+  averageCohensKappa,
+  groupByResponse,
+  exactAgreementPct,
+  agreementWithin1Pct,
+  perResponseDisagreement,
+  buildConfusionMatrix,
+  renderAgreementReportHtml,
+  FOUR_CRITERIA,
+  CRITERION_LABELS_PT,
+} from './agreement';
+
+export type { HumanAnnotation, Criterion, AgreementReport } from './agreement';
