@@ -145,11 +145,16 @@ export default function MapaPage() {
     <CosmicBackground>
       <div className="space-y-6 p-4 md:p-6">
         {/* Header with user info */}
-        <div className="flex items-center justify-between">
-          <Heading variant="mystical" size="2xl">
-            ✦ {mapaData.perfil.nomeCompleto}
-          </Heading>
-          <span className="text-slate-500 text-sm font-cinzel">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent">
+              ✦ {mapaData.perfil.nomeCompleto}
+            </h1>
+            <p className="text-slate-400 text-sm font-raleway mt-1">
+              Mapa espiritual integrado
+            </p>
+          </div>
+          <span className="text-xs text-slate-500 font-cinzel bg-slate-800/30 border border-slate-700/30 px-3 py-1 rounded-full">
             {mapaData.dataCalculo}
           </span>
         </div>

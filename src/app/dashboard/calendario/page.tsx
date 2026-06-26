@@ -22,10 +22,12 @@ export default function CalendarioPage() {
   return (
     <div className="space-y-6">
       <div>
-        <Heading variant="mystical" size="2xl">
+        <h1 className="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent">
           ✦ Calendário Energético
-        </Heading>
-        <MysticDivider className="mt-3 max-w-sm" />
+        </h1>
+        <p className="text-slate-400 text-sm font-raleway mt-1">
+          Ritmos cósmicos e orientações cerimoniais
+        </p>
       </div>
 
       <CalendarioEnergetico odu={sampleOdu} />
@@ -33,14 +35,14 @@ export default function CalendarioPage() {
       {/* Monthly overview - placeholder */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {[
-          { title: 'Dias Favoráveis', count: 12, icon: '⭐', color: 'text-spiritual-gold' },
-          { title: 'Dias de Precaução', count: 4, icon: '⚠', color: 'text-amber-400' },
-          { title: 'Rituais Recomendados', count: 7, icon: '✦', color: 'text-spiritual-violet' },
+          { title: 'Dias Favoráveis', count: 12, icon: '⭐', color: 'text-amber-400', bg: 'from-amber-500/10' },
+          { title: 'Dias de Precaução', count: 4, icon: '⚠', color: 'text-amber-300', bg: 'from-yellow-500/10' },
+          { title: 'Rituais Recomendados', count: 7, icon: '✦', color: 'text-violet-400', bg: 'from-violet-500/10' },
         ].map(stat => (
-          <div key={stat.title} className="card-spiritual p-4">
+          <div key={stat.title} className={`card-spiritual p-4 bg-gradient-to-br ${stat.bg} to-slate-950/50 border-slate-800/50`}>
             <div className="flex items-center gap-2 mb-2">
               <span>{stat.icon}</span>
-              <span className="text-spiritual-text-secondary text-sm">{stat.title}</span>
+              <span className="text-slate-300 text-sm">{stat.title}</span>
             </div>
             <p className={`text-3xl font-bold ${stat.color}`}>{stat.count}</p>
           </div>
@@ -48,21 +50,21 @@ export default function CalendarioPage() {
       </div>
 
       {/* Ritual recommendations */}
-      <div className="card-spiritual p-6">
-        <Heading variant="section" size="lg" className="mb-4">
+      <div className="card-spiritual bg-gradient-to-br from-slate-900/90 to-slate-950/90 backdrop-blur-sm border-slate-800/50 p-6">
+        <h2 className="text-lg font-cinzel bg-gradient-to-r from-amber-400 to-violet-400 bg-clip-text text-transparent mb-4">
           ✦ Recomendações para Esta Semana
-        </Heading>
+        </h2>
         <div className="space-y-3">
           {[
             { day: 'Segunda-feira', ritual: 'Banho de ervas com Oxum', orixa: 'Oxum', time: 'Manhã' },
             { day: 'Quinta-feira', ritual: 'Saudação a Oxóssi', orixa: 'Oxóssi', time: 'Pôr do sol' },
             { day: 'Domingo', ritual: 'Oferenda de mel e flores', orixa: 'Oxalá', time: 'Qualquer horário' },
           ].map(rec => (
-            <div key={rec.day} className="flex items-center gap-4 p-3 bg-slate-800/30 rounded-lg">
-              <div className="w-2 h-2 rounded-full bg-spiritual-gold" />
+            <div key={rec.day} className="flex items-center gap-4 p-3 bg-slate-800/30 border border-slate-700/30 rounded-lg hover:bg-slate-800/50 transition-all">
+              <div className="w-2 h-2 rounded-full bg-amber-400" />
               <div>
-                <p className="text-spiritual-text-primary font-medium">{rec.ritual}</p>
-                <p className="text-spiritual-text-muted text-sm">
+                <p className="text-slate-100 font-medium">{rec.ritual}</p>
+                <p className="text-slate-400 text-sm">
                   {rec.orixa} • {rec.day} • {rec.time}
                 </p>
               </div>

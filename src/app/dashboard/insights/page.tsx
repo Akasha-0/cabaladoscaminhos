@@ -147,25 +147,29 @@ export default function InsightsPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <Heading variant="mystical" size="2xl">
+            <h1 className="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent">
               ✦ Insights Espirituais
-            </Heading>
-            <MysticDivider className="mt-3 max-w-sm" />
+            </h1>
+            <p className="text-slate-400 text-sm font-raleway mt-1">
+              Orientações integradas dos seus mapas
+            </p>
           </div>
 
           {/* View toggle */}
           <div className="flex gap-2">
             <Button
-              variant={view === 'resumido' ? 'golden' : 'outline'}
+              variant={view === 'resumido' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setView('resumido')}
+              className={view === 'resumido' ? 'bg-gradient-to-r from-amber-500 to-violet-500 text-white border-0' : 'border-slate-700 bg-slate-800/50 hover:bg-slate-700/50'}
             >
               Resumido
             </Button>
             <Button
-              variant={view === 'aprofundado' ? 'golden' : 'outline'}
+              variant={view === 'aprofundado' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setView('aprofundado')}
+              className={view === 'aprofundado' ? 'bg-gradient-to-r from-amber-500 to-violet-500 text-white border-0' : 'border-slate-700 bg-slate-800/50 hover:bg-slate-700/50'}
             >
               Aprofundado
             </Button>

@@ -16,8 +16,8 @@ interface ReportCardProps {
 
 function ReportCard({ title, children, className = '' }: ReportCardProps) {
   return (
-    <Card className={`p-6 bg-slate-900/20 border-slate-700/20 ${className}`}>
-      <h3 className="font-serif text-lg text-slate-300 mb-4">{title}</h3>
+    <Card className={`p-6 bg-gradient-to-br from-slate-900/90 to-slate-950/90 backdrop-blur-sm border-slate-800/50 ${className}`}>
+      <h3 className="text-base font-semibold bg-gradient-to-r from-amber-400 to-violet-400 bg-clip-text text-transparent mb-4">{title}</h3>
       {children}
     </Card>
   );
@@ -100,8 +100,10 @@ export default function RelatoriosPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="font-serif text-3xl text-slate-100">Relatórios Espirituais</h1>
-          <p className="text-slate-400 mt-2">
+          <h1 className="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent">
+            ✦ Relatórios Espirituais
+          </h1>
+          <p className="text-slate-400 text-sm font-raleway mt-1">
             Acompanhe sua jornada espiritual com relatórios personalizados.
           </p>
         </div>
@@ -115,8 +117,10 @@ export default function RelatoriosPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="font-serif text-3xl text-slate-100">Relatórios Espirituais</h1>
-          <p className="text-slate-400 mt-2">
+          <h1 className="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent">
+            ✦ Relatórios Espirituais
+          </h1>
+          <p className="text-slate-400 text-sm font-raleway mt-1">
             Acompanhe sua jornada espiritual com relatórios personalizados.
           </p>
         </div>
@@ -135,8 +139,10 @@ export default function RelatoriosPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="font-serif text-3xl text-slate-100">Relatórios Espirituais</h1>
-          <p className="text-slate-400 mt-2">
+          <h1 className="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent">
+            ✦ Relatórios Espirituais
+          </h1>
+          <p className="text-slate-400 text-sm font-raleway mt-1">
             Acompanhe sua jornada espiritual com relatórios personalizados.
           </p>
         </div>
@@ -168,8 +174,10 @@ export default function RelatoriosPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-serif text-3xl text-slate-100">Relatórios Espirituais</h1>
-        <p className="text-slate-400 mt-2">
+        <h1 className="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent">
+          ✦ Relatórios Espirituais
+        </h1>
+        <p className="text-slate-400 text-sm font-raleway mt-1">
           Olá, {profile.nomeCompleto.split(' ')[0]}. Seus relatórios são baseados em seu Mapa da Alma.
         </p>
       </div>
