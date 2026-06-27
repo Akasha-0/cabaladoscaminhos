@@ -34,7 +34,7 @@ import { calculateBirthOdu, type OduBirth } from '@/lib/calculators/odu-birth';
 
 import { calcularSol, getSigno } from '@/lib/astrologia/swiss-ephemeris';
 
-import type { SpiritualProfileInput } from '@/lib/schemas/onboarding';
+import type { Tradition } from '@/lib/validation/auth';
 
 // ============================================================
 // TYPES
@@ -61,7 +61,7 @@ export type MapaEspiritual = {
     birthCity: string;
     birthState: string;
     birthCountry: string;
-    traditions: SpiritualProfileInput['traditions'];
+    traditions: Tradition[];
   };
   numerologiaCabalistica: KabalisticMap & {
     /** Resumo em uma frase para preview no onboarding. */
@@ -156,7 +156,15 @@ export function calculateAstrologyInicial(
  * validado pelo Zod schema de onboarding.
  */
 export function generateMapaEspiritual(
-  profile: SpiritualProfileInput
+  profile: {
+    fullName: string;
+    birthDate: string;
+    birthTime?: string | null;
+    birthPlace: string;
+    birthState?: string | null;
+    birthCountry: string;
+    traditions: Tradition[];
+  }
 ): MapaEspiritual {
   const kabalistic = buildKabalisticMap(profile.fullName, profile.birthDate);
   const tantric = buildTantricMap(profile.birthDate);
