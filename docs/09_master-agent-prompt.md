@@ -1,4 +1,10 @@
 # Documento 09 — Master Prompt para Agentes
+
+> ⚠️ **DEPRECATED** — Esta documentação se refere ao Akasha Portal **v1.0 (B2B Cockpit Oracular)**.
+> A visão atual é **v3.0 (comunidade universalista + Akasha IA como consciousness translator)**.
+> Veja: [VISION.md](../VISION.md) | [ARCHITECTURE.md](../ARCHITECTURE.md) | [README.md](../../README.md)
+> Use esta versão apenas para referência histórica.
+
 ## Cabala dos Caminhos
 
 > **Uso:** Copie este documento completo como System Prompt no Hermes (orquestrador) e/ou Minimax (agente de codificação).  

@@ -1,4 +1,10 @@
 # Documento 03 — Arquitetura Técnica
+
+> ⚠️ **DEPRECATED** — Esta documentação se refere ao Akasha Portal **v1.0 (B2B Cockpit Oracular)**.
+> A visão atual é **v3.0 (comunidade universalista + Akasha IA como consciousness translator)**.
+> Veja: [VISION.md](../VISION.md) | [ARCHITECTURE.md](../ARCHITECTURE.md) | [README.md](../../README.md)
+> Use esta versão apenas para referência histórica.
+
 ## Cabala dos Caminhos
 
 > **Versão:** 1.0 | **Padrão:** Clean Architecture + Next.js App Router

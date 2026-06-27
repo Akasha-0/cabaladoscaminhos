@@ -1,5 +1,10 @@
 # Cabala dos Caminhos — Documentação Oficial do Projeto
 
+> ⚠️ **DEPRECATED** — Esta documentação se refere ao Akasha Portal **v1.0 (B2B Cockpit Oracular)**.
+> A visão atual é **v3.0 (comunidade universalista + Akasha IA como consciousness translator)**.
+> Veja: [VISION.md](../VISION.md) | [ARCHITECTURE.md](../ARCHITECTURE.md) | [README.md](../../README.md)
+> Use esta versão apenas para referência histórica.
+
 > **Versão:** 1.0.0 | **Última atualização:** 2026  
 > **Proprietário:** Gabriel (Operador e Desenvolvedor)  
 > **Status:** Planejamento / Pré-Desenvolvimento
