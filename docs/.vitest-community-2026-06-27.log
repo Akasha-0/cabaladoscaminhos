@@ -1,0 +1,3510 @@
+
+ RUN  v4.1.7 /run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos
+
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > renderizacao inicial > renderiza sem crash 1ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > renderizacao inicial > mostra o titulo da pagina 114ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > renderizacao inicial > mostra o input de busca 51ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > renderizacao inicial > lista todos os 8 artigos mock no estado inicial 49ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > renderizacao inicial > mostra artigos por titulo (alguns) 78ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > renderizacao inicial > mostra os chips de filtro das 3 categorias 479ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > Filtro por tradicao > clicar em "cabala" filtra para artigos dessa tradicao 223ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > Filtro por tradicao > clicar em "xamanismo" filtra para 2 artigos 158ms
+ × src/components/community/__tests__/library-page.test.tsx > Library page > Filtro por tradicao > clicar em "todas" volta a listar todos 162ms
+   → Found multiple elements with the role "button" and name "todas"
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+<button
+  class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+>
+  todas
+</button>
+
+Ignored nodes: comments, script, style
+<button
+  class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+>
+  todas
+</button>
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-6xl mx-auto space-y-6"
+      >
+        <div>
+          <h1
+            class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+          >
+            📚 Biblioteca
+          </h1>
+          <p
+            class="text-slate-400 text-sm font-raleway mt-1"
+          >
+            Artigos, papers e ensaios curados pela comunidade — classificados por nível de evidência
+          </p>
+        </div>
+        <div
+          class="relative"
+        >
+          <svg
+            aria-hidden="true"
+            class="lucide lucide-search absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"
+            fill="none"
+            height="24"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="m21 21-4.34-4.34"
+            />
+            <circle
+              cx="11"
+              cy="11"
+              r="8"
+            />
+          </svg>
+          <input
+            class="w-full min-w-0 rounded-lg border px-2.5 py-1 text-base transition-colors outline-none file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 pl-10 h-11 bg-slate-800/50 border-slate-700/50 focus:border-amber-500/50"
+            data-slot="input"
+            id="base-ui-_r_7_"
+            placeholder="Buscar artigos..."
+            value=""
+          />
+        </div>
+        <div
+          class="space-y-3"
+        >
+          <div
+            class="flex items-center gap-2 overflow-x-auto pb-2"
+          >
+            <span
+              class="text-xs text-slate-500 flex-shrink-0"
+            >
+              Tradição:
+            </span>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+            >
+              todas
+            </button>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+            >
+              cabala
+            </button>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+            >
+              ifa
+            </button>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+            >
+              xamanismo
+            </button>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+            >
+              tantra
+            </button>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+            >
+              reiki
+            </button>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+            >
+              ayurveda
+            </button>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+            >
+              meditacao
+            </button>
+          </div>
+          <div
+            class="flex items-center gap-2 overflow-x-auto pb-2"
+          >
+            <span
+              class="text-xs text-slate-500 flex-shrink-0"
+            >
+              Tipo:
+            </span>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+            >
+              todos
+            </button>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+            >
+              Paper
+            </button>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 ...
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > Filtro por tipo > clicar em "Paper" mostra apenas artigos do tipo SCIENTIFIC_PAPER 131ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > Filtro por tipo > clicar em "Podcast" mostra apenas o podcast 143ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > Filtro por tipo > clicar em "Ensaio" mostra apenas ensaios (a4 e a5) 116ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > Filtro por evidencia > clicar em "Meta-análise" filtra artigos META_ANALYSIS 88ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > Filtro por evidencia > clicar em "Revisado por pares" filtra PEER_REVIEWED 79ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > Busca textual > filtrar por titulo 117ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > Busca textual > filtrar por summary (campo summary do artigo) 147ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > Busca textual > busca case-insensitive 95ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > Filtros combinados > busca + tradicao juntos aplicam AND 167ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > Filtros combinados > tradicao + tipo juntos aplicam AND 115ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > Sort (ordenacao) > Recente (default) ordena por ano decrescente 80ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > Sort (ordenacao) > clicar em Popular muda o destaque e reordena 137ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > Sort (ordenacao) > Popular ordena por reads decrescente (primeiro item = mais leituras) 81ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > Empty state > mostra mensagem quando nenhum artigo bate o filtro 289ms
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > Empty state > "Limpar filtros" reseta busca + categoria 171ms
+ × src/components/community/__tests__/library-page.test.tsx > Library page > Contagem singular/plural > mostra "1 artigo" (singular) quando ha exatamente 1 76ms
+   → Unable to find an element with the text: /1 artigo[^s]/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-6xl mx-auto space-y-6"
+      >
+        <div>
+          <h1
+            class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+          >
+            📚 Biblioteca
+          </h1>
+          <p
+            class="text-slate-400 text-sm font-raleway mt-1"
+          >
+            Artigos, papers e ensaios curados pela comunidade — classificados por nível de evidência
+          </p>
+        </div>
+        <div
+          class="relative"
+        >
+          <svg
+            aria-hidden="true"
+            class="lucide lucide-search absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"
+            fill="none"
+            height="24"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="m21 21-4.34-4.34"
+            />
+            <circle
+              cx="11"
+              cy="11"
+              r="8"
+            />
+          </svg>
+          <input
+            class="w-full min-w-0 rounded-lg border px-2.5 py-1 text-base transition-colors outline-none file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 pl-10 h-11 bg-slate-800/50 border-slate-700/50 focus:border-amber-500/50"
+            data-slot="input"
+            id="base-ui-_r_n_"
+            placeholder="Buscar artigos..."
+            value=""
+          />
+        </div>
+        <div
+          class="space-y-3"
+        >
+          <div
+            class="flex items-center gap-2 overflow-x-auto pb-2"
+          >
+            <span
+              class="text-xs text-slate-500 flex-shrink-0"
+            >
+              Tradição:
+            </span>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+            >
+              todas
+            </button>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+            >
+              cabala
+            </button>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+            >
+              ifa
+            </button>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+            >
+              xamanismo
+            </button>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+            >
+              tantra
+            </button>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+            >
+              reiki
+            </button>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+            >
+              ayurveda
+            </button>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+            >
+              meditacao
+            </button>
+          </div>
+          <div
+            class="flex items-center gap-2 overflow-x-auto pb-2"
+          >
+            <span
+              class="text-xs text-slate-500 flex-shrink-0"
+            >
+              Tipo:
+            </span>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+            >
+              todos
+            </button>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+            >
+              Paper
+            </button>
+            <button
+              class="px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap border bg-slate-800/50 text-slate-400 ...
+ ✓ src/components/community/__tests__/library-page.test.tsx > Library page > Contagem singular/plural > mostra "N artigos" (plural) quando ha mais de 1 45ms
+ ✓ src/components/community/__tests__/notifications-page.test.tsx > Notifications page > renderizacao inicial > renderiza sem crash 2ms
+ ✓ src/components/community/__tests__/notifications-page.test.tsx > Notifications page > renderizacao inicial > mostra o titulo 62ms
+ × src/components/community/__tests__/notifications-page.test.tsx > Notifications page > renderizacao inicial > mostra contador de nao lidas (3 no mock) 29ms
+   → Unable to find an element with the text: /3 não lidas/i. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-3xl mx-auto space-y-4"
+      >
+        <div
+          class="flex items-center justify-between flex-wrap gap-3"
+        >
+          <div>
+            <h1
+              class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              🔔 Notificações
+            </h1>
+            <p
+              class="text-slate-400 text-sm font-raleway mt-1"
+            >
+              Tudo lido ✨
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <a
+              href="/settings/notifications"
+            >
+              <button
+                aria-label="Configurar preferências de notificação"
+                class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+                data-slot="button"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-settings w-4 h-4 mr-2"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  />
+                </svg>
+                Preferências
+              </button>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+          >
+            Todas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-amber-500/20"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Não lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <span
+            class="text-xs text-slate-500 mr-1"
+          >
+            Tipo:
+          </span>
+          <button
+            class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+          >
+            Todos
+          </button>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="space-y-2"
+          >
+            <div
+              class="group/card flex flex-col gap-4 overflow-hidden rounded-xl py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl bg-slate-900/30 border-slate-800/30"
+              data-size="default"
+              data-slot="card"
+            >
+              [...
+ × src/components/community/__tests__/notifications-page.test.tsx > Notifications page > renderizacao inicial > lista as 7 notificacoes mock 19ms
+   → Unable to find an element with the text: /Ruy de Ogum/i. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-3xl mx-auto space-y-4"
+      >
+        <div
+          class="flex items-center justify-between flex-wrap gap-3"
+        >
+          <div>
+            <h1
+              class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              🔔 Notificações
+            </h1>
+            <p
+              class="text-slate-400 text-sm font-raleway mt-1"
+            >
+              Tudo lido ✨
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <a
+              href="/settings/notifications"
+            >
+              <button
+                aria-label="Configurar preferências de notificação"
+                class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+                data-slot="button"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-settings w-4 h-4 mr-2"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  />
+                </svg>
+                Preferências
+              </button>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+          >
+            Todas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-amber-500/20"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Não lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <span
+            class="text-xs text-slate-500 mr-1"
+          >
+            Tipo:
+          </span>
+          <button
+            class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+          >
+            Todos
+          </button>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="space-y-2"
+          >
+            <div
+              class="group/card flex flex-col gap-4 overflow-hidden rounded-xl py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl bg-slate-900/30 border-slate-800/30"
+              data-size="default"
+              data-slot="card"
+            >
+              [...
+ × src/components/community/__tests__/notifications-page.test.tsx > Notifications page > renderizacao inicial > mostra os filtros "Tudo" e "Não lidas" com contadores 383ms
+   → Unable to find an accessible element with the role "button" and name `/Tudo/i`
+
+Here are the accessible roles:
+
+  heading:
+
+  Name "🔔 Notificações":
+  <h1
+    class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p
+    class="text-slate-400 text-sm font-raleway mt-1"
+  />
+
+  --------------------------------------------------
+  link:
+
+  Name "Preferências":
+  <a
+    href="/settings/notifications"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Configurar preferências de notificação":
+  <button
+    aria-label="Configurar preferências de notificação"
+    class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+    data-slot="button"
+    tabindex="0"
+    type="button"
+  />
+
+  Name "Todas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+  />
+
+  Name "Não lidas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+  />
+
+  Name "Lidas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+  />
+
+  Name "Todos":
+  <button
+    class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-3xl mx-auto space-y-4"
+      >
+        <div
+          class="flex items-center justify-between flex-wrap gap-3"
+        >
+          <div>
+            <h1
+              class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              🔔 Notificações
+            </h1>
+            <p
+              class="text-slate-400 text-sm font-raleway mt-1"
+            >
+              Tudo lido ✨
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <a
+              href="/settings/notifications"
+            >
+              <button
+                aria-label="Configurar preferências de notificação"
+                class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+                data-slot="button"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-settings w-4 h-4 mr-2"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  />
+                </svg>
+                Preferências
+              </button>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+          >
+            Todas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-amber-500/20"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Não lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <span
+            class="text-xs text-slate-500 mr-1"
+          >
+            Tipo:
+          </span>
+          <button
+            class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+          >
+            Todos
+          </button>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="space-y-2"
+          >
+            <div
+              class="group/card flex flex-col gap-4 overflow-hidden rounded-xl py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl bg-slate-900/30 border-slate-800/30"
+              data-size="default"
+              data-slot="card"
+            >
+              [...
+ × src/components/community/__tests__/notifications-page.test.tsx > Notifications page > renderizacao inicial > "Tudo" comeca ativo 136ms
+   → Unable to find an accessible element with the role "button" and name `/Tudo/i`
+
+Here are the accessible roles:
+
+  heading:
+
+  Name "🔔 Notificações":
+  <h1
+    class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p
+    class="text-slate-400 text-sm font-raleway mt-1"
+  />
+
+  --------------------------------------------------
+  link:
+
+  Name "Preferências":
+  <a
+    href="/settings/notifications"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Configurar preferências de notificação":
+  <button
+    aria-label="Configurar preferências de notificação"
+    class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+    data-slot="button"
+    tabindex="0"
+    type="button"
+  />
+
+  Name "Todas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+  />
+
+  Name "Não lidas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+  />
+
+  Name "Lidas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+  />
+
+  Name "Todos":
+  <button
+    class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-3xl mx-auto space-y-4"
+      >
+        <div
+          class="flex items-center justify-between flex-wrap gap-3"
+        >
+          <div>
+            <h1
+              class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              🔔 Notificações
+            </h1>
+            <p
+              class="text-slate-400 text-sm font-raleway mt-1"
+            >
+              Tudo lido ✨
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <a
+              href="/settings/notifications"
+            >
+              <button
+                aria-label="Configurar preferências de notificação"
+                class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+                data-slot="button"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-settings w-4 h-4 mr-2"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  />
+                </svg>
+                Preferências
+              </button>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+          >
+            Todas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-amber-500/20"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Não lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <span
+            class="text-xs text-slate-500 mr-1"
+          >
+            Tipo:
+          </span>
+          <button
+            class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+          >
+            Todos
+          </button>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="space-y-2"
+          >
+            <div
+              class="group/card flex flex-col gap-4 overflow-hidden rounded-xl py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl bg-slate-900/30 border-slate-800/30"
+              data-size="default"
+              data-slot="card"
+            >
+              [...
+ × src/components/community/__tests__/notifications-page.test.tsx > Notifications page > renderizacao inicial > mostra o botao "Marcar todas como lidas" quando ha nao lidas 84ms
+   → Unable to find an accessible element with the role "button" and name `/Marcar todas como lidas/i`
+
+Here are the accessible roles:
+
+  heading:
+
+  Name "🔔 Notificações":
+  <h1
+    class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p
+    class="text-slate-400 text-sm font-raleway mt-1"
+  />
+
+  --------------------------------------------------
+  link:
+
+  Name "Preferências":
+  <a
+    href="/settings/notifications"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Configurar preferências de notificação":
+  <button
+    aria-label="Configurar preferências de notificação"
+    class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+    data-slot="button"
+    tabindex="0"
+    type="button"
+  />
+
+  Name "Todas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+  />
+
+  Name "Não lidas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+  />
+
+  Name "Lidas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+  />
+
+  Name "Todos":
+  <button
+    class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-3xl mx-auto space-y-4"
+      >
+        <div
+          class="flex items-center justify-between flex-wrap gap-3"
+        >
+          <div>
+            <h1
+              class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              🔔 Notificações
+            </h1>
+            <p
+              class="text-slate-400 text-sm font-raleway mt-1"
+            >
+              Tudo lido ✨
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <a
+              href="/settings/notifications"
+            >
+              <button
+                aria-label="Configurar preferências de notificação"
+                class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+                data-slot="button"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-settings w-4 h-4 mr-2"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  />
+                </svg>
+                Preferências
+              </button>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+          >
+            Todas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-amber-500/20"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Não lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <span
+            class="text-xs text-slate-500 mr-1"
+          >
+            Tipo:
+          </span>
+          <button
+            class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+          >
+            Todos
+          </button>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="space-y-2"
+          >
+            <div
+              class="group/card flex flex-col gap-4 overflow-hidden rounded-xl py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl bg-slate-900/30 border-slate-800/30"
+              data-size="default"
+              data-slot="card"
+            >
+              [...
+ × src/components/community/__tests__/notifications-page.test.tsx > Notifications page > Filtro "Não lidas" > clicar em "Não lidas" esconde as notificacoes lidas 66ms
+   → Unable to find an element with the text: /começou a seguir você/i. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-3xl mx-auto space-y-4"
+      >
+        <div
+          class="flex items-center justify-between flex-wrap gap-3"
+        >
+          <div>
+            <h1
+              class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              🔔 Notificações
+            </h1>
+            <p
+              class="text-slate-400 text-sm font-raleway mt-1"
+            >
+              Tudo lido ✨
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <a
+              href="/settings/notifications"
+            >
+              <button
+                aria-label="Configurar preferências de notificação"
+                class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+                data-slot="button"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-settings w-4 h-4 mr-2"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  />
+                </svg>
+                Preferências
+              </button>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Todas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+          >
+            Não lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-amber-500/20"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <span
+            class="text-xs text-slate-500 mr-1"
+          >
+            Tipo:
+          </span>
+          <button
+            class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+          >
+            Todos
+          </button>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="group/card flex flex-col gap-4 overflow-hidden rounded-xl py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl card-spiritual bg-slate-900/50 border-red-500/30"
+            data-size="default"
+            data-slot="card"
+          >
+            <div
+              class="px-4 group-data-[size=sm]/card:px-3 pt-8 pb-8 text-center space-y-2"
+              data-slot="card-content"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-triangle-alert w-10 h-10 mx-auto text-red-400"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"
+                />
+                <path
+                  d="M12 9v4"
+                />
+                <path
+                  d="M12 17h.01"
+                />
+              </svg>
+              <p
+                class="text-red-400"
+              >
+                Erro ao carregar notificações
+              </p>
+              <p
+                class="text-xs text-slate-500"
+              >
+                Failed to parse URL from /api/notifications?limit=20
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+ × src/components/community/__tests__/notifications-page.test.tsx > Notifications page > Filtro "Não lidas" > clicar em "Não lidas" marca o chip como ativo 113ms
+   → Unable to find an accessible element with the role "button" and name `/Tudo/i`
+
+Here are the accessible roles:
+
+  heading:
+
+  Name "🔔 Notificações":
+  <h1
+    class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p
+    class="text-slate-400 text-sm font-raleway mt-1"
+  />
+
+  Name "":
+  <p
+    class="text-red-400"
+  />
+
+  Name "":
+  <p
+    class="text-xs text-slate-500"
+  />
+
+  --------------------------------------------------
+  link:
+
+  Name "Preferências":
+  <a
+    href="/settings/notifications"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Configurar preferências de notificação":
+  <button
+    aria-label="Configurar preferências de notificação"
+    class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+    data-slot="button"
+    tabindex="0"
+    type="button"
+  />
+
+  Name "Todas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+  />
+
+  Name "Não lidas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+  />
+
+  Name "Lidas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+  />
+
+  Name "Todos":
+  <button
+    class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-3xl mx-auto space-y-4"
+      >
+        <div
+          class="flex items-center justify-between flex-wrap gap-3"
+        >
+          <div>
+            <h1
+              class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              🔔 Notificações
+            </h1>
+            <p
+              class="text-slate-400 text-sm font-raleway mt-1"
+            >
+              Tudo lido ✨
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <a
+              href="/settings/notifications"
+            >
+              <button
+                aria-label="Configurar preferências de notificação"
+                class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+                data-slot="button"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-settings w-4 h-4 mr-2"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  />
+                </svg>
+                Preferências
+              </button>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Todas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+          >
+            Não lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-amber-500/20"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <span
+            class="text-xs text-slate-500 mr-1"
+          >
+            Tipo:
+          </span>
+          <button
+            class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+          >
+            Todos
+          </button>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="group/card flex flex-col gap-4 overflow-hidden rounded-xl py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl card-spiritual bg-slate-900/50 border-red-500/30"
+            data-size="default"
+            data-slot="card"
+          >
+            <div
+              class="px-4 group-data-[size=sm]/card:px-3 pt-8 pb-8 text-center space-y-2"
+              data-slot="card-content"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-triangle-alert w-10 h-10 mx-auto text-red-400"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"
+                />
+                <path
+                  d="M12 9v4"
+                />
+                <path
+                  d="M12 17h.01"
+                />
+              </svg>
+              <p
+                class="text-red-400"
+              >
+                Erro ao carregar notificações
+              </p>
+              <p
+                class="text-xs text-slate-500"
+              >
+                Failed to parse URL from /api/notifications?limit=20
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+ × src/components/community/__tests__/notifications-page.test.tsx > Notifications page > Filtro "Não lidas" > voltar para "Tudo" reaparece as notificacoes lidas 72ms
+   → Unable to find an accessible element with the role "button" and name `/Tudo/i`
+
+Here are the accessible roles:
+
+  heading:
+
+  Name "🔔 Notificações":
+  <h1
+    class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p
+    class="text-slate-400 text-sm font-raleway mt-1"
+  />
+
+  Name "":
+  <p
+    class="text-red-400"
+  />
+
+  Name "":
+  <p
+    class="text-xs text-slate-500"
+  />
+
+  --------------------------------------------------
+  link:
+
+  Name "Preferências":
+  <a
+    href="/settings/notifications"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Configurar preferências de notificação":
+  <button
+    aria-label="Configurar preferências de notificação"
+    class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+    data-slot="button"
+    tabindex="0"
+    type="button"
+  />
+
+  Name "Todas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+  />
+
+  Name "Não lidas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+  />
+
+  Name "Lidas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+  />
+
+  Name "Todos":
+  <button
+    class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-3xl mx-auto space-y-4"
+      >
+        <div
+          class="flex items-center justify-between flex-wrap gap-3"
+        >
+          <div>
+            <h1
+              class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              🔔 Notificações
+            </h1>
+            <p
+              class="text-slate-400 text-sm font-raleway mt-1"
+            >
+              Tudo lido ✨
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <a
+              href="/settings/notifications"
+            >
+              <button
+                aria-label="Configurar preferências de notificação"
+                class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+                data-slot="button"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-settings w-4 h-4 mr-2"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  />
+                </svg>
+                Preferências
+              </button>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Todas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+          >
+            Não lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-amber-500/20"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <span
+            class="text-xs text-slate-500 mr-1"
+          >
+            Tipo:
+          </span>
+          <button
+            class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+          >
+            Todos
+          </button>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="group/card flex flex-col gap-4 overflow-hidden rounded-xl py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl card-spiritual bg-slate-900/50 border-red-500/30"
+            data-size="default"
+            data-slot="card"
+          >
+            <div
+              class="px-4 group-data-[size=sm]/card:px-3 pt-8 pb-8 text-center space-y-2"
+              data-slot="card-content"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-triangle-alert w-10 h-10 mx-auto text-red-400"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"
+                />
+                <path
+                  d="M12 9v4"
+                />
+                <path
+                  d="M12 17h.01"
+                />
+              </svg>
+              <p
+                class="text-red-400"
+              >
+                Erro ao carregar notificações
+              </p>
+              <p
+                class="text-xs text-slate-500"
+              >
+                Failed to parse URL from /api/notifications?limit=20
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+ × src/components/community/__tests__/notifications-page.test.tsx > Notifications page > Marcar como lida individualmente > clicar em uma notif a remove do filtro "Não lidas" 20ms
+   → Unable to find an element with the text: /Ruy de Ogum/i. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-3xl mx-auto space-y-4"
+      >
+        <div
+          class="flex items-center justify-between flex-wrap gap-3"
+        >
+          <div>
+            <h1
+              class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              🔔 Notificações
+            </h1>
+            <p
+              class="text-slate-400 text-sm font-raleway mt-1"
+            >
+              Tudo lido ✨
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <a
+              href="/settings/notifications"
+            >
+              <button
+                aria-label="Configurar preferências de notificação"
+                class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+                data-slot="button"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-settings w-4 h-4 mr-2"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  />
+                </svg>
+                Preferências
+              </button>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+          >
+            Todas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-amber-500/20"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Não lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <span
+            class="text-xs text-slate-500 mr-1"
+          >
+            Tipo:
+          </span>
+          <button
+            class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+          >
+            Todos
+          </button>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="space-y-2"
+          >
+            <div
+              class="group/card flex flex-col gap-4 overflow-hidden rounded-xl py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl bg-slate-900/30 border-slate-800/30"
+              data-size="default"
+              data-slot="card"
+            >
+              [...
+ × src/components/community/__tests__/notifications-page.test.tsx > Notifications page > Marcar como lida individualmente > remover a ultima nao-lida esconde o botao "Marcar todas como lidas" 17ms
+   → Unable to find an element with the text: /Ruy de Ogum/i. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-3xl mx-auto space-y-4"
+      >
+        <div
+          class="flex items-center justify-between flex-wrap gap-3"
+        >
+          <div>
+            <h1
+              class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              🔔 Notificações
+            </h1>
+            <p
+              class="text-slate-400 text-sm font-raleway mt-1"
+            >
+              Tudo lido ✨
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <a
+              href="/settings/notifications"
+            >
+              <button
+                aria-label="Configurar preferências de notificação"
+                class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+                data-slot="button"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-settings w-4 h-4 mr-2"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  />
+                </svg>
+                Preferências
+              </button>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+          >
+            Todas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-amber-500/20"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Não lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <span
+            class="text-xs text-slate-500 mr-1"
+          >
+            Tipo:
+          </span>
+          <button
+            class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+          >
+            Todos
+          </button>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="space-y-2"
+          >
+            <div
+              class="group/card flex flex-col gap-4 overflow-hidden rounded-xl py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl bg-slate-900/30 border-slate-800/30"
+              data-size="default"
+              data-slot="card"
+            >
+              [...
+ × src/components/community/__tests__/notifications-page.test.tsx > Notifications page > Marcar todas como lidas > zera contador de nao lidas 68ms
+   → Unable to find an accessible element with the role "button" and name `/Marcar todas como lidas/i`
+
+Here are the accessible roles:
+
+  heading:
+
+  Name "🔔 Notificações":
+  <h1
+    class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p
+    class="text-slate-400 text-sm font-raleway mt-1"
+  />
+
+  --------------------------------------------------
+  link:
+
+  Name "Preferências":
+  <a
+    href="/settings/notifications"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Configurar preferências de notificação":
+  <button
+    aria-label="Configurar preferências de notificação"
+    class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+    data-slot="button"
+    tabindex="0"
+    type="button"
+  />
+
+  Name "Todas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+  />
+
+  Name "Não lidas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+  />
+
+  Name "Lidas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+  />
+
+  Name "Todos":
+  <button
+    class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-3xl mx-auto space-y-4"
+      >
+        <div
+          class="flex items-center justify-between flex-wrap gap-3"
+        >
+          <div>
+            <h1
+              class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              🔔 Notificações
+            </h1>
+            <p
+              class="text-slate-400 text-sm font-raleway mt-1"
+            >
+              Tudo lido ✨
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <a
+              href="/settings/notifications"
+            >
+              <button
+                aria-label="Configurar preferências de notificação"
+                class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+                data-slot="button"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-settings w-4 h-4 mr-2"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  />
+                </svg>
+                Preferências
+              </button>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+          >
+            Todas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-amber-500/20"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Não lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <span
+            class="text-xs text-slate-500 mr-1"
+          >
+            Tipo:
+          </span>
+          <button
+            class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+          >
+            Todos
+          </button>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="space-y-2"
+          >
+            <div
+              class="group/card flex flex-col gap-4 overflow-hidden rounded-xl py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl bg-slate-900/30 border-slate-800/30"
+              data-size="default"
+              data-slot="card"
+            >
+              [...
+ × src/components/community/__tests__/notifications-page.test.tsx > Notifications page > Marcar todas como lidas > esconde o proprio botao depois de clicar 81ms
+   → Unable to find an accessible element with the role "button" and name `/Marcar todas como lidas/i`
+
+Here are the accessible roles:
+
+  heading:
+
+  Name "🔔 Notificações":
+  <h1
+    class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p
+    class="text-slate-400 text-sm font-raleway mt-1"
+  />
+
+  --------------------------------------------------
+  link:
+
+  Name "Preferências":
+  <a
+    href="/settings/notifications"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Configurar preferências de notificação":
+  <button
+    aria-label="Configurar preferências de notificação"
+    class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+    data-slot="button"
+    tabindex="0"
+    type="button"
+  />
+
+  Name "Todas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+  />
+
+  Name "Não lidas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+  />
+
+  Name "Lidas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+  />
+
+  Name "Todos":
+  <button
+    class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-3xl mx-auto space-y-4"
+      >
+        <div
+          class="flex items-center justify-between flex-wrap gap-3"
+        >
+          <div>
+            <h1
+              class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              🔔 Notificações
+            </h1>
+            <p
+              class="text-slate-400 text-sm font-raleway mt-1"
+            >
+              Tudo lido ✨
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <a
+              href="/settings/notifications"
+            >
+              <button
+                aria-label="Configurar preferências de notificação"
+                class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+                data-slot="button"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-settings w-4 h-4 mr-2"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  />
+                </svg>
+                Preferências
+              </button>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+          >
+            Todas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-amber-500/20"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Não lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <span
+            class="text-xs text-slate-500 mr-1"
+          >
+            Tipo:
+          </span>
+          <button
+            class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+          >
+            Todos
+          </button>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="space-y-2"
+          >
+            <div
+              class="group/card flex flex-col gap-4 overflow-hidden rounded-xl py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl bg-slate-900/30 border-slate-800/30"
+              data-size="default"
+              data-slot="card"
+            >
+              [...
+ × src/components/community/__tests__/notifications-page.test.tsx > Notifications page > Marcar todas como lidas > apos marcar todas, o filtro "Não lidas" fica vazio 63ms
+   → Unable to find an accessible element with the role "button" and name `/Marcar todas como lidas/i`
+
+Here are the accessible roles:
+
+  heading:
+
+  Name "🔔 Notificações":
+  <h1
+    class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p
+    class="text-slate-400 text-sm font-raleway mt-1"
+  />
+
+  --------------------------------------------------
+  link:
+
+  Name "Preferências":
+  <a
+    href="/settings/notifications"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Configurar preferências de notificação":
+  <button
+    aria-label="Configurar preferências de notificação"
+    class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+    data-slot="button"
+    tabindex="0"
+    type="button"
+  />
+
+  Name "Todas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+  />
+
+  Name "Não lidas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+  />
+
+  Name "Lidas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+  />
+
+  Name "Todos":
+  <button
+    class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-3xl mx-auto space-y-4"
+      >
+        <div
+          class="flex items-center justify-between flex-wrap gap-3"
+        >
+          <div>
+            <h1
+              class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              🔔 Notificações
+            </h1>
+            <p
+              class="text-slate-400 text-sm font-raleway mt-1"
+            >
+              Tudo lido ✨
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <a
+              href="/settings/notifications"
+            >
+              <button
+                aria-label="Configurar preferências de notificação"
+                class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+                data-slot="button"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-settings w-4 h-4 mr-2"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  />
+                </svg>
+                Preferências
+              </button>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+          >
+            Todas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-amber-500/20"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Não lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <span
+            class="text-xs text-slate-500 mr-1"
+          >
+            Tipo:
+          </span>
+          <button
+            class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+          >
+            Todos
+          </button>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="space-y-2"
+          >
+            <div
+              class="group/card flex flex-col gap-4 overflow-hidden rounded-xl py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl bg-slate-900/30 border-slate-800/30"
+              data-size="default"
+              data-slot="card"
+            >
+              [...
+ × src/components/community/__tests__/notifications-page.test.tsx > Notifications page > Empty state do filtro "Não lidas" > mostra empty state quando nao ha nao-lidas 56ms
+   → Unable to find an accessible element with the role "button" and name `/Marcar todas como lidas/i`
+
+Here are the accessible roles:
+
+  heading:
+
+  Name "🔔 Notificações":
+  <h1
+    class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p
+    class="text-slate-400 text-sm font-raleway mt-1"
+  />
+
+  --------------------------------------------------
+  link:
+
+  Name "Preferências":
+  <a
+    href="/settings/notifications"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Configurar preferências de notificação":
+  <button
+    aria-label="Configurar preferências de notificação"
+    class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+    data-slot="button"
+    tabindex="0"
+    type="button"
+  />
+
+  Name "Todas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+  />
+
+  Name "Não lidas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+  />
+
+  Name "Lidas0":
+  <button
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+  />
+
+  Name "Todos":
+  <button
+    class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-3xl mx-auto space-y-4"
+      >
+        <div
+          class="flex items-center justify-between flex-wrap gap-3"
+        >
+          <div>
+            <h1
+              class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              🔔 Notificações
+            </h1>
+            <p
+              class="text-slate-400 text-sm font-raleway mt-1"
+            >
+              Tudo lido ✨
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <a
+              href="/settings/notifications"
+            >
+              <button
+                aria-label="Configurar preferências de notificação"
+                class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+                data-slot="button"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-settings w-4 h-4 mr-2"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  />
+                </svg>
+                Preferências
+              </button>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+          >
+            Todas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-amber-500/20"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Não lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <span
+            class="text-xs text-slate-500 mr-1"
+          >
+            Tipo:
+          </span>
+          <button
+            class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+          >
+            Todos
+          </button>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="space-y-2"
+          >
+            <div
+              class="group/card flex flex-col gap-4 overflow-hidden rounded-xl py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl bg-slate-900/30 border-slate-800/30"
+              data-size="default"
+              data-slot="card"
+            >
+              [...
+ × src/components/community/__tests__/notifications-page.test.tsx > Notifications page > Link de destino das notificacoes > notif de follow aponta para /u/<handle> 13ms
+   → Unable to find an element with the text: /Ruy de Ogum/i. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-3xl mx-auto space-y-4"
+      >
+        <div
+          class="flex items-center justify-between flex-wrap gap-3"
+        >
+          <div>
+            <h1
+              class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              🔔 Notificações
+            </h1>
+            <p
+              class="text-slate-400 text-sm font-raleway mt-1"
+            >
+              Tudo lido ✨
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <a
+              href="/settings/notifications"
+            >
+              <button
+                aria-label="Configurar preferências de notificação"
+                class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+                data-slot="button"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-settings w-4 h-4 mr-2"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  />
+                </svg>
+                Preferências
+              </button>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+          >
+            Todas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-amber-500/20"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Não lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <span
+            class="text-xs text-slate-500 mr-1"
+          >
+            Tipo:
+          </span>
+          <button
+            class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+          >
+            Todos
+          </button>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="space-y-2"
+          >
+            <div
+              class="group/card flex flex-col gap-4 overflow-hidden rounded-xl py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl bg-slate-900/30 border-slate-800/30"
+              data-size="default"
+              data-slot="card"
+            >
+              [...
+ × src/components/community/__tests__/notifications-page.test.tsx > Notifications page > Link de destino das notificacoes > notif de comment aponta para /post/<id> 12ms
+   → Unable to find an element with the text: /Marina dos Caminhos/i. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-3xl mx-auto space-y-4"
+      >
+        <div
+          class="flex items-center justify-between flex-wrap gap-3"
+        >
+          <div>
+            <h1
+              class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              🔔 Notificações
+            </h1>
+            <p
+              class="text-slate-400 text-sm font-raleway mt-1"
+            >
+              Tudo lido ✨
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <a
+              href="/settings/notifications"
+            >
+              <button
+                aria-label="Configurar preferências de notificação"
+                class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+                data-slot="button"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-settings w-4 h-4 mr-2"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  />
+                </svg>
+                Preferências
+              </button>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+          >
+            Todas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-amber-500/20"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Não lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <span
+            class="text-xs text-slate-500 mr-1"
+          >
+            Tipo:
+          </span>
+          <button
+            class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+          >
+            Todos
+          </button>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="space-y-2"
+          >
+            <div
+              class="group/card flex flex-col gap-4 overflow-hidden rounded-xl py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl bg-slate-900/30 border-slate-800/30"
+              data-size="default"
+              data-slot="card"
+            >
+              [...
+ × src/components/community/__tests__/notifications-page.test.tsx > Notifications page > Link de destino das notificacoes > notif da IA aponta para /library#a1 17ms
+   → Unable to find an element with the text: /Akasha IA/i. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-3xl mx-auto space-y-4"
+      >
+        <div
+          class="flex items-center justify-between flex-wrap gap-3"
+        >
+          <div>
+            <h1
+              class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              🔔 Notificações
+            </h1>
+            <p
+              class="text-slate-400 text-sm font-raleway mt-1"
+            >
+              Tudo lido ✨
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <a
+              href="/settings/notifications"
+            >
+              <button
+                aria-label="Configurar preferências de notificação"
+                class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+                data-slot="button"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-settings w-4 h-4 mr-2"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  />
+                </svg>
+                Preferências
+              </button>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+          >
+            Todas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-amber-500/20"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Não lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <span
+            class="text-xs text-slate-500 mr-1"
+          >
+            Tipo:
+          </span>
+          <button
+            class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+          >
+            Todos
+          </button>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="space-y-2"
+          >
+            <div
+              class="group/card flex flex-col gap-4 overflow-hidden rounded-xl py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl bg-slate-900/30 border-slate-800/30"
+              data-size="default"
+              data-slot="card"
+            >
+              [...
+ × src/components/community/__tests__/notifications-page.test.tsx > Notifications page > Indicador visual de nao lida > notifs nao-lidas tem classe com border-amber-500/20 19ms
+   → Unable to find an element with the text: /Ruy de Ogum/i. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-3xl mx-auto space-y-4"
+      >
+        <div
+          class="flex items-center justify-between flex-wrap gap-3"
+        >
+          <div>
+            <h1
+              class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              🔔 Notificações
+            </h1>
+            <p
+              class="text-slate-400 text-sm font-raleway mt-1"
+            >
+              Tudo lido ✨
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <a
+              href="/settings/notifications"
+            >
+              <button
+                aria-label="Configurar preferências de notificação"
+                class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+                data-slot="button"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-settings w-4 h-4 mr-2"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  />
+                </svg>
+                Preferências
+              </button>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+          >
+            Todas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-amber-500/20"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Não lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <span
+            class="text-xs text-slate-500 mr-1"
+          >
+            Tipo:
+          </span>
+          <button
+            class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+          >
+            Todos
+          </button>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="space-y-2"
+          >
+            <div
+              class="group/card flex flex-col gap-4 overflow-hidden rounded-xl py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl bg-slate-900/30 border-slate-800/30"
+              data-size="default"
+              data-slot="card"
+            >
+              [...
+ × src/components/community/__tests__/notifications-page.test.tsx > Notifications page > Indicador visual de nao lida > notifs lidas tem classe mais discreta 13ms
+   → Unable to find an element with the text: /Akasha IA/i. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="min-h-screen p-4 md:p-6 lg:p-8"
+    >
+      <div
+        class="max-w-3xl mx-auto space-y-4"
+      >
+        <div
+          class="flex items-center justify-between flex-wrap gap-3"
+        >
+          <div>
+            <h1
+              class="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              🔔 Notificações
+            </h1>
+            <p
+              class="text-slate-400 text-sm font-raleway mt-1"
+            >
+              Tudo lido ✨
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <a
+              href="/settings/notifications"
+            >
+              <button
+                aria-label="Configurar preferências de notificação"
+                class="group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50"
+                data-slot="button"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-settings w-4 h-4 mr-2"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  />
+                </svg>
+                Preferências
+              </button>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30"
+          >
+            Todas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-amber-500/20"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Não lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px] bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200"
+          >
+            Lidas
+            <span
+              class="px-1.5 rounded-full text-[10px] bg-slate-700/50"
+            >
+              0
+            </span>
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 flex-wrap"
+        >
+          <span
+            class="text-xs text-slate-500 mr-1"
+          >
+            Tipo:
+          </span>
+          <button
+            class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
+          >
+            Todos
+          </button>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="space-y-2"
+          >
+            <div
+              class="group/card flex flex-col gap-4 overflow-hidden rounded-xl py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl bg-slate-900/30 border-slate-800/30"
+              data-size="default"
+              data-slot="card"
+            >
+              [...
+ ✓ src/lib/community/__tests__/groups-api.test.ts > listGroups > retorna array vazio quando não há grupos 2ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > listGroups > filtra por mineOnly usando viewerId 0ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > listGroups > filtra por search 1ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > listGroups > filtra por tradição 0ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > getGroupBySlug > retorna null quando não existe 0ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > getGroupBySlug > retorna DTO com viewerRole correto para ADMIN 1ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > getGroupBySlug > retorna viewerRole null quando usuário não é membro 0ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > createGroup > cria grupo com criador como ADMIN (transação) 2ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > joinGroup > rejeita grupo privado com GroupPrivateError 1ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > joinGroup > rejeita grupo inexistente 0ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > joinGroup > permite join em grupo público (transação) 0ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > leaveGroup > idempotente: sai silenciosamente se não é membro 0ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > leaveGroup > rejeita quando último ADMIN tenta sair 0ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > leaveGroup > permite sair para MEMBER 7ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > leaveGroup > permite ADMIN sair se houver outros admins 0ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > updateGroup > rejeita com GroupForbiddenError quando usuário não é admin/mod 0ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > updateGroup > permite ADMIN atualizar nome 0ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > updateGroup > permite MODERATOR atualizar 0ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > deleteGroup > rejeita se não for ADMIN/MODERATOR 0ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > deleteGroup > permite ADMIN deletar 1ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > listMembers > retorna DTOs com displayName heurístico 1ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > listMembers > lança GroupNotFoundError se grupo não existe 0ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > updateMemberRole > rejeita se ator não é admin/mod 0ms
+ × src/lib/community/__tests__/groups-api.test.ts > updateMemberRole > rejeita rebaixar último ADMIN 6ms
+   → expected error to be instance of LastAdminError
+ × src/lib/community/__tests__/groups-api.test.ts > updateMemberRole > promove MEMBER → MODERATOR com sucesso 4ms
+   → Grupo não encontrado
+ × src/lib/community/__tests__/groups-api.test.ts > removeMember > rejeita remover último ADMIN 1ms
+   → expected error to be instance of LastAdminError
+ × src/lib/community/__tests__/groups-api.test.ts > removeMember > permite remover MEMBER 1ms
+   → Grupo não encontrado
+ ✓ src/lib/community/__tests__/groups-api.test.ts > createInvite > cria invite com token e expiração 0ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > createInvite > rejeita se ator não é admin/mod 0ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > acceptInvite > lança InviteNotFoundError se token não existe 0ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > acceptInvite > rejeita token vinculado a outro usuário 1ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > acceptInvite > rejeita convite expirado 0ms
+ ✓ src/lib/community/__tests__/groups-api.test.ts > acceptInvite > aceita convite válido e cria membership 0ms
+ ✓ src/components/community/__tests__/group-member.test.ts > joinGroup — regras de privacidade > grupo público: cria membership via upsert + incrementa contador 2ms
+ ✓ src/components/community/__tests__/group-member.test.ts > joinGroup — regras de privacidade > grupo privado: lança GroupPrivateError (não cria membership) 1ms
+ ✓ src/components/community/__tests__/group-member.test.ts > joinGroup — regras de privacidade > grupo inexistente: lança GroupNotFoundError 0ms
+ ✓ src/components/community/__tests__/group-member.test.ts > leaveGroup — last-admin guard > último ADMIN não pode sair 1ms
+ ✓ src/components/community/__tests__/group-member.test.ts > leaveGroup — last-admin guard > se há múltiplos admins, ADMIN pode sair 0ms
+ ✓ src/components/community/__tests__/group-member.test.ts > leaveGroup — last-admin guard > MODERATOR pode sair sem last-admin guard 0ms
+ ✓ src/components/community/__tests__/group-member.test.ts > leaveGroup — last-admin guard > idempotente: não-membro pode chamar leave sem erro 0ms
+ × src/components/community/__tests__/group-member.test.ts > updateMemberRole — regras de hierarquia > ADMIN pode promover MEMBER → MODERATOR 5ms
+   → Grupo não encontrado
+ × src/components/community/__tests__/group-member.test.ts > updateMemberRole — regras de hierarquia > rebaixar último ADMIN para MEMBER é bloqueado 2ms
+   → expected GroupNotFoundError: Grupo não encontrado to be an instance of LastAdminError
+ × src/components/community/__tests__/group-member.test.ts > updateMemberRole — regras de hierarquia > promover MODERATOR → ADMIN é permitido 1ms
+   → Grupo não encontrado
+ × src/components/community/__tests__/group-member.test.ts > removeMember — last-admin guard > remover último ADMIN é bloqueado 1ms
+   → expected GroupNotFoundError: Grupo não encontrado to be an instance of LastAdminError
+ × src/components/community/__tests__/group-member.test.ts > removeMember — last-admin guard > remover MEMBER decrementa contador 0ms
+   → Grupo não encontrado
+ ✓ src/components/community/__tests__/groups-page.test.tsx > GroupsListPage > renderização inicial > renderiza sem crash 55ms
+ ✓ src/components/community/__tests__/groups-page.test.tsx > GroupsListPage > renderização inicial > mostra o título da página 39ms
+ ✓ src/components/community/__tests__/groups-page.test.tsx > GroupsListPage > renderização inicial > mostra subheadline 20ms
+ ✓ src/components/community/__tests__/groups-page.test.tsx > GroupsListPage > renderização inicial > renderiza todos os grupos como cards 28ms
+ ✓ src/components/community/__tests__/groups-page.test.tsx > GroupsListPage > renderização inicial > cada card tem link para /groups/[slug] 16ms
+ ✓ src/components/community/__tests__/groups-page.test.tsx > GroupsListPage > renderização inicial > cada card mostra contagem de membros e posts 34ms
+ ✓ src/components/community/__tests__/groups-page.test.tsx > GroupsListPage > renderização inicial > mostra badge "membro" em grupos onde usuário é membro 17ms
+ ✓ src/components/community/__tests__/groups-page.test.tsx > GroupsListPage > filtros > passa tradition para o hook useGroupsList 301ms
+ ✓ src/components/community/__tests__/groups-page.test.tsx > GroupsListPage > filtros > toggle do filtro "Meus grupos" 58ms
+ ✓ src/components/community/__tests__/groups-page.test.tsx > GroupsListPage > filtros > botão "Limpar filtros" reseta tradição, mine e search 131ms
+ ✓ src/components/community/__tests__/groups-page.test.tsx > GroupsListPage > filtros > search atualiza debouncedSearch após 300ms 404ms
+ ✓ src/components/community/__tests__/groups-page.test.tsx > GroupsListPage > estados de loading/erro/vazio > mostra spinner quando loading=true e nenhum grupo 7ms
+ ✓ src/components/community/__tests__/groups-page.test.tsx > GroupsListPage > estados de loading/erro/vazio > mostra mensagem de erro quando há erro e nenhum grupo 14ms
+ ✓ src/components/community/__tests__/groups-page.test.tsx > GroupsListPage > estados de loading/erro/vazio > mostra empty state quando mine=true sem grupos 29ms
+ ✓ src/components/community/__tests__/FeedErrorBoundary.test.tsx > FeedError > renderiza mensagem padrao de erro 52ms
+ ✓ src/components/community/__tests__/FeedErrorBoundary.test.tsx > FeedError > mostra mensagem de erro customizada quando passada 5ms
+ ✓ src/components/community/__tests__/FeedErrorBoundary.test.tsx > FeedError > omite botao de retry quando onRetry nao e fornecido 11ms
+ ✓ src/components/community/__tests__/FeedErrorBoundary.test.tsx > FeedError > chama onRetry quando o botao e clicado 158ms
+ ✓ src/components/community/__tests__/FeedErrorBoundary.test.tsx > FeedError > expoe role=alert e data-testid para acessibilidade e integracao 6ms
+ ✓ src/components/community/__tests__/FeedEmpty.test.tsx > FeedEmpty > renderiza titulo e mensagem padrao 42ms
+ ✓ src/components/community/__tests__/FeedEmpty.test.tsx > FeedEmpty > aceita titulo e mensagem customizados 6ms
+ ✓ src/components/community/__tests__/FeedEmpty.test.tsx > FeedEmpty > mostra CTA de explorar por padrao 147ms
+ ✓ src/components/community/__tests__/FeedEmpty.test.tsx > FeedEmpty > omite CTA quando showCreateCta=false 3ms
+ ✓ src/components/community/__tests__/FeedEmpty.test.tsx > FeedEmpty > expoe data-testid para integracao 4ms
+ ✓ src/components/community/__tests__/FeedSkeleton.test.tsx > FeedSkeleton > renderiza 3 placeholders por padrao 37ms
+ ✓ src/components/community/__tests__/FeedSkeleton.test.tsx > FeedSkeleton > respeita count customizado 12ms
+ ✓ src/components/community/__tests__/FeedSkeleton.test.tsx > FeedSkeleton > nao renderiza nada para count=0 2ms
+ ✓ src/components/community/__tests__/FeedSkeleton.test.tsx > FeedSkeleton > expoe aria-busy=true e aria-label para leitores de tela 5ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > SLUG_PATTERN > aceita slugs simples lowercase 2ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > SLUG_PATTERN > rejeita maiúsculas 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > SLUG_PATTERN > rejeita espaços 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > SLUG_PATTERN > rejeita hífen no início 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > SLUG_PATTERN > rejeita underscore 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > SLUG_PATTERN > rejeita slug muito curto 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > SLUG_PATTERN > rejeita slug muito longo (>50 chars) 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > CreateGroupSchema > aceita payload mínimo válido 2ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > CreateGroupSchema > aceita payload completo 1ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > CreateGroupSchema > rejeita slug inválido (maiúscula) 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > CreateGroupSchema > rejeita descrição muito curta 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > CreateGroupSchema > rejeita nome vazio 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > CreateGroupSchema > rejeita mais de 10 regras 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > CreateGroupSchema > rejeita rule vazia 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > UpdateGroupSchema > aceita atualização parcial (apenas name) 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > UpdateGroupSchema > aceita payload vazio 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > UpdateGroupSchema > rejeita isPublic como string 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > GroupListQuerySchema > aceita filtros vazios 1ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > GroupListQuerySchema > coage limit para número 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > GroupListQuerySchema > rejeita limit fora do range 1ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > GroupListQuerySchema > transforma isPublic string em boolean 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > GroupListQuerySchema > transforma isPublic="false" em false 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > GroupListQuerySchema > mantém isPublic undefined quando omitido 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > GroupListQuerySchema > transforma mine=true 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > CreateInviteSchema > aceita convite por userId 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > CreateInviteSchema > aceita convite por email 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > CreateInviteSchema > rejeita quando ambos userId e email são preenchidos 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > CreateInviteSchema > rejeita quando nenhum é preenchido 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > CreateInviteSchema > rejeita email inválido 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > UpdateMemberRoleSchema > aceita roles válidas 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > UpdateMemberRoleSchema > rejeita role desconhecida 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > AcceptInviteSchema > aceita token com 8+ chars 0ms
+ ✓ src/lib/community/__tests__/groups-validators.test.ts > Groups validators > AcceptInviteSchema > rejeita token muito curto 0ms
+
+ Test Files  8 failed | 5 passed (13)
+      Tests  30 failed | 123 passed (153)
+   Start at  10:15:56
+   Duration  41.14s (transform 1.03s, setup 2.48s, import 4.16s, tests 6.47s, environment 22.85s)
+
