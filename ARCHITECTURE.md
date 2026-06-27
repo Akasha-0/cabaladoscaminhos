@@ -408,3 +408,14 @@ Perguntas pro user antes de continuar:
 - **[`docs/AI-PROMPT-base.md`](docs/AI-PROMPT-base.md)** — system prompt da Akasha IA com 8 regras éticas
 - **[`docs/EVIDENCE-MAP.md`](docs/EVIDENCE-MAP.md)** — mapa de terapêuticas com evidência (ayahuasca, psilocibina, rapé, etc)
 - **[`README.md`](README.md)** — apresentação do projeto
+- **[`docs/VALIDATION-CRITERIA.md`](docs/VALIDATION-CRITERIA.md)** — **NOVO** — quando pivotar, scale up ou matar (métricas por fase, sinais de vida/morte)
+- **[`docs/EVIDENCE-MAP.md`](docs/EVIDENCE-MAP.md)** — mapa de terapêuticas com evidência (ayahuasca, psilocibina, rapé, etc)
+- **[`README.md`](README.md)** — apresentação do projeto
+
+## 🧪 Landing de validação
+
+A home (`/`) redireciona CTAs para `/early-access`, que captura emails via `/api/early-access`.
+- Sem Supabase: loga no console (sandbox-friendly)
+- Com Supabase: insere na tabela `early_access`
+- Tracking: PostHog ou console fallback
+- Métricas-alvo (7 dias): >500 visitantes, >5% conversion rate

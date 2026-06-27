@@ -75,6 +75,10 @@ next-env.d.ts
 /.mavis/
 /.swarm/
 
+# Validation landing — waitlist captures (do NOT commit emails)
+/data/
+!/data/.gitkeep
+
 # Local-only override
 /.vscode/
 /.idea/

@@ -47,12 +47,12 @@ export default function HomePage() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link href="/feed">
+            <Link href="/validacao">
               <Button
                 size="lg"
                 className="bg-gradient-to-r from-amber-500 to-violet-500 hover:from-amber-600 hover:to-violet-600 text-white border-0 px-8 h-12 text-base"
               >
-                Entrar na comunidade
+                Entrar na lista de espera
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
@@ -165,13 +165,13 @@ export default function HomePage() {
             Entre na comunidade, compartilhe sua primeira reflexão,
             descubra artigos e conheça pessoas que trilham caminhos parecidos.
           </p>
-          <Link href="/feed">
+          <Link href="/validacao">
             <Button
               size="lg"
               className="bg-gradient-to-r from-amber-500 to-violet-500 hover:from-amber-600 hover:to-violet-600 text-white border-0 px-8 h-12"
             >
               <Sparkles className="w-4 h-4 mr-2" />
-              Entrar agora
+              Entrar na lista de espera
             </Button>
           </Link>
         </div>

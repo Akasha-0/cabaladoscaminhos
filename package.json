@@ -9,6 +9,7 @@
     "lint": "eslint",
     "test": "vitest",
     "test:run": "vitest run",
+    "test:community": "vitest run src/components/community/__tests__",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
