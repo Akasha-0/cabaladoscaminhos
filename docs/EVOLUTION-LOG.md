@@ -1134,4 +1134,15 @@ TSC: 0 errors novos. Comprehensive broken imports: ZERO. App deve bootar.
 - [x] 5/5 trilhas mobile (touch, safe-area, focus, ARIA, skip-target)
 - [x] LGPD: security fixes F1-F11 aplicados + docs/SECURITY-FIXES-WAVE10.md
 - [ ] Auth: BLOCKED — worker rodou 30+ min sem commits (próxima wave)
-- [x] E2E: Playwright + 3 sp
+- [x] E2E: Playwright + 3 specs + CI defensive workflow
+- [x] Akasha IA: MVP completo (prompt + RAG + endpoints + UI + 38 tests)
+
+### Wave 10 final
+
+- 18 commits entregues (5 trilhas paralelas)
+- 1 tag pushed: v0.1.0-rc.1
+- CHANGELOG.md completo
+- main @ e788f0a9 (synced com origin)
+- Status: ✅ READY FOR RELEASE CANDIDATE
+
+-
