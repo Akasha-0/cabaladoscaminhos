@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '@/components/providers/SupabaseProvider'
+import { useAuth } from '@/hooks/useAuth'
 
 interface AuthGuardProps {
   children: React.ReactNode
@@ -10,7 +10,7 @@ interface AuthGuardProps {
 }
 
 export function AuthGuard({ children, fallbackPath = '/login' }: AuthGuardProps) {
-  const { user, isLoading } = useAuth()
+  const { user, loading } = useAuth()
   const router = useRouter()
   const [mounted, setMounted] = useState(false)
 
@@ -21,13 +21,13 @@ export function AuthGuard({ children, fallbackPath = '/login' }: AuthGuardProps)
   useEffect(() => {
     if (!mounted) return
     
-    if (!isLoading && !user) {
+    if (!loading && !user) {
       router.push(fallbackPath)
     }
-  }, [user, isLoading, router, fallbackPath, mounted])
+  }, [user, loading, router, fallbackPath, mounted])
 
   // Não mostrar nada enquanto verifica auth (SSR/hydration)
-  if (!mounted || isLoading) {
+  if (!mounted || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="flex justify-center gap-2 text-primary">

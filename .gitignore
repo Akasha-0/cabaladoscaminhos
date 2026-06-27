@@ -76,6 +76,7 @@ next-env.d.ts
 # Runtime/agent state
 /.mavis/
 /.swarm/
+/.hermes/
 
 # Validation landing — waitlist captures (do NOT commit emails)
 /data/

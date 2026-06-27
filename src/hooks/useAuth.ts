@@ -20,7 +20,7 @@
 
 import { useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth as useAuthFromProvider } from '@/components/providers/SupabaseProvider';
+import { useSupabase as useAuthFromProvider } from '@/components/providers/SupabaseProvider';
 import type { AuthError, User } from '@supabase/supabase-js';
 
 export interface AuthActionResult<T = void> {
@@ -60,6 +60,8 @@ export interface UseAuthReturn {
 export function useAuth(): UseAuthReturn {
   const ctx = useAuthFromProvider();
   const router = useRouter();
+  const user = ctx.session?.user ?? null;
+  const isAuthenticated = !!user && !ctx.isLoading;
 
   const signIn = useCallback(
     async (email: string, password: string): Promise<AuthActionResult> => {
@@ -149,9 +151,9 @@ export function useAuth(): UseAuthReturn {
 
   return useMemo(
     () => ({
-      user: ctx.user,
+      user,
       loading: ctx.isLoading,
-      isAuthenticated: ctx.isAuthenticated,
+      isAuthenticated,
       supabase: ctx.supabase,
       signIn,
       signUp,
@@ -160,15 +162,14 @@ export function useAuth(): UseAuthReturn {
       redirectAfterAuth,
     }),
     [
-      ctx.user,
+      user,
       ctx.isLoading,
-      ctx.isAuthenticated,
+      isAuthenticated,
       ctx.supabase,
       signIn,
       signUp,
       signInWithGoogle,
       signOut,
-      redirectAfterAuth,
     ]
   );
 }
