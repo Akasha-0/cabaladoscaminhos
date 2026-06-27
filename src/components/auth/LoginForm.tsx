@@ -1,24 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { z } from 'zod';
-import { useAuth } from '@/components/providers/SupabaseProvider';
+import { useAuth } from '@/hooks/useAuth';
+import { loginSchema } from '@/lib/validation/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
 import { MysticDivider } from '@/components/shared/MysticDivider';
+import { GoogleOAuthButton } from '@/components/auth/GoogleOAuthButton';
 import { Eye, EyeOff, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-const loginSchema = z.object({
-  email: z.string().email('Email inválido'),
-  password: z.string().min(6, 'Mínimo 6 caracteres'),
-});
-
-type LoginFormData = z.infer<typeof loginSchema>;
 
 interface LoginFormProps {
   className?: string;
@@ -26,73 +20,52 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ className = '', onSuccess }: LoginFormProps) {
-  const [formData, setFormData] = useState<LoginFormData>({
-    email: '',
-    password: '',
-  });
-  const [errors, setErrors] = useState<Partial<Record<keyof LoginFormData, string>>>({});
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
 
   const router = useRouter();
-  const { supabase } = useAuth();
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear error when user types
-    if (errors[name as keyof LoginFormData]) {
-      setErrors((prev) => ({ ...prev, [name]: undefined }));
-    }
-    setServerError(null);
-  };
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get('redirectTo') ?? '/feed';
+  const { signIn, supabase } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setServerError(null);
+    setErrors({});
 
-    // Validate with Zod
-    const result = loginSchema.safeParse(formData);
-    if (!result.success) {
-      const fieldErrors: Partial<Record<keyof LoginFormData, string>> = {};
-      result.error.errors.forEach((err) => {
-        const field = err.path[0] as keyof LoginFormData;
-        if (!fieldErrors[field]) {
-          fieldErrors[field] = err.message;
-        }
+    const parsed = loginSchema.safeParse({ email, password });
+    if (!parsed.success) {
+      const fieldErrors: { email?: string; password?: string } = {};
+      parsed.error.issues.forEach((issue) => {
+        const field = issue.path[0];
+        if (field === 'email' && !fieldErrors.email) fieldErrors.email = issue.message;
+        if (field === 'password' && !fieldErrors.password)
+          fieldErrors.password = issue.message;
       });
       setErrors(fieldErrors);
       return;
     }
 
+    if (!supabase) {
+      setServerError(
+        'Supabase não configurado. Veja docs/SUPABASE-SETUP.md para configurar.'
+      );
+      return;
+    }
+
     setIsLoading(true);
-
     try {
-      if (!supabase) {
-        setServerError('Serviço de autenticação indisponível');
+      const result = await signIn(parsed.data.email, parsed.data.password);
+      if (!result.ok) {
+        setServerError(result.error ?? 'Erro ao fazer login');
         return;
       }
-
-      const { error } = await supabase.auth.signInWithPassword({
-        email: formData.email,
-        password: formData.password,
-      });
-
-      if (error) {
-        setServerError(error.message === 'Invalid login credentials'
-          ? 'Email ou senha incorretos'
-          : error.message
-        );
-        return;
-      }
-
-      // Success - navigate to dashboard
-      if (onSuccess) {
-        onSuccess();
-      } else {
-        router.push('/dashboard');
-      }
+      if (onSuccess) onSuccess();
+      else router.push(redirectTo);
     } catch {
       setServerError('Erro ao fazer login. Tente novamente.');
     } finally {
@@ -115,7 +88,7 @@ export function LoginForm({ className = '', onSuccess }: LoginFormProps) {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-5" noValidate>
         {/* Email */}
         <div className="space-y-2">
           <Label
@@ -130,17 +103,16 @@ export function LoginForm({ className = '', onSuccess }: LoginFormProps) {
             type="email"
             autoComplete="email"
             placeholder="seu@email.com"
-            value={formData.email}
-            onChange={handleChange}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             disabled={isLoading}
+            aria-invalid={Boolean(errors.email)}
             className={cn(
               'h-11 bg-slate-900/80 border-slate-700 focus:border-spiritual-gold focus:ring-spiritual-gold/30 text-foreground placeholder:text-slate-500',
               errors.email && 'border-red-500 focus:border-red-500 focus:ring-red-500/30'
             )}
           />
-          {errors.email && (
-            <p className="text-red-400 text-sm mt-1">{errors.email}</p>
-          )}
+          {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
         </div>
 
         {/* Password */}
@@ -158,9 +130,10 @@ export function LoginForm({ className = '', onSuccess }: LoginFormProps) {
               type={showPassword ? 'text' : 'password'}
               autoComplete="current-password"
               placeholder="••••••••"
-              value={formData.password}
-              onChange={handleChange}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               disabled={isLoading}
+              aria-invalid={Boolean(errors.password)}
               className={cn(
                 'h-11 bg-slate-900/80 border-slate-700 focus:border-spiritual-gold focus:ring-spiritual-gold/30 text-foreground placeholder:text-slate-500 pr-12',
                 errors.password && 'border-red-500 focus:border-red-500 focus:ring-red-500/30'
@@ -171,27 +144,25 @@ export function LoginForm({ className = '', onSuccess }: LoginFormProps) {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-spiritual-gold transition-colors"
               tabIndex={-1}
+              aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
             >
-              {showPassword ? (
-                <EyeOff className="w-4 h-4" />
-              ) : (
-                <Eye className="w-4 h-4" />
-              )}
+              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>
-          {errors.password && (
-            <p className="text-red-400 text-sm mt-1">{errors.password}</p>
-          )}
+          {errors.password && <p className="text-red-400 text-sm mt-1">{errors.password}</p>}
         </div>
 
         {/* Server Error */}
         {serverError && (
-          <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3 text-red-400 text-sm text-center">
+          <div
+            role="alert"
+            className="bg-red-500/10 border border-red-500/30 rounded-lg p-3 text-red-400 text-sm text-center"
+          >
             {serverError}
           </div>
         )}
 
-        {/* Submit Button */}
+        {/* Submit */}
         <Button
           type="submit"
           disabled={isLoading}
@@ -216,10 +187,16 @@ export function LoginForm({ className = '', onSuccess }: LoginFormProps) {
         </Button>
       </form>
 
-      {/* Links */}
-      <div className="mt-8 space-y-4">
-        <MysticDivider variant="subtle" />
+      {/* Divider + OAuth */}
+      <div className="mt-6">
+        <MysticDivider variant="subtle" label="ou" />
+        <div className="mt-4">
+          <GoogleOAuthButton />
+        </div>
+      </div>
 
+      {/* Links */}
+      <div className="mt-8 space-y-3">
         <div className="flex flex-col items-center gap-3">
           <Link
             href="/register"
@@ -228,9 +205,8 @@ export function LoginForm({ className = '', onSuccess }: LoginFormProps) {
             Não tem conta?{' '}
             <span className="text-spiritual-gold font-semibold">Criar uma conta</span>
           </Link>
-
           <Link
-            href="#"
+            href="/forgot-password"
             className="text-xs text-slate-500 hover:text-spiritual-gold/70 transition-colors"
           >
             Esqueci minha senha

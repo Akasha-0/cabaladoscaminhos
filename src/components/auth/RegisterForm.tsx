@@ -3,34 +3,28 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { z } from 'zod';
-import { useAuth } from '@/components/providers/SupabaseProvider';
+import { useAuth } from '@/hooks/useAuth';
+import { signupSchema } from '@/lib/validation/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
 import { MysticDivider } from '@/components/shared/MysticDivider';
+import { GoogleOAuthButton } from '@/components/auth/GoogleOAuthButton';
 import { Eye, EyeOff, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-const registerSchema = z.object({
-  name: z.string().min(2, 'Nome muito curto'),
-  email: z.string().email('Email inválido'),
-  password: z.string().min(8, 'Mínimo 8 caracteres'),
-  confirmPassword: z.string(),
-  acceptTerms: z.boolean().refine(val => val === true, {
-    message: 'Você deve aceitar os termos',
-  }),
-}).refine(data => data.password === data.confirmPassword, {
-  message: 'As senhas não coincidem',
-  path: ['confirmPassword'],
-});
-
-type RegisterFormData = z.infer<typeof registerSchema>;
 
 interface RegisterFormProps {
   className?: string;
   onSuccess?: () => void;
+}
+
+interface FormState {
+  fullName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  acceptTerms: boolean;
 }
 
 function PasswordStrengthIndicator({ password }: { password: string }) {
@@ -46,7 +40,7 @@ function PasswordStrengthIndicator({ password }: { password: string }) {
     weak: { bars: 1, color: 'bg-red-500', label: 'Fraca', textColor: 'text-red-400' },
     medium: { bars: 2, color: 'bg-amber-500', label: 'Média', textColor: 'text-amber-400' },
     strong: { bars: 3, color: 'bg-emerald-500', label: 'Forte', textColor: 'text-emerald-400' },
-  };
+  } as const;
 
   const config = strengthConfig[strength];
 
@@ -63,91 +57,68 @@ function PasswordStrengthIndicator({ password }: { password: string }) {
           />
         ))}
       </div>
-      <span className={cn('text-xs font-medium', config.textColor)}>
-        {config.label}
-      </span>
+      <span className={cn('text-xs font-medium', config.textColor)}>{config.label}</span>
     </div>
   );
 }
 
 export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
-  const [formData, setFormData] = useState<RegisterFormData>({
-    name: '',
+  const [formData, setFormData] = useState<FormState>({
+    fullName: '',
     email: '',
     password: '',
     confirmPassword: '',
     acceptTerms: false,
   });
-  const [errors, setErrors] = useState<Partial<Record<keyof RegisterFormData, string>>>({});
+  const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
 
   const router = useRouter();
-  const { supabase } = useAuth();
+  const { signUp, supabase } = useAuth();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    const newValue = type === 'checkbox' ? checked : value;
-
-    setFormData((prev) => ({ ...prev, [name]: newValue }));
-
-    // Clear error when user types
-    const fieldName = name as keyof RegisterFormData;
-    if (errors[fieldName]) {
-      setErrors((prev) => ({ ...prev, [fieldName]: undefined }));
-    }
+  const handleChange = (field: keyof FormState, value: string | boolean) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: undefined }));
     setServerError(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setServerError(null);
+    setErrors({});
 
-    // Validate with Zod
-    const result = registerSchema.safeParse(formData);
-    if (!result.success) {
-      const fieldErrors: Partial<Record<keyof RegisterFormData, string>> = {};
-      result.error.errors.forEach((err) => {
-        const field = err.path[0] as keyof RegisterFormData;
-        if (!fieldErrors[field]) {
-          fieldErrors[field] = err.message;
-        }
+    const parsed = signupSchema.safeParse(formData);
+    if (!parsed.success) {
+      const fieldErrors: Partial<Record<keyof FormState, string>> = {};
+      parsed.error.issues.forEach((issue) => {
+        const field = issue.path[0] as keyof FormState;
+        if (field && !fieldErrors[field]) fieldErrors[field] = issue.message;
       });
       setErrors(fieldErrors);
       return;
     }
 
+    if (!supabase) {
+      setServerError(
+        'Supabase não configurado. Veja docs/SUPABASE-SETUP.md para configurar.'
+      );
+      return;
+    }
+
     setIsLoading(true);
-
     try {
-      if (!supabase) {
-        setServerError('Serviço de autenticação indisponível');
-        return;
-      }
-
-      const { error } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-        options: {
-          data: {
-            name: formData.name,
-          },
-        },
+      const result = await signUp(parsed.data.email, parsed.data.password, {
+        fullName: parsed.data.fullName,
       });
-
-      if (error) {
-        setServerError(error.message);
+      if (!result.ok) {
+        setServerError(result.error ?? 'Erro ao criar conta');
         return;
       }
-
-      // Success - navigate to dashboard or login
-      if (onSuccess) {
-        onSuccess();
-      } else {
-        router.push('/dashboard');
-      }
+      if (onSuccess) onSuccess();
+      else router.push('/onboarding');
     } catch {
       setServerError('Erro ao criar conta. Tente novamente.');
     } finally {
@@ -157,7 +128,6 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
 
   return (
     <div className={cn('card-spiritual p-8 rounded-2xl max-w-md w-full', className)}>
-      {/* Header */}
       <div className="flex flex-col items-center mb-8">
         <div className="w-16 h-16 rounded-full bg-gradient-to-br from-spiritual-gold/20 to-spiritual-violet/20 flex items-center justify-center mb-4 shadow-[0_0_30px_rgba(212,175,55,0.2)]">
           <Sparkles className="w-8 h-8 text-spiritual-gold" />
@@ -170,32 +140,31 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
         {/* Name */}
         <div className="space-y-2">
           <Label
-            htmlFor="name"
+            htmlFor="fullName"
             className="font-cinzel uppercase text-xs tracking-widest text-spiritual-gold"
           >
-            Nome
+            Nome Completo
           </Label>
           <Input
-            id="name"
-            name="name"
+            id="fullName"
+            name="fullName"
             type="text"
             autoComplete="name"
-            placeholder="Seu nome"
-            value={formData.name}
-            onChange={handleChange}
+            placeholder="Seu nome completo"
+            value={formData.fullName}
+            onChange={(e) => handleChange('fullName', e.target.value)}
             disabled={isLoading}
+            aria-invalid={Boolean(errors.fullName)}
             className={cn(
               'h-11 bg-slate-900/80 border-slate-700 focus:border-spiritual-gold focus:ring-spiritual-gold/30 text-foreground placeholder:text-slate-500',
-              errors.name && 'border-red-500 focus:border-red-500 focus:ring-red-500/30'
+              errors.fullName && 'border-red-500 focus:border-red-500 focus:ring-red-500/30'
             )}
           />
-          {errors.name && (
-            <p className="text-red-400 text-sm mt-1">{errors.name}</p>
-          )}
+          {errors.fullName && <p className="text-red-400 text-sm mt-1">{errors.fullName}</p>}
         </div>
 
         {/* Email */}
@@ -213,16 +182,15 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
             autoComplete="email"
             placeholder="seu@email.com"
             value={formData.email}
-            onChange={handleChange}
+            onChange={(e) => handleChange('email', e.target.value)}
             disabled={isLoading}
+            aria-invalid={Boolean(errors.email)}
             className={cn(
               'h-11 bg-slate-900/80 border-slate-700 focus:border-spiritual-gold focus:ring-spiritual-gold/30 text-foreground placeholder:text-slate-500',
               errors.email && 'border-red-500 focus:border-red-500 focus:ring-red-500/30'
             )}
           />
-          {errors.email && (
-            <p className="text-red-400 text-sm mt-1">{errors.email}</p>
-          )}
+          {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
         </div>
 
         {/* Password */}
@@ -241,8 +209,9 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
               autoComplete="new-password"
               placeholder="••••••••"
               value={formData.password}
-              onChange={handleChange}
+              onChange={(e) => handleChange('password', e.target.value)}
               disabled={isLoading}
+              aria-invalid={Boolean(errors.password)}
               className={cn(
                 'h-11 bg-slate-900/80 border-slate-700 focus:border-spiritual-gold focus:ring-spiritual-gold/30 text-foreground placeholder:text-slate-500 pr-12',
                 errors.password && 'border-red-500 focus:border-red-500 focus:ring-red-500/30'
@@ -253,20 +222,13 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-spiritual-gold transition-colors"
               tabIndex={-1}
+              aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
             >
-              {showPassword ? (
-                <EyeOff className="w-4 h-4" />
-              ) : (
-                <Eye className="w-4 h-4" />
-              )}
+              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>
-          {formData.password && (
-            <PasswordStrengthIndicator password={formData.password} />
-          )}
-          {errors.password && (
-            <p className="text-red-400 text-sm mt-1">{errors.password}</p>
-          )}
+          {formData.password && <PasswordStrengthIndicator password={formData.password} />}
+          {errors.password && <p className="text-red-400 text-sm mt-1">{errors.password}</p>}
         </div>
 
         {/* Confirm Password */}
@@ -285,11 +247,13 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
               autoComplete="new-password"
               placeholder="••••••••"
               value={formData.confirmPassword}
-              onChange={handleChange}
+              onChange={(e) => handleChange('confirmPassword', e.target.value)}
               disabled={isLoading}
+              aria-invalid={Boolean(errors.confirmPassword)}
               className={cn(
                 'h-11 bg-slate-900/80 border-slate-700 focus:border-spiritual-gold focus:ring-spiritual-gold/30 text-foreground placeholder:text-slate-500 pr-12',
-                errors.confirmPassword && 'border-red-500 focus:border-red-500 focus:ring-red-500/30'
+                errors.confirmPassword &&
+                  'border-red-500 focus:border-red-500 focus:ring-red-500/30'
               )}
             />
             <button
@@ -297,12 +261,9 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-spiritual-gold transition-colors"
               tabIndex={-1}
+              aria-label={showConfirmPassword ? 'Ocultar senha' : 'Mostrar senha'}
             >
-              {showConfirmPassword ? (
-                <EyeOff className="w-4 h-4" />
-              ) : (
-                <Eye className="w-4 h-4" />
-              )}
+              {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>
           {errors.confirmPassword && (
@@ -310,7 +271,7 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
           )}
         </div>
 
-        {/* Terms Checkbox */}
+        {/* Terms */}
         <div className="space-y-2">
           <label className="flex items-start gap-3 cursor-pointer group">
             <div className="relative flex items-center justify-center mt-0.5">
@@ -318,19 +279,22 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
                 type="checkbox"
                 name="acceptTerms"
                 checked={formData.acceptTerms}
-                onChange={handleChange}
+                onChange={(e) => handleChange('acceptTerms', e.target.checked)}
                 disabled={isLoading}
                 className="peer sr-only"
+                aria-label="Aceitar termos"
               />
-              <div className={cn(
-                'w-5 h-5 rounded border-2 transition-all duration-200',
-                'bg-slate-900/80 border-slate-600',
-                'peer-checked:bg-spiritual-gold peer-checked:border-spiritual-gold',
-                'peer-focus-visible:ring-2 peer-focus-visible:ring-spiritual-gold/50',
-                'peer-disabled:opacity-50',
-                'group-hover:border-spiritual-gold/70',
-                errors.acceptTerms && 'border-red-500'
-              )}>
+              <div
+                className={cn(
+                  'w-5 h-5 rounded border-2 transition-all duration-200',
+                  'bg-slate-900/80 border-slate-600',
+                  'peer-checked:bg-spiritual-gold peer-checked:border-spiritual-gold',
+                  'peer-focus-visible:ring-2 peer-focus-visible:ring-spiritual-gold/50',
+                  'peer-disabled:opacity-50',
+                  'group-hover:border-spiritual-gold/70',
+                  errors.acceptTerms && 'border-red-500'
+                )}
+              >
                 <svg
                   className={cn(
                     'w-full h-full text-slate-900 p-0.5 transition-opacity',
@@ -349,11 +313,11 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
             </div>
             <span className="text-sm text-muted-foreground leading-tight">
               Li e aceito os{' '}
-              <Link href="#" className="text-spiritual-gold hover:underline">
+              <Link href="/manifesto" className="text-spiritual-gold hover:underline">
                 Termos de Uso
               </Link>{' '}
               e a{' '}
-              <Link href="#" className="text-spiritual-gold hover:underline">
+              <Link href="/privacy" className="text-spiritual-gold hover:underline">
                 Política de Privacidade
               </Link>
             </span>
@@ -365,12 +329,15 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
 
         {/* Server Error */}
         {serverError && (
-          <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3 text-red-400 text-sm text-center">
+          <div
+            role="alert"
+            className="bg-red-500/10 border border-red-500/30 rounded-lg p-3 text-red-400 text-sm text-center"
+          >
             {serverError}
           </div>
         )}
 
-        {/* Submit Button */}
+        {/* Submit */}
         <Button
           type="submit"
           disabled={isLoading}
@@ -395,17 +362,20 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
         </Button>
       </form>
 
-      {/* Links */}
-      <div className="mt-8 space-y-4">
-        <MysticDivider variant="subtle" />
+      <div className="mt-6">
+        <MysticDivider variant="subtle" label="ou" />
+        <div className="mt-4">
+          <GoogleOAuthButton label="Cadastrar com Google" />
+        </div>
+      </div>
 
+      <div className="mt-8">
         <div className="flex justify-center">
           <Link
             href="/login"
             className="text-sm text-muted-foreground hover:text-spiritual-gold transition-colors font-serif"
           >
-            Já tem conta?{' '}
-            <span className="text-spiritual-gold font-semibold">Entrar</span>
+            Já tem conta? <span className="text-spiritual-gold font-semibold">Entrar</span>
           </Link>
         </div>
       </div>

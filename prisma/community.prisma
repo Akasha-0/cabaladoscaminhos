@@ -33,11 +33,16 @@ enum ArticleType {
   ESSAY
 }
 
+// 2026-06-27 — alinhado com GRADE system para a Biblioteca Akasha
+// HIGH        = revisões sistemáticas / meta-análises de RCTs
+// MEDIUM      = RCTs individuais ou coortes bem desenhadas
+// LOW         = observacionais pequenos / séries de casos
+// ANECDOTAL   = ensaios, opinião de especialista, valor tradicional
 enum EvidenceLevel {
   ANECDOTAL
-  OBSERVATIONAL
-  PEER_REVIEWED
-  META_ANALYSIS
+  LOW
+  MEDIUM
+  HIGH
 }
 
 enum PostType {
@@ -50,13 +55,40 @@ enum PostType {
 }
 
 enum NotificationType {
-  NEW_FOLLOWER
-  NEW_COMMENT
-  NEW_LIKE
-  GROUP_INVITE
-  NEW_POST_FROM_FOLLOWED
-  ARTICLE_RECOMMENDATION
+  // Social graph
+  LIKE
+  COMMENT
+  POST_REPLY
+  FOLLOW
   MENTION
+  // Community
+  GROUP_INVITE
+  GROUP_POST
+  GROUP_ROLE_CHANGE
+  // Content
+  ARTICLE_RECOMMENDATION
+  ARTICLE_PUBLISHED
+  // System
+  SYSTEM_ALERT
+  MODERATION_ACTION
+  // Meta
+  DIGEST_WEEKLY
+}
+
+enum NotificationChannel {
+  IN_APP
+  EMAIL
+  PUSH
+}
+
+enum EntityType {
+  POST
+  COMMENT
+  USER
+  GROUP
+  ARTICLE
+  MENTION
+  SYSTEM
 }
 
 // ============================================================================
@@ -95,6 +127,9 @@ model SpiritualProfile {
 
   // Onboarding flag
   onboardedAt DateTime?
+
+  // 2026-06-27 — Onda 12 Search & Discovery
+  searchVector Unsupported("tsvector")?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -141,6 +176,11 @@ model Post {
   // Soft delete
   deletedAt DateTime?
 
+  // 2026-06-27 — Onda 12 Search & Discovery
+  // Coluna tsvector populada por trigger Postgres (ver migration search_discovery)
+  // GIN index + pg_trgm index criados no SQL (não no Prisma)
+  searchVector Unsupported("tsvector")?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -183,29 +223,45 @@ model Comment {
 // ============================================================================
 // GRUPOS POR TRADIÇÃO / LINHA ESPIRITUAL
 // ============================================================================
+// Cada grupo representa uma sub-comunidade focada em uma tradição.
+// Hierarquia de papéis: ADMIN (criador/promovido) > MODERATOR > MEMBER.
+// ============================================================================
 
 model Group {
   id          String  @id @default(cuid())
   slug        String  @unique  // "cabala", "ifa", "xamanismo", "tantra", "reiki", "ayurveda"
   name        String
   description String  @db.Text
-  iconUrl     String?
-  bannerUrl   String?
-  tradition   String  // linha espiritual
+  longDescription String? @db.Text  // descrição longa exibida na aba "Sobre"
+  rules       String[]            // regras da comunidade (3-5 itens curtos)
+  iconUrl     String?             // avatar (ícone/emoji)
+  bannerUrl   String?             // cover image
+  tradition   String              // linha espiritual (ex: "cabala", "ifa")
 
   // Configurações
-  isPublic    Boolean @default(true)
-  requireApproval Boolean @default(false)
+  isPublic    Boolean @default(true)         // false = requer invite
+  requireApproval Boolean @default(false)    // futuro: fila de aprovação
 
+  // Quem criou o grupo (referência a User/Operator por id)
+  createdBy   String?
+
+  // Contadores denormalizados (atualizar via app)
   membersCount Int @default(0)
+  postsCount   Int @default(0)
 
   members GroupMember[]
+  invites GroupInvite[]
   posts   Post[]
+
+  // 2026-06-27 — Onda 12 Search & Discovery
+  searchVector Unsupported("tsvector")?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([tradition])
+  @@index([isPublic])
+  @@index([createdBy])
   @@map("groups")
 }
 
@@ -215,15 +271,63 @@ model GroupMember {
   userId  String
   role    GroupRole @default(MEMBER)
 
+  // Quem convidou (opcional — audit trail)
+  invitedBy String?
+
   joinedAt DateTime @default(now())
 
   @@id([groupId, userId])
   @@index([userId])
+  @@index([role])
   @@map("group_members")
+}
+
+// Convite pendente para grupo privado.
+// Status: PENDING / ACCEPTED / DECLINED / REVOKED
+enum GroupInviteStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  REVOKED
+}
+
+model GroupInvite {
+  id        String   @id @default(cuid())
+  groupId   String
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  // Token único compartilhado no link de invite
+  token     String   @unique
+
+  // Quem convidou (moderador/admin)
+  invitedBy String
+
+  // Destinatário (id do usuário convidado, ou null se email-link)
+  inviteeUserId String?
+  inviteeEmail  String?
+
+  // Quem aceitou (caso tenha sido por link com usuário)
+  acceptedBy    String?
+  acceptedAt    DateTime?
+
+  status    GroupInviteStatus @default(PENDING)
+  expiresAt DateTime
+
+  createdAt DateTime @default(now())
+
+  @@index([groupId, status])
+  @@index([inviteeUserId])
+  @@map("group_invites")
 }
 
 // ============================================================================
 // BIBLIOTECA COLETIVA — Artigos, papers, livros
+// ============================================================================
+// Atualizado em 2026-06-27 para a "Biblioteca Akasha Curada":
+//   - Campos bibliográficos formais (authors[], journal, year, citations)
+//   - Idioma e level de evidência GRADE-aligned
+//   - Tags livres + tradition canônica
+//   - Métricas (viewCount, bookmarkCount, citations) para ranking
 // ============================================================================
 
 model Article {
@@ -231,30 +335,58 @@ model Article {
   slug  String @unique
   title String
 
-  summary String @db.Text  // resumo curto (preview)
-  body    String @db.Text  // conteúdo completo (markdown)
+  // Conteúdo
+  summary String @db.Text  // resumo curto (~200 palavras, PT-BR) — preview
+  content String @db.Text  // conteúdo completo (markdown PT-BR)
 
-  type          ArticleType
-  tradition     String?     // "cabala", "ifa",...
-  topics        String[]    // ["meditacao", "neurociencia",...]
+  // --- Bibliographic core ---
+  // Autores estruturados como JSON para suportar "Lastname FM, Lastname FM" no citation
+  // e futuro link a um Author canônico. Mantemos compat com o campo antigo `contributor`.
+  authors   String[]  // ["Griffiths RR", "Johnson MW", ...]
+  journal   String?   // "JAMA Psychiatry", "Cochrane Database Syst Rev", ...
+  year      Int       // ano de publicação
+  doi       String?   // DOI canônico (sem prefixo https://doi.org/)
+  url       String?   // URL externa (DOI URL, PubMed, OpenAlex landing)
+
+  // --- Tags / tradição ---
+  tags      String[]    // ["meditacao", "neurociencia", "mbsr", ...]
+  tradition String?     // "meditacao", "xamanismo", "cabala", "ifa", "tantra", "reiki", ...
+
+  // --- Avaliação de evidência (GRADE-aligned) ---
   evidenceLevel EvidenceLevel @default(ANECDOTAL)
 
-  // Referências externas
-  doi         String?  // digital object identifier
-  externalUrl String?
-  references  Json?    // [{title, url, doi, year}]
+  // Idioma do paper original (article.language). O conteúdo do Akasha é sempre PT-BR.
+  language  String  @default("en")  // "en" | "pt" | "es"
 
-  // Autoria
-  authorId    String?  // se for um membro da comunidade
-  contributor String?  // se for um autor externo (nome)
+  // --- Mantidos por compat ---
+  type          ArticleType     @default(SCIENTIFIC_PAPER)
+  body          String?         @db.Text  // alias histórico de `content`
+  topics        String[]                  // alias histórico de `tags` (mantido populado igual)
+  externalUrl   String?                   // alias histórico de `url`
+  references    Json?            // [{title, url, doi, year}]
+  authorId      String?
+  contributor   String?
 
-  // Estatísticas
-  viewsCount    Int @default(0)
-  likesCount    Int @default(0)
-  bookmarksCount Int @default(0)
+  // --- Métricas ---
+  citations      Int @default(0)  // citações externas (do Crossref/OpenAlex)
+  viewCount      Int @default(0)  // visualizações no Akasha
+  bookmarkCount  Int @default(0)  // saves dos usuários
+  likesCount     Int @default(0)  // likes (mantido para compat)
 
-  // Embeddings para busca semântica (Fase 3)
+  // Embeddings para recomendação semântica (Fase 3)
   // embedding Unsupported("vector(1536)")? -- quando ativar pgvector
+
+  // 2026-06-27 — Onda 12 Search & Discovery
+  // Coluna tsvector populada por trigger Postgres (ver migration search_discovery)
+  searchVector Unsupported("tsvector")?
+
+  // --- Auditoria / proveniência ---
+  // Quem inseriu (curador humano ou seed-bot)
+  curatedBy  String?
+  // Fonte de onde veio (openalex-id W..., pubmed-id PMID..., manual, ...)
+  source     String?
+  // Hash para detectar duplicatas em re-seed
+  sourceHash String?
 
   publishedAt DateTime?
   createdAt   DateTime  @default(now())
@@ -263,8 +395,15 @@ model Article {
   @@index([type])
   @@index([tradition])
   @@index([evidenceLevel])
+  @@index([year])
+  @@index([language])
   @@index([publishedAt])
+  @@index([viewCount])
+  @@index([bookmarkCount])
+  @@index([citations])
+  @@index([doi])
   @@index([topics])
+  @@index([tags])
   @@map("articles")
 }
 
@@ -322,7 +461,15 @@ model Bookmark {
 }
 
 // ============================================================================
-// NOTIFICAÇÕES
+// NOTIFICAÇÕES — Modelo consolidado (in-app + email + push)
+// ============================================================================
+// Adicionado em 2026-06-27 — Onda 3 (Sistema de notificações real).
+// Suporta: tipos sociais (like/comment/follow/mention), grupos, artigos,
+// alertas de sistema, moderação, e digest semanal.
+//
+// Batch: o campo `groupKey` permite agrupar várias notificações do mesmo
+// tipo + entity em uma (ex: 5 likes → "+5 likes"). A aplicação usa
+// upsert por (userId, type, groupKey) quando aplicável.
 // ============================================================================
 
 model Notification {
@@ -330,26 +477,118 @@ model Notification {
   userId String  // destinatário
   type   NotificationType
 
-  // Quem gerou (opcional)
+  // Quem gerou (opcional, null para SYSTEM_ALERT etc)
   actorId String?
 
-  // Referência ao objeto relacionado
+  // Entidade alvo (polimórfica via entityType + entityId)
+  entityType EntityType?
+  entityId   String?
+
+  // Referência direta (atalho para queries comuns — denormalizado)
   postId    String?
   commentId String?
   groupId   String?
   articleId String?
 
-  // Conteúdo extra (texto, payload custom)
+  // Chave de agrupamento para batch (ex: "post:<id>:LIKES")
+  // Permite consolidar múltiplas notificações do mesmo tipo na mesma entidade
+  groupKey String?
+
+  // Contador quando batched (ex: 5 likes virou 1 notif com count=5)
+  count Int @default(1)
+
+  // Snapshot do ator mais recente (denormalizado p/ evitar joins no feed)
+  // {id, displayName, handle, avatarUrl}
+  actorSnapshot Json?
+
+  // Conteúdo extra (preview, links, deep-link, etc)
   payload Json?
 
   read Boolean @default(false)
   readAt DateTime?
 
-  createdAt DateTime @default(now())
+  // Rastreamento de canais entregues (multi-canal)
+  emailedAt DateTime?  // quando foi enviado por email
+  pushedAt  DateTime?  // quando foi entregue via push
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, groupKey])
   @@index([userId, read, createdAt])
   @@index([userId, createdAt])
+  @@index([userId, type, createdAt])
+  @@index([groupKey])
   @@map("notifications")
+}
+
+// Preferências de notificação por usuário e tipo
+// Quando ausente, default é: IN_APP=true, EMAIL=true, PUSH=false
+model NotificationPreference {
+  id     String @id @default(cuid())
+  userId String
+  type   NotificationType
+
+  inApp Boolean @default(true)
+  email Boolean @default(true)
+  push  Boolean @default(false)
+
+  // Digest semanal separado (se true, emails individuais são suprimidos)
+  weeklyDigest Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, type])
+  @@index([userId])
+  @@map("notification_preferences")
+}
+
+// Assinaturas de Web Push (opt-in, armazenadas para entrega de pushes)
+model PushSubscription {
+  id     String @id @default(cuid())
+  userId String
+
+  // Endpoint único por subscription (RFC 8030)
+  endpoint String  @unique
+  // Criptografia — p256dh + auth
+  p256dh   String
+  auth     String
+
+  // Metadata
+  userAgent String?
+  ipAddress String?
+
+  // Controle
+  active     Boolean   @default(true)
+  lastSentAt DateTime?
+  lastError  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([active, userId])
+  @@map("push_subscriptions")
+}
+
+// Tokens de unsubscribe (LGPD-friendly) — links assinados em emails
+// Pra simplicidade, geramos tokens opacos (não JWT) armazenados no DB
+model UnsubscribeToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  // null = unsubscribe de TODAS as notificações
+  // string = apenas este tipo
+  type      String?
+  expiresAt DateTime
+  usedAt    DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("unsubscribe_tokens")
 }
 
 // ============================================================================

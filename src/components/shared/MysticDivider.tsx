@@ -6,6 +6,7 @@ interface MysticDividerProps {
   symbol?: 'star' | 'diamond' | 'sun' | 'moon';
   variant?: 'subtle' | 'default' | 'bold';
   className?: string;
+  label?: string;
 }
 
 const SYMBOLS = {
@@ -19,6 +20,7 @@ export function MysticDivider({
   symbol = 'star',
   variant = 'default',
   className = '',
+  label,
 }: MysticDividerProps) {
   return (
     <div
@@ -36,7 +38,7 @@ export function MysticDivider({
         )}
       />
 
-      {/* Center symbol */}
+      {/* Center symbol or label */}
       <span
         className={cn(
           'shrink-0 select-none font-serif',
@@ -48,7 +50,7 @@ export function MysticDivider({
           ]
         )}
       >
-        {SYMBOLS[symbol]}
+        {label ?? SYMBOLS[symbol]}
       </span>
 
       {/* Right line */}

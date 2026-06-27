@@ -10,12 +10,20 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:community": "vitest run src/components/community/__tests__",
+    "test:ssr": "vitest run __tests__/ssr",
+    "e2e": "playwright test",
+    "e2e:smoke": "playwright test e2e/smoke.spec.ts",
+    "e2e:screenshots": "playwright test e2e/screenshots.spec.ts",
+    "ci:local": "bash scripts/ci-local.sh",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
+    "seed:posts": "tsx prisma/seed/posts.ts",
     "quality": "tsx scripts/run-quality-eval.ts",
-    "quality:evolve": "tsx scripts/run-evolution.ts"
+    "quality:evolve": "tsx scripts/run-evolution.ts",
+    "postbuild": "next-sitemap",
+    "sitemap": "next-sitemap"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",

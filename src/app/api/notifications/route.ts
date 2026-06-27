@@ -1,111 +1,173 @@
+// ============================================================================
+// API /api/notifications — list (paginated) + count unread
+// ============================================================================
+// GET /api/notifications?cursor=...&limit=20&filter=unread&type=LIKE
+// ============================================================================
+
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
-const NotificationTypeSchema = z.enum([
-  'ritual_reminder',
-  'orixa_message',
-  'afirmation',
-  'calendar_event',
-  'guidance',
-  'manifestation_update',
-  'system',
-]);
-const NotificationStatusSchema = z.enum(['unread', 'read', 'dismissed']);
-const NotificationQuerySchema = z.object({
-  userId: z.string().optional(),
-  status: NotificationStatusSchema.optional(),
-  type: NotificationTypeSchema.optional(),
-  limit: z.coerce.number().int().positive().max(100).optional(),
+import { prisma } from '@/lib/prisma';
+import { getViewer } from '@/lib/community/auth';
+import type { NotificationType } from '@prisma/client';
+import type { NotificationDto, PaginatedNotifications } from '@/lib/notifications';
+
+export const dynamic = 'force-dynamic';
+
+// ============================================================================
+// Query schema
+// ============================================================================
+
+const QuerySchema = z.object({
+  cursor: z.string().optional(),
+  limit: z.coerce.number().int().positive().max(100).default(20),
+  filter: z.enum(['all', 'unread', 'read']).default('all'),
+  type: z
+    .enum([
+      'LIKE',
+      'COMMENT',
+      'POST_REPLY',
+      'FOLLOW',
+      'MENTION',
+      'GROUP_INVITE',
+      'GROUP_POST',
+      'GROUP_ROLE_CHANGE',
+      'ARTICLE_RECOMMENDATION',
+      'ARTICLE_PUBLISHED',
+      'SYSTEM_ALERT',
+      'MODERATION_ACTION',
+      'DIGEST_WEEKLY',
+    ])
+    .optional(),
 });
-const CreateNotificationSchema = z.object({
-  userId: z.string().min(1, 'userId é obrigatório'),
-  type: NotificationTypeSchema,
-  title: z.string().min(1, 'Título é obrigatório'),
-  message: z.string().min(1, 'Mensagem é obrigatória'),
-  orixa: z.string().optional(),
-  priority: z.enum(['low', 'medium', 'high']).optional().default('medium'),
-  scheduledAt: z.string().datetime().optional(),
-  data: z.record(z.any()).optional(),
-});
-// GET /api/notifications - Get user notifications
+
+// ============================================================================
+// Cursor helpers
+// ============================================================================
+
+interface Cursor {
+  createdAt: string;
+  id: string;
+}
+
+function encodeCursor(c: Cursor): string {
+  return Buffer.from(JSON.stringify(c)).toString('base64url');
+}
+
+function decodeCursor(raw: string): Cursor | null {
+  try {
+    const json = JSON.parse(Buffer.from(raw, 'base64url').toString('utf8'));
+    if (typeof json?.createdAt !== 'string' || typeof json?.id !== 'string') {
+      return null;
+    }
+    return json;
+  } catch {
+    return null;
+  }
+}
+
+// ============================================================================
+// GET handler
+// ============================================================================
+
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams;
-    const parseResult = NotificationQuerySchema.safeParse({
-      userId: searchParams.get('userId'),
-      status: searchParams.get('status'),
-      type: searchParams.get('type'),
-      limit: searchParams.get('limit'),
-    });
-    if (!parseResult.success) {
-      return NextResponse.json({
-        error: 'Parâmetros inválidos',
-        details: parseResult.error.flatten().fieldErrors,
-      }, { status: 400 });
+    const viewer = await getViewer();
+    if (!viewer) {
+      return NextResponse.json({ error: 'Não autenticado' }, { status: 401 });
     }
-    const { userId, status, type, limit } = parseResult.data;
-    return NextResponse.json({
-      notifications: [],
-      count: 0,
-      filters: { userId, status, type },
-      limit: limit ?? 20,
-    });
-  } catch {
-    return NextResponse.json({
-      error: 'Erro ao processar notificações',
-    }, { status: 500 });
-  }
-}
-// POST /api/notifications - Create a notification
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const parseResult = CreateNotificationSchema.safeParse(body);
-    if (!parseResult.success) {
-      return NextResponse.json({
-        error: 'Corpo inválido',
-        details: parseResult.error.flatten().fieldErrors,
-      }, { status: 400 });
+
+    const params = Object.fromEntries(request.nextUrl.searchParams);
+    const parsed = QuerySchema.safeParse(params);
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: 'Parâmetros inválidos', details: parsed.error.flatten().fieldErrors },
+        { status: 400 }
+      );
     }
-    return NextResponse.json({
-      success: true,
-      notification: {
-        id: crypto.randomUUID(),
-        ...parseResult.data,
-        status: 'unread',
-        createdAt: new Date().toISOString(),
-      },
-    }, { status: 201 });
-  } catch {
-    return NextResponse.json({
-      error: 'Erro ao processar notificação',
-    }, { status: 500 });
-  }
-}
-// PATCH /api/notifications - Update notification status
-export async function PATCH(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const parseResult = z.object({
-      id: z.string().min(1),
-      status: NotificationStatusSchema,
-    }).safeParse(body);
-    if (!parseResult.success) {
-      return NextResponse.json({
-        error: 'Corpo inválido',
-        details: parseResult.error.flatten().fieldErrors,
-      }, { status: 400 });
+
+    const { cursor, limit, filter, type } = parsed.data;
+
+    const where: {
+      userId: string;
+      read?: boolean;
+      type?: NotificationType;
+      OR?: unknown[];
+    } = { userId: viewer.id };
+
+    if (filter === 'unread') where.read = false;
+    if (filter === 'read') where.read = true;
+    if (type) where.type = type;
+
+    if (cursor) {
+      const decoded = decodeCursor(cursor);
+      if (decoded) {
+        where.OR = [
+          { createdAt: { lt: new Date(decoded.createdAt) } },
+          {
+            AND: [
+              { createdAt: new Date(decoded.createdAt) },
+              { id: { lt: decoded.id } },
+            ],
+          },
+        ];
+      }
     }
-    return NextResponse.json({
-      success: true,
-      updated: {
-        id: parseResult.data.id,
-        status: parseResult.data.status,
-      },
-    });
-  } catch {
-    return NextResponse.json({
-      error: 'Erro ao atualizar notificação',
-    }, { status: 500 });
+
+    const [rows, unreadCount] = await Promise.all([
+      prisma.notification.findMany({
+        where,
+        orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+        take: limit + 1,
+      }),
+      prisma.notification.count({
+        where: { userId: viewer.id, read: false },
+      }),
+    ]);
+
+    const hasMore = rows.length > limit;
+    const slice = hasMore ? rows.slice(0, limit) : rows;
+    const nextCursor = hasMore
+      ? encodeCursor({
+          createdAt: slice[slice.length - 1]!.createdAt.toISOString(),
+          id: slice[slice.length - 1]!.id,
+        })
+      : null;
+
+    const items: NotificationDto[] = slice.map((r) => ({
+      id: r.id,
+      userId: r.userId,
+      type: r.type,
+      actorId: r.actorId,
+      actorSnapshot: (r.actorSnapshot as NotificationDto['actorSnapshot']) ?? null,
+      entityType: r.entityType ?? null,
+      entityId: r.entityId,
+      postId: r.postId,
+      commentId: r.commentId,
+      groupId: r.groupId,
+      articleId: r.articleId,
+      groupKey: r.groupKey,
+      count: r.count,
+      payload: (r.payload as NotificationDto['payload']) ?? null,
+      read: r.read,
+      readAt: r.readAt?.toISOString() ?? null,
+      emailedAt: r.emailedAt?.toISOString() ?? null,
+      pushedAt: r.pushedAt?.toISOString() ?? null,
+      createdAt: r.createdAt.toISOString(),
+      updatedAt: r.updatedAt.toISOString(),
+    }));
+
+    const body: PaginatedNotifications = {
+      items,
+      nextCursor,
+      unreadCount,
+    };
+
+    return NextResponse.json(body);
+  } catch (err) {
+    console.error('[api/notifications][GET] error', err);
+    return NextResponse.json(
+      { error: 'Erro ao listar notificações' },
+      { status: 500 }
+    );
   }
 }

@@ -1,4 +1,8 @@
-# https://www.robotstxt.org/robotstxt.html
+# ============================================================================
+# robots.txt — Akasha Portal (2026-06-27, Onda 12 Search)
+# ============================================================================
+
+# Geral: todas as user-agents
 User-agent: *
 Allow: /
 
@@ -10,17 +14,58 @@ Crawl-delay: 1
 
 # Disallow admin/api internal paths
 Disallow: /api/
+Disallow: /admin/
+Disallow: /onboarding/
+Disallow: /login
+Disallow: /register
 Disallow: /dashboard/perfil/
 Disallow: /conta/
 Disallow: /*.json$
 Disallow: /*.tsx$
 
-# Allow important public pages
+# Allow important public pages — descobrimento / search
 Allow: /$
-Allow: /onboarding$
-Allow: /login$
-Allow: /register$
-Allow: /pricing$
-Allow: /calendario$
-Allow: /mapa$
-Allow: /dashboard$
+Allow: /explore
+Allow: /explore?*
+Allow: /tags/
+Allow: /tags/*
+Allow: /groups/
+Allow: /groups/*
+Allow: /library/
+Allow: /library/*
+Allow: /feed
+Allow: /u/
+Allow: /u/*
+
+# Googlebot — explicitamente
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Googlebot-Image
+User-agent: Googlebot-Image
+Allow: /
+
+# Bingbot
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Bloqueia IA scrapers comuns
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /

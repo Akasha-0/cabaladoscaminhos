@@ -1,0 +1,127 @@
+name: Auto-merge Dependabot PRs
+
+# Auto-merge PRs do Dependabot que:
+#   - Passaram em todos os CI checks
+#   - Têm o label "auto-merge" (aplicado automaticamente pelo dependabot.yml)
+#   - São patch ou minor updates (major nunca auto-merge)
+#
+# Workflow seguro: nunca toca PR manual, exige label explícito,
+# requer CI verde, usa squash.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    name: Auto-merge (dependabot only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # Só roda pra Dependabot com label "auto-merge" E CI verde
+    if: |
+      github.event.pull_request.user.login == 'dependabot[bot]' &&
+      contains(github.event.pull_request.labels.*.name, 'auto-merge') &&
+      contains(github.event.pull_request.labels.*.name, 'dependencies')
+    steps:
+      - name: Fetch PR details
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+
+            // Major update? NUNCA auto-merge
+            const title = pr.title.toLowerCase();
+            const isMajor = /bump.*from.*to.*\d+\.\0\.0|major/.test(title);
+            if (isMajor) {
+              core.info('⏭️ Major version bump — skip auto-merge, requer revisão humana.');
+              core.setOutput('should_merge', 'false');
+              return;
+            }
+
+            // Draft? Aguarda tirar do draft
+            if (pr.draft) {
+              core.info('⏭️ Draft PR — aguardando marcar como ready.');
+              core.setOutput('should_merge', 'false');
+              return;
+            }
+
+            core.info('✅ PR elegível pra auto-merge (patch/minor, não-draft, CI verde).');
+            core.setOutput('should_merge', 'true');
+
+      - name: Enable auto-merge
+        if: steps.fetch.outputs.should_merge == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              await github.rest.pulls.enableAutoMergeForPullRequest({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.payload.pull_request.number,
+                merge_method: 'squash'
+              });
+              core.info('🤖 Auto-merge habilitado. CI passa → squash merge.');
+            } catch (err) {
+              if (err.message.includes('Pull request is in clean status')) {
+                core.warning('PR já está em clean status — não foi possível ativar auto-merge (pode ter sido mergeado por outro caminho).');
+              } else {
+                throw err;
+              }
+            }
+
+  comment-blocked:
+    name: Notifica PR major/draft
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    if: |
+      github.event.pull_request.user.login == 'dependabot[bot]' &&
+      github.event.action == 'opened'
+    steps:
+      - name: Detect major/draft e comenta
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+
+            const title = pr.title.toLowerCase();
+            const isMajor = /major|bump.*from.*to.*\d+\.\0\.0/.test(title);
+            const isDraft = pr.draft;
+
+            if (!isMajor && !isDraft) {
+              core.info('PR patch/minor + ready — não requer notificação.');
+              return;
+            }
+
+            const reasons = [];
+            if (isMajor) reasons.push('🚨 **Major version bump** — mudanças breaking, requer revisão humana.');
+            if (isDraft) reasons.push('📝 **Draft PR** — remova do draft quando CI estiver verde.');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              body: [
+                '👋 **Oi Dependabot!**',
+                '',
+                'Este PR **não será auto-merged** porque:',
+                '',
+                ...reasons,
+                '',
+                isMajor
+                  ? '👉 **Ação:** revisar CHANGELOG + breaking changes, rodar testes manualmente, e remover o label `auto-merge` se quiser merge manual depois de validar.'
+                  : '👉 **Ação:** marcar como Ready for Review. Auto-merge vai ativar quando CI passar.'
+              ].join('\n')
+            });
