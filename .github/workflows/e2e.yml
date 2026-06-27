@@ -1,0 +1,153 @@
+name: E2E Tests (Playwright)
+
+# Badges disponíveis no README:
+# ![E2E](https://github.com/Akasha-0/cabaladoscaminhos/actions/workflows/e2e.yml/badge.svg)
+
+on:
+  push:
+    branches: [main, develop, 'feat/**', 'fix/**']
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+# Não cancela runs anteriores — cada run é independente e rápida
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  NODE_ENV: test
+  NEXT_TELEMETRY_DISABLED: '1'
+  CI: '1'
+
+jobs:
+  # ──────────────────────────────────────────────────────────────────
+  # E2E Smoke — 3 fluxos críticos (mobile + desktop)
+  # ──────────────────────────────────────────────────────────────────
+  e2e:
+    name: E2E Smoke (${{ matrix.project }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [mobile-chromium, desktop-chromium]
+        # mobile-chromium-alt (Pixel 5) fica fora do default matrix pra
+        # economizar minutos — rodar manualmente em wave/feat branches
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies (frozen lockfile)
+        run: pnpm install --frozen-lockfile
+
+      - name: Prisma generate (precisa pro Prisma Client tipar)
+        run: pnpm db:generate
+        env:
+          DATABASE_URL: postgresql://placeholder@localhost:5432/placeholder
+
+      - name: Install Playwright browsers
+        run: pnpm playwright install --with-deps chromium
+        # NÃO instala WebKit/Safari — usamos chromium apenas (mais leve)
+        # mobile-safari project requer WebKit (~200MB extra)
+
+      - name: Build Next.js (production) para E2E
+        run: pnpm build
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+          DATABASE_URL: postgresql://placeholder@localhost:5432/placeholder
+          # Supabase vars ausentes → cai em "no supabase" (mock client)
+
+      - name: Run Playwright E2E tests (project=${{ matrix.project }})
+        run: |
+          pnpm playwright test \
+            --project=${{ matrix.project }} \
+            --reporter=list \
+            e2e/signup-onboarding-feed.spec.ts \
+            e2e/feed-interaction.spec.ts \
+            e2e/library-search.spec.ts
+        env:
+          CI: '1'
+          PORT: '3000'
+
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ matrix.project }}
+          path: |
+            test-results/playwright/
+            playwright-report/
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-screenshots-${{ matrix.project }}
+          path: test-results/playwright/**/*.{png,jpg,webm}
+          retention-days: 3
+          if-no-files-found: ignore
+
+  # ──────────────────────────────────────────────────────────────────
+  # E2E List Check — só valida que specs são sintaticamente válidos
+  # Roda SEMPRE (mesmo quando e2e job falha por OOM/sandbox)
+  # ──────────────────────────────────────────────────────────────────
+  e2e-list:
+    name: E2E spec listing (syntax check)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: List Playwright tests
+        run: pnpm playwright test --list
+        # Se specs têm erro de sintaxe, esse comando falha com exit 1
+        # Rápido: <30s sem precisar de browsers nem webServer
+
+      - name: Comment spec count on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { execSync } = require('child_process');
+            try {
+              const output = execSync('pnpm playwright test --list 2>&1', { encoding: 'utf8' });
+              const lines = output.split('\n').filter(l => l.match(/\[Chromium|\[Mobile|\[Desktop/));
+              const body = `✅ **Playwright specs** — ${lines.length} test(s) listed\n\n\`\`\`\n${lines.slice(0, 30).join('\n')}\n\`\`\``;
+              github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body
+              });
+            } catch (err) {
+              console.error('List check failed:', err.message);
+            }
