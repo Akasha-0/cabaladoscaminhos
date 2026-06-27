@@ -1,0 +1,651 @@
+__tests__/components/autocomplete.test.tsx(243,18): error TS2339: Property 'value' does not exist on type 'HTMLElement'.
+__tests__/components/autocomplete.test.tsx(248,18): error TS2339: Property 'value' does not exist on type 'HTMLElement'.
+__tests__/hooks/usePosts.test.tsx(231,57): error TS2345: Argument of type '{ content: string; }' is not assignable to parameter of type '{ type: "TEXT" | "LINK" | "ARTICLE" | "QUESTION" | "EXPERIENCE" | "PRACTICE"; content: string; tradition?: string | null | undefined; topic?: string | null | undefined; groupSlug?: string | null | undefined; mediaUrls?: string[] | undefined; references?: { ...; }[] | undefined; mentions?: string[] | undefined; }'.
+  Property 'type' is missing in type '{ content: string; }' but required in type '{ type: "TEXT" | "LINK" | "ARTICLE" | "QUESTION" | "EXPERIENCE" | "PRACTICE"; content: string; tradition?: string | null | undefined; topic?: string | null | undefined; groupSlug?: string | null | undefined; mediaUrls?: string[] | undefined; references?: { ...; }[] | undefined; mentions?: string[] | undefined; }'.
+__tests__/hooks/usePosts.test.tsx(254,52): error TS2345: Argument of type '{ content: string; }' is not assignable to parameter of type '{ type: "TEXT" | "LINK" | "ARTICLE" | "QUESTION" | "EXPERIENCE" | "PRACTICE"; content: string; tradition?: string | null | undefined; topic?: string | null | undefined; groupSlug?: string | null | undefined; mediaUrls?: string[] | undefined; references?: { ...; }[] | undefined; mentions?: string[] | undefined; }'.
+  Property 'type' is missing in type '{ content: string; }' but required in type '{ type: "TEXT" | "LINK" | "ARTICLE" | "QUESTION" | "EXPERIENCE" | "PRACTICE"; content: string; tradition?: string | null | undefined; topic?: string | null | undefined; groupSlug?: string | null | undefined; mediaUrls?: string[] | undefined; references?: { ...; }[] | undefined; mentions?: string[] | undefined; }'.
+__tests__/notification-triggers.test.ts(385,7): error TS2578: Unused '@ts-expect-error' directive.
+__tests__/notifications-api.test.ts(382,48): error TS2551: Property 'mockResolvedOnce' does not exist on type 'Mock<Procedure>'. Did you mean 'mockResolvedValueOnce'?
+__tests__/ssr/smoke.test.tsx(173,32): error TS2307: Cannot find module '@/app/(info)/login/page' or its corresponding type declarations.
+__tests__/ssr/smoke.test.tsx(195,32): error TS2307: Cannot find module '@/app/(info)/register/page' or its corresponding type declarations.
+playwright.config.ts(25,3): error TS1117: An object literal cannot have multiple properties with the same name.
+prisma/seed.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+prisma/seed/groups.ts(17,10): error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+prisma/seed/groups.ts(267,20): error TS2339: Property 'iconUrl' does not exist on type 'GroupSeed'.
+prisma/seed/groups.ts(278,20): error TS2339: Property 'iconUrl' does not exist on type 'GroupSeed'.
+prisma/seed/posts.ts(15,10): error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+prisma/seed/posts.ts(145,44): error TS2353: Object literal may only specify known properties, and 'author' does not exist in type '{ title: string; url?: string | undefined; doi?: string | undefined; year?: number | undefined; }'.
+prisma/seed/posts.ts(312,43): error TS7006: Parameter 'g' implicitly has an 'any' type.
+src/app/(community)/explore/page.tsx(310,13): error TS2322: Type '{ initialQuery: string; placeholder: string; size: "md"; onSubmit: (q: any) => void; }' is not assignable to type 'IntrinsicAttributes & SearchBarProps'.
+  Property 'onSubmit' does not exist on type 'IntrinsicAttributes & SearchBarProps'.
+src/app/(community)/explore/page.tsx(310,24): error TS7006: Parameter 'q' implicitly has an 'any' type.
+src/app/(community)/explore/page.tsx(483,52): error TS2339: Property 'id' does not exist on type 'Hit'.
+  Property 'id' does not exist on type '{ type: "tag"; tag: string; kind: "tradition" | "topic" | "article_tag"; count: number; score: number; url: string; }'.
+src/app/(community)/explore/page.tsx(854,19): error TS2322: Type '{ children: Element; asChild: true; variant: "outline"; className: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; golden: string; "golden-outline": string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; golden: string; "golden-outline": string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+src/app/(community)/feed/page.tsx(14,40): error TS2307: Cannot find module '@/components/ui/avatar' or its corresponding type declarations.
+src/app/(community)/feedback/page.tsx(62,13): error TS2503: Cannot find namespace 'JSX'.
+src/app/(community)/feedback/page.tsx(121,11): error TS2339: Property 'PrismaClient' does not exist on type '{ default: typeof import("/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/node_modules/@prisma/client/default"); }'.
+src/app/(community)/feedback/page.tsx(137,53): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/app/(community)/feedback/page.tsx(155,36): error TS7006: Parameter 'u' implicitly has an 'any' type.
+src/app/(community)/groups/[slug]/page.tsx(19,53): error TS2307: Cannot find module '@/components/ui/avatar' or its corresponding type declarations.
+src/app/(community)/groups/[slug]/page.tsx(411,9): error TS2322: Type '{ title: string; subtitle: string; }' is not assignable to type 'IntrinsicAttributes & FeedEmptyProps'.
+  Property 'subtitle' does not exist on type 'IntrinsicAttributes & FeedEmptyProps'.
+src/app/(community)/tags/[tag]/page.tsx(215,26): error TS18048: 'count' is possibly 'undefined'.
+src/app/(community)/tags/[tag]/page.tsx(250,25): error TS2322: Type '{ children: Element; asChild: true; variant: "outline"; className: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; golden: string; "golden-outline": string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; golden: string; "golden-outline": string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+src/app/(community)/u/[handle]/page.tsx(15,53): error TS2307: Cannot find module '@/components/ui/avatar' or its corresponding type declarations.
+src/app/(personal)/dashboard/clientes/page.tsx(14,26): error TS2307: Cannot find module '@/hooks/useToast' or its corresponding type declarations.
+src/app/(personal)/dashboard/clientes/page.tsx(286,28): error TS2322: Type '{ children: Element; asChild: true; }' is not assignable to type 'IntrinsicAttributes & Props<unknown>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & Props<unknown>'.
+src/app/(personal)/dashboard/mesa-real/page.tsx(13,26): error TS2307: Cannot find module '@/hooks/useToast' or its corresponding type declarations.
+src/app/(personal)/dashboard/perfil/page.tsx(14,52): error TS2307: Cannot find module '@/lib/hooks' or its corresponding type declarations.
+src/app/actions/posts.ts(295,20): error TS7006: Parameter 'p' implicitly has an 'any' type.
+src/app/admin/feedback/actions.ts(60,13): error TS2339: Property 'PrismaClient' does not exist on type '{ default: typeof import("/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/node_modules/@prisma/client/default"); }'.
+src/app/admin/feedback/actions.ts(96,13): error TS2339: Property 'PrismaClient' does not exist on type '{ default: typeof import("/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/node_modules/@prisma/client/default"); }'.
+src/app/admin/feedback/page.tsx(81,60): error TS2503: Cannot find namespace 'JSX'.
+src/app/admin/feedback/page.tsx(141,11): error TS2339: Property 'PrismaClient' does not exist on type '{ default: typeof import("/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/node_modules/@prisma/client/default"); }'.
+src/app/admin/feedback/page.tsx(226,18): error TS7006: Parameter 'c' implicitly has an 'any' type.
+src/app/admin/feedback/page.tsx(227,15): error TS7006: Parameter 'c' implicitly has an 'any' type.
+src/app/admin/feedback/page.tsx(235,65): error TS7006: Parameter 'f' implicitly has an 'any' type.
+src/app/admin/feedback/page.tsx(247,51): error TS7006: Parameter 'b' implicitly has an 'any' type.
+src/app/api/feedback/route.ts(144,18): error TS2339: Property 'PrismaClient' does not exist on type '{ default: typeof import("/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/node_modules/@prisma/client/default"); }'.
+src/app/api/feedback/route.ts(200,38): error TS7006: Parameter 'tx' implicitly has an 'any' type.
+src/app/api/groups/[slug]/invite/route.ts(119,20): error TS7006: Parameter 'i' implicitly has an 'any' type.
+src/app/api/notifications/preferences/route.ts(17,15): error TS2305: Module '"@prisma/client"' has no exported member 'NotificationType'.
+src/app/api/notifications/read-all/route.ts(79,7): error TS2322: Type '"MENTION" | "POST_REPLY" | "COMMENT" | "FOLLOW" | "GROUP_INVITE" | "GROUP_ROLE_CHANGE" | "SYSTEM_ALERT" | "MODERATION_ACTION" | "LIKE" | "GROUP_POST" | "ARTICLE_PUBLISHED" | "ARTICLE_RECOMMENDATION" | "DIGEST_WEEKLY"' is not assignable to type 'undefined'.
+  Type '"MENTION"' is not assignable to type 'undefined'.
+src/app/api/notifications/route.ts(11,15): error TS2305: Module '"@prisma/client"' has no exported member 'NotificationType'.
+src/app/api/notifications/route.ts(136,49): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/app/api/notifications/templates/route.ts(11,8): error TS2307: Cannot find module '@/lib/notifications/templates' or its corresponding type declarations.
+src/app/api/notifications/unsubscribe/route.ts(11,15): error TS2305: Module '"@prisma/client"' has no exported member 'NotificationType'.
+src/app/api/tags/[tag]/route.ts(8,10): error TS2305: Module '"@prisma/client"' has no exported member 'Prisma'.
+src/app/api/tags/[tag]/route.ts(62,17): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/api/tags/[tag]/route.ts(90,17): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/api/tags/[tag]/route.ts(114,17): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/api/tags/[tag]/route.ts(122,28): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/app/api/tags/[tag]/route.ts(136,34): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/app/api/tags/[tag]/route.ts(148,32): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/app/design-system/page.tsx(89,19): error TS2322: Type '{ children: Element; asChild: boolean; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; golden: string; "golden-outline": string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; golden: string; "golden-outline": string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+src/app/design-system/page.tsx(92,37): error TS2322: Type '{ children: Element; variant: "outline"; asChild: boolean; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; golden: string; "golden-outline": string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; golden: string; "golden-outline": string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+src/app/layout.tsx(158,3): error TS1117: An object literal cannot have multiple properties with the same name.
+src/components/community/CommunityNav.tsx(17,53): error TS2307: Cannot find module '@/components/ui/avatar' or its corresponding type declarations.
+src/components/community/CreatePost.tsx(15,40): error TS2307: Cannot find module '@/components/ui/avatar' or its corresponding type declarations.
+src/components/community/PostCard.tsx(17,53): error TS2307: Cannot find module '@/components/ui/avatar' or its corresponding type declarations.
+src/components/dashboard/GuidedMeditationWidget.tsx(7,42): error TS2307: Cannot find module '@/lib/chakra/v4/chakra-v4-data' or its corresponding type declarations.
+src/components/dashboard/GuidedMeditationWidget.tsx(955,46): error TS7006: Parameter 'chakra' implicitly has an 'any' type.
+src/components/dashboard/NotificationCenter.tsx(19,85): error TS2307: Cannot find module '@/lib/hooks/useNotifications' or its corresponding type declarations.
+src/components/dashboard/NotificationCenter.tsx(288,28): error TS7006: Parameter 'n' implicitly has an 'any' type.
+src/components/dashboard/NotificationCenter.tsx(294,34): error TS7006: Parameter 'n' implicitly has an 'any' type.
+src/components/dashboard/NotificationCenter.tsx(295,31): error TS7006: Parameter 'n' implicitly has an 'any' type.
+src/components/dashboard/NotificationCenter.tsx(296,32): error TS7006: Parameter 'n' implicitly has an 'any' type.
+src/components/dashboard/NotificationCenter.tsx(297,34): error TS7006: Parameter 'n' implicitly has an 'any' type.
+src/components/dashboard/NotificationCenter.tsx(446,41): error TS7006: Parameter 'notification' implicitly has an 'any' type.
+src/components/dashboard/RealtimeEnergyWidget.tsx(7,39): error TS2307: Cannot find module '@/lib/frequency/frequency-data' or its corresponding type declarations.
+src/components/dashboard/RealtimeEnergyWidget.tsx(56,43): error TS7006: Parameter 'f' implicitly has an 'any' type.
+src/components/dashboard/UnifiedSpiritualFlow.tsx(8,39): error TS2307: Cannot find module '@/lib/frequency/frequency-data' or its corresponding type declarations.
+src/components/dashboard/UserProfileBadge.tsx(3,37): error TS2307: Cannot find module '@/lib/store/user-profile' or its corresponding type declarations.
+src/components/design-system/divider.tsx(120,15): error TS2484: Export declaration conflicts with exported declaration of 'DividerProps'.
+src/components/design-system/empty.tsx(162,15): error TS2484: Export declaration conflicts with exported declaration of 'EmptyProps'.
+src/components/design-system/empty.tsx(162,27): error TS2484: Export declaration conflicts with exported declaration of 'EmptyAction'.
+src/components/design-system/error.tsx(190,15): error TS2484: Export declaration conflicts with exported declaration of 'ErrorProps'.
+src/components/design-system/error.tsx(190,27): error TS2484: Export declaration conflicts with exported declaration of 'ErrorSeverity'.
+src/components/design-system/loading.tsx(155,15): error TS2484: Export declaration conflicts with exported declaration of 'LoadingProps'.
+src/components/mesa-real/CasaModal.tsx(17,3): error TS2305: Module '"@/lib/lenormand/mesa-real-data"' has no exported member 'getCasaPorNumero'.
+src/components/mesa-real/CasaModal.tsx(18,3): error TS2305: Module '"@/lib/lenormand/mesa-real-data"' has no exported member 'getCartaPorNumero'.
+src/components/mesa-real/CasaModal.tsx(19,3): error TS2305: Module '"@/lib/lenormand/mesa-real-data"' has no exported member 'getOduPorNumero'.
+src/components/mesa-real/CasaModal.tsx(103,55): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'.
+src/components/mesa-real/CasaModal.tsx(123,53): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'.
+src/components/mesa-real/MesaRealGrid.tsx(9,24): error TS2307: Cannot find module 'framer-motion' or its corresponding type declarations.
+src/components/mesa-real/MesaRealGrid.tsx(12,15): error TS2305: Module '"@/lib/lenormand/mesa-real-types"' has no exported member 'CasaCigana'.
+src/components/onboarding/OnboardingEspiritual.tsx(51,43): error TS2307: Cannot find module '@/app/actions/mapa' or its corresponding type declarations.
+src/components/onboarding/OnboardingEspiritual.tsx(276,70): error TS18046: 'v' is of type 'unknown'.
+src/components/providers/UserProvider.tsx(4,37): error TS2307: Cannot find module '@/lib/store/user-profile' or its corresponding type declarations.
+src/hooks/__tests__/useAuth.test.tsx(85,29): error TS2339: Property 'error' does not exist on type 'UseAuthReturn'.
+src/hooks/__tests__/useAuth.test.tsx(100,29): error TS2339: Property 'error' does not exist on type 'UseAuthReturn'.
+src/hooks/__tests__/useAuth.test.tsx(128,73): error TS2345: Argument of type 'string' is not assignable to parameter of type 'SignUpMetadata'.
+src/hooks/__tests__/useAuth.test.tsx(149,73): error TS2345: Argument of type 'string' is not assignable to parameter of type 'SignUpMetadata'.
+src/hooks/usePosts.ts(421,31): error TS2561: Object literal may only specify known properties, but 'loadingMore' does not exist in type 'UseCommentsResult'. Did you mean to write 'loadMore'?
+src/hooks/useUserProfile.ts(4,37): error TS2307: Cannot find module '@/lib/store/user-profile' or its corresponding type declarations.
+src/hooks/useUserProfile.ts(44,40): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/hooks/useUserProfile.ts(108,40): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/lib/agents/index.ts(10,1): error TS2308: Module './recommendation-engine' has already exported a member named 'AreaRecommendation'. Consider explicitly re-exporting to resolve the ambiguity.
+src/lib/agents/index.ts(10,1): error TS2308: Module './recommendation-engine' has already exported a member named 'RecommendationResult'. Consider explicitly re-exporting to resolve the ambiguity.
+src/lib/agents/recommendation-engine-v2.ts(18,8): error TS2307: Cannot find module './agent-prompts-v2' or its corresponding type declarations.
+src/lib/ai/dossier/prompt-builder.ts(229,71): error TS2339: Property 'length' does not exist on type 'Record<number, string>'.
+src/lib/ai/insights/generator.ts(15,35): error TS2307: Cannot find module '../../spiritual-data/spiritual-data' or its corresponding type declarations.
+src/lib/ai/insights/generator.ts(245,5): error TS7006: Parameter 'o' implicitly has an 'any' type.
+src/lib/ai/prompt-builder/index.ts(115,13): error TS2551: Property 'quililas' does not exist on type 'Odu'. Did you mean 'quizilas'?
+src/lib/ai/prompt-builder/index.ts(115,60): error TS2551: Property 'quililas' does not exist on type 'Odu'. Did you mean 'quizilas'?
+src/lib/ai/prompt-builder/index.ts(202,15): error TS2484: Export declaration conflicts with exported declaration of 'HouseInput'.
+src/lib/ai/prompt-builder/index.ts(202,27): error TS2484: Export declaration conflicts with exported declaration of 'CartaCigana'.
+src/lib/ai/prompt-builder/index.ts(202,40): error TS2484: Export declaration conflicts with exported declaration of 'Odu'.
+src/lib/ai/prompt-builder/index.ts(202,45): error TS2484: Export declaration conflicts with exported declaration of 'MapaFixo'.
+src/lib/ai/tradition-mapper.ts(3,51): error TS2307: Cannot find module '../spiritual-data/spiritual-data' or its corresponding type declarations.
+src/lib/analytics/posthog-setup.ts(31,21): error TS2307: Cannot find module 'posthog-js' or its corresponding type declarations.
+src/lib/analytics/posthog-setup.ts(32,25): error TS2307: Cannot find module 'posthog-node' or its corresponding type declarations.
+src/lib/analytics/posthog-setup.ts(141,14): error TS7006: Parameter 'ph' implicitly has an 'any' type.
+src/lib/api/posts.ts(8,15): error TS2305: Module '"@prisma/client"' has no exported member 'Post'.
+src/lib/api/posts.ts(8,21): error TS2305: Module '"@prisma/client"' has no exported member 'Comment'.
+src/lib/api/posts.ts(8,30): error TS2305: Module '"@prisma/client"' has no exported member 'Like'.
+src/lib/api/posts.ts(8,36): error TS2305: Module '"@prisma/client"' has no exported member 'Group'.
+src/lib/api/posts.ts(11,3): error TS2305: Module '"./types"' has no exported member 'CommentDto'.
+src/lib/api/posts.ts(12,3): error TS2305: Module '"./types"' has no exported member 'PostAuthorDto'.
+src/lib/api/posts.ts(13,3): error TS2305: Module '"./types"' has no exported member 'PostDto'.
+src/lib/api/posts.ts(14,3): error TS2305: Module '"./types"' has no exported member 'PostReference'.
+src/lib/api/posts.ts(57,55): error TS7006: Parameter 'l' implicitly has an 'any' type.
+src/lib/api/posts.ts(225,58): error TS7006: Parameter 'l' implicitly has an 'any' type.
+src/lib/api/posts.ts(229,59): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/lib/api/response.ts(10,25): error TS2305: Module '"./types"' has no exported member 'ApiMeta'.
+src/lib/api/response.ts(22,40): error TS2322: Type 'null' is not assignable to type 'ApiError | undefined'.
+src/lib/api/response.ts(28,40): error TS2322: Type 'null' is not assignable to type 'ApiError | undefined'.
+src/lib/api/response.ts(44,29): error TS2322: Type 'string' is not assignable to type 'number'.
+src/lib/api/response.ts(45,56): error TS2322: Type 'null' is not assignable to type 'ResponseMeta | undefined'.
+src/lib/api/response.ts(87,14): error TS2322: Type 'string' is not assignable to type 'number'.
+src/lib/api/response.ts(88,5): error TS2322: Type 'null' is not assignable to type 'ResponseMeta | undefined'.
+src/lib/calculators/numerology-kabalah.ts(220,5): error TS2322: Type '{ first: { number: number; ageEnd: number; }; second: { number: number; ageStart: number; ageEnd: number; }; third: { number: number; ageStart: number; }; }' is not assignable to type '{ first: { number: number; ageStart: number; ageEnd: number; }; second: { number: number; ageStart: number; ageEnd: number; }; third: { number: number; ageStart: number; }; }'.
+  Types of property 'first' are incompatible.
+    Property 'ageStart' is missing in type '{ number: number; ageEnd: number; }' but required in type '{ number: number; ageStart: number; ageEnd: number; }'.
+src/lib/community/groups.ts(8,10): error TS2305: Module '"@prisma/client"' has no exported member 'Prisma'.
+src/lib/community/groups.ts(168,20): error TS7006: Parameter 'g' implicitly has an 'any' type.
+src/lib/community/groups.ts(206,52): error TS7006: Parameter 'tx' implicitly has an 'any' type.
+src/lib/community/groups.ts(703,23): error TS7006: Parameter 'p' implicitly has an 'any' type.
+src/lib/community/notifications.ts(9,10): error TS2305: Module '"@prisma/client"' has no exported member 'Prisma'.
+src/lib/community/notifications.ts(72,31): error TS7006: Parameter 'm' implicitly has an 'any' type.
+src/lib/community/notifications.ts(146,25): error TS7006: Parameter 'a' implicitly has an 'any' type.
+src/lib/community/posts.ts(8,10): error TS2305: Module '"@prisma/client"' has no exported member 'Prisma'.
+src/lib/community/posts.ts(40,24): error TS7006: Parameter 'l' implicitly has an 'any' type.
+src/lib/community/posts.ts(58,7): error TS2698: Spread types may only be created from object types.
+src/lib/community/posts.ts(104,43): error TS7006: Parameter 'l' implicitly has an 'any' type.
+src/lib/community/posts.ts(174,23): error TS7006: Parameter 'p' implicitly has an 'any' type.
+src/lib/community/posts.ts(428,26): error TS7006: Parameter 'c' implicitly has an 'any' type.
+src/lib/community/search.ts(20,10): error TS2305: Module '"@prisma/client"' has no exported member 'Prisma'.
+src/lib/community/search.ts(340,22): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/lib/community/search.ts(438,22): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/lib/community/search.ts(522,22): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/lib/community/search.ts(601,22): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/lib/community/search.ts(660,20): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/lib/community/search.ts(756,38): error TS2339: Property 'id' does not exist on type 'SearchHit'.
+  Property 'id' does not exist on type 'SearchHitTag'.
+src/lib/community/search.ts(831,20): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/lib/community/search.ts(839,23): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/lib/community/search.ts(847,21): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/lib/community/search.ts(855,19): error TS7006: Parameter 't' implicitly has an 'any' type.
+src/lib/credits/service.ts(2,10): error TS2305: Module '"@prisma/client"' has no exported member 'TipoTransacao'.
+src/lib/engines/mapa-generator.ts(32,8): error TS2459: Module '"@/lib/calculators/odu-birth"' declares 'OduBirth' locally, but it is not exported.
+src/lib/engines/spiritual-engine.ts(12,42): error TS2307: Cannot find module '@/lib/chakra/v4/chakra-v4-data' or its corresponding type declarations.
+src/lib/engines/spiritual-engine.ts(198,50): error TS7006: Parameter 'c' implicitly has an 'any' type.
+src/lib/engines/spiritual-engine.ts(217,35): error TS7006: Parameter 'c' implicitly has an 'any' type.
+src/lib/engines/spiritual-engine.ts(218,35): error TS7006: Parameter 'c' implicitly has an 'any' type.
+src/lib/engines/types/mapa-alma.ts(15,35): error TS2307: Cannot find module '../../chakra/v4/chakra-v4-data' or its corresponding type declarations.
+src/lib/lenormand/mesa-real-data.ts(21,15): error TS2305: Module '"./mesa-real-types"' has no exported member 'CasaCigana'.
+src/lib/lenormand/mesa-real-data.ts(21,27): error TS2305: Module '"./mesa-real-types"' has no exported member 'CartaCigana'.
+src/lib/lenormand/mesa-real-data.ts(21,40): error TS2305: Module '"./mesa-real-types"' has no exported member 'OduInfo'.
+src/lib/lenormand/mesa-real.ts(8,3): error TS2305: Module '"./mesa-real-types"' has no exported member 'CasaCigana'.
+src/lib/lenormand/mesa-real.ts(9,3): error TS2305: Module '"./mesa-real-types"' has no exported member 'CartaCigana'.
+src/lib/lenormand/mesa-real.ts(10,3): error TS2305: Module '"./mesa-real-types"' has no exported member 'OduInfo'.
+src/lib/lenormand/mesa-real.ts(13,3): error TS2305: Module '"./mesa-real-types"' has no exported member 'DadosConsulente'.
+src/lib/lenormand/mesa-real.ts(14,3): error TS2305: Module '"./mesa-real-types"' has no exported member 'CorrelacaoCasa'.
+src/lib/lenormand/mesa-real.ts(15,3): error TS2305: Module '"./mesa-real-types"' has no exported member 'ResultadoLeitura'.
+src/lib/lenormand/mesa-real.ts(16,3): error TS2305: Module '"./mesa-real-types"' has no exported member 'PosicaoTiragem'.
+src/lib/lenormand/mesa-real.ts(23,3): error TS2305: Module '"./mesa-real-data"' has no exported member 'getCasaPorNumero'.
+src/lib/lenormand/mesa-real.ts(24,3): error TS2305: Module '"./mesa-real-data"' has no exported member 'getCartaPorNumero'.
+src/lib/lenormand/mesa-real.ts(25,3): error TS2305: Module '"./mesa-real-data"' has no exported member 'getOduPorNumero'.
+src/lib/lenormand/mesa-real.ts(26,3): error TS2305: Module '"./mesa-real-data"' has no exported member 'CORRELACOES_ESPECIAIS'.
+src/lib/lenormand/mesa-real.ts(27,3): error TS2305: Module '"./mesa-real-data"' has no exported member 'getPosicaoGrid'.
+src/lib/lenormand/mesa-real.ts(110,21): error TS7053: Element implicitly has an 'any' type because expression of type 'number' can't be used to index type 'TiragemMesaReal'.
+  No index signature with a parameter of type 'number' was found on type 'TiragemMesaReal'.
+src/lib/lenormand/mesa-real.ts(130,7): error TS2561: Object literal may only specify known properties, but 'casaNumero' does not exist in type 'ArquiteturaDossiê'. Did you mean to write 'casa_numero'?
+src/lib/lenormand/mesa-real.ts(160,9): error TS2739: Type '{}' is missing the following properties from type 'TiragemMesaReal': formato, cartas, odus, timestamp
+src/lib/lenormand/mesa-real.ts(163,5): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type 'TiragemMesaReal'.
+src/lib/lenormand/mesa-real.ts(283,54): error TS2551: Property 'casaNumero' does not exist on type 'ArquiteturaDossiê'. Did you mean 'casa_numero'?
+src/lib/lenormand/mesa-real.ts(284,54): error TS2551: Property 'casaNumero' does not exist on type 'ArquiteturaDossiê'. Did you mean 'casa_numero'?
+src/lib/lenormand/mesa-real.ts(285,55): error TS2551: Property 'casaNumero' does not exist on type 'ArquiteturaDossiê'. Did you mean 'casa_numero'?
+src/lib/lenormand/mesa-real.ts(286,52): error TS2551: Property 'casaNumero' does not exist on type 'ArquiteturaDossiê'. Did you mean 'casa_numero'?
+src/lib/lenormand/mesa-real.ts(291,17): error TS2339: Property 'odu' does not exist on type 'ArquiteturaDossiê'.
+src/lib/lenormand/mesa-real.ts(291,44): error TS2339: Property 'odu' does not exist on type 'ArquiteturaDossiê'.
+src/lib/lenormand/mesa-real.ts(405,17): error TS7053: Element implicitly has an 'any' type because expression of type 'number' can't be used to index type 'TiragemMesaReal'.
+  No index signature with a parameter of type 'number' was found on type 'TiragemMesaReal'.
+src/lib/lenormand/mesa-real.ts(439,32): error TS2551: Property 'casaNumero' does not exist on type 'ArquiteturaDossiê'. Did you mean 'casa_numero'?
+src/lib/lenormand/mesa-real.ts(452,3): error TS2305: Module '"./mesa-real-types"' has no exported member 'CasaCigana'.
+src/lib/lenormand/mesa-real.ts(453,3): error TS2305: Module '"./mesa-real-types"' has no exported member 'CartaCigana'.
+src/lib/lenormand/mesa-real.ts(454,3): error TS2305: Module '"./mesa-real-types"' has no exported member 'OduInfo'.
+src/lib/lenormand/mesa-real.ts(457,3): error TS2305: Module '"./mesa-real-types"' has no exported member 'DadosConsulente'.
+src/lib/lenormand/mesa-real.ts(458,3): error TS2305: Module '"./mesa-real-types"' has no exported member 'CorrelacaoCasa'.
+src/lib/lenormand/mesa-real.ts(459,3): error TS2305: Module '"./mesa-real-types"' has no exported member 'ResultadoLeitura'.
+src/lib/lenormand/mesa-real.ts(460,3): error TS2305: Module '"./mesa-real-types"' has no exported member 'PosicaoTiragem'.
+src/lib/mapa-generator.ts(24,8): error TS2459: Module '"@/lib/calculators/numerology-kabalah"' declares 'KabalisticMap' locally, but it is not exported.
+src/lib/mapa-generator.ts(30,8): error TS2459: Module '"@/lib/calculators/numerology-tantric"' declares 'TantricMap' locally, but it is not exported.
+src/lib/mapa-generator.ts(33,34): error TS2459: Module '"@/lib/calculators/odu-birth"' declares 'OduBirth' locally, but it is not exported.
+src/lib/notifications/preferences.ts(8,15): error TS2305: Module '"@prisma/client"' has no exported member 'NotificationType'.
+src/lib/notifications/preferences.ts(9,15): error TS2305: Module '"@prisma/client"' has no exported member 'NotificationChannel'.
+src/lib/notifications/triggers.ts(21,15): error TS2305: Module '"@prisma/client"' has no exported member 'NotificationType'.
+src/lib/notifications/types.ts(7,15): error TS2305: Module '"@prisma/client"' has no exported member 'NotificationType'.
+src/lib/notifications/types.ts(7,33): error TS2305: Module '"@prisma/client"' has no exported member 'EntityType'.
+src/lib/notifications/types.ts(13,15): error TS2305: Module '"@prisma/client"' has no exported member 'NotificationType'.
+src/lib/notifications/types.ts(13,33): error TS2305: Module '"@prisma/client"' has no exported member 'EntityType'.
+src/lib/prisma-optimized.ts(7,10): error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+src/lib/prisma.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+src/lib/schedule.ts(22,8): error TS2307: Cannot find module './schedule/reminder-system' or its corresponding type declarations.
+src/lib/statistics/stats-visualization.ts(17,8): error TS2307: Cannot find module '../stats/dashboard' or its corresponding type declarations.
+src/lib/swarm/agents/index.ts(546,7): error TS2322: Type '"lilith-casa8-sexo"' is not assignable to type 'KnowledgeDomain'.
+src/lib/swarm/agents/index.ts(564,7): error TS2322: Type '"lilith-casa8-sexo"' is not assignable to type 'KnowledgeDomain'.
+src/lib/swarm/expansion-data-lote2.ts(176,5): error TS2322: Type '"lilith-casa8-sexo"' is not assignable to type 'KnowledgeDomain'.
+src/lib/swarm/expansion-data-lote2.ts(206,5): error TS2322: Type '"lilith-casa8-sexo"' is not assignable to type 'KnowledgeDomain'.
+src/lib/swarm/expansion-data.ts(275,5): error TS2322: Type '"lilith-casa8-sexo"' is not assignable to type 'KnowledgeDomain'.
+src/lib/swarm/expansion-data.ts(295,5): error TS2322: Type '"lilith-casa8-sexo"' is not assignable to type 'KnowledgeDomain'.
+src/lib/swarm/expansion-data.ts(315,5): error TS2322: Type '"lilith-casa8-sexo"' is not assignable to type 'KnowledgeDomain'.
+src/lib/swarm/expansion-data.ts(335,5): error TS2322: Type '"lilith-casa8-sexo"' is not assignable to type 'KnowledgeDomain'.
+src/lib/swarm/knowledge-base.ts(418,5): error TS2322: Type '"lilith-casa8-sexo"' is not assignable to type 'KnowledgeDomain'.
+src/lib/swarm/knowledge-base.ts(434,5): error TS2322: Type '"lilith-casa8-sexo"' is not assignable to type 'KnowledgeDomain'.
+src/lib/swarm/knowledge-base.ts(448,5): error TS2322: Type '"lilith-casa8-sexo"' is not assignable to type 'KnowledgeDomain'.
+tests/api/timer.test.ts(15,38): error TS2307: Cannot find module '@/app/api/timer/route' or its corresponding type declarations.
+tests/api/timer.test.ts(47,38): error TS2307: Cannot find module '@/app/api/timer/route' or its corresponding type declarations.
+tests/app/dashboard/chakra.test.tsx(10,31): error TS2307: Cannot find module '@/app/dashboard/chakra/page' or its corresponding type declarations.
+tests/app/dashboard/orixa.test.tsx(10,31): error TS2307: Cannot find module '@/app/dashboard/orixa/page' or its corresponding type declarations.
+tests/app/dashboard/ritual.test.tsx(10,31): error TS2307: Cannot find module '@/app/dashboard/ritual/page' or its corresponding type declarations.
+tests/cockpit/HouseCell.test.tsx(7,27): error TS2307: Cannot find module '@/components/cockpit/HouseCell' or its corresponding type declarations.
+tests/cockpit/HouseCell.test.tsx(8,38): error TS2307: Cannot find module '@/lib/divination/house-types' or its corresponding type declarations.
+tests/cockpit/HouseCell.test.tsx(9,34): error TS2307: Cannot find module '@/stores/cockpit-store' or its corresponding type declarations.
+tests/cockpit/cockpit-store.test.ts(5,33): error TS2307: Cannot find module '@/stores/cockpit-store' or its corresponding type declarations.
+tests/components/dashboard/UserProfileBadge.test.tsx(3,37): error TS2307: Cannot find module '@/lib/store/user-profile' or its corresponding type declarations.
+tests/hooks/useCiclos.test.ts(3,27): error TS2307: Cannot find module '@/lib/hooks/useCiclos' or its corresponding type declarations.
+tests/hooks/useNumerologia.test.ts(3,32): error TS2307: Cannot find module '@/lib/hooks/useNumerologia' or its corresponding type declarations.
+tests/integration/api/auth.test.ts(213,46): error TS2307: Cannot find module '@/lib/auth-jwt/helpers' or its corresponding type declarations.
+tests/integration/middleware.test.ts(166,47): error TS2307: Cannot find module '@/lib/auth-jwt/helpers' or its corresponding type declarations.
+tests/integration/middleware.test.ts(177,46): error TS2307: Cannot find module '@/lib/auth-jwt/helpers' or its corresponding type declarations.
+tests/integration/middleware.test.ts(185,50): error TS2307: Cannot find module '@/lib/auth-jwt/helpers' or its corresponding type declarations.
+tests/integration/middleware.test.ts(204,50): error TS2307: Cannot find module '@/lib/auth-jwt/helpers' or its corresponding type declarations.
+tests/integration/middleware.test.ts(217,50): error TS2307: Cannot find module '@/lib/auth-jwt/helpers' or its corresponding type declarations.
+tests/integration/setup.ts(110,17): error TS2307: Cannot find module '@/lib/auth-jwt' or its corresponding type declarations.
+tests/lib/affirmations/categories.test.ts(2,58): error TS2307: Cannot find module '@/lib/affirmations/categories' or its corresponding type declarations.
+tests/lib/affirmations/daily.test.ts(2,37): error TS2307: Cannot find module '@/lib/affirmations/daily' or its corresponding type declarations.
+tests/lib/akashic/akashic-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/akashic/akashic-data' or its corresponding type declarations.
+tests/lib/alignment-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/alignment/alignment-data' or its corresponding type declarations.
+tests/lib/alignment/alignment-data.test.ts(5,8): error TS2307: Cannot find module '@/lib/alignment/alignment-data' or its corresponding type declarations.
+tests/lib/alignment/alignment-data.test.ts(56,29): error TS7006: Parameter 'd' implicitly has an 'any' type.
+tests/lib/alignment/alignment-data.test.ts(69,30): error TS7006: Parameter 'd' implicitly has an 'any' type.
+tests/lib/alignment/alignment-data.test.ts(79,30): error TS7006: Parameter 'd' implicitly has an 'any' type.
+tests/lib/alignment/alignment-data.test.ts(88,34): error TS7006: Parameter 'd' implicitly has an 'any' type.
+tests/lib/alignment/alignment-data.test.ts(96,31): error TS7006: Parameter 'd' implicitly has an 'any' type.
+tests/lib/alignment/alignment-data.test.ts(108,30): error TS7006: Parameter 'color' implicitly has an 'any' type.
+tests/lib/alignment/alignment-tracking.test.ts(2,59): error TS2307: Cannot find module '@/lib/alignment/alignment-tracking' or its corresponding type declarations.
+tests/lib/aromatherapy/aromatherapy-data.test.ts(2,49): error TS2307: Cannot find module '@/lib/aromatherapy/aromatherapy-data' or its corresponding type declarations.
+tests/lib/ascension-data.test.ts(2,57): error TS2307: Cannot find module '@/lib/ascension/ascension-data' or its corresponding type declarations.
+tests/lib/ascension-v2-data.test.ts(2,57): error TS2307: Cannot find module '@/lib/ascension/v2/ascension-v2-data' or its corresponding type declarations.
+tests/lib/ascension-v2-practice.test.ts(2,33): error TS2307: Cannot find module '@/lib/ascension/v2/ascension-v2-practice' or its corresponding type declarations.
+tests/lib/ascension/ascension-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/ascension/ascension-data' or its corresponding type declarations.
+tests/lib/aura/aura-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/aura/aura-data' or its corresponding type declarations.
+tests/lib/aura/aura-protection.test.ts(2,31): error TS2307: Cannot find module '@/lib/aura/aura-protection' or its corresponding type declarations.
+tests/lib/aura/aura-reading.test.ts(2,52): error TS2307: Cannot find module '@/lib/aura/aura-reading' or its corresponding type declarations.
+tests/lib/auric-field/auric-field-data.test.ts(2,63): error TS2307: Cannot find module '@/lib/auric-field/auric-field-data' or its corresponding type declarations.
+tests/lib/auth-jwt.test.ts(11,59): error TS2307: Cannot find module '@/lib/auth-jwt/jwt' or its corresponding type declarations.
+tests/lib/auth-jwt.test.ts(18,8): error TS2307: Cannot find module '@/lib/auth-jwt/helpers' or its corresponding type declarations.
+tests/lib/auth-jwt/helpers.test.ts(6,8): error TS2307: Cannot find module '@/lib/auth-jwt/helpers' or its corresponding type declarations.
+tests/lib/auth-jwt/helpers.test.ts(11,7): error TS2578: Unused '@ts-expect-error' directive.
+tests/lib/auth-jwt/helpers.test.ts(18,9): error TS2578: Unused '@ts-expect-error' directive.
+tests/lib/auth-jwt/helpers.test.ts(26,9): error TS2578: Unused '@ts-expect-error' directive.
+tests/lib/auth-jwt/integration.test.ts(14,29): error TS2307: Cannot find module '@/lib/auth-jwt' or its corresponding type declarations.
+tests/lib/auth-jwt/jwt.test.ts(2,40): error TS2307: Cannot find module '@/lib/auth-jwt/jwt' or its corresponding type declarations.
+tests/lib/awakening/awakening-data.test.ts(7,8): error TS2307: Cannot find module '@/lib/awakening/v2/awakening-data' or its corresponding type declarations.
+tests/lib/awakening/awakening-data.test.ts(42,27): error TS7006: Parameter 'a' implicitly has an 'any' type.
+tests/lib/awakening/awakening-data.test.ts(50,35): error TS7006: Parameter 'a' implicitly has an 'any' type.
+tests/lib/awakening/awakening-data.test.ts(57,27): error TS7006: Parameter 'a' implicitly has an 'any' type.
+tests/lib/awakening/awakening-data.test.ts(73,27): error TS7006: Parameter 'a' implicitly has an 'any' type.
+tests/lib/awakening/awakening-data.test.ts(81,35): error TS7006: Parameter 'a' implicitly has an 'any' type.
+tests/lib/awakening/awakening-stages.test.ts(2,59): error TS2307: Cannot find module '@/lib/awakening/awakening-stages' or its corresponding type declarations.
+tests/lib/awakening/awakening-stages.test.ts(3,55): error TS2307: Cannot find module '@/lib/awakening/awakening-stages' or its corresponding type declarations.
+tests/lib/awakening/awakening-stages.test.ts(34,40): error TS2345: Argument of type 'string | number | symbol' is not assignable to parameter of type 'string | (string | number)[]'.
+  Type 'number' is not assignable to type 'string | (string | number)[]'.
+tests/lib/awakening/awakening-stages.test.ts(49,31): error TS7006: Parameter 's' implicitly has an 'any' type.
+tests/lib/awakening/awakening-tracking.test.ts(2,31): error TS2307: Cannot find module '@/lib/awakening/awakening-tracking' or its corresponding type declarations.
+tests/lib/awakening/v2/awakening-data.test.ts(8,8): error TS2307: Cannot find module '@/lib/awakening/v2/awakening-data' or its corresponding type declarations.
+tests/lib/awakening/v2/awakening-data.test.ts(67,40): error TS7006: Parameter 'a' implicitly has an 'any' type.
+tests/lib/awakening/v2/awakening-data.test.ts(103,35): error TS7006: Parameter 'a' implicitly has an 'any' type.
+tests/lib/awakening/v2/awakening-data.test.ts(111,35): error TS7006: Parameter 'a' implicitly has an 'any' type.
+tests/lib/awakening/v2/awakening-data.test.ts(126,35): error TS7006: Parameter 'a' implicitly has an 'any' type.
+tests/lib/awakening/v2/awakening-data.test.ts(134,35): error TS7006: Parameter 'a' implicitly has an 'any' type.
+tests/lib/awakening/v2/awakening-tracking.test.ts(15,8): error TS2307: Cannot find module '@/lib/awakening/v2/awakening-tracking' or its corresponding type declarations.
+tests/lib/awareness/awareness-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/awareness/awareness-data' or its corresponding type declarations.
+tests/lib/ayurveda/ayurveda-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/ayurveda/ayurveda-data' or its corresponding type declarations.
+tests/lib/bandha/bandha.test.ts(2,25): error TS2307: Cannot find module '@/lib/bandha/bandha-data' or its corresponding type declarations.
+tests/lib/bandha/bandha.test.ts(3,33): error TS2307: Cannot find module '@/lib/bandha/bandha-practice' or its corresponding type declarations.
+tests/lib/bandha/bandha.test.ts(21,23): error TS7006: Parameter 'entry' implicitly has an 'any' type.
+tests/lib/being/being-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/being/being-data' or its corresponding type declarations.
+tests/lib/bhakti/bhakti-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/bhakti/bhakti-data' or its corresponding type declarations.
+tests/lib/bhakti/bhakti-practice.test.ts(2,33): error TS2307: Cannot find module '@/lib/bhakti/bhakti-practice' or its corresponding type declarations.
+tests/lib/birth-chart/chart-calculator.test.ts(2,86): error TS2307: Cannot find module '@/lib/birth-chart/chart-calculator' or its corresponding type declarations.
+tests/lib/breath/breath-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/breath/breath-data' or its corresponding type declarations.
+tests/lib/breath/breath-data.test.ts(22,33): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/breath/breathwork.test.ts(2,35): error TS2307: Cannot find module '@/lib/breath/breathwork' or its corresponding type declarations.
+tests/lib/breathwork/breath-patterns.test.ts(2,61): error TS2307: Cannot find module '@/lib/breathwork/breath-patterns' or its corresponding type declarations.
+tests/lib/breathwork/breathing-techniques.test.ts(2,31): error TS2307: Cannot find module '@/lib/breathwork/breathing-techniques' or its corresponding type declarations.
+tests/lib/breathwork/breathing-techniques.test.ts(22,34): error TS7006: Parameter 't' implicitly has an 'any' type.
+tests/lib/chakra/energy-balance.test.ts(5,8): error TS2307: Cannot find module '@/lib/chakra/energy-balance' or its corresponding type declarations.
+tests/lib/chakra/meanings.test.ts(6,8): error TS2307: Cannot find module '@/lib/chakra/meanings' or its corresponding type declarations.
+tests/lib/chakra/meanings.test.ts(131,34): error TS7006: Parameter 'c' implicitly has an 'any' type.
+tests/lib/chakra/v2/chakra-activation.test.ts(8,8): error TS2307: Cannot find module '@/lib/chakra/v2/chakra-activation' or its corresponding type declarations.
+tests/lib/chakra/v4-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/chakra/v4/chakra-v4-data' or its corresponding type declarations.
+tests/lib/chakra/v4-data.test.ts(61,37): error TS7006: Parameter 'c' implicitly has an 'any' type.
+tests/lib/chakra/v4-data.test.ts(61,60): error TS7006: Parameter 'a' implicitly has an 'any' type.
+tests/lib/chakra/v4-data.test.ts(61,63): error TS7006: Parameter 'b' implicitly has an 'any' type.
+tests/lib/chakra/v4-data.test.ts(67,24): error TS7006: Parameter 'chakra' implicitly has an 'any' type.
+tests/lib/chakra/v4-data.test.ts(67,32): error TS7006: Parameter 'i' implicitly has an 'any' type.
+tests/lib/channel/channel-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/channel/channel-data' or its corresponding type declarations.
+tests/lib/choice/choice-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/choice/choice-data' or its corresponding type declarations.
+tests/lib/choice/choice-practice.test.ts(2,33): error TS2307: Cannot find module '@/lib/choice/choice-practice' or its corresponding type declarations.
+tests/lib/color/color-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/color/color-data' or its corresponding type declarations.
+tests/lib/consciousness/consciousness-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/consciousness/consciousness-data' or its corresponding type declarations.
+tests/lib/consciousness/consciousness-practice.test.ts(2,33): error TS2307: Cannot find module '@/lib/consciousness/consciousness-practice' or its corresponding type declarations.
+tests/lib/cosmic/cosmic-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/cosmic/cosmic-data' or its corresponding type declarations.
+tests/lib/creator/creator-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/creator/creator-data' or its corresponding type declarations.
+tests/lib/crystals/crystal-meanings.test.ts(2,68): error TS2307: Cannot find module '@/lib/crystals/crystal-meanings' or its corresponding type declarations.
+tests/lib/crystals/crystal-meanings.test.ts(20,22): error TS7006: Parameter 'c' implicitly has an 'any' type.
+tests/lib/destiny/destiny-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/destiny/destiny-data' or its corresponding type declarations.
+tests/lib/dharma/dharma-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/dharma/dharma-data' or its corresponding type declarations.
+tests/lib/divination/divination-methods.test.ts(2,28): error TS2307: Cannot find module '@/lib/divination/divination-methods' or its corresponding type declarations.
+tests/lib/divination/oracle-cards.test.ts(10,8): error TS2307: Cannot find module '@/lib/divination/oracle-cards' or its corresponding type declarations.
+tests/lib/divination/oracle-cards.test.ts(56,29): error TS7006: Parameter 'c' implicitly has an 'any' type.
+tests/lib/divination/oracle-cards.test.ts(106,32): error TS7006: Parameter 'c' implicitly has an 'any' type.
+tests/lib/divination/reading-history.test.ts(2,35): error TS2307: Cannot find module '@/lib/divination/reading-history' or its corresponding type declarations.
+tests/lib/dosha-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/dosha/dosha-data' or its corresponding type declarations.
+tests/lib/dosha-data.test.ts(12,26): error TS7006: Parameter 'd' implicitly has an 'any' type.
+tests/lib/dosha-data.test.ts(20,28): error TS7006: Parameter 'd' implicitly has an 'any' type.
+tests/lib/dosha-practice.test.ts(2,33): error TS2307: Cannot find module '@/lib/dosha/dosha-practice' or its corresponding type declarations.
+tests/lib/dosha/dosha-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/dosha/dosha-data' or its corresponding type declarations.
+tests/lib/education/paths.test.ts(2,73): error TS2307: Cannot find module '@/lib/education/paths' or its corresponding type declarations.
+tests/lib/education/progress.test.ts(2,65): error TS2307: Cannot find module '@/lib/education/progress' or its corresponding type declarations.
+tests/lib/element-compatibility.test.ts(2,40): error TS2307: Cannot find module '@/lib/compatibility/element-compatibility' or its corresponding type declarations.
+tests/lib/elements/balance.test.ts(2,69): error TS2307: Cannot find module '@/lib/elements/balance' or its corresponding type declarations.
+tests/lib/elements/element-balance.test.ts(2,34): error TS2307: Cannot find module '@/lib/elements/element-balance' or its corresponding type declarations.
+tests/lib/elements/element-data.test.ts(2,42): error TS2307: Cannot find module '@/lib/elements/element-data' or its corresponding type declarations.
+tests/lib/elements/element-data.test.ts(13,29): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/elements/harmony.test.ts(2,53): error TS2307: Cannot find module '@/lib/elements/harmony' or its corresponding type declarations.
+tests/lib/embodiment/embodiment-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/embodiment/embodiment-data' or its corresponding type declarations.
+tests/lib/energy-field/energy-field-data.test.ts(2,47): error TS2307: Cannot find module '@/lib/energy-field/energy-field-data' or its corresponding type declarations.
+tests/lib/energy/balance.test.ts(2,49): error TS2307: Cannot find module '@/lib/energy/balance' or its corresponding type declarations.
+tests/lib/energy/balance.test.ts(3,51): error TS2307: Cannot find module '@/lib/energy/balance' or its corresponding type declarations.
+tests/lib/energy/energy-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/energy/energy-data' or its corresponding type declarations.
+tests/lib/energy/energy-flow.test.ts(2,79): error TS2307: Cannot find module '@/lib/energy/energy-flow' or its corresponding type declarations.
+tests/lib/energy/energy-healing.test.ts(2,28): error TS2307: Cannot find module '@/lib/energy/energy-healing' or its corresponding type declarations.
+tests/lib/energy/energy-history.test.ts(2,56): error TS2307: Cannot find module '@/lib/energy/energy-history' or its corresponding type declarations.
+tests/lib/energy/energy-patterns.test.ts(10,8): error TS2307: Cannot find module '@/lib/energy/energy-patterns' or its corresponding type declarations.
+tests/lib/energy/energy-patterns.test.ts(21,25): error TS7006: Parameter 'pattern' implicitly has an 'any' type.
+tests/lib/energy/energy-patterns.test.ts(35,25): error TS7006: Parameter 'pattern' implicitly has an 'any' type.
+tests/lib/energy/energy-patterns.test.ts(42,25): error TS7006: Parameter 'pattern' implicitly has an 'any' type.
+tests/lib/energy/energy-patterns.test.ts(99,25): error TS7006: Parameter 'pattern' implicitly has an 'any' type.
+tests/lib/energy/energy-patterns.test.ts(107,25): error TS7006: Parameter 'pattern' implicitly has an 'any' type.
+tests/lib/energy/energy-patterns.test.ts(115,25): error TS7006: Parameter 'pattern' implicitly has an 'any' type.
+tests/lib/energy/energy-patterns.test.ts(246,25): error TS7006: Parameter 'pattern' implicitly has an 'any' type.
+tests/lib/energy/energy-patterns.test.ts(254,25): error TS7006: Parameter 'pattern' implicitly has an 'any' type.
+tests/lib/energy/energy-types.test.ts(7,8): error TS2307: Cannot find module '@/lib/energy/energy-types' or its corresponding type declarations.
+tests/lib/energy/energy-types.test.ts(23,22): error TS7006: Parameter 'type' implicitly has an 'any' type.
+tests/lib/energy/energy-types.test.ts(40,22): error TS7006: Parameter 'type' implicitly has an 'any' type.
+tests/lib/energy/energy-types.test.ts(48,22): error TS7006: Parameter 'type' implicitly has an 'any' type.
+tests/lib/energy/energy-types.test.ts(56,22): error TS7006: Parameter 'type' implicitly has an 'any' type.
+tests/lib/energy/energy-types.test.ts(64,30): error TS7006: Parameter 't' implicitly has an 'any' type.
+tests/lib/energy/patterns.test.ts(9,8): error TS2307: Cannot find module '@/lib/energy/patterns' or its corresponding type declarations.
+tests/lib/energy/patterns.test.ts(21,25): error TS7006: Parameter 'pattern' implicitly has an 'any' type.
+tests/lib/energy/patterns.test.ts(66,25): error TS7006: Parameter 'p' implicitly has an 'any' type.
+tests/lib/energy/patterns.test.ts(72,25): error TS7006: Parameter 'p' implicitly has an 'any' type.
+tests/lib/energy/patterns.test.ts(78,25): error TS7006: Parameter 'p' implicitly has an 'any' type.
+tests/lib/energy/patterns.test.ts(168,25): error TS7006: Parameter 'pattern' implicitly has an 'any' type.
+tests/lib/energy/patterns.test.ts(187,25): error TS7006: Parameter 'pattern' implicitly has an 'any' type.
+tests/lib/engines/mapa-alma.test.ts(44,42): error TS2307: Cannot find module '@/lib/chakra/v4/chakra-v4-data' or its corresponding type declarations.
+tests/lib/engines/mapa-alma.test.ts(187,64): error TS7006: Parameter 'c' implicitly has an 'any' type.
+tests/lib/enlightened/enlightened-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/enlightened/enlightened-data' or its corresponding type declarations.
+tests/lib/eternal/eternal-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/eternal/eternal-data' or its corresponding type declarations.
+tests/lib/evolution/evolution-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/evolution/evolution-data' or its corresponding type declarations.
+tests/lib/existence/existence-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/existence/existence-data' or its corresponding type declarations.
+tests/lib/food/sacred-food-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/food/sacred-food-data' or its corresponding type declarations.
+tests/lib/food/sacred-food-data.test.ts(3,33): error TS2307: Cannot find module '@/lib/food/food-medicine' or its corresponding type declarations.
+tests/lib/free-will/free-will-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/free-will/free-will-data' or its corresponding type declarations.
+tests/lib/frequency/frequency-analysis.test.ts(2,72): error TS2307: Cannot find module '@/lib/frequency/frequency-analysis' or its corresponding type declarations.
+tests/lib/frequency/frequency-analysis.test.ts(3,42): error TS2307: Cannot find module '@/lib/frequencias/dados' or its corresponding type declarations.
+tests/lib/frequency/frequency-analysis.test.ts(57,32): error TS7006: Parameter 'item' implicitly has an 'any' type.
+tests/lib/frequency/frequency-analysis.test.ts(72,32): error TS7006: Parameter 'item' implicitly has an 'any' type.
+tests/lib/frequency/frequency-analysis.test.ts(87,32): error TS7006: Parameter 'item' implicitly has an 'any' type.
+tests/lib/frequency/frequency-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/frequency/frequency-data' or its corresponding type declarations.
+tests/lib/garden/plant-meanings.test.ts(2,56): error TS2307: Cannot find module '@/lib/garden/plant-meanings' or its corresponding type declarations.
+tests/lib/goals/achievements.test.ts(2,138): error TS2307: Cannot find module '@/lib/goals/achievements' or its corresponding type declarations.
+tests/lib/goals/tracking.test.ts(2,113): error TS2307: Cannot find module '@/lib/goals/tracking' or its corresponding type declarations.
+tests/lib/gratitude/gratitude-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/gratitude/practice/gratitude-data' or its corresponding type declarations.
+tests/lib/gratitude/gratitude-practice.test.ts(2,33): error TS2307: Cannot find module '@/lib/gratitude/practice/gratitude-practice' or its corresponding type declarations.
+tests/lib/guidance/daily-message.test.ts(2,33): error TS2307: Cannot find module '@/lib/guidance/daily-message' or its corresponding type declarations.
+tests/lib/guidance/eclipse-meditation.test.ts(6,8): error TS2307: Cannot find module '@/lib/guidance/eclipse-meditation' or its corresponding type declarations.
+tests/lib/guidance/guidance-history.test.ts(2,93): error TS2307: Cannot find module '@/lib/guidance/guidance-history' or its corresponding type declarations.
+tests/lib/guidance/guidance-types.test.ts(7,8): error TS2307: Cannot find module '@/lib/guidance/guidance-types' or its corresponding type declarations.
+tests/lib/guidance/guidance-types.test.ts(18,22): error TS7006: Parameter 'type' implicitly has an 'any' type.
+tests/lib/guidance/guidance-types.test.ts(35,30): error TS7006: Parameter 't' implicitly has an 'any' type.
+tests/lib/guidance/guidance-types.test.ts(210,30): error TS7006: Parameter 't' implicitly has an 'any' type.
+tests/lib/guidance/guidance-types.test.ts(218,30): error TS7006: Parameter 't' implicitly has an 'any' type.
+tests/lib/habits/habit-streaks.test.ts(2,85): error TS2307: Cannot find module '@/lib/habits/habit-streaks' or its corresponding type declarations.
+tests/lib/habits/habit-tracking.test.ts(2,49): error TS2307: Cannot find module '@/lib/habits/habit-tracking' or its corresponding type declarations.
+tests/lib/harmony/harmony-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/harmony/harmony-data' or its corresponding type declarations.
+tests/lib/hatha/hatha-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/hatha/hatha-data' or its corresponding type declarations.
+tests/lib/healing-techniques.test.ts(2,70): error TS2307: Cannot find module '@/lib/healing/healing-techniques' or its corresponding type declarations.
+tests/lib/healing-types.test.ts(2,58): error TS2307: Cannot find module '@/lib/healing/healing-types' or its corresponding type declarations.
+tests/lib/healing/healing-sessions.test.ts(2,77): error TS2307: Cannot find module '@/lib/healing/healing-sessions' or its corresponding type declarations.
+tests/lib/healing/healing-techniques.test.ts(2,97): error TS2307: Cannot find module '@/lib/healing/healing-techniques' or its corresponding type declarations.
+tests/lib/healing/healing-types.test.ts(2,26): error TS2307: Cannot find module '@/lib/healing/healing-types' or its corresponding type declarations.
+tests/lib/hooks/useNotifications.test.ts(14,62): error TS2307: Cannot find module '@/lib/hooks/useNotifications' or its corresponding type declarations.
+tests/lib/ida-pingala/ida-pingala-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/ida-pingala/ida-pingala-data' or its corresponding type declarations.
+tests/lib/infinite/infinite-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/infinite/infinite-data' or its corresponding type declarations.
+tests/lib/jnana/jnana-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/jnana/jnana-data' or its corresponding type declarations.
+tests/lib/journal/journal-entries.test.ts(2,69): error TS2307: Cannot find module '@/lib/journal/journal-entries' or its corresponding type declarations.
+tests/lib/journal/journal-search.test.ts(2,64): error TS2307: Cannot find module '@/lib/journal/journal-search' or its corresponding type declarations.
+tests/lib/journal/mood-tracking.test.ts(2,43): error TS2307: Cannot find module '@/lib/journal/mood-tracking' or its corresponding type declarations.
+tests/lib/journey/journey-stages.test.ts(2,27): error TS2307: Cannot find module '../../../src/lib/journey/journey-stages' or its corresponding type declarations.
+tests/lib/journey/journey-tracking.test.ts(2,59): error TS2307: Cannot find module '../../../src/lib/journey/journey-tracking' or its corresponding type declarations.
+tests/lib/journey/milestones.test.ts(2,78): error TS2307: Cannot find module '../../../src/lib/journey/milestones' or its corresponding type declarations.
+tests/lib/journey/milestones.test.ts(30,37): error TS7006: Parameter 'm' implicitly has an 'any' type.
+tests/lib/journey/progress.test.ts(2,60): error TS2307: Cannot find module '@/lib/journey/progress' or its corresponding type declarations.
+tests/lib/karma/karma-analysis.test.ts(2,45): error TS2307: Cannot find module '@/lib/karma/karma-analysis' or its corresponding type declarations.
+tests/lib/karma/karma-clearing.test.ts(2,49): error TS2307: Cannot find module '@/lib/karma/karma-clearing' or its corresponding type declarations.
+tests/lib/karma/karma-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/karma/karma-data' or its corresponding type declarations.
+tests/lib/karma/karma-patterns.test.ts(10,8): error TS2307: Cannot find module '@/lib/karma/karma-patterns' or its corresponding type declarations.
+tests/lib/karma/karma-patterns.test.ts(48,25): error TS7006: Parameter 'p' implicitly has an 'any' type.
+tests/lib/karma/karma-patterns.test.ts(56,25): error TS7006: Parameter 'p' implicitly has an 'any' type.
+tests/lib/karma/karma-practice.test.ts(2,33): error TS2307: Cannot find module '@/lib/karma/karma-practice' or its corresponding type declarations.
+tests/lib/kriya/kriya-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/kriya/kriya-data' or its corresponding type declarations.
+tests/lib/kundalini/kundalini-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/kundalini/kundalini-data' or its corresponding type declarations.
+tests/lib/kundalini/kundalini.test.ts(2,47): error TS2307: Cannot find module '@/lib/kundalini/kundalini-data' or its corresponding type declarations.
+tests/lib/kundalini/kundalini.test.ts(3,33): error TS2307: Cannot find module '@/lib/kundalini/kundalini-practice' or its corresponding type declarations.
+tests/lib/laya/laya-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/laya/laya-data' or its corresponding type declarations.
+tests/lib/learning/learning-content.test.ts(2,80): error TS2307: Cannot find module '@/lib/learning/learning-content' or its corresponding type declarations.
+tests/lib/learning/learning-progress.test.ts(2,133): error TS2307: Cannot find module '@/lib/learning/learning-progress' or its corresponding type declarations.
+tests/lib/learning/lessons-library.test.ts(2,84): error TS2307: Cannot find module '@/lib/learning/lessons-library' or its corresponding type declarations.
+tests/lib/learning/lessons-library.test.ts(13,27): error TS7006: Parameter 'l' implicitly has an 'any' type.
+tests/lib/learning/quiz-system.test.ts(2,78): error TS2307: Cannot find module '@/lib/learning/quiz-system' or its corresponding type declarations.
+tests/lib/lenormand/mesa-real.test.ts(26,3): error TS2305: Module '"@/lib/lenormand/mesa-real-data"' has no exported member 'CORRELACOES_ESPECIAIS'.
+tests/lib/lenormand/mesa-real.test.ts(348,60): error TS7006: Parameter 'n' implicitly has an 'any' type.
+tests/lib/lenormand/mesa-real.test.ts(358,54): error TS7006: Parameter 'n' implicitly has an 'any' type.
+tests/lib/lenormand/mesa-real.test.ts(368,54): error TS7006: Parameter 'n' implicitly has an 'any' type.
+tests/lib/lenormand/mesa-real.test.ts(375,40): error TS7006: Parameter 'n' implicitly has an 'any' type.
+tests/lib/lenormand/mesa-real.test.ts(405,47): error TS2345: Argument of type 'Record<number, { carta: number; odu: number; }>' is not assignable to parameter of type 'TiragemMesaReal'.
+  Type 'Record<number, { carta: number; odu: number; }>' is missing the following properties from type 'TiragemMesaReal': formato, cartas, odus, timestamp
+tests/lib/lenormand/mesa-real.test.ts(424,47): error TS2345: Argument of type 'Record<number, { carta: number; odu: number; }>' is not assignable to parameter of type 'TiragemMesaReal'.
+  Type 'Record<number, { carta: number; odu: number; }>' is missing the following properties from type 'TiragemMesaReal': formato, cartas, odus, timestamp
+tests/lib/lenormand/mesa-real.test.ts(427,38): error TS2339: Property 'posicaoGrid' does not exist on type 'ArquiteturaDossiê'.
+tests/lib/lenormand/mesa-real.test.ts(436,47): error TS2345: Argument of type 'Record<number, { carta: number; odu: number; }>' is not assignable to parameter of type 'TiragemMesaReal'.
+  Type 'Record<number, { carta: number; odu: number; }>' is missing the following properties from type 'TiragemMesaReal': formato, cartas, odus, timestamp
+tests/lib/lenormand/mesa-real.test.ts(438,38): error TS2551: Property 'casaNumero' does not exist on type 'ArquiteturaDossiê'. Did you mean 'casa_numero'?
+tests/lib/lenormand/mesa-real.test.ts(440,19): error TS2339: Property 'carta' does not exist on type 'ArquiteturaDossiê'.
+tests/lib/lenormand/mesa-real.test.ts(441,19): error TS2339: Property 'carta' does not exist on type 'ArquiteturaDossiê'.
+tests/lib/lenormand/mesa-real.test.ts(445,47): error TS2345: Argument of type 'Record<number, { carta: number; odu: number; }>' is not assignable to parameter of type 'TiragemMesaReal'.
+  Type 'Record<number, { carta: number; odu: number; }>' is missing the following properties from type 'TiragemMesaReal': formato, cartas, odus, timestamp
+tests/lib/lenormand/mesa-real.test.ts(447,38): error TS2551: Property 'casaNumero' does not exist on type 'ArquiteturaDossiê'. Did you mean 'casa_numero'?
+tests/lib/lenormand/mesa-real.test.ts(449,19): error TS2339: Property 'odu' does not exist on type 'ArquiteturaDossiê'.
+tests/lib/lenormand/mesa-real.test.ts(450,19): error TS2339: Property 'odu' does not exist on type 'ArquiteturaDossiê'.
+tests/lib/lenormand/mesa-real.test.ts(459,47): error TS2345: Argument of type 'Record<number, { carta: number; odu: number; }>' is not assignable to parameter of type 'TiragemMesaReal'.
+  Type 'Record<number, { carta: number; odu: number; }>' is missing the following properties from type 'TiragemMesaReal': formato, cartas, odus, timestamp
+tests/lib/lenormand/mesa-real.test.ts(461,31): error TS2551: Property 'casaNumero' does not exist on type 'ArquiteturaDossiê'. Did you mean 'casa_numero'?
+tests/lib/lenormand/mesa-real.test.ts(462,31): error TS2551: Property 'casaNumero' does not exist on type 'ArquiteturaDossiê'. Did you mean 'casa_numero'?
+tests/lib/lenormand/mesa-real.test.ts(463,31): error TS2551: Property 'casaNumero' does not exist on type 'ArquiteturaDossiê'. Did you mean 'casa_numero'?
+tests/lib/lenormand/mesa-real.test.ts(548,35): error TS2345: Argument of type 'Record<number, { carta: number; odu: number; }>' is not assignable to parameter of type 'TiragemMesaReal'.
+  Type 'Record<number, { carta: number; odu: number; }>' is missing the following properties from type 'TiragemMesaReal': formato, cartas, odus, timestamp
+tests/lib/lenormand/mesa-real.test.ts(559,35): error TS2345: Argument of type 'Record<number, { carta: number; odu: number; }>' is not assignable to parameter of type 'TiragemMesaReal'.
+  Type 'Record<number, { carta: number; odu: number; }>' is missing the following properties from type 'TiragemMesaReal': formato, cartas, odus, timestamp
+tests/lib/lenormand/mesa-real.test.ts(571,35): error TS2345: Argument of type 'Record<number, { carta: number; odu: number; }>' is not assignable to parameter of type 'TiragemMesaReal'.
+  Type 'Record<number, { carta: number; odu: number; }>' is missing the following properties from type 'TiragemMesaReal': formato, cartas, odus, timestamp
+tests/lib/lenormand/mesa-real.test.ts(582,35): error TS2345: Argument of type 'Record<number, { carta: number; odu: number; }>' is not assignable to parameter of type 'TiragemMesaReal'.
+  Type 'Record<number, { carta: number; odu: number; }>' is missing the following properties from type 'TiragemMesaReal': formato, cartas, odus, timestamp
+tests/lib/lenormand/mesa-real.test.ts(654,54): error TS7006: Parameter 'n' implicitly has an 'any' type.
+tests/lib/lenormand/mesa-real.test.ts(664,55): error TS7006: Parameter 'n' implicitly has an 'any' type.
+tests/lib/lenormand/mesa-real.test.ts(670,47): error TS2345: Argument of type '{}' is not assignable to parameter of type 'TiragemMesaReal'.
+  Type '{}' is missing the following properties from type 'TiragemMesaReal': formato, cartas, odus, timestamp
+tests/lib/lenormand/mesa-real.test.ts(678,47): error TS2345: Argument of type 'Record<number, { carta: number; odu: number; }>' is not assignable to parameter of type 'TiragemMesaReal'.
+  Type 'Record<number, { carta: number; odu: number; }>' is missing the following properties from type 'TiragemMesaReal': formato, cartas, odus, timestamp
+tests/lib/lenormand/mesa-real.test.ts(680,22): error TS2339: Property 'dadosConsulente' does not exist on type 'ArquiteturaDossiê'.
+tests/lib/lightbody/lightbody-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/lightbody/lightbody-data' or its corresponding type declarations.
+tests/lib/lightwork/lightwork-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/lightwork/lightwork-data' or its corresponding type declarations.
+tests/lib/manifest/manifest-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/manifest/manifest-data' or its corresponding type declarations.
+tests/lib/manifestation/intention-setting.test.ts(11,8): error TS2307: Cannot find module '@/lib/manifestation/intention-setting' or its corresponding type declarations.
+tests/lib/manifestation/intention-setting.test.ts(56,25): error TS7006: Parameter 'i' implicitly has an 'any' type.
+tests/lib/mantra/mantra-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/mantra/mantra-data' or its corresponding type declarations.
+tests/lib/mantra/mantra-data.test.ts(13,14): error TS18046: 'mantra' is of type 'unknown'.
+tests/lib/mantra/mantra-data.test.ts(19,14): error TS18046: 'mantra' is of type 'unknown'.
+tests/lib/mantra/mantra-data.test.ts(30,28): error TS18046: 'mantra' is of type 'unknown'.
+tests/lib/mantra/mantra-data.test.ts(36,28): error TS18046: 'mantra' is of type 'unknown'.
+tests/lib/marma/marma-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/marma/marma-data' or its corresponding type declarations.
+tests/lib/marma/marma.test.ts(2,58): error TS2307: Cannot find module '@/lib/marma/marma-data' or its corresponding type declarations.
+tests/lib/marma/marma.test.ts(3,47): error TS2307: Cannot find module '@/lib/marma/marma-practice' or its corresponding type declarations.
+tests/lib/matching/compatibility.test.ts(2,40): error TS2307: Cannot find module '@/lib/matching/compatibility' or its corresponding type declarations.
+tests/lib/meaning/meaning-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/meaning/meaning-data' or its corresponding type declarations.
+tests/lib/meditation/meditation-categories.test.ts(2,31): error TS2307: Cannot find module '@/lib/meditation/meditation-categories' or its corresponding type declarations.
+tests/lib/meditation/meditation-guides.test.ts(10,8): error TS2307: Cannot find module '@/lib/meditation/meditation-guides' or its corresponding type declarations.
+tests/lib/meditation/meditation-progress.test.ts(7,8): error TS2307: Cannot find module '@/lib/meditation/meditation-progress' or its corresponding type declarations.
+tests/lib/meditation/meditation-techniques.test.ts(2,31): error TS2307: Cannot find module '@/lib/meditation/meditation-techniques' or its corresponding type declarations.
+tests/lib/meditation/meditation-timer.test.ts(2,84): error TS2307: Cannot find module '@/lib/meditation/meditation-timer' or its corresponding type declarations.
+tests/lib/meditation/series-tracking.test.ts(9,8): error TS2307: Cannot find module '@/lib/meditation/series-tracking' or its corresponding type declarations.
+tests/lib/meditation/session-tracking.test.ts(7,8): error TS2307: Cannot find module '@/lib/meditation/session-tracking' or its corresponding type declarations.
+tests/lib/meditation/types.test.ts(2,41): error TS2307: Cannot find module '@/lib/meditation/types' or its corresponding type declarations.
+tests/lib/meridian/meridian-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/meridian/meridian-data' or its corresponding type declarations.
+tests/lib/meridian/meridian.test.ts(2,65): error TS2307: Cannot find module '@/lib/meridian/meridian-data' or its corresponding type declarations.
+tests/lib/meridian/meridian.test.ts(3,33): error TS2307: Cannot find module '@/lib/meridian/meridian-practice' or its corresponding type declarations.
+tests/lib/meridian/meridian.test.ts(21,19): error TS7006: Parameter 'm' implicitly has an 'any' type.
+tests/lib/merkabah/merkabah-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/merkabah/merkabah-data' or its corresponding type declarations.
+tests/lib/mood/mood-logging.test.ts(2,25): error TS2307: Cannot find module '@/lib/mood/mood-logging' or its corresponding type declarations.
+tests/lib/movement/movement-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/movement/movement-data' or its corresponding type declarations.
+tests/lib/mudra/mudra.test.ts(2,25): error TS2307: Cannot find module '@/lib/mudra/mudra-data' or its corresponding type declarations.
+tests/lib/mudra/mudra.test.ts(3,33): error TS2307: Cannot find module '@/lib/mudra/mudra-practice' or its corresponding type declarations.
+tests/lib/nada/nada-data.test.ts(2,39): error TS2307: Cannot find module '@/lib/nada/nada-data' or its corresponding type declarations.
+tests/lib/nada/nada.test.ts(2,25): error TS2307: Cannot find module '@/lib/nada/nada-data' or its corresponding type declarations.
+tests/lib/nada/nada.test.ts(3,33): error TS2307: Cannot find module '@/lib/nada/nada-practice' or its corresponding type declarations.
+tests/lib/nada/nada.test.ts(22,18): error TS7006: Parameter 'entry' implicitly has an 'any' type.
+tests/lib/nadi/nadi-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/nadi/nadi-data' or its corresponding type declarations.
+tests/lib/notifications/scheduling.test.ts(2,52): error TS2307: Cannot find module '@/lib/notifications/scheduling' or its corresponding type declarations.
+tests/lib/notifications/scheduling.test.ts(3,59): error TS2307: Cannot find module '@/lib/notifications/scheduling' or its corresponding type declarations.
+tests/lib/offerings/offering-guide.test.ts(2,42): error TS2307: Cannot find module '@/lib/offerings/offering-guide' or its corresponding type declarations.
+tests/lib/offerings/offering-types.test.ts(2,26): error TS2307: Cannot find module '@/lib/offerings/offering-types' or its corresponding type declarations.
+tests/lib/oneness/oneness-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/oneness/oneness-data' or its corresponding type declarations.
+tests/lib/oracle/oracle-data.test.ts(11,8): error TS2307: Cannot find module '@/lib/oracle/oracle-data' or its corresponding type declarations.
+tests/lib/oracle/oracle-data.test.ts(83,22): error TS7006: Parameter 'card' implicitly has an 'any' type.
+tests/lib/oracle/oracle-data.test.ts(105,22): error TS7006: Parameter 'card' implicitly has an 'any' type.
+tests/lib/oracle/oracle-data.test.ts(116,22): error TS7006: Parameter 'card' implicitly has an 'any' type.
+tests/lib/oracle/oracle-data.test.ts(136,22): error TS7006: Parameter 'card' implicitly has an 'any' type.
+tests/lib/oracle/oracle-data.test.ts(147,22): error TS7006: Parameter 'card' implicitly has an 'any' type.
+tests/lib/oracle/oracle-data.test.ts(167,22): error TS7006: Parameter 'card' implicitly has an 'any' type.
+tests/lib/oracle/oracle-data.test.ts(190,35): error TS7006: Parameter 'c' implicitly has an 'any' type.
+tests/lib/oracle/oracle-reading.test.ts(8,8): error TS2307: Cannot find module '@/lib/oracle/oracle-reading' or its corresponding type declarations.
+tests/lib/oracle/oracle-reading.test.ts(9,35): error TS2307: Cannot find module '@/lib/divination/oracle-cards' or its corresponding type declarations.
+tests/lib/oracle/oracle-reading.test.ts(42,33): error TS7006: Parameter 's' implicitly has an 'any' type.
+tests/lib/oracle/oracle-reading.test.ts(153,39): error TS7006: Parameter 'c' implicitly has an 'any' type.
+tests/lib/oracle/oracle-reading.test.ts(174,39): error TS7006: Parameter 'c' implicitly has an 'any' type.
+tests/lib/oracle/oracle-reading.test.ts(188,39): error TS7006: Parameter 'c' implicitly has an 'any' type.
+tests/lib/oracle/oracle-reading.test.ts(202,58): error TS7006: Parameter 'c' implicitly has an 'any' type.
+tests/lib/oracle/oracle-reading.test.ts(215,55): error TS7006: Parameter 'c' implicitly has an 'any' type.
+tests/lib/panchakarma/panchakarma-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/panchakarma/panchakarma-data' or its corresponding type declarations.
+tests/lib/past-life/past-life-data.test.ts(14,8): error TS2307: Cannot find module '@/lib/past-life/past-life-data' or its corresponding type declarations.
+tests/lib/past-life/past-life-practice.test.ts(2,33): error TS2307: Cannot find module '@/lib/past-life/past-life-practice' or its corresponding type declarations.
+tests/lib/planetary/correspondences.test.ts(8,8): error TS2307: Cannot find module '@/lib/planetary/correspondences' or its corresponding type declarations.
+tests/lib/planetary/meditations.test.ts(7,8): error TS2307: Cannot find module '@/lib/planetary/meditations' or its corresponding type declarations.
+tests/lib/prana/prana-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/prana/prana-data' or its corresponding type declarations.
+tests/lib/prana/prana.test.ts(2,25): error TS2307: Cannot find module '@/lib/prana/prana-data' or its corresponding type declarations.
+tests/lib/prana/prana.test.ts(3,33): error TS2307: Cannot find module '@/lib/prana/prana-practice' or its corresponding type declarations.
+tests/lib/prophecy/prophecy-data.test.ts(2,96): error TS2307: Cannot find module '@/lib/prophecy/prophecy-data' or its corresponding type declarations.
+tests/lib/prophecy/prophecy-history.test.ts(2,72): error TS2307: Cannot find module '@/lib/prophecy/prophecy-history' or its corresponding type declarations.
+tests/lib/quality/auto-evolution.test.ts(11,8): error TS2307: Cannot find module '@/lib/quality/metrics-framework' or its corresponding type declarations.
+tests/lib/quality/metrics.test.ts(7,8): error TS2307: Cannot find module '@/lib/quality/metrics-framework' or its corresponding type declarations.
+tests/lib/quality/runner.test.ts(2,27): error TS2307: Cannot find module '@/lib/quality/runner' or its corresponding type declarations.
+tests/lib/quality/runner.test.ts(53,29): error TS18046: 'evals' is of type 'unknown'.
+tests/lib/quality/runner.test.ts(64,19): error TS18046: 'evals' is of type 'unknown'.
+tests/lib/raja/raja-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/raja/raja-data' or its corresponding type declarations.
+tests/lib/reiki-healing.test.ts(2,56): error TS2307: Cannot find module '@/lib/reiki/reiki-healing' or its corresponding type declarations.
+tests/lib/reiki-symbols.test.ts(2,62): error TS2307: Cannot find module '@/lib/reiki/reiki-symbols' or its corresponding type declarations.
+tests/lib/reiki/reiki-symbols.test.ts(2,28): error TS2307: Cannot find module '@/lib/reiki/reiki-symbols' or its corresponding type declarations.
+tests/lib/reincarnation/reincarnation-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/reincarnation/reincarnation-data' or its corresponding type declarations.
+tests/lib/reincarnation/reincarnation-practice.test.ts(2,33): error TS2307: Cannot find module '@/lib/reincarnation/reincarnation-practice' or its corresponding type declarations.
+tests/lib/resonance/resonance-data.test.ts(12,8): error TS2307: Cannot find module '@/lib/resonance/resonance-data' or its corresponding type declarations.
+tests/lib/rituais/ritual-library.test.ts(2,84): error TS2307: Cannot find module '@/lib/rituais/ritual-library' or its corresponding type declarations.
+tests/lib/rituais/ritual-library.test.ts(34,21): error TS7006: Parameter 'r' implicitly has an 'any' type.
+tests/lib/ritual/ritual-calendar.test.ts(2,61): error TS2307: Cannot find module '../../../src/lib/ritual/ritual-calendar' or its corresponding type declarations.
+tests/lib/ritual/ritual-guides.test.ts(2,47): error TS2307: Cannot find module '../../../src/lib/ritual/ritual-guides' or its corresponding type declarations.
+tests/lib/ritual/ritual-tracking.test.ts(12,29): error TS2307: Cannot find module '@/lib/ritual/ritual-tracking' or its corresponding type declarations.
+tests/lib/ritual/ritual-types.test.ts(2,41): error TS2307: Cannot find module '../../../src/lib/ritual/ritual-types' or its corresponding type declarations.
+tests/lib/sacred-geometry/geometric-patterns.test.ts(11,8): error TS2307: Cannot find module '../../../src/lib/sacred-geometry/geometric-patterns' or its corresponding type declarations.
+tests/lib/sacred-geometry/geometric-patterns.test.ts(40,35): error TS7006: Parameter 'p' implicitly has an 'any' type.
+tests/lib/sacred-texts/commentary-library.test.ts(14,8): error TS2307: Cannot find module '@/lib/sacred-texts/commentary-library' or its corresponding type declarations.
+tests/lib/sacred/sacred-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/sacred/sacred-data' or its corresponding type declarations.
+tests/lib/samadhi/samadhi-data.test.ts(2,39): error TS2307: Cannot find module '@/lib/samadhi/samadhi-data' or its corresponding type declarations.
+tests/lib/samadhi/samadhi-practice.test.ts(2,33): error TS2307: Cannot find module '@/lib/samadhi/samadhi-practice' or its corresponding type declarations.
+tests/lib/shadow/shadow-data.test.ts(2,53): error TS2307: Cannot find module '@/lib/shadow/shadow-data' or its corresponding type declarations.
+tests/lib/shadow/shadow-data.test.ts(14,22): error TS7006: Parameter 'item' implicitly has an 'any' type.
+tests/lib/shadow/shadow-practice.test.ts(2,33): error TS2307: Cannot find module '@/lib/shadow/shadow-practice' or its corresponding type declarations.
+tests/lib/sign-relationships.test.ts(2,34): error TS2307: Cannot find module '@/lib/compatibility/sign-relationships' or its corresponding type declarations.
+tests/lib/sleep/sleep.test.ts(2,53): error TS2307: Cannot find module '@/lib/audio/sleep' or its corresponding type declarations.
+tests/lib/soul/soul-data.test.ts(6,8): error TS2307: Cannot find module '@/lib/soul/soul-data' or its corresponding type declarations.
+tests/lib/soul/soul-data.test.ts(47,43): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/soul/soul-data.test.ts(55,46): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/soul/soul-data.test.ts(63,45): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/soul/soul-data.test.ts(81,43): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/soul/soul-data.test.ts(87,46): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/soul/soul-data.test.ts(93,45): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/sounds/sounds.test.ts(7,8): error TS2307: Cannot find module '@/lib/sounds/sound-healing' or its corresponding type declarations.
+tests/lib/sounds/sounds.test.ts(18,26): error TS7006: Parameter 's' implicitly has an 'any' type.
+tests/lib/source/source-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/source/source-data' or its corresponding type declarations.
+tests/lib/spirit/spirit-data.test.ts(6,8): error TS2307: Cannot find module '@/lib/spirit/spirit-data' or its corresponding type declarations.
+tests/lib/spirit/spirit-data.test.ts(47,40): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/spirit/spirit-data.test.ts(55,42): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/spirit/spirit-data.test.ts(63,44): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/spirit/spirit-data.test.ts(81,40): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/spirit/spirit-data.test.ts(87,42): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/spirit/spirit-data.test.ts(93,44): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/spirit/spirit-data.test.ts(101,38): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/stats/dashboard.test.ts(2,127): error TS2307: Cannot find module '@/lib/stats/dashboard' or its corresponding type declarations.
+tests/lib/stats/tracking.test.ts(2,38): error TS2307: Cannot find module '@/lib/stats/tracking' or its corresponding type declarations.
+tests/lib/store/index.test.ts(14,8): error TS2307: Cannot find module '@/lib/store/index' or its corresponding type declarations.
+tests/lib/store/user-profile.test.ts(2,37): error TS2307: Cannot find module '@/lib/store/user-profile' or its corresponding type declarations.
+tests/lib/store/userPreferences.test.ts(2,36): error TS2307: Cannot find module '@/lib/store/userPreferences' or its corresponding type declarations.
+tests/lib/sushumna/sushumna-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/sushumna/sushumna-data' or its corresponding type declarations.
+tests/lib/temple/temple-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/temple/temple-data' or its corresponding type declarations.
+tests/lib/temple/temple-practice.test.ts(2,33): error TS2307: Cannot find module '@/lib/temple/temple-practice' or its corresponding type declarations.
+tests/lib/transcendence/transcendence-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/transcendence/transcendence-data' or its corresponding type declarations.
+tests/lib/transformation/transformation.test.ts(7,8): error TS2307: Cannot find module '../../../src/lib/transformation/transformation-data' or its corresponding type declarations.
+tests/lib/transformation/transformation.test.ts(13,8): error TS2307: Cannot find module '../../../src/lib/transformation/transformation-tracking' or its corresponding type declarations.
+tests/lib/transformation/transformation.test.ts(47,21): error TS7006: Parameter 'item' implicitly has an 'any' type.
+tests/lib/transformation/transformation.test.ts(64,21): error TS7006: Parameter 'item' implicitly has an 'any' type.
+tests/lib/transformation/transformation.test.ts(72,21): error TS7006: Parameter 'item' implicitly has an 'any' type.
+tests/lib/transformation/transformation.test.ts(103,31): error TS7006: Parameter 'item' implicitly has an 'any' type.
+tests/lib/transmutation/transmutation-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/transmutation/transmutation-data' or its corresponding type declarations.
+tests/lib/truth/truth-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/truth/truth-data' or its corresponding type declarations.
+tests/lib/unity/unity-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/unity/unity-data' or its corresponding type declarations.
+tests/lib/vibration/v2/vibration-data.test.ts(2,59): error TS2307: Cannot find module '@/lib/vibration/v2/vibration-data' or its corresponding type declarations.
+tests/lib/vibration/v2/vibration-data.test.ts(33,41): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/vibration/v2/vibration-data.test.ts(39,44): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/vibration/v2/vibration-data.test.ts(47,44): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/vibration/v2/vibration-data.test.ts(55,44): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/vibration/v2/vibration-data.test.ts(63,44): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/lib/vibration/v2/vibration-tracking.test.ts(2,60): error TS2307: Cannot find module '@/lib/vibration/v2/vibration-tracking' or its corresponding type declarations.
+tests/lib/vibration/vibration-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/vibration/vibration-data' or its corresponding type declarations.
+tests/lib/vibration/vibration-mapping.test.ts(9,8): error TS2307: Cannot find module '@/lib/vibration/vibration-mapping' or its corresponding type declarations.
+tests/lib/vibration/vibration-mapping.test.ts(72,47): error TS7006: Parameter 'm' implicitly has an 'any' type.
+tests/lib/vibration/vibration-mapping.test.ts(107,51): error TS7006: Parameter 'k' implicitly has an 'any' type.
+tests/lib/wisdom/wisdom-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/wisdom/wisdom-data' or its corresponding type declarations.
+tests/lib/wisdom/wisdom-data.test.ts(74,32): error TS7006: Parameter 'i' implicitly has an 'any' type.
+tests/lib/wisdom/wisdom-tracking.test.ts(2,59): error TS2307: Cannot find module '@/lib/wisdom/wisdom-tracking' or its corresponding type declarations.
+tests/lib/yantra/yantra-data.test.ts(2,25): error TS2307: Cannot find module '@/lib/yantra/yantra-data' or its corresponding type declarations.
