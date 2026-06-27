@@ -59,6 +59,8 @@ export interface UseFeedOptions {
   tradition?: string;
   topic?: string;
   groupSlug?: string;
+  /** Filtro de alto nível: 'all' (default), 'para-voce' (recommendation engine), etc */
+  filter?: 'all' | 'seguindo' | 'grupos' | 'tendencias' | 'para-voce';
   /** Dev user id — usado em sandbox/dev sem Supabase */
   devUserId?: string;
 }
@@ -81,7 +83,7 @@ export interface UseFeedResult {
 }
 
 export function useFeed(options: UseFeedOptions = {}): UseFeedResult {
-  const { limit = 20, tradition, topic, groupSlug, devUserId } = options;
+  const { limit = 20, tradition, topic, groupSlug, filter, devUserId } = options;
   const [posts, setPosts] = useState<Post[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -93,11 +95,12 @@ export function useFeed(options: UseFeedOptions = {}): UseFeedResult {
   const queryString = useMemo(() => {
     const sp = new URLSearchParams();
     sp.set('limit', String(limit));
+    if (filter && filter !== 'all') sp.set('filter', filter);
     if (tradition) sp.set('tradition', tradition);
     if (topic) sp.set('topic', topic);
     if (groupSlug) sp.set('groupSlug', groupSlug);
     return sp.toString();
-  }, [limit, tradition, topic, groupSlug]);
+  }, [limit, tradition, topic, groupSlug, filter]);
 
   const fetchPage = useCallback(
     async (cursorValue: string | null, replace: boolean) => {

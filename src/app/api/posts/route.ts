@@ -11,7 +11,7 @@ import {
   CreatePostSchema,
 } from '@/lib/validators/posts';
 import { ok, fail, fromZodError, handleError, ErrorCode } from '@/lib/community/api';
-import { getFeed, createPost } from '@/lib/community/posts';
+import { getFeed, createPost, getFeedPersonalized } from '@/lib/community/posts';
 import { getViewer, requireViewer } from '@/lib/community/auth';
 import { checkPostRateLimit } from '@/lib/community/rate-limit';
 
@@ -27,6 +27,7 @@ export async function GET(request: NextRequest) {
       topic: sp.get('topic') ?? undefined,
       authorId: sp.get('authorId') ?? undefined,
       groupSlug: sp.get('groupSlug') ?? undefined,
+      filter: sp.get('filter') ?? undefined,
     });
 
     if (!parsed.success) {
@@ -34,6 +35,25 @@ export async function GET(request: NextRequest) {
     }
 
     const viewer = await getViewer();
+
+    // "Para voce" — recommendation engine; cai no feed padrão se não autenticado
+    if (parsed.data.filter === 'para-voce') {
+      if (viewer) {
+        const result = await getFeedPersonalized({
+          viewerId: viewer.id,
+          limit: parsed.data.limit,
+        });
+        return ok(result, {
+          meta: {
+            nextCursor: result.nextCursor,
+            total: result.total,
+            count: result.posts.length,
+          },
+        });
+      }
+      // fallback: viewer anônimo = feed global
+    }
+
     const result = await getFeed(parsed.data, viewer?.id ?? null);
 
     return ok(result, {

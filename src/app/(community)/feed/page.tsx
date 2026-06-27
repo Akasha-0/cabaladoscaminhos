@@ -138,13 +138,16 @@ function SuggestionItem({ title, reason }: { title: string; reason: string }) {
 // MAIN FEED PAGE
 // ============================================================
 
-type FilterKey = 'all' | 'seguindo' | 'grupos' | 'tendencias';
+type FilterKey = 'all' | 'seguindo' | 'grupos' | 'tendencias' | 'para-voce';
 
 export default function CommunityFeedPage() {
   const [filter, setFilter] = useState<FilterKey>('all');
 
-  // Hooks do feed
-  const feed = useFeed({ limit: 20 });
+  // Hooks do feed — passa o filter ativo pro recommendation engine quando for 'para-voce'
+  const feed = useFeed({
+    limit: 20,
+    filter: filter === 'para-voce' ? 'para-voce' : undefined,
+  });
   const { createPost, loading: creating } = useCreatePost({ prependPost: feed.prependPost });
   const { toggleLike } = useLikePost(feed);
   const { deletePost } = useDeletePost({ removePost: feed.removePost });
@@ -190,6 +193,12 @@ export default function CommunityFeedPage() {
             <div className="flex items-center gap-2 overflow-x-auto pb-2">
               <FilterChip
                 icon={<Sparkles className="w-3 h-3" />}
+                label="Para você"
+                active={filter === 'para-voce'}
+                onClick={() => setFilter('para-voce')}
+              />
+              <FilterChip
+                icon={<Filter className="w-3 h-3" />}
                 label="Tudo"
                 active={filter === 'all'}
                 onClick={() => setFilter('all')}
@@ -223,7 +232,18 @@ export default function CommunityFeedPage() {
             ) : feed.error && feed.posts.length === 0 ? (
               <FeedError error={feed.error} onRetry={feed.refresh} />
             ) : feed.posts.length === 0 ? (
-              <FeedEmpty />
+              <FeedEmpty
+                title={
+                  filter === 'para-voce'
+                    ? 'Ainda não temos recomendações pra você'
+                    : 'Nenhum post ainda'
+                }
+                message={
+                  filter === 'para-voce'
+                    ? 'Siga algumas tradições ou entre em grupos pra personalizar seu feed ✨'
+                    : 'Seja o primeiro a compartilhar algo com a comunidade.'
+                }
+              />
             ) : (
               <>
                 <div className="space-y-4" data-testid="posts-list">

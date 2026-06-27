@@ -178,6 +178,108 @@ export async function getFeed(
 }
 
 // ============================================================================
+// Personalized feed — "Para você"
+// ============================================================================
+// Recommendation engine minimal:
+//   +10 if post.tradition ∈ traditions the viewer follows (via GroupMember.group.tradition)
+//   +5  if post.groupId is in groups the viewer is a member of
+//   +3  if post was liked by someone the viewer follows (Follow table)
+//   +0  baseline (qualquer post entra no pool)
+//
+// Returns top `limit` posts ordered by score desc, then createdAt desc.
+// IMPORTANT: SpiritualProfile no schema atual não tem array `traditions[]`,
+// então derivamos os interesses do viewer a partir dos grupos que ele segue
+// (cada grupo tem um campo `tradition`). Isso é semanticamente equivalente
+// a "tradições de interesse" porque seguir um grupo = interesse na tradição.
+// ============================================================================
+
+export const RECOMMEND_WEIGHTS = {
+  TRADITION_MATCH: 10,
+  FOLLOWED_GROUP: 5,
+  FOLLOWED_AUTHOR_LIKE: 3,
+} as const;
+
+export async function getFeedPersonalized(input: {
+  viewerId: string;
+  limit?: number;
+}): Promise<FeedResult> {
+  const limit = input.limit ?? 20;
+  const viewerId = input.viewerId;
+
+  // 1. Tradições de interesse = traditions dos grupos que o viewer segue
+  const memberships = await prisma.groupMember.findMany({
+    where: { userId: viewerId },
+    select: { group: { select: { id: true, tradition: true } } },
+  });
+  const followedGroupIds = memberships.map((m) => m.group.id);
+  const interestedTraditions = Array.from(
+    new Set(memberships.map((m) => m.group.tradition).filter(Boolean) as string[])
+  );
+
+  // 2. Pessoas que o viewer segue (pra boost de likes)
+  const follows = await prisma.follow.findMany({
+    where: { followerId: viewerId },
+    select: { followedId: true },
+  });
+  const followedUserIds = follows.map((f) => f.followedId);
+
+  // 3. Posts curtidos por quem o viewer segue
+  //    → set de postIds pra scoring rápido
+  let likedByFollowedPostIds = new Set<string>();
+  if (followedUserIds.length > 0) {
+    const likedRows = await prisma.like.findMany({
+      where: { userId: { in: followedUserIds } },
+      select: { postId: true },
+    });
+    likedByFollowedPostIds = new Set(likedRows.map((l) => l.postId));
+  }
+
+  // 4. Pool de candidatos — posts recentes (últimos 200) sem filtro rígido,
+  //    scoring no app layer. Volume é controlado pra evitar scan completo.
+  const candidates = await prisma.post.findMany({
+    where: { deletedAt: null },
+    include: {
+      group: true,
+      likes: { select: { userId: true } },
+      comments: { select: { id: true } },
+    },
+    orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+    take: 200,
+  });
+
+  // 5. Scoring
+  const scored = candidates.map((post) => {
+    let score = 0;
+    if (post.tradition && interestedTraditions.includes(post.tradition)) {
+      score += RECOMMEND_WEIGHTS.TRADITION_MATCH;
+    }
+    if (post.groupId && followedGroupIds.includes(post.groupId)) {
+      score += RECOMMEND_WEIGHTS.FOLLOWED_GROUP;
+    }
+    if (likedByFollowedPostIds.has(post.id)) {
+      score += RECOMMEND_WEIGHTS.FOLLOWED_AUTHOR_LIKE;
+    }
+    return { post, score };
+  });
+
+  // 6. Ordena: score desc → createdAt desc → id desc
+  scored.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    const at = a.post.createdAt.getTime();
+    const bt = b.post.createdAt.getTime();
+    if (bt !== at) return bt - at;
+    return b.post.id.localeCompare(a.post.id);
+  });
+
+  const slice = scored.slice(0, limit);
+  return {
+    posts: slice.map((s) => postToDto(s.post, viewerId)),
+    nextCursor: null, // cursor pagination não se aplica ao feed personalizado (re-score por página)
+    total: scored.length,
+  };
+}
+
+// ============================================================================
 // Cursor helpers
 // ============================================================================
 

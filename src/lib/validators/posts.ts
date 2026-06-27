@@ -59,6 +59,7 @@ export const FeedQuerySchema = z.object({
   topic: z.string().max(80).optional(),
   authorId: z.string().max(60).optional(),
   groupSlug: z.string().max(50).optional(),
+  filter: z.enum(['all', 'seguindo', 'grupos', 'tendencias', 'para-voce']).optional(),
 });
 
 export type FeedQuery = z.infer<typeof FeedQuerySchema>;
