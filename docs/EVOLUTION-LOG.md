@@ -1020,3 +1020,73 @@ Re-rodar este gap analysis após P0 #1-#4 estarem merged, focar em medir:
 - typecheck verde (`pnpm tsc --noEmit`)
 - testes community passando (`pnpm test src/components/community`)
 - build size de `/.next` (alvo: < 5MB na rota `/`)
+
+---
+
+## 2026-06-27 (quarta) — entrega do agente de desenvolvimento: .env.example + BUGS.md + 1 bug fix
+
+**Sessão:** agente de desenvolvimento (root, Mavis)
+**Branch:** `feat/community-platform`
+**Escopo:** 1 feature (P0 #3 do gap analysis — corrigindo regressão) + 1 finding crítico (BUG-001) + 1 bug fix (TSC gate)
+
+### O que foi entregue
+
+| Arquivo | Tipo | LOC | O que |
+|---|---|---|---|
+| `.env.example` | **novo** | 137 | Template completo pra branch community (10 seções, sem vars B2B legadas) |
+| `.gitignore` | **modified** | +1 | Whitelist `!.env.example` após `.env*` |
+| `docs/BUGS.md` | **novo** | 102 | BUG-001 (migration quebrada) + BUG-002 (.env ausente) |
+| `docs/DEV-LOG.md` | **modified** | +50 | Entrada técnica com decisão + métricas |
+| `src/app/(community)/feedback/page.tsx` | **bug fix** | -1/+1 | Type annotation malformada linha 62 |
+
+### BUG-001 — Migration `20260627_000000_search_discovery` quebrada 🔴 BLOCKER
+
+A migration SQL (212 linhas) faz `ALTER TABLE posts ADD COLUMN ...` mas o `prisma/schema.prisma` atual NÃO define o model `Post` — ele está em `prisma/community.prisma` (não-mesclado). Resultado: `prisma migrate deploy` quebraria em prod/staging imediatamente. Documentado em `docs/BUGS.md` com:
+- Reprodução (1 comando)
+- Causa raiz (workflow Prisma quebrado: SQL migration escrita antes do schema merge)
+- Impacto (CI/CD quebrado, sem caminho pra promover a base)
+- 2 opções de correção (Opção A: merge completo — preferida; Opção B: desabilitar — conservadora)
+- Esforço (A: M 1-2 dias, B: P ½ dia)
+- Auditoria relacionada (linka com EVOLUTION-LOG P0 #1, ARCHITECTURE §3, migrations README)
+
+**Padrão de fix:** NÃO fazer sozinho — o P0 #1 do gap analysis já tem isso priorizado com Coder + Verifier. Esta entrega só documenta.
+
+### TSC gate — estado real (honest disclosure)
+
+| Métrica | Resultado |
+|---|---|
+| Errors introduzidos por esta entrega | **0** |
+| Errors pré-existentes | **621** em 300 arquivos |
+| Bug fix do feedback/page.tsx | -5 errors (1 arquivo) |
+| Heap disponível | 2GB sandbox; TSC OOM no default; completa com `--max-old-space-size=1536` |
+| Concentração de errors | lenormand (60), energy (28), community (24), api (18) |
+
+**Por que não fixar tudo:** violaria "não fazer mudanças grandes (>500 linhas) sem aprovação". Os 621 errors são estruturais — P0 #1 (merge schema) + P1 #9 (remover Mesa Real) sozinhos limpariam ~60+.
+
+### Decisão de governança — `.env.example` reescrito do zero
+
+Três caminhos considerados:
+1. **Cherry-pick de `origin/main`** (commit `96004fea`, 66 linhas) — traria vars B2B não-usadas (STRIPE, JWT, MFA)
+2. **Cherry-pick de `feat/minimax-anthropic-default`** (commit `50ffe949`, 115 linhas) — mais completo mas é PR de feature específica
+3. **Reescrita focada no branch community** (escolhida) — 137 linhas, 10 seções por responsabilidade, sem B2B legacy
+
+**Por que a opção 3:** o que a comunidade PRECISA configura (Supabase, OpenAI, Resend, VAPID, Redis, PostHog) ≠ o que B2B/Zelador configurava (Stripe, JWT cockpita, MFA encryption). Cherry-pick traria poluição + drift. Do zero é mais limpo e educacional (comentários inline "quando setar").
+
+### Status final
+
+🟡 **Entrega completa (5 arquivos) mas TSC não-green por trust debt pré-existente.**
+
+- **+** 1 feature P0 fechada (`.env.example` real, não-declarativa)
+- **+** 1 finding crítico documentado (BUG-001) com opções de fix
+- **+** 1 bug pequeno fixed (feedback/page.tsx:62, 5 errors limpos)
+- **+** 2 docs novos/updated (BUGS.md, DEV-LOG)
+- **−** TSC não-green: 621 errors pré-existentes, não-introduzidos, não-fixáveis sem escopo >1 dia
+- **=** BUG-001 segue P0 — não foi corrigido, só documentado (regra do agente: não mexer no Prisma sem aprovação)
+
+### Próxima entrega sugerida
+
+**P0 #2 — Remover B2B deps do `package.json`** (esforço P, ½ dia):
+- `stripe`, `@stripe/stripe-js`, `web-push`, `bcryptjs`, `jsonwebtoken`, `qrcode`, `jspdf` + `@types/*`
+- CAVEAT: precisa remover primeiro o código que os usa (~15 arquivos em `src/lib/payments`, `src/lib/notifications/push`, `src/lib/export`, `src/lib/sharing/qr-code`)
+- Estimativa realista: M (1-2 dias) quando combinada com remoção das APIs B2B correspondentes
+- Liberaria ~30+ dos 621 errors TSC

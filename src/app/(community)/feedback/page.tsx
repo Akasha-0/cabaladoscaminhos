@@ -59,7 +59,7 @@ export default async function FeedbackPage({
   searchParams,
 }: {
   searchParams: Promise<{ status?: string; category?: string }>
-}: Promise<JSX.Element>) {
+}): Promise<JSX.Element> {
   const params = await searchParams
   const status = params.status ?? 'all'
   const category = params.category ?? 'all'
