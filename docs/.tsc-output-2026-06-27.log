@@ -10,6 +10,9 @@ __tests__/ssr/smoke.test.tsx(173,32): error TS2307: Cannot find module '@/app/(i
 __tests__/ssr/smoke.test.tsx(195,32): error TS2307: Cannot find module '@/app/(info)/register/page' or its corresponding type declarations.
 playwright.config.ts(25,3): error TS1117: An object literal cannot have multiple properties with the same name.
 prisma/seed.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+prisma/seed/articles.ts(25,10): error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+prisma/seed/articles.ts(25,24): error TS2305: Module '"@prisma/client"' has no exported member 'ArticleType'.
+prisma/seed/articles.ts(25,37): error TS2305: Module '"@prisma/client"' has no exported member 'EvidenceLevel'.
 prisma/seed/groups.ts(17,10): error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
 prisma/seed/groups.ts(267,20): error TS2339: Property 'iconUrl' does not exist on type 'GroupSeed'.
 prisma/seed/groups.ts(278,20): error TS2339: Property 'iconUrl' does not exist on type 'GroupSeed'.
@@ -24,6 +27,8 @@ src/app/(community)/explore/page.tsx(483,52): error TS2339: Property 'id' does n
 src/app/(community)/explore/page.tsx(854,19): error TS2322: Type '{ children: Element; asChild: true; variant: "outline"; className: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; golden: string; "golden-outline": string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
   Property 'asChild' does not exist on type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; golden: string; "golden-outline": string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
 src/app/(community)/feed/page.tsx(14,40): error TS2307: Cannot find module '@/components/ui/avatar' or its corresponding type declarations.
+src/app/(community)/feedback/__tests__/FeedbackBoard.test.tsx(45,5): error TS2353: Object literal may only specify known properties, and 'author_handle' does not exist in type 'FeatureRequestRow'.
+src/app/(community)/feedback/__tests__/FeedbackBoard.test.tsx(56,5): error TS2353: Object literal may only specify known properties, and 'author_handle' does not exist in type 'FeatureRequestRow'.
 src/app/(community)/feedback/page.tsx(62,13): error TS2503: Cannot find namespace 'JSX'.
 src/app/(community)/feedback/page.tsx(121,11): error TS2339: Property 'PrismaClient' does not exist on type '{ default: typeof import("/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/node_modules/@prisma/client/default"); }'.
 src/app/(community)/feedback/page.tsx(137,53): error TS7006: Parameter 'r' implicitly has an 'any' type.
@@ -243,6 +248,8 @@ src/lib/swarm/expansion-data.ts(335,5): error TS2322: Type '"lilith-casa8-sexo"'
 src/lib/swarm/knowledge-base.ts(418,5): error TS2322: Type '"lilith-casa8-sexo"' is not assignable to type 'KnowledgeDomain'.
 src/lib/swarm/knowledge-base.ts(434,5): error TS2322: Type '"lilith-casa8-sexo"' is not assignable to type 'KnowledgeDomain'.
 src/lib/swarm/knowledge-base.ts(448,5): error TS2322: Type '"lilith-casa8-sexo"' is not assignable to type 'KnowledgeDomain'.
+tests/api/stripe-webhook.test.ts(30,24): error TS2307: Cannot find module '@/lib/payments/stripe' or its corresponding type declarations.
+tests/api/stripe-webhook.test.ts(47,33): error TS2307: Cannot find module '@/app/api/stripe/webhook/route' or its corresponding type declarations.
 tests/api/timer.test.ts(15,38): error TS2307: Cannot find module '@/app/api/timer/route' or its corresponding type declarations.
 tests/api/timer.test.ts(47,38): error TS2307: Cannot find module '@/app/api/timer/route' or its corresponding type declarations.
 tests/app/dashboard/chakra.test.tsx(10,31): error TS2307: Cannot find module '@/app/dashboard/chakra/page' or its corresponding type declarations.
@@ -261,6 +268,37 @@ tests/integration/middleware.test.ts(177,46): error TS2307: Cannot find module '
 tests/integration/middleware.test.ts(185,50): error TS2307: Cannot find module '@/lib/auth-jwt/helpers' or its corresponding type declarations.
 tests/integration/middleware.test.ts(204,50): error TS2307: Cannot find module '@/lib/auth-jwt/helpers' or its corresponding type declarations.
 tests/integration/middleware.test.ts(217,50): error TS2307: Cannot find module '@/lib/auth-jwt/helpers' or its corresponding type declarations.
+tests/integration/payments.test.ts(22,59): error TS2307: Cannot find module '@/lib/payments/service' or its corresponding type declarations.
+tests/integration/payments.test.ts(23,24): error TS2307: Cannot find module '@/lib/payments/stripe' or its corresponding type declarations.
+tests/integration/payments.test.ts(71,14): error TS18046: 'plano' is of type 'unknown'.
+tests/integration/payments.test.ts(72,28): error TS18046: 'plano' is of type 'unknown'.
+tests/integration/payments.test.ts(73,14): error TS18046: 'plano' is of type 'unknown'.
+tests/integration/payments.test.ts(79,14): error TS18046: 'plano' is of type 'unknown'.
+tests/integration/payments.test.ts(80,21): error TS18046: 'plano' is of type 'unknown'.
+tests/integration/payments.test.ts(132,35): error TS2307: Cannot find module '@/app/api/payments/checkout/route' or its corresponding type declarations.
+tests/integration/payments.test.ts(151,35): error TS2307: Cannot find module '@/app/api/payments/checkout/route' or its corresponding type declarations.
+tests/integration/payments.test.ts(166,35): error TS2307: Cannot find module '@/app/api/payments/checkout/route' or its corresponding type declarations.
+tests/integration/payments.test.ts(181,35): error TS2307: Cannot find module '@/app/api/payments/checkout/route' or its corresponding type declarations.
+tests/integration/payments.test.ts(202,35): error TS2307: Cannot find module '@/app/api/payments/checkout/route' or its corresponding type declarations.
+tests/integration/payments.test.ts(227,35): error TS2307: Cannot find module '@/app/api/payments/portal/route' or its corresponding type declarations.
+tests/integration/payments.test.ts(245,35): error TS2307: Cannot find module '@/app/api/payments/portal/route' or its corresponding type declarations.
+tests/integration/payments.test.ts(272,32): error TS2307: Cannot find module '@/app/api/webhooks/stripe/route' or its corresponding type declarations.
+tests/integration/payments.test.ts(280,35): error TS2307: Cannot find module '@/app/api/webhooks/stripe/route' or its corresponding type declarations.
+tests/integration/payments.test.ts(297,73): error TS2307: Cannot find module '@/app/api/webhooks/stripe/route' or its corresponding type declarations.
+tests/integration/payments.test.ts(306,52): error TS2307: Cannot find module '@/app/api/webhooks/stripe/route' or its corresponding type declarations.
+tests/integration/payments.test.ts(314,50): error TS2307: Cannot find module '@/app/api/webhooks/stripe/route' or its corresponding type declarations.
+tests/integration/payments.test.ts(328,52): error TS2307: Cannot find module '@/lib/payments/service' or its corresponding type declarations.
+tests/integration/payments.test.ts(334,52): error TS2307: Cannot find module '@/lib/payments/service' or its corresponding type declarations.
+tests/integration/payments.test.ts(348,52): error TS2307: Cannot find module '@/lib/payments/service' or its corresponding type declarations.
+tests/integration/payments.test.ts(367,51): error TS2307: Cannot find module '@/lib/payments/service' or its corresponding type declarations.
+tests/integration/payments.test.ts(373,51): error TS2307: Cannot find module '@/lib/payments/service' or its corresponding type declarations.
+tests/integration/payments.test.ts(390,44): error TS2307: Cannot find module '@/lib/payments/service' or its corresponding type declarations.
+tests/integration/payments.test.ts(396,45): error TS2307: Cannot find module '@/lib/payments/service' or its corresponding type declarations.
+tests/integration/payments.test.ts(402,46): error TS2307: Cannot find module '@/lib/payments/service' or its corresponding type declarations.
+tests/integration/payments.test.ts(408,44): error TS2307: Cannot find module '@/lib/payments/service' or its corresponding type declarations.
+tests/integration/payments.test.ts(416,45): error TS2307: Cannot find module '@/lib/payments/service' or its corresponding type declarations.
+tests/integration/payments.test.ts(424,46): error TS2307: Cannot find module '@/lib/payments/service' or its corresponding type declarations.
+tests/integration/payments.test.ts(432,46): error TS2307: Cannot find module '@/lib/payments/service' or its corresponding type declarations.
 tests/integration/setup.ts(110,17): error TS2307: Cannot find module '@/lib/auth-jwt' or its corresponding type declarations.
 tests/lib/affirmations/categories.test.ts(2,58): error TS2307: Cannot find module '@/lib/affirmations/categories' or its corresponding type declarations.
 tests/lib/affirmations/daily.test.ts(2,37): error TS2307: Cannot find module '@/lib/affirmations/daily' or its corresponding type declarations.
@@ -596,6 +634,7 @@ tests/lib/samadhi/samadhi-practice.test.ts(2,33): error TS2307: Cannot find modu
 tests/lib/shadow/shadow-data.test.ts(2,53): error TS2307: Cannot find module '@/lib/shadow/shadow-data' or its corresponding type declarations.
 tests/lib/shadow/shadow-data.test.ts(14,22): error TS7006: Parameter 'item' implicitly has an 'any' type.
 tests/lib/shadow/shadow-practice.test.ts(2,33): error TS2307: Cannot find module '@/lib/shadow/shadow-practice' or its corresponding type declarations.
+tests/lib/sharing/qr-code.test.ts(12,32): error TS2307: Cannot find module '@/lib/sharing/qr-code' or its corresponding type declarations.
 tests/lib/sign-relationships.test.ts(2,34): error TS2307: Cannot find module '@/lib/compatibility/sign-relationships' or its corresponding type declarations.
 tests/lib/sleep/sleep.test.ts(2,53): error TS2307: Cannot find module '@/lib/audio/sleep' or its corresponding type declarations.
 tests/lib/soul/soul-data.test.ts(6,8): error TS2307: Cannot find module '@/lib/soul/soul-data' or its corresponding type declarations.
