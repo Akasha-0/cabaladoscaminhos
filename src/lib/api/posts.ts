@@ -122,11 +122,30 @@ export async function loadAuthors(userIds: string[]): Promise<Map<string, PostAu
       where: { id: { in: userIds } },
     });
 
+    // Busca em batch — authorId pode ser Prisma User.id OU Supabase authUserId.
+    // 1) Match direto por id (caminho comum em posts novos).
+    // 2) Sobras via supabaseUserId (posts antigos, user sem link).
+    const usersById = await prisma.user.findMany({
+      where: { id: { in: userIds } },
+      select: { id: true, supabaseUserId: true, nomeCompleto: true, email: true },
+    });
+    const foundIds = new Set(usersById.map((u) => u.id));
+    const remaining = userIds.filter((id) => !foundIds.has(id));
+    const usersBySupaId =
+      remaining.length > 0
+        ? await prisma.user.findMany({
+            where: { supabaseUserId: { in: remaining } },
+            select: { id: true, supabaseUserId: true, nomeCompleto: true, email: true },
+          })
+        : [];
+    const allUsers = [...usersById, ...usersBySupaId];
+
     // Perfis em paralelo (mesma query para todos)
     let profiles: Array<{ userId: string; caminhoDeVida: number | null; signoSolar: string | null; orixaRegente: string | null }> = [];
     try {
+      const prismaUserIds = allUsers.map((u) => u.id);
       profiles = await prisma.spiritualProfile.findMany({
-        where: { userId: { in: userIds } },
+        where: { userId: { in: prismaUserIds } },
         select: { userId: true, caminhoDeVida: true, signoSolar: true, orixaRegente: true },
       });
     } catch {
@@ -134,19 +153,24 @@ export async function loadAuthors(userIds: string[]): Promise<Map<string, PostAu
     }
     const profileByUser = new Map(profiles.map((p) => [p.userId, p]));
 
-    for (const user of users) {
+    for (const user of allUsers) {
       const profile = profileByUser.get(user.id);
       const spiritualTag = profile?.caminhoDeVida
         ? `Caminho ${profile.caminhoDeVida}${profile.signoSolar ? ` · ${profile.signoSolar}` : ''}`
         : null;
-      map.set(user.id, {
+      const dto: PostAuthorDto = {
         id: user.id,
-        handle: deriveHandle(user.name, user.id),
-        displayName: user.name || user.email?.split('@')[0] || 'Membro',
+        handle: deriveHandle(user.nomeCompleto, user.id),
+        displayName: user.nomeCompleto || user.email?.split('@')[0] || 'Membro',
         avatarUrl: null,
         spiritualTag,
         orixa: profile?.orixaRegente ?? null,
-      });
+      };
+      // Publica o mesmo DTO nas duas chaves possíveis (id direto + supabaseUserId)
+      const keys = [user.id, user.supabaseUserId].filter((k): k is string => !!k);
+      for (const k of keys) {
+        if (!map.has(k)) map.set(k, dto);
+      }
     }
   } catch (err) {
     // eslint-disable-next-line no-console
