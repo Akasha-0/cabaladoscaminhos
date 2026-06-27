@@ -704,8 +704,10 @@ model Article {
   bookmarkCount  Int @default(0)  // saves dos usuários
   likesCount     Int @default(0)  // likes (mantido para compat)
 
-  // Embeddings para recomendação semântica (Fase 3)
-  // embedding Unsupported("vector(1536)")? -- quando ativar pgvector
+  // Embeddings para recomendação semântica (Fase 3 — Akasha IA)
+  // Ativado em 2026-06-27 — pgvector com dimensão 1536 (OpenAI text-embedding-3-small)
+  // Migration: prisma/migrations/20260627_000000_pgvector_enable/migration.sql
+  embedding Unsupported("vector(1536)")?
 
   // 2026-06-27 — Onda 12 Search & Discovery
   // Coluna tsvector populada por trigger Postgres (ver migration search_discovery)
