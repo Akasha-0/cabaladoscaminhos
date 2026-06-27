@@ -20,6 +20,8 @@
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "seed:posts": "tsx prisma/seed/posts.ts",
+    "seed:articles": "tsx prisma/seed/articles.ts",
+    "embed:articles": "tsx scripts/embed-articles.ts",
     "verify:notifications-realtime": "tsx scripts/verify-notifications-realtime.ts",
     "quality": "tsx scripts/run-quality-eval.ts",
     "quality:evolve": "tsx scripts/run-evolution.ts",
