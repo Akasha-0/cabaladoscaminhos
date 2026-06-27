@@ -45,12 +45,13 @@ const NAV_ITEMS = [
   { href: '/feed', label: 'Feed', icon: Home },
   { href: '/explore', label: 'Explorar', icon: Compass },
   { href: '/library', label: 'Biblioteca', icon: BookOpen },
+  { href: '/akashic', label: 'Akasha IA', icon: Sparkles },
 ] as const;
 
 const BOTTOM_NAV_ITEMS = [
   { href: '/feed', icon: Home, label: 'Feed' },
   { href: '/explore', icon: Compass, label: 'Explorar' },
-  { href: '/library', icon: BookOpen, label: 'Biblioteca' },
+  { href: '/akashic', icon: Sparkles, label: 'Akasha' },
   { href: '/notifications', icon: Bell, label: 'Notif' },
 ] as const;
 
