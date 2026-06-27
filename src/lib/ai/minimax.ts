@@ -4,7 +4,26 @@ import type { ChatMessage, StreamChunk } from './types';
 // CONFIGURATION
 // ============================================================
 
-const MINIMAX_API_TOKEN = 'sk-cp-Kpz6_rV0uxSFKNFwhXXsj1ZNE_sd7_nSHd_KBOGPvjZ2l00J8tvlE8lA7gDwyuI-vUm_xxX66bALC4952KyRulzaosepLhGmkuIvIGU2OVmHESpWTUR0GGQ';
+/**
+ * Lê a chave de API do MiniMax exclusivamente de variável de ambiente.
+ * Throw explícito se ausente (fail-closed) — antes deste fix
+ * (ver docs/SECURITY-FIXES-WAVE10.md · F1) o token estava HARDCODED em
+ * 3 arquivos e exposto no git history público.
+ *
+ * ⚠️ A chave antiga DEVE ser revogada no painel MiniMax antes do merge —
+ * assume-se que está comprometida desde o primeiro commit.
+ */
+function getMinimaxApiToken(): string {
+  const token = process.env.MINIMAX_API_TOKEN;
+  if (!token || token.length === 0) {
+    throw new MinimaxError(
+      'MINIMAX_API_TOKEN não configurada. Defina em .env.local ou Vercel env vars.',
+      500,
+      'E_MINIMAX_KEY_MISSING'
+    );
+  }
+  return token;
+}
 const MINIMAX_API_BASE = 'https://api.minimaxi.chat/v1';
 const MINIMAX_MODEL = 'minimax/m3';
 
@@ -49,7 +68,7 @@ export async function generateMinimaxResponse(
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${MINIMAX_API_TOKEN}`,
+      Authorization: `Bearer ${getMinimaxApiToken()}`,
     },
     body: JSON.stringify({
       model,
@@ -94,7 +113,7 @@ export async function* streamMinimaxResponse(
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${MINIMAX_API_TOKEN}`,
+      Authorization: `Bearer ${getMinimaxApiToken()}`,
     },
     body: JSON.stringify({
       model,
