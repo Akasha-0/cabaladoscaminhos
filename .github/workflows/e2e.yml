@@ -19,21 +19,26 @@ env:
   NODE_ENV: test
   NEXT_TELEMETRY_DISABLED: '1'
   CI: '1'
+  # Cache key consistente para ~/.cache/ms-playwright
+  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/ms-playwright
 
 jobs:
   # ──────────────────────────────────────────────────────────────────
-  # E2E Smoke — 3 fluxos críticos (mobile + desktop)
+  # E2E — Wave 11: 8 specs cobrindo fluxos críticos
+  # Matrix: 2 strategies (chromium-desktop, mobile-safari)
+  # mobile-safari requer WebKit (~200MB extra) mas é a produção real (iOS)
+  # mobile-chromium-alt e mobile-chromium ficam fora do default para economizar minutos
   # ──────────────────────────────────────────────────────────────────
   e2e:
-    name: E2E Smoke (${{ matrix.project }})
+    name: E2E Wave 11 (${{ matrix.project }})
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30  # 30min total (Wave 10 era 25min)
     strategy:
       fail-fast: false
       matrix:
-        project: [mobile-chromium, desktop-chromium]
-        # mobile-chromium-alt (Pixel 5) fica fora do default matrix pra
-        # economizar minutos — rodar manualmente em wave/feat branches
+        project: [chromium-desktop, mobile-safari]
+        # Wave 11: 2 strategies — chromium-desktop (smoke) + mobile-safari (produção iOS)
+        # mobile-chromium (iPhone 13) roda em PRs críticos manualmente
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -57,10 +62,23 @@ jobs:
         env:
           DATABASE_URL: postgresql://placeholder@localhost:5432/placeholder
 
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: .cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            playwright-${{ runner.os }}-
+
       - name: Install Playwright browsers
-        run: pnpm playwright install --with-deps chromium
-        # NÃO instala WebKit/Safari — usamos chromium apenas (mais leve)
-        # mobile-safari project requer WebKit (~200MB extra)
+        run: |
+          if [ "${{ matrix.project }}" = "mobile-safari" ]; then
+            pnpm playwright install --with-deps webkit
+          else
+            pnpm playwright install --with-deps chromium
+          fi
+        # WebKit (~200MB extra) só para mobile-safari project
 
       - name: Build Next.js (production) para E2E
         run: pnpm build
@@ -69,19 +87,27 @@ jobs:
           DATABASE_URL: postgresql://placeholder@localhost:5432/placeholder
           # Supabase vars ausentes → cai em "no supabase" (mock client)
 
-      - name: Run Playwright E2E tests (project=${{ matrix.project }})
+      - name: Run Playwright E2E tests (8 specs — Wave 11)
         run: |
           pnpm playwright test \
             --project=${{ matrix.project }} \
             --reporter=list \
+            --timeout=300000 \
             e2e/signup-onboarding-feed.spec.ts \
             e2e/feed-interaction.spec.ts \
-            e2e/library-search.spec.ts
+            e2e/library-search.spec.ts \
+            e2e/group-create-join.spec.ts \
+            e2e/akashic-chat.spec.ts \
+            e2e/profile-edit.spec.ts \
+            e2e/feed-para-voce.spec.ts \
+            e2e/notifications-realtime.spec.ts
         env:
           CI: '1'
           PORT: '3000'
+        # 5min/spec (300s) — Next.js dev/build pode demorar em rotas complexas
+        # 8 specs × 5min = 40min teórico, mas workers paralelos reduzem
 
-      - name: Upload Playwright report on failure
+      - name: Upload Playwright HTML report on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
@@ -92,12 +118,24 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
 
-      - name: Upload screenshots on failure
+      - name: Upload screenshots/videos on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-screenshots-${{ matrix.project }}
-          path: test-results/playwright/**/*.{png,jpg,webm}
+          name: playwright-artifacts-${{ matrix.project }}
+          path: |
+            test-results/playwright/**/*.{png,jpg,webm,zip}
+            test-results/playwright/**/trace.zip
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Upload test logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-logs-${{ matrix.project }}
+          path: |
+            test-results/playwright/**/*.{log,txt}
           retention-days: 3
           if-no-files-found: ignore
 
@@ -127,7 +165,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: List Playwright tests
+      - name: List Playwright tests (8 specs)
         run: pnpm playwright test --list
         # Se specs têm erro de sintaxe, esse comando falha com exit 1
         # Rápido: <30s sem precisar de browsers nem webServer
@@ -140,8 +178,15 @@ jobs:
             const { execSync } = require('child_process');
             try {
               const output = execSync('pnpm playwright test --list 2>&1', { encoding: 'utf8' });
-              const lines = output.split('\n').filter(l => l.match(/\[Chromium|\[Mobile|\[Desktop/));
-              const body = `✅ **Playwright specs** — ${lines.length} test(s) listed\n\n\`\`\`\n${lines.slice(0, 30).join('\n')}\n\`\`\``;
+              const lines = output.split('\n').filter(l => l.match(/\[Chromium|\[Mobile|\[Desktop|\[WebKit/));
+              const specFiles = new Set();
+              lines.forEach(l => {
+                const m = l.match(/›.*?› ([^\s]+\.spec\.ts)/);
+                if (m) specFiles.add(m[1]);
+              });
+              const body = `✅ **Playwright Wave 11** — ${lines.length} test(s) listed across ${specFiles.size} spec files\n\n` +
+                `**Specs (8):**\n${[...specFiles].map(f => '- \`' + f + '\`').join('\n')}\n\n` +
+                `<details><summary>View all tests</summary>\n\n\`\`\`\n${lines.slice(0, 50).join('\n')}\n\`\`\`\n</details>`;
               github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -151,3 +196,77 @@ jobs:
             } catch (err) {
               console.error('List check failed:', err.message);
             }
+
+  # ──────────────────────────────────────────────────────────────────
+  # E2E Mobile Chromium — projeto secundário para Android coverage
+  # Roda SÓ em push para main/develop (não em PRs) para economizar minutos
+  # ──────────────────────────────────────────────────────────────────
+  e2e-android:
+    name: E2E Mobile Chromium (Android)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [mobile-chromium, mobile-chromium-alt]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Prisma generate
+        run: pnpm db:generate
+        env:
+          DATABASE_URL: postgresql://placeholder@localhost:5432/placeholder
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: .cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            playwright-${{ runner.os }}-
+
+      - name: Install Playwright (chromium only)
+        run: pnpm playwright install --with-deps chromium
+
+      - name: Build Next.js
+        run: pnpm build
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+          DATABASE_URL: postgresql://placeholder@localhost:5432/placeholder
+
+      - name: Run Playwright E2E (${{ matrix.project }})
+        run: |
+          pnpm playwright test \
+            --project=${{ matrix.project }} \
+            --reporter=list \
+            --timeout=300000
+        env:
+          CI: '1'
+          PORT: '3000'
+
+      - name: Upload artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ matrix.project }}
+          path: |
+            test-results/playwright/
+            playwright-report/
+          retention-days: 7
+          if-no-files-found: ignore

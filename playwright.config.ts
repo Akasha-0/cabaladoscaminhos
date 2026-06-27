@@ -1,21 +1,27 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Playwright config — Akasha Portal v3.0 (Wave 10)
+ * Playwright config — Akasha Portal v3.0 (Wave 11)
  *
- * Smoke E2E para os 3 fluxos críticos do produto:
+ * Cobertura E2E expandida de 3 → 8 specs cobrindo fluxos críticos:
  *   1. signup-onboarding-feed  → novo usuário chega ao feed
- *   2. feed-interaction        → core social (post → like)
+ *   2. feed-interaction        → core social (post → like/bookmark)
  *   3. library-search          → consumo de conteúdo (search → article)
+ *   4. group-create-join       → comunidade (criar grupo, entrar, postar)
+ *   5. akashic-chat            → chat IA com fontes + filtro de tradição
+ *   6. profile-edit            → edição de perfil (bio, tradições, avatar)
+ *   7. feed-para-voce          → algoritmo de recomendação (5º feed)
+ *   8. notifications-realtime  → notificações ao vivo (SSE)
  *
- * Design decisions (Wave 10 — Ravena / QA Engineer):
+ * Design decisions (Wave 11 — Ravena / QA Engineer):
  * - Mobile-first viewport (iPhone 13) porque o uso real é mobile (consulta cotidiana)
+ * - mobile-safari (iPhone 13 WebKit) adicionado como projeto de produção —
+ *   Safari é dominante no mobile real (iOS ~30% BR) mas requer WebKit (~200MB)
  * - Single worker porque sandbox tem pouca RAM (~2GB) — paralelo causaria OOM
- * - Timeout 30s por teste (Next.js dev mode é lento na primeira rota)
- * - Web server: `npm run dev` (pnpm não está disponível no sandbox)
- * - Reutiliza .env.example como env padrão (Supabase mock, sem rede)
- * - Screenshots/videos APENAS em falha (não em sucesso) — economiza disco
- * - Projects: chromium-desktop (smoke rápido) + mobile-safari (uso real)
+ * - Timeout 30s por teste (Next.js dev compila sob demanda) + 5min/spec CI
+ * - HTML + list reporters: HTML para humans, list para CI logs
+ * - Cache `~/.cache/ms-playwright` no CI para acelerar runs subsequentes
+ * - Artifacts APENAS em falha (screenshots, videos, traces) — economiza disco
  * - testIgnore para arquivos *.skip.ts quando sandbox OOM (defensive)
  *
  * IMPORTANTE: este arquivo NÃO roda `next build` antes — usa `next dev` que
@@ -38,13 +44,14 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0, // retry 1x em CI; sem retry em local
 
+  // Reporter duplo: HTML (humanos) + list (CI logs)
   reporter: process.env.CI
-    ? [['list'], ['html', { open: 'never' }]]
-    : 'list',
+    ? [['list'], ['html', { open: 'never', outputFolder: 'playwright-report' }]]
+    : [['list'], ['html', { open: 'never', outputFolder: 'playwright-report' }]],
 
   outputDir: './test-results/playwright',
   timeout: 30_000, // 30s por teste (Next.js dev compila sob demanda)
-  expect: { timeout: 5_000 },
+  expect: { timeout: 5_000 }, // 5s para assertions
 
   use: {
     baseURL: BASE_URL,
@@ -82,7 +89,22 @@ export default defineConfig({
     },
 
     // --------------------------------------------------------------
-    // Project 3: Desktop chromium — desktop coverage (admin/devtools)
+    // Project 3: Mobile Safari (iPhone 13 WebKit) — produção iOS
+    // Wave 11: adicionado para validar Safari real (30% do tráfego mobile BR)
+    // Requer `npx playwright install webkit` (~200MB extra)
+    // CI pode rodar manualmente em wave/feat branches para economizar minutos
+    // --------------------------------------------------------------
+    {
+      name: 'mobile-safari',
+      use: {
+        ...devices['iPhone 13'], // mesma viewport que chromium, mas engine WebKit
+        // WebKit tem quirks: scrollIntoView, focus management, etc.
+        // Ativar se Safari coverage for prioridade
+      },
+    },
+
+    // --------------------------------------------------------------
+    // Project 4: Desktop chromium — desktop coverage (admin/devtools)
     // --------------------------------------------------------------
     {
       name: 'desktop-chromium',
