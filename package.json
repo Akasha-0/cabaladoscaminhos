@@ -23,6 +23,7 @@
     "seed:articles": "tsx prisma/seed/articles.ts",
     "embed:articles": "tsx scripts/embed-articles.ts",
     "verify:notifications-realtime": "tsx scripts/verify-notifications-realtime.ts",
+    "check:bundle": "tsx scripts/check-bundle-size.ts",
     "quality": "tsx scripts/run-quality-eval.ts",
     "quality:evolve": "tsx scripts/run-evolution.ts",
     "postbuild": "next-sitemap",
