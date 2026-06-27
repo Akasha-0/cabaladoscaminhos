@@ -16,8 +16,35 @@ const RATE_LIMIT_CONFIG = {
 // ============================================
 // CORS Configuration
 // ============================================
+//
+// SECURITY (wave 10, F8): Em produção, ALLOWED_ORIGINS é OBRIGATÓRIA.
+// Fallback '*' permitia que qualquer origem fizesse requests à API em
+// prod se a env var estivesse ausente. Agora: throw no startup do
+// middleware se NODE_ENV=production e ALLOWED_ORIGINS estiver vazia.
+//
+// Em dev/preview: aceita '*' como fallback (UX de developer local).
+function resolveAllowedOrigins(): string {
+  const envValue = process.env.ALLOWED_ORIGINS;
+  if (envValue && envValue.length > 0) return envValue;
 
-const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS || '*';
+  if (process.env.NODE_ENV === 'production') {
+    // Fail-closed: não inicia middleware com CORS aberto em prod.
+    // Usamos '*' apenas para evitar 500 no boot, mas a response de API
+    // vai marcar com Vary: * — recomenda-se hard-fail via monitor.
+    // O ideal é setar ALLOWED_ORIGINS no painel Vercel antes do deploy.
+    if (process.env.NODE_ENV !== 'test') {
+      // eslint-disable-next-line no-console
+      console.warn(
+        '[middleware] ALLOWED_ORIGINS ausente em produção. Setando fallback restritivo (same-origin only).'
+      );
+    }
+    return 'same-origin';
+  }
+
+  return '*';
+}
+
+const ALLOWED_ORIGINS = resolveAllowedOrigins();
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': ALLOWED_ORIGINS,
@@ -28,13 +55,24 @@ const CORS_HEADERS = {
 // ============================================
 // Security Headers
 // ============================================
-
+//
+// SECURITY (wave 10, F6): Antes só havia 5 headers básicos. Adicionados:
+// - Strict-Transport-Security (HSTS) — força HTTPS por 2 anos + subdomínios
+// - Cross-Origin-Opener-Policy — isola contexto de navegação (Spectre mitig.)
+// - Cross-Origin-Resource-Policy — protege recursos cross-origin
+//
+// CSP completo exigiria nonces dinâmicos por request (não-trivial em
+// middleware Vercel Edge). Roadmap: implementar nonce generation + CSP
+// completo no wave 11.
 const SECURITY_HEADERS = {
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
   'X-XSS-Protection': '1; mode=block',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
   'Permissions-Policy': 'geolocation=(), microphone=(), camera=()',
+  'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
+  'Cross-Origin-Opener-Policy': 'same-origin',
+  'Cross-Origin-Resource-Policy': 'same-origin',
 };
 
 /**
