@@ -327,7 +327,7 @@ function ExplorePageInner() {
                     updateUrl({ sort: s });
                   }}
                   className={cn(
-                    'block w-full text-left px-3 py-1.5 rounded text-sm transition-colors',
+                    'block w-full text-left px-3 py-2.5 rounded text-sm transition-colors min-h-[44px]',
                     sort === s
                       ? 'bg-amber-500/15 text-amber-200'
                       : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40',
@@ -347,7 +347,7 @@ function ExplorePageInner() {
                   updateUrl({ tradition: '' });
                 }}
                 className={cn(
-                  'block w-full text-left px-3 py-1.5 rounded text-sm transition-colors',
+                  'block w-full text-left px-3 py-2.5 rounded text-sm transition-colors min-h-[44px]',
                   !tradition ? 'bg-amber-500/15 text-amber-200' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40',
                 )}
               >
@@ -361,7 +361,7 @@ function ExplorePageInner() {
                     updateUrl({ tradition: t });
                   }}
                   className={cn(
-                    'block w-full text-left px-3 py-1.5 rounded text-sm transition-colors',
+                    'block w-full text-left px-3 py-2.5 rounded text-sm transition-colors min-h-[44px]',
                     tradition === t
                       ? 'bg-amber-500/15 text-amber-200'
                       : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40',
@@ -379,9 +379,10 @@ function ExplorePageInner() {
                   setTag('');
                   updateUrl({ tradition: '', tag: '' });
                 }}
-                className="flex items-center gap-2 text-xs text-slate-400 hover:text-amber-300 px-3"
+                className="flex items-center gap-2 text-sm text-slate-400 hover:text-amber-300 px-3 min-h-[44px] transition-colors"
+                aria-label="Limpar todos os filtros de busca"
               >
-                <X className="w-3 h-3" />
+                <X className="w-3 h-3" aria-hidden="true" />
                 Limpar filtros
               </button>
             )}
@@ -410,7 +411,7 @@ function ExplorePageInner() {
                       updateUrl({ type: tab.id as TabId });
                     }}
                     className={cn(
-                      'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap',
+                      'flex items-center gap-1.5 px-3 py-2.5 rounded-full text-sm font-medium transition-all whitespace-nowrap min-h-[44px]',
                       type === tab.id
                         ? 'bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-200 border border-amber-500/30'
                         : 'bg-slate-800/50 text-slate-400 border border-slate-700/30 hover:text-slate-200',

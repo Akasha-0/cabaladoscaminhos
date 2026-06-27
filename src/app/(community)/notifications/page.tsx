@@ -448,7 +448,7 @@ function FilterChip({
     <button
       onClick={onClick}
       className={cn(
-        'flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all border min-h-[36px]',
+        'flex items-center gap-2 px-3 py-2.5 rounded-full text-sm font-medium transition-all border min-h-[44px]',
         active
           ? 'bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border-amber-500/30'
           : 'bg-slate-800/50 text-slate-400 border-slate-700/30 hover:text-slate-200'
@@ -480,7 +480,7 @@ function TypeChip({
     <button
       onClick={onClick}
       className={cn(
-        'px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border',
+        'px-3 py-2 rounded-full text-xs font-medium transition-all border min-h-[44px]',
         active
           ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30'
           : 'bg-slate-900/50 text-slate-500 border-slate-800/30 hover:text-slate-300'

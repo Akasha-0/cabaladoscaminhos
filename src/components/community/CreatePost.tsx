@@ -182,7 +182,7 @@ export function CreatePost({
                       type="button"
                       onClick={() => setType(pt.value)}
                       className={cn(
-                        'flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs transition-all',
+                        'flex items-center gap-1 px-3 py-2 rounded-lg text-sm transition-all min-h-[44px]',
                         type === pt.value
                           ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30'
                           : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
