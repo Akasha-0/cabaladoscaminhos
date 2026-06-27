@@ -1,154 +1,178 @@
+// ============================================================================
+// PUBLIC PROFILE — /api/users/profile?handle=<handle>
+// ============================================================================
+// GET → resolve a public profile by handle (or id) and return a lean DTO.
+// Spec: docs/MOCKS-AUDIT.md (2026-06-27 — replaces hardcoded DEMO_PROFILE).
+//
+// `handle` semantics (resolved in order):
+//   1. User.id (Prisma cuid)
+//   2. User.email (exact match)
+//   3. User.email local-part (substring before "@")
+//
+// The DTO exposes only public-safe fields. Sensitive / missing fields are
+// returned as `null` so the UI can render honest empty states ("ainda não
+// temos foto de perfil", etc.).
+// ============================================================================
+
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { prisma } from '@/lib/prisma';
+import { ok, fail, ErrorCode, handleError } from '@/lib/community/api';
 
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
+// ─── Zod ────────────────────────────────────────────────────────────────────
 
-const ZodiacSignSchema = z.enum([
-  'aries', 'touro', 'gemeos', 'cancer', 'leao', 'virgem',
-  'libra', 'escorpiao', 'sagitario', 'capricornio', 'aquario', 'peixes'
-]);
-
-const OrixaSchema = z.enum([
-  'oxala', 'iemanja', 'ogum', 'xango', 'oxum', 'nanã', 'ieiá',
-  'omulu', 'oxumaré', 'logun-edé', 'ibuai', 'oregui', 'nanã'
-]);
-
-const NumerologyProfileSchema = z.object({
-  lifePath: z.number().int().min(1).max(33),
-  expression: z.number().int().min(1).max(9),
-  soulUrge: z.number().int().min(1).max(9),
-  personality: z.number().int().min(1).max(9),
-  masterNumbers: z.array(z.number()).optional(),
+const QuerySchema = z.object({
+  handle: z
+    .string()
+    .trim()
+    .min(1, 'handle obrigatório')
+    .max(120, 'handle muito longo'),
 });
 
-const SpiritualProfileSchema = z.object({
-  orixa: OrixaSchema,
-  odu: z.string().optional(),
-  lifePath: z.number(),
-  element: z.enum(['agua', 'fogo', 'terra', 'ar', 'eter']),
-  temperament: z.enum(['sanguineo', 'colerico', 'melancolico', 'fleumatico']),
-});
+// ─── DTO ────────────────────────────────────────────────────────────────────
 
-const UserProfileResponseSchema = z.object({
-  id: z.string(),
-  email: z.string().email(),
-  name: z.string(),
-  spiritualProfile: SpiritualProfileSchema,
-  numerologyProfile: NumerologyProfileSchema,
-  birthDate: z.string(),
-  birthLocation: z.string().optional(),
-  createdAt: z.string(),
-  lastLogin: z.string().optional(),
-});
+export interface PublicProfileDto {
+  id: string;
+  handle: string;
+  displayName: string;
+  bio: string | null;
+  avatarUrl: string | null;
+  coverUrl: string | null;
+  joinedAt: string;
 
-const UpdateProfileSchema = z.object({
-  name: z.string().min(1).max(100).optional(),
-  spiritualProfile: z.object({
-    orixa: OrixaSchema.optional(),
-    odu: z.string().optional(),
-    lifePath: z.number().int().positive().optional(),
-    element: z.enum(['agua', 'fogo', 'terra', 'ar', 'eter']).optional(),
-    temperament: z.enum(['sanguineo', 'colerico', 'melancolico', 'fleumatico']).optional(),
-  }).optional(),
-});
+  // Spiritual data — pulled from MapaNatal when present
+  odu: string | null;
+  orixa: string | null;
+  elemento: string | null;
+  signoSolar: string | null;
+  signoLunar: string | null;
+  ascendente: string | null;
+  caminhoDeVida: number | null;
 
-const ProfileQuerySchema = z.object({
-  include: z.enum(['numerology', 'orixa', 'all']).optional(),
-});
+  // Stats
+  followersCount: number;
+  followingCount: number;
+  postsCount: number;
+  groupsCount: number;
 
-// ─── Demo Profile Data ─────────────────────────────────────────────────────
-
-const DEMO_PROFILE: z.infer<typeof UserProfileResponseSchema> = {
-  id: 'user-001',
-  email: 'maria.santos@cabala.com',
-  name: 'Maria da Conceição',
-  spiritualProfile: {
-    orixa: 'oxum',
-    odu: 'ejionla',
-    lifePath: 11,
-    element: 'agua',
-    temperament: 'melancolico',
-  },
-  numerologyProfile: {
-    lifePath: 11,
-    expression: 3,
-    soulUrge: 7,
-    personality: 2,
-    masterNumbers: [11],
-  },
-  birthDate: '1985-03-15',
-  birthLocation: 'Salvador, BA',
-  createdAt: '2024-01-15T10:30:00Z',
-  lastLogin: new Date().toISOString(),
-};
-
-export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const parseResult = ProfileQuerySchema.safeParse({
-    include: searchParams.get('include') ?? undefined,
-  });
-
-  if (!parseResult.success) {
-    return NextResponse.json({
-      success: false,
-      error: 'Parâmetros inválidos',
-      details: parseResult.error.flatten().fieldErrors,
-    }, { status: 400 });
-  }
-
-  const { include } = parseResult.data;
-  let profile = { ...DEMO_PROFILE };
-
-  if (include === 'numerology') {
-    profile = {
-      ...profile,
-      spiritualProfile: {} as any,
-    };
-  } else if (include === 'orixa') {
-    profile = {
-      ...profile,
-      numerologyProfile: {} as any,
-    };
-  }
-
-  return NextResponse.json({
-    success: true,
-    profile,
-  });
+  // Flags
+  isOwn: boolean;
+  isPrivate: boolean;
 }
 
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const parseResult = UpdateProfileSchema.safeParse(body);
+// ─── Handler ────────────────────────────────────────────────────────────────
 
-    if (!parseResult.success) {
-      return NextResponse.json({
-        success: false,
-        error: 'Payload inválida',
-        details: parseResult.error.flatten().fieldErrors,
-      }, { status: 400 });
+export async function GET(request: NextRequest) {
+  try {
+    const params = request.nextUrl.searchParams;
+    const parsed = QuerySchema.safeParse({
+      handle: params.get('handle') ?? '',
+    });
+
+    if (!parsed.success) {
+      return fail(
+        400,
+        ErrorCode.VALIDATION_ERROR,
+        'Parâmetro handle inválido',
+        parsed.error.flatten().fieldErrors
+      );
     }
 
-    const { name, spiritualProfile } = parseResult.data;
+    const { handle } = parsed.data;
 
-    const updatedProfile = {
-      ...DEMO_PROFILE,
-      name: name ?? DEMO_PROFILE.name,
-      spiritualProfile: spiritualProfile
-        ? { ...DEMO_PROFILE.spiritualProfile, ...spiritualProfile }
-        : DEMO_PROFILE.spiritualProfile,
+    // 1) Lookup strategy: id → email exact → email local-part
+    const user = await resolveUserByHandle(handle);
+
+    if (!user) {
+      return fail(404, ErrorCode.NOT_FOUND, `Perfil @${handle} não encontrado`);
+    }
+
+    // 2) Counters (best-effort; tables podem estar vazias)
+    const [followersCount, followingCount, postsCount, groupsCount] =
+      await Promise.all([
+        prisma.follow.count({ where: { followedId: user.id } }),
+        prisma.follow.count({ where: { followerId: user.id } }),
+        prisma.post.count({
+          where: { authorId: user.id, deletedAt: null },
+        }),
+        prisma.groupMember.count({ where: { userId: user.id } }),
+      ]);
+
+    // 3) Compose DTO
+    const dto: PublicProfileDto = {
+      id: user.id,
+      handle: deriveHandle(user.email, user.id),
+      displayName: user.nomeCompleto,
+      bio: null, // User model não tem bio; SpiritualProfile tem, mas é separado
+      avatarUrl: null, // User model não tem avatarUrl em v3.0
+      coverUrl: null, // User model não tem coverUrl em v3.0
+      joinedAt: user.createdAt.toISOString(),
+
+      odu: user.mapaNatal?.oduPrincipal ?? null,
+      orixa: user.mapaNatal?.orixaSecundario ?? null,
+      elemento: null, // MapaNatal não tem elemento direto (vem de SpiritualProfile)
+      signoSolar: user.mapaNatal?.signoSolar ?? null,
+      signoLunar: user.mapaNatal?.signoLunar ?? null,
+      ascendente: user.mapaNatal?.ascendente ?? null,
+      caminhoDeVida: user.mapaNatal?.numeroPitagorico ?? null,
+
+      followersCount,
+      followingCount,
+      postsCount,
+      groupsCount,
+
+      isOwn: false, // Será reavaliado no client via auth (futuro)
+      isPrivate: false,
     };
 
-    return NextResponse.json({
-      success: true,
-      profile: updatedProfile,
-      message: 'Perfil atualizado com sucesso',
-    }, { status: 200 });
-  } catch {
-    return NextResponse.json({
-      success: false,
-      error: 'Falha ao processar atualização do perfil',
-    }, { status: 500 });
+    return ok(dto);
+  } catch (err) {
+    return handleError(err);
   }
+}
+
+// ─── Helpers ────────────────────────────────────────────────────────────────
+
+async function resolveUserByHandle(handle: string) {
+  // 1) Tenta match por id (Prisma cuid ou seed id)
+  //    Skip silenciosamente se não tiver formato cuid plausível.
+  if (looksLikeCuid(handle) || handle.startsWith('seed-')) {
+    const byId = await prisma.user.findUnique({
+      where: { id: handle },
+      include: { mapaNatal: true },
+    });
+    if (byId) return byId;
+  }
+
+  // 2) Match exato por email
+  if (handle.includes('@')) {
+    const byEmail = await prisma.user.findUnique({
+      where: { email: handle },
+      include: { mapaNatal: true },
+    });
+    if (byEmail) return byEmail;
+  }
+
+  // 3) Match por email local-part (handle = "marina" → email LIKE "marina@%")
+  const localPart = handle.split('@')[0]!.toLowerCase();
+  const byLocal = await prisma.user.findFirst({
+    where: {
+      email: { startsWith: `${localPart}@` },
+    },
+    include: { mapaNatal: true },
+    orderBy: { createdAt: 'asc' }, // deterministic pick quando há múltiplos
+  });
+  return byLocal;
+}
+
+function looksLikeCuid(value: string): boolean {
+  // cuid padrão: 25 chars, alphanumeric, começa com 'c'
+  return /^c[a-z0-9]{20,30}$/i.test(value);
+}
+
+function deriveHandle(email: string, id: string): string {
+  if (email && email.includes('@')) {
+    return email.split('@')[0]!;
+  }
+  return id.slice(0, 12);
 }
