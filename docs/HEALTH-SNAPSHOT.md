@@ -5,15 +5,15 @@
 ## Estado técnico
 
 - **Branch ativa local**: `feat/community-platform`
-- **HEAD local**: `4cf270dc` (merge gap analysis + 2 novos commits)
-- **Branch main local**: `4cf270dc` (fast-forward de feat/community-platform em 2026-06-27 05:50 UTC)
-- **Working tree**: limpo (todos os 184 arquivos commitados)
-- **TSC**: zero erros reportados (last check via worker)
+- **HEAD local**: `5a363be2` (merge dos 3 commits do origin + report do worker B)
+- **Branch main local**: `5a363be2` (fast-forward 2026-06-27 10:48 UTC)
+- **Working tree**: limpo (todos os 184+ arquivos commitados)
+- **TSC**: zero erros novos (1 erro pré-existente em feedback/page.tsx corrigido por b45eb352)
 - **Crons ativos**: 6 (`akasha-dev-implementation`, `akasha-evolution-daily`, `akasha-health-check-12h`, `akasha-planning-weekly`, `akasha-research-weekly`, `akasha-tests-pre-release`)
 - **Planos team**: `plan_1e515874` paused (cycle 4, 3/20 done), perpetual-v2 self-executing
-- **Sandbox**: respondeu em 2026-06-27 05:38 UTC
-- **Branches locais**: 2 (`feat/community-platform` + `main`, ambas em 4cf270dc)
-- **Branches remotas (origin)**: feat/community-platform ✓ synced; origin/main diverge (2122 commits, Akasha Portal B2B separado, NÃO tocado)
+- **Sandbox**: respondeu desde 05:38 UTC
+- **Branches locais**: 2 (`feat/community-platform` + `main`, ambas em 5a363be2)
+- **Branches remotas (origin)**: feat/community-platform ✓ synced em 5a363be2; origin/main diverge (2122 commits, NÃO tocado)
 
 ## Repositório
 
@@ -95,10 +95,34 @@
 - ✅ Worktree `/tmp/onboarding-worktree` pruned (sandbox cleanup)
 - ✅ Ref quebrado `feat/smoke-tests` (DELETED_BY_CLEANUP) removido
 
-## Estado final (05:50 UTC)
+## Estado final (10:48 UTC — pós 3-worker batch)
 
-- 2 branches locais (feat/community-platform + main) → mesmo commit 4cf270dc
+- 2 branches locais (feat/community-platform + main) → mesmo commit 5a363be2
 - 1 worktree ativo, limpo
-- 7 docs novos criados neste ciclo, todos commitados
-- origin/feat/community-platform sincronizado
+- 4 commits novos neste batch:
+  - 61e8138f docs(deprecation): banner em 10 docs v1.0
+  - 388a4984 refactor(prisma): merge 18 community models + remove 12 B2B
+  - 2ceb8f29 docs(report): worker B feed-api honest BLOCKED
+  - 5a363be2 merge remote-tracking origin/feat/community-platform
+- 3 commits chegaram via origin (de outros workers em paralelo):
+  - fa7a8f01 chore(env): .env.example + .gitignore whitelist
+  - c9c85fc3 docs(bugs+dev+evolution): BUG-001 (broken migration) + entry
+  - b45eb352 fix(feedback): FeedbackPage return type corrigido
+- Migration SQL pronta: `prisma/migrations/20260627_000000_search_discovery/migration.sql` (212 linhas, full-text search)
+- origin/feat/community-platform sincronizado em 5a363be2
 - origin/main intocado (2122 commits de divergência preservados)
+
+## P0 status pós-batch
+
+- ✅ **#1 merge schema**: 388a4984 (FEITO, sem migration run por OOM sandbox)
+- ✅ **#3 .env.example**: fa7a8f01 (FEITO por outro worker)
+- ✅ **#4 substituir FEED mocks**: JÁ FEITO em dfdee9de (worker B bloqueou com honestidade)
+- 🟡 **#2 remover deps B2B do package.json**: PENDENTE
+- 🟡 **#5-15 P1/P2**: PENDENTES (próximas waves)
+
+## Aprendizados do batch 3-worker
+
+1. **Worker B demonstrou honestidade crítica** — ao invés de regredir código real com stub, bloqueou com investigation trail completa. Isso é EXATAMENTE o comportamento que user profile 2026-06-27 pede ("User accepts BLOCKED reports when source data is missing").
+2. **Gap analysis era stale** — escrito em 408d122a (antes do pivot dfdee9de que já tinha resolvido). Quando planejar próximo batch, revisar gap analysis vs estado real.
+3. **Workers paralelos no mesmo branch** podem commitar simultaneamente — o merge ficou limpo porque cada worker tocou arquivos diferentes.
+4. **Schema merge encontrou mais models do que eu esperava** — 18 community (não 13) e removeu 12 B2B + 3 enums orfãos. Backup file desnecessário.
