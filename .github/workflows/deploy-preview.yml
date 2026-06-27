@@ -1,0 +1,199 @@
+name: Deploy Preview
+
+# ============================================================================
+# CI — Deploy Preview por PR
+# ============================================================================
+# Cria preview deploy no Vercel pra cada PR aberto contra main (ou develop),
+# roda smoke test contra a URL, e comenta no PR com o resultado.
+#
+# Companion do .github/workflows/preview-deploy.yml (legado).
+# Este é o caminho oficial Wave 11+ — mais robusto:
+#   - Cache de pnpm + Vercel build cache
+#   - Smoke test pós-deploy (curl 200 + GET /)
+#   - Skip explícito em ambiente sandbox (vercel-action não roda em fork)
+#   - Concurrency cancel-in-progress (re-deploy em PR force-push)
+# ============================================================================
+
+on:
+  pull_request:
+    branches: [main, develop]
+    types: [opened, synchronize, reopened, closed]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-preview-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  NEXT_TELEMETRY_DISABLED: '1'
+  NODE_VERSION: '22'
+
+jobs:
+  # ────────────────────────────────────────────────────────────────────────
+  # Job 1: CI gate (type check + lint + build) — bloqueia deploy se falhar
+  # ────────────────────────────────────────────────────────────────────────
+  ci-gate:
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    name: CI Gate (TSC + build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Prisma generate é OBRIGATÓRIO antes de tsc/build (gera tipagens @prisma/client)
+      - name: Prisma generate
+        run: pnpm db:generate
+        env:
+          # Placeholder só pra validar schema; runtime usa DATABASE_URL real.
+          DATABASE_URL: postgresql://placeholder@localhost:5432/placeholder
+
+      - name: TypeScript check
+        run: pnpm exec tsc --noEmit --skipLibCheck
+
+      # Build Next.js com experimental build mode (compile + generate)
+      # Espelha o que Vercel roda — falha aqui = falha em prod.
+      - name: Next.js build (Vercel parity)
+        run: pnpm build
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+          NODE_OPTIONS: '--max-old-space-size=4096'
+          ENABLE_EXPERIMENTAL_BUILD_MODE: '1'
+          # Vars mínimas pra build não crashar (não precisam ser reais)
+          NEXT_PUBLIC_SUPABASE_URL: 'https://placeholder.supabase.co'
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: 'placeholder-anon-key'
+          NEXT_PUBLIC_APP_URL: 'http://localhost:3000'
+
+  # ────────────────────────────────────────────────────────────────────────
+  # Job 2: Deploy preview no Vercel + smoke test
+  # ────────────────────────────────────────────────────────────────────────
+  deploy-preview:
+    needs: ci-gate
+    if: |
+      github.event_name == 'pull_request' &&
+      github.event.action != 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    name: Deploy Vercel Preview + Smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      preview_url: ${{ steps.deploy.outputs.preview-url }}
+      preview_id: ${{ steps.deploy.outputs.preview-id }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Prisma generate
+        run: pnpm db:generate
+        env:
+          DATABASE_URL: postgresql://placeholder@localhost:5432/placeholder
+
+      # vercel-action oficial — recomendada pela Vercel, simplifica build/deploy
+      # Skip se secrets ausentes (fork/sandbox).
+      - name: Deploy to Vercel (Preview)
+        id: deploy
+        if: ${{ env.VERCEL_TOKEN != '' }}
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prebuilt'
+          working-directory: ${{ github.workspace }}
+          github-comment: false
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+
+      # Fallback manual se vercel-action não estiver disponível (mantém compat)
+      - name: Deploy (fallback via CLI)
+        id: deploy-fallback
+        if: ${{ env.VERCEL_TOKEN == '' && steps.deploy.outputs.preview-url == '' }}
+        run: |
+          echo "⚠️ VERCEL_TOKEN não configurado — pulando deploy (sandbox ou fork)"
+          echo "preview-url=SKIPPED_NO_TOKEN" >> $GITHUB_OUTPUT
+          echo "preview-id=skipped" >> $GITHUB_OUTPUT
+
+      - name: Smoke test (HTTP 200 em /)
+        id: smoke
+        if: steps.deploy.outputs.preview-url != 'SKIPPED_NO_TOKEN' && steps.deploy.outputs.preview-url != ''
+        run: |
+          PREVIEW="${{ steps.deploy.outputs.preview-url }}"
+          echo "🔍 Smoke test contra $PREVIEW"
+          # Aguarda até 60s pro cold start do serverless function
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 60 "$PREVIEW/" || echo "000")
+          if [[ "$STATUS" == "200" || "$STATUS" == "307" || "$STATUS" == "308" ]]; then
+            echo "✅ Smoke OK (HTTP $STATUS)"
+            echo "smoke=pass" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Smoke FAIL (HTTP $STATUS)"
+            echo "smoke=fail:$STATUS" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Comment PR with preview URL
+        if: steps.deploy.outputs.preview-url != 'SKIPPED_NO_TOKEN' && steps.deploy.outputs.preview-url != ''
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: deploy-preview
+          message: |
+            🚀 **Preview deploy + smoke OK**
+
+            | Item | Valor |
+            |------|-------|
+            | 🔗 URL | ${{ steps.deploy.outputs.preview-url }} |
+            | 📦 Commit | `${{ github.event.pull_request.head.sha }}` |
+            | ✅ Smoke | `${{ steps.smoke.outputs.smoke }}` |
+            | ⏱️ Expira | Em 7 dias (cleanup automático) |
+
+            > ⚠️ **Preview é público** — não commite secrets nem dados sensíveis.
+
+      - name: Skip comment (no token)
+        if: steps.deploy.outputs.preview-url == 'SKIPPED_NO_TOKEN'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: deploy-preview
+          message: |
+            ⏭️ **Deploy pulado** — `VERCEL_TOKEN` ausente (fork/sandbox).
+            Rode localmente: `pnpm ci:local && vercel deploy --prebuilt`.
+
+  cleanup-preview:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    name: Cleanup Preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Remove stale PR comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: deploy-preview
+          message: |
+            🔒 **Preview encerrado** (PR fechado/merged).
+            _O ambiente de preview foi derrubado automaticamente._

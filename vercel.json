@@ -1,11 +1,15 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "framework": "nextjs",
+
+  "_comment_build": "Build = prisma generate (precisa rodar ANTES do next build pra tipar o client) + next build com experimental build mode (compile + generate estático). NODE_OPTIONS=4096 evita OOM em build pesado.",
   "buildCommand": "pnpm db:generate && pnpm build",
   "devCommand": "pnpm dev",
   "installCommand": "pnpm install --frozen-lockfile",
   "outputDirectory": ".next",
-  "framework": "nextjs",
 
+  "_comment_regions": "gru1 = São Paulo. Latência < 50ms pra usuário BR. Trocar pra iad1 (US East) se audiência principal for EUA.",
   "regions": ["gru1"],
 
   "build": {
@@ -22,6 +26,7 @@
     "productionBranch": "main"
   },
 
+  "_comment_redirects": "Redirects mantidos mínimos. /blog → /artigos é dead redirect (não temos /artigos) — removido. /home → / é seguro. www → apex é SEO (canonicaliza domínio).",
   "redirects": [
     {
       "source": "/home",
@@ -29,104 +34,85 @@
       "permanent": true
     },
     {
-      "source": "/blog",
-      "destination": "/artigos",
+      "source": "/www",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.cabaladoscaminhos.com.br"
+        }
+      ],
+      "destination": "https://cabaladoscaminhos.com.br",
       "permanent": true
-    },
-    {
-      "source": "/docs",
-      "destination": "/docs/overview",
-      "permanent": false
     }
   ],
 
+  "_comment_rewrites": "Rewrites só pra compat. /r/:path* → /redirect/:path* (links curtos). /api/v1/* mantém compat pra futuro versioning sem quebrar clients existentes.",
   "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    },
     {
       "source": "/r/:path*",
       "destination": "/redirect/:path*"
+    },
+    {
+      "source": "/api/v1/:path*",
+      "destination": "/api/:path*"
     }
   ],
 
+  "_comment_headers": "Security headers em todas as rotas. Cache-Control imutável pra /_next/static e imagens (hash no filename). API routes = no-store (sempre fresh). HSTS preload = opt-in via submit ao hstspreload.org.",
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        },
-        {
-          "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=()"
-        },
-        {
-          "key": "Strict-Transport-Security",
-          "value": "max-age=63072000; includeSubDomains; preload"
-        }
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
+        { "key": "X-DNS-Prefetch-Control", "value": "on" }
       ]
     },
     {
       "source": "/api/(.*)",
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-store, no-cache, must-revalidate, proxy-revalidate"
-        }
+        { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, proxy-revalidate" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" }
       ]
     },
     {
       "source": "/_next/static/(.*)",
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
     },
     {
-      "source": "/(.*)\\.(ico|png|jpg|jpeg|svg|webp|avif)",
+      "source": "/(.*)\\.(ico|png|jpg|jpeg|svg|webp|avif|woff|woff2)",
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
+        { "key": "Service-Worker-Allowed", "value": "/" }
       ]
     }
   ],
 
-  "crons": [
-    {
-      "path": "/api/cron/daily-inspiration",
-      "schedule": "0 6 * * *"
-    },
-    {
-      "path": "/api/cron/cleanup-tokens",
-      "schedule": "0 3 * * 0"
-    }
-  ],
+  "_comment_crons": "Crons usam autenticação via header `Authorization: Bearer ${CRON_SECRET}` (validado dentro de cada route handler). Vercel injeta automaticamente o header quando configurado aqui. Horários em UTC. ATENÇÃO: crons intencionalmente VAZIOS até que os handlers existam — ver docs/DEPLOY-WAVE11.md §Findings.",
+  "crons": [],
 
+  "_comment_functions": "Memory/duração por rota. AI endpoints precisam 1024MB e 60s (LLM é lento). Webhooks = 30s (Stripe tem retry próprio).",
   "functions": {
-    "src/app/api/**/*.ts": {
+    "src/app/api/notifications/**/*.ts": {
       "maxDuration": 30,
       "memory": 512
     },
-    "src/app/api/ai/**/*.ts": {
+    "src/app/api/akashic/**/*.ts": {
       "maxDuration": 60,
       "memory": 1024
     },
-    "src/app/api/webhooks/stripe.ts": {
+    "src/app/api/webhooks/**/*.ts": {
       "maxDuration": 30,
       "memory": 512
     }
