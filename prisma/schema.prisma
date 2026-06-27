@@ -8,130 +8,122 @@ datasource db {
 }
 
 // ============================================================================
-// ENUMS
+// AKASHA PORTAL — SCHEMA CONSOLIDADO (2026-06-27)
+// ============================================================================
+// Refs: ARCHITECTURE v3.0 §3 (Remove B2B/Zelador/Ferramentas pessoais)
+// Refs: gap analysis 2026-06-27 P0 #1 (mesclar schema + remover B2B)
+//
+// Histórico:
+//   - 2026-06-26: comunidade adicionada em prisma/community.prisma (18 modelos)
+//   - 2026-06-27: community.prisma mesclado neste arquivo. 12 modelos B2B
+//     legacy removidos (Operator, Client, Reading, Report, Assinatura,
+//     Credito, TransacaoCredito, Empresa, Reminder, BirthChart,
+//     SynastryResult, LeituraHistorico).
+//
+// Visão:
+//   - Comunidade viva de espiritualidade universalista + IA co-evoluindo
+//   - Posts, comentários, grupos por tradição, biblioteca de artigos
+//   - Perfil espiritual público, follows, likes
+//   - User é o agregado raiz; mapaNatal + spiritualProfile coexistem
 // ============================================================================
 
-enum TipoTransacao {
-  CREDITO
-  DEBITO
+// ============================================================================
+// ENUMS — COMUNIDADE
+// ============================================================================
+
+enum Visibility {
+  PUBLIC       // qualquer pessoa vê (mesmo sem login)
+  COMMUNITY    // só membros logados
+  PRIVATE      // só o próprio dono
 }
 
-// ============================================================================
-// ÉPICO A — AUTENTICAÇÃO (Doc 04 §1)
-// ============================================================================
-
-enum UserRole {
-  OPERATOR
+enum GroupRole {
+  MEMBER
+  MODERATOR
   ADMIN
 }
 
-enum ReadingStatus {
-  PENDING     // Mesa preenchida, dossiê ainda não gerado
-  GENERATING  // IA processando
-  COMPLETED   // Dossiê gerado com sucesso
-  ERROR       // Falha na geração
+enum ArticleType {
+  SCIENTIFIC_PAPER
+  MAGAZINE_ARTICLE
+  BOOK
+  VIDEO
+  PODCAST
+  ESSAY
+}
+
+// 2026-06-27 — alinhado com GRADE system para a Biblioteca Akasha
+// HIGH        = revisões sistemáticas / meta-análises de RCTs
+// MEDIUM      = RCTs individuais ou coortes bem desenhadas
+// LOW         = observacionais pequenos / séries de casos
+// ANECDOTAL   = ensaios, opinião de especialista, valor tradicional
+enum EvidenceLevel {
+  ANECDOTAL
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum PostType {
+  TEXT
+  LINK
+  ARTICLE
+  QUESTION
+  EXPERIENCE
+  PRACTICE
+}
+
+enum NotificationType {
+  // Social graph
+  LIKE
+  COMMENT
+  POST_REPLY
+  FOLLOW
+  MENTION
+  // Community
+  GROUP_INVITE
+  GROUP_POST
+  GROUP_ROLE_CHANGE
+  // Content
+  ARTICLE_RECOMMENDATION
+  ARTICLE_PUBLISHED
+  // System
+  SYSTEM_ALERT
+  MODERATION_ACTION
+  // Meta
+  DIGEST_WEEKLY
+}
+
+enum NotificationChannel {
+  IN_APP
+  EMAIL
+  PUSH
+}
+
+enum EntityType {
+  POST
+  COMMENT
+  USER
+  GROUP
+  ARTICLE
+  MENTION
+  SYSTEM
+}
+
+enum GroupInviteStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  REVOKED
 }
 
 // ============================================================================
-// MODELOS CANÔNICOS (Doc 04 §1) — Client / Reading / Report
+// USER — agregado raiz
 // ============================================================================
-
-/// Usuário operador (terapeuta) — modelo canônico da Fase 1.
-model Operator {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  name         String
-  passwordHash String
-  role         UserRole @default(OPERATOR)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  readings Reading[]
-
-  @@map("operators")
-}
-
-/// Consulente — dados fixos do cliente. Os mapas calculados ficam
-/// armazenados em JSON conforme estruturas do Doc 04 §2.
-model Client {
-  id String @id @default(cuid())
-
-  // Identificação
-  fullName     String
-  birthDate    DateTime
-  birthTime    String
-  birthCity    String
-  birthState   String
-  birthCountry String
-
-  // Coordenadas para cálculo astral
-  birthLatitude  Float?
-  birthLongitude Float?
-  birthTimezone  String?
-
-  // Mapas cacheados (calculados uma única vez no cadastro)
-  astrologyMap  Json?
-  kabalisticMap Json?
-  tantricMap    Json?
-  oduBirth      Json?
-
-  notes     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  readings Reading[]
-
-  @@map("clients")
-}
-
-/// Leitura — uma sessão de Mesa Real.
-model Reading {
-  id     String        @id @default(cuid())
-  date   DateTime      @default(now())
-  status ReadingStatus @default(PENDING)
-  notes  String?
-
-  /// Matriz 9x4 salva como JSON. Estrutura: MatrixData
-  matrixData Json
-
-  // Relacionamentos
-  clientId String
-  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
-
-  operatorId String
-  operator   Operator @relation(fields: [operatorId], references: [id])
-
-  report Report?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("readings")
-}
-
-/// Dossiê — relatório interpretativo gerado pelo LLM.
-model Report {
-  id String @id @default(cuid())
-
-  /// Conteúdo gerado pelo LLM. Estrutura: ReportContent
-  content Json
-
-  llmModel   String?
-  tokensUsed Int?
-  pdfUrl     String?
-
-  readingId String  @unique
-  reading   Reading @relation(fields: [readingId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("reports")
-}
-
-// =====================
-// USUÁRIO E AUTENTICAÇÃO
-// =====================
+// Mantido do schema legacy. Removidas relações para modelos B2B deletados
+// (assinatura, credito, empresas, historicoLeituras). Stripe fields
+// preservados por ora (cleanup B2B completo é tarefa separada).
+// ============================================================================
 
 model User {
   id              String   @id @default(cuid())
@@ -143,20 +135,13 @@ model User {
   localNascimento String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
-  journalEntries    JournalEntry[]
 
-  mapaNatal MapaNatal?
+  journalEntries JournalEntry[]
+  mapaNatal      MapaNatal?
+  favoritos      Favorito[]
+  temaPreferido  String        @default("mystical")
 
-  assinatura Assinatura?
-
-  credito           Credito?
-  empresas          Empresa[]
-  favoritos         Favorito[]
-  historicoLeituras LeituraHistorico[]
-  temaPreferido     String             @default("mystical")
-
-  supabaseUserId String? @unique
-
+  supabaseUserId       String? @unique
   stripeCustomerId     String? @unique
   stripeSubscriptionId String? @unique
   planoAssinatura      String?
@@ -203,100 +188,6 @@ model MapaNatal {
   @@index([arcanoPessoal])
   @@index([createdAt])
   @@map("mapa_natal")
-}
-
-// =====================
-// ASSINATURA
-// =====================
-
-model Assinatura {
-  id     String @id @default(cuid())
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  plano                String  @default("iniciante")
-  status               String  @default("active")
-  stripeCustomerId     String? @unique
-  stripeSubscriptionId String? @unique
-
-  dataInicio       DateTime  @default(now())
-  dataProximoCobro DateTime?
-
-  moduloPlanetas    Boolean @default(false)
-  moduloLetras      Boolean @default(false)
-  moduloGeometria   Boolean @default(false)
-  moduloFrequencias Boolean @default(false)
-  moduloEmpresa     Boolean @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([status])
-  @@index([dataProximoCobro])
-  @@index([plano])
-  @@map("assinaturas")
-}
-
-// =====================
-// CRÉDITOS
-// =====================
-
-model Credito {
-  id     String @id @default(cuid())
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  saldo Int @default(0)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  transacoes TransacaoCredito[]
-
-  @@index([saldo])
-  @@index([createdAt])
-  @@map("creditos")
-}
-
-model TransacaoCredito {
-  id         String        @id @default(cuid())
-  creditoId  String
-  credito    Credito       @relation(fields: [creditoId], references: [id], onDelete: Cascade)
-  tipo       TipoTransacao
-  quantidade Int
-  descricao  String?
-  operacao   String?
-  createdAt  DateTime      @default(now())
-
-  @@index([creditoId, createdAt])
-  @@index([tipo])
-  @@index([createdAt])
-  @@map("transacoes_credito")
-}
-
-// =====================
-// EMPRESA (FUTURO)
-// =====================
-
-model Empresa {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  nomeFantasia String
-  razaoSocial  String?
-  cnpj         String?
-  dataFundacao DateTime?
-
-  numeroNome  Int?
-  numeroRazao Int?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([userId])
-  @@index([cnpj])
-  @@map("empresas")
 }
 
 // =====================
@@ -494,75 +385,6 @@ model Mensagem {
 }
 
 // =====================
-// REMINDERS
-// =====================
-
-model Reminder {
-  id              String    @id @default(cuid())
-  userId          String
-  type            String
-  frequency       String
-  title           String?
-  message         String?
-  time            String
-  timezone        String?
-  schedule        Json?
-  enabled         Boolean   @default(true)
-  lastTriggeredAt DateTime?
-  nextTriggerAt   DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([userId])
-  @@index([enabled])
-  @@index([nextTriggerAt])
-  @@map("reminders")
-}
-
-// =====================
-// MAPA NATAL - GRAPHICS/STORAGE
-// =====================
-
-model BirthChart {
-  id     String @id @default(cuid())
-  userId String
-
-  birthDate DateTime
-  birthTime String?
-  latitude  Float?
-  longitude Float?
-  chartData Json?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([userId])
-  @@index([birthDate])
-  @@index([createdAt])
-  @@map("birth_charts")
-}
-
-model SynastryResult {
-  id        String  @id @default(cuid())
-  userId    String
-  partnerId String?
-
-  chart1Id String?
-  chart2Id String?
-
-  resultData Json
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([userId])
-  @@index([partnerId])
-  @@index([createdAt])
-  @@map("synastry_results")
-}
-
-// =====================
 // FAVORITOS
 // =====================
 
@@ -584,23 +406,8 @@ model Favorito {
 }
 
 // =====================
-// LEITURA HISTÓRICO
+// JOURNAL
 // =====================
-
-model LeituraHistorico {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  type String
-  data Json
-
-  createdAt DateTime @default(now())
-
-  @@index([userId])
-  @@index([type])
-  @@index([createdAt])
-}
 
 model JournalEntry {
   id        String   @id @default(cuid())
@@ -618,3 +425,568 @@ model JournalEntry {
   @@index([mood])
   @@index([createdAt])
   @@map("journal_entries")
+}
+
+// ============================================================================
+// COMUNIDADE — modelos adicionados em 2026-06-26 (mesclados em 2026-06-27)
+// ============================================================================
+
+// ============================================================================
+// PERFIL ESPIRITUAL (camada pessoal, compartilhável)
+// ============================================================================
+// Espelha o mapa espiritual do usuário mas com visibilidade configurável.
+// Mantém o cache do cálculo pra não recalcular toda hora.
+
+model SpiritualProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+
+  // Dados de nascimento
+  birthName     String
+  birthDate     DateTime
+  birthTime     String?
+  birthPlace    String?
+
+  // Resultado calculado pelo motor espiritual (cache)
+  caminhoDeVida    Int?
+  numeroPessoal    Int?
+  oduNascimento    String?   // ex: "Alafia"
+  orixaRegente     String?   // ex: "Oxalá"
+  signoSolar       String?   // ex: "Escorpião"
+  ascendente       String?
+  elementoDominante String?
+
+  // Mapa completo (JSON) — gerado pelos engines
+  mapaJson Json?
+
+  // Visibilidade do mapa
+  visibility Visibility @default(COMMUNITY)
+
+  // Bio curta que aparece no perfil
+  bio String?
+
+  // Onboarding flag
+  onboardedAt DateTime?
+
+  // 2026-06-27 — Onda 12 Search & Discovery
+  searchVector Unsupported("tsvector")?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([caminhoDeVida])
+  @@index([signoSolar])
+  @@index([oduNascimento])
+  @@index([orixaRegente])
+  @@map("spiritual_profiles")
+}
+
+// ============================================================================
+// POSTS DA COMUNIDADE
+// ============================================================================
+
+model Post {
+  id String @id @default(cuid())
+
+  authorId String
+  content  String @db.Text
+
+  type     PostType @default(TEXT)
+  // Tags rápidas
+  tradition String?  // "cabala", "ifa", "xamanismo", "tantra", "reiki", "ayurveda",...
+  topic    String?  // sub-tema: "meditacao", "ervas", "sonhos", "rituais",...
+  // Para posts de link ou compartilhamento de artigo
+  mediaUrls String[]
+  linkUrl   String?
+  // Para citações a fontes científicas
+  references Json?  // [{title, url, doi, year}]
+
+  // Grupo ao qual pertence (opcional)
+  groupId String?
+  group   Group?  @relation(fields: [groupId], references: [id], onDelete: SetNull)
+
+  // Contadores denormalizados (atualizar via trigger ou app)
+  likesCount    Int @default(0)
+  commentsCount Int @default(0)
+  sharesCount   Int @default(0)
+
+  comments Comment[]
+  likes    Like[]
+
+  // Soft delete
+  deletedAt DateTime?
+
+  // 2026-06-27 — Onda 12 Search & Discovery
+  // Coluna tsvector populada por trigger Postgres (ver migration search_discovery)
+  // GIN index + pg_trgm index criados no SQL (não no Prisma)
+  searchVector Unsupported("tsvector")?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([authorId, createdAt])
+  @@index([groupId, createdAt])
+  @@index([tradition])
+  @@index([topic])
+  @@index([createdAt])
+  @@map("posts")
+}
+
+model Comment {
+  id String @id @default(cuid())
+
+  postId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  authorId String
+  content  String @db.Text
+
+  // Threading
+  parentId String?
+  parent   Comment?  @relation("replies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies  Comment[] @relation("replies")
+
+  likesCount Int @default(0)
+  likes      CommentLike[]
+
+  deletedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([postId, createdAt])
+  @@index([authorId])
+  @@index([parentId])
+  @@map("comments")
+}
+
+// ============================================================================
+// GRUPOS POR TRADIÇÃO / LINHA ESPIRITUAL
+// ============================================================================
+// Cada grupo representa uma sub-comunidade focada em uma tradição.
+// Hierarquia de papéis: ADMIN (criador/promovido) > MODERATOR > MEMBER.
+// ============================================================================
+
+model Group {
+  id          String  @id @default(cuid())
+  slug        String  @unique  // "cabala", "ifa", "xamanismo", "tantra", "reiki", "ayurveda"
+  name        String
+  description String  @db.Text
+  longDescription String? @db.Text  // descrição longa exibida na aba "Sobre"
+  rules       String[]            // regras da comunidade (3-5 itens curtos)
+  iconUrl     String?             // avatar (ícone/emoji)
+  bannerUrl   String?             // cover image
+  tradition   String              // linha espiritual (ex: "cabala", "ifa")
+
+  // Configurações
+  isPublic    Boolean @default(true)         // false = requer invite
+  requireApproval Boolean @default(false)    // futuro: fila de aprovação
+
+  // Quem criou o grupo (referência a User/Operator por id)
+  createdBy   String?
+
+  // Contadores denormalizados (atualizar via app)
+  membersCount Int @default(0)
+  postsCount   Int @default(0)
+
+  members GroupMember[]
+  invites GroupInvite[]
+  posts   Post[]
+
+  // 2026-06-27 — Onda 12 Search & Discovery
+  searchVector Unsupported("tsvector")?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tradition])
+  @@index([isPublic])
+  @@index([createdBy])
+  @@map("groups")
+}
+
+model GroupMember {
+  groupId String
+  group   Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  userId  String
+  role    GroupRole @default(MEMBER)
+
+  // Quem convidou (opcional — audit trail)
+  invitedBy String?
+
+  joinedAt DateTime @default(now())
+
+  @@id([groupId, userId])
+  @@index([userId])
+  @@index([role])
+  @@map("group_members")
+}
+
+model GroupInvite {
+  id        String   @id @default(cuid())
+  groupId   String
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  // Token único compartilhado no link de invite
+  token     String   @unique
+
+  // Quem convidou (moderador/admin)
+  invitedBy String
+
+  // Destinatário (id do usuário convidado, ou null se email-link)
+  inviteeUserId String?
+  inviteeEmail  String?
+
+  // Quem aceitou (caso tenha sido por link com usuário)
+  acceptedBy    String?
+  acceptedAt    DateTime?
+
+  status    GroupInviteStatus @default(PENDING)
+  expiresAt DateTime
+
+  createdAt DateTime @default(now())
+
+  @@index([groupId, status])
+  @@index([inviteeUserId])
+  @@map("group_invites")
+}
+
+// ============================================================================
+// BIBLIOTECA COLETIVA — Artigos, papers, livros
+// ============================================================================
+// Atualizado em 2026-06-27 para a "Biblioteca Akasha Curada":
+//   - Campos bibliográficos formais (authors[], journal, year, citations)
+//   - Idioma e level de evidência GRADE-aligned
+//   - Tags livres + tradition canônica
+//   - Métricas (viewCount, bookmarkCount, citations) para ranking
+// ============================================================================
+
+model Article {
+  id    String @id @default(cuid())
+  slug  String @unique
+  title String
+
+  // Conteúdo
+  summary String @db.Text  // resumo curto (~200 palavras, PT-BR) — preview
+  content String @db.Text  // conteúdo completo (markdown PT-BR)
+
+  // --- Bibliographic core ---
+  // Autores estruturados como JSON para suportar "Lastname FM, Lastname FM" no citation
+  // e futuro link a um Author canônico. Mantemos compat com o campo antigo `contributor`.
+  authors   String[]  // ["Griffiths RR", "Johnson MW", ...]
+  journal   String?   // "JAMA Psychiatry", "Cochrane Database Syst Rev", ...
+  year      Int       // ano de publicação
+  doi       String?   // DOI canônico (sem prefixo https://doi.org/)
+  url       String?   // URL externa (DOI URL, PubMed, OpenAlex landing)
+
+  // --- Tags / tradição ---
+  tags      String[]    // ["meditacao", "neurociencia", "mbsr", ...]
+  tradition String?     // "meditacao", "xamanismo", "cabala", "ifa", "tantra", "reiki", ...
+
+  // --- Avaliação de evidência (GRADE-aligned) ---
+  evidenceLevel EvidenceLevel @default(ANECDOTAL)
+
+  // Idioma do paper original (article.language). O conteúdo do Akasha é sempre PT-BR.
+  language  String  @default("en")  // "en" | "pt" | "es"
+
+  // --- Mantidos por compat ---
+  type          ArticleType     @default(SCIENTIFIC_PAPER)
+  body          String?         @db.Text  // alias histórico de `content`
+  topics        String[]                  // alias histórico de `tags` (mantido populado igual)
+  externalUrl   String?                   // alias histórico de `url`
+  references    Json?            // [{title, url, doi, year}]
+  authorId      String?
+  contributor   String?
+
+  // --- Métricas ---
+  citations      Int @default(0)  // citações externas (do Crossref/OpenAlex)
+  viewCount      Int @default(0)  // visualizações no Akasha
+  bookmarkCount  Int @default(0)  // saves dos usuários
+  likesCount     Int @default(0)  // likes (mantido para compat)
+
+  // Embeddings para recomendação semântica (Fase 3)
+  // embedding Unsupported("vector(1536)")? -- quando ativar pgvector
+
+  // 2026-06-27 — Onda 12 Search & Discovery
+  // Coluna tsvector populada por trigger Postgres (ver migration search_discovery)
+  searchVector Unsupported("tsvector")?
+
+  // --- Auditoria / proveniência ---
+  // Quem inseriu (curador humano ou seed-bot)
+  curatedBy  String?
+  // Fonte de onde veio (openalex-id W..., pubmed-id PMID..., manual, ...)
+  source     String?
+  // Hash para detectar duplicatas em re-seed
+  sourceHash String?
+
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([type])
+  @@index([tradition])
+  @@index([evidenceLevel])
+  @@index([year])
+  @@index([language])
+  @@index([publishedAt])
+  @@index([viewCount])
+  @@index([bookmarkCount])
+  @@index([citations])
+  @@index([doi])
+  @@index([topics])
+  @@index([tags])
+  @@map("articles")
+}
+
+// ============================================================================
+// SOCIAL GRAPH
+// ============================================================================
+
+model Follow {
+  followerId String
+  followedId String
+
+  createdAt DateTime @default(now())
+
+  @@id([followerId, followedId])
+  @@index([followedId])
+  @@map("follows")
+}
+
+model Like {
+  userId String
+  postId String
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@id([userId, postId])
+  @@index([postId])
+  @@map("likes")
+}
+
+model CommentLike {
+  userId    String
+  commentId String
+
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@id([userId, commentId])
+  @@index([commentId])
+  @@map("comment_likes")
+}
+
+model Bookmark {
+  id     String @id @default(cuid())
+  userId String
+  articleId String
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, articleId])
+  @@index([userId])
+  @@map("bookmarks")
+}
+
+// ============================================================================
+// NOTIFICAÇÕES — Modelo consolidado (in-app + email + push)
+// ============================================================================
+// Adicionado em 2026-06-27 — Onda 3 (Sistema de notificações real).
+// Suporta: tipos sociais (like/comment/follow/mention), grupos, artigos,
+// alertas de sistema, moderação, e digest semanal.
+//
+// Batch: o campo `groupKey` permite agrupar várias notificações do mesmo
+// tipo + entity em uma (ex: 5 likes → "+5 likes"). A aplicação usa
+// upsert por (userId, type, groupKey) quando aplicável.
+// ============================================================================
+
+model Notification {
+  id     String @id @default(cuid())
+  userId String  // destinatário
+  type   NotificationType
+
+  // Quem gerou (opcional, null para SYSTEM_ALERT etc)
+  actorId String?
+
+  // Entidade alvo (polimórfica via entityType + entityId)
+  entityType EntityType?
+  entityId   String?
+
+  // Referência direta (atalho para queries comuns — denormalizado)
+  postId    String?
+  commentId String?
+  groupId   String?
+  articleId String?
+
+  // Chave de agrupamento para batch (ex: "post:<id>:LIKES")
+  // Permite consolidar múltiplas notificações do mesmo tipo na mesma entidade
+  groupKey String?
+
+  // Contador quando batched (ex: 5 likes virou 1 notif com count=5)
+  count Int @default(1)
+
+  // Snapshot do ator mais recente (denormalizado p/ evitar joins no feed)
+  // {id, displayName, handle, avatarUrl}
+  actorSnapshot Json?
+
+  // Conteúdo extra (preview, links, deep-link, etc)
+  payload Json?
+
+  read Boolean @default(false)
+  readAt DateTime?
+
+  // Rastreamento de canais entregues (multi-canal)
+  emailedAt DateTime?  // quando foi enviado por email
+  pushedAt  DateTime?  // quando foi entregue via push
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, groupKey])
+  @@index([userId, read, createdAt])
+  @@index([userId, createdAt])
+  @@index([userId, type, createdAt])
+  @@index([groupKey])
+  @@map("notifications")
+}
+
+// Preferências de notificação por usuário e tipo
+// Quando ausente, default é: IN_APP=true, EMAIL=true, PUSH=false
+model NotificationPreference {
+  id     String @id @default(cuid())
+  userId String
+  type   NotificationType
+
+  inApp Boolean @default(true)
+  email Boolean @default(true)
+  push  Boolean @default(false)
+
+  // Digest semanal separado (se true, emails individuais são suprimidos)
+  weeklyDigest Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, type])
+  @@index([userId])
+  @@map("notification_preferences")
+}
+
+// Assinaturas de Web Push (opt-in, armazenadas para entrega de pushes)
+model PushSubscription {
+  id     String @id @default(cuid())
+  userId String
+
+  // Endpoint único por subscription (RFC 8030)
+  endpoint String  @unique
+  // Criptografia — p256dh + auth
+  p256dh   String
+  auth     String
+
+  // Metadata
+  userAgent String?
+  ipAddress String?
+
+  // Controle
+  active     Boolean   @default(true)
+  lastSentAt DateTime?
+  lastError  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([active, userId])
+  @@map("push_subscriptions")
+}
+
+// Tokens de unsubscribe (LGPD-friendly) — links assinados em emails
+// Pra simplicidade, geramos tokens opacos (não JWT) armazenados no DB
+model UnsubscribeToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  // null = unsubscribe de TODAS as notificações
+  // string = apenas este tipo
+  type      String?
+  expiresAt DateTime
+  usedAt    DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("unsubscribe_tokens")
+}
+
+// ============================================================================
+// CONTEÚDO CURADO POR IA (Fase 3 — IA Curadora)
+// ============================================================================
+// Histórico de respostas da IA, para co-evolução e feedback da comunidade.
+
+model AiConversation {
+  id     String @id @default(cuid())
+  userId String
+
+  title String?  // pode ser auto-gerado do primeiro prompt
+
+  messages AiMessage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, updatedAt])
+  @@map("ai_conversations")
+}
+
+model AiMessage {
+  id             String         @id @default(cuid())
+  conversationId String
+  conversation   AiConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  role    String  // "user" | "assistant" | "system"
+  content String  @db.Text
+
+  // Fontes que a IA usou pra responder (artigos da biblioteca)
+  sources Json?  // [articleId, articleId, ...]
+
+  // Feedback da comunidade (pra treinar/melhorar)
+  helpful   Boolean?
+  feedbackText String?
+
+  createdAt DateTime @default(now())
+
+  @@index([conversationId, createdAt])
+  @@map("ai_messages")
+}
+
+// ============================================================================
+// VIEW DO FEED (denormalizada para performance)
+// ============================================================================
+// Pré-computa o que aparece na timeline de cada usuário.
+// Atualizada por triggers do Postgres ou via cron.
+
+model FeedItem {
+  id     String @id @default(cuid())
+  userId String  // pra quem é esse item de feed
+
+  // O que é esse item
+  postId String?
+
+  // Score (quanto maior, mais relevante)
+  score Float
+
+  // Razão ("followed_user_post", "group_post", "trending_topic", "article_recommendation")
+  reason String
+
+  seen Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, seen, createdAt])
+  @@index([userId, createdAt])
+  @@map("feed_items")
+}
