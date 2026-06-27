@@ -13,6 +13,7 @@ import { ok, fail, handleError, ErrorCode } from '@/lib/community/api';
 import { toggleLike } from '@/lib/community/posts';
 import { requireViewer } from '@/lib/community/auth';
 import { prisma } from '@/lib/prisma';
+import { checkUserRateLimit, userRateLimitMessage } from '@/lib/rate-limit-user';
 import {
   createNotification,
   fetchActorSnapshot,
@@ -38,6 +39,16 @@ export async function POST(_request: NextRequest, context: RouteContext) {
         e.statusCode ?? 401,
         ErrorCode.UNAUTHORIZED,
         'Você precisa estar logado para curtir'
+      );
+    }
+
+    // Wave 11 — rate limit granular por user (like: 100/h)
+    const userRl = checkUserRateLimit(viewer.id, 'like');
+    if (!userRl.allowed) {
+      return fail(
+        429,
+        ErrorCode.RATE_LIMIT_EXCEEDED,
+        userRateLimitMessage('like', userRl.resetIn)
       );
     }
 

@@ -992,3 +992,69 @@ model FeedItem {
   @@index([userId, createdAt])
   @@map("feed_items")
 }
+
+// ============================================================================
+// AUDIT LOG — LGPD Art. 37 + Segurança (Wave 11)
+// ============================================================================
+// Registra ações sensíveis para auditoria e suporte a direitos do titular.
+// Categorias: AUTH (login/logout/password), LGPD (export/delete/consent),
+// CONTENT (post/comment/like/follow), ADMIN (moderação).
+//
+// Política de retenção: 12 meses para AUTH/CONTENT; 24 meses para LGPD.
+// Após retenção, job cron deve purgar registros antigos.
+//
+// Hash do IP (sha256 + salt) para evitar armazenar IP cru em conformidade
+// com LGPD art. 46 (dados de tráfego). Em caso de ordem judicial, é
+// possível re-derivar via salt guardado fora do banco.
+// ============================================================================
+
+enum AuditAction {
+  // Auth
+  LOGIN_SUCCESS
+  LOGIN_FAIL
+  LOGOUT
+  PASSWORD_RESET_REQUEST
+  PASSWORD_RESET_SUCCESS
+  ACCOUNT_DELETE_REQUEST
+  ACCOUNT_DELETE_CONFIRMED
+  // LGPD
+  DATA_EXPORT_REQUEST
+  DATA_EXPORT_DELIVERED
+  CONSENT_GRANTED
+  CONSENT_REVOKED
+  // Content (sample; pode crescer)
+  POST_CREATED
+  POST_DELETED
+  COMMENT_CREATED
+  COMMENT_DELETED
+  // Admin / moderação
+  ADMIN_USER_BAN
+  ADMIN_CONTENT_REMOVE
+}
+
+model AuditLog {
+  id        String      @id @default(cuid())
+
+  // Quem fez (subject) — opcional (eventos anônimos como login_fail sem userId)
+  actorId   String?
+  // Sobre quem (target) — útil para admin actions sobre outros
+  targetId  String?
+
+  // Categoria + ação específica
+  action    AuditAction
+
+  // Contexto extra (sem PII). Exemplos:
+  //   { ipHash: "...", userAgent: "Chrome/120", metadata: { reason: "..." } }
+  metadata  Json?
+
+  // Hash da request-id + timestamp — útil pra deduplicação e correlação
+  requestId String?
+
+  createdAt DateTime @default(now())
+
+  @@index([actorId, createdAt])
+  @@index([action, createdAt])
+  @@index([targetId, createdAt])
+  @@index([createdAt])
+  @@map("audit_logs")
+}

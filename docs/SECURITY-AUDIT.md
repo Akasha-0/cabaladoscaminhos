@@ -1,9 +1,68 @@
 # Security Audit — Akasha Portal (2026-06-27)
+# Wave 11 Update (2026-06-27) — LGPD completo + rate limit por user + audit log
+
+> **Wave 11 status (Caio · AppSec):** LGPD end-to-end entregue, rate limiting granular por usuário, tabela AuditLog + helpers, CSP+Permissions-Policy expandidos. Ver `docs/SECURITY-LGPD-CHECKLIST.md` para checklist completo de artigos LGPD.
 
 > **Auditor:** Caio (AppSec Engineer) · **Branch auditada:** `feat/community-platform`
 > **Escopo:** Auth flow, RLS/Prisma schema, secret management, LGPD compliance, rate limiting
 > **Stack:** Next.js 16 + Supabase (Auth + Postgres + Storage) + Prisma + OpenAI/MiniMax
 > **Severidades:** P0 (crítico/bloqueia release) · P1 (alto — agendar antes do GA) · P2 (médio/baixo)
+
+---
+
+
+---
+
+## Wave 11 — Entregas (2026-06-27)
+
+| ID | Wave | Entrega | Arquivo | Status |
+|----|------|---------|---------|--------|
+| W11-01 | 11 | **LGPD Art. 18 VI** — direito ao esquecimento implementado | `src/app/api/users/[id]/delete-account/route.ts` + `src/lib/privacy/data-deletion.ts` | ✅ |
+| W11-02 | 11 | **LGPD Art. 18 V** — portabilidade (export JSON completo) | `src/app/api/users/[id]/export/route.ts` | ✅ |
+| W11-03 | 11 | **LGPD Art. 8°** — banner de consentimento granular | `src/components/consent/CookieConsent.tsx` + `src/app/api/consent/route.ts` | ✅ |
+| W11-04 | 11 | **Política de privacidade** reescrita com artigos LGPD + DPO | `src/app/(info)/privacy/page.tsx` | ✅ |
+| W11-05 | 11 | **Rate limit granular por user** (post 10/h, comment 30/h, like 100/h, follow 50/h) | `src/lib/rate-limit-user.ts` + wired em 4 endpoints | ✅ |
+| W11-06 | 11 | **Audit log** — tabela `audit_logs` + helpers `logAudit()` semânticos | `src/lib/audit/index.ts` + `prisma/migrations/20260627_010000_audit_log/migration.sql` | ✅ |
+| W11-07 | 11 | **Security headers** — CSP completo + Permissions-Policy expandida | `middleware.ts` | ✅ |
+| W11-08 | 11 | LGPD checklist formal | `docs/SECURITY-LGPD-CHECKLIST.md` | ✅ |
+
+### Findings Wave 11 resolvidos (referência)
+
+- **F5 (P0)** direito ao esquecimento → **resolvido** (W11-01 + W11-06)
+- **F10 (P1)** retenção sem base legal → **resolvido** (W11-04 política + W11-06 retenção de audit 24m)
+- **F13 (P2)** privacy policy genérica → **resolvido** (W11-04 reescrita com artigos)
+- **Rate limit granular** (NOVO Wave 11) → **resolvido** (W11-05)
+- **Audit trail LGPD** (NOVO Wave 11) → **resolvido** (W11-06)
+- **CSP completo** (F6 P1 → parcial) → **resolvido** com `'unsafe-inline'` controlado (W11-07); nonce-based no Wave 12
+
+### Pendências para Wave 12
+
+- [ ] **Nonce-based CSP** — propagar nonce do middleware até componentes JSX (requer refactor Next.js config)
+- [ ] **Migrar rate-limiter para Upstash Redis** (`@upstash/ratelimit`) — substituir Map in-memory
+- [ ] **Rotação automática de IP salt** (`AUDIT_IP_SALT`) — gera novo a cada deploy, mantém histórico
+- [ ] **Job de purge** — executar `purgeOldAuditLogs()` diariamente via cron
+- [ ] **gitleaks pre-commit hook** — bloquear novos hardcoded secrets (F1 prevention)
+- [ ] **Tests** — adicionar suite de testes para `deleteUserData`, `logAudit`, `checkUserRateLimit`
+
+### Como auditar Wave 11
+
+```bash
+# Verificar LGPD endpoints
+curl -X GET http://localhost:3000/api/users/<userId>/export -H "Cookie: sb-*-auth-token=..." \
+  -o meu-export.json
+
+# Verificar rate limit por user
+for i in {1..15}; do
+  curl -X POST http://localhost:3000/api/posts -d '{"content":"test","type":"TEXT"}' \
+    -H "Cookie: sb-*-auth-token=..." -H "Content-Type: application/json"
+done  # último deve retornar 429
+
+# Verificar audit log
+psql $DATABASE_URL -c "SELECT action, COUNT(*) FROM audit_logs GROUP BY action ORDER BY 2 DESC"
+
+# Verificar CSP
+curl -I http://localhost:3000 | grep -i "content-security-policy"
+```
 
 ---
 

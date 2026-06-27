@@ -14,6 +14,7 @@ import { ok, fail, fromZodError, handleError, ErrorCode } from '@/lib/community/
 import { listComments, createComment } from '@/lib/community/posts';
 import { getViewer, requireViewer } from '@/lib/community/auth';
 import { prisma } from '@/lib/prisma';
+import { checkUserRateLimit, userRateLimitMessage } from '@/lib/rate-limit-user';
 import {
   createNotification,
   fetchActorSnapshot,
@@ -75,6 +76,16 @@ export async function POST(request: NextRequest, context: RouteContext) {
     const body = await request.json().catch(() => null);
     if (!body) {
       return fail(400, ErrorCode.BAD_REQUEST, 'Corpo inválido (JSON esperado)');
+    }
+
+    // Wave 11 — rate limit granular por user (comment-create: 30/h)
+    const userRl = checkUserRateLimit(viewer.id, 'comment-create');
+    if (!userRl.allowed) {
+      return fail(
+        429,
+        ErrorCode.RATE_LIMIT_EXCEEDED,
+        userRateLimitMessage('comment-create', userRl.resetIn)
+      );
     }
 
     const parsed = CreateCommentSchema.safeParse(body);

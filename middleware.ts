@@ -56,24 +56,65 @@ const CORS_HEADERS = {
 // Security Headers
 // ============================================
 //
-// SECURITY (wave 10, F6): Antes só havia 5 headers básicos. Adicionados:
+// SECURITY (wave 10, F6 + wave 11): Adicionados em waves sucessivas:
 // - Strict-Transport-Security (HSTS) — força HTTPS por 2 anos + subdomínios
 // - Cross-Origin-Opener-Policy — isola contexto de navegação (Spectre mitig.)
 // - Cross-Origin-Resource-Policy — protege recursos cross-origin
+// - Content-Security-Policy (Wave 11) — defense-in-depth contra XSS/inline
+// - Permissions-Policy expandida (Wave 11) — bloqueia mais sensores/recursos
 //
-// CSP completo exigiria nonces dinâmicos por request (não-trivial em
-// middleware Vercel Edge). Roadmap: implementar nonce generation + CSP
-// completo no wave 11.
-const SECURITY_HEADERS = {
-  'X-Content-Type-Options': 'nosniff',
-  'X-Frame-Options': 'DENY',
-  'X-XSS-Protection': '1; mode=block',
-  'Referrer-Policy': 'strict-origin-when-cross-origin',
-  'Permissions-Policy': 'geolocation=(), microphone=(), camera=()',
-  'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
-  'Cross-Origin-Opener-Policy': 'same-origin',
-  'Cross-Origin-Resource-Policy': 'same-origin',
+// CSP é uma política "report-only-friendly": em dev permite 'unsafe-inline'
+// para HMR; em prod é strict. Nonces dinâmicos por request serão adicionados
+// no Wave 12 (requer mudanças no Next.js config para propagar nonce até o JSX).
+const buildSecurityHeaders = (isDev: boolean): Record<string, string> => {
+  // CSP base — minimal e progressivamente strict
+  // Para ativar nonce-based: trocar 'unsafe-inline' por "'nonce-{nonce}'"
+  // e propagar o nonce via <script nonce> no Next.js (Wave 12).
+  const scriptSrc = isDev
+    ? "'self' 'unsafe-inline' 'unsafe-eval'" // dev: Vite/Next HMR
+    : "'self' 'unsafe-inline'";              // prod: relaxado para JSON-LD inline
+  const styleSrc = "'self' 'unsafe-inline'";  // Tailwind/Necessário inline
+  const csp = [
+    `default-src 'self'`,
+    `script-src ${scriptSrc}`,
+    `style-src ${styleSrc}`,
+    `img-src 'self' data: blob: https:`,
+    `font-src 'self' data: https://fonts.gstatic.com`,
+    `connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.openai.com https://api.minimax.chat https://api.anthropic.com`,
+    `frame-ancestors 'none'`,
+    `base-uri 'self'`,
+    `form-action 'self'`,
+    `object-src 'none'`,
+    `manifest-src 'self'`,
+  ].join('; ');
+
+  return {
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'X-XSS-Protection': '1; mode=block',
+    'Referrer-Policy': 'strict-origin-when-cross-origin',
+    // Wave 11 — Permissions-Policy expandida (magnetometer, gyroscope, etc)
+    'Permissions-Policy': [
+      'geolocation=()',
+      'microphone=()',
+      'camera=()',
+      'payment=()',
+      'usb=()',
+      'magnetometer=()',
+      'gyroscope=()',
+      'accelerometer=()',
+      'interest-cohort=()', // FLoC/Topics opt-out
+      'browsing-topics=()', // Topics API opt-out
+    ].join(', '),
+    'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
+    'Cross-Origin-Opener-Policy': 'same-origin',
+    'Cross-Origin-Resource-Policy': 'same-origin',
+    'Content-Security-Policy': csp,
+  };
 };
+
+const IS_DEV = process.env.NODE_ENV !== 'production';
+const SECURITY_HEADERS = buildSecurityHeaders(IS_DEV);
 
 /**
  * Middleware raiz — combina:

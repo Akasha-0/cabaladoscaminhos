@@ -14,6 +14,7 @@ import { ok, fail, fromZodError, handleError, ErrorCode } from '@/lib/community/
 import { getFeed, createPost, getFeedPersonalized } from '@/lib/community/posts';
 import { getViewer, requireViewer } from '@/lib/community/auth';
 import { checkPostRateLimit } from '@/lib/community/rate-limit';
+import { checkUserRateLimit, userRateLimitMessage } from '@/lib/rate-limit-user';
 
 export const dynamic = 'force-dynamic';
 
@@ -88,6 +89,16 @@ export async function POST(request: NextRequest) {
         429,
         ErrorCode.RATE_LIMIT_EXCEEDED,
         `Você está postando rápido demais. Tente novamente em ${Math.ceil(rl.resetIn / 1000)}s.`
+      );
+    }
+
+    // Wave 11 — rate limit granular por user (10/h, complementa o 10/min legacy)
+    const userRl = checkUserRateLimit(viewer.id, 'post-create');
+    if (!userRl.allowed) {
+      return fail(
+        429,
+        ErrorCode.RATE_LIMIT_EXCEEDED,
+        userRateLimitMessage('post-create', userRl.resetIn)
       );
     }
 

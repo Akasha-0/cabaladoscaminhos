@@ -6,26 +6,53 @@ import { OfflineIndicator } from "@/components/dashboard/OfflineIndicator";
 import { UpdatePrompt } from "@/components/pwa/UpdatePrompt";
 import { SkipToContent } from "@/components/a11y/SkipToContent";
 import { SupabaseProvider } from "@/components/providers/SupabaseProvider";
+import { PostHogProvider } from "@/components/providers/PostHogProvider";
+import { ThemeScript } from "@/components/ui/ThemeScript";
+import { CookieConsent } from "@/components/consent/CookieConsent";
+
+// ============================================================================
+// Font strategy (Wave 11 perf) — variable fonts + reduced weight sets
+// ============================================================================
+// Before: 4 families × 4-5 weights = up to 18 subset files (~180 KB raw).
+// After:  variable fonts + tight weight subsets + preload tuning = ~30-50%
+//         smaller critical font payload.
+//   - Cinzel:    600 only (headings)        — was 400/500/600/700
+//   - Cormorant: 500 only (legal serif)     — was 400-700
+//   - Raleway:   400/500/600 (body + nav)   — was 300/400/500/600/700
+//   - IM_Fell:   400 unchanged (decorative)
+// `display: "swap"` shows fallback immediately. `preload: true` puts the font
+// in <head> as a high-priority resource (Cinzel + Raleway only). `fallback`
+// metrics reduce CLS by matching fallback advance width.
+// ============================================================================
 
 const cinzel = Cinzel({
   variable: "--font-cinzel",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: ["600"],
+  preload: true,
+  fallback: ["Georgia", "serif"],
+  adjustFontFallback: "Times New Roman",
 });
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: ["500"],
+  preload: false,
+  fallback: ["Georgia", "serif"],
+  adjustFontFallback: "Times New Roman",
 });
 
 const raleway = Raleway({
   variable: "--font-raleway",
   subsets: ["latin"],
   display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
+  preload: true,
+  fallback: ["system-ui", "sans-serif"],
+  adjustFontFallback: "Arial",
 });
 
 const imFell = IM_Fell_English({
@@ -33,6 +60,9 @@ const imFell = IM_Fell_English({
   subsets: ["latin"],
   display: "swap",
   weight: ["400"],
+  preload: false,
+  fallback: ["Georgia", "serif"],
+  adjustFontFallback: "Times New Roman",
 });
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://cabaladoscaminhos.com';
@@ -221,8 +251,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className="dark">
+    <html lang="pt-BR" suppressHydrationWarning>
       <head>
+        {/* Anti-FOUC: aplica classe `dark` antes do hydration baseado em
+            cookie/localStorage/OS preference. Ver ThemeScript.tsx. */}
+        <ThemeScript />
         <link rel="canonical" href={BASE_URL} />
         <link rel="sitemap" href="/sitemap.xml" type="application/xml" />
         <link rel="robots" href="/robots.txt" />
@@ -250,11 +283,14 @@ export default function RootLayout({
       >
         <SkipToContent />
         <SupabaseProvider>
-          {children}
+          <PostHogProvider>
+            {children}
+          </PostHogProvider>
         </SupabaseProvider>
         <InstallPrompt />
         <UpdatePrompt />
         <OfflineIndicator />
+        <CookieConsent />
       </body>
     </html>
   );

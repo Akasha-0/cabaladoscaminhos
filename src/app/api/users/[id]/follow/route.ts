@@ -9,6 +9,7 @@ import { NextRequest } from 'next/server';
 import { ok, fail, handleError, ErrorCode } from '@/lib/community/api';
 import { requireViewer } from '@/lib/community/auth';
 import { prisma } from '@/lib/prisma';
+import { checkUserRateLimit, userRateLimitMessage } from '@/lib/rate-limit-user';
 import {
   createNotification,
   fetchActorSnapshot,
@@ -42,6 +43,16 @@ export async function POST(_request: NextRequest, context: RouteContext) {
 
     if (viewer.id === followedId) {
       return fail(400, ErrorCode.BAD_REQUEST, 'Você não pode seguir a si mesmo');
+    }
+
+    // Wave 11 — rate limit granular por user (follow: 50/h)
+    const userRl = checkUserRateLimit(viewer.id, 'follow');
+    if (!userRl.allowed) {
+      return fail(
+        429,
+        ErrorCode.RATE_LIMIT_EXCEEDED,
+        userRateLimitMessage('follow', userRl.resetIn)
+      );
     }
 
     // Verifica que o target existe (best-effort)
