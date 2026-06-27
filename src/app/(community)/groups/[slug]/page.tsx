@@ -13,6 +13,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -27,8 +28,29 @@ import {
 import { useGroup, useGroupMembership, useGroupMembers, useGroupPosts } from '@/hooks/useGroups';
 import { useCreatePost } from '@/hooks/usePosts';
 import { useAuth } from '@/hooks/useAuth';
-import { CreatePost } from '@/components/community/CreatePost';
+import dynamic from 'next/dynamic';
 import { FeedSkeleton } from '@/components/community/FeedSkeleton';
+// ============================================================================
+// Code split — CreatePost (288 lines + useGroupsList + form state) is loaded
+// lazily so its JS isn't in the group route's initial bundle. The compose box
+// is reused from feed; SSR HTML still renders it immediately.
+// ============================================================================
+const CreatePost = dynamic(
+  () => import('@/components/community/CreatePost').then((m) => m.CreatePost),
+  {
+    loading: () => (
+      <div className="card-spiritual bg-slate-900/40 border-slate-800/30 rounded-xl p-4 animate-pulse">
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 rounded-full bg-slate-800/50" />
+          <div className="flex-1 space-y-2">
+            <div className="h-10 bg-slate-800/40 rounded" />
+            <div className="h-3 bg-slate-800/40 rounded w-1/3" />
+          </div>
+        </div>
+      </div>
+    ),
+  }
+);
 import { FeedEmpty } from '@/components/community/FeedEmpty';
 import { FeedError } from '@/components/community/FeedErrorBoundary';
 import { cn } from '@/lib/utils';
@@ -186,11 +208,14 @@ export default function GroupPage() {
                 data-testid="group-emoji"
               >
                 {group.iconUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <Image
                     src={group.iconUrl}
                     alt={group.name}
+                    width={96}
+                    height={96}
                     className="w-full h-full object-cover rounded-2xl"
+                    loading="lazy"
+                    sizes="(max-width: 768px) 80px, 96px"
                   />
                 ) : (
                   emoji

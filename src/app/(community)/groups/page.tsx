@@ -8,6 +8,7 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Users, Search, Loader2, Plus, Lock, Globe,
   Hash, MessageCircle, Sparkles,
@@ -281,11 +282,14 @@ function GroupCard({ group }: { group: GroupDto }) {
             <div className="flex items-center gap-3 min-w-0 flex-1">
               <div className="w-12 h-12 rounded-xl bg-slate-950/40 border border-slate-800/50 flex items-center justify-center text-2xl flex-shrink-0">
                 {group.iconUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <Image
                     src={group.iconUrl}
                     alt={group.name}
+                    width={48}
+                    height={48}
                     className="w-full h-full object-cover rounded-xl"
+                    loading="lazy"
+                    sizes="48px"
                   />
                 ) : (
                   emoji

@@ -12,6 +12,7 @@
 // ============================================================================
 
 import React, { useCallback, useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -160,11 +161,15 @@ export default function PublicProfilePage() {
       {/* Cover + Avatar */}
       <div className="relative h-48 md:h-64 bg-gradient-to-br from-violet-900/40 via-amber-900/30 to-pink-900/40 overflow-hidden">
         {profile.coverUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={profile.coverUrl}
             alt=""
+            width={1280}
+            height={256}
             className="w-full h-full object-cover"
+            loading="eager"
+            priority
+            sizes="(max-width: 768px) 100vw, 1280px"
           />
         ) : (
           <div className="absolute inset-0" style={{
