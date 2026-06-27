@@ -11,7 +11,15 @@ import { SearchQuerySchema } from '@/lib/validators/search';
 import { ok, fail, fromZodError, handleError, ErrorCode } from '@/lib/community/api';
 import { search } from '@/lib/community/search';
 
-export const dynamic = 'force-dynamic';
+// ============================================================================
+// Caching strategy — ISR with 60-second TTL (per query key)
+// ============================================================================
+// Search results depend on the query string + filters; Next.js keys the
+// cache per unique request. 60s is a sweet spot for "fresh enough, fast
+// enough" — the same query hitting the same results within a minute is a
+// common pattern during exploration sessions.
+// ============================================================================
+export const revalidate = 60;
 export const runtime = 'nodejs';   // precisa de $queryRaw com Prisma
 
 export async function GET(request: NextRequest) {
