@@ -196,13 +196,13 @@ export function CreatePost({
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
-                  <label className="flex items-center gap-1.5 text-xs text-slate-400">
-                    <Hash className="w-3 h-3" />
+                  <label className="flex items-center gap-1.5 text-sm text-slate-400">
+                    <Hash className="w-3.5 h-3.5" aria-hidden="true" />
                     <span>Tradição:</span>
                     <select
                       value={tradition}
                       onChange={(e) => setTradition(e.target.value)}
-                      className="bg-slate-800/40 border border-slate-700/40 rounded-md px-2 py-0.5 text-xs text-slate-200 focus:border-amber-500/50 focus:outline-none"
+                      className="bg-slate-800/40 border border-slate-700/40 rounded-md px-2 py-2 text-base min-h-[44px] text-slate-200 focus:border-amber-500/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/40"
                       aria-label="Tradição"
                     >
                       {TRADITION_OPTIONS.map((opt) => (
@@ -212,7 +212,7 @@ export function CreatePost({
                       ))}
                     </select>
                   </label>
-                  <label className="flex items-center gap-1.5 text-xs text-slate-400 flex-1 min-w-[160px]">
+                  <label className="flex items-center gap-1.5 text-sm text-slate-400 flex-1 min-w-[160px]">
                     <span>Tópico:</span>
                     <input
                       type="text"
@@ -220,20 +220,20 @@ export function CreatePost({
                       onChange={(e) => setTopic(e.target.value)}
                       placeholder="ex: meditação"
                       maxLength={80}
-                      className="bg-slate-800/40 border border-slate-700/40 rounded-md px-2 py-0.5 text-xs text-slate-200 focus:border-amber-500/50 focus:outline-none flex-1"
+                      className="bg-slate-800/40 border border-slate-700/40 rounded-md px-2 py-2 text-base min-h-[44px] text-slate-200 placeholder:text-slate-500 focus:border-amber-500/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/40 flex-1"
                       aria-label="Tópico"
                     />
                   </label>
                 </div>
 
                 {!hideGroupSelector && (
-                  <label className="flex items-center gap-1.5 text-xs text-slate-400">
-                    <Users className="w-3 h-3" />
+                  <label className="flex items-center gap-1.5 text-sm text-slate-400">
+                    <Users className="w-3.5 h-3.5" aria-hidden="true" />
                     <span>Postar em:</span>
                     <select
                       value={groupSlug}
                       onChange={(e) => setGroupSlug(e.target.value)}
-                      className="bg-slate-800/40 border border-slate-700/40 rounded-md px-2 py-0.5 text-xs text-slate-200 focus:border-amber-500/50 focus:outline-none"
+                      className="bg-slate-800/40 border border-slate-700/40 rounded-md px-2 py-2 text-base min-h-[44px] text-slate-200 focus:border-amber-500/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/40"
                       aria-label="Grupo"
                       data-testid="create-post-group-select"
                     >

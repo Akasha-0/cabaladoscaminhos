@@ -167,7 +167,7 @@ export function CommunityNav({ user, onSearch }: CommunityNavProps) {
               <div className="relative">
                 <button
                   onClick={handleProfileToggle}
-                  className="flex items-center gap-2 p-1 rounded-lg hover:bg-slate-800/50 transition-all min-h-[44px]"
+                  className="flex items-center gap-2 p-1 rounded-lg hover:bg-slate-800/50 transition-all min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
                   aria-label="Abrir menu de perfil"
                   aria-expanded={profileOpen}
                 >
@@ -206,7 +206,7 @@ export function CommunityNav({ user, onSearch }: CommunityNavProps) {
                 trigger('light');
                 setMobileMenuOpen(!mobileMenuOpen);
               }}
-              className="md:hidden p-2 rounded-lg text-slate-400 hover:bg-slate-800/50 min-h-[44px] min-w-[44px] flex items-center justify-center"
+              className="md:hidden p-2 rounded-lg text-slate-400 hover:bg-slate-800/50 min-h-[44px] min-w-[44px] flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
               aria-label={mobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
               aria-expanded={mobileMenuOpen}
             >

@@ -182,9 +182,9 @@ export function PostCard({
                 aria-haspopup="menu"
                 aria-expanded={menuOpen}
                 onClick={() => setMenuOpen((v) => !v)}
-                className="p-1 text-slate-500 hover:text-slate-300 transition-colors"
+                className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-800/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
               >
-                <MoreHorizontal className="w-4 h-4" />
+                <MoreHorizontal className="w-4 h-4" aria-hidden="true" />
               </button>
               {menuOpen && (
                 <div
@@ -198,9 +198,9 @@ export function PostCard({
                         setMenuOpen(false);
                         onEdit(post.id);
                       }}
-                      className="w-full text-left px-3 py-1.5 text-sm text-slate-300 hover:bg-slate-800/70 hover:text-slate-100 flex items-center gap-2"
+                      className="w-full text-left px-3 py-2.5 min-h-[44px] text-sm text-slate-300 hover:bg-slate-800/70 hover:text-slate-100 flex items-center gap-2 focus-visible:outline-none focus-visible:bg-slate-800/70 focus-visible:text-slate-100"
                     >
-                      <Pencil className="w-3.5 h-3.5" />
+                      <Pencil className="w-3.5 h-3.5" aria-hidden="true" />
                       Editar
                     </button>
                   )}
@@ -211,9 +211,9 @@ export function PostCard({
                         setMenuOpen(false);
                         onDelete(post.id);
                       }}
-                      className="w-full text-left px-3 py-1.5 text-sm text-red-300 hover:bg-red-500/10 hover:text-red-200 flex items-center gap-2"
+                      className="w-full text-left px-3 py-2.5 min-h-[44px] text-sm text-red-300 hover:bg-red-500/10 hover:text-red-200 flex items-center gap-2 focus-visible:outline-none focus-visible:bg-red-500/10 focus-visible:text-red-200"
                     >
-                      <Trash2 className="w-3.5 h-3.5" />
+                      <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
                       Deletar
                     </button>
                   )}
@@ -224,9 +224,9 @@ export function PostCard({
                         setMenuOpen(false);
                         onReport(post.id);
                       }}
-                      className="w-full text-left px-3 py-1.5 text-sm text-slate-300 hover:bg-slate-800/70 hover:text-slate-100 flex items-center gap-2"
+                      className="w-full text-left px-3 py-2.5 min-h-[44px] text-sm text-slate-300 hover:bg-slate-800/70 hover:text-slate-100 flex items-center gap-2 focus-visible:outline-none focus-visible:bg-slate-800/70 focus-visible:text-slate-100"
                     >
-                      <Flag className="w-3.5 h-3.5" />
+                      <Flag className="w-3.5 h-3.5" aria-hidden="true" />
                       Reportar
                     </button>
                   )}
@@ -307,15 +307,17 @@ export function PostCard({
           <button
             onClick={() => onBookmark?.(post.id)}
             className={cn(
-              'p-2 rounded-lg transition-all',
+              'p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950',
               post.bookmarked
                 ? 'text-amber-400 bg-amber-500/10'
                 : 'text-slate-500 hover:text-amber-400 hover:bg-amber-500/5'
             )}
             aria-label="Salvar"
+            aria-pressed={post.bookmarked}
           >
             <Bookmark
               className={cn('w-4 h-4', post.bookmarked && 'fill-amber-400')}
+              aria-hidden="true"
             />
           </button>
         </div>
@@ -345,7 +347,7 @@ function ActionButton({
       type="button"
       onClick={onClick}
       className={cn(
-        'flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all',
+        'flex items-center gap-1.5 px-3 py-2 min-h-[44px] rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950',
         active
           ? activeColor
           : 'text-slate-500 hover:text-slate-300 hover:bg-slate-800/50'
