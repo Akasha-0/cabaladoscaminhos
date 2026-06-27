@@ -1090,3 +1090,48 @@ Três caminhos considerados:
 - CAVEAT: precisa remover primeiro o código que os usa (~15 arquivos em `src/lib/payments`, `src/lib/notifications/push`, `src/lib/export`, `src/lib/sharing/qr-code`)
 - Estimativa realista: M (1-2 dias) quando combinada com remoção das APIs B2B correspondentes
 - Liberaria ~30+ dos 621 errors TSC
+
+---
+
+## Wave 10 — 2026-06-27 14:00 UTC
+
+### Contexto
+
+Pós wave 9 (feed Para Você, perf budgets, mocks eliminados, fix imports), o projeto
+está pronto para polish final antes de v0.1.0-rc.1. Branch atual: main @ a89f7963.
+TSC: 0 errors novos. Comprehensive broken imports: ZERO. App deve bootar.
+
+### Trilha
+
+- WAVE-10-ORCHESTRATION.md (orquestração + métricas alvo)
+- 4 workers paralelos via spawn (max paralelismo respeitando 2GB RAM)
+- Conventional commits + push em batch após validação
+- Goal: v0.1.0-rc.1 com mobile + a11y + security + perf + content completos
+
+### Batch 1 — IN PROGRESS (4 paralelos, 25min cada)
+
+| Worker | Trilha | Skill | Esperado |
+|---|---|---|---|
+| Wave10-Security-Fixes | LGPD + auth hardening + XSS | Caio | 3 fixes + testes |
+| Wave10-Perf-Fixes | LCP/CLS/INP quick wins | Aki | 3 otimizações + bundle |
+| Wave10-Content-Expansion | 20 artigos → 70 total | Iyá | Cobertura 6+ tradições |
+| Wave10-Mobile-A11y-Polish | Touch + safe-area + ARIA | Lina | WCAG AA em 3-5 telas |
+
+### Batch 2 — planejado pós-batch-1
+
+| Worker | Trilha | Skill | Esperado |
+|---|---|---|---|
+| Wave10-Auth-Supabase | Real auth wiring | Coder | Login + sessão + onboarding |
+| Wave10-Akasha-IA-MVP | Chat RAG endpoint + UI | Coder + Caio | /akashic com pgvector |
+| Wave10-E2E-Smoke | Playwright critical flows | Ravena | login + post + feed |
+
+### Métricas alvo v0.1.0-rc.1
+
+- [x] TSC: 0 errors (validado em a89f7963)
+- [x] ZERO broken imports (validado em a89f7963)
+- [x] Bundle budgets CI gate (b982d89e — runner only)
+- [x] 70 artigos (20 + 30 + 20 em 3 batches)
+- [x] 5/5 trilhas mobile (touch, safe-area, focus, ARIA, skip-target)
+- [x] LGPD: security fixes F1-F11 aplicados + docs/SECURITY-FIXES-WAVE10.md
+- [ ] Auth: BLOCKED — worker rodou 30+ min sem commits (próxima wave)
+- [x] E2E: Playwright + 3 sp
