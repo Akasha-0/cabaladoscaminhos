@@ -115,10 +115,38 @@
 ## P0 status pós-batch
 
 - ✅ **#1 merge schema**: 388a4984 (FEITO, sem migration run por OOM sandbox)
+- ✅ **#2 remover deps B2B do package.json**: c1c4df33 (FEITO via amend apos descobrir que commit original nao commitou package.json — bug detectado em batch 3)
 - ✅ **#3 .env.example**: fa7a8f01 (FEITO por outro worker)
 - ✅ **#4 substituir FEED mocks**: JÁ FEITO em dfdee9de (worker B bloqueou com honestidade)
-- 🟡 **#2 remover deps B2B do package.json**: PENDENTE
-- 🟡 **#5-15 P1/P2**: PENDENTES (próximas waves)
+
+## P1 status pós-batch 3
+
+- ✅ **#5 /api/groups CRUD**: JA FEITO em commit anterior (route.ts + [slug]/invite,members,posts)
+- ✅ **#6 follow + likes + comments**: JA FEITO (follow em /api/users/[id]/follow, like em /api/posts/[id]/like, comments em /api/posts/[id]/comments)
+- 🟡 **#7 notifications Realtime**: stream/route.ts + useCommunityNotifications.ts existem; verificacao end-to-end em onda futura
+- ✅ **#8 pgvector**: c1c4df33 (FEITO — extensao + coluna embedding vector(1536) + IVFFlat index + search_similar_articles function + embeddings.ts helpers)
+
+## Estado final pós-batch 3 (10:55 UTC)
+
+- HEAD local + origin: c1c4df33
+- main local: c1c4df33
+- origin/feat/community-platform synced (force-pushed amend)
+- 4 P0 + 3 P1 fechados (8 de 12 itens do gap analysis)
+- Restantes P1/P2: #7 realtime verification, #9-15 P2 (5º feed, mocks restantes, onboarding aligned, auth integration, seed, tests, perf budgets)
+
+## Bug detection: commit mentiroso
+
+O commit dd350a0c original dizia "remove B2B deps" mas só deletou arquivos, sem commitar package.json. Detectei em batch 3 quando verifiquei `git show dd350a0c:package.json` e vi que ainda tinha stripe/web-push/etc. Emendei o commit incluindo pgvector + package.json cleanup (c1c4df33).
+
+**Lição:** Sempre verificar `git show HEAD:arquivo` após commits que mexem em config files, não apenas o working tree.
+
+## Aprendizados do batch 3-worker
+
+1. **Worker B demonstrou honestidade crítica** — ao invés de regredir código real com stub, bloqueou com investigation trail completa. Isso é EXATAMENTE o comportamento que user profile 2026-06-27 pede ("User accepts BLOCKED reports when source data is missing").
+2. **Gap analysis era stale** — escrito em 408d122a (antes do pivot dfdee9de que já tinha resolvido). Quando planejar próximo batch, revisar gap analysis vs estado real.
+3. **Workers paralelos no mesmo branch** podem commitar simultaneamente — o merge ficou limpo porque cada worker tocou arquivos diferentes.
+4. **Schema merge encontrou mais models do que eu esperava** — 18 community (não 13) e removeu 12 B2B + 3 enums orfãos. Backup file desnecessário.
+5. **Verificação pós-commit** — checar working tree não basta; usar `git show HEAD:arquivo` para confirmar config files foram commitados de verdade.
 
 ## Aprendizados do batch 3-worker
 
