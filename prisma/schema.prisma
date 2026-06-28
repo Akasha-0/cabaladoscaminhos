@@ -73,6 +73,18 @@ enum PostType {
   PRACTICE
 }
 
+// 2026-06-27 — Onda 14b Drafts & Scheduled Publishing
+// DRAFT     → usuário está escrevendo (não aparece no feed)
+// SCHEDULED → tem scheduledFor no futuro; cron publica ao chegar a hora
+// PUBLISHED → publicado normalmente (default; comportamento legado)
+// ARCHIVED  → oculto do feed, mantido para histórico do autor
+enum PostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+  ARCHIVED
+}
+
 enum NotificationType {
   // Social graph
   LIKE
@@ -117,6 +129,16 @@ enum GroupInviteStatus {
   REVOKED
 }
 
+// 2026-06-27 — Onda 13 Mentorship 1-on-1
+// PENDING  = mentee solicitou, mentor ainda não aceitou
+// ACTIVE   = mentor aceitou, em andamento
+// COMPLETED = encerrado por qualquer das partes (endedAt preenchido)
+enum MentorshipStatus {
+  PENDING
+  ACTIVE
+  COMPLETED
+}
+
 // ============================================================================
 // USER — agregado raiz
 // ============================================================================
@@ -138,7 +160,6 @@ model User {
 
   journalEntries JournalEntry[]
   mapaNatal      MapaNatal?
-  favoritos      Favorito[]
   temaPreferido  String        @default("mystical")
 
   supabaseUserId       String? @unique
@@ -146,7 +167,28 @@ model User {
   stripeSubscriptionId String? @unique
   planoAssinatura      String?
 
+  // 2026-06-27 — Onda 13 Mentorship
+  // Flag opcional: usuário pode oferecer mentoria na comunidade
+  isMentor        Boolean   @default(false)
+  // Tradições que o mentor pratica (slug canônico: cabala, ifa, tantra, ...)
+  mentorTraditions String[] @default([])
+  // Bio curta do mentor (até 500 chars)
+  mentorBio       String?
+  // Rating médio agregado (0.00–5.00, atualizado por trigger/event)
+  mentorRating    Float     @default(0)
+  // Total de mentorias já concluídas (denormalizado p/ ranking)
+  mentorCompleted Int       @default(0)
+
+  // 2026-06-27 — Wave 14 Newsletter
+  // Inscrição em newsletter (opcional). Cada usuário pode ter no máximo uma.
+  newsletterSubscription NewsletterSubscription?
+
+  // 2026-06-27 — Wave 18 Akasha IA feedback
+  // Histórico de 👍/👎 dados em respostas da Akasha (analytics + retreino).
+  akashicFeedback AkashicFeedback[]
+
   @@index([planoAssinatura])
+  @@index([isMentor])
   @@index([createdAt])
   @@index([dataNascimento])
   @@index([stripeSubscriptionId])
@@ -329,81 +371,25 @@ model Elemento {
 }
 
 // =====================
-// INSIGHTS E CONVERSAS
+// INSIGHTS E CONVERSAS — REMOVIDOS Wave 21 (2026-06-28)
 // =====================
-
-model Insight {
-  id     String @id @default(cuid())
-  userId String
-
-  titulo          String
-  descricao       String
-  acaoRecomendada String?
-  mantra          String?
-
-  diaSemana     String?
-  faseLua       String?
-  numeroPessoal Int?
-  odu           String?
-
-  createdAt DateTime @default(now())
-
-  @@index([userId])
-  @@index([createdAt])
-  @@index([titulo])
-  @@map("insights")
-}
-
-model Conversa {
-  id     String @id @default(cuid())
-  userId String
-  tema   String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  mensagens Mensagem[]
-
-  @@index([userId])
-  @@index([updatedAt])
-  @@map("conversas")
-}
-
-model Mensagem {
-  id         String   @id @default(cuid())
-  conversaId String
-  conversa   Conversa @relation(fields: [conversaId], references: [id], onDelete: Cascade)
-
-  tipo     String
-  conteudo String
-
-  createdAt DateTime @default(now())
-
-  @@index([conversaId, createdAt])
-  @@index([conversaId])
-  @@map("mensagens")
-}
+// Models órfãos do schema B2B pré-v3.0. Substituídos por:
+//   - AkashicFeedback (voto 👍/👎 em respostas da IA — Wave 18)
+//   - MentorshipMessage (chat 1-on-1 de mentorias — Onda 13)
+// Migration de drop: prisma/migrations/20260628_legacy_cleanup_w21/migration.sql
+// Investigação completa: docs/LEGACY-CLEANUP-W21.md
+// =====================
+// (bloco intencionalmente vazio)
 
 // =====================
-// FAVORITOS
+// FAVORITOS — REMOVIDO Wave 21 (2026-06-28)
 // =====================
-
-model Favorito {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  type        String
-  referenceId String
-
-  createdAt DateTime @default(now())
-
-  @@index([userId])
-  @@index([type])
-  @@index([referenceId])
-  @@index([userId, type])
-  @@map("favoritos")
-}
+// Substituído por Bookmark (articles) + PostBookmark (posts com collections),
+// ambos adicionados em Onda 14 (2026-06-27). Cobertura completa em v3.0.
+// Migration de drop: prisma/migrations/20260628_legacy_cleanup_w21/migration.sql
+// Investigação completa: docs/LEGACY-CLEANUP-W21.md
+// =====================
+// (bloco intencionalmente vazio)
 
 // =====================
 // JOURNAL
@@ -516,6 +502,14 @@ model Post {
   // Soft delete
   deletedAt DateTime?
 
+  // 2026-06-27 — Onda 14b Drafts & Scheduled Publishing
+  // status default PUBLISHED mantém compat com posts já criados antes da migration.
+  // scheduledFor + status=SCHEDULED é o "agendado para publicar".
+  // publishedAt é preenchido quando transita para PUBLISHED (imediato ou via cron).
+  status        PostStatus  @default(PUBLISHED)
+  scheduledFor  DateTime?
+  publishedAt   DateTime?
+
   // 2026-06-27 — Onda 12 Search & Discovery
   // Coluna tsvector populada por trigger Postgres (ver migration search_discovery)
   // GIN index + pg_trgm index criados no SQL (não no Prisma)
@@ -529,6 +523,8 @@ model Post {
   @@index([tradition])
   @@index([topic])
   @@index([createdAt])
+  @@index([status, scheduledFor])
+  @@index([authorId, status])
   @@map("posts")
 }
 
@@ -592,6 +588,7 @@ model Group {
   members GroupMember[]
   invites GroupInvite[]
   posts   Post[]
+  events  Event[]
 
   // 2026-06-27 — Onda 12 Search & Discovery
   searchVector Unsupported("tsvector")?
@@ -738,6 +735,69 @@ model Article {
   @@index([topics])
   @@index([tags])
   @@map("articles")
+
+  // Wave 21 — reading progress tracking
+  readingProgress ArticleReadingProgress[]
+}
+
+// ============================================================================
+// MENTORSHIP — 1-on-1 pairing (Onda 13, 2026-06-27)
+// ============================================================================
+// Praticantes mais experientes guiam novatos em uma tradição.
+// Fluxo:
+//   1. mentor marca isMentor=true no User
+//   2. mentee solicita (status=PENDING)
+//   3. mentor aceita (status=ACTIVE)
+//   4. qualquer parte encerra (status=COMPLETED, endedAt=now)
+// Mensagens do chat ficam em MentorshipMessage (1-on-1, sem realtime).
+// ============================================================================
+
+model Mentorship {
+  id        String @id @default(cuid())
+  mentorId  String
+  menteeId  String
+
+  // Tradição foco da mentoria (ex: "cabala", "ifa")
+  tradition String
+
+  // Status + timestamps
+  status     MentorshipStatus @default(PENDING)
+  createdAt  DateTime         @default(now())
+  acceptedAt DateTime?
+  endedAt    DateTime?
+
+  // Notas internas (audit/observabilidade)
+  // Ex.: { requestMessage: "...", endReason: "completed" }
+  metadata Json?
+
+  messages MentorshipMessage[]
+
+  // Um usuário só pode ter uma mentoria ATIVA com o mesmo mentor
+  // (mas pode ter várias COMPLETED no histórico)
+  @@unique([mentorId, menteeId, status])
+  @@index([mentorId, status])
+  @@index([menteeId, status])
+  @@index([tradition])
+  @@index([createdAt])
+  @@map("mentorships")
+}
+
+// Mensagens simples do chat 1-on-1 (append-only, sem realtime)
+// Reuso o envelope de Mensagem (existente) seria ideal, mas
+// Mensagem depende de Conversa. Aqui temos escopo próprio para clareza.
+model MentorshipMessage {
+  id           String     @id @default(cuid())
+  mentorshipId String
+  mentorship   Mentorship @relation(fields: [mentorshipId], references: [id], onDelete: Cascade)
+
+  // Autor (deve ser mentorId ou menteeId da Mentorship)
+  authorId String
+  content  String @db.Text
+
+  createdAt DateTime @default(now())
+
+  @@index([mentorshipId, createdAt])
+  @@map("mentorship_messages")
 }
 
 // ============================================================================
@@ -781,6 +841,45 @@ model CommentLike {
   @@map("comment_likes")
 }
 
+// ============================================================================
+// REACTIONS — Emoji universalista em posts e comments (Onda 14, 2026-06-27)
+// ============================================================================
+// Feedback positivo sem precisar escrever reply. Set curado de 8 emojis
+// espiritualizados (gratidão, compaixão, transformação, insight, crescimento,
+// paz, unidade, inspiração). Toggle: se já existe a (user, target, emoji),
+// remove — senão cria.
+//
+// Diferente do Like binário (curtir genérico), Reaction carrega **emoção**.
+// Mesma tabela para POST e COMMENT via targetType (polimórfico).
+// ============================================================================
+
+enum ReactionTargetType {
+  POST
+  COMMENT
+}
+
+model Reaction {
+  id          String             @id @default(cuid())
+  userId      String
+
+  // Polimorfismo simples via (targetType, targetId). Não temos FK relacional
+  // aqui porque o Prisma não suporta FK condicional ao enum — o app garante
+  // integridade via checagem de existência antes do toggle.
+  targetType  ReactionTargetType
+  targetId    String
+
+  // Emoji unicode (1-8 chars). Restrição de domínio é enforçada no app
+  // (ALLOWED_EMOJIS) — não no DB — para permitir evolução do set sem migration.
+  emoji       String
+
+  createdAt   DateTime @default(now())
+
+  @@unique([userId, targetType, targetId, emoji])
+  @@index([targetType, targetId, emoji])
+  @@index([userId, targetType])
+  @@map("reactions")
+}
+
 model Bookmark {
   id     String @id @default(cuid())
   userId String
@@ -791,6 +890,103 @@ model Bookmark {
   @@unique([userId, articleId])
   @@index([userId])
   @@map("bookmarks")
+}
+
+// ============================================================================
+// ARTICLE READING PROGRESS — "Continue de onde parou" (Wave 21, 2026-06-28)
+// ============================================================================
+// Diferente do Bookmark (que é apenas "salvar"), este modelo registra
+// o progresso de leitura pessoal por artigo. Permite:
+//   - "Continue de onde parou" (lastPosition)
+//   - Barra de progresso (percentRead)
+//   - Histórico pessoal "O que estou lendo"
+// Idempotente via @@unique(userId, articleId). Auto-upsert no client.
+//
+// Privacidade: percentRead e lastPosition são privados do usuário (LGPD).
+// Apenas o próprio user lê/escreve nesta tabela.
+// ============================================================================
+
+model ArticleReadingProgress {
+  id        String   @id @default(cuid())
+  userId    String
+  articleId String
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  // 0..100 (clamp na API). Monotônico crescente — não regredimos.
+  percentRead Int @default(0)
+
+  // Posição livre (ex: índice do parágrafo, scroll offset, etc).
+  // Mantemos como string para flexibilidade (client define o formato).
+  lastPosition String?
+
+  // Quando terminou de ler (100%) — setado uma única vez
+  completedAt DateTime?
+
+  // Tracking
+  readAt   DateTime  @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, articleId])
+  @@index([userId, readAt])
+  @@index([articleId])
+  @@map("article_reading_progress")
+}
+
+// ============================================================================
+// POST BOOKMARKS — "Salvar para ler depois" (Onda 14, 2026-06-27)
+// ============================================================================
+// Diferente do Bookmark (que é para Artigos da Biblioteca Akasha), este
+// modelo cobre os Posts da comunidade. Suporta "collections" opcionais
+// para o usuário organizar ("Favoritos", "Para Meditar", "Estudos", etc).
+// Soft idempotente: o @@unique(userId, postId, collectionName) garante
+// que não há duplicatas; toggle = delete + insert em uma transação.
+// ============================================================================
+
+model PostBookmark {
+  id     String @id @default(cuid())
+  userId String
+  postId String
+
+  // Coleção opcional (ex: "Favoritos", "Para Meditar"). Default = 'default'.
+  // Vazio ou null também são aceitos e tratados como 'default' pela API.
+  collectionName String @default("default")
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId, collectionName])
+  @@index([userId, collectionName, createdAt])
+  @@index([userId, createdAt])
+  @@index([postId])
+  @@map("post_bookmarks")
+}
+
+// ============================================================================
+// READING HISTORY — Histórico pessoal de leitura (Onda 14, 2026-06-27)
+// ============================================================================
+// Cada vez que o usuário lê um post (chega a >= 50% de scroll, ou sai da
+// página), registramos um evento. Mantemos o último por (userId, postId) via
+// upsert, atualizando percentRead e readAt. O histórico pessoal é ordenado
+// por readAt desc — "continue de onde parou".
+//
+// NÃO é analytics agregado; é histórico pessoal privado (LGPD-friendly).
+// ============================================================================
+
+model ReadingHistory {
+  id     String @id @default(cuid())
+  userId String
+  postId String
+
+  // Porcentagem lida (0..100). Default 0 — só registramos após o usuário
+  // rolar a página, então a primeira escrita costuma ser > 0.
+  percentRead Int    @default(0)
+
+  readAt DateTime @default(now())
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId])
+  @@index([userId, readAt])
+  @@index([postId])
+  @@map("reading_history")
 }
 
 // ============================================================================
@@ -994,6 +1190,104 @@ model FeedItem {
 }
 
 // ============================================================================
+// EVENTS — Círculos de Partilha Online (Wave 13, 2026-06-27)
+// ============================================================================
+// Eventos síncronos (workshops, rodas de conversa, meditações guiadas ao
+// vivo). Diferente do feed assíncrono: aqui há data/hora marcada, número
+// limitado de participantes e um host responsável. Suporta tanto eventos
+// abertos (isPublic=true, qualquer logado participa) quanto eventos
+// fechados do grupo (groupId opcional).
+//
+// Design minimal — sem videoconferência integrada nesta onda: o evento
+// guarda um `meetingUrl` externo (Zoom, Google Meet, Jitsi...). Foco é
+// discovery + RSVP + listagem de participantes.
+// ============================================================================
+
+model Event {
+  id          String   @id @default(cuid())
+
+  title       String
+  description String   @db.Text
+
+  // Tradição espiritual do círculo (mesmas chaves canônicas dos grupos)
+  // ex: "cabala", "ifa", "astrologia", "tantra", "meditacao", "xamanismo"
+  tradition   String
+
+  // Host (quem está conduzindo)
+  hostId      String
+
+  // Quando acontece
+  startsAt    DateTime
+
+  // Duração estimada em minutos (mostrada na UI)
+  durationMin Int      @default(60)
+
+  // Capacidade máxima (0 = ilimitado)
+  maxParticipants Int   @default(0)
+
+  // Visibilidade: pública na lista de eventos vs restrita
+  isPublic    Boolean  @default(true)
+
+  // URL externa de reunião (Zoom, Meet, Jitsi...). Opcional — pode ser
+  // revelada ao participante só após RSVP confirmado.
+  meetingUrl  String?
+
+  // Grupo opcional ao qual o evento pertence (círculo fechado)
+  groupId     String?
+  group       Group?   @relation(fields: [groupId], references: [id], onDelete: SetNull)
+
+  // Contadores denormalizados (atualizar via app)
+  participantsCount Int @default(0)
+
+  participants EventParticipant[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([startsAt])
+  @@index([tradition])
+  @@index([hostId])
+  @@index([groupId])
+  @@index([isPublic, startsAt])
+  @@map("events")
+}
+
+// RSVP — quem confirmou presença em qual evento
+// 2026-06-28 — Wave 21: status expandido (going/maybe/declined).
+// - going     → participante confirmado (incrementa participantsCount)
+// - maybe     → marcou interesse mas não confirmou (não conta)
+// - declined  → recusou (não conta)
+//
+// Mantemos joinedAt para audit de quando virou going pela primeira vez.
+// event_participants_status_idx ajuda queries do tipo
+// "listar RSVPs going de um host" no dashboard admin.
+model EventParticipant {
+  eventId String
+  event   Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId  String
+
+  status   EventRsvpStatus @default(GOING)
+  joinedAt DateTime        @default(now())
+  // Quando foi a última mudança de status (going→declined etc.)
+  statusUpdatedAt DateTime @default(now())
+
+  @@id([eventId, userId])
+  @@index([userId])
+  @@index([eventId])
+  @@index([eventId, status])
+  @@map("event_participants")
+}
+
+// 2026-06-28 — Wave 21: enum de status de RSVP.
+// Substitui o boolean binário "está dentro / não está" por uma tríade
+// que cobre o fluxo real de confirmações de eventos comunitários.
+enum EventRsvpStatus {
+  GOING       // confirmou presença
+  MAYBE       // marcou interesse, sem confirmar
+  DECLINED    // recusou explicitamente (host vê que recusou)
+}
+
+// ============================================================================
 // AUDIT LOG — LGPD Art. 37 + Segurança (Wave 11)
 // ============================================================================
 // Registra ações sensíveis para auditoria e suporte a direitos do titular.
@@ -1007,6 +1301,16 @@ model FeedItem {
 // com LGPD art. 46 (dados de tráfego). Em caso de ordem judicial, é
 // possível re-derivar via salt guardado fora do banco.
 // ============================================================================
+
+// 2026-06-27 — Frequência do digest semanal/mensal de newsletter
+// WEEKLY = digest toda segunda 9h (default)
+// MONTHLY = digest primeiro dia do mês
+// NEVER = não envia (usuário continuou assinado mas silenciou)
+enum NewsletterFrequency {
+  WEEKLY
+  MONTHLY
+  NEVER
+}
 
 enum AuditAction {
   // Auth
@@ -1030,6 +1334,72 @@ enum AuditAction {
   // Admin / moderação
   ADMIN_USER_BAN
   ADMIN_CONTENT_REMOVE
+}
+
+// ============================================================================
+// MODERAÇÃO — Flag/Report (Wave 14, 2026-06-27)
+// ============================================================================
+// Sistema transparente e respeitoso de denúncias. Membros sinalizam
+// conteúdo problemático; admins revisam em uma fila e tomam ação
+// (dismiss/hide/delete). Tudo auditado.
+//
+// Filosofia:
+//  - Reporter nunca é exposto publicamente (anti-retaliação)
+//  - Reporter vê status da própria denúncia no perfil
+//  - Staff vê queue priorizada (PENDING + mais antiga primeiro)
+//  - Toda ação é registrada em AuditLog (transparência interna)
+// ============================================================================
+
+enum FlagTargetType {
+  POST
+  COMMENT
+  USER
+  GROUP
+}
+
+enum FlagReason {
+  SPAM
+  HARASSMENT
+  MISINFO
+  OTHER
+}
+
+enum FlagStatus {
+  PENDING       // novo, ainda não revisado
+  REVIEWED      // admin viu, mas não agiu (ex: contexto ok)
+  ACTIONED      // admin tomou ação (hide/delete)
+  DISMISSED     // admin julgou improcedente
+}
+
+model Flag {
+  id          String         @id @default(cuid())
+
+  // O que foi sinalizado
+  targetType  FlagTargetType
+  targetId    String
+
+  // Quem sinalizou
+  reporterId  String
+
+  // Por quê
+  reason      FlagReason
+  description String?        @db.Text  // contexto opcional (até 500 chars)
+
+  // Workflow
+  status      FlagStatus     @default(PENDING)
+  createdAt   DateTime       @default(now())
+  reviewedAt  DateTime?
+  reviewerId  String?        // id do admin/moderador que resolveu
+
+  // Ação tomada (quando status=ACTIONED). null quando não houve ação.
+  // Valores: 'dismiss' | 'hide' | 'delete'
+  actionTaken String?
+
+  @@index([status, createdAt])
+  @@index([reporterId, createdAt])
+  @@index([targetType, targetId])
+  @@index([reviewerId, reviewedAt])
+  @@map("flags")
 }
 
 model AuditLog {
@@ -1057,4 +1427,168 @@ model AuditLog {
   @@index([targetId, createdAt])
   @@index([createdAt])
   @@map("audit_logs")
+}
+
+// ============================================================================
+// DRAFTS — Auto-save workspace separado do Post (2026-06-27)
+// ==========================================================================
+// Por que um modelo separado em vez de Post(status=DRAFT)?
+//  - Auto-save escreve a cada 5s; mexer em Post.likesCount/commentsCount
+//    e em likes[]/comments[] a cada save seria caro.
+//  - Draft é 100% privado (visibility=PRIVATE + só o próprio autor).
+//  - Quando o usuário "Publicar agora", copiamos conteúdo para Post e
+//    deletamos o Draft (idempotente via deleteMany na transação).
+//  - Permite multi-draft: usuário pode ter N rascunhos em paralelo.
+// ============================================================================
+
+model Draft {
+  id        String   @id @default(cuid())
+
+  // Autor
+  authorId  String
+
+  // Conteúdo do rascunho
+  title     String?
+  content   String   @db.Text  // markdown livre; vazio é ok (rascunho recém-criado)
+
+  // Mesmos campos opcionais que Post (preview consistente)
+  tradition String?  // "cabala", "ifa", "xamanismo", ...
+  topic     String?
+  tags      String[]
+
+  // Estado do auto-save (timestamp do último save bem-sucedido)
+  // Útil pro hook useAutoSave mostrar "salvo há 3s" sem bater no servidor.
+  lastSavedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([authorId, updatedAt])
+  @@index([authorId, createdAt])
+  @@map("drafts")
+}
+
+// ============================================================================
+// NEWSLETTER — Newsletter semanal + Resend integration (Wave 14, 2026-06-27)
+// ============================================================================
+// Free-tier growth: manter engajamento da comunidade via digest semanal
+// enviado a cada segunda-feira 9h (cron /api/cron/weekly-digest).
+//
+// Modelos:
+//   - NewsletterSubscription — preferência do usuário (tradições + frequência)
+//   - Newsletter              — edições enviadas (histórico para auditoria)
+//
+// Tradições armazenadas como slugs canônicos (cabala, ifa, tantra, ...) para
+// cruzamento direto com Group.tradition, Article.traditions, Post.tags.
+// ============================================================================
+
+model NewsletterSubscription {
+  id        String   @id @default(cuid())
+
+  // Email é único por inscrito (mesmo anônimo sem user)
+  email     String   @unique
+
+  // Opcional: se o inscrito também é usuário autenticado, vincula
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  // Tradições de interesse (vazio = recebe tudo). Slugs canônicos.
+  traditions String[] @default([])
+
+  // Frequência do digest. WEEKLY = segunda 9h, MONTHLY = dia 1º, NEVER = silenciou
+  frequency NewsletterFrequency @default(WEEKLY)
+
+  // Quando foi desinscrito (soft-delete). null = ativo.
+  unsubscribedAt DateTime?
+
+  // Token único para unsubscribe sem login (enviado no rodapé do email)
+  unsubscribeToken String @unique @default(cuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([frequency, unsubscribedAt])
+  @@index([createdAt])
+  @@map("newsletter_subscriptions")
+}
+
+model Newsletter {
+  id        String   @id @default(cuid())
+
+  // Assunto (subject do email)
+  subject   String
+
+  // Conteúdo em markdown (renderizado pra HTML inline no envio)
+  contentMarkdown String @db.Text
+
+  // Filtro de tradições enviado para esta edição (vazio = todos)
+  traditionsFilter String[] @default([])
+
+  // Quando foi efetivamente enviado. null = rascunho.
+  sentAt    DateTime?
+
+  // Quantos recipients receberam (denormalizado após envio)
+  recipientCount Int @default(0)
+
+  // Quem compôs (audit)
+  composedBy String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sentAt])
+  @@index([createdAt])
+  @@map("newsletters")
+}
+
+// ============================================================================
+// AKASHIC FEEDBACK — Wave 18 (2026-06-27)
+// ============================================================================
+// Sinal 👍/👎 que o usuário dá em cada resposta da Akasha IA. Modelo
+// separado da `Message` do chat porque:
+//   - Permite analytics agregados sem precisar carregar histórico inteiro
+//   - Permite auditoria ética (picos de 👎 disparam review)
+//   - Permite retreino futuro do prompt quando houver volume
+//
+// Privacidade:
+//   - messageId é um UUID gerado pelo client (não referenciamos ChatMessage
+//     por FK porque o chat é em memória)
+//   - userId é opcional (visitante anônimo pode dar feedback)
+//   - NÃO salvamos o conteúdo da mensagem/resposta (LGPD minimization)
+// ============================================================================
+
+enum AkashicFeedbackVote {
+  UP       // 👍
+  DOWN     // 👎
+}
+
+model AkashicFeedback {
+  id        String              @id @default(cuid())
+
+  // Identificador da resposta avaliada (UUID v4 do client, no page.tsx)
+  // Permite que o client faça match com a mensagem atual sem precisar de FK
+  messageId String
+
+  // Voto
+  vote      AkashicFeedbackVote
+
+  // Quem votou (opcional — visitante anônimo pode dar feedback)
+  userId    String?
+  user      User?               @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  // Contexto (para analytics, NÃO PII)
+  tradition String?              // tradição efetiva da resposta (auto-detect ou explícita)
+  deepMode  Boolean              @default(false)
+
+  // Comentário opcional do usuário (ex: "faltou contraindicação")
+  comment   String?              @db.Text
+
+  createdAt DateTime            @default(now())
+
+  @@index([messageId])
+  @@index([userId, createdAt])
+  @@index([vote, createdAt])
+  @@index([tradition, vote])
+  @@map("akashic_feedback")
 }

@@ -8,14 +8,12 @@
 // ============================================================================
 
 import React, { useState } from 'react';
-import Link from 'next/link';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
+import { BottomSheet } from '@/components/ui/BottomSheet';
+import { useHaptic } from '@/hooks/useHaptic';
 import {
   Sparkles, Users, BookOpen, Hash, TrendingUp, Filter,
-  Heart, MessageCircle, Share2, Flame,
+  PenSquare, X,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -52,6 +50,7 @@ import {
   useDeletePost,
 } from '@/hooks/usePosts';
 import { useAuth } from '@/hooks/useAuth';
+import { useT } from '@/lib/i18n/useT';
 
 // ============================================================
 // CONSTANTS
@@ -66,96 +65,6 @@ const TRADITION_LABELS: Record<string, string> = {
   ayurveda: 'Ayurveda',
 };
 
-// ============================================================
-// SIDEBAR (mantida — IA suggestions e CTA)
-// =========================================================================
-
-function Sidebar() {
-  return (
-    <div className="space-y-4">
-      <Card className="card-spiritual bg-gradient-to-br from-slate-900/90 to-slate-950/90 backdrop-blur-sm border-slate-800/50">
-        <CardHeader className="pb-3 border-b border-slate-800/50">
-          <h3 className="text-sm font-semibold bg-gradient-to-r from-amber-400 to-violet-400 bg-clip-text text-transparent flex items-center gap-2">
-            <Flame className="w-4 h-4 text-amber-400" />
-            Tradições em destaque
-          </h3>
-        </CardHeader>
-        <CardContent className="pt-3 space-y-2">
-          {['cabala', 'ifa', 'xamanismo', 'tantra', 'reiki'].map((t) => (
-            <Link
-              key={t}
-              href={`/groups/${t}`}
-              className="flex items-center justify-between p-2 rounded-lg hover:bg-slate-800/50 transition-all group"
-            >
-              <span className="text-sm text-slate-300 group-hover:text-amber-300 transition-colors">
-                {TRADITION_LABELS[t] || t}
-              </span>
-              <Badge variant="outline" className="text-xs border-slate-700 text-slate-500">
-                {(Math.floor(Math.random() * 900) + 100)}+ membros
-              </Badge>
-            </Link>
-          ))}
-        </CardContent>
-      </Card>
-
-      <Card className="card-spiritual bg-gradient-to-br from-violet-900/30 to-slate-900/90 border-violet-500/20">
-        <CardHeader className="pb-3">
-          <h3 className="text-sm font-semibold bg-gradient-to-r from-violet-300 to-pink-300 bg-clip-text text-transparent flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-violet-400" />
-            Sugestões da Akasha IA
-          </h3>
-          <p className="text-xs text-slate-500 mt-1">Baseado no seu mapa espiritual</p>
-        </CardHeader>
-        <CardContent className="pt-0 space-y-3">
-          <SuggestionItem
-            title="Como Escorpião pode usar a meditação Vipassana"
-            reason="seu signo lunar"
-          />
-          <SuggestionItem
-            title="Estudo: Reiki em pacientes oncológicos (2023)"
-            reason="tradição que você segue"
-          />
-          <SuggestionItem
-            title="Ayahuasca e neuroplasticidade — revisão de 47 papers"
-            reason="tópico que você curtiu"
-          />
-        </CardContent>
-      </Card>
-
-      <Card className="card-spiritual bg-gradient-to-br from-amber-500/10 to-violet-500/10 border-amber-500/20">
-        <CardContent className="pt-4 text-center space-y-2">
-          <Sparkles className="w-8 h-8 mx-auto text-amber-400" />
-          <p className="text-sm text-slate-200">Complete seu mapa espiritual</p>
-          <p className="text-xs text-slate-400">
-            Quanto mais dados você compartilhar, mais personalizadas são as sugestões da IA
-          </p>
-          <Button
-            variant="outline"
-            className="w-full mt-2 border-amber-500/30 text-amber-300 hover:bg-amber-500/10"
-          >
-            Ver meu perfil espiritual
-          </Button>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
-function SuggestionItem({ title, reason }: { title: string; reason: string }) {
-  return (
-    <Link
-      href="/library"
-      className="block p-2.5 rounded-lg bg-slate-800/30 hover:bg-slate-800/60 transition-all group"
-    >
-      <p className="text-sm text-slate-200 group-hover:text-amber-300 transition-colors line-clamp-2">
-        {title}
-      </p>
-      <p className="text-xs text-slate-500 mt-1">Por causa de: {reason}</p>
-    </Link>
-  );
-}
-
-// ============================================================
 // MAIN FEED PAGE
 // ============================================================
 
@@ -163,6 +72,9 @@ type FilterKey = 'all' | 'seguindo' | 'grupos' | 'tendencias' | 'para-voce';
 
 export default function CommunityFeedPage() {
   const [filter, setFilter] = useState<FilterKey>('all');
+  const [composeOpen, setComposeOpen] = useState(false);
+  const { light: lightHaptic } = useHaptic();
+  const t = useT();
 
   // Hooks do feed — passa o filter ativo pro recommendation engine quando for 'para-voce'
   const feed = useFeed({
@@ -180,11 +92,11 @@ export default function CommunityFeedPage() {
   // Handlers do PostCard
   const handleLike = (id: string) => void toggleLike(id);
   const handleDelete = async (id: string) => {
-    if (!confirm('Tem certeza que deseja deletar este post?')) return;
+    if (!confirm(t('feed.deleteConfirm'))) return;
     const r = await deletePost(id);
     if (!r.ok) {
       // eslint-disable-next-line no-console
-      console.warn('[feed] Falha ao deletar:', r.error);
+      console.warn(`[feed] ${t('feed.deleteFailed')}`, r.error);
     }
   };
   const handleCreate = async (input: Parameters<typeof createPost>[0]) => {
@@ -202,50 +114,52 @@ export default function CommunityFeedPage() {
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent">
-                  🌌 Akasha — Comunidade Viva
+                  {t('feed.title')}
                 </h1>
                 <p className="text-sm text-slate-400 font-raleway mt-1">
-                  Compartilhe, aprenda e evolua junto
+                  {t('feed.subtitle')}
                 </p>
               </div>
             </div>
 
-            {/* Filter tabs */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-2">
+            {/* Filter tabs — pr-4 gives breathing room when scrolling right on mobile */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 pr-4 scrollbar-thin">
               <FilterChip
                 icon={<Sparkles className="w-3 h-3" />}
-                label="Para você"
+                label={t('feed.filterForYou')}
                 active={filter === 'para-voce'}
                 onClick={() => setFilter('para-voce')}
               />
               <FilterChip
                 icon={<Filter className="w-3 h-3" />}
-                label="Tudo"
+                label={t('feed.filterAll')}
                 active={filter === 'all'}
                 onClick={() => setFilter('all')}
               />
               <FilterChip
                 icon={<Users className="w-3 h-3" />}
-                label="Seguindo"
+                label={t('feed.filterFollowing')}
                 active={filter === 'seguindo'}
                 onClick={() => setFilter('seguindo')}
               />
               <FilterChip
                 icon={<Hash className="w-3 h-3" />}
-                label="Meus grupos"
+                label={t('feed.filterGroups')}
                 active={filter === 'grupos'}
                 onClick={() => setFilter('grupos')}
               />
               <FilterChip
                 icon={<TrendingUp className="w-3 h-3" />}
-                label="Tendências"
+                label={t('feed.filterTrending')}
                 active={filter === 'tendencias'}
                 onClick={() => setFilter('tendencias')}
               />
             </div>
 
-            {/* Compose */}
-            <CreatePost onCreate={handleCreate} loading={creating} userInitials={userInitials} />
+            {/* Compose (desktop / tablet) — mobile usa BottomSheet via FAB */}
+            <div className="hidden md:block">
+              <CreatePost onCreate={handleCreate} loading={creating} userInitials={userInitials} />
+            </div>
 
             {/* Posts */}
             {feed.loading && feed.posts.length === 0 ? (
@@ -256,13 +170,13 @@ export default function CommunityFeedPage() {
               <FeedEmpty
                 title={
                   filter === 'para-voce'
-                    ? 'Ainda não temos recomendações pra você'
-                    : 'Nenhum post ainda'
+                    ? t('feed.emptyForYouTitle')
+                    : t('feed.emptyTitle')
                 }
                 message={
                   filter === 'para-voce'
-                    ? 'Siga algumas tradições ou entre em grupos pra personalizar seu feed ✨'
-                    : 'Seja o primeiro a compartilhar algo com a comunidade.'
+                    ? t('feed.emptyForYouMessage')
+                    : t('feed.emptyMessage')
                 }
               />
             ) : (
@@ -309,7 +223,7 @@ export default function CommunityFeedPage() {
                       className="border-slate-700 text-slate-300 hover:bg-slate-800"
                       data-testid="load-more"
                     >
-                      {feed.loadingMore ? 'Carregando…' : 'Carregar mais'}
+                      {feed.loadingMore ? t('feed.loadingMore') : t('feed.loadMore')}
                     </Button>
                   </div>
                 )}
@@ -322,12 +236,48 @@ export default function CommunityFeedPage() {
             )}
           </div>
 
-          {/* Sidebar */}
+          {/* Sidebar (lazy) */}
           <div className="hidden lg:block">
-            <Sidebar />
+            <FeedSidebar />
           </div>
         </div>
       </div>
+
+      {/* FAB mobile — abre CreatePost em BottomSheet */}
+      <button
+        type="button"
+        onClick={() => {
+          lightHaptic();
+          setComposeOpen(true);
+        }}
+        className="md:hidden fixed right-4 z-30 min-h-[56px] min-w-[56px] rounded-full flex items-center justify-center bg-gradient-to-br from-amber-500 to-violet-500 text-white shadow-lg shadow-amber-500/30 active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+        style={{
+          bottom: 'calc(env(safe-area-inset-bottom, 0px) + 80px)',
+        }}
+        aria-label={t('feed.composeDesktopAria')}
+        data-testid="mobile-compose-fab"
+      >
+        <PenSquare className="w-6 h-6" aria-hidden="true" />
+      </button>
+
+      {/* BottomSheet — compose no mobile */}
+      <BottomSheet
+        open={composeOpen}
+        onClose={() => setComposeOpen(false)}
+        title={t('feed.composeSheetTitle')}
+        description={t('feed.composeSheetDescription')}
+        height="auto"
+      >
+        <CreatePost
+          onCreate={async (input) => {
+            const r = await handleCreate(input);
+            if (r.ok) setComposeOpen(false);
+            return r;
+          }}
+          loading={creating}
+          userInitials={userInitials}
+        />
+      </BottomSheet>
     </div>
   );
 }

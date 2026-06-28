@@ -9,15 +9,20 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import {
-  Heart, MessageCircle, Share2, Bookmark, MoreHorizontal,
+  Heart, MessageCircle, Share2, MoreHorizontal,
   Users, BookOpen, Lightbulb, Star, Leaf,
-  Pencil, Trash2, Flag,
+  Pencil, Trash2,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { ShareButton } from '@/components/ui/ShareButton';
+import { FlagButton } from '@/components/moderation/FlagButton';
+import { BookmarkButton } from '@/components/community/BookmarkButton';
 import { cn } from '@/lib/utils';
 import type { Post } from '@/types/community';
+import { useT } from '@/lib/i18n/useT';
+import { ReactionBar } from '@/components/community/ReactionBar';
 
 // ============================================================================
 // Visual constants
@@ -54,20 +59,22 @@ const POST_TYPE_ICONS = {
 // Helpers
 // ============================================================================
 
-export function formatRelativeTime(iso: string): string {
+export function formatRelativeTime(iso: string, t?: (k: string) => string): string {
   const date = new Date(iso);
   const diffMs = Date.now() - date.getTime();
   const sec = Math.floor(diffMs / 1000);
-  if (sec < 60) return 'agora';
+  // resolveRel: usa i18n se t() disponível, senão fallback PT-BR inline (preserva compat com testes existentes)
+  const resolveRel = (ptBr: string) => (t ? t(`post.${ptBr === 'agora' ? 'justNow' : ptBr.endsWith('min') ? 'suffixMin' : ptBr.endsWith('h') ? 'suffixHour' : ptBr.endsWith('d') ? 'suffixDay' : ptBr.endsWith('m') ? 'suffixMonth' : 'suffixYear'}`) : ptBr);
+  if (sec < 60) return resolveRel('agora');
   const min = Math.floor(sec / 60);
-  if (min < 60) return `${min}min`;
+  if (min < 60) return `${min}${resolveRel('min')}`;
   const hr = Math.floor(min / 60);
-  if (hr < 24) return `${hr}h`;
+  if (hr < 24) return `${hr}${resolveRel('h')}`;
   const days = Math.floor(hr / 24);
-  if (days < 30) return `${days}d`;
+  if (days < 30) return `${days}${resolveRel('d')}`;
   const months = Math.floor(days / 30);
-  if (months < 12) return `${months}m`;
-  return `${Math.floor(months / 12)}a`;
+  if (months < 12) return `${months}${resolveRel('m')}`;
+  return `${Math.floor(months / 12)}${resolveRel('a')}`;
 }
 
 function getInitials(name: string): string {
@@ -106,6 +113,7 @@ export function PostCard({
   onDelete,
   onReport,
 }: PostCardProps) {
+  const t = useT();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -126,14 +134,9 @@ export function PostCard({
   );
 
   const initials = getInitials(post.author.displayName || 'Anônimo');
-  const time = formatRelativeTime(post.createdAt);
+  const time = formatRelativeTime(post.createdAt, t);
 
   return (
-    <Card
-      data-testid="post-card"
-      data-post-id={post.id}
-      className="card-spiritual bg-gradient-to-br from-slate-900/90 to-slate-950/90 backdrop-blur-sm border-slate-800/50 hover:border-slate-700/70 transition-all"
-    >
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-3">
           <Link
@@ -178,7 +181,7 @@ export function PostCard({
             <div ref={menuRef} className="relative">
               <button
                 type="button"
-                aria-label="Mais opções"
+                aria-label={t('post.moreOptions')}
                 aria-haspopup="menu"
                 aria-expanded={menuOpen}
                 onClick={() => setMenuOpen((v) => !v)}
@@ -201,7 +204,7 @@ export function PostCard({
                       className="w-full text-left px-3 py-2.5 min-h-[44px] text-sm text-slate-300 hover:bg-slate-800/70 hover:text-slate-100 flex items-center gap-2 focus-visible:outline-none focus-visible:bg-slate-800/70 focus-visible:text-slate-100"
                     >
                       <Pencil className="w-3.5 h-3.5" aria-hidden="true" />
-                      Editar
+                      {t('post.edit')}
                     </button>
                   )}
                   {isAuthor && onDelete && (
@@ -214,21 +217,18 @@ export function PostCard({
                       className="w-full text-left px-3 py-2.5 min-h-[44px] text-sm text-red-300 hover:bg-red-500/10 hover:text-red-200 flex items-center gap-2 focus-visible:outline-none focus-visible:bg-red-500/10 focus-visible:text-red-200"
                     >
                       <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
-                      Deletar
+                      {t('post.delete')}
                     </button>
                   )}
-                  {!isAuthor && onReport && (
-                    <button
-                      role="menuitem"
-                      onClick={() => {
-                        setMenuOpen(false);
-                        onReport(post.id);
-                      }}
-                      className="w-full text-left px-3 py-2.5 min-h-[44px] text-sm text-slate-300 hover:bg-slate-800/70 hover:text-slate-100 flex items-center gap-2 focus-visible:outline-none focus-visible:bg-slate-800/70 focus-visible:text-slate-100"
-                    >
-                      <Flag className="w-3.5 h-3.5" aria-hidden="true" />
-                      Reportar
-                    </button>
+                  {!isAuthor && (
+                    <div role="menuitem" onClick={(e) => e.stopPropagation()}>
+                      <FlagButton
+                        targetType="POST"
+                        targetId={post.id}
+                        variant="menu-item"
+                        label={t('post.report')}
+                      />
+                    </div>
                   )}
                 </div>
               )}
@@ -248,7 +248,7 @@ export function PostCard({
             className="inline-flex items-center gap-1.5 text-xs text-violet-400 hover:text-violet-300 transition-colors"
           >
             <Users className="w-3 h-3" />
-            postado em <span className="font-medium">{post.groupName}</span>
+            {t('post.groupLabelPrefix')} <span className="font-medium">{post.groupName}</span>
           </Link>
         )}
 
@@ -256,7 +256,7 @@ export function PostCard({
           <div className="p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/20 space-y-1.5">
             <p className="text-xs text-emerald-400 font-medium flex items-center gap-1.5">
               <BookOpen className="w-3 h-3" />
-              Referências científicas
+              {t('post.referencesTitle')}
             </p>
             {post.references.map((ref, i) => (
               <a
@@ -288,39 +288,63 @@ export function PostCard({
               count={post.likesCount}
               active={post.liked}
               onClick={() => onLike?.(post.id)}
-              label="Curtir"
+              label={t('post.like')}
               activeColor="text-red-400"
             />
             <ActionButton
               icon={<MessageCircle className="w-4 h-4" />}
               count={post.commentsCount}
               onClick={() => onComment?.(post.id)}
-              label="Comentar"
+              label={t('post.comment')}
             />
-            <ActionButton
-              icon={<Share2 className="w-4 h-4" />}
-              count={post.sharesCount}
-              onClick={() => onShare?.(post.id)}
-              label="Compartilhar"
-            />
+            {(() => {
+              const shareUrl = typeof window !== 'undefined'
+                ? `${window.location.origin}/feed#post-${post.id}`
+                : `/feed#post-${post.id}`;
+              return (
+                <ShareButton
+                  data={{
+                    title: `Post de ${post.author.displayName}`,
+                    text: post.content.slice(0, 120),
+                    url: shareUrl,
+                  }}
+                  count={post.sharesCount}
+                  variant="pill"
+                  onShared={(method) => {
+                    // Notifica o handler externo para tracking
+                    onShare?.(post.id);
+                    // Analytics poderia ser disparado aqui
+                    if (typeof console !== 'undefined' && process.env.NODE_ENV !== 'production') {
+                      console.debug('[share]', { postId: post.id, method });
+                    }
+                  }}
+                />
+              );
+            })()}
           </div>
-          <button
-            onClick={() => onBookmark?.(post.id)}
-            className={cn(
-              'p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950',
-              post.bookmarked
-                ? 'text-amber-400 bg-amber-500/10'
-                : 'text-slate-500 hover:text-amber-400 hover:bg-amber-500/5'
-            )}
-            aria-label="Salvar"
-            aria-pressed={post.bookmarked}
-          >
-            <Bookmark
-              className={cn('w-4 h-4', post.bookmarked && 'fill-amber-400')}
-              aria-hidden="true"
-            />
-          </button>
+          <BookmarkButton
+            postId={post.id}
+            bookmarked={Boolean(post.bookmarked)}
+            label={t('post.bookmark')}
+            size="sm"
+            onChange={(b) => {
+              // Mantém o onBookmark do parent (analytics) sem quebrar o contrato
+              onBookmark?.(post.id);
+              void b;
+            }}
+          />
+          {!isAuthor && (
+            <FlagButton targetType="POST" targetId={post.id} variant="icon" />
+          )}
         </div>
+
+        {/* ReactionBar — feedback emocional além do like binário */}
+        <ReactionBar
+          targetType="POST"
+          targetId={post.id}
+          isAuthenticated={Boolean(currentUserId)}
+          variant="post"
+        />
       </CardContent>
     </Card>
   );
@@ -347,7 +371,7 @@ function ActionButton({
       type="button"
       onClick={onClick}
       className={cn(
-        'flex items-center gap-1.5 px-3 py-2 min-h-[44px] rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950',
+        'flex items-center gap-1.5 px-3 py-2 min-h-[44px] rounded-lg transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950',
         active
           ? activeColor
           : 'text-slate-500 hover:text-slate-300 hover:bg-slate-800/50'

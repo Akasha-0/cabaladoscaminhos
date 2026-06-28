@@ -1,14 +1,18 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Cinzel, Cormorant_Garamond, Raleway, IM_Fell_English } from "next/font/google";
-import { InstallPrompt } from "@/components/dashboard/InstallPrompt";
+import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 import { OfflineIndicator } from "@/components/dashboard/OfflineIndicator";
 import { UpdatePrompt } from "@/components/pwa/UpdatePrompt";
+import { BackgroundSyncIndicator } from "@/components/pwa/BackgroundSyncIndicator";
 import { SkipToContent } from "@/components/a11y/SkipToContent";
 import { SupabaseProvider } from "@/components/providers/SupabaseProvider";
 import { PostHogProvider } from "@/components/providers/PostHogProvider";
 import { ThemeScript } from "@/components/ui/ThemeScript";
 import { CookieConsent } from "@/components/consent/CookieConsent";
+import { EnablePushButton } from "@/components/notifications/EnablePushButton";
+import { HeaderPushButton } from "@/components/notifications/HeaderPushButton";
+import { WebVitalsReporter } from "@/components/monitoring/WebVitalsReporter";
 
 // ============================================================================
 // Font strategy (Wave 11 perf) — variable fonts + reduced weight sets
@@ -256,9 +260,40 @@ export default function RootLayout({
         {/* Anti-FOUC: aplica classe `dark` antes do hydration baseado em
             cookie/localStorage/OS preference. Ver ThemeScript.tsx. */}
         <ThemeScript />
+        {/* Wave 18 perf — Critical CSS inline (above-the-fold tokens).
+            Apply paint-ready colors immediately so the browser doesn't
+            flash white before globals.css loads. Keeps the body bg/text
+            consistent during the <1s LCP window. */}
+        <style
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{
+            __html: `:root{color-scheme:dark light}html,body{background-color:#020617;color:#e2e8f0}html{font-family:var(--font-raleway),system-ui,sans-serif;-webkit-font-smoothing:antialiased}`,
+          }}
+        />
         <link rel="canonical" href={BASE_URL} />
         <link rel="sitemap" href="/sitemap.xml" type="application/xml" />
         <link rel="robots" href="/robots.txt" />
+        {/* RSS / Atom / JSON Feed — auto-discovery para leitores externos
+            (Feedly, Inoreader, NetNewsWire, Reeder, etc). Cada feed também
+            carrega atom:link rel="alternate" apontando para os outros formatos. */}
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="Akasha Portal — Comunidade (RSS 2.0)"
+          href="/feed.xml"
+        />
+        <link
+          rel="alternate"
+          type="application/atom+xml"
+          title="Akasha Portal — Comunidade (Atom 1.0)"
+          href="/feed.atom"
+        />
+        <link
+          rel="alternate"
+          type="application/feed+json"
+          title="Akasha Portal — Comunidade (JSON Feed v1)"
+          href="/feed.json"
+        />
         {/* Preconnect a recursos externos */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -282,15 +317,23 @@ export default function RootLayout({
         className={`${cinzel.variable} ${cormorant.variable} ${raleway.variable} ${imFell.variable} min-h-screen bg-background text-foreground antialiased`}
       >
         <SkipToContent />
+        {/* Header push opt-in — renderiza só quando autenticado (ver componente) */}
+        <HeaderPushButton />
         <SupabaseProvider>
           <PostHogProvider>
+            {/* Mounts PerformanceObservers for LCP/CLS/INP/FCP/TTFB → PostHog */}
+            <WebVitalsReporter />
             {children}
           </PostHogProvider>
         </SupabaseProvider>
         <InstallPrompt />
         <UpdatePrompt />
         <OfflineIndicator />
+        <BackgroundSyncIndicator />
         <CookieConsent />
+        {/* Standalone fallback: enable push (renderiza em qualquer ponto,
+            mas o componente se auto-hide se não há auth/suporte) */}
+        <EnablePushButton className="fixed bottom-4 left-4 z-30 shadow-lg" />
       </body>
     </html>
   );

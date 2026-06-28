@@ -12,12 +12,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   Home, Compass, BookOpen, Bell, User, Search, Sparkles,
-  Menu, X, LogOut, Settings,
+  Menu, X, LogOut, Settings, CalendarDays, GraduationCap,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { ThemeToggleButton } from '@/components/ui/ThemeToggleButton';
 import { cn } from '@/lib/utils';
 import { useHaptic } from '@/hooks/useHaptic';
+import { useT } from '@/lib/i18n/useT';
 
 // ============================================================
 // TYPES
@@ -41,18 +43,26 @@ interface CommunityNavProps {
 // NAV ITEMS
 // ============================================================
 
-const NAV_ITEMS = [
-  { href: '/feed', label: 'Feed', icon: Home },
-  { href: '/explore', label: 'Explorar', icon: Compass },
-  { href: '/library', label: 'Biblioteca', icon: BookOpen },
-  { href: '/akashic', label: 'Akasha IA', icon: Sparkles },
+// NAV_ITEMS e BOTTOM_NAV_ITEMS precisam de chaves i18n — definidos dentro do componente
+// via hook `useT()` (hooks não podem rodar em escopo de módulo).
+// Mantemos `iconKey` para mapear ícones em runtime.
+
+const NAV_ITEMS_META = [
+  { href: '/feed', icon: Home, key: 'nav.home' },
+  { href: '/explore', icon: Compass, key: 'nav.explore' },
+  { href: '/events', icon: CalendarDays, key: 'nav.events' },
+  { href: '/library', icon: BookOpen, key: 'nav.library' },
+  { href: '/akashic', icon: Sparkles, key: 'nav.akashic' },
+  // 2026-06-27 — Onda 13 Mentorship 1-on-1
+  { href: '/mentorship', icon: GraduationCap, key: 'nav.mentorship' },
 ] as const;
 
-const BOTTOM_NAV_ITEMS = [
-  { href: '/feed', icon: Home, label: 'Feed' },
-  { href: '/explore', icon: Compass, label: 'Explorar' },
-  { href: '/akashic', icon: Sparkles, label: 'Akasha' },
-  { href: '/notifications', icon: Bell, label: 'Notif' },
+const BOTTOM_NAV_ITEMS_META = [
+  { href: '/feed', icon: Home, key: 'nav.home' },
+  { href: '/explore', icon: Compass, key: 'nav.explore' },
+  { href: '/events', icon: CalendarDays, key: 'nav.events' },
+  { href: '/akashic', icon: Sparkles, key: 'nav.akashic' },
+  { href: '/notifications', icon: Bell, key: 'nav.notifications' },
 ] as const;
 
 // ============================================================
@@ -66,6 +76,19 @@ export function CommunityNav({ user, onSearch }: CommunityNavProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const { trigger } = useHaptic();
+  const t = useT();
+
+  // Resolve labels i18n para NAV_ITEMS no escopo do componente
+  const NAV_ITEMS = NAV_ITEMS_META.map((m) => ({
+    href: m.href,
+    icon: m.icon,
+    label: t(m.key),
+  }));
+  const BOTTOM_NAV_ITEMS = BOTTOM_NAV_ITEMS_META.map((m) => ({
+    href: m.href,
+    icon: m.icon,
+    label: t(m.key),
+  }));
 
   const handleNavClick = (href: string) => {
     trigger('selection');
@@ -97,7 +120,7 @@ export function CommunityNav({ user, onSearch }: CommunityNavProps) {
             href="/feed"
             onClick={() => handleNavClick('/feed')}
             className="flex items-center gap-2 flex-shrink-0 min-h-[44px]"
-            aria-label="Akasha Portal - Página inicial"
+            aria-label={t('nav.logoAriaLabel')}
           >
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-violet-500 flex items-center justify-center">
               <Sparkles className="w-4 h-4 text-white" aria-hidden="true" />
@@ -112,10 +135,15 @@ export function CommunityNav({ user, onSearch }: CommunityNavProps) {
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon;
               const isActive = pathname?.startsWith(item.href);
+              // Wave 11 perf — /akashic is the heaviest route (545-line page
+              // + chat composer + IA chunks). Prefetch only on hover so we
+              // don't ship its bundle just because the user hovered the nav.
+              const prefetch = item.href === '/akashic' ? false : undefined;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
+                  prefetch={prefetch}
                   className={cn(
                     'flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all min-h-[44px]',
                     isActive
@@ -136,12 +164,15 @@ export function CommunityNav({ user, onSearch }: CommunityNavProps) {
             {/* Search button (desktop) */}
             <button
               onClick={handleSearchToggle}
-              className="p-2 rounded-lg text-slate-400 hover:text-amber-300 hover:bg-slate-800/50 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center"
-              aria-label={searchOpen ? 'Fechar busca' : 'Abrir busca'}
+              className="p-2 rounded-lg text-slate-400 hover:text-amber-300 hover:bg-slate-800/50 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+              aria-label={searchOpen ? t('nav.searchClose') : t('nav.searchOpen')}
               aria-expanded={searchOpen}
             >
               <Search className="w-4 h-4" aria-hidden="true" />
             </button>
+
+            {/* Theme toggle (dark/light) — sempre visível */}
+            <ThemeToggleButton />
 
             {/* Notifications */}
             {user && (
@@ -149,7 +180,7 @@ export function CommunityNav({ user, onSearch }: CommunityNavProps) {
                 href="/notifications"
                 onClick={() => trigger('selection')}
                 className="relative p-2 rounded-lg text-slate-400 hover:text-amber-300 hover:bg-slate-800/50 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center"
-                aria-label={`Notificações${user.notificationsCount && user.notificationsCount > 0 ? ` (${user.notificationsCount} não lidas)` : ''}`}
+                aria-label={`${t('nav.notifications')}${user.notificationsCount && user.notificationsCount > 0 ? ` (${user.notificationsCount} ${t('nav.unreadSuffix')})` : ''}`}
               >
                 <Bell className="w-4 h-4" aria-hidden="true" />
                 {user.notificationsCount !== undefined && user.notificationsCount > 0 && (
@@ -169,7 +200,7 @@ export function CommunityNav({ user, onSearch }: CommunityNavProps) {
                 <button
                   onClick={handleProfileToggle}
                   className="flex items-center gap-2 p-1 rounded-lg hover:bg-slate-800/50 transition-all min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
-                  aria-label="Abrir menu de perfil"
+                  aria-label={t('nav.profileMenu')}
                   aria-expanded={profileOpen}
                 >
                   <Avatar className="w-8 h-8 border border-amber-500/20">
@@ -196,7 +227,7 @@ export function CommunityNav({ user, onSearch }: CommunityNavProps) {
                   size="sm"
                   className="bg-gradient-to-r from-amber-500 to-violet-500 hover:from-amber-600 hover:to-violet-600 text-white border-0 min-h-[44px]"
                 >
-                  Entrar
+                  {t('nav.login')}
                 </Button>
               </Link>
             )}
@@ -208,7 +239,7 @@ export function CommunityNav({ user, onSearch }: CommunityNavProps) {
                 setMobileMenuOpen(!mobileMenuOpen);
               }}
               className="md:hidden p-2 rounded-lg text-slate-400 hover:bg-slate-800/50 min-h-[44px] min-w-[44px] flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
-              aria-label={mobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
+              aria-label={mobileMenuOpen ? t('nav.menuClose') : t('nav.menuOpen')}
               aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
@@ -225,14 +256,14 @@ export function CommunityNav({ user, onSearch }: CommunityNavProps) {
                 <input
                   autoFocus
                   type="text"
-                  placeholder="Buscar tradições, pessoas, artigos..."
+                  placeholder={t('nav.searchHeroPlaceholder')}
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
                     onSearch?.(e.target.value);
                   }}
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-800/50 border border-slate-700/50 focus:border-amber-500/50 text-base text-slate-200 placeholder-slate-500 outline-none min-h-[44px]"
-                  aria-label="Buscar conteúdo"
+                  aria-label={t('nav.searchPlaceholder')}
                 />
               </div>
             </div>
@@ -281,7 +312,7 @@ export function CommunityNav({ user, onSearch }: CommunityNavProps) {
           <div className="grid grid-cols-5 h-16">
             {[
               ...BOTTOM_NAV_ITEMS,
-              { href: `/u/${user.handle}`, icon: User, label: 'Perfil' },
+              { href: `/u/${user.handle}`, icon: User, label: t('nav.profile') },
             ].map((item) => {
               const Icon = item.icon;
               const isActive = pathname?.startsWith(item.href);
@@ -338,6 +369,7 @@ function ProfileDropdown({
   onClose: () => void;
   onItemClick: () => void;
 }) {
+  const t = useT();
   return (
     <>
       {/* Backdrop */}
@@ -357,7 +389,7 @@ function ProfileDropdown({
           role="menuitem"
         >
           <User className="w-4 h-4" aria-hidden="true" />
-          Meu perfil
+          {t('nav.myProfile')}
         </Link>
         <Link
           href="/settings"
@@ -366,7 +398,7 @@ function ProfileDropdown({
           role="menuitem"
         >
           <Settings className="w-4 h-4" aria-hidden="true" />
-          Configurações
+          {t('nav.settings')}
         </Link>
         <Link
           href="/mapa"
@@ -375,7 +407,7 @@ function ProfileDropdown({
           role="menuitem"
         >
           <Sparkles className="w-4 h-4" aria-hidden="true" />
-          Meu mapa espiritual
+          {t('nav.myMap')}
         </Link>
         <div className="border-t border-slate-800/50" aria-hidden="true" />
         <button
@@ -384,7 +416,7 @@ function ProfileDropdown({
           role="menuitem"
         >
           <LogOut className="w-4 h-4" aria-hidden="true" />
-          Sair
+          {t('nav.logout')}
         </button>
       </div>
     </>

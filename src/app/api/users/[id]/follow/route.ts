@@ -117,3 +117,73 @@ export async function POST(_request: NextRequest, context: RouteContext) {
     return handleError(err);
   }
 }
+
+// ============================================================================
+// DELETE /api/users/[id]/follow — Unfollow idempotente (Wave 21)
+// ============================================================================
+// Diferente do POST (que é toggle), este endpoint SEMPRE remove o follow
+// se existir. Se não existir, retorna 200 com { removed: false }.
+// Idempotente — múltiplos DELETE retornam o mesmo resultado.
+// ============================================================================
+
+export async function DELETE(_request: NextRequest, context: RouteContext) {
+  try {
+    const { id: followedId } = await context.params;
+
+    if (!followedId) {
+      return fail(400, ErrorCode.BAD_REQUEST, 'id obrigatório');
+    }
+
+    let viewer;
+    try {
+      viewer = await requireViewer();
+    } catch (err) {
+      const e = err as { statusCode?: number };
+      return fail(
+        e.statusCode ?? 401,
+        ErrorCode.UNAUTHORIZED,
+        'Você precisa estar logado para deixar de seguir'
+      );
+    }
+
+    // DELETE também conta no rate limit (50/h) — previne abuso de toggle
+    const userRl = checkUserRateLimit(viewer.id, 'follow');
+    if (!userRl.allowed) {
+      return fail(
+        429,
+        ErrorCode.RATE_LIMIT_EXCEEDED,
+        userRateLimitMessage('follow', userRl.resetIn)
+      );
+    }
+
+    const existing = await prisma.follow.findUnique({
+      where: {
+        followerId_followedId: {
+          followerId: viewer.id,
+          followedId,
+        },
+      },
+    });
+
+    let removed = false;
+    if (existing) {
+      await prisma.follow.delete({
+        where: {
+          followerId_followedId: {
+            followerId: viewer.id,
+            followedId,
+          },
+        },
+      });
+      removed = true;
+    }
+
+    const followersCount = await prisma.follow.count({
+      where: { followedId },
+    });
+
+    return ok({ removed, following: false, followersCount });
+  } catch (err) {
+    return handleError(err);
+  }
+}

@@ -12,6 +12,7 @@ import {
   Sparkles, Users, BookOpen, Heart, ArrowRight, Star,
   Brain, MessageCircle, Lightbulb, Globe, Loader2,
 } from 'lucide-react';
+import { InlineEmailCapture } from '@/components/conversion/InlineEmailCapture';
 
 export default function HomePage() {
   return (
@@ -24,26 +25,26 @@ export default function HomePage() {
         }} />
 
         <div className="relative max-w-6xl mx-auto px-4 py-20 md:py-32 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs text-caps mb-6">
             <Sparkles className="w-3 h-3" />
             Comunidade + IA co-evoluindo
           </div>
 
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-cinzel font-bold mb-6 leading-tight">
+          <h1 className="text-display-7xl mb-6">
             <span className="bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 bg-clip-text text-transparent">
               Akasha
             </span>
             <br />
-            <span className="bg-gradient-to-r from-violet-400 via-pink-400 to-violet-400 bg-clip-text text-transparent text-3xl md:text-5xl">
+            <span className="bg-gradient-to-r from-violet-400 via-pink-400 to-violet-400 bg-clip-text text-transparent text-display-5xl">
               Comunidade Viva de Espiritualidade
             </span>
           </h1>
 
-          <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed">
+          <p className="text-lg text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed">
             Compartilhe, aprenda e evolua com uma comunidade de praticantes,
             guiado por uma IA curadora alimentada por{' '}
-            <span className="text-amber-300">tradições ancestrais</span> e{' '}
-            <span className="text-emerald-300">artigos científicos</span>.
+            <span className="text-amber-300 font-medium">tradições ancestrais</span> e{' '}
+            <span className="text-emerald-300 font-medium">artigos científicos</span>.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -67,7 +68,7 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-xs text-slate-500">
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-tiny text-slate-500">
             <span className="flex items-center gap-1.5">
               <Users className="w-3 h-3" /> 1.200+ praticantes
             </span>
@@ -87,10 +88,10 @@ export default function HomePage() {
       {/* O que é */}
       <section className="max-w-6xl mx-auto px-4 py-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-cinzel bg-gradient-to-r from-amber-400 to-violet-400 bg-clip-text text-transparent mb-3">
+          <h2 className="text-display-5xl bg-gradient-to-r from-amber-400 to-violet-400 bg-clip-text text-transparent mb-3">
             Uma consciência coletiva em movimento
           </h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">
+          <p className="text-body text-slate-400 max-w-2xl mx-auto">
             Não é uma rede social qualquer. É um espaço onde a sabedoria ancestral
             encontra a ciência, e onde a IA aprende com cada interação da comunidade.
           </p>
@@ -121,10 +122,10 @@ export default function HomePage() {
       {/* Tradições */}
       <section className="max-w-6xl mx-auto px-4 py-16">
         <div className="text-center mb-10">
-          <h2 className="text-2xl md:text-3xl font-cinzel text-slate-200 mb-2">
+          <h2 className="text-3xl text-slate-200 mb-2">
             8 tradições representadas
           </h2>
-          <p className="text-slate-400 text-sm">
+          <p className="text-caption text-slate-400">
             Universalista, não proselitista. Cada tradição com seu grupo dedicado.
           </p>
         </div>
@@ -146,7 +147,7 @@ export default function HomePage() {
               className="p-4 rounded-2xl bg-slate-900/50 border border-slate-800/50 hover:border-amber-500/30 hover:bg-slate-800/50 transition-all text-center group"
             >
               <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">{t.emoji}</div>
-              <p className="text-sm text-slate-300 group-hover:text-amber-300 transition-colors">
+              <p className="text-caption text-slate-300 group-hover:text-amber-300 transition-colors">
                 {t.name}
               </p>
             </Link>
@@ -158,20 +159,19 @@ export default function HomePage() {
       <section className="max-w-4xl mx-auto px-4 py-16 text-center">
         <div className="p-8 md:p-12 rounded-3xl bg-gradient-to-br from-amber-500/10 via-violet-500/10 to-pink-500/10 border border-amber-500/20">
           <Sparkles className="w-10 h-10 mx-auto text-amber-400 mb-4" />
-          <h2 className="text-2xl md:text-3xl font-cinzel text-slate-100 mb-3">
+          <h2 className="text-3xl text-slate-100 mb-3">
             Pronto pra despertar junto?
           </h2>
-          <p className="text-slate-400 mb-6 max-w-xl mx-auto">
+          <p className="text-body text-slate-400 mb-6 max-w-xl mx-auto">
             Entre na comunidade, compartilhe sua primeira reflexão,
             descubra artigos e conheça pessoas que trilham caminhos parecidos.
           </p>
           <Link href="/validacao">
             <Button
-              size="lg"
-              className="bg-gradient-to-r from-amber-500 to-violet-500 hover:from-amber-600 hover:to-violet-600 text-white border-0 px-8 h-12"
+              variant="outline"
+              className="border-amber-500/40 text-amber-300 hover:bg-amber-500/10 px-6 h-11"
             >
-              <Sparkles className="w-4 h-4 mr-2" />
-              Entrar na lista de espera
+              Ver detalhes do beta
             </Button>
           </Link>
         </div>
@@ -199,8 +199,8 @@ function FeatureCard({
       <div className="w-12 h-12 rounded-xl bg-slate-900/50 flex items-center justify-center mb-4">
         {icon}
       </div>
-      <h3 className="text-lg font-semibold text-slate-100 mb-2">{title}</h3>
-      <p className="text-sm text-slate-400 leading-relaxed">{description}</p>
+      <h3 className="text-xl text-slate-100 mb-2">{title}</h3>
+      <p className="text-caption text-slate-400 leading-relaxed">{description}</p>
     </div>
   );
 }

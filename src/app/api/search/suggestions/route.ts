@@ -40,6 +40,15 @@ export async function GET(request: NextRequest) {
         took_ms: results.took_ms,
         count: results.suggestions.length,
       },
+      // Wave 11 perf — explicit Cache-Control for browser + edge cache.
+      //   s-maxage=300   → Vercel Edge holds the response 5 min
+      //   swr=600        → stale for 10 min while revalidating in bg
+      // The route handler's `revalidate = 300` keeps the underlying fn
+      // fresh; these headers just make sure intermediaries honor that TTL.
+      cache: {
+        sMaxage: 300,
+        staleWhileRevalidate: 600,
+      },
     });
   } catch (err) {
     return handleError(err);

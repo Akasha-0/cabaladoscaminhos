@@ -19,7 +19,37 @@
 
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
-import type { SearchQuery, SuggestionQuery, SearchSort, SearchType } from '@/lib/validators/search';
+import { expandQueryTs } from '@/lib/search/synonyms';
+import {
+  buildArticlesWhere,
+  buildGroupsWhere,
+  buildPostsWhere,
+  buildProfilesWhere,
+  type SearchFilters,
+} from '@/lib/search/filters';
+import type { SearchQuery, SuggestionQuery, SearchType } from '@/lib/validators/search';
+
+// ============================================================================
+// Bridge — converte SearchQuery (Zod) em SearchFilters (filtros ricos)
+// ============================================================================
+
+function toFilters(q: SearchQuery): SearchFilters {
+  return {
+    q: q.q,
+    type: q.type,
+    tradition: q.tradition,
+    tag: q.tag,
+    level: q.level,
+    format: q.format,
+    author: q.author,
+    // dateFrom/dateTo têm prioridade; from/to é fallback para compat
+    dateFrom: q.dateFrom ?? q.from,
+    dateTo: q.dateTo ?? q.to,
+    hasAudio: q.hasAudio,
+    hasVideo: q.hasVideo,
+    sort: q.sort,
+  };
+}
 
 // ============================================================================
 // Tipos públicos (DTO da API)
@@ -136,19 +166,33 @@ export interface SearchResults {
 /**
  * Converte query do usuário em tsquery normalizado.
  * Estratégia:
- *   - converte pra lowercase
+ *   - converte pra lowercase + remove acentos
  *   - troca espaços por `:*` (prefix match em cada termo) — busca "começa com"
  *   - caracteres perigosos viram espaços
  *   - juntamos com AND (&) entre termos
+ *   - sinônimos (Wave 18) expandem cada termo para `term | synonym | synonym`
+ *     via `expandQueryTs()` de @/lib/search/synonyms
  *
- * Ex: "meditação ansiedade" → "meditação:* & ansiedade:*"
+ * Ex: "cabalá meditação" → "(cabalá|cabala|kabbalah|kabbala|qabalah):* & (meditação|meditacao|meditation):*"
+ *
+ * Fallback legado: se expandQueryTs falhar ou retornar vazio, usa o builder
+ * simples (sem sinônimos) para garantir que a busca nunca fica vazia.
  */
 function buildTsQuery(q: string): string {
-  // Escapar caracteres especiais do tsquery
+  if (!q || !q.trim()) return "''";
+
+  try {
+    const expanded = expandQueryTs(q);
+    if (expanded && expanded !== "''") return expanded;
+  } catch {
+    // fall through to legacy builder
+  }
+
+  // Legacy builder (sem expansão de sinônimos) — usado como fallback
   const sanitized = q
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')   // remove acentos para busca mais permissiva
+    .replace(/[\u0300-\u036f]/g, '')
     .replace(/[\\()&|:!<>]/g, ' ')
     .trim();
 
@@ -268,22 +312,19 @@ const MAX_LIMIT = 50;
 async function searchPosts(q: string, tsquery: string, opts: {
   limit: number;
   cursor: CursorData | null;
-  tradition?: string;
-  tag?: string; // topic
-  sort: SearchSort;
+  filters: SearchFilters;
 }): Promise<{ hits: SearchHitPost[]; count: number }> {
-  const where: Prisma.Sql[] = [Prisma.sql`p."deletedAt" IS NULL`];
-  if (opts.tradition) where.push(Prisma.sql`p.tradition = ${opts.tradition}`);
-  if (opts.tag) where.push(Prisma.sql`p.topic = ${opts.tag}`);
+  const baseWhere = buildPostsWhere(opts.filters);
+  const where: Prisma.Sql[] = [baseWhere];
   if (opts.cursor) {
     // relevance cursor: score menor ou id menor (tie-breaker)
     where.push(Prisma.sql`((${rankExpr('p."searchVector"', tsquery, 'p."createdAt"', 'p."likesCount"')}), p.id) < (${opts.cursor.score}, ${opts.cursor.id})`);
   }
 
   const orderBy =
-    opts.sort === 'recent'
+    opts.filters.sort === 'recent'
       ? Prisma.sql`p."createdAt" DESC`
-      : opts.sort === 'popular'
+      : opts.filters.sort === 'popular'
       ? Prisma.sql`p."likesCount" DESC, p."createdAt" DESC`
       : Prisma.sql`(${rankExpr('p."searchVector"', tsquery, 'p."createdAt"', 'p."likesCount"')}) DESC, p.id DESC`;
 
@@ -362,21 +403,18 @@ async function searchPosts(q: string, tsquery: string, opts: {
 async function searchArticles(q: string, tsquery: string, opts: {
   limit: number;
   cursor: CursorData | null;
-  tradition?: string;
-  tag?: string;
-  sort: SearchSort;
+  filters: SearchFilters;
 }): Promise<{ hits: SearchHitArticle[]; count: number }> {
-  const where: Prisma.Sql[] = [];
-  if (opts.tradition) where.push(Prisma.sql`a.tradition = ${opts.tradition}`);
-  if (opts.tag) where.push(Prisma.sql`${opts.tag} = ANY(a.tags)`);
+  const baseWhere = buildArticlesWhere(opts.filters);
+  const where: Prisma.Sql[] = baseWhere ? [baseWhere] : [];
   if (opts.cursor) {
     where.push(Prisma.sql`((${rankExpr('a."searchVector"', tsquery, 'a."createdAt"', 'a."likesCount"')}), a.id) < (${opts.cursor.score}, ${opts.cursor.id})`);
   }
 
   const orderBy =
-    opts.sort === 'recent'
+    opts.filters.sort === 'recent'
       ? Prisma.sql`a."createdAt" DESC`
-      : opts.sort === 'popular'
+      : opts.filters.sort === 'popular'
       ? Prisma.sql`(a."viewCount" + 2*a."bookmarkCount" + 3*a.citations) DESC, a."createdAt" DESC`
       : Prisma.sql`(${rankExpr('a."searchVector"', tsquery, 'a."createdAt"', 'a."likesCount"')}) DESC, a.id DESC`;
 
@@ -462,17 +500,18 @@ async function searchArticles(q: string, tsquery: string, opts: {
 async function searchGroups(q: string, tsquery: string, opts: {
   limit: number;
   cursor: CursorData | null;
-  sort: SearchSort;
+  filters: SearchFilters;
 }): Promise<{ hits: SearchHitGroup[]; count: number }> {
-  const where: Prisma.Sql[] = [Prisma.sql`g."isPublic" = true`];
+  const baseWhere = buildGroupsWhere(opts.filters);
+  const where: Prisma.Sql[] = [baseWhere];
   if (opts.cursor) {
     where.push(Prisma.sql`((${rankExpr('g."searchVector"', tsquery, 'g."createdAt"', 'g."membersCount"')}), g.id) < (${opts.cursor.score}, ${opts.cursor.id})`);
   }
 
   const orderBy =
-    opts.sort === 'recent'
+    opts.filters.sort === 'recent'
       ? Prisma.sql`g."createdAt" DESC`
-      : opts.sort === 'popular'
+      : opts.filters.sort === 'popular'
       ? Prisma.sql`g."membersCount" DESC, g."createdAt" DESC`
       : Prisma.sql`(${rankExpr('g."searchVector"', tsquery, 'g."createdAt"', 'g."membersCount"')}) DESC, g.id DESC`;
 
@@ -540,17 +579,16 @@ async function searchGroups(q: string, tsquery: string, opts: {
 async function searchUsers(q: string, tsquery: string, opts: {
   limit: number;
   cursor: CursorData | null;
-  sort: SearchSort;
+  filters: SearchFilters;
 }): Promise<{ hits: SearchHitUser[]; count: number }> {
-  const where: Prisma.Sql[] = [
-    Prisma.sql`sp.visibility IN ('PUBLIC', 'COMMUNITY')`,
-  ];
+  const baseWhere = buildProfilesWhere(opts.filters);
+  const where: Prisma.Sql[] = [baseWhere];
   if (opts.cursor) {
     where.push(Prisma.sql`((${rankExpr('sp."searchVector"', tsquery, 'sp."createdAt"', '0')}), sp.id) < (${opts.cursor.score}, ${opts.cursor.id})`);
   }
 
   const orderBy =
-    opts.sort === 'recent'
+    opts.filters.sort === 'recent'
       ? Prisma.sql`sp."createdAt" DESC`
       : Prisma.sql`(${rankExpr('sp."searchVector"', tsquery, 'sp."createdAt"', '0')}) DESC, sp.id DESC`;
 
@@ -679,12 +717,12 @@ export async function search(query: SearchQuery): Promise<SearchResults> {
   const limit = Math.min(Math.max(query.limit ?? DEFAULT_LIMIT, 1), MAX_LIMIT);
   const cursor = query.cursor ? decodeCursor(query.cursor) : null;
 
+  const filters = toFilters({ ...query, sort: query.sort ?? 'relevance' });
+
   const opts = {
     limit,
     cursor,
-    tradition: query.tradition,
-    tag: query.tag,
-    sort: (query.sort ?? 'relevance') as SearchSort,
+    filters,
   };
 
   // Determina quais modelos consultar
@@ -799,7 +837,9 @@ export async function suggestions(query: SuggestionQuery): Promise<SuggestionsRe
   const tsquery = buildTsQuery(query.q);
   const limit = Math.min(Math.max(query.limit ?? 8, 1), 10);
 
-  // Combina 4 fontes: posts, articles, groups, tags
+  // Combina 4 fontes: posts, articles, groups, tags.
+  // Wave 18: typo tolerance — se a tsquery não retornar nada, cai no pg_trgm
+  // (operador `%` — match por similaridade acima do threshold configurado).
   const [postsR, articlesR, groupsR, tagsR] = await Promise.all([
     prisma.$queryRaw<Array<{ id: string; content: string; score: number }>>(Prisma.sql`
       SELECT id, content,
@@ -826,6 +866,41 @@ export async function suggestions(query: SuggestionQuery): Promise<SuggestionsRe
     `).catch(() => [] as Array<{ id: string; name: string; slug: string; score: number }>),
     searchTags(query.q, { limit: 3 }).catch(() => [] as SearchHitTag[]),
   ]);
+
+  // Fallback Wave 18: se tsquery não retornou nada E a query tem >= 4 chars,
+  // usa pg_trgm (similarity) para tolerar typos no autocomplete.
+  if (
+    postsR.length === 0 &&
+    articlesR.length === 0 &&
+    groupsR.length === 0 &&
+    tagsR.length === 0 &&
+    query.q.trim().length >= 4
+  ) {
+    const safeQ = query.q.trim().replace(/'/g, "''");
+    const [postsF, articlesF, groupsF] = await Promise.all([
+      prisma.$queryRaw<Array<{ id: string; content: string; score: number }>>(Prisma.sql`
+        SELECT id, content, similarity(content, ${safeQ}) AS score
+        FROM posts
+        WHERE content % ${safeQ} AND "deletedAt" IS NULL
+        ORDER BY score DESC LIMIT 3
+      `).catch(() => [] as Array<{ id: string; content: string; score: number }>),
+      prisma.$queryRaw<Array<{ id: string; title: string; score: number }>>(Prisma.sql`
+        SELECT id, title, similarity(title, ${safeQ}) AS score
+        FROM articles
+        WHERE title % ${safeQ}
+        ORDER BY score DESC LIMIT 3
+      `).catch(() => [] as Array<{ id: string; title: string; score: number }>),
+      prisma.$queryRaw<Array<{ id: string; name: string; slug: string; score: number }>>(Prisma.sql`
+        SELECT id, name, slug, similarity(name, ${safeQ}) AS score
+        FROM groups
+        WHERE name % ${safeQ} AND "isPublic" = true
+        ORDER BY score DESC LIMIT 2
+      `).catch(() => [] as Array<{ id: string; name: string; slug: string; score: number }>),
+    ]);
+    postsR.push(...postsF);
+    articlesR.push(...articlesF);
+    groupsR.push(...groupsF);
+  }
 
   const suggestions: Suggestion[] = [
     ...postsR.map((r) => ({

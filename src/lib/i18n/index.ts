@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from 'react';
 
-export type Locale = 'pt-BR' | 'en';
+export type Locale = 'pt-BR' | 'en' | 'es';
 
-export const availableLocales: Locale[] = ['pt-BR', 'en'];
+export const availableLocales: Locale[] = ['pt-BR', 'en', 'es'];
 
 const translations: Record<Locale, Record<string, unknown>> = {
   'pt-BR': {},
   en: {},
+  es: {},
 };
 
 function getNestedValue(obj: Record<string, unknown>, path: string): string | undefined {
@@ -91,9 +92,11 @@ async function getI18n(): Promise<I18nInstance> {
 
     const { ptBR } = await import('./locales/pt-BR');
     const { en } = await import('./locales/en');
+    const { es } = await import('./locales/es');
 
     translations['pt-BR'] = ptBR;
     translations.en = en;
+    translations.es = es;
 
     i18nInstance = createI18n(initialLocale);
     return i18nInstance;

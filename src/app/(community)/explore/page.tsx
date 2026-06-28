@@ -391,7 +391,7 @@ function ExplorePageInner() {
           {/* Resultados */}
           <section className="space-y-4">
             {/* Tabs */}
-            <div role="tablist" className="flex items-center gap-2 overflow-x-auto pb-2">
+            <div role="tablist" className="flex items-center gap-2 overflow-x-auto pb-2 pr-4 scrollbar-thin">
               {TABS.map((tab) => {
                 const Icon = tab.icon;
                 const count =

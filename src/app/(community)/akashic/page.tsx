@@ -1,37 +1,46 @@
 'use client';
 
 // ============================================================================
-// AKASHIC CHAT — /akashic (Wave 10 — 2026-06-27)
+// AKASHIC CHAT — /akashic (Wave 12 — 2026-06-27)
 // ============================================================================
-// Interface de chat com a Akasha IA. Consome /api/akashic/chat (non-streaming)
-// com fallback automático para streaming via /api/akashic/chat/stream quando
-// disponível.
+// Interface de chat com a Akasha IA. Consome /api/akashic/chat/stream via
+// Server-Sent Events (SSE): tokens chegam incrementalmente, sources ficam
+// disponíveis antes do primeiro token, meta aparece junto.
+//
+// Eventos SSE consumidos:
+//   sources  → { sources: RagSource[] }     (antes do primeiro token)
+//   meta     → { model, rag_degraded }      (antes do stream)
+//   token    → { content: "..." }           (chunks de texto, typing effect)
+//   done     → { ok: true }                 (fim do stream)
+//   error    → { code, message }            (se algo falhar)
 //
 // Features:
 //   - Lista de mensagens com distinção user / assistant
-//   - Painel lateral de sources (citações) com similaridade
+//   - Painel lateral de sources (citações) com similaridade — atualiza incremental
 //   - Filtro de tradição (select)
 //   - Estado de loading + erro
 //   - Mobile-first (stack vertical, sources colapsáveis)
+//
+// Wave 12 (2026-06-27) — Voice Mode + SSE streaming:
+//   - Voice Mode: botão "Ouvir" em cada resposta (TTS via Web Speech API).
+//     Componente: src/components/akashic/VoiceButton.tsx
+//   - SSE streaming: consome /api/akashic/chat/stream (ReadableStream).
+//     Tokens chegam incrementalmente (typing effect natural).
+//     Sources chegam ANTES do primeiro token (sidebar atualiza cedo).
+//   - Docs: docs/VOICE-MODE-W12.md, docs/AKASHIC-STREAMING-W12.md
 // ============================================================================
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import {
   Send,
   Sparkles,
   Loader2,
-  BookOpen,
-  ExternalLink,
   AlertTriangle,
-  MessageSquare,
-  ChevronDown,
-  ChevronUp,
   RotateCcw,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
 import {
   Select,
   SelectContent,
@@ -40,6 +49,40 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
+
+// ============================================================================
+// Code split (Wave 11 perf) — heavy off-viewport pieces become dynamic chunks
+// ============================================================================
+// Sources panel lives on the right rail (desktop) or behind a tap (mobile).
+// EmptyState only shows on first paint when message list is empty. Both are
+// below-the-fold for the typical 'send a question' flow, so SSR + lazy
+// hydration keeps the composer + chat list in the initial bundle.
+// ============================================================================
+
+const AkashicSourcesPanel = dynamic(
+  () => import('@/components/akashic/AkashicSourcesPanel').then((m) => m.AkashicSourcesPanel),
+  { ssr: true },
+);
+
+const AkashicEmptyState = dynamic(
+  () => import('@/components/akashic/AkashicEmptyState').then((m) => m.AkashicEmptyState),
+  { ssr: true },
+);
+
+// MessageBubble + ThinkingBubble are used on every render. Loading them via
+// `next/dynamic` keeps the bubble styles + meta strip out of the initial
+// route bundle. SSR true so first paint already includes the messages.
+const MessageBubble = dynamic(
+  () =>
+    import('@/components/akashic/AkashicMessageList').then((m) => m.MessageBubble),
+  { ssr: true },
+);
+
+const ThinkingBubble = dynamic(
+  () =>
+    import('@/components/akashic/AkashicMessageList').then((m) => m.ThinkingBubble),
+  { ssr: true },
+);
 
 // ============================================================================
 // Types
@@ -68,20 +111,6 @@ interface ChatMessage {
   error?: boolean;
 }
 
-interface ChatResponse {
-  reply: string;
-  sources: RagSource[];
-  meta: {
-    took_ms: number;
-    rag_took_ms: number;
-    model: string;
-    tradition: string | null;
-    rag_degraded: boolean;
-    rag_reason?: string;
-    tokens?: { prompt: number; completion: number; total: number };
-  };
-}
-
 const TRADITIONS = [
   { value: '__all__', label: 'Todas as tradições' },
   { value: 'cabala', label: 'Cabala' },
@@ -96,15 +125,6 @@ const TRADITIONS = [
   { value: 'umbanda', label: 'Umbanda' },
   { value: 'candomble', label: 'Candomblé' },
   { value: 'espiritismo', label: 'Espiritismo' },
-];
-
-const SUGGESTIONS = [
-  'O que a ciência diz sobre meditação Vipassana?',
-  'Quais práticas podem ajudar com ansiedade? (sem prescrever)',
-  'Como Cabala e Ifá se correlacionam nos 4 mapas?',
-  'Qual a evidência sobre Reiki?',
-  'Posso praticar ayahuasca se tomo SSRI?',
-  'Explique o Odu Alafia em termos simples',
 ];
 
 // ============================================================================
@@ -145,22 +165,31 @@ export default function AkashicChatPage() {
         content: trimmed,
       };
 
-      // Monta histórico a partir do estado atual (sem a nova msg do user)
+      // Histórico ANTES da nova msg do user (sem placeholders vazios)
       const history = messages
-        .filter((m) => !m.error)
+        .filter((m) => !m.error && m.content)
         .slice(-20) // cap
         .map((m) => ({
           role: m.role as 'user' | 'assistant',
           content: m.content,
         }));
 
-      setMessages((prev) => [...prev, userMsg]);
+      // Placeholder assistant — vai ser preenchido incrementalmente pelo stream
+      const assistantId = crypto.randomUUID();
+
+      setMessages((prev) => [
+        ...prev,
+        userMsg,
+        { id: assistantId, role: 'assistant', content: '' },
+      ]);
       setInput('');
       setLoading(true);
       setError(null);
 
+      const startedAt = performance.now();
+
       try {
-        const res = await fetch('/api/akashic/chat', {
+        const res = await fetch('/api/akashic/chat/stream', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({
@@ -180,39 +209,146 @@ export default function AkashicChatPage() {
           throw new Error(errMsg);
         }
 
-        const data: ChatResponse = await res.json();
+        if (!res.body) {
+          throw new Error('Resposta sem corpo (stream vazio)');
+        }
 
-        const assistantMsg: ChatMessage = {
-          id: crypto.randomUUID(),
-          role: 'assistant',
-          content: data.reply,
-          sources: data.sources,
-          meta: {
-            model: data.meta.model,
-            took_ms: data.meta.took_ms,
-            rag_degraded: data.meta.rag_degraded,
-            rag_reason: data.meta.rag_reason,
-          },
-        };
+        // ── SSE consumer (ReadableStream + TextDecoder) ───────────────
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        let receivedTokens = false;
 
-        setMessages((prev) => [...prev, assistantMsg]);
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+
+          // SSE events separados por linha em branco
+          const parts = buffer.split('\n\n');
+          buffer = parts.pop() ?? ''; // guarda parcial
+
+          for (const part of parts) {
+            if (!part.trim()) continue;
+
+            let event = 'message';
+            let data = '';
+            for (const line of part.split('\n')) {
+              if (line.startsWith('event:')) {
+                event = line.slice(6).trim();
+              } else if (line.startsWith('data:')) {
+                data += line.slice(5).trim();
+              }
+            }
+            if (!data) continue;
+
+            let parsed: unknown;
+            try {
+              parsed = JSON.parse(data);
+            } catch {
+              continue;
+            }
+            const p = parsed as {
+              sources?: RagSource[];
+              model?: string;
+              rag_degraded?: boolean;
+              rag_reason?: string;
+              content?: string;
+              message?: string;
+              ok?: boolean;
+            };
+
+            switch (event) {
+              case 'sources':
+                setMessages((prev) =>
+                  prev.map((m) =>
+                    m.id === assistantId
+                      ? { ...m, sources: p.sources ?? [] }
+                      : m,
+                  ),
+                );
+                break;
+              case 'meta':
+                setMessages((prev) =>
+                  prev.map((m) =>
+                    m.id === assistantId
+                      ? {
+                          ...m,
+                          meta: {
+                            model: p.model ?? 'gpt-4o',
+                            took_ms: m.meta?.took_ms ?? 0,
+                            rag_degraded: p.rag_degraded ?? false,
+                            rag_reason: p.rag_reason,
+                          },
+                        }
+                      : m,
+                  ),
+                );
+                break;
+              case 'token':
+                receivedTokens = true;
+                setMessages((prev) =>
+                  prev.map((m) =>
+                    m.id === assistantId
+                      ? { ...m, content: m.content + (p.content ?? '') }
+                      : m,
+                  ),
+                );
+                break;
+              case 'done':
+                setMessages((prev) =>
+                  prev.map((m) =>
+                    m.id === assistantId
+                      ? {
+                          ...m,
+                          meta: {
+                            ...m.meta,
+                            took_ms: Math.round(performance.now() - startedAt),
+                          },
+                        }
+                      : m,
+                  ),
+                );
+                break;
+              case 'error':
+                throw new Error(p.message ?? 'Erro no stream');
+            }
+          }
+        }
+
+        if (!receivedTokens) {
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantId
+                ? {
+                    ...m,
+                    content: 'A Akasha não retornou conteúdo.',
+                    error: true,
+                  }
+                : m,
+            ),
+          );
+        }
       } catch (err) {
         const msg = err instanceof Error ? err.message : 'Erro desconhecido';
         setError(msg);
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: crypto.randomUUID(),
-            role: 'assistant',
-            content: `Desculpa, tive um problema técnico: ${msg}\n\nVocê pode tentar de novo ou reformular a pergunta.`,
-            error: true,
-          },
-        ]);
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === assistantId
+              ? {
+                  ...m,
+                  content: `Desculpa, tive um problema técnico: ${msg}\n\nVocê pode tentar de novo ou reformular a pergunta.`,
+                  error: true,
+                }
+              : m,
+          ),
+        );
       } finally {
         setLoading(false);
       }
     },
-    [loading, messages, tradition],
+    [loading, messages, tradition, deepMode],
   );
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -266,8 +402,8 @@ export default function AkashicChatPage() {
               </Button>
             </div>
 
-            {/* Tradition filter */}
-            <div className="mt-3 flex items-center gap-2">
+            {/* Tradition filter + Wave 18 deep mode toggle */}
+            <div className="mt-3 flex flex-wrap items-center gap-2">
               <label
                 htmlFor="tradition-select"
                 className="text-xs text-slate-400"
@@ -286,6 +422,28 @@ export default function AkashicChatPage() {
                   ))}
                 </SelectContent>
               </Select>
+              {/* Wave 18 — toggle "estudo profundo" */}
+              <button
+                type="button"
+                role="switch"
+                aria-checked={deepMode}
+                aria-label="Modo estudo profundo"
+                onClick={() => setDeepMode((v) => !v)}
+                className={cn(
+                  'flex h-8 items-center gap-1.5 rounded-full border px-3 text-[11px] transition',
+                  deepMode
+                    ? 'border-purple-500/50 bg-purple-900/30 text-purple-100'
+                    : 'border-slate-700 bg-slate-800/40 text-slate-300 hover:bg-slate-800/70',
+                )}
+                title={
+                  deepMode
+                    ? 'Modo profundo ativo — cita papers, contraindicações e cross-refs'
+                    : 'Clique para respostas com mais papers e profundidade'
+                }
+              >
+                <BookOpen className="h-3.5 w-3.5" aria-hidden />
+                <span>{deepMode ? 'Profundo' : 'Rápido'}</span>
+              </button>
             </div>
           </header>
 
@@ -297,12 +455,16 @@ export default function AkashicChatPage() {
             aria-label="Mensagens do chat"
           >
             {messages.length === 0 ? (
-              <EmptyState onPickSuggestion={handleSuggestion} />
+              <AkashicEmptyState onPickSuggestion={handleSuggestion} />
             ) : (
               <div className="mx-auto flex max-w-3xl flex-col gap-4">
-                {messages.map((m) => (
-                  <MessageBubble key={m.id} message={m} />
-                ))}
+                {messages.map((m) => {
+                  // Esconde placeholder assistant vazio até o primeiro token chegar
+                  if (m.role === 'assistant' && !m.content && !m.error) {
+                    return null;
+                  }
+                  return <MessageBubble key={m.id} message={m} />;
+                })}
                 {loading && <ThinkingBubble />}
               </div>
             )}
@@ -354,193 +516,13 @@ export default function AkashicChatPage() {
           </div>
         </div>
 
-        {/* ─── Sidebar: sources ─────────────────────────────────────── */}
-        <aside
-          className={cn(
-            'border-t border-slate-800 bg-slate-900/40 md:w-80 md:border-l md:border-t-0',
-            'overflow-y-auto',
-          )}
-          aria-label="Fontes citadas pela Akasha"
-        >
-          <button
-            type="button"
-            onClick={() => setShowSources((v) => !v)}
-            className="flex w-full items-center justify-between px-4 py-3 text-left hover:bg-slate-800/30 md:cursor-default md:hover:bg-transparent"
-          >
-            <div className="flex items-center gap-2">
-              <BookOpen className="h-4 w-4 text-amber-300" aria-hidden />
-              <h2 className="font-heading text-sm font-semibold text-slate-100">
-                Fontes citadas
-              </h2>
-              {latestSources.length > 0 && (
-                <Badge variant="secondary" className="ml-1">
-                  {latestSources.length}
-                </Badge>
-              )}
-            </div>
-            <span className="md:hidden">
-              {showSources ? (
-                <ChevronUp className="h-4 w-4" />
-              ) : (
-                <ChevronDown className="h-4 w-4" />
-              )}
-            </span>
-          </button>
-
-          {showSources && (
-            <div className="space-y-2 px-4 pb-4">
-              {latestSources.length === 0 ? (
-                <p className="text-xs text-slate-500">
-                  As fontes que a Akasha citar vão aparecer aqui. Por padrão, até 5 artigos por resposta.
-                </p>
-              ) : (
-                latestSources.map((s, i) => (
-                  <SourceCard key={s.id} source={s} index={i + 1} />
-                ))
-              )}
-            </div>
-          )}
-        </aside>
+        {/* ─── Sidebar: sources (lazy) ───────────────────────────── */}
+        <AkashicSourcesPanel
+          sources={latestSources}
+          initiallyExpanded={showSources}
+        />
       </div>
     </div>
   );
 }
 
-// ============================================================================
-// Sub-components
-// ============================================================================
-
-function EmptyState({ onPickSuggestion }: { onPickSuggestion: (s: string) => void }) {
-  return (
-    <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 py-12 text-center">
-      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-amber-500/20 via-amber-400/10 to-amber-300/20 ring-1 ring-amber-400/30">
-        <Sparkles className="h-8 w-8 text-amber-300" aria-hidden />
-      </div>
-      <div className="space-y-2">
-        <h2 className="font-heading text-2xl font-semibold text-slate-100">
-          Olá, eu sou a Akasha
-        </h2>
-        <p className="mx-auto max-w-md text-sm text-slate-400">
-          Posso ajudar a conectar tradições, citar papers e traduzir conceitos. Sempre com humildade epistêmica — quando não sei, admito.
-        </p>
-      </div>
-      <Card className="w-full max-w-md border-slate-800 bg-slate-900/60">
-        <CardContent className="space-y-2 p-4">
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
-            Comece com uma pergunta:
-          </p>
-          {SUGGESTIONS.map((s) => (
-            <button
-              key={s}
-              type="button"
-              onClick={() => onPickSuggestion(s)}
-              className="block w-full rounded-lg border border-slate-800 bg-slate-900/40 px-3 py-2 text-left text-sm text-slate-200 transition-colors hover:border-amber-400/40 hover:bg-slate-800/40"
-            >
-              <MessageSquare className="mr-2 inline h-3.5 w-3.5 text-amber-300" />
-              {s}
-            </button>
-          ))}
-        </CardContent>
-      </Card>
-      <p className="text-[10px] text-slate-500">
-        Lembrete: Akasha não substitui profissionais, não promete cura, e sempre recomenda consultar praticantes da tradição.
-      </p>
-    </div>
-  );
-}
-
-function MessageBubble({ message }: { message: ChatMessage }) {
-  const isUser = message.role === 'user';
-  return (
-    <article
-      className={cn('flex', isUser ? 'justify-end' : 'justify-start')}
-    >
-      <div
-        className={cn(
-          'max-w-[85%] rounded-2xl px-4 py-3 text-sm md:text-base',
-          isUser
-            ? 'bg-amber-500/15 text-slate-50 ring-1 ring-amber-400/30'
-            : message.error
-              ? 'bg-red-950/30 text-red-100 ring-1 ring-red-800/40'
-              : 'bg-slate-800/60 text-slate-100 ring-1 ring-slate-700/50',
-        )}
-      >
-        <div className="whitespace-pre-wrap break-words leading-relaxed">
-          {message.content}
-        </div>
-        {!isUser && !message.error && message.meta && (
-          <div className="mt-2 flex flex-wrap items-center gap-2 text-[10px] text-slate-400">
-            <span className="rounded-full bg-slate-900/50 px-2 py-0.5">
-              {message.meta.model}
-            </span>
-            <span>·</span>
-            <span>{message.meta.took_ms}ms</span>
-            {message.meta.rag_degraded && (
-              <>
-                <span>·</span>
-                <span
-                  className="rounded-full bg-amber-900/40 px-2 py-0.5 text-amber-200"
-                  title={message.meta.rag_reason ?? 'RAG degradado'}
-                >
-                  RAG off
-                </span>
-              </>
-            )}
-            {message.sources && message.sources.length > 0 && (
-              <>
-                <span>·</span>
-                <span>{message.sources.length} fontes</span>
-              </>
-            )}
-          </div>
-        )}
-      </div>
-    </article>
-  );
-}
-
-function ThinkingBubble() {
-  return (
-    <div className="flex justify-start">
-      <div className="flex items-center gap-2 rounded-2xl bg-slate-800/60 px-4 py-3 text-sm text-slate-300 ring-1 ring-slate-700/50">
-        <Loader2 className="h-4 w-4 animate-spin text-amber-300" />
-        <span>Akasha está buscando na biblioteca e pensando…</span>
-      </div>
-    </div>
-  );
-}
-
-function SourceCard({ source, index }: { source: RagSource; index: number }) {
-  const simPct = (source.similarity * 100).toFixed(0);
-  return (
-    <a
-      href={`/library/${source.slug}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="block rounded-lg border border-slate-800 bg-slate-900/60 p-3 transition-colors hover:border-amber-400/40 hover:bg-slate-900"
-    >
-      <div className="flex items-start justify-between gap-2">
-        <h3 className="flex-1 text-xs font-medium leading-snug text-slate-100">
-          <span className="mr-1 text-amber-300">[{index}]</span>
-          {source.title}
-        </h3>
-        <ExternalLink className="h-3 w-3 shrink-0 text-slate-500" />
-      </div>
-      <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[10px]">
-        <Badge variant="outline" className="border-amber-400/30 text-amber-300">
-          {simPct}% match
-        </Badge>
-        {source.tradition && (
-          <Badge variant="secondary" className="text-[10px]">
-            {source.tradition}
-          </Badge>
-        )}
-      </div>
-      {source.excerpt && (
-        <p className="mt-2 line-clamp-3 text-[11px] leading-snug text-slate-400">
-          {source.excerpt}
-        </p>
-      )}
-    </a>
-  );
-}

@@ -25,7 +25,14 @@ export const PROTECTED_PREFIXES = [
   '/settings',
   '/dashboard',
 ];
-export const AUTH_PREFIXES = ['/login', '/register', '/forgot-password'];
+export const AUTH_PREFIXES = [
+  '/login',
+  '/signup',
+  '/register',
+  '/forgot-password',
+  '/reset-password',
+  '/verify-email',
+];
 
 function isProtectedPath(pathname: string): boolean {
   return PROTECTED_PREFIXES.some(

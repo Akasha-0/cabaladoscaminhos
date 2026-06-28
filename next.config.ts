@@ -1,4 +1,20 @@
 import type { NextConfig } from "next";
+import bundleAnalyzer from "@next/bundle-analyzer";
+
+// ============================================================================
+// @next/bundle-analyzer — gated behind ANALYZE env var
+// ============================================================================
+// Run: `pnpm analyze:bundle` → opens .next/analyze/{client,server,edge}.html
+// CI: see `docs/PERF-BUNDLE-ANALYSIS.md` for the workflow.
+// ============================================================================
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+  openAnalyzer: false, // CI-friendly; opt-in local open via ANALYZE_OPEN=1
+  analyzerMode: "static",
+  reportFilename: "../analyze/[type].html",
+  defaultSizes: "gzip",
+});
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   compress: true,
@@ -10,9 +26,9 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
-    optimizePackageImports: ['jspdf', 'lucide-react'],
+    optimizePackageImports: ["jspdf", "lucide-react"],
   },
   staticPageGenerationTimeout: 120,
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);

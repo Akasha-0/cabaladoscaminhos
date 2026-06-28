@@ -19,6 +19,7 @@ import {
   fetchActorSnapshot,
   likeGroupKey,
 } from '@/lib/notifications';
+import { trackPostLike } from '@/lib/analytics/events-catalog';
 
 export const dynamic = 'force-dynamic';
 
@@ -53,6 +54,11 @@ export async function POST(_request: NextRequest, context: RouteContext) {
     }
 
     const result = await toggleLike({ postId: id, userId: viewer.id });
+
+    // Wave 18 — analytics: post_liked (so' no add, nao no unlike)
+    if (result.liked) {
+      trackPostLike(id, viewer.id);
+    }
 
     // Side-effect: notificar o autor do post quando um like é adicionado
     // (result.liked === true após o toggle)

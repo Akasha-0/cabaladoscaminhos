@@ -190,12 +190,28 @@ class Logger {
     }
   }
 
-  private async sendToMonitoring(_entry: LogEntry): Promise<void> {
-    // TODO: Integrate with Sentry, Datadog, or similar
-    if (process.env.SENTRY_DSN) {
-      // await import('@sentry/node').then(({ captureException }) => {
-      //   captureException(new Error(entry.message), { extra: entry });
-      // });
+  private async sendToMonitoring(entry: LogEntry): Promise<void> {
+    // Sentry integration (Wave 11) — dynamic import pra evitar bundle bloat.
+    try {
+      const sentry = await import("./monitoring/sentry");
+      if (!sentry.isSentryEnabled()) return;
+
+      const err = entry.error
+        ? Object.assign(new Error(entry.error.message), { name: entry.error.code })
+        : new Error(entry.message);
+      sentry.captureException(err, {
+        level: entry.level >= LogLevel.FATAL ? "fatal" : entry.level >= LogLevel.ERROR ? "error" : "warning",
+        tags: {
+          logger: "akasha-portal",
+          requestId: entry.context?.requestId,
+        },
+        extra: {
+          context: entry.context,
+          duration: entry.duration,
+        },
+      });
+    } catch {
+      // Sentry nao inicializado ou modulo ausente — silent fallback.
     }
   }
 

@@ -10,6 +10,7 @@ import { ok, fail, fromZodError, handleError, ErrorCode } from '@/lib/community/
 import { getViewer, requireViewer } from '@/lib/community/auth';
 import { GroupListQuerySchema, CreateGroupSchema } from '@/lib/validators/groups';
 import { listGroups, createGroup } from '@/lib/community/groups';
+import { trackEvent } from '@/lib/analytics/events-catalog';
 
 export const dynamic = 'force-dynamic';
 
@@ -77,6 +78,15 @@ export async function POST(request: NextRequest) {
         requireApproval: parsed.data.requireApproval ?? false,
         createdBy: viewer.id,
       });
+
+      // Wave 18 — analytics: group_created
+      trackEvent('group_created', {
+        groupId: group.id,
+        groupSlug: group.slug,
+        tradition: group.tradition,
+        isPublic: group.isPublic,
+      });
+
       return ok(group, { status: 201 });
     } catch (err) {
       // Prisma P2002 = unique constraint (slug duplicado)

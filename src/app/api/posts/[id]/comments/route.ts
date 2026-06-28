@@ -19,6 +19,7 @@ import {
   createNotification,
   fetchActorSnapshot,
 } from '@/lib/notifications';
+import { trackEvent } from '@/lib/analytics/events-catalog';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,6 +32,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
     const { id } = await context.params;
 
     const sp = request.nextUrl.searchParams;
+    const treeFlag = sp.get('tree');
     const parsed = CommentQuerySchema.safeParse({
       cursor: sp.get('cursor') ?? undefined,
       limit: sp.get('limit') ?? undefined,
@@ -47,6 +49,8 @@ export async function GET(request: NextRequest, context: RouteContext) {
       cursor: parsed.data.cursor,
       limit: parsed.data.limit,
       parentId: parsed.data.parentId ?? null,
+      // Modo árvore opt-in (mantém compat com listas/paginação flat).
+      tree: treeFlag === 'true' || treeFlag === '1',
     });
 
     return ok(result, {
@@ -98,6 +102,14 @@ export async function POST(request: NextRequest, context: RouteContext) {
       authorId: viewer.id,
       content: parsed.data.content,
       parentId: parsed.data.parentId ?? null,
+    });
+
+    // Wave 18 — analytics: comment_created (fire-and-forget)
+    trackEvent('comment_created', {
+      commentId: comment.id,
+      postId: id,
+      parentCommentId: parsed.data.parentId ?? undefined,
+      contentLength: parsed.data.content.length,
     });
 
     // Side-effects: notificações

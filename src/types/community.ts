@@ -57,6 +57,12 @@ export interface Comment {
   likesCount: number;
   liked?: boolean;
   createdAt: string;
+  /**
+   * Replies aninhadas. Presente quando o comentário veio de um endpoint em
+   * modo árvore (`GET /api/posts/[id]/comments?tree=true`). Em modo flat
+   * (default) é `undefined` para manter compat com consumidores antigos.
+   */
+  replies?: Comment[];
 }
 
 // ============================================================================

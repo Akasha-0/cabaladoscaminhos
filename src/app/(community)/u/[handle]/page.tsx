@@ -181,9 +181,9 @@ export default function PublicProfilePage() {
       <div className="max-w-5xl mx-auto px-4 -mt-16 md:-mt-20 relative z-10">
         {/* Identity block */}
         <div className="flex flex-col md:flex-row md:items-end gap-4 mb-6">
-          <Avatar className="w-32 h-32 md:w-40 md:h-40 border-4 border-slate-950 shadow-2xl">
+          <Avatar className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 border-4 border-slate-950 shadow-2xl">
             <AvatarImage src={profile.avatarUrl ?? undefined} />
-            <AvatarFallback className="bg-gradient-to-br from-amber-500/30 to-violet-500/30 text-amber-200 text-3xl md:text-4xl">
+            <AvatarFallback className="bg-gradient-to-br from-amber-500/30 to-violet-500/30 text-amber-200 text-2xl sm:text-3xl md:text-4xl">
               {initials}
             </AvatarFallback>
           </Avatar>

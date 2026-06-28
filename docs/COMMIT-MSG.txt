@@ -1,0 +1,23 @@
+feat(notifications): Web Push real com web-push lib
+
+- Adiciona `web-push@^3.6.7` (devDep usada server-side via lazy import)
+- Cria `src/lib/notifications/push-server.ts` — wrapper VAPID completo
+  com subscribeUser/unsubscribeUser/sendPush/sendPushFromNotification,
+  cleanup automático de subscriptions inválidas (404/410)
+- Cria `/api/notifications/push/subscribe` — POST/GET/DELETE (VAPID pub,
+  save com dedup por endpoint, remove com autorização)
+- Cria `/api/notifications/push/test` — POST dev-only para QA manual
+  (retorna 404 em produção)
+- Cria `EnablePushButton` (fallback flutuante) e `HeaderPushButton`
+  (pill top-right) com máquina de estado completa
+  (idle/requesting/subscribing/subscribed/denied/error)
+- Adiciona `<HeaderPushButton />` e `<EnablePushButton />` no root layout
+- Service Worker: adiciona handler `pushsubscriptionchange` (sincroniza
+  com backend quando browser invalida subscription)
+- `triggers.dispatchPush` agora usa `push-server` com fallback ao legacy
+  push.ts (compat com testes que mockam o path antigo)
+- Tests: `__tests__/push-server.test.ts` com cobertura cirúrgica
+  (VAPID config, subscribe, unsubscribe, sendPush — 4 grupos)
+- Documentação completa em `docs/PUSH-W13.md`
+
+Refs: docs/PUSH-W13.md · IDEIA.md §Notificações · Onda 13

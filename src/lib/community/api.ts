@@ -45,13 +45,56 @@ export type ErrorCodeType = (typeof ErrorCode)[keyof typeof ErrorCode];
 
 export function ok<T>(
   data: T,
-  init?: { status?: number; meta?: Record<string, unknown> }
+  init?: {
+    status?: number;
+    meta?: Record<string, unknown>;
+    /**
+     * Optional cache headers. Common patterns:
+     *  - `{ sMaxage: 300, staleWhileRevalidate: 60 }` for edge-cached JSON
+     *  - `{ private: true, maxAge: 0 }` for user-specific data
+     *  - `{ noStore: true }` for sensitive mutations
+     */
+    cache?: {
+      sMaxage?: number;
+      maxAge?: number;
+      staleWhileRevalidate?: number;
+      private?: boolean;
+      noStore?: boolean;
+    };
+  }
 ) {
   const meta: ApiSuccess<T>['meta'] = {
     timestamp: new Date().toISOString(),
     ...(init?.meta ?? {}),
   };
-  return NextResponse.json<ApiSuccess<T>>({ data, meta }, { status: init?.status ?? 200 });
+  const headers = buildCacheHeader(init?.cache);
+  return NextResponse.json<ApiSuccess<T>>(
+    { data, meta },
+    { status: init?.status ?? 200, headers },
+  );
+}
+
+/**
+ * Build a `Cache-Control` header value from a typed options bag.
+ * Defaults are conservative (no-store). Only declare what you mean.
+ */
+export function buildCacheHeader(opts?: {
+  sMaxage?: number;
+  maxAge?: number;
+  staleWhileRevalidate?: number;
+  private?: boolean;
+  noStore?: boolean;
+}): Record<string, string> {
+  if (!opts) return { 'Cache-Control': 'no-store' };
+  if (opts.noStore) return { 'Cache-Control': 'no-store' };
+  const parts: string[] = [];
+  if (opts.private) parts.push('private');
+  else parts.push('public');
+  if (typeof opts.maxAge === 'number') parts.push(`max-age=${opts.maxAge}`);
+  if (typeof opts.sMaxage === 'number') parts.push(`s-maxage=${opts.sMaxage}`);
+  if (typeof opts.staleWhileRevalidate === 'number')
+    parts.push(`stale-while-revalidate=${opts.staleWhileRevalidate}`);
+  return { 'Cache-Control': parts.join(', ') };
 }
 
 export function fail(

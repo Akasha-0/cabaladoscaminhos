@@ -172,6 +172,215 @@ export const AKASHA_TRADITIONS = [
 export type AkashaTradition = (typeof AKASHA_TRADITIONS)[number];
 
 /**
+ * Wave 18 — Perfil de tom + papers-âncora POR TRADIÇÃO.
+ *
+ * Cada entrada define:
+ *   - tone: como a Akasha deve falar quando o tema é desta tradição
+ *     (místico/ancestral/sensual/suave/etc — pedido do usuário)
+ *   - keyPapers: 1-3 papers específicos do EVIDENCE-MAP.md (Wave 15) para
+ *     citar quando relevante. NÃO inventar: se o paper não está aqui,
+ *     NÃO citar.
+ *   - cautions: contraindicações específicas mais comuns.
+ *
+ * Esses blocos são injetados no system prompt quando `tradition` é
+ * detectada (filtro explícito OU auto-detect via rag.ts).
+ */
+export interface TraditionProfile {
+  tone: string;
+  keyPapers: Array<{ citation: string; use: string }>;
+  cautions: string[];
+}
+
+export const TRADITION_PROFILES: Record<AkashaTradition, TraditionProfile> = {
+  cabala: {
+    tone:
+      'Místico-cabalístico. Use linguagem de Sefirot, Árvore da Vida, Ain/Ain Soph/Olam. Respeite o Rabbi como autoridade. Evite reduzir Cabala a "numerologia mística".',
+    keyPapers: [
+      {
+        citation: 'Goodwin et al. (2022) — NEJM — psilocibina para depressão',
+        use: 'Só se Cabala for cruzada com prática meditativa/contemplativa moderna',
+      },
+    ],
+    cautions: [
+      'Cabala prática (Kavanah, meditação) deve ser orientada por Rabbi/Mashpia autorizado',
+      'Não substitui acompanhamento psicológico quando há sofrimento clínico',
+    ],
+  },
+  ifa: {
+    tone:
+      'Ancestral, axé, terreiro. Use termos como Odu, Babalorixá, Ori, Ebó. Respeite a hierarquia do terreiro. Nunca simplifique Ifá a "astrologia africana".',
+    keyPapers: [
+      {
+        citation:
+          'Palhano-Fontes et al. (2019) — "Rapid antidepressant effects of the psychedelic ayahuasca"',
+        use: 'Se a pergunta envolver Odu que pedem práticas com sacramentos (Baba Omi, Padê)',
+      },
+    ],
+    cautions: [
+      'Orientação personalizada sobre Odu vem do Babalorixá do consulente — não substitua',
+      'Práticas com fundamento exigem contexto ritual, não faço por chat',
+    ],
+  },
+  xamanismo: {
+    tone:
+      'Xamânico, natureza, cantos, mestres animais. Use termos como Ayahuasca, Rapé, Kambo, intenção, dieta. Respeite Shipibo, Kichwa, Yawanawá, Kaxinawá.',
+    keyPapers: [
+      {
+        citation: 'Palhano-Fontes et al. (2019) — ayahuasca, depressão',
+        use: 'Quando perguntarem sobre efeitos terapêuticos documentados',
+      },
+      {
+        citation: 'PMC9863029 (2023) — "Indigenous-Amazonian Traditional Medicine"',
+        use: 'Para contextualizar rapé/tobacco sagrado e suas concentrações',
+      },
+      {
+        citation: 'Carhart-Harris et al. (2014) — DMN + ayahuasca (PLOS ONE)',
+        use: 'Quando perguntarem sobre neurociência da experiência',
+      },
+    ],
+    cautions: [
+      'Ayahuasca + SSRI/antidepressivo = risco de síndrome serotoninérgica',
+      'Histórico de psicose/esquizofrenia na família = contraindicação séria',
+      'Kambo: contraindicações cardíacas e gestação — pelo menos 10 mortes documentadas',
+    ],
+  },
+  tantra: {
+    tone:
+      'Sensual, consciente, energético. Use termos como Kundalini, Chakra, Prana, Maithuna, Sahasrara. Não reduza Tantra a sexo tântrico — é prática espiritual completa.',
+    keyPapers: [
+      {
+        citation: 'Brewer et al. (2011) — DMN e meditação',
+        use: 'Cruzamento com meditação/contemplação tântrica',
+      },
+    ],
+    cautions: [
+      'Práticas intensas com Kundalini sem supervisão podem destabilizar',
+      'Não substitui acompanhamento terapêutico em trauma',
+    ],
+  },
+  reiki: {
+    tone:
+      'Suave, presença, compaixão. Use termos como canal, energia vital, Ki, intenção terapêutica. Honre Mikao Usui. Não reduza a "placebo" — discuta com respeito.',
+    keyPapers: [
+      {
+        citation: 'McManus (2017) — Reiki como terapia complementar',
+        use: 'Quando perguntarem sobre evidência ou mecanismo',
+      },
+      {
+        citation: 'Baldwin et al. (2017) — Cochrane systematic review',
+        use: 'Para nível de evidência realista (OBSERVATIONAL)',
+      },
+    ],
+    cautions: [
+      'Reiki NÃO substitui tratamento médico convencional — é complementar',
+      'Em casos de câncer ou doença grave, sempre junto com acompanhamento médico',
+    ],
+  },
+  ayurveda: {
+    tone:
+      'Hindu milenar, Doshas (Vata/Pitta/Kapha), prakriti, fitoterapia. Use termos sânscritos com tradução. Respeite o Vaidya (médico ayurvédico).',
+    keyPapers: [
+      {
+        citation: 'Whiting et al. (2015) — JAMA — Cannabis medicinal',
+        use: 'Se a pergunta envolver fitoterapia ayurvédica específica',
+      },
+    ],
+    cautions: [
+      'Interações herbais com medicação alopática são reais',
+      'Autoprescrição de Rasayanas pode ser perigosa sem diagnóstico',
+    ],
+  },
+  meditacao: {
+    tone:
+      'Acolhedor, baseado em evidências. Use termos como Vipassana, Zazen, DMN, mindfulness, atenção aberta. Não espiritualize demais nem seque em "técnica".',
+    keyPapers: [
+      {
+        citation: 'Brewer et al. (2011) — Default Mode Network + meditação',
+        use: 'Quando perguntarem sobre neurociência',
+      },
+      {
+        citation: 'Goyal et al. (2014) — JAMA Internal Medicine — meta-análise',
+        use: 'Para nível de evidência agregado',
+      },
+      {
+        citation: 'Tang et al. (2015) — RCT integrativo-body-mind training',
+        use: 'Para efeitos de treino curto vs longo',
+      },
+    ],
+    cautions: [
+      'Pode intensificar ansiedade/depressão nas primeiras semanas',
+      'Em prática intensa com histórico de psicose, procurar professor experiente',
+    ],
+  },
+  astrologia: {
+    tone:
+      'Simbólico, jungiano, sem determinismo. Use termos como mapa natal, trânsito, Lilith, Meio-do-Céu. Não prometa "prever o futuro" — descreva potenciais.',
+    keyPapers: [],
+    cautions: [
+      'Astrologia não substitui psicoterapia ou orientação vocacional',
+    ],
+  },
+  numerologia: {
+    tone:
+      'Simbólico, pitagórico/cabalístico. Use termos como caminho de vida, expressão, motivação, número pessoal. Respeite o sistema Cabalístico e o Tântrico como diferentes.',
+    keyPapers: [],
+    cautions: [],
+  },
+  umbanda: {
+    tone:
+      'Respeitoso com a tradição, caboclos, pretos-velhos, entidades. Use termos como Gira, Ponto, Cambono, Zelador de Santo. Não simplifique nem fetichize.',
+    keyPapers: [],
+    cautions: [
+      'Orientação pessoal de entidade vem do Zelador/Cambono do consulente',
+    ],
+  },
+  candomble: {
+    tone:
+      'Respeitoso com a tradição, Orixás, terreiro. Use termos como Ori, Ebó, Odu, Babalorixá, Yalorixá, Ogã. Honre a hierarquia do terreiro.',
+    keyPapers: [],
+    cautions: [
+      'Orientação pessoal sobre Orixá regente vem da Yalorixá/Babalorixá',
+      'Não interprete cabeça (ori) sem terreiro de origem',
+    ],
+  },
+  espiritismo: {
+    tone:
+      'Kardecista, doutrinário mas aberto. Use termos como mediunidade, desobsessão, evangelho no lar, passes. Respeite o dirigente/mentor espírita.',
+    keyPapers: [],
+    cautions: [
+      'Não substitui acompanhamento psicológico/psiquiátrico',
+    ],
+  },
+};
+
+/**
+ * Wave 18 — detectTradition: heurística simples para sugerir tradição
+ * a partir da mensagem quando o usuário não escolheu filtro.
+ * Não é classificação pesada — só ajuda a Akasha a entrar no tom certo.
+ */
+export function detectTradition(message: string): AkashaTradition | null {
+  const m = message.toLowerCase();
+  const checks: Array<[AkashaTradition, RegExp]> = [
+    ['cabala', /\b(cabala|cabal[áa]stic|sefirot|sephirot|kether|tiferet|malhut|qabalah)\b/i],
+    ['ifa', /\b(if[áa]|odu|orix[áa]|babalorix[áa]|yalorix[áa]|ori\b|terreiro)\b/i],
+    ['xamanismo', /\b(xaman|ayahuasca|rap[ée]|kambo|san\s*pedro|kichwa|shipibo)\b/i],
+    ['tantra', /\b(tantra|kundalini|chakra|maithuna|prana|hatha)\b/i],
+    ['reiki', /\b(reiki|usui|cura\s*energ[ée]tica|canal\s*de\s*energia)\b/i],
+    ['ayurveda', /\b(ayurveda|dosha|vata|pitta|kapha|prakriti)\b/i],
+    ['meditacao', /\b(medita[çc][ãa]o|vipassana|zazen|mindfulness|aten[çc][ãa]o\s*plena)\b/i],
+    ['astrologia', /\b(astrologi|mapa\s*natal|signo|sol\s*em|lua\s*em|ascendente|meio[\s-]?do[\s-]?c[ée]u)\b/i],
+    ['numerologia', /\b(numerolog|caminho\s*de\s*vida|n[úu]mero\s*pessoal)\b/i],
+    ['umbanda', /\b(umbanda|gira|caboclo|preto[\s-]?velho|cambono)\b/i],
+    ['candomble', /\b(candombl[ée]|orix[áa]|orunmil[áa]|og[ãa]n)\b/i],
+    ['espiritismo', /\b(espiritismo|kardec|mediun[ie]dade|desobsess[ãa]o|evangelho\s*no\s*lar)\b/i],
+  ];
+  for (const [trad, re] of checks) {
+    if (re.test(m)) return trad;
+  }
+  return null;
+}
+
+/**
  * Bloco de contexto RAG a ser injetado no system prompt quando há artigos
  * similares encontrados via pgvector. Cada item vira uma "fonte citada" que a
  * IA pode referenciar diretamente.
@@ -194,30 +403,64 @@ export interface BuildPromptOptions {
   sources?: RagSource[];
   /** Limite de tamanho do bloco RAG (em caracteres totais) */
   maxContextChars?: number;
+  /** Wave 18 — modo "estudo profundo" (mais papers + cross-refs + contraindicações) */
+  deepMode?: boolean;
+  /** Wave 18 — recap das últimas N mensagens (default 10, 0 desativa) */
+  historyRecap?: Array<{ role: 'user' | 'assistant'; content: string }>;
 }
 
 /**
- * Constrói o prompt final: identidade Akasha + bloco RAG + filtro tradição.
+ * Constrói o prompt final: identidade Akasha + bloco RAG + filtro tradição +
+ * perfil por tradição + modo profundo + recap de histórico.
  * Mantém a ordem: identidade primeiro, contexto depois — assim a IA não se
  * "esquece" das regras éticas quando o contexto cresce.
  */
 export function buildAkashaPrompt(options: BuildPromptOptions = {}): string {
-  const { tradition = null, sources = [], maxContextChars = 6000 } = options;
+  const {
+    tradition = null,
+    sources = [],
+    maxContextChars = 6000,
+    deepMode = false,
+    historyRecap = [],
+  } = options;
 
   const blocks: string[] = [AKASHA_SYSTEM_PROMPT];
 
-  // Bloco de tradição (filtro explícito)
+  // ── Bloco de tradição (filtro explícito + tom + papers âncora) ──────────
   if (tradition) {
-    blocks.push(
-      [
+    const profile = TRADITION_PROFILES[tradition as AkashaTradition];
+    const tradLines = [
+      '',
+      '## Filtro de tradição ativo',
+      `O usuário pediu foco em: **${tradition}**. Dê prioridade a artigos e referências dessa tradição. Se a pergunta não tiver relação clara, sinalize gentilmente.`,
+    ];
+    if (profile) {
+      tradLines.push(
         '',
-        '## Filtro de tradição ativo',
-        `O usuário pediu foco em: **${tradition}**. Dê prioridade a artigos e referências dessa tradição. Se a pergunta não tiver relação clara, sinalize gentilmente.`,
-      ].join('\n'),
-    );
+        '### Tom específico desta tradição',
+        profile.tone,
+      );
+      if (profile.cautions.length > 0) {
+        tradLines.push(
+          '',
+          '### Contraindicações específicas',
+          ...profile.cautions.map((c) => `- ${c}`),
+        );
+      }
+      if (profile.keyPapers.length > 0) {
+        tradLines.push(
+          '',
+          `### Papers âncora (cite quando relevante)${deepMode ? ' — modo profundo: sempre que se aplicar' : ''}`,
+          ...profile.keyPapers.map(
+            (p) => `- **${p.citation}** — use para: ${p.use}`,
+          ),
+        );
+      }
+    }
+    blocks.push(tradLines.join('\n'));
   }
 
-  // Bloco RAG (artigos indexados)
+  // ── Bloco RAG (artigos indexados) ──────────────────────────────────────
   if (sources.length > 0) {
     const ragBlock = formatRagBlock(sources, maxContextChars);
     blocks.push(
@@ -229,6 +472,41 @@ export function buildAkashaPrompt(options: BuildPromptOptions = {}): string {
         ragBlock,
         '',
         'Se os artigos acima não respondem a pergunta, diga honestamente que a biblioteca não cobriu o tópico e ofereça buscar mais.',
+      ].join('\n'),
+    );
+  }
+
+  // ── Wave 18: bloco "estudo profundo" ────────────────────────────────────
+  if (deepMode) {
+    blocks.push(
+      [
+        '',
+        '## Modo "estudo profundo" ativado',
+        'O usuário pediu profundidade adicional. Além da resposta direta:',
+        '1. **Cite 2+ papers** relevantes (autores + ano + periódico) — use formato `(Autor et al. ANO, Periódico)`.',
+        '2. **Aponte contraindicações** explicitamente, mesmo que não perguntem — perfil risco/benefício.',
+        '3. **Cross-references**: mostre conexões com outras tradições, sistemas ou evidências (ex: "Isso conecta com X em Y").',
+        '4. **Níveis de evidência**: use HIGH/MEDIUM/LOW/ANECDOTAL quando classificar estudos.',
+        '5. **Footnote visual**: ao final, agrupe as citações em uma seção `## Referências` com lista numerada.',
+      ].join('\n'),
+    );
+  }
+
+  // ── Wave 18: recap de histórico (últimas 10) ────────────────────────────
+  if (historyRecap.length > 0) {
+    const recapBlock = historyRecap
+      .map(
+        (m) =>
+          `- **${m.role === 'user' ? 'Usuário' : 'Akasha'}:** ${m.content.slice(0, 300)}${m.content.length > 300 ? '…' : ''}`,
+      )
+      .join('\n');
+    blocks.push(
+      [
+        '',
+        '## Contexto da conversa atual (últimas mensagens)',
+        'Use isto para manter coerência com o que já foi dito nesta conversa:',
+        '',
+        recapBlock,
       ].join('\n'),
     );
   }

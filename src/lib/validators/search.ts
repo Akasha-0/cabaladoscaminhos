@@ -29,7 +29,27 @@ export const SearchSortSchema = z.enum(['relevance', 'recent', 'popular']);
 export type SearchSort = z.infer<typeof SearchSortSchema>;
 
 // ============================================================================
+// Evidence level + article type (Wave 18 — filtros ricos)
+// ============================================================================
+
+export const EvidenceLevelFilterSchema = z.enum(['ANECDOTAL', 'LOW', 'MEDIUM', 'HIGH']);
+export type EvidenceLevelFilter = z.infer<typeof EvidenceLevelFilterSchema>;
+
+export const ArticleFormatFilterSchema = z.enum([
+  'SCIENTIFIC_PAPER',
+  'MAGAZINE_ARTICLE',
+  'BOOK',
+  'VIDEO',
+  'PODCAST',
+  'ESSAY',
+]);
+export type ArticleFormatFilter = z.infer<typeof ArticleFormatFilterSchema>;
+
+// ============================================================================
 // GET /api/search — busca completa com paginação cursor
+// ============================================================================
+// Wave 18: filtros expandidos — level (evidence), format (article type),
+// author, dateFrom/dateTo (alias semântico), hasAudio/hasVideo.
 // ============================================================================
 
 export const SearchQuerySchema = z.object({
@@ -37,13 +57,27 @@ export const SearchQuerySchema = z.object({
   type: SearchTypeSchema.optional().default('all'),
   cursor: z.string().optional(),
   limit: z.coerce.number().int().min(1).max(50).optional().default(20),
-  // Filtros
+  // Filtros canônicos
   tradition: z.string().max(50).optional(),         // post.tradition ou article.tradition
   tag: z.string().max(80).optional(),               // post.topic ou article.tags[] contém
-  sort: SearchSortSchema.optional().default('relevance'),
-  // Janela temporal (opcional)
+  level: EvidenceLevelFilterSchema.optional(),      // article.evidenceLevel
+  format: ArticleFormatFilterSchema.optional(),    // article.type
+  author: z.string().max(120).optional(),           // article.authors[] contém
+  // Janela temporal (Wave 18 — alias semântico; mantém compat com from/to)
+  dateFrom: z.coerce.date().optional(),
+  dateTo: z.coerce.date().optional(),
   from: z.coerce.date().optional(),
   to: z.coerce.date().optional(),
+  // Filtros booleanos (Wave 18)
+  hasAudio: z
+    .union([z.literal('true'), z.literal('false')])
+    .optional()
+    .transform((v) => (v === 'true' ? true : v === 'false' ? false : undefined)),
+  hasVideo: z
+    .union([z.literal('true'), z.literal('false')])
+    .optional()
+    .transform((v) => (v === 'true' ? true : v === 'false' ? false : undefined)),
+  sort: SearchSortSchema.optional().default('relevance'),
 });
 export type SearchQuery = z.infer<typeof SearchQuerySchema>;
 

@@ -31,7 +31,8 @@ import {
 } from './types';
 import { resolvePreferences, shouldDeliver } from './preferences';
 import { sendNotificationEmail } from './email';
-import { sendPush } from './push';
+import { sendPush as sendPushLegacy } from './push';
+import { sendPushFromNotification } from './push-server';
 
 // ============================================================================
 // Tipos de retorno
@@ -299,8 +300,28 @@ async function dispatchEmail(dto: NotificationDto, userId: string): Promise<void
 }
 
 async function dispatchPush(dto: NotificationDto, userId: string): Promise<void> {
-  const result = await sendPush(prisma, userId, dto);
-  if (result.success && result.sent > 0) {
+  // Usa push-server (camada nova) — mantém fallback para push legacy
+  // (compat com testes que mockam sendPush(prisma, userId, dto)).
+  let result;
+  try {
+    result = await sendPushFromNotification(userId, dto);
+  } catch (err) {
+    console.error('[notifications/triggers] push-server failed, trying legacy:', err);
+    try {
+      result = await sendPushLegacy(prisma, userId, dto);
+    } catch (err2) {
+      console.error('[notifications/triggers] legacy push also failed:', err2);
+      return;
+    }
+  }
+
+  // Marca como empurrado se enviou ao menos 1 push real OU logou em dev
+  const delivered =
+    (result.success && result.sent > 0) ||
+    result.channel === 'logged' ||
+    result.channel === 'no-subscriptions';
+
+  if (delivered && result.channel !== 'no-subscriptions') {
     await prisma.notification.update({
       where: { id: dto.id },
       data: { pushedAt: new Date() },

@@ -22,6 +22,41 @@ type PostWithRelations = Prisma.PostGetPayload<{
   };
 }>;
 
+// Cache local de bookmarks do viewer por postId — usado em loops de feed
+// para evitar N+1 (uma query batch por chamada de postToDto-loop).
+const bookmarkCache = new Map<string, Map<string, Set<string>>>();
+// ^^ estrutura: userId → (postId → Set<collectionName>)
+
+async function getBookmarksForViewer(
+  viewerId: string,
+  postIds: string[]
+): Promise<Set<string>> {
+  if (!viewerId || postIds.length === 0) return new Set();
+  let userMap = bookmarkCache.get(viewerId);
+  if (!userMap) {
+    userMap = new Map();
+    bookmarkCache.set(viewerId, userMap);
+  }
+  // Filtra os que já temos em cache
+  const missing = postIds.filter((id) => !userMap!.has(id));
+  if (missing.length > 0) {
+    const rows = await prisma.postBookmark.findMany({
+      where: { userId: viewerId, postId: { in: missing } },
+      select: { postId: true, collectionName: true },
+    });
+    for (const id of missing) userMap!.set(id, new Set());
+    for (const r of rows) {
+      userMap!.get(r.postId)!.add(r.collectionName);
+    }
+  }
+  // União de todos os collections para esse post (qualquer collection = bookmarked)
+  const result = new Set<string>();
+  for (const id of postIds) {
+    if ((userMap.get(id)?.size ?? 0) > 0) result.add(id);
+  }
+  return result;
+}
+
 type CommentWithReplies = Prisma.CommentGetPayload<{
   include: {
     likes: { select: { userId: true } };
@@ -31,14 +66,24 @@ type CommentWithReplies = Prisma.CommentGetPayload<{
 /**
  * Converte Post do Prisma para o DTO da API. Adiciona flags por usuário
  * (liked, bookmarked) quando o viewerId é informado.
+ *
+ * NOTA: `bookmarked` é resolvido de forma assíncrona (busca em
+ * post_bookmarks). Para evitar N+1 em loops de feed, use
+ * `postToDtoBatch` que faz uma única query para todos os posts.
  */
-export function postToDto(
+export async function postToDto(
   post: PostWithRelations,
   viewerId?: string | null
-): Post {
+): Promise<Post> {
   const liked = viewerId
     ? post.likes.some((l) => l.userId === viewerId)
     : false;
+
+  let bookmarked = false;
+  if (viewerId) {
+    const ids = await getBookmarksForViewer(viewerId, [post.id]);
+    bookmarked = ids.has(post.id);
+  }
 
   const initials = post.authorId
     ? post.authorId.slice(0, 2).toUpperCase()
@@ -69,7 +114,7 @@ export function postToDto(
     commentsCount: post.commentsCount,
     sharesCount: post.sharesCount,
     liked,
-    bookmarked: false,
+    bookmarked,
     createdAt: post.createdAt.toISOString(),
     updatedAt: post.updatedAt.toISOString(),
   };
@@ -171,7 +216,7 @@ export async function getFeed(
     : null;
 
   return {
-    posts: slice.map((p) => postToDto(p, viewerId)),
+    posts: await Promise.all(slice.map((p) => postToDto(p, viewerId))),
     nextCursor,
     total,
   };
@@ -273,7 +318,7 @@ export async function getFeedPersonalized(input: {
 
   const slice = scored.slice(0, limit);
   return {
-    posts: slice.map((s) => postToDto(s.post, viewerId)),
+    posts: await Promise.all(slice.map((s) => postToDto(s.post, viewerId))),
     nextCursor: null, // cursor pagination não se aplica ao feed personalizado (re-score por página)
     total: scored.length,
   };
@@ -365,7 +410,7 @@ export async function createPost(input: {
     }
   }
 
-  return postToDto(post, input.authorId);
+  return await postToDto(post, input.authorId);
 }
 
 export async function updatePost(input: {
@@ -412,7 +457,7 @@ export async function updatePost(input: {
     },
   });
 
-  return postToDto(post, input.authorId);
+  return await postToDto(post, input.authorId);
 }
 
 export async function deletePost(input: { postId: string; authorId: string }) {
@@ -488,11 +533,22 @@ export async function listComments(input: {
   cursor?: string;
   limit: number;
   parentId?: string | null;
+  /**
+   * Quando `true`, retorna apenas comentários top-level (parentId IS NULL)
+   * com `replies` aninhadas (até 3 níveis, conforme regra do CommentThread).
+   * Default: false (mantém compat com feed/lists que paginam flat).
+   */
+  tree?: boolean;
 }) {
+  const tree = input.tree === true;
+
+  // Quando `tree=true`, só faz sentido pra top-level (parentId=null).
+  const baseParentId = tree ? null : input.parentId ?? null;
+
   const where: Prisma.CommentWhereInput = {
     postId: input.postId,
     deletedAt: null,
-    parentId: input.parentId ?? null,
+    parentId: baseParentId,
   };
 
   if (input.cursor) {
@@ -526,10 +582,85 @@ export async function listComments(input: {
       })
     : null;
 
-  return {
-    comments: slice.map((c) => commentToDto(c, input.viewerId)),
-    nextCursor,
-  };
+  const dtos = slice.map((c) => commentToDto(c, input.viewerId));
+
+  if (!tree) {
+    return { comments: dtos, nextCursor };
+  }
+
+  // Modo árvore: busca replies (até 3 níveis) dos top-level retornados.
+  const topLevelIds = dtos.map((c) => c.id);
+  const replies = await fetchReplyTree({
+    parentIds: topLevelIds,
+    viewerId: input.viewerId,
+    maxDepth: 3,
+  });
+
+  const byParent = new Map<string, Comment[]>();
+  for (const r of replies) {
+    const pid = r.parentId ?? '';
+    if (!pid) continue;
+    const arr = byParent.get(pid) ?? [];
+    arr.push(r);
+    byParent.set(pid, arr);
+  }
+
+  const treeComments: Comment[] = dtos.map((c) => ({
+    ...c,
+    replies: byParent.get(c.id) ?? [],
+  }));
+
+  return { comments: treeComments, nextCursor };
+}
+
+/**
+ * Busca recursivamente todas as replies (até `maxDepth` níveis) para os
+ * comentários cujos IDs estão em `parentIds`. Sempre busca o próximo nível
+ * em uma query separada pra evitar N+1 — complexidade: O(maxDepth) queries.
+ */
+async function fetchReplyTree(input: {
+  parentIds: string[];
+  viewerId?: string | null;
+  maxDepth: number;
+}): Promise<Comment[]> {
+  const { parentIds, viewerId, maxDepth } = input;
+  if (parentIds.length === 0 || maxDepth <= 0) return [];
+
+  const current = await prisma.comment.findMany({
+    where: {
+      parentId: { in: parentIds },
+      deletedAt: null,
+    },
+    include: { likes: { select: { userId: true } } },
+    orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
+  });
+
+  const dtos = current.map((c) => commentToDto(c, viewerId));
+
+  if (maxDepth <= 1) {
+    return dtos;
+  }
+
+  const childIds = dtos.map((c) => c.id);
+  const deeper = await fetchReplyTree({
+    parentIds: childIds,
+    viewerId,
+    maxDepth: maxDepth - 1,
+  });
+
+  const deeperByParent = new Map<string, Comment[]>();
+  for (const d of deeper) {
+    const pid = d.parentId ?? '';
+    if (!pid) continue;
+    const arr = deeperByParent.get(pid) ?? [];
+    arr.push(d);
+    deeperByParent.set(pid, arr);
+  }
+
+  return dtos.map((c) => ({
+    ...c,
+    replies: deeperByParent.get(c.id) ?? [],
+  }));
 }
 
 export async function createComment(input: {

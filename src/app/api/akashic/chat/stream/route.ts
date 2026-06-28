@@ -39,7 +39,10 @@ const HistoryMessageSchema = z.object({
 const StreamRequestSchema = z.object({
   message: z.string().min(1).max(2000),
   tradition: z.enum(AKASHA_TRADITIONS).optional().nullable(),
+  /** Wave 18 — efetivo: 10 (não 20). Schema ainda permite 20 para compat. */
   history: z.array(HistoryMessageSchema).max(20).optional().default([]),
+  /** Wave 18 — modo estudo profundo */
+  deepMode: z.boolean().optional().default(false),
   topK: z.number().int().min(1).max(10).optional(),
   threshold: z.number().min(0).max(1).optional(),
 });
@@ -97,7 +100,7 @@ export async function POST(request: NextRequest): Promise<Response> {
     );
   }
 
-  const { message, tradition, history, topK, threshold } = parsed.data;
+  const { message, tradition, history, deepMode, topK, threshold } = parsed.data;
   const cleanMessage = sanitizeInput(message);
 
   // 3. RAG (bloqueante — vem antes do stream)
@@ -108,15 +111,23 @@ export async function POST(request: NextRequest): Promise<Response> {
     threshold: threshold ?? 0.65,
   });
 
-  // 4. System prompt
+  // 4. Wave 18: histórico limitado a 10 (token economy)
+  const trimmedHistory = (history ?? []).slice(-10);
+
+  // 5. System prompt (identidade + tradição efetiva + RAG + deepMode + recap)
   const systemPrompt = buildAkashaPrompt({
-    tradition: tradition ?? null,
+    tradition: rag.effectiveTradition ?? tradition ?? null,
     sources: rag.sources,
+    deepMode,
+    historyRecap: trimmedHistory.map((h) => ({
+      role: h.role,
+      content: h.content,
+    })),
   });
 
-  // 5. Mensagens
+  // 6. Mensagens
   const messages: ChatMessage[] = [
-    ...(history ?? []).map((h) => ({
+    ...trimmedHistory.map((h) => ({
       role: h.role,
       content: sanitizeInput(h.content),
     })),
@@ -140,6 +151,9 @@ export async function POST(request: NextRequest): Promise<Response> {
             rag_degraded: rag.degraded,
             rag_took_ms: rag.took_ms,
             tradition: tradition ?? null,
+            effective_tradition: rag.effectiveTradition ?? null,
+            tradition_auto_detected: rag.traditionWasAutoDetected,
+            deep_mode: deepMode,
           }),
         ),
       );

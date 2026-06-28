@@ -15,6 +15,7 @@ import { getFeed, createPost, getFeedPersonalized } from '@/lib/community/posts'
 import { getViewer, requireViewer } from '@/lib/community/auth';
 import { checkPostRateLimit } from '@/lib/community/rate-limit';
 import { checkUserRateLimit, userRateLimitMessage } from '@/lib/rate-limit-user';
+import { trackPostCreate } from '@/lib/analytics/events-catalog';
 
 export const dynamic = 'force-dynamic';
 
@@ -121,6 +122,17 @@ export async function POST(request: NextRequest) {
       groupSlug: parsed.data.groupSlug ?? null,
       mediaUrls: parsed.data.mediaUrls ?? [],
       references: parsed.data.references ?? null,
+    });
+
+    // Wave 18 — analytics: post_created (server-side, nao depende do client flush)
+    trackPostCreate({
+      postId: post.id,
+      authorId: viewer.id,
+      postType: parsed.data.type,
+      tradition: parsed.data.tradition ?? undefined,
+      groupSlug: parsed.data.groupSlug ?? undefined,
+      hasMedia: (parsed.data.mediaUrls ?? []).length > 0,
+      contentLength: parsed.data.content.length,
     });
 
     return ok(post, { status: 201 });

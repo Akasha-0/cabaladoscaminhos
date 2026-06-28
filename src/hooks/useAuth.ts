@@ -9,7 +9,8 @@
  *   - isAuthenticated — atalho `!!user && !loading`
  *   - signIn          — login com email + senha
  *   - signUp          — signup com email + senha + metadados
- *   - signInWithGoogle — OAuth (placeholder)
+ *   - signInWithMagicLink — Wave 20 — magic link (passwordless) via signInWithOtp
+ *   - signInWithGoogle — OAuth
  *   - signOut         — logout
  *   - supabase        — cliente Supabase (pode ser null em sandbox)
  *
@@ -46,6 +47,11 @@ export interface UseAuthReturn {
     email: string,
     password: string,
     metadata?: SignUpMetadata
+  ) => Promise<AuthActionResult>;
+  /** Wave 20 — magic link (passwordless) via Supabase signInWithOtp. */
+  signInWithMagicLink: (
+    email: string,
+    redirectTo?: string
   ) => Promise<AuthActionResult>;
   signInWithGoogle: () => Promise<AuthActionResult>;
   signOut: () => Promise<AuthActionResult>;
@@ -112,6 +118,32 @@ export function useAuth(): UseAuthReturn {
     [ctx.supabase]
   );
 
+  const signInWithMagicLink = useCallback(
+    async (
+      email: string,
+      redirectTo?: string
+    ): Promise<AuthActionResult> => {
+      if (!ctx.supabase) {
+        return { ok: false, error: 'Serviço de autenticação indisponível' };
+      }
+      const { error } = await ctx.supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo:
+            redirectTo ??
+            (typeof window !== 'undefined'
+              ? `${window.location.origin}/feed`
+              : undefined),
+        },
+      });
+      if (error) {
+        return { ok: false, error: mapAuthError(error) };
+      }
+      return { ok: true };
+    },
+    [ctx.supabase]
+  );
+
   const signInWithGoogle = useCallback(async (): Promise<AuthActionResult> => {
     if (!ctx.supabase) {
       return { ok: false, error: 'Serviço de autenticação indisponível' };
@@ -157,6 +189,7 @@ export function useAuth(): UseAuthReturn {
       supabase: ctx.supabase,
       signIn,
       signUp,
+      signInWithMagicLink,
       signInWithGoogle,
       signOut,
       redirectAfterAuth,
@@ -168,6 +201,7 @@ export function useAuth(): UseAuthReturn {
       ctx.supabase,
       signIn,
       signUp,
+      signInWithMagicLink,
       signInWithGoogle,
       signOut,
     ]

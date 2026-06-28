@@ -1,8 +1,20 @@
 // ============================================================================
-// GET /api/search — Busca unificada (Onda 12, 2026-06-27)
+// GET /api/search — Busca unificada (Onda 12 + Wave 18)
 // ============================================================================
 // Tipos: all, posts, articles, users, groups, tags
-// Query params: q, type, cursor, limit, tradition, tag, sort, from, to
+// Query params:
+//   q               — query obrigatória
+//   type            — escopo (all|posts|articles|users|groups|tags)
+//   cursor, limit   — paginação cursor
+//   tradition       — slug canônico (cabala, ifa, tantra, ...)
+//   tag             — topic (posts) ou tag (articles)
+//   level           — ANECDOTAL | LOW | MEDIUM | HIGH (articles only)
+//   format          — SCIENTIFIC_PAPER | BOOK | VIDEO | ... (articles only)
+//   author          — author name (articles only)
+//   dateFrom/dateTo — janela temporal (alias semântico)
+//   from/to         — janela temporal (legado, mantido p/ compat)
+//   hasAudio/hasVideo — boolean (Wave 18)
+//   sort            — relevance | recent | popular
 // Resposta: { data: SearchResults, meta }
 // ============================================================================
 
@@ -32,9 +44,16 @@ export async function GET(request: NextRequest) {
       limit: sp.get('limit') ?? undefined,
       tradition: sp.get('tradition') ?? undefined,
       tag: sp.get('tag') ?? undefined,
-      sort: sp.get('sort') ?? undefined,
+      level: sp.get('level') ?? undefined,
+      format: sp.get('format') ?? undefined,
+      author: sp.get('author') ?? undefined,
+      dateFrom: sp.get('dateFrom') ?? undefined,
+      dateTo: sp.get('dateTo') ?? undefined,
       from: sp.get('from') ?? undefined,
       to: sp.get('to') ?? undefined,
+      hasAudio: sp.get('hasAudio') ?? undefined,
+      hasVideo: sp.get('hasVideo') ?? undefined,
+      sort: sp.get('sort') ?? undefined,
     });
 
     if (!parsed.success) {
@@ -50,6 +69,12 @@ export async function GET(request: NextRequest) {
         nextCursor: results.nextCursor,
         total: results.facets.total,
         facets: results.facets,
+      },
+      // Wave 11 perf — explicit Cache-Control mirroring the ISR revalidate
+      // window so Vercel Edge / browsers / proxies honor the same TTL.
+      cache: {
+        sMaxage: 60,
+        staleWhileRevalidate: 300,
       },
     });
   } catch (err) {

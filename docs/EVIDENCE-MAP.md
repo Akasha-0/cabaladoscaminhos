@@ -317,6 +317,101 @@ Cada entrada segue o formato:
 
 ---
 
+## 7. Wave 15 — Papers novos (2024–2026)
+
+> Atualizado em 2026-06-27. Pesquisa completa em
+> `docs/RESEARCH-AKASHAIA-W15.md`.
+
+### 🧠 Ayahuasca + DMN (2024 update)
+
+- **Paper:** Carhart-Harris et al. (2014) — PLOS ONE — *"The Psychedelic
+  State Induced by Ayahuasca Modulates the Activity and Connectivity of the
+  Default Mode Network"* — DOI: 10.1371/journal.pone.0118143
+- **Revisão sistemática:** IJP (2023) — "Default Mode Network Modulation by
+  Psychedelics"
+- **Confidence:** ALTA
+- **Achado:** Redução aguda da DMN durante experiência; adaptações crônicas
+  (espessura cortical) em usuários de longo prazo.
+
+### 🍄 Psilocybin Phase 3 (2024 update)
+
+- **Paper pivotal:** Goodwin et al. (2022) — NEJM — *"Single-Dose Psilocybin
+  for a Treatment-Resistant Episode of Major Depression"* — DOI:
+  10.1056/NEJMoa2206443
+- **Update:** Borissova & Rucker (2024) — BJPsych Bulletin
+- **Meta-análise:** PubMed 38426002 (2024) — 10 estudos, 8 em meta-análise
+- **Confidence:** ALTA
+- **Achado:** Remissão em ~30% dos respondedores (25mg, dose única) por 3+
+  semanas. **Setting terapêutico é crítico** — molécula sozinha não funciona.
+
+### 💚 MDMA-assisted therapy — REJEITADA pela FDA (2024)
+
+- **Paper pivotal:** Mitchell et al. (2021) — Nature Medicine — MAPP1 Phase 3
+- **Atualização crítica:** FDA Complete Response Letter — agosto/2024 —
+  https://maps.org/2025/09/04/fda-public-release-of-crl/
+- **Confidence:** ALTA
+- **Achado:** Mesmo com resultados fortes (67% sem PTSD pós-tratamento),
+  FDA rejeitou por preocupações de blinding + ética. **Metodologia > resultado.**
+
+### 🧘 Meditação + Neuroplasticidade (2024–2025 update)
+
+- **Review:** "Mindfulness Meditation and Network Neuroscience" (2024) —
+  ScienceDirect
+- **Preprint:** "Neuroplasticity of directed connectivity in long-term
+  meditation" — biorxiv 2025.07.01.662528
+- **Confidence:** ALTA
+- **Achado:** Redução crônica da DMN em meditadores experientes;
+  reorganização do fluxo de informação (top-down). Intervenção de
+  **primeira linha** pelo perfil risco/benefício.
+
+### 🌿 Rapé — Chemical characterization (2023–2024)
+
+- **Paper:** PMC9863029 (2023) — "Indigenous-Amazonian Traditional
+  Medicine's Usage of the Tobacco"
+- **Paper:** PMC5704902 — "Comprehensive Chemical Characterization of
+  Rapé Tobacco Products"
+- **Confidence:** MÉDIA (poucos estudos controlados)
+- **Achado:** Nicotina em concentrações 5–10× maiores que tabaco comercial;
+  alcalinização para absorção intranasal. **Risco cardiovascular real**;
+  respeito cultural necessário.
+
+### 🙏 Biofield therapies (2024)
+
+- **Paper:** Vijayakumar et al. (2024) — Europe PMC 11208854 — RCT
+  preliminar
+- **Paper:** PMC11392496 (2024) — "Distant biofield energy healing"
+- **Guidelines:** ScienceDirect (2023) — "Biofield therapies: Guidelines
+  for reporting clinical trials"
+- **Confidence:** MÉDIA (dificuldade de blinding)
+- **Achado:** Sinais positivos modestos em saúde psicológica, sono e bem-estar.
+  Mecanismos prováveis: presença terapêutica, regulação parassimpática.
+
+### 🔮 MEQ-30 — Experiência Mística (2024 update)
+
+- **Paper:** Barrett, Johnson & Griffiths (2015) — J. Psychopharmacology —
+  validação original
+- **Paper 2024:** Nicholas et al. — Translational Psychiatry — midazolam +
+  psilocybin
+- **Confidence:** ALTA
+- **Achado:** MEQ-30 é preditor de desfecho terapêutico. **Experiência
+  mística completa** (unidade, sacralidade, noética) correlaciona com
+  benefício sustentado.
+
+### ⚠️ Riscos: psicose + interações (2024–2025)
+
+- **Meta-análise:** Sabé et al. (2024) — Molecular Psychiatry — reexamina
+  risco de psicose induzida por psicodélicos em espectro de esquizofrenia
+- **Living systematic review:** PubMed 41205366 (2025) — 30 RCTs, 1480
+  participantes
+- **Interações:** SAGE Journals 2023 — systematic review de drug-drug
+  interactions
+- **Confidence:** ALTA
+- **Achado:** Evidência de psicose induzida é fraca mas não ausente;
+  **SSRI + psilocybin = efeito reduzido; MAOI + MDMA = síndrome
+  serotoninérgica; lítio + psilocybin = risco de convulsão.**
+
+---
+
 ## Como a IA usa este mapa
 
 Quando alguém perguntar "X tem evidência?", a IA:

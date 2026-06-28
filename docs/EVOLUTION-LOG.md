@@ -1145,4 +1145,67 @@ TSC: 0 errors novos. Comprehensive broken imports: ZERO. App deve bootar.
 - main @ e788f0a9 (synced com origin)
 - Status: ✅ READY FOR RELEASE CANDIDATE
 
--
+---
+
+## Wave 11 — Trilha 3 PM (2026-06-27 15:10 UTC)
+
+### Contexto
+Pós Wave 10 (v0.1.0-rc.1), owner pediu roadmap Q4 2026 com top 10 features ICE-scored para Akasha Portal v3.0. Sessão: root, agent `General` em modo PM (Tomás persona).
+
+### Entregas
+- ✅ `ROADMAP-Q4-2026.md` (44KB, 44188 bytes) — Q4 2026 roadmap completo:
+  - **Top 10 features ICE-scored** (8 features com ICE 18-24)
+  - **3 marcos mensais**: Marco 4 (out, profundidade social) / Marco 5 (nov, Akasha IA pessoal) / Marco 6 (dez, abertura global + polish)
+  - **3 OKRs com 15 KRs mensuráveis** (O1: relação com IA / O2: engajamento multimodal / O3: audiência global sem diluir BR)
+  - **North Star:** Weekly Engaged Members (WEM) — meta 1500 até 31/dez
+  - **3 supporting metrics**: DRS (Daily Reflection Stickiness) ≥40% / ACD (AI Conversation Depth) ≥7 / CTR (Cross-Tradition Reads) ≥35%
+  - **8 counter metrics** (NPS, churn, report, P95, Lighthouse, LGPD=0, AI 👎, push unsub)
+  - **10 riscos Q4** com probabilidade + impacto + mitigação
+  - **Backlog Q1/2027** com 10 candidatas não-priorizadas (live streams, app nativo, fine-tuning, etc)
+  - **5 features depriorizadas explicitamente** com justificativa (marketplace/mentorship/karma/Apple Health por princípio+fit+risco)
+
+- ✅ `docs/PM-WAVE11.md` (9KB) — resumo executivo + 6 decisões-chave:
+  - **D1:** marketplace/mentorship/karma/Apple Health DEPRIORITIZED por princípio (VISION §1, §9) + fit
+  - **D2:** bundle Akasha IA Feedback Loop + Conversation Persistence (mesma sprint)
+  - **D3:** North Star muda WAC→WEM (captura leitura contemplativa)
+  - **D4:** 3 OKRs em vez de 2 (Q4 tem frentes distintas)
+  - **D5:** i18n EN com confidence 6/10 (mitigações específicas: EN-only read em v1, métricas separadas BR vs EN)
+  - **D6:** Curator Iyá é gargalo (40 artigos + 100 prompts + 100 feedbacks/semana) — plano de 2-3 assistentes + AI-assisted triage
+
+- ✅ Commit `064e4988`: `docs(pm): roadmap Q4 2026 + top 10 features ICE-scored` (874 insertions, 2 files)
+
+### Decisões de priorização (não-inventadas, rastreáveis)
+
+| Deprioritizada | Origem da restrição | Risco se强行 |
+|---|---|---|
+| Marketplace de livros (afiliados) | VISION §1 "gratuito, sem fins lucrativos" | Drift de missão |
+| Mentorship pairing 1:1 | VISION §9 "nunca substitui profissional" | Responsabilidade legal |
+| Marketplace local (terapeutas) | ARCHITECTURE §1 "NÃO é marketplace" | B2B regressão |
+| Apple Health / Google Fit | VISION §1 "comunidade de espiritualidade universalista" | Fit fraco |
+| Karma/reputation system | STRATEGY §3.6 "Confiança > Engajamento" | Gamificação azeda comunidade |
+
+### Top 3 features (ICE ≥ 23)
+1. **Akasha IA Multi-Tradição (12→20+)** — ICE 24 (I=9 C=8 E=7), M, Marco 5
+2. **Notificações Push Reais (Web Push + LGPD opt-in)** — ICE 24 (I=8 C=9 E=7), M, Marco 4
+3. **Akasha IA Feedback Loop (👍/👎 + persistência)** — ICE 23 (I=8 C=8 E=7), M-L, Marco 5
+
+### Próximas ações (recomendação pré-Q4)
+1. **Limpar gaps estruturais** (jul-ago): merge schema P0 #1, push branches pendentes, higene branches mortas
+2. **Wave 12 (QUALITY-STANDARDS Sprint)** dedicada a pre-push typecheck + hygiene script + ADR
+3. **Spike técnico i18n** (ago): decidir next-intl vs alternativa antes de comprometer Feature 9
+4. **Curator capacity plan**: treinar 2-3 assistentes de curadoria, AI-assisted triage pipeline
+
+### Status geral
+🟢 **Wave 11 Trilha 3 PM: entrega completa. ROADMAP-Q4-2026.md + PM-WAVE11.md commitados em `064e4988`. Push pendente (bash indisponível nesta sessão — mesmo padrão Wave 2/10).**
+
+- **+** Roadmap Q4 2026 com 10 features ICE-scored, 3 marcos, 15 KRs
+- **+** Deprioritizações explícitas com origem rastreável (princípio + fit + risco)
+- **+** Mudança de North Star (WAC→WEM) justificada
+- **+** Bundle Feedback+Persistence para economizar coordination
+- **+** Plano de capacity para Curator (gargalo identificado)
+- **−** Push pendente (bash indisponível, mesmo padrão Wave 2/10)
+- **−** Não validação via feedback real (Q3 não fechou retrospectiva ainda)
+
+**Próximo desbloqueio real:** bash voltar → push do commit → owner revisar OKRs → disparar Wave 12 (QUALITY) antes de Q4 começar.
+
+

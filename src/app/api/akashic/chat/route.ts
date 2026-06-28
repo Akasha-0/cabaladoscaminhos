@@ -23,6 +23,7 @@ import { runRagSearch } from '@/lib/ai/rag';
 import { sendMessage, AIError, CircuitBreakerOpenError } from '@/lib/ai/openai';
 import { checkRateLimit } from '@/lib/rate-limit';
 import type { ChatMessage } from '@/lib/ai/types';
+import { trackAkashicMessageSent } from '@/lib/analytics/events-catalog';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -37,7 +38,10 @@ const HistoryMessageSchema = z.object({
 const ChatRequestSchema = z.object({
   message: z.string().min(1, 'Mensagem vazia').max(2000, 'Mensagem muito longa'),
   tradition: z.enum(AKASHA_TRADITIONS).optional().nullable(),
+  /** Wave 18 — capped em 10 no handler (não 20) para economia de tokens */
   history: z.array(HistoryMessageSchema).max(20).optional().default([]),
+  /** Wave 18 — modo "estudo profundo": papers + cross-refs + contraindicações */
+  deepMode: z.boolean().optional().default(false),
   /** Override do topK do RAG (1..10, default 5) */
   topK: z.number().int().min(1).max(10).optional(),
   /** Override do threshold de similaridade (0..1, default 0.65) */
@@ -53,7 +57,13 @@ interface ChatResponse {
     took_ms: number;
     rag_took_ms: number;
     model: string;
+    /** Tradição solicitada pelo usuário (pode ser null) */
     tradition: string | null;
+    /** Tradição efetivamente usada (explícita OU auto-detectada) */
+    effective_tradition: string | null;
+    /** Se a tradição efetiva foi auto-detectada */
+    tradition_auto_detected: boolean;
+    deep_mode: boolean;
     rag_degraded: boolean;
     rag_reason?: string;
     tokens?: {
@@ -122,12 +132,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     );
   }
 
-  const { message, tradition, history, topK, threshold } = parsed.data;
+  const { message, tradition, history, deepMode, topK, threshold } = parsed.data;
 
   // 3. Sanitização do input (anti-injection básico + limites)
   const cleanMessage = sanitizeInput(message);
 
-  // 4. RAG (busca semântica na biblioteca)
+  // 4. RAG (busca semântica na biblioteca) — rag.ts pode auto-detectar tradição
   const rag = await runRagSearch({
     query: cleanMessage,
     tradition: tradition ?? null,
@@ -135,14 +145,22 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     threshold: threshold ?? 0.65,
   });
 
-  // 5. Monta system prompt (identidade + RAG + filtro tradição)
+  // 5. Wave 18: histórico limitado a 10 mensagens (token economy)
+  const trimmedHistory = (history ?? []).slice(-10);
+
+  // 6. Monta system prompt (identidade + tradição + RAG + deepMode + recap)
   const systemPrompt = buildAkashaPrompt({
-    tradition: tradition ?? null,
+    tradition: rag.effectiveTradition ?? tradition ?? null,
     sources: rag.sources,
+    deepMode,
+    historyRecap: trimmedHistory.map((h) => ({
+      role: h.role,
+      content: h.content,
+    })),
   });
 
-  // 6. Monta histórico (apenas user/assistant; limit a 20)
-  const historyMessages: ChatMessage[] = (history ?? []).map((h) => ({
+  // 7. Monta histórico (apenas user/assistant; limit a 10 — Wave 18)
+  const historyMessages: ChatMessage[] = trimmedHistory.map((h) => ({
     role: h.role,
     content: sanitizeInput(h.content),
   }));
@@ -202,6 +220,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       rag_took_ms: rag.took_ms,
       model: aiResponse.model,
       tradition: tradition ?? null,
+      effective_tradition: rag.effectiveTradition ?? null,
+      tradition_auto_detected: rag.traditionWasAutoDetected,
+      deep_mode: deepMode,
       rag_degraded: rag.degraded,
       ...(rag.reason ? { rag_reason: rag.reason } : {}),
       ...(aiResponse.usage
@@ -216,6 +237,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     },
   };
 
+  // Wave 18 — analytics: akashic_message_sent (fire-and-forget)
+  trackAkashicMessageSent({
+    messageLength: cleanMessage.length,
+    tradition: tradition ?? undefined,
+    ragUsed: rag.sources.length > 0,
+    tookMs: Date.now() - start,
+  });
+
   return NextResponse.json(response, { status: 200 });
 }
 
@@ -229,7 +258,8 @@ export async function GET(): Promise<NextResponse> {
     schema: {
       message: 'string (1-2000)',
       tradition: `enum(${AKASHA_TRADITIONS.join('|')}) optional`,
-      history: 'array<{role, content}> optional, max 20',
+      history: 'array<{role, content}> optional, max 20 (effective: 10)',
+      deepMode: 'boolean optional, default false (Wave 18)',
     },
   });
 }

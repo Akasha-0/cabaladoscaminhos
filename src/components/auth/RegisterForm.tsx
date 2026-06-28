@@ -13,6 +13,7 @@ import { MysticDivider } from '@/components/shared/MysticDivider';
 import { GoogleOAuthButton } from '@/components/auth/GoogleOAuthButton';
 import { Eye, EyeOff, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { trackSignup } from '@/lib/analytics/events-catalog';
 
 interface RegisterFormProps {
   className?: string;
@@ -116,6 +117,10 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
       if (!result.ok) {
         setServerError(result.error ?? 'Erro ao criar conta');
         return;
+      }
+      // Wave 18 — analytics: user_signed_up (client-side, captura IMEDIATA)
+      if (result.data?.id) {
+        trackSignup(result.data.id, 'email');
       }
       if (onSuccess) onSuccess();
       else router.push('/onboarding');

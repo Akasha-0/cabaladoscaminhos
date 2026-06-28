@@ -74,7 +74,7 @@ async function main() {
   // Buscar IDs pelos slugs
   const articles = await prisma.article.findMany({
     where: { slug: { in: slugs } },
-    select: { id: true, slug: true, title: true },
+    select: { id: true, slug: true, title: true, references: true, source: true },
   });
 
   if (articles.length === 0) {
@@ -84,7 +84,52 @@ async function main() {
 
   console.log(`✅ Encontrados ${articles.length} artigos:`);
   for (const a of articles) {
-    console.log(`   - ${a.slug}`);
+    const refsCount = Array.isArray(a.references) ? a.references.length : 0;
+    console.log(`   - ${a.slug} (${refsCount} citations)`);
+  }
+
+  // Wave 11 (Iyá): enriquece o texto de embedding com citations + relatedArticles
+  // para que a busca semântica considere o contexto editorial (autor, DOI, links)
+  for (const article of articles) {
+    if (!Array.isArray(article.references) || article.references.length === 0) continue;
+
+    // Extrai metadata editorial (Wave 11+)
+    let editorialMeta: { citations?: string[]; relatedArticles?: string[] } = {};
+    if (typeof article.source === 'string' && article.source.startsWith('{')) {
+      try {
+        editorialMeta = JSON.parse(article.source);
+      } catch {
+        // ignore parse errors
+      }
+    }
+
+    const citations = editorialMeta.citations ?? article.references.map((r: unknown) => {
+      const ref = r as { url?: string; title?: string };
+      return ref.url ?? '';
+    }).filter(Boolean);
+
+    if (citations.length === 0) continue;
+
+    // Constrói um "summary enriquecido" com citations para indexação
+    // (não persistimos — só usamos para gerar embedding com contexto)
+    const enrichedText = `\n\nCITATIONS (${citations.length}):\n${citations.join('\n')}`;
+
+    // Sobrescreve embedding com texto enriquecido (chamada adicional)
+    try {
+      const { generateEmbedding } = await import('../src/lib/ai/embeddings');
+      const embedding = await generateEmbedding(
+        `${article.title}\n\n${enrichedText}`.slice(0, 8000),
+      );
+      const vectorStr = `[${embedding.join(',')}]`;
+      await prisma.$executeRawUnsafe(
+        `UPDATE "Article" SET embedding = $1::vector WHERE id = $2`,
+        vectorStr,
+        article.id,
+      );
+      console.log(`   ✓ ${article.slug}: embedding enriquecido com ${citations.length} citations`);
+    } catch (err) {
+      console.warn(`   ⚠ ${article.slug}: falhou enrichment (${err instanceof Error ? err.message : err})`);
+    }
   }
 
   const ids = articles.map((a) => a.id);

@@ -14,7 +14,11 @@
 
 import { searchSimilarArticles } from './embeddings';
 import { prisma } from '@/lib/prisma';
-import type { RagSource } from './prompts/akasha';
+import {
+  detectTradition,
+  type AkashaTradition,
+  type RagSource,
+} from './prompts/akasha';
 
 export interface RagSearchOptions {
   /** Texto da pergunta — vira embedding de busca */
@@ -29,6 +33,10 @@ export interface RagSearchOptions {
 
 export interface RagSearchResult {
   sources: RagSource[];
+  /** Tradição usada na busca (explícita OU auto-detectada) */
+  effectiveTradition: string | null;
+  /** Se a tradição foi auto-detectada (vs explícita do usuário) */
+  traditionWasAutoDetected: boolean;
   /** Tempo total em ms (busca + hidratação) */
   took_ms: number;
   /** Quando a busca foi pulada por algum motivo (sem Supabase, sem embedding, etc) */
@@ -54,6 +62,8 @@ export async function runRagSearch({
   if (!query || query.trim().length < 3) {
     return {
       sources: [],
+      effectiveTradition: tradition ?? null,
+      traditionWasAutoDetected: false,
       took_ms: Date.now() - start,
       degraded: true,
       reason: 'Query muito curta (< 3 chars)',
@@ -62,19 +72,30 @@ export async function runRagSearch({
 
   const clampedK = Math.min(Math.max(1, topK), 10);
 
-  // 2. Busca semântica via pgvector
+  // 2. Wave 18 — auto-detect tradição quando usuário não selecionou filtro.
+  // Só usamos o auto-detect como filtro de RAG se o caller não passou tradição
+  // explícita. Mesmo assim, devolvemos no resultado para o prompt usar.
+  const detectedTradition: AkashaTradition | null = tradition
+    ? null
+    : detectTradition(query);
+  const effectiveTradition =
+    tradition ?? (detectedTradition as string | null) ?? null;
+
+  // 3. Busca semântica via pgvector
   let hits: Array<{ id: string; title: string; slug: string; similarity: number }>;
   try {
     hits = await searchSimilarArticles(query, {
       limit: clampedK,
       threshold,
-      tradition: tradition ?? undefined,
+      tradition: effectiveTradition ?? undefined,
     });
   } catch (err) {
     const reason = err instanceof Error ? err.message : String(err);
     console.warn('[RAG] searchSimilarArticles falhou, degradando:', reason);
     return {
       sources: [],
+      effectiveTradition,
+      traditionWasAutoDetected: !tradition && !!detectedTradition,
       took_ms: Date.now() - start,
       degraded: true,
       reason: `pgvector indisponível: ${reason.slice(0, 120)}`,
@@ -84,12 +105,14 @@ export async function runRagSearch({
   if (hits.length === 0) {
     return {
       sources: [],
+      effectiveTradition,
+      traditionWasAutoDetected: !tradition && !!detectedTradition,
       took_ms: Date.now() - start,
       degraded: false,
     };
   }
 
-  // 3. Hidratação: pega abstract + tradition + content (truncado) dos hits
+  // 4. Hidratação: pega abstract + tradition + content (truncado) dos hits
   // para injetar como excerpt no prompt. Usa uma query em batch.
   let rows: Array<{
     id: string;
@@ -116,7 +139,7 @@ export async function runRagSearch({
 
   const byId = new Map(rows.map((r) => [r.id, r]));
 
-  // 4. Merge + ordena por similarity desc (searchSimilarArticles já retorna
+  // 5. Merge + ordena por similarity desc (searchSimilarArticles já retorna
   // ordenado, mas garantimos após o map).
   const sources: RagSource[] = hits
     .map((h) => {
@@ -135,6 +158,8 @@ export async function runRagSearch({
 
   return {
     sources,
+    effectiveTradition,
+    traditionWasAutoDetected: !tradition && !!detectedTradition,
     took_ms: Date.now() - start,
     degraded: false,
   };

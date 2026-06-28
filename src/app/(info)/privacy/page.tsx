@@ -261,7 +261,7 @@ export default function PrivacyPage() {
                     <p className="text-xs text-amber-400/80 mb-3 font-mono">
                       {section.articles}
                     </p>
-                    <p className="text-slate-400 font-raleway leading-relaxed whitespace-pre-line">
+                    <p className="text-slate-400 font-raleway leading-relaxed whitespace-pre-line break-words [overflow-wrap:anywhere]">
                       {section.content}
                     </p>
                   </div>

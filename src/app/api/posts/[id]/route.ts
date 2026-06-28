@@ -37,7 +37,7 @@ export async function GET(_request: NextRequest, context: RouteContext) {
     }
 
     const viewer = await getViewer();
-    return ok(postToDto(post, viewer?.id ?? null));
+    return ok(await postToDto(post, viewer?.id ?? null));
   } catch (err) {
     return handleError(err);
   }

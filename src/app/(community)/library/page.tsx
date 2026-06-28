@@ -17,6 +17,7 @@ import {
   Brain, FlaskConical, FileText, Video, Mic, BookText, TrendingUp, Sparkles,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useT } from '@/lib/i18n/useT';
 
 // ============================================================
 // DATA
@@ -152,6 +153,7 @@ const EVIDENCES = ['todas', 'ANECDOTAL', 'OBSERVATIONAL', 'PEER_REVIEWED', 'META
 // ============================================================
 
 export default function LibraryPage() {
+  const t = useT();
   const [search, setSearch] = useState('');
   const [tradition, setTradition] = useState('todas');
   const [type, setType] = useState('todos');
@@ -175,10 +177,10 @@ export default function LibraryPage() {
         {/* Header */}
         <div>
           <h1 className="text-2xl md:text-3xl font-cinzel bg-gradient-to-r from-amber-400 via-violet-400 to-pink-400 bg-clip-text text-transparent">
-            📚 Biblioteca
+            {t('library.title')}
           </h1>
           <p className="text-slate-400 text-sm font-raleway mt-1">
-            Artigos, papers e ensaios curados pela comunidade — classificados por nível de evidência
+            {t('library.subtitle')}
           </p>
         </div>
 
@@ -186,7 +188,7 @@ export default function LibraryPage() {
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
           <Input
-            placeholder="Buscar artigos..."
+            placeholder={t('library.searchPlaceholder')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="pl-10 h-11 bg-slate-800/50 border-slate-700/50 focus:border-amber-500/50"
@@ -195,29 +197,29 @@ export default function LibraryPage() {
 
         {/* Filters */}
         <div className="space-y-3">
-          <div className="flex items-center gap-2 overflow-x-auto pb-2">
-            <span className="text-xs text-slate-500 flex-shrink-0">Tradição:</span>
-            {TRADITIONS.map((t) => (
-              <FilterChip key={t} label={t} active={tradition === t} onClick={() => setTradition(t)} />
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 pr-4 scrollbar-thin">
+            <span className="text-xs text-slate-500 flex-shrink-0">{t('library.traditionLabel')}</span>
+            {TRADITIONS.map((trad) => (
+              <FilterChip key={trad} label={trad} active={tradition === trad} onClick={() => setTradition(trad)} />
             ))}
           </div>
-          <div className="flex items-center gap-2 overflow-x-auto pb-2">
-            <span className="text-xs text-slate-500 flex-shrink-0">Tipo:</span>
-            {TYPES.map((t) => (
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 pr-4 scrollbar-thin">
+            <span className="text-xs text-slate-500 flex-shrink-0">{t('library.typeLabel')}</span>
+            {TYPES.map((tp) => (
               <FilterChip
-                key={t}
-                label={t === 'todos' ? 'todos' : TYPE_LABELS[t]?.label || t}
-                active={type === t}
-                onClick={() => setType(t)}
+                key={tp}
+                label={tp === 'todos' ? t('library.filterAllTypes') : TYPE_LABELS[tp]?.label || tp}
+                active={type === tp}
+                onClick={() => setType(tp)}
               />
             ))}
           </div>
-          <div className="flex items-center gap-2 overflow-x-auto pb-2">
-            <span className="text-xs text-slate-500 flex-shrink-0">Evidência:</span>
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 pr-4 scrollbar-thin">
+            <span className="text-xs text-slate-500 flex-shrink-0">{t('library.evidenceLabel')}</span>
             {EVIDENCES.map((e) => (
               <FilterChip
                 key={e}
-                label={e === 'todas' ? 'todas' : EVIDENCE_LABELS[e]?.label || e}
+                label={e === 'todas' ? t('library.filterAll') : EVIDENCE_LABELS[e]?.label || e}
                 active={evidence === e}
                 onClick={() => setEvidence(e)}
               />
@@ -228,7 +230,7 @@ export default function LibraryPage() {
         {/* Sort + count */}
         <div className="flex items-center justify-between text-sm">
           <p className="text-slate-500">
-            {filtered.length} {filtered.length === 1 ? 'artigo' : 'artigos'}
+            {filtered.length} {filtered.length === 1 ? t('library.countOne') : t('library.countMany')}
           </p>
           <div className="flex items-center gap-1 bg-slate-800/50 rounded-lg p-0.5 border border-slate-700/30">
             <button
@@ -238,7 +240,7 @@ export default function LibraryPage() {
                 sort === 'recent' ? 'bg-amber-500/20 text-amber-300' : 'text-slate-400'
               )}
             >
-              Recente
+              {t('library.sortRecent')}
             </button>
             <button
               onClick={() => setSort('popular')}
@@ -247,7 +249,7 @@ export default function LibraryPage() {
                 sort === 'popular' ? 'bg-amber-500/20 text-amber-300' : 'text-slate-400'
               )}
             >
-              Popular
+              {t('library.sortPopular')}
             </button>
           </div>
         </div>
@@ -320,7 +322,7 @@ export default function LibraryPage() {
         {filtered.length === 0 && (
           <div className="text-center py-16">
             <BookOpen className="w-12 h-12 mx-auto text-slate-600 mb-3" />
-            <p className="text-slate-400">Nenhum artigo encontrado com esses filtros</p>
+            <p className="text-slate-400">{t('library.emptyTitle')}</p>
             <Button
               variant="outline"
               onClick={() => {
@@ -331,7 +333,7 @@ export default function LibraryPage() {
               }}
               className="mt-4 border-slate-700"
             >
-              Limpar filtros
+              {t('library.emptyAction')}
             </Button>
           </div>
         )}

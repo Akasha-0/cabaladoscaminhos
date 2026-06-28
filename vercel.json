@@ -99,8 +99,17 @@
     }
   ],
 
-  "_comment_crons": "Crons usam autenticação via header `Authorization: Bearer ${CRON_SECRET}` (validado dentro de cada route handler). Vercel injeta automaticamente o header quando configurado aqui. Horários em UTC. ATENÇÃO: crons intencionalmente VAZIOS até que os handlers existam — ver docs/DEPLOY-WAVE11.md §Findings.",
-  "crons": [],
+  "_comment_crons": "Crons usam autenticação via header `Authorization: Bearer ${CRON_SECRET}` (validado dentro de cada route handler). Vercel injeta automaticamente o header quando configurado aqui. Horários em UTC.\n  - weekly-digest: toda segunda 9h (UTC-3 → 12:00 UTC) — digest semanal\n  - process-email-queue: a cada 15min — drena tabela email_jobs (welcome + transactional)",
+  "crons": [
+    {
+      "path": "/api/cron/weekly-digest",
+      "schedule": "0 12 * * 1"
+    },
+    {
+      "path": "/api/cron/process-email-queue",
+      "schedule": "*/15 * * * *"
+    }
+  ],
 
   "_comment_functions": "Memory/duração por rota. AI endpoints precisam 1024MB e 60s (LLM é lento). Webhooks = 30s (Stripe tem retry próprio).",
   "functions": {
