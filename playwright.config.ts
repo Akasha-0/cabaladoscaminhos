@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Playwright config — Akasha Portal v3.0 (Wave 11)
+ * Playwright config — Akasha Portal v3.0 (Wave 11 + Wave 26)
  *
  * Cobertura E2E expandida de 3 → 8 specs cobrindo fluxos críticos:
  *   1. signup-onboarding-feed  → novo usuário chega ao feed
@@ -12,6 +12,13 @@ import { defineConfig, devices } from '@playwright/test';
  *   6. profile-edit            → edição de perfil (bio, tradições, avatar)
  *   7. feed-para-voce          → algoritmo de recomendação (5º feed)
  *   8. notifications-realtime  → notificações ao vivo (SSE)
+ *
+ * Visual Regression (Wave 26 — Lina / Designer):
+ * - 8 visual specs em tests/visual/*.spec.ts
+ * - Captura screenshots em 3 viewports: desktop, tablet, mobile
+ * - 2 themes: light + dark
+ * - Loading + error + empty states
+ * - 6 screenshots por spec × 8 specs = 48 baselines
  *
  * Design decisions (Wave 11 — Ravena / QA Engineer):
  * - Mobile-first viewport (iPhone 13) porque o uso real é mobile (consulta cotidiana)
@@ -33,9 +40,14 @@ const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 const BASE_URL = `http://localhost:${PORT}`;
 
 export default defineConfig({
-  testDir: './e2e',
+  testDir: './',
   testMatch: /.*\.spec\.ts$/,
-  testIgnore: /.*\.skip\.spec\.ts$/,
+  testIgnore: [
+    /.*\.skip\.spec\.ts$/,
+    /node_modules/,
+    // Não roda visual specs no mesmo config que e2e por padrão — use `npm run test:visual`
+    // Visual specs precisam de webServer estável (next start), não dev mode
+  ],
 
   // Sandbox: evita OOM com workers paralelos
   fullyParallel: false,
@@ -51,7 +63,20 @@ export default defineConfig({
 
   outputDir: './test-results/playwright',
   timeout: 30_000, // 30s por teste (Next.js dev compila sob demanda)
-  expect: { timeout: 5_000 }, // 5s para assertions
+  expect: {
+    timeout: 5_000, // 5s para assertions
+    /**
+     * Visual regression threshold (Wave 26):
+     * - maxDiffPixels: 100 (~0.5% de 1280×720 viewport)
+     * - threshold: 0.2 (20% de diferença por pixel — tolera anti-aliasing)
+     * - Para mudanças intencionais de UI: rodar com `--update-snapshots`
+     */
+    toHaveScreenshot: {
+      maxDiffPixels: 100,
+      threshold: 0.2,
+      animations: 'disabled',
+    },
+  },
 
   use: {
     baseURL: BASE_URL,
@@ -68,11 +93,16 @@ export default defineConfig({
   },
 
   projects: [
+    // ==============================================================
+    // E2E PROJECTS (Wave 11 — comportamento funcional)
+    // ==============================================================
+
     // --------------------------------------------------------------
     // Project 1: iPhone 13 (mobile-chromium) — uso real do produto
     // --------------------------------------------------------------
     {
       name: 'mobile-chromium',
+      testMatch: /e2e\/.*\.spec\.ts$/, // só roda specs e2e/
       use: {
         ...devices['iPhone 13'],
       },
@@ -83,6 +113,7 @@ export default defineConfig({
     // --------------------------------------------------------------
     {
       name: 'mobile-chromium-alt',
+      testMatch: /e2e\/.*\.spec\.ts$/,
       use: {
         ...devices['Pixel 5'],
       },
@@ -96,6 +127,7 @@ export default defineConfig({
     // --------------------------------------------------------------
     {
       name: 'mobile-safari',
+      testMatch: /e2e\/.*\.spec\.ts$/,
       use: {
         ...devices['iPhone 13'], // mesma viewport que chromium, mas engine WebKit
         // WebKit tem quirks: scrollIntoView, focus management, etc.
@@ -108,8 +140,56 @@ export default defineConfig({
     // --------------------------------------------------------------
     {
       name: 'desktop-chromium',
+      testMatch: /e2e\/.*\.spec\.ts$/,
       use: {
         ...devices['Desktop Chrome'],
+      },
+    },
+
+    // ==============================================================
+    // VISUAL REGRESSION PROJECTS (Wave 26 — Lina / Designer)
+    // 3 viewports × 8 specs × 2 themes = 48 baselines
+    // ==============================================================
+
+    // --------------------------------------------------------------
+    // Project V1: Desktop (1280x720) — visual regression baseline
+    // --------------------------------------------------------------
+    {
+      name: 'visual-desktop',
+      testMatch: /tests\/visual\/.*\.spec\.ts$/,
+      use: {
+        viewport: { width: 1280, height: 720 },
+        deviceScaleFactor: 1,
+        isMobile: false,
+        hasTouch: false,
+      },
+    },
+
+    // --------------------------------------------------------------
+    // Project V2: Tablet (768x1024) — iPad portrait
+    // --------------------------------------------------------------
+    {
+      name: 'visual-tablet',
+      testMatch: /tests\/visual\/.*\.spec\.ts$/,
+      use: {
+        viewport: { width: 768, height: 1024 },
+        deviceScaleFactor: 2,
+        isMobile: false,
+        hasTouch: true,
+      },
+    },
+
+    // --------------------------------------------------------------
+    // Project V3: Mobile (375x667) — iPhone SE baseline (uso real)
+    // --------------------------------------------------------------
+    {
+      name: 'visual-mobile',
+      testMatch: /tests\/visual\/.*\.spec\.ts$/,
+      use: {
+        viewport: { width: 375, height: 667 },
+        deviceScaleFactor: 2,
+        isMobile: true,
+        hasTouch: true,
       },
     },
   ],

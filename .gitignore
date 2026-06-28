@@ -85,3 +85,16 @@ next-env.d.ts
 # Local-only override
 /.vscode/
 /.idea/
+
+# =================================
+# Playwright / Visual Regression (Wave 26)
+# =================================
+# Snapshots gerados pelos visual specs são dependentes do render atual;
+# regenerar via `npm run test:visual -- --update-snapshots` antes de commit.
+/test-results/
+/playwright-report/
+/tests/visual/__snapshots__/*.actual.png
+/tests/visual/__snapshots__/*.diff.png
+
+# Screenshots antigos (legacy e2e/screenshots.spec.ts)
+/.screenshots/
