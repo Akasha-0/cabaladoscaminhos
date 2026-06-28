@@ -5,8 +5,7 @@
 //   { enabled?: boolean, rolloutPercent?: number,
 //     addToWhitelist?: string, removeFromWhitelist?: string }
 //
-// Auth: TODO — quando tivermos role check, validar admin aqui.
-// Por enquanto, dev-only gate (NODE_ENV !== 'production').
+// Auth: admin only (requireAdmin — Wave 25 fix, substituiu NODE_ENV gate).
 //
 // Audit: updatedBy vem do body ou do cookie userId (futuro: do JWT).
 // ============================================================================
@@ -14,6 +13,7 @@
 import { cookies } from 'next/headers';
 import { z } from 'zod';
 import { ok, fail, handleError, ErrorCode } from '@/lib/community/api';
+import { requireAdmin } from '@/lib/admin/session';
 import { isValidFlagKey } from '@/lib/feature-flags/flags';
 import { upsertFlag } from '@/lib/feature-flags/storage';
 
@@ -41,12 +41,12 @@ export async function PATCH(
   context: { params: Promise<{ name: string }> }
 ) {
   try {
-    // Dev gate — produção precisa de auth real
-    if (process.env.NODE_ENV === 'production') {
+    const session = await requireAdmin();
+    if (!session.ok) {
       return fail(
-        403,
         ErrorCode.FORBIDDEN,
-        'Admin gate pendente — feature flag mutations desabilitadas em produção'
+        `Admin required (${session.reason})`,
+        403
       );
     }
 

@@ -4,10 +4,12 @@
 // Snapshot dos 7 eventos do funil + breakdown por variante da landing.
 // In-memory (substituir por PostHog query em produção).
 //
-// Auth: TODO (admin gate). Por enquanto, dev-only (NODE_ENV !== 'production').
+// Auth: admin only (requireAdmin — Wave 25 fix, substituiu NODE_ENV gate).
 // ============================================================================
 
 import { NextResponse } from 'next/server';
+import { fail, handleError } from '@/lib/community/api';
+import { requireAdmin } from '@/lib/admin/session';
 import { getVariantMetrics } from '@/lib/landing/variant';
 
 export const dynamic = 'force-dynamic';
@@ -67,50 +69,55 @@ const FUNNEL_STEPS: FunnelStep[] = [
 ];
 
 export async function GET() {
-  if (process.env.NODE_ENV === 'production') {
-    return NextResponse.json(
-      { error: 'Admin gate pendente' },
-      { status: 403 }
-    );
+  try {
+    const session = await requireAdmin();
+    if (!session.ok) {
+      return fail(
+        4003, // FORBIDDEN (see @/lib/community/api ErrorCode)
+        `Admin required (${session.reason})`,
+        403
+      );
+    }
+
+    const variantMetrics = getVariantMetrics();
+
+    // Calcula conversion rate por etapa
+    const enrichedFunnel = FUNNEL_STEPS.map((step, idx) => {
+      const previous = idx > 0 ? FUNNEL_STEPS[idx - 1] : null;
+      const conversionFromTop =
+        FUNNEL_STEPS[0].total > 0 ? step.total / FUNNEL_STEPS[0].total : 0;
+      const conversionFromPrevious =
+        previous && previous.total > 0 ? step.total / previous.total : null;
+      return {
+        ...step,
+        conversionFromTop: Number(conversionFromTop.toFixed(4)),
+        conversionFromPrevious:
+          conversionFromPrevious !== null
+            ? Number(conversionFromPrevious.toFixed(4))
+            : null,
+      };
+    });
+
+    return NextResponse.json({
+      funnel: enrichedFunnel,
+      variants: variantMetrics,
+      summary: {
+        visitorToWaitlist:
+          FUNNEL_STEPS[1].total / Math.max(1, FUNNEL_STEPS[0].total),
+        waitlistToSignup:
+          FUNNEL_STEPS[3].total / Math.max(1, FUNNEL_STEPS[1].total),
+        signupToActivation:
+          FUNNEL_STEPS[4].total / Math.max(1, FUNNEL_STEPS[3].total),
+        signupToD7Retention:
+          FUNNEL_STEPS[6].total / Math.max(1, FUNNEL_STEPS[3].total),
+      },
+      meta: {
+        timestamp: new Date().toISOString(),
+        periodDays: 7,
+        note: 'In-memory metrics. Replace with PostHog query in Wave 21+.',
+      },
+    });
+  } catch (err) {
+    return handleError(err);
   }
-
-  const variantMetrics = getVariantMetrics();
-
-  // Calcula conversion rate por etapa
-  const enrichedFunnel = FUNNEL_STEPS.map((step, idx) => {
-    const previous = idx > 0 ? FUNNEL_STEPS[idx - 1] : null;
-    const conversionFromTop =
-      FUNNEL_STEPS[0].total > 0 ? step.total / FUNNEL_STEPS[0].total : 0;
-    const conversionFromPrevious = previous && previous.total > 0
-      ? step.total / previous.total
-      : null;
-    return {
-      ...step,
-      conversionFromTop: Number(conversionFromTop.toFixed(4)),
-      conversionFromPrevious:
-        conversionFromPrevious !== null
-          ? Number(conversionFromPrevious.toFixed(4))
-          : null,
-    };
-  });
-
-  return NextResponse.json({
-    funnel: enrichedFunnel,
-    variants: variantMetrics,
-    summary: {
-      visitorToWaitlist:
-        FUNNEL_STEPS[1].total / Math.max(1, FUNNEL_STEPS[0].total),
-      waitlistToSignup:
-        FUNNEL_STEPS[3].total / Math.max(1, FUNNEL_STEPS[1].total),
-      signupToActivation:
-        FUNNEL_STEPS[4].total / Math.max(1, FUNNEL_STEPS[3].total),
-      signupToD7Retention:
-        FUNNEL_STEPS[6].total / Math.max(1, FUNNEL_STEPS[3].total),
-    },
-    meta: {
-      timestamp: new Date().toISOString(),
-      periodDays: 7,
-      note: 'In-memory metrics. Replace with PostHog query in Wave 21+.',
-    },
-  });
 }
