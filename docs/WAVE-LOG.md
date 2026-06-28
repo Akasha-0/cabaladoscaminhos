@@ -699,3 +699,105 @@ All workers: 30min hard cap, additive work only, push to remote during cycle (sa
 - If TSC stays ≥1: spawn more TSC reducers.
 - Verify all 4 w22 worker branches exist on origin via `git ls-remote`.
 - Begin sequencing feature branch merges (w19- → w20- → w25- → w22-) into a "merge train".
+
+---
+
+# Cycle 23 — 2026-06-28 21:30 UTC — B-WORKER-PUSH-VERIFICATION (cycle 22) CONFIRMED REAL, spawn 4 amplifiers with push-fail-fallback
+
+**Status:** ⚠️ PARTIAL → 🔴 REGRESSION CONFIRMED.
+
+## Pre-flight
+
+- Workspace wiped again (cycle 23 start). `git clone --depth 50` restored 1497 files in ~20s.
+- MEM available: 1974MB / 2048MB (96% free, well above 1000MB threshold).
+- `git log --since="1 hour ago" --oneline | wc -l` = **2 commits** (cycle 22 ff5ac24 + cycle 21 87dee9c).
+- Wave-spawner docs pushes ARE working (cycle 18-22 all on main).
+
+## CRITICAL FINDING — cycle 22's "B-WORKER-PUSH-VERIFICATION false alarm" was WRONG
+
+Cycle 22 documented that the B-WORKER-PUSH-VERIFICATION hypothesis was a false alarm (cycle 21's shallow clone issue). **Cycle 22 only verified the 7 OLD w19/w20/w25 branches** — it failed to verify the 4 NEW w22 branches it had JUST spawned.
+
+Cycle 23's `git ls-remote origin` (post-fetch, with full remote ref scan, not local cache) reveals:
+
+```
+=== w22 branches === (empty)
+=== w21 branches === (empty)  
+=== w19/w20/w25 branches === (11 verified, intact)
+```
+
+**8 worker branches across cycles 21+22 were spawned and LOST. 0 of 8 pushed successfully.**
+
+| Cycle | Worker | Branch | On origin? | Last known SHA |
+|---|---|---|---|---|
+| 21 | Worker A | `w21/worker-a-tsc-final` | ❌ MISSING | unknown |
+| 21 | Worker B | `w21/worker-b-auth-pages` | ❌ MISSING | unknown |
+| 21 | Worker C | `w21/worker-c-akasha-voice` | ❌ MISSING | unknown |
+| 21 | Worker D | `w21/worker-d-comments` | ❌ MISSING | unknown |
+| 22 | Worker A | `w22/tsc-verify-and-merge` | ❌ MISSING | unknown |
+| 22 | Worker B | `w22/auth-oauth-mfa` | ❌ MISSING | unknown |
+| 22 | Worker C | `w22/voice-akashic-integration` | ❌ MISSING | unknown |
+| 22 | Worker D | `w22/comments-threading` | ❌ MISSING | unknown |
+
+## Why this is a regression (cycle 19-20 worked, 21-22 didn't)
+
+Cycles 19 and 20 successfully spawned workers that pushed 4+4=8 branches (all verified intact today). Cycles 21 and 22 spawned 4+4=8 workers that ALL failed to push.
+
+**Hypotheses (not yet root-caused):**
+
+1. **Sandbox wipe timing regression** — cycles 21+22 may have spawned workers, but the 30-min cron triggered a wipe BEFORE workers could push. Cycles 19+20 may have had workers that finished within ~25min and pushed in time.
+2. **GITHUB_TOKEN expiry / rotation** — cycle 18+ URL injection pattern (`https://${GITHUB_TOKEN}@github.com/...`) may have stopped working if the token rotated. Wave-spawner's own push (different mechanism) may use a different auth path.
+3. **Worker session memory pressure** — workers running `npm install` + `tsc` consume more memory than wave-spawner (no install). With 4 workers in parallel, OOM could kill push step.
+4. **Branch protection / force-push blocks** — GitHub may have added branch protection on `w2[12]/*` branches after cycle 19-20.
+
+**Most likely: (1) timing + (3) memory pressure combined.** Workers are doing too much (TSC verification, OAuth impl, TTS integration, comments threading) in 30min and don't have time to push before wipe.
+
+## Cycle 23 strategy — REDUCED SCOPE + PUSH-FAIL FALLBACK
+
+**Lesson learned:** the 30-min cap is REAL. Workers that try to do 30min of work don't push. Cycle 23 spawns workers with **15min cap + ultra-minimal scope** (single file change max) and a **push-fail fallback** (write report to `docs/cycle-23-failures/` in main workspace so wave-spawner can pick up the work).
+
+### Workers (cycle 23)
+
+1. **Worker A (Coder) — TSC verifier on `w20/tsc-final`:** fork from `w20/tsc-final` (87ab7c29), run TSC in worktree, report TSC count. **NO CODE CHANGES, NO PUSH REQUIRED.** Just verify w20/tsc-final's TSC=0 claim. This is the critical missing data point.
+
+2. **Worker B (General) — One-file i18n seed on `w23/i18n-en-onboarding`:** add ONE EN locale file (e.g., `src/i18n/locales/en/onboarding.json`) with 5 keys translated from PT-BR. **Push-fail fallback:** write the JSON content to `docs/cycle-23-failures/w23-i18n-onboarding.json` so wave-spawner can commit it.
+
+3. **Worker C (General) — One-prompt reflection on `w23/reflection-content`:** add 7 daily reflection prompts to `src/content/reflections/2026-07.json` (PT-BR + EN + ES). **Push-fail fallback:** write JSON to `docs/cycle-23-failures/w23-reflection-week.json`.
+
+4. **Worker D (General) — One-listing marketplace on `w23/marketplace-content`:** add 3 sample product listings (leitura + prática) to `src/content/marketplace/seed.json`. **Push-fail fallback:** write JSON to `docs/cycle-23-failures/w23-marketplace-seed.json`.
+
+### Common brief (all workers)
+
+- 15min hard cap (NOT 30)
+- ONE file change max
+- Fork from existing verified branch (not main — main is TSC=643)
+- `git push` URL injection pattern: `https://${GITHUB_TOKEN}@github.com/Akasha-0/cabaladoscaminhos.git`
+- **MANDATORY verification:** after `git push`, run `git ls-remote origin <branch>` and include the returned SHA in the report
+- **If push fails:** write the work to `docs/cycle-23-failures/<descriptive-name>.json` (or `.md`) inside the wave-spawner's workspace, include file path in report
+- Report must include: branch name, push status (✅ SHA / ❌ reason), file path, work content
+
+### Wave-spawner plan (cycle 23)
+
+1. ✅ Update WAVE-LOG (this entry)
+2. ⏳ Update BLOCKERS (new entry: B-WORKER-PUSH-VERIFICATION-CYCLE-22)
+3. ⏳ Spawn 4 workers (Worker A Coder, B/C/D General)
+4. ⏳ Wait ~20min for workers
+5. ⏳ Verify w23 branches on origin OR collect failure reports
+6. ⏳ Commit + push WAVE-LOG + BLOCKERS update to main
+7. ⏳ If push-fail reports exist, decide: commit them to main as a stop-gap (so work isn't lost) OR re-spawn in cycle 24
+
+### Why not just merge w20/tsc-final directly?
+
+TSC=1 gate is REAL (per project policy: must be ≤1 to push to main). Without Worker A's TSC verification, merging w20/tsc-final could land TSC=100+ on main, breaking the gate worse. We need the verification first.
+
+## Cycle 23 cross-project lessons (durable)
+
+- **"Verified by `git ls-remote`" must include the BRANCH YOU JUST SPAWNED.** Cycle 22 only verified OLD branches, missing the new ones. Lesson: in any wave-spawner, the verification step must enumerate the exact branches the wave-spawner spawned, not just the "known good" set.
+- **30-min cap on workers is structural, not soft.** Workers that try to do 30min of work don't push. Reduce scope to 15min + minimal changes.
+- **Push-fail fallback is essential.** Worker's local worktree will be wiped with the next sandbox reset. If push fails, wave-spawner must have a backup path (write to shared workspace).
+- **Memory pressure compounds timing.** 4 workers × TSC check = high OOM risk. Cycle 23 caps at 1 TSC worker + 3 minimal-scope workers.
+
+## Cycle 23 → Cycle 24 handoff
+
+- If `w23/*` branches all pushed: cycle 24 can begin merging them (after Worker A's TSC report).
+- If `w23/*` branches missing: collect failure reports, commit their content to main as `docs/cycle-23-failures/`, document in WAVE-LOG, spawn cycle 24 with same minimal-scope strategy.
+- If Worker A's TSC report comes back: cycle 24 wave-spawner can propose merge train to owner (if TSC=0) or spawn TSC reducers (if TSC>0).

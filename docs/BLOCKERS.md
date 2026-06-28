@@ -365,3 +365,53 @@ Same as cycle 21. **Likely resolvable** via merge sequence above (if `feat/commu
 ## ✅ UNCHANGED (cycle 22): B-CRON-WIPE-1 — 30-min cron triggers sandbox reset
 
 Same as cycle 21. Wave-spawner logs persist via git push to remote (cycle 18+ pattern). Worker branches MUST push during the cycle or are lost.
+
+---
+
+## 🆕 B-WORKER-PUSH-VERIFICATION-CYCLE-22 (cycle 23): CONFIRMED REAL — 8 worker branches LOST across cycles 21+22
+
+**Status:** 🔴 ACTIVE. Worker push mechanism is broken. Wave-spawner cannot rely on durable worker output until this is resolved.
+
+**Cycle 22's B-WORKER-PUSH-VERIFICATION entry was incorrect.** It claimed the cycle 21 "missing branches" hypothesis was a false alarm (cycle 21's shallow clone was the cause). **This was only partially true** — the cycle 21 false alarm was about OLD branches (w19/w20) that were actually intact. But cycle 22 itself failed to verify its OWN newly-spawned w22 branches.
+
+**Cycle 23 verification (post `git fetch --all`, full `git ls-remote origin`):**
+
+| Cycle | Worker branches spawned | On origin? |
+|---|---|---|
+| 19 | 4 (`w19/worker-a/b/c/d-*`) | ✅ 4/4 verified |
+| 20 | 4 (`w20/auth-pages`, `w20/events`, `w20/mentorship`, `w20/tsc-final`) | ✅ 4/4 verified |
+| 21 | 4 (`w21/worker-a/b/c/d-*`) | ❌ 0/4 — all MISSING |
+| 22 | 4 (`w22/tsc-verify-and-merge`, `w22/auth-oauth-mfa`, `w22/voice-akashic-integration`, `w22/comments-threading`) | ❌ 0/4 — all MISSING |
+| 23 | 4 (`w23/*` — spawning now) | ⏳ TBD |
+
+**8 of 8 workers spawned in cycles 21+22 failed to push.** Workers spawned in cycles 19+20 (8 of 8) succeeded. Regression point: cycle 21.
+
+### Root cause hypotheses (not yet root-caused)
+
+1. **Sandbox wipe timing:** workers in cycle 21+22 may have taken >25min (TSC check, OAuth impl, TTS integration, comments threading) and got wiped by the 30-min cron before they could push. Cycles 19+20 had lighter-scope workers.
+2. **GITHUB_TOKEN rotation:** URL injection pattern `https://${GITHUB_TOKEN}@github.com/...` may have stopped working if the secret rotated. Wave-spawner's own push (different mechanism) is unaffected.
+3. **Memory pressure OOM:** 4 workers × TSC check + Node install = OOM kill on the push step.
+4. **Branch protection added to `w2[12]/*`:** GitHub may have added protection after cycle 19-20.
+
+**Most likely:** (1) timing + (3) memory combined. Workers that try to do 30min of work don't push.
+
+### Cycle 23 mitigation
+
+- Workers capped at **15min hard** (not 30)
+- Workers given **ultra-minimal scope** (ONE file change max)
+- Workers given **push-fail fallback**: write to `docs/cycle-23-failures/<name>` in wave-spawner's shared workspace
+- Workers given **MANDATORY push verification**: `git ls-remote origin <branch>` after push, include SHA in report
+
+### Resolution path
+
+1. Cycle 23 spawns 4 minimal-scope workers. If pushes succeed, mechanism is fixed (was timing/scope issue).
+2. If pushes still fail: escalate to owner. Check (a) GitHub branch protection rules, (b) GITHUB_TOKEN secret status, (c) worker session memory limits.
+3. As stop-gap: wave-spawner commits `docs/cycle-23-failures/` content directly to main (via wave-spawner's working push mechanism), preserving at least the report content even if feature work is lost.
+
+### Impact
+
+- 8 worker-days of work (cycle 21+22) effectively lost. May be partially recoverable from worker session transcripts (if any were preserved before wipe).
+- Merge train (B-MERGE-TRAIN) cannot start until TSC=0 verified (Worker A cycle 23).
+- TSC=643 gate on main holds.
+
+**Resolution: B-WORKER-PUSH-VERIFICATION-CYCLE-22 → ACTIVE. Cycle 23 will test if minimal-scope workers can push. If not, owner intervention required.**
