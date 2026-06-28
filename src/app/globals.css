@@ -2085,3 +2085,238 @@ html:not(.dark) {
     transform: none;
   }
 }
+
+/* ============================================
+ * WAVE 24 — MOBILE-FIRST POLISH UTILITIES
+ * ============================================
+ * Helpers para tap targets, safe-area, iOS keyboard e PWA polish.
+ * Aplicados em todos os componentes novos (Wave 24+).
+ * ============================================ */
+
+/* === TAP DELAY (iOS Safari 300ms) ===
+ * Elimina o delay de 300ms em iOS Safari para taps em botões/links.
+ * Aplicar em componentes interativos. Safe — não bloqueia scroll vertical.
+ */
+.touch-manipulation {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* === TAP HIGHLIGHT (Android) ===
+ * Remove o flash azul/laranja em tap, mantém :focus-visible para a11y.
+ */
+.no-tap-highlight {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+/* === SAFE-AREAS (iOS notch + home indicator) === */
+/* Helpers para aplicar insets específicos sem inline style. */
+.safe-top {
+  padding-top: max(env(safe-area-inset-top, 0), 0px);
+}
+.safe-bottom {
+  padding-bottom: max(env(safe-area-inset-bottom, 0), 0px);
+}
+.safe-left {
+  padding-left: max(env(safe-area-inset-left, 0), 0px);
+}
+.safe-right {
+  padding-right: max(env(safe-area-inset-right, 0), 0px);
+}
+.safe-x {
+  padding-left: max(env(safe-area-inset-left, 0), 0px);
+  padding-right: max(env(safe-area-inset-right, 0), 0px);
+}
+.safe-y {
+  padding-top: max(env(safe-area-inset-top, 0), 0px);
+  padding-bottom: max(env(safe-area-inset-bottom, 0), 0px);
+}
+.safe-area {
+  padding-top: max(env(safe-area-inset-top, 0), 0px);
+  padding-bottom: max(env(safe-area-inset-bottom, 0), 0px);
+  padding-left: max(env(safe-area-inset-left, 0), 0px);
+  padding-right: max(env(safe-area-inset-right, 0), 0px);
+}
+
+/* === MIN HEIGHT APP (sem 100vh que inclui keyboard) ===
+ * Use .min-h-app em vez de min-h-screen em containers que devem
+ * respeitar o visualViewport (iOS keyboard).
+ */
+.min-h-app {
+  min-height: 100vh;
+  min-height: 100dvh; /* dynamic viewport — respeita keyboard */
+}
+
+/* === H-FIT (container para inputs acima do keyboard iOS) ===
+ * Move o footer/input bar acima do keyboard quando aberto.
+ */
+.h-fit-keyboard {
+  height: calc(100vh - env(safe-area-inset-top, 0) - env(safe-area-inset-bottom, 0));
+}
+@supports (height: 100dvh) {
+  .h-fit-keyboard {
+    height: calc(100dvh - env(safe-area-inset-top, 0) - env(safe-area-inset-bottom, 0));
+  }
+}
+
+/* === TOUCH TARGET (WCAG 2.5.5 + Apple HIG 44pt) ===
+ * Garante 44x44px mínimo mesmo quando o visual é menor.
+ * Usar em botões com texto curto que visualmente parecem < 44px.
+ */
+.touch-target {
+  position: relative;
+  min-width: 44px;
+  min-height: 44px;
+}
+.touch-target::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  /* Expande a hit area sem mudar o visual */
+}
+
+/* === SWIPE GESTURE (BottomSheet swipe-down) === */
+.swipe-down-cursor {
+  cursor: grab;
+}
+.swipe-down-cursor:active {
+  cursor: grabbing;
+}
+
+/* === OVRFLOW SCROLLBAR (mobile horizontal scroll) === */
+.scrollbar-thin::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 2px;
+}
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.3) transparent;
+}
+
+/* === REDUCED MOTION: PullToRefresh === */
+@media (prefers-reduced-motion: reduce) {
+  .pull-to-refresh-indicator,
+  .pull-to-refresh-spinner {
+    animation: none !important;
+  }
+}
+
+/* ============================================================================
+ * Wave 24 — Microinteractions (60fps, transform+opacity only)
+ * ============================================================================
+ * Todas as animações são compositor-only (transform/opacity) e respeitam
+ * prefers-reduced-motion via o bloco @media no final deste bloco.
+ * ============================================================================ */
+
+@keyframes countBounce {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+.animate-count-bounce {
+  animation: countBounce 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+}
+
+@keyframes bookmarkPop {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.25); }
+  60%  { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+.animate-bookmark-pop {
+  animation: bookmarkPop 380ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+}
+
+@keyframes confirmPop {
+  0%   { transform: scale(0) rotate(-15deg); opacity: 0; }
+  60%  { transform: scale(1.15) rotate(0deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.animate-confirm-pop {
+  animation: confirmPop 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+}
+
+@keyframes tabIndicator {
+  0%   { transform: scaleX(0.4); opacity: 0.6; }
+  100% { transform: scaleX(1); opacity: 1; }
+}
+.animate-tab-indicator {
+  animation: tabIndicator 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: left center;
+}
+
+@keyframes avatarSwapIn {
+  0%   { transform: scale(0.6) rotate(-8deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.animate-avatar-swap-in {
+  animation: avatarSwapIn 280ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: center;
+}
+
+@keyframes followRing {
+  0%   { box-shadow: 0 0 0 0 rgba(212, 168, 67, 0.55); }
+  100% { box-shadow: 0 0 0 14px rgba(212, 168, 67, 0); }
+}
+.animate-follow-ring {
+  animation: followRing 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes successCheckDraw {
+  0%   { stroke-dashoffset: var(--check-len, 22); }
+  100% { stroke-dashoffset: 0; }
+}
+
+@keyframes spinnerRotate {
+  to { transform: rotate(360deg); }
+}
+.animate-spin-smooth {
+  animation: spinnerRotate 800ms linear infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+
+/* === Empty state illustration float (sutil) === */
+@keyframes emptyFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+.animate-empty-float {
+  animation: emptyFloat 4s ease-in-out infinite;
+}
+
+/* === Skeleton shimmer (já existe .animate-shimmer, esta é a versão suave) === */
+@keyframes pulseGentle {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 0.85; }
+}
+.animate-pulse-gentle {
+  animation: pulseGentle 2.4s ease-in-out infinite;
+}
+
+/* === REDUCED MOTION: Wave 24 microinteractions === */
+@media (prefers-reduced-motion: reduce) {
+  .animate-count-bounce,
+  .animate-bookmark-pop,
+  .animate-confirm-pop,
+  .animate-tab-indicator,
+  .animate-avatar-swap-in,
+  .animate-follow-ring,
+  .animate-empty-float,
+  .animate-pulse-gentle,
+  .animate-spin-smooth {
+    animation: none !important;
+  }
+}
+

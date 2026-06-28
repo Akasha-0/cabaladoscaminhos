@@ -320,9 +320,15 @@ export default function LibraryPage() {
         </div>
 
         {filtered.length === 0 && (
-          <div className="text-center py-16">
-            <BookOpen className="w-12 h-12 mx-auto text-slate-600 mb-3" />
-            <p className="text-slate-400">{t('library.emptyTitle')}</p>
+          <div className="text-center py-16 space-y-3">
+            <BookOpen className="w-12 h-12 mx-auto text-amber-400/70" aria-hidden="true" />
+            <p className="text-slate-300 font-medium">
+              Em breve 100+ artigos curados
+            </p>
+            <p className="text-sm text-slate-500 max-w-sm mx-auto">
+              {t('library.emptyTitle')} Nossa curadoria reúne textos de
+              tradições ancestrais e ciência moderna.
+            </p>
             <Button
               variant="outline"
               onClick={() => {
@@ -331,7 +337,7 @@ export default function LibraryPage() {
                 setType('todos');
                 setEvidence('todas');
               }}
-              className="mt-4 border-slate-700"
+              className="mt-2 border-slate-700"
             >
               {t('library.emptyAction')}
             </Button>

@@ -153,12 +153,13 @@ export default function BookmarksPage() {
       {!loading && !error && data && data.items.length === 0 && (
         <Card className="bg-slate-900/40 border-slate-800/50">
           <CardContent className="p-8 text-center space-y-3">
-            <FolderOpen className="w-10 h-10 mx-auto text-slate-600" aria-hidden="true" />
+            <FolderOpen className="w-10 h-10 mx-auto text-amber-400/70" aria-hidden="true" />
             <p className="text-slate-300 font-medium">
-              Nenhum post salvo por aqui.
+              Salve posts pra ler depois
             </p>
-            <p className="text-sm text-slate-500">
-              Toque no ícone de bookmark em qualquer post para guardá-lo.
+            <p className="text-sm text-slate-500 max-w-sm mx-auto">
+              Toque no ícone de bookmark em qualquer post para guardá-lo aqui.
+              Quando voltar, ele estará esperando por você.
             </p>
             <Link
               href="/feed"

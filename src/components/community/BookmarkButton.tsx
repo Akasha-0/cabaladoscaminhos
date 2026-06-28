@@ -17,6 +17,9 @@
 import React, { useState, useTransition } from 'react';
 import { Bookmark, BookmarkCheck, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useHaptic } from '@/hooks/useHaptic';
+import { useSoundEffects } from '@/hooks/useSoundEffects';
+import { ConfirmCheck } from '@/components/ui/ConfirmCheck';
 
 export interface BookmarkButtonProps {
   postId: string;
@@ -47,6 +50,9 @@ export function BookmarkButton({
   const [bookmarked, setBookmarked] = useState(initialBookmarked);
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [pulseKey, setPulseKey] = useState(0);
+  const { light: lightHaptic, success: successHaptic, error: errorHaptic } = useHaptic();
+  const { tap: tapSound, success: successSound, error: errorSound } = useSoundEffects();
 
   // Sincroniza quando a prop muda externamente (ex: feed refresh)
   React.useEffect(() => {
@@ -58,10 +64,14 @@ export function BookmarkButton({
     e.stopPropagation();
     if (disabled || pending) return;
     setError(null);
+    lightHaptic();
+    tapSound();
 
     // Optimistic flip
     const prev = bookmarked;
-    setBookmarked(!prev);
+    const next = !prev;
+    setBookmarked(next);
+    setPulseKey((k) => k + 1); // re-trigger check draw animation
 
     startTransition(async () => {
       try {
@@ -75,6 +85,8 @@ export function BookmarkButton({
         if (!res.ok) {
           // Rollback
           setBookmarked(prev);
+          errorHaptic();
+          errorSound();
           const json = (await res.json().catch(() => null)) as
             | { error?: { message?: string } }
             | null;
@@ -91,9 +103,16 @@ export function BookmarkButton({
         } else {
           onChange?.(!prev);
         }
+        if (next) {
+          // Confirmação de save — feedback de sucesso
+          successHaptic();
+          successSound();
+        }
       } catch (err) {
         // Rollback
         setBookmarked(prev);
+        errorHaptic();
+        errorSound();
         setError(err instanceof Error ? err.message : 'Erro de rede');
       }
     });
@@ -113,7 +132,7 @@ export function BookmarkButton({
       title={bookmarked ? 'Salvo — clique para remover' : 'Salvar para ler depois'}
       className={cn(
         sizeClass,
-        'inline-flex items-center justify-center rounded-lg transition-all',
+        'relative inline-flex items-center justify-center rounded-lg transition-all',
         'active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950',
         bookmarked
           ? 'text-amber-400 bg-amber-500/10'
@@ -126,10 +145,30 @@ export function BookmarkButton({
       {pending ? (
         <Loader2 className={cn('animate-spin', size === 'md' ? 'w-5 h-5' : 'w-4 h-4')} />
       ) : (
-        <Icon
-          className={cn(size === 'md' ? 'w-5 h-5' : 'w-4 h-4', bookmarked && 'fill-amber-400')}
+        <span
+          key={pulseKey}
+          className="inline-flex items-center justify-center animate-bookmark-pop"
+        >
+          <Icon
+            className={cn(size === 'md' ? 'w-5 h-5' : 'w-4 h-4', bookmarked && 'fill-amber-400')}
+            aria-hidden="true"
+          />
+        </span>
+      )}
+      {/* Confirm check overlay — aparece 120ms após o flip positivo */}
+      {bookmarked && !pending && (
+        <span
+          className="pointer-events-none absolute -right-1 -top-1 rounded-full bg-emerald-500/90 p-0.5 shadow-md animate-confirm-pop"
           aria-hidden="true"
-        />
+        >
+          <ConfirmCheck
+            active={bookmarked}
+            size={size === 'md' ? 14 : 12}
+            color="white"
+            strokeWidth={3}
+            label="Salvo"
+          />
+        </span>
       )}
       {error && (
         <span role="alert" className="sr-only">

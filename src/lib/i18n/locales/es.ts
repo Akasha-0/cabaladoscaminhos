@@ -24,6 +24,8 @@ export const es = {
     searchClose: 'Cerrar búsqueda',
     menuOpen: 'Abrir menú',
     menuClose: 'Cerrar menú',
+    menu: 'Menú',
+    menuDescription: 'Navega por las secciones de la comunidad',
     profileMenu: 'Abrir menú de perfil',
     logoAriaLabel: 'Akasha Portal - Inicio',
     searchPlaceholder: 'Buscar contenido',

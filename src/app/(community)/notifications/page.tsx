@@ -533,11 +533,11 @@ function EmptyState({
   return (
     <Card className="card-spiritual bg-slate-900/50 border-slate-800/50">
       <CardContent className="pt-8 pb-8 text-center space-y-3">
-        <Bell className="w-12 h-12 mx-auto text-slate-600" />
-        <p className="text-slate-300">Nenhuma notificação por aqui</p>
+        <Bell className="w-12 h-12 mx-auto text-amber-400/70" />
+        <p className="text-slate-300 font-medium">Você está em paz</p>
         <p className="text-xs text-slate-500 max-w-sm mx-auto">
-          Quando alguém curtir, comentar, mencionar ou seguir você,
-          vai aparecer aqui em tempo real.
+          Nenhuma notificação por aqui. Quando alguém curtir, comentar,
+          mencionar ou seguir você, vai aparecer aqui em tempo real.
         </p>
         <Link href="/feed">
           <Button

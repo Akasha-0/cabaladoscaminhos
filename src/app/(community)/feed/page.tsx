@@ -8,9 +8,14 @@
 // ============================================================================
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { BottomSheet } from '@/components/ui/BottomSheet';
 import { useHaptic } from '@/hooks/useHaptic';
+import { useSoundEffects } from '@/hooks/useSoundEffects';
+import { Toast, StaggerList } from '@/components/ui/motion';
+import { PullToRefresh } from '@/components/community/PullToRefresh';
+import { OfflineBanner } from '@/components/community/OfflineBanner';
 import {
   Sparkles, Users, BookOpen, Hash, TrendingUp, Filter,
   PenSquare, X,
@@ -71,10 +76,23 @@ const TRADITION_LABELS: Record<string, string> = {
 type FilterKey = 'all' | 'seguindo' | 'grupos' | 'tendencias' | 'para-voce';
 
 export default function CommunityFeedPage() {
+  const router = useRouter();
   const [filter, setFilter] = useState<FilterKey>('all');
   const [composeOpen, setComposeOpen] = useState(false);
   const { light: lightHaptic } = useHaptic();
+  const { success: successSound, error: errorSound } = useSoundEffects();
+  const [toast, setToast] = useState<{ visible: boolean; variant: 'success' | 'destructive' | 'default'; message: string }>({
+    visible: false,
+    variant: 'default',
+    message: '',
+  });
   const t = useT();
+
+  const showToast = (variant: 'success' | 'destructive' | 'default', message: string) => {
+    setToast({ visible: true, variant, message });
+    if (variant === 'success') successSound();
+    else if (variant === 'destructive') errorSound();
+  };
 
   // Hooks do feed — passa o filter ativo pro recommendation engine quando for 'para-voce'
   const feed = useFeed({
@@ -89,7 +107,10 @@ export default function CommunityFeedPage() {
   const { user } = useAuth();
   const currentUserId = user?.id ?? null;
 
-  // Handlers do PostCard
+  // Handlers do PostCard — W24 (P1-M1) wireados para handlers reais.
+  // Share/Bookmark/Report UX já é tratada dentro do PostCard via
+  // ShareButton/BookmarkButton/FlagButton — os handlers abaixo servem
+  // como tracking callback (analytics-ready) e não duplicam a ação.
   const handleLike = (id: string) => void toggleLike(id);
   const handleDelete = async (id: string) => {
     if (!confirm(t('feed.deleteConfirm'))) return;
@@ -99,14 +120,67 @@ export default function CommunityFeedPage() {
       console.warn(`[feed] ${t('feed.deleteFailed')}`, r.error);
     }
   };
+  // Navega para o post + âncora dos comentários (scrollIntoView via hash)
+  const handleComment = (id: string) => {
+    router.push(`/post/${id}#comments`);
+  };
+  // Navega para a página de edição (somente autor)
+  const handleEdit = (id: string) => {
+    router.push(`/post/${id}/edit`);
+  };
+  // Tracking de share — UX real está no ShareButton interno do PostCard.
+  // Aqui só registramos o evento p/ analytics (no-op por enquanto).
+  const handleShare = (id: string) => {
+    if (typeof console !== 'undefined' && process.env.NODE_ENV !== 'production') {
+      // eslint-disable-next-line no-console
+      console.debug('[feed] share', { postId: id });
+    }
+  };
+  // Tracking de bookmark — UX real está no BookmarkButton interno.
+  const handleBookmark = (id: string) => {
+    if (typeof console !== 'undefined' && process.env.NODE_ENV !== 'production') {
+      // eslint-disable-next-line no-console
+      console.debug('[feed] bookmark', { postId: id });
+    }
+  };
+  // Tracking de report — UX real está no FlagButton interno.
+  const handleReport = (id: string) => {
+    if (typeof console !== 'undefined' && process.env.NODE_ENV !== 'production') {
+      // eslint-disable-next-line no-console
+      console.debug('[feed] report', { postId: id });
+    }
+  };
   const handleCreate = async (input: Parameters<typeof createPost>[0]) => {
     const r = await createPost(input);
+    if (r.ok) {
+      showToast('success', t('feed.postCreated') || 'Post publicado ✨');
+    } else {
+      showToast('destructive', r.error?.message || t('feed.createFailed') || 'Falha ao publicar');
+    }
     return { ok: r.ok, error: r.error };
+  };
+
+  const handleRefresh = async () => {
+    try {
+      await feed.refresh?.();
+      showToast('default', 'Atualizado');
+    } catch {
+      showToast('destructive', 'Falha ao atualizar — tente novamente');
+    }
   };
   const userInitials = (user?.email?.[0] ?? 'V').toUpperCase() + 'C';
 
   return (
     <div className="min-h-screen p-4 md:p-6 lg:p-8">
+      <OfflineBanner />
+      <Toast
+        visible={toast.visible}
+        variant={toast.variant}
+        position="top"
+        onDismiss={() => setToast((s) => ({ ...s, visible: false }))}
+      >
+        {toast.message}
+      </Toast>
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
           {/* Main feed column */}
@@ -181,37 +255,23 @@ export default function CommunityFeedPage() {
               />
             ) : (
               <>
-                <div className="space-y-4" data-testid="posts-list">
+                <PullToRefresh onRefresh={handleRefresh}>
+                <StaggerList step={50} max={12} className="space-y-4">
                   {feed.posts.map((post) => (
                     <PostCard
                       key={post.id}
                       post={post}
                       currentUserId={currentUserId}
                       onLike={handleLike}
-                      onComment={(id) => {
-                        // eslint-disable-next-line no-console
-                        console.log('comment', id);
-                      }}
-                      onShare={(id) => {
-                        // eslint-disable-next-line no-console
-                        console.log('share', id);
-                      }}
-                      onBookmark={(id) => {
-                        // eslint-disable-next-line no-console
-                        console.log('bookmark', id);
-                      }}
-                      onEdit={(id) => {
-                        // eslint-disable-next-line no-console
-                        console.log('edit', id);
-                      }}
+                      onComment={handleComment}
+                      onShare={handleShare}
+                      onBookmark={handleBookmark}
+                      onEdit={handleEdit}
                       onDelete={handleDelete}
-                      onReport={(id) => {
-                        // eslint-disable-next-line no-console
-                        console.log('report', id);
-                      }}
+                      onReport={handleReport}
                     />
                   ))}
-                </div>
+                </StaggerList>
 
                 {/* Carregar mais */}
                 {feed.hasMore && (
@@ -232,6 +292,7 @@ export default function CommunityFeedPage() {
                 {feed.error && (
                   <FeedError error={feed.error} onRetry={feed.refresh} />
                 )}
+                </PullToRefresh>
               </>
             )}
           </div>
@@ -290,11 +351,20 @@ function FilterChip({
   active: boolean;
   onClick: () => void;
 }) {
+  const { light: lightHaptic } = useHaptic();
+  const { tap: tapSound } = useSoundEffects();
   return (
     <button
-      onClick={onClick}
+      onClick={() => {
+        lightHaptic();
+        tapSound();
+        onClick();
+      }}
+      aria-pressed={active}
       className={cn(
-        'flex items-center gap-1.5 px-3 py-2.5 rounded-full text-sm font-medium transition-all whitespace-nowrap min-h-[44px]',
+        'relative flex items-center gap-1.5 px-3 py-2.5 rounded-full text-sm font-medium whitespace-nowrap min-h-[44px]',
+        'transition-colors duration-200 ease-out active:scale-95',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950',
         active
           ? 'bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-300 border border-amber-500/30'
           : 'bg-slate-800/50 text-slate-400 border border-slate-700/30 hover:text-slate-200 hover:border-slate-600/50'
@@ -302,6 +372,12 @@ function FilterChip({
     >
       {icon}
       {label}
+      {active && (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-gradient-to-r from-amber-400 to-violet-400 animate-tab-indicator"
+        />
+      )}
     </button>
   );
 }

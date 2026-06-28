@@ -28,7 +28,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <main
         id="main-content"
         tabIndex={-1}
-        className="min-h-screen flex items-center justify-center px-4 py-10 focus:outline-none"
+        className="min-h-app flex items-center justify-center px-4 py-10 safe-x focus:outline-none"
       >
         {children}
       </main>

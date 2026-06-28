@@ -20,6 +20,7 @@ import { ThemeToggleButton } from '@/components/ui/ThemeToggleButton';
 import { cn } from '@/lib/utils';
 import { useHaptic } from '@/hooks/useHaptic';
 import { useT } from '@/lib/i18n/useT';
+import { MobileNavDrawer } from '@/components/shared/MobileNavDrawer';
 
 // ============================================================
 // TYPES
@@ -270,34 +271,38 @@ export function CommunityNav({ user, onSearch }: CommunityNavProps) {
           </div>
         )}
 
-        {/* Mobile menu (dropdown) */}
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t border-slate-800/50 bg-slate-950/95 backdrop-blur-md">
-            <div className="px-4 py-3 space-y-1">
-              {NAV_ITEMS.map((item) => {
-                const Icon = item.icon;
-                const isActive = pathname?.startsWith(item.href);
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => handleNavClick(item.href)}
-                    className={cn(
-                      'flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium transition-all min-h-[44px]',
-                      isActive
-                        ? 'bg-amber-500/10 text-amber-300 border border-amber-500/20'
-                        : 'text-slate-300 hover:bg-slate-800/50'
-                    )}
-                    aria-current={isActive ? 'page' : undefined}
-                  >
-                    <Icon className="w-5 h-5" aria-hidden="true" />
-                    {item.label}
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        )}
+        {/* Mobile menu (drawer) — Wave 24: agora usa MobileNavDrawer (BottomSheet) */}
+        <MobileNavDrawer
+          open={mobileMenuOpen}
+          onClose={() => {
+            trigger('light');
+            setMobileMenuOpen(false);
+          }}
+          title={t('nav.menu')}
+          description={t('nav.menuDescription')}
+        >
+          {NAV_ITEMS.map((item) => {
+            const Icon = item.icon;
+            const isActive = pathname?.startsWith(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => handleNavClick(item.href)}
+                className={cn(
+                  'flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium transition-all min-h-[44px] no-tap-highlight',
+                  isActive
+                    ? 'bg-amber-500/10 text-amber-300 border border-amber-500/20'
+                    : 'text-slate-300 hover:bg-slate-800/50'
+                )}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                <Icon className="w-5 h-5" aria-hidden="true" />
+                {item.label}
+              </Link>
+            );
+          })}
+        </MobileNavDrawer>
       </header>
 
       {/* BOTTOM NAV (mobile) — com safe area inset */}

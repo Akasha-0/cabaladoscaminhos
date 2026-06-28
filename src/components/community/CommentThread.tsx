@@ -23,6 +23,8 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { FlagButton } from '@/components/moderation/FlagButton';
 import { CommentReactionBar } from '@/components/community/CommentReactionBar';
+import { useHaptic } from '@/hooks/useHaptic';
+import { useSoundEffects } from '@/hooks/useSoundEffects';
 
 const MAX_DEPTH = 3;
 const MAX_CONTENT = 2000;
@@ -98,11 +100,18 @@ function CommentNode({
   const [submitting, setSubmitting] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
   const [optimisticReplies, setOptimisticReplies] = useState<Comment[]>([]);
+  const [justAddedId, setJustAddedId] = useState<string | null>(null);
+  const { light: lightHaptic, success: successHaptic, error: errorHaptic } = useHaptic();
+  const { tap: tapSound, submit: submitSound, success: successSound, error: errorSound } = useSoundEffects();
 
   const replies: Comment[] = [
     ...(comment.replies ?? []),
     ...optimisticReplies,
   ];
+  const optimisticIds = React.useMemo(
+    () => new Set(optimisticReplies.map((r) => r.id)),
+    [optimisticReplies]
+  );
 
   const initials = (comment.author.displayName || 'AN')
     .split(' ')
@@ -113,6 +122,8 @@ function CommentNode({
   const handleSubmitReply = useCallback(async () => {
     const text = replyText.trim();
     if (!text) return;
+    lightHaptic();
+    submitSound();
     setSubmitting(true);
     setLocalError(null);
     try {
@@ -122,18 +133,27 @@ function CommentNode({
 
       if (created) {
         setOptimisticReplies((prev) => [...prev, created]);
+        setJustAddedId(created.id);
         setReplyText('');
         setReplyOpen(false);
+        successHaptic();
+        successSound();
+        // Clear slide-in flag após animação (~600ms)
+        window.setTimeout(() => setJustAddedId(null), 700);
       } else {
         setLocalError('Não foi possível enviar. Tente novamente.');
+        errorHaptic();
+        errorSound();
       }
     } catch (err) {
       console.error('[CommentThread] reply failed', err);
       setLocalError(err instanceof Error ? err.message : 'Erro de rede');
+      errorHaptic();
+      errorSound();
     } finally {
       setSubmitting(false);
     }
-  }, [comment.id, onReply, postId, replyText]);
+  }, [comment.id, onReply, postId, replyText, lightHaptic, submitSound, successHaptic, successSound, errorHaptic, errorSound]);
 
   const indentPx = depth === 1 ? 0 : Math.min((depth - 1) * 16, 32);
   const atMaxDepth = depth >= maxDepth;
@@ -264,13 +284,17 @@ function CommentNode({
       {/* Respostas aninhadas — recursivo até maxDepth */}
       {replies.length > 0 && (
         <ol className="mt-3 space-y-2" aria-label="Respostas">
-          {replies.map((r) =>
-            atMaxDepth ? (
+          {replies.map((r) => {
+            const isOptimistic = optimisticIds.has(r.id) || r.id === justAddedId;
+            return atMaxDepth ? (
               // Colapsa excedente: mostra link para a sub-thread em página
               // própria (futuro) — por ora, renderiza inline mas avisa.
               <li
                 key={r.id}
-                className="text-xs text-slate-500 pl-2 border-l border-slate-800"
+                className={cn(
+                  'text-xs text-slate-500 pl-2 border-l border-slate-800',
+                  isOptimistic && 'animate-slide-in-from-right'
+                )}
               >
                 <span className="italic">
                   @{r.author.handle}: {r.content.slice(0, 80)}
@@ -278,17 +302,21 @@ function CommentNode({
                 </span>
               </li>
             ) : (
-              <CommentNode
+              <div
                 key={r.id}
-                comment={r}
-                depth={depth + 1}
-                maxDepth={maxDepth}
-                postId={postId}
-                currentUserId={currentUserId}
-                onReply={onReply}
-              />
-            )
-          )}
+                className={cn(isOptimistic && 'animate-slide-in-from-right')}
+              >
+                <CommentNode
+                  comment={r}
+                  depth={depth + 1}
+                  maxDepth={maxDepth}
+                  postId={postId}
+                  currentUserId={currentUserId}
+                  onReply={onReply}
+                />
+              </div>
+            );
+          })}
         </ol>
       )}
     </li>

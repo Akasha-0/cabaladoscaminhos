@@ -221,12 +221,14 @@ export default function GroupsPage() {
         {!loading && !error && groups.length === 0 && (
           <Card className="card-spiritual bg-slate-900/50 border-slate-800/50">
             <CardContent className="py-12 text-center space-y-2">
-              <Sparkles className="w-8 h-8 mx-auto text-slate-500" />
-              <p className="text-sm text-slate-300">Nenhum grupo encontrado.</p>
-              <p className="text-xs text-slate-500">
+              <Sparkles className="w-8 h-8 mx-auto text-amber-400/70" />
+              <p className="text-sm text-slate-300 font-medium">
+                Encontre sua tribo
+              </p>
+              <p className="text-xs text-slate-500 max-w-sm mx-auto">
                 {mine
-                  ? 'Você ainda não participa de nenhum grupo.'
-                  : 'Tente outra tradição ou busca.'}
+                  ? 'Você ainda não participa de nenhum grupo. Explore as tradições e encontre pessoas que caminham como você.'
+                  : 'Nenhum grupo combina com esses filtros. Tente outra tradição ou termo de busca.'}
               </p>
               {mine && (
                 <Link href="/groups">

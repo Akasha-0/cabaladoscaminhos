@@ -317,7 +317,7 @@ export default function PostDetailPage() {
       </Card>
 
       {/* Thread (árvore) */}
-      <section aria-label="Comentários" className="space-y-2">
+      <section id="comments" aria-label="Comentários" className="space-y-2 scroll-mt-20">
         <h2 className="text-sm font-medium text-slate-300 px-1">
           {comments.length === 0
             ? 'Sem comentários'

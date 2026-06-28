@@ -303,6 +303,42 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Akasha" />
+        {/* iOS Splash Screens (Wave 24) — sizes baseados em devices comuns */}
+        <link
+          rel="apple-touch-startup-image"
+          media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"
+          href="/icons/splash-640x1136.png"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
+          href="/icons/splash-750x1334.png"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)"
+          href="/icons/splash-1242x2208.png"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
+          href="/icons/splash-1125x2436.png"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)"
+          href="/icons/splash-1170x2532.png"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)"
+          href="/icons/splash-828x1792.png"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3)"
+          href="/icons/splash-1284x2778.png"
+        />
         {/* PWA meta tags Android */}
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#fbbf24" />

@@ -22,6 +22,8 @@ export const ptBR = {
     searchClose: 'Fechar busca',
     menuOpen: 'Abrir menu',
     menuClose: 'Fechar menu',
+    menu: 'Menu',
+    menuDescription: 'Navegue pelas seções da comunidade',
     profileMenu: 'Abrir menu de perfil',
     logoAriaLabel: 'Akasha Portal - Página inicial',
     searchPlaceholder: 'Buscar conteúdo',

@@ -20,6 +20,8 @@ import {
   type ReactionAggregate,
 } from '@/lib/community/reactions';
 import { ReactionPicker } from './ReactionPicker';
+import { useHaptic } from '@/hooks/useHaptic';
+import { useSoundEffects } from '@/hooks/useSoundEffects';
 
 export interface ReactionBarProps {
   targetType: 'POST' | 'COMMENT';
@@ -45,6 +47,8 @@ export function ReactionBar({
   const [reactions, setReactions] = useState<ReactionAggregate[]>(initialReactions);
   const [loading, setLoading] = useState(initialReactions.length === 0);
   const [pending, setPending] = useState<AllowedEmoji | null>(null);
+  const { light: lightHaptic, success: successHaptic, error: errorHaptic } = useHaptic();
+  const { tap: tapSound, success: successSound, error: errorSound } = useSoundEffects();
 
   // Carrega reactions no mount se não vierem do SSR
   useEffect(() => {
@@ -75,6 +79,8 @@ export function ReactionBar({
   const handleToggle = useCallback(
     async (emoji: AllowedEmoji) => {
       if (!isAuthenticated || pending) return;
+      lightHaptic();
+      tapSound();
 
       // Snapshot para rollback
       const snapshot = reactions;
@@ -118,6 +124,8 @@ export function ReactionBar({
         if (!res.ok || !json?.data) {
           // Rollback
           setReactions(snapshot);
+          errorHaptic();
+          errorSound();
         } else {
           // Confirma com o servidor
           const server = json.data as { emoji: AllowedEmoji; count: number; userHasReacted: boolean };
@@ -130,14 +138,18 @@ export function ReactionBar({
             merged.sort((a, b) => b.count - a.count);
             return merged;
           });
+          successHaptic();
+          successSound();
         }
       } catch {
         setReactions(snapshot);
+        errorHaptic();
+        errorSound();
       } finally {
         setPending(null);
       }
     },
-    [isAuthenticated, pending, reactions, targetType, targetId]
+    [isAuthenticated, pending, reactions, targetType, targetId, lightHaptic, successHaptic, errorHaptic, tapSound, successSound, errorSound]
   );
 
   const selectedEmojis = useMemo(
