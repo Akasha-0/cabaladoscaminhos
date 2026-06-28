@@ -2,6 +2,8 @@
 
 > **TTS nas respostas da Akasha IA. Surgical, zero-cost, mobile-first.**
 
+> **Wave 25 (2026-06-28):** hook `useTTS()` + componente `<VoicePlayer />` multilíngue (pt-BR/en-US/es-ES) + endpoint server-side placeholder `/api/akashic/tts` + atalho Espaço. Veja `docs/VOICE-MODE-W25.md` para detalhes. VoiceButton (este wave) continua em produção no `/akashic`; VoicePlayer é usado em `/akashic-chat`.
+
 ## TL;DR
 
 - **Botão "Ouvir"** em cada resposta da Akasha no chat `/akashic`.

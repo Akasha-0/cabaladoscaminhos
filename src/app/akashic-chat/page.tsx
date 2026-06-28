@@ -4,11 +4,14 @@
 // AKASHA PORTAL — Akashic Chat
 // ============================================================================
 // Chat com a IA curadora. Wave 17 — type system aplicado.
+// Wave 25 (2026-06-28) — Voice Mode: botão "Ouvir resposta" em cada
+// mensagem da Akasha via Web Speech API. Componente: VoicePlayer.tsx.
 // ============================================================================
 
 import { useState } from 'react';
 import { Sparkles, Send, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { VoicePlayer } from '@/components/akashic/voice-player';
 
 type Message = {
   id: string;
@@ -95,6 +98,13 @@ export default function AkashicChatPage() {
                 </div>
               )}
               <p className="text-body leading-relaxed">{m.text}</p>
+
+              {/* Wave 25 — Voice mode: "Ouvir resposta" via Web Speech API */}
+              {m.role === 'akasha' && (
+                <div className="mt-3 flex justify-end">
+                  <VoicePlayer text={m.text} locale="pt-BR" />
+                </div>
+              )}
             </div>
           </div>
         ))}
