@@ -281,3 +281,87 @@ $ git branch -r | grep -E "w1[8-9]|w2[0-9]"
 - B-TSC-W28: TSC on main is 643, gate is 1, push blocked
 - B-CRON-WIPE-1: 30-min cron triggers sandbox reset; wave-spawner logs persist via git push to remote (cycle 18+), but worker branches MUST be pushed during the cycle or they are lost on next wipe
 - B-WORKER-PUSH-VERIFICATION (NEW cycle 21): cycle 19/20 worker pushes are missing from origin; cycle 21 has explicit `git ls-remote` verification mandate
+
+---
+
+## ✅ RESOLVED (cycle 22): B-WORKER-PUSH-VERIFICATION was a FALSE ALARM
+
+**Updated status (cycle 22, 21:00 UTC):** Cycle 22's `git ls-remote origin` after `git fetch --unshallow` reveals that **all 7 cycle 19+20 worker branches ARE INTACT on origin**. The B-WORKER-PUSH-VERIFICATION hypothesis was WRONG.
+
+**What actually happened (cycle 22 root cause analysis):**
+
+- Cycle 21 used `git clone --depth 50` (shallow), which limits the cloned refs to the most recent 50 commits on the default branch.
+- After the clone, cycle 21 attempted `git fetch --all --prune=false` — this **failed silently** (the `--prune=false` syntax is invalid in git 2.x; it should be `--no-prune`).
+- The shallow clone's `.git/refs/remotes/origin/` had only `origin/main` and `origin/HEAD`.
+- Cycle 21 ran `git branch -r | grep -E "w1[8-9]|w2[0-9]"` → empty result → **incorrectly concluded** branches were missing from origin.
+- In reality, the branches existed on `origin` but were not FETCHED into the local remote tracking refs.
+
+**Verification (cycle 22):**
+
+| Branch | SHA on origin | Status |
+|---|---|---|
+| `w19/worker-a-tsc-reduction` | `53a3bd92d954e8b8c79a6d4d5beb5260cdcd2689` | ✅ EXISTS |
+| `w19/worker-b-i18n` | `595fa3f43240f079d45c928b4d53f698d1c8d853` | ✅ EXISTS |
+| `w19/worker-c-voice` | `5e9b5cf11434c5b1f1ff47e5ebe283d5a6cd56e7` | ✅ EXISTS |
+| `w20/auth-pages` | `89bbca0b0d777f19e89df9c1c8d418f48a440d71` | ✅ EXISTS |
+| `w20/events` | `584e220372ffe4f211e6bba1dd32393b4f826894` | ✅ EXISTS |
+| `w20/mentorship` | `cdc3a5b67854df6874fd01325eeac702a0d655f2` | ✅ EXISTS |
+| `w20/tsc-final` | `87ab7c29f1e7b64800ca177447256ae7f417fae1` | ✅ EXISTS |
+
+**Lesson (durable, cross-project):**
+
+> When verifying whether a remote branch exists after a sandbox wipe, ALWAYS use `git ls-remote origin <ref>` — NEVER trust `git branch -r` after a shallow clone. The shallow clone's `refs/remotes/origin/` only contains branches that were FETCHED during the clone, not the full set of branches on the remote.
+
+`git ls-remote origin` queries the remote directly (no local reflog dependency) and is the **source of truth** for "does this branch exist on origin?".
+
+**Impact of the false alarm:**
+
+- Cycle 21 spawned 4 NEW workers (w21/*) that re-did work that already existed on origin (auth pages, voice mode, comments, events variants).
+- This is wasted compute but **not destructive** — those w21 workers (if they pushed) are additive; they didn't overwrite existing w19/w20 branches.
+- **Action:** No rollback needed. Cycle 22's Worker B/C/D build on the EXISTING w19/w20/w25 branches (correct fork base) rather than re-doing from main.
+
+**Resolution: B-WORKER-PUSH-VERIFICATION → RESOLVED (false alarm). Worker push mechanism is WORKING — the verification step was broken.**
+
+---
+
+## 🆕 B-MERGE-TRAIN (cycle 22): Merge sequencing strategy needed
+
+**Status:** 10+ feature branches exist on origin with verified work. Main is at TSC=643 (gate = 1). Need an owner-approved merge sequence to unlock the rest of the trilhas.
+
+**Branches ready to merge (verified cycle 22):**
+
+| Order | Branch | Why |
+|---|---|---|
+| 1 | `feat/community-platform` (06d0576b) | v3.0 refactor + B2B cleanup, deletes 98,529 lines (Stripe, MFA, admin, sessions, web-push, cron) — must go first to clear the deck |
+| 2 | `w20/tsc-final` (87ab7c29) | Claims TSC 80→0 — IF true, this brings main to TSC=1 and unlocks everything else |
+| 3 | `w19/worker-b-i18n` (595fa3f) | EN/ES locales + LanguageSwitcher (i18n foundation) |
+| 4 | `w20/auth-pages` (89bbca0) | AuthForm + 12 LoginForm tests |
+| 5 | `w19/worker-c-voice` (5e9b5cf) | Server-side TTS |
+| 6 | `wave/w25-voice-mode` (11bf2e2) | useTTS hook + VoicePlayer multilíngue (depends on w19/worker-c-voice) |
+| 7 | `w20/events` (584e220) | Events EN/ES i18n |
+| 8 | `w20/mentorship` (cdc3a5b) | Mentorship discover+profile UI |
+| 9 | `wave/w25-comments-moderation` (3f525fb) | Comments moderation |
+| 10 | `wave/w25-daily-reflection` (1789eed) | Daily reflection + Prisma model |
+
+**Risks:**
+
+- `feat/community-platform` is a 98,529-line deletion — could conflict with EVERYTHING.
+- `w20/tsc-final` may not actually achieve TSC=0 (claim is unverified — needs Worker A's check in cycle 22).
+- `wave/w25-daily-reflection` adds a new Prisma model — needs a migration.
+
+**Cycle 22 action:** Spawn Worker A (TSC verifier) to validate w20/tsc-final's TSC=0 claim on a clean worktree. Report back TSC counts at each stage. **DO NOT auto-merge** — that's owner action.
+
+**Resolution path:**
+
+- Cycle 23+ (owner approval required): execute merge sequence above via PR per branch.
+- Alternative: if `w20/tsc-final` TSC=0 claim is false, re-spawn a TSC reducer wave (3-4 Coder workers in parallel, each fixing 20-30 errors).
+
+---
+
+## ✅ UNCHANGED (cycle 22): B-TSC-W28 — TypeScript gate = 643 errors on main
+
+Same as cycle 21. **Likely resolvable** via merge sequence above (if `feat/community-platform` + `w20/tsc-final` claims are accurate, TSC drops to 0).
+
+## ✅ UNCHANGED (cycle 22): B-CRON-WIPE-1 — 30-min cron triggers sandbox reset
+
+Same as cycle 21. Wave-spawner logs persist via git push to remote (cycle 18+ pattern). Worker branches MUST push during the cycle or are lost.

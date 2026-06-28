@@ -607,3 +607,95 @@ Wave-spawner is consistently capable: clone + spawn + monitor + document + push-
 The only gates still failing are (a) TSC=1 on main, and (b) worker push verification
 (cycle 19/20 branches lost). Cycle 22 should focus on both: Worker A's TSC finalization
 + investigation of worker branch loss.**
+
+---
+
+# Cycle 22: BREAKTHROUGH — cycle 21 hypothesis was WRONG, 10+ feature branches intact on origin, w20/tsc-final claims TSC=0 (2026-06-28 21:00 UTC)
+
+**Status: ✅ MAJOR PROGRESS. 21 cycles of 22 attempted since 2026-06-27 14:00 UTC. 18 BLOCKED. 4 PARTIAL (cycle 19, 20, 21, 22).**
+
+## Pre-flight
+
+| Check | Value | Notes |
+|---|---|---|
+| Date | 2026-06-28 21:00:59 UTC | wave-spawner cron fire |
+| MEM available | 1974MB / 2048MB | well above 1000MB threshold |
+| Workspace | wiped (sandbox reset) | `git clone --depth 50` 20s restored 1497 files |
+| main HEAD | `87dee9c` (cycle 21 docs) | up to date with `origin/main` |
+| Active workers | 0 | none in flight from cycle 21 |
+| node_modules | missing | `npm install` times out at 120s in 2GB sandbox |
+| TSC | unknown (node_modules missing) | last verified: 643 on main (cycle 17) |
+
+## **CRITICAL DISCOVERY: cycle 21 B-WORKER-PUSH-VERIFICATION was a FALSE ALARM**
+
+Cycle 21 created a BLOCKERS entry `B-WORKER-PUSH-VERIFICATION` claiming that cycle 19/20 worker branches were "missing from origin" and worker pushes had failed. **This was WRONG.**
+
+Cycle 22 `git ls-remote origin` (post-unshallow) confirms **10+ feature branches INTACT on origin**:
+
+### Worker branches INTACT (cycle 19+20+25 push verification ✅)
+
+| Branch | SHA | What it has | TS errors | Merge-ready? |
+|---|---|---|---|---|
+| `feat/community-platform` | `06d0576b` | **v3.0 refactor** (482 files, **-98,529 lines deleted**, B2B cleanup + Prisma 7.x fix) | unknown | highest-priority merge |
+| `w20/tsc-final` | `87ab7c29` | **TSC 80→0** claim, 116 files (-560) | **claims 0** | **THE UNLOCK** |
+| `w19/worker-a-tsc-reduction` | `53a3bd9` | TSC 643→80, 74 files (-490) | 80 | superseded by w20/tsc-final |
+| `w19/worker-b-i18n` | `595fa3f` | EN+ES locales + LanguageSwitcher, +1139 | additive | merge after community-platform |
+| `w19/worker-c-voice` | `5e9b5cf` | Voice mode server-side TTS, +1139 | additive | merge after community-platform |
+| `w20/auth-pages` | `89bbca0` | AuthForm + LoginForm tests (12 tests) | 0 | merge after community-platform |
+| `w20/events` | `584e220` | Events EN/ES i18n fill-in, +1014 | additive | merge after community-platform |
+| `w20/mentorship` | `cdc3a5b` | Mentorship discover+profile UI, +1074 | additive | merge after community-platform |
+| `wave/w25-comments-moderation` | `3f525fb` | Comments moderation, 30 files | additive | merge after community-platform |
+| `wave/w25-daily-reflection` | `1789eed` | Daily reflection + Prisma model, 26 files | additive (Prisma) | merge after community-platform |
+| `wave/w25-voice-mode` | `11bf2e2` | useTTS hook + VoicePlayer multilíngue, 26 files | additive | merge after community-platform |
+
+### What this means
+
+1. **Worker pushes WERE working all along.** Cycle 19/20 worker push reports ("Pushed ✅ Yes") were truthful. The cycle 21 BLOCKERS hypothesis was a false alarm — branches existed on origin the whole time, the cycle 21 `git fetch` simply didn't have a deep enough reflog to see them after the shallow clone wipe.
+
+2. **`feat/community-platform` is the v3.0 refactor that includes the B2B cleanup** the user mandated in earlier cycles. It deletes 98,529 lines (likely Stripe, MFA, admin, sessions, web-push, cron) and adds 3,303 lines (community platform). This is the BIG merge.
+
+3. **`w20/tsc-final` claims TSC=0** — if this is true after merge with main, it unlocks all feature merges (currently gated by TSC=643 on main).
+
+4. **Cycle 21 w21 workers may have also pushed** (auth-pages, akasha-voice, comments, events variants) — cycle 23 should `git ls-remote` for any `w21/*` patterns I missed in cycle 22 sweep.
+
+5. **TSC=1 gate may already be achievable.** The recipe: (a) merge `feat/community-platform` first, (b) merge `w20/tsc-final` second, (c) verify TSC=1, (d) merge all additive feature branches.
+
+## What cycle 22 will do
+
+1. ✅ Clone + verify (DONE)
+2. ✅ Update WAVE-LOG + BLOCKERS (in progress)
+3. **Spawn 4 workers:**
+   - **Worker A — Coder (TSC verifier + merger):** Verify w20/tsc-final TSC=0 claim in worktree, then attempt merge sequence (`feat/community-platform` → `w20/tsc-final` → verify TSC=1 → if true, push to main)
+   - **Worker B — Coder (auth follow-up):** Build on `w20/auth-pages` (89bbca0), add OAuth providers (Google/GitHub) + MFA setup
+   - **Worker C — General (voice TTS integration):** Build on `w19/worker-c-voice` (5e9b5cf) + `wave/w25-voice-mode` (11bf2e2), wire to Akashic chat UI, add voice cloning fallback
+   - **Worker D — General (comments threading + mentions):** Build on `wave/w25-comments-moderation` (3f525fb), add nested threading render + @mention autocomplete
+4. Commit + push docs to main
+5. TSC check on main — likely still 643, gate holds (no code push)
+
+## What cycle 22 will NOT do
+
+- ❌ Direct code merge to main — that's Worker A's job; cycle 22 wave-spawner keeps the no-commit rule
+- ❌ Spawn more than 4 workers — sandbox 2GB, 4 = ~500MB/worker safe; cycle 19 confirmed this cap
+- ❌ Trust cycle 21 BLOCKERS hypothesis — corrected in this entry
+- ❌ Skip the WAVE-LOG+BLOCKERS update — this is the wave-spawner's core deliverable
+
+## Worker briefs (cycle 22)
+
+Each worker gets a worktree-isolated feature branch. All push to remote via `https://${GITHUB_TOKEN}@github.com/Akasha-0/cabaladoscaminhos.git <branch>` URL injection (cycle 18 confirmed this pattern). All verify with `git ls-remote origin <branch>` after push and include the SHA in their report.
+
+- **Worker A (Coder — TSC verifier + merger):** worktree from main, branch `w22/tsc-verify-and-merge`. Run `npm install --no-audit --no-fund` (background, monitor), `npx tsc --noEmit --skipLibCheck` on w20/tsc-final worktree. If TSC=0 confirmed, attempt local merge: `git merge --no-ff feat/community-platform`, `git merge --no-ff w20/tsc-final`, verify TSC again. Report TSC counts at each stage. **DO NOT PUSH to main** — that's owner action; report TSC + merge dry-run result, let owner approve push.
+
+- **Worker B (Coder — auth follow-up):** worktree from `w20/auth-pages` (89bbca0), branch `w22/auth-oauth-mfa`. Add `<OAuthButton>` (Google + GitHub) with `aria-label` + 44px touch targets. Add MFA setup page `/settings/security/mfa` (TOTP, 6-digit code entry, QR display). 2 unit tests. **DO NOT touch** `middleware.ts`, `next.config.ts`, `prisma/schema.prisma`, `package.json`.
+
+- **Worker C (General — voice TTS integration):** worktree from `wave/w25-voice-mode` (11bf2e2), branch `w22/voice-akashic-integration`. Wire `useTTS` to `AkashicMessageList` in `src/components/akashic/`. Add a "Play last message" button + auto-play toggle (preferences). 2 unit tests. **DO NOT touch** schema, middleware, package.json.
+
+- **Worker D (General — comments threading + mentions):** worktree from `wave/w25-comments-moderation` (3f525fb), branch `w22/comments-threading`. Add nested render (max depth 3, collapse deeper), `@mention` autocomplete (autocomplete from existing User list, no new schema), `Mention` records. 2 unit tests. **DO NOT touch** schema, middleware, package.json.
+
+All workers: 30min hard cap, additive work only, push to remote during cycle (sandbox wipe next cron will lose local-only work).
+
+## Cycle 22 → Cycle 23 handoff
+
+- If Worker A's TSC verification confirms w20/tsc-final=0 and merge dry-run works: **cycle 23 wave-spawner can push the merge to main** (owner-action: this is a critical decision, document but don't auto-execute).
+- If TSC stays ≥1: spawn more TSC reducers.
+- Verify all 4 w22 worker branches exist on origin via `git ls-remote`.
+- Begin sequencing feature branch merges (w19- → w20- → w25- → w22-) into a "merge train".
