@@ -137,7 +137,7 @@ export function PostCard({
   const time = formatRelativeTime(post.createdAt, t);
 
   return (
-    <Card>
+    <Card className="bg-slate-900/40 border-slate-800/50 hover:border-slate-700/70 transition-colors">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-3">
           <Link
