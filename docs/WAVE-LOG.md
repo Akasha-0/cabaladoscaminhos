@@ -101,9 +101,37 @@ TSC=643. 4 workers in flight, results expected in next cycle.**
 
 ---
 
-## Cycle 19 (update, 19:39 UTC) — Worker C reported back
+## Cycle 19 (update, 19:44 UTC) — Workers B and C reported back, 2 of 4 delivered
 
-**Status:** Partial delivery. Worker C finished and pushed. Workers A, B, D in flight.
+**Status:** 2 of 4 workers delivered (B + C). Workers A and D in flight.
+
+### Worker B — i18n PT-BR → EN/ES + switcher + SSR locale ✅ DELIVERED
+
+| Aspect | Result |
+|---|---|
+| i18n lib found | NONE — custom thin wrapper (`src/lib/i18n/index.ts` exposes `useI18n()` + `setLocale()` with localStorage persistence; `useT.ts` wraps it) |
+| Audit insight | W12/W18 already had PT-BR/EN/ES files filled. W19's value-add is the SWITCHER + SSR locale detection + 3 high-traffic pages |
+| Files added | 4 — `LanguageSwitcher.tsx` (268L), `i18n/server.ts` (89L RSC), `manifesto/ManifestoClient.tsx` (65L client wrapper), `docs/I18N-W19-SWITCHER.md` (292L operational doc) |
+| Files modified | 7 — 3 locale files (+4 namespaces), `middleware.ts` (locale resolve block), 3 page migrations (`/`, `/manifesto`, `/welcome`) |
+| Branch | `w19/worker-b-i18n` |
+| Commit | `595fa3f feat(i18n): add EN + ES locales + language switcher (W19)` |
+| Pushed | ✅ Yes (+1188/-137 lines, 11 files) |
+| Time used | ~30min (cap hit) |
+| Blockers | TSC not run in sandbox (known W17/18 pattern); 3 components still pending migration (LoginForm, FirstValueExperience, InlineEmailCapture — W20 debt); no `document.cookie` fallback yet; flag SVGs stylized (no copyright concerns) |
+
+**Quality highlights:**
+- Comprehensive architecture (client + server + middleware + RSC + generateMetadata)
+- 44px touch targets, keyboard accessible, dual localStorage+cookie persistence
+- BCP 47 locale resolution chain: cookie → Accept-Language → default pt-BR
+- Vary + X-Akasha-Locale headers set correctly
+- **Transparent about limitations** — 5 known issues documented honestly with W20/W21 follow-up paths
+
+**Recommended next (W20/W21):**
+1. Migrate LoginForm + FirstValueExperience + InlineEmailCapture to `useT()`
+2. Plug `document.cookie` fallback into `useI18n` (avoids 50ms PT-BR flash)
+3. Move switcher into `CommunityNav` global header (or FAB variant for mobile)
+4. Audit: `grep -rE "'[A-Z][a-z]+\s+\w" src/app src/components --include="*.tsx"` for remaining hardcoded strings
+5. E2E test: cookie persists across reload, Accept-Language EN-US serves EN metadata, dropdown Esc + click-outside
 
 ### Worker C — voice mode TTS ✅ DELIVERED
 
@@ -133,21 +161,21 @@ TSC=643. 4 workers in flight, results expected in next cycle.**
 2. Add unit test for `hashTtsKey` + cache round-trip
 3. W20 candidate: pre-synthesize `AkashicResponse.ttsUrl` for one-click playback
 
-### Workers A, B, D — still in flight (as of 19:39 UTC)
+### Workers A and D — still in flight (as of 19:44 UTC)
 
 - **Worker A (TSC reduction):** Worktree at `/workspace/w19-worker-a-tsc`, last file activity 19:37:22 UTC. Likely mid-`npm install` + TSC baseline check (~5-7min elapsed). Expected to commit + push within 20-25min.
-- **Worker B (i18n):** Worktree at `/workspace/w19-worker-b-i18n`, last activity 19:35:23 UTC (creation time). Either still reading code OR running long grep operations.
 - **Worker D (comments):** Worktree at `/workspace/w19-worker-d-comments`, last activity 19:36:01 UTC (creation time). Either still reading code OR running long grep operations.
 
-**If workers B/D are silent at next cycle check:** they likely failed (e.g., the Prisma schema grep took too long, or they got stuck on a specific file). Cycle 20 will investigate their worktrees and either revive or document as failed.
+**If worker D is silent at next cycle check:** it likely failed (e.g., the Prisma schema grep took too long, or it got stuck on a specific file). Cycle 20 will investigate the worktree and either revive or document as failed.
 
 **Cycle 19 → Cycle 20 handoff (updated):**
-- **Confirmed pattern:** git worktree + feature branch + push to remote (cycle 18 push pattern) works
-- **Worker C's branch is mergeable** — only 2 modified files, both additive (one-line change + new prop), no schema changes. Cycle 20 should consider: `git checkout main && git merge --no-ff w19/worker-c-voice` once TSC validates Worker C's files (but TSC=643 blocks main merge regardless).
+- **Confirmed pattern:** git worktree + feature branch + push to remote (cycle 18 push pattern) works (×2 confirmations: B + C)
+- **Worker B's branch (i18n) is mergeable** — additive only (new component + 3 locale namespace additions + 3 page migrations); no schema changes. Files visually sanity-checked but TSC not validated (no node_modules). Cycle 20 should consider `git checkout main && git merge --no-ff w19/worker-b-i18n` once TSC validates (but TSC=643 blocks main merge regardless).
+- **Worker C's branch (voice TTS) is mergeable** — only 2 modified files, both additive (one-line change + new prop), no schema changes. Same merge gating.
 - **Worker A is the unlock** — if they reduce TSC to <100, cycle 20 can attempt the full TSC=1 path
-- **Cycle 20 actions:** clone, fetch all 4 branches, review each diff, decide on merges, push docs
+- **Cycle 20 actions:** clone, fetch all branches, review each diff, decide on merges, push docs
 
-**Updated status:** ⚠️ PARTIAL with 1 of 4 workers confirmed delivered. The other 3 are in flight; their branches (if pushed) or worktrees will be visible to cycle 20.
+**Updated status:** ⚠️ PARTIAL with 2 of 4 workers confirmed delivered. Workers A and D in flight; their branches (if pushed) or worktrees will be visible to cycle 20.
 
 ---
 
