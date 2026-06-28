@@ -38,6 +38,7 @@ import {
   Loader2,
   AlertTriangle,
   RotateCcw,
+  BookOpen,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -135,6 +136,7 @@ export default function AkashicChatPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [tradition, setTradition] = useState<string>('__all__');
+  const [deepMode, setDeepMode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showSources, setShowSources] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -196,6 +198,7 @@ export default function AkashicChatPage() {
             message: trimmed,
             tradition: tradition === '__all__' ? null : tradition,
             history,
+            deepMode,
             topK: 5,
             threshold: 0.6,
           }),
@@ -254,6 +257,8 @@ export default function AkashicChatPage() {
               model?: string;
               rag_degraded?: boolean;
               rag_reason?: string;
+              effective_tradition?: string | null;
+              tradition_auto_detected?: boolean;
               content?: string;
               message?: string;
               ok?: boolean;
@@ -280,6 +285,10 @@ export default function AkashicChatPage() {
                             took_ms: m.meta?.took_ms ?? 0,
                             rag_degraded: p.rag_degraded ?? false,
                             rag_reason: p.rag_reason,
+                            effective_tradition: p.effective_tradition ?? null,
+                            tradition_auto_detected:
+                              p.tradition_auto_detected ?? false,
+                            deep_mode: deepMode,
                           },
                         }
                       : m,
