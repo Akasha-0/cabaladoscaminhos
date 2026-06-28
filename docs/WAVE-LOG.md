@@ -867,3 +867,35 @@ With TSC=0 verified on w20/tsc-final, the merge train is now technically unblock
 - Owner: review MERGE TRAIN proposal. Approve or reject.
 - Cycle 24: spawn next wave (4-6 workers on remaining trilhas: notifications, audio/video, live streams, moderation, reputation, marketplace real backend, translation tooling real)
 - Cycle 24: continue testing minimal-scope worker pattern (15min cap, single file)
+## Cycle 24 — 2026-06-28 22:00 UTC
+
+**Pre-flight (cycle 24):**
+- Workspace: WIPED at cycle start (cron reset, padrão known)
+- Recovery: `git clone --depth 50` 25s, 1497 files
+- MEM: 1978MB available (96% free, well above 1000MB threshold)
+- Local commits (1h): 3 (cycle 22 + 23 doc updates)
+- TSC on main: 643 errors (unchanged, w23 work on separate branches)
+- Origin branches intact: 14 worker branches (11 prior + 3 w23: i18n-onboarding, marketplace-content, reflection-content)
+
+**Cycle 24 strategy:**
+- Continue minimal-scope pattern (15min cap, ONE file change)
+- Spawn 4 w24 workers on remaining trilhas
+- TSC gate prevents auto-push of code to main; docs commits OK
+- MERGE TRAIN proposal still PENDING owner action (not auto-merge)
+
+**Workers to spawn (4 minimal-scope w24):**
+1. Worker A — Notifications: 1 skeleton push handler file (server-side stub)
+2. Worker B — Audio/Video posts: 1 upload UI component placeholder
+3. Worker C — Live streams: 1 stream-card component placeholder
+4. Worker D — Comments moderation: 1 moderation queue UI polish
+
+**Push verification:** All 3 w23 workers (cycle 23) confirmed pushed via `git ls-remote`:
+- w23/i18n-en-onboarding (dedb4b7e)
+- w23/marketplace-content (25b52838)
+- w23/reflection-content (4ab9e909)
+
+**Memory check (cycle 24 lessons from cycle 23):**
+- 15min cap + minimal-scope = push success (3/3 in cycle 23)
+- Background npm install in orchestrator = shell hang (don't do it)
+- `git ls-remote` is source of truth (re-verify each cycle)
+
