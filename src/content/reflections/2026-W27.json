@@ -1,0 +1,48 @@
+{
+  "week_starting": "2026-07-06",
+  "theme": "O Caminho do Cavaleiro — coragem e direção",
+  "prompts": [
+    {
+      "day": "monday",
+      "pt-BR": "Qual decisão você vem adiando que exige a coragem do Cavaleiro (carta 1 do Baralho Cigano)? O que aconteceria se você tomasse essa decisão hoje?",
+      "en": "What decision have you been postponing that demands the courage of the Knight (card 1 of the Cigano deck)? What would happen if you made that decision today?",
+      "es": "¿Qué decisión has estado postergando que exige la valentía del Caballero (carta 1 de la Baraja Gitana)? ¿Qué pasaría si tomaras esa decisión hoy?"
+    },
+    {
+      "day": "tuesday",
+      "pt-BR": "A carta do Trevo (2) lembra que sorte é preparação + oportunidade. Que preparação interna você vem negligenciando?",
+      "en": "The Clover card (2) reminds us that luck is preparation + opportunity. What inner preparation have you been neglecting?",
+      "es": "La carta del Trébol (2) recuerda que la suerte es preparación + oportunidad. ¿Qué preparación interior has estado descuidando?"
+    },
+    {
+      "day": "wednesday",
+      "pt-BR": "O Navio (3) fala de movimento e离开. Há uma viagem ou mudança que seu Odu de nascimento está pedindo?",
+      "en": "The Ship (3) speaks of movement and leaving. Is there a journey or change your birth Odu is asking for?",
+      "es": "El Barco (3) habla de movimiento y离开. ¿Hay un viaje o cambio que tu Odu de nacimiento está pidiendo?"
+    },
+    {
+      "day": "thursday",
+      "pt-BR": "A Casa (4) representa o interior. O que em seu espaço físico ou emocional precisa de organização esta semana?",
+      "en": "The House (4) represents the interior. What in your physical or emotional space needs organizing this week?",
+      "es": "La Casa (4) representa el interior. ¿Qué en tu espacio físico o emocional necesita organizarse esta semana?"
+    },
+    {
+      "day": "friday",
+      "pt-BR": "A Árvore (5) fala de raízes e crescimento. Qual hábito você precisa plantar hoje para colher em 90 dias?",
+      "en": "The Tree (5) speaks of roots and growth. What habit do you need to plant today to harvest in 90 days?",
+      "es": "El Árbol (5) habla de raíces y crecimiento. ¿Qué hábito necesitas plantar hoy para cosechar en 90 días?"
+    },
+    {
+      "day": "saturday",
+      "pt-BR": "As Nuvens (6) trazem confusão mas também revelação. Que verdade você tem evitado olhar de frente?",
+      "en": "The Clouds (6) bring confusion but also revelation. What truth have you been avoiding facing?",
+      "es": "Las Nubes (6) traen confusión pero también revelación. ¿Qué verdad has estado evitando mirar de frente?"
+    },
+    {
+      "day": "sunday",
+      "pt-BR": "A Serpente (7) pede transformação através do silêncio e da escuta. Reserve 20min hoje para ouvir seu Orixá regente sem agenda.",
+      "en": "The Serpent (7) asks for transformation through silence and listening. Reserve 20min today to listen to your guardian Orixá without agenda.",
+      "es": "La Serpiente (7) pide transformación a través del silencio y la escucha. Reserva 20min hoy para escuchar a tu Orixá regente sin agenda."
+    }
+  ]
+}
