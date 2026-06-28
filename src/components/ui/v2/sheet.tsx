@@ -72,11 +72,13 @@ interface SheetContentProps extends React.ComponentProps<"div"> {
 }
 
 const sideStyles: Record<Side, string> = {
-  top: "inset-x-0 top-0 border-b border-[var(--border)] data-[state=open]:slide-in-from-top",
-  right: "inset-y-0 right-0 h-full w-3/4 max-w-sm border-l border-[var(--border)] data-[state=open]:slide-in-from-right",
+  top: "inset-x-0 top-0 rounded-b-[var(--radius-2xl)] border-b border-[var(--border)] data-[state=open]:slide-in-from-top",
+  // W28 — desktop sheet com radius gentil (xl = 24px) na lateral
+  right: "inset-y-0 right-0 h-full w-3/4 max-w-sm rounded-l-[var(--radius-xl)] border-l border-[var(--border)] data-[state=open]:slide-in-from-right",
+  // W28 — bottom sheet mobile com radius 3xl (40px) topo — iOS-like
   bottom:
-    "inset-x-0 bottom-0 max-h-[90vh] rounded-t-2xl border-t border-[var(--border)] data-[state=open]:slide-in-from-bottom pb-[env(safe-area-inset-bottom)]",
-  left: "inset-y-0 left-0 h-full w-3/4 max-w-sm border-r border-[var(--border)] data-[state=open]:slide-in-from-left",
+    "inset-x-0 bottom-0 max-h-[90vh] rounded-t-[var(--radius-3xl)] border-t border-[var(--border)] data-[state=open]:slide-in-from-bottom pb-[env(safe-area-inset-bottom)]",
+  left: "inset-y-0 left-0 h-full w-3/4 max-w-sm rounded-r-[var(--radius-xl)] border-r border-[var(--border)] data-[state=open]:slide-in-from-left",
 }
 
 const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
@@ -102,7 +104,7 @@ const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
           data-side={side}
           data-slot="sheet-content"
           className={cn(
-            "absolute bg-[var(--background)] shadow-[var(--shadow-2xl)]",
+            "absolute bg-[var(--background)] shadow-[var(--shadow-2xl)] dark:shadow-[var(--shadow-cosmic-lg)]",
             "animate-in duration-[var(--duration-normal)] ease-[var(--ease-out)]",
             sideStyles[side],
             className
@@ -120,7 +122,8 @@ const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
               type="button"
               onClick={() => onOpenChange(false)}
               aria-label="Fechar"
-              className="absolute top-4 right-4 inline-flex items-center justify-center size-9 rounded-md text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
+              // W28 — close button com radius md (12px) suave, hover lg (16px)
+              className="absolute top-4 right-4 inline-flex items-center justify-center size-9 rounded-[var(--radius-md)] text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)] transition-[background-color,border-radius,color] duration-[var(--duration-fast)]"
             >
               <X className="size-4" />
             </button>

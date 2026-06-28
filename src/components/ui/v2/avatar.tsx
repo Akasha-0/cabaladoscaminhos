@@ -23,7 +23,8 @@ const avatarVariants = cva(
   [
     "relative inline-flex shrink-0 overflow-hidden rounded-full",
     "bg-gradient-to-br from-[var(--spiritual-gold)] to-[var(--spiritual-violet)]",
-    "transition-all duration-[var(--duration-fast)]",
+    // W28 — mantém rounded-full (circle), mas com transição só de shadow/box-shadow
+    "transition-[box-shadow,transform] duration-[var(--duration-fast)] ease-[var(--ease-out)]",
   ].join(" "),
   {
     variants: {
@@ -49,9 +50,9 @@ const avatarVariants = cva(
 )
 
 const statusVariants = {
-  online: "bg-[var(--success)]",
+  online: "bg-[var(--success)] dot-glow-emerald",
   offline: "bg-[var(--muted-foreground)]",
-  away: "bg-[var(--warning)]",
+  away: "bg-[var(--warning)] dot-glow-amber",
   busy: "bg-[var(--destructive)]",
 }
 

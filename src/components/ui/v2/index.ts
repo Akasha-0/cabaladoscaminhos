@@ -48,3 +48,33 @@ export type { CommandItem } from "./command"
 
 export { ToastProvider, useToast } from "./toast"
 export type { Severity, ToastInput } from "./toast"
+
+export {
+  LuminousCard,
+  LuminousCardHeader,
+  LuminousCardTitle,
+  LuminousCardDescription,
+  LuminousCardContent,
+  LuminousCardFooter,
+  luminousCardVariants,
+} from "./luminous-card"
+export type { LuminousCardProps } from "./luminous-card"
+
+// Wave 28.5 — Sacred Typography primitives
+export {
+  DisplayHero,
+  SectionHeading,
+  Subheading,
+  HeadingSmall,
+  Body,
+  Caption,
+  Quote,
+  MysticalQuote,
+  TechLabel,
+  SacredLabel,
+  Manuscript,
+  Sanskrit,
+  CosmicText,
+  AuroraText,
+  DivineText,
+} from "./typography"

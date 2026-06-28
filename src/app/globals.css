@@ -392,6 +392,34 @@
   --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
   --shadow-glow-gold: 0 0 20px rgba(212, 175, 55, 0.3), 0 0 40px rgba(212, 175, 55, 0.15);
   --shadow-glow-violet: 0 0 20px rgba(139, 92, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.15);
+
+  /* === WAVE 28 — ETHEREAL SHADOWS (luz interior, aura, elevação mística) =====
+     sm → 2xl : escala canônica de elevação neutra (10% base, 5% blur layer)
+     glow-*  : halos cromáticos 24px+48px duplo stop (Lina — "aura visível")
+     inner-* : luz sagrada que emana DE DENTRO do componente (inscribed glow)
+     cosmic-* : elevação profunda para modo escuro (cosmos denso, indigo-purpureo)
+     Performance: aplicar glows em ≤8 elementos por viewport; preferir card/hero. */
+  --shadow-sm:  0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md:  0 4px 6px -1px rgb(0 0 0 / 0.10), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg:  0 10px 15px -3px rgb(0 0 0 / 0.10), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  --shadow-xl:  0 20px 25px -5px rgb(0 0 0 / 0.10), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.20);
+
+  /* Ethereal glows (luz emanada — chakra, aura, liturgia) */
+  --shadow-glow-amber:   0 0 24px oklch(0.70 0.18 80 / 0.35), 0 0 48px oklch(0.70 0.18 80 / 0.20);
+  --shadow-glow-violet:  0 0 24px oklch(0.65 0.22 285 / 0.35), 0 0 48px oklch(0.65 0.22 285 / 0.20);
+  --shadow-glow-emerald: 0 0 24px oklch(0.65 0.17 160 / 0.35), 0 0 48px oklch(0.65 0.17 160 / 0.20);
+  --shadow-glow-cyan:    0 0 24px oklch(0.65 0.20 220 / 0.35), 0 0 48px oklch(0.65 0.20 220 / 0.20);
+
+  /* Inner glows (luz inscrita — sagrado vindo de dentro) */
+  --shadow-inner-sacred:   inset 0 0 20px oklch(0.70 0.18 80 / 0.25);
+  --shadow-inner-mystical: inset 0 0 20px oklch(0.65 0.22 285 / 0.25);
+
+  /* Cosmic depth (modo noturno — elevação em cosmos denso) */
+  --shadow-cosmic-sm: 0 2px 8px oklch(0.10 0.05 285 / 0.40);
+  --shadow-cosmic-md: 0 8px 24px oklch(0.10 0.05 285 / 0.40), 0 4px 8px oklch(0.10 0.05 285 / 0.30);
+  --shadow-cosmic-lg: 0 16px 48px oklch(0.10 0.05 285 / 0.50), 0 8px 16px oklch(0.10 0.05 285 / 0.30);
+
   --bg-mystic-gradient: linear-gradient(135deg, oklch(0.985 0.005 250) 0%, oklch(0.96 0.030 285) 50%, oklch(0.97 0.008 250) 100%);
 }
 
@@ -477,6 +505,30 @@
   --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   --shadow-glow-gold: 0 0 20px rgba(212, 175, 55, 0.4), 0 0 40px rgba(212, 175, 55, 0.2);
   --shadow-glow-violet: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 40px rgba(139, 92, 246, 0.2);
+
+  /* === WAVE 28 — ETHEREAL SHADOWS (DARK MODE OVERRIDE) ===
+     Glows 40-60% mais intensos; cosmic elevation é a base no escuro. */
+  --shadow-sm:  0 1px 2px 0 rgb(0 0 0 / 0.40);
+  --shadow-md:  0 4px 6px -1px rgb(0 0 0 / 0.50), 0 2px 4px -2px rgb(0 0 0 / 0.40);
+  --shadow-lg:  0 10px 15px -3px rgb(0 0 0 / 0.55), 0 4px 6px -4px rgb(0 0 0 / 0.40);
+  --shadow-xl:  0 20px 25px -5px rgb(0 0 0 / 0.60), 0 8px 10px -6px rgb(0 0 0 / 0.40);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.70);
+
+  /* Glows cromáticos intensificados (aura noturna mais visível) */
+  --shadow-glow-amber:   0 0 32px oklch(0.70 0.18 80 / 0.50), 0 0 64px oklch(0.70 0.18 80 / 0.30);
+  --shadow-glow-violet:  0 0 32px oklch(0.65 0.22 285 / 0.55), 0 0 64px oklch(0.65 0.22 285 / 0.30);
+  --shadow-glow-emerald: 0 0 32px oklch(0.65 0.17 160 / 0.50), 0 0 64px oklch(0.65 0.17 160 / 0.28);
+  --shadow-glow-cyan:    0 0 32px oklch(0.65 0.20 220 / 0.55), 0 0 64px oklch(0.65 0.20 220 / 0.30);
+
+  /* Inner glows — sagrado dentro do componente (modo noturno, mais presente) */
+  --shadow-inner-sacred:   inset 0 0 24px oklch(0.70 0.18 80 / 0.40);
+  --shadow-inner-mystical: inset 0 0 24px oklch(0.65 0.22 285 / 0.40);
+
+  /* Cosmic depth — base de elevação preferida no escuro (profundidade cósmica) */
+  --shadow-cosmic-sm: 0 2px 8px oklch(0.05 0.05 285 / 0.60);
+  --shadow-cosmic-md: 0 8px 24px oklch(0.05 0.05 285 / 0.65), 0 4px 8px oklch(0.05 0.05 285 / 0.45);
+  --shadow-cosmic-lg: 0 16px 48px oklch(0.05 0.05 285 / 0.75), 0 8px 16px oklch(0.05 0.05 285 / 0.50);
+
   --bg-mystic-gradient: linear-gradient(135deg, oklch(0.10 0.012 250) 0%, oklch(0.20 0.090 285) 50%, oklch(0.15 0.015 250) 100%);
 }
 
@@ -805,6 +857,82 @@ html:not(.dark) {
 @keyframes glowPulse {
   0%, 100% { filter: brightness(1); }
   50% { filter: brightness(1.2); }
+}
+
+/* === WAVE 28 — ETHEREAL GLOW UTILITIES =============================
+   .animate-glow-{cor}  : pulsa o glow token em 3s (respiração meditativa)
+   .animate-shine       : gradiente varre o card em 6s (luminosidade aurora)
+   .dot-glow-{cor}      : halo em status dots (avatar online/away)
+   Reduced motion honrado no bloco abaixo.
+   Use APENAS em ≤8 elementos com glow por viewport (perf). ============== */
+@keyframes glowBreathe {
+  0%, 100% { box-shadow: var(--glow-from); opacity: 1; }
+  50%      { box-shadow: var(--glow-to);   opacity: 0.92; }
+}
+.animate-glow-amber {
+  --glow-from: var(--shadow-glow-amber);
+  --glow-to:   0 0 32px oklch(0.70 0.18 80 / 0.55), 0 0 64px oklch(0.70 0.18 80 / 0.35);
+  animation: glowBreathe 3s ease-in-out infinite;
+}
+.animate-glow-violet {
+  --glow-from: var(--shadow-glow-violet);
+  --glow-to:   0 0 32px oklch(0.65 0.22 285 / 0.60), 0 0 64px oklch(0.65 0.22 285 / 0.35);
+  animation: glowBreathe 3s ease-in-out infinite;
+}
+.animate-glow-emerald {
+  --glow-from: var(--shadow-glow-emerald);
+  --glow-to:   0 0 32px oklch(0.65 0.17 160 / 0.55), 0 0 64px oklch(0.65 0.17 160 / 0.32);
+  animation: glowBreathe 3s ease-in-out infinite;
+}
+.animate-glow-cyan {
+  --glow-from: var(--shadow-glow-cyan);
+  --glow-to:   0 0 32px oklch(0.65 0.20 220 / 0.60), 0 0 64px oklch(0.65 0.20 220 / 0.35);
+  animation: glowBreathe 3s ease-in-out infinite;
+}
+
+/* Shine — varredura luminosa diagonal (aurora sweep) */
+@keyframes shineSweep {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+.animate-shine {
+  background-image: linear-gradient(
+    110deg,
+    transparent 0%,
+    rgb(255 255 255 / 0.06) 35%,
+    rgb(255 255 255 / 0.18) 50%,
+    rgb(255 255 255 / 0.06) 65%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  animation: shineSweep 6s ease-in-out infinite;
+}
+.dark .animate-shine {
+  background-image: linear-gradient(
+    110deg,
+    transparent 0%,
+    rgb(255 255 255 / 0.04) 35%,
+    rgb(255 255 255 / 0.14) 50%,
+    rgb(255 255 255 / 0.04) 65%,
+    transparent 100%
+  );
+}
+
+/* Status dot glows (avatar online/away) */
+.dot-glow-emerald { box-shadow: 0 0 0 2px var(--background), 0 0 8px oklch(0.65 0.17 160 / 0.60); }
+.dot-glow-amber   { box-shadow: 0 0 0 2px var(--background), 0 0 8px oklch(0.70 0.18 80 / 0.60); }
+.dot-glow-cyan    { box-shadow: 0 0 0 2px var(--background), 0 0 8px oklch(0.65 0.20 220 / 0.60); }
+
+/* Respect prefers-reduced-motion para os novos utilitários */
+@media (prefers-reduced-motion: reduce) {
+  .animate-glow-amber,
+  .animate-glow-violet,
+  .animate-glow-emerald,
+  .animate-glow-cyan,
+  .animate-shine {
+    animation: none !important;
+  }
 }
 
 /* === DASHBOARD STYLES === */
@@ -2305,6 +2433,26 @@ html:not(.dark) {
   animation: pulseGentle 2.4s ease-in-out infinite;
 }
 
+/* === WAVE 28 — Sacred geometry rotation === */
+@keyframes akasha-sacred-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes akasha-sacred-rotate-reverse {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+.animate-sacred-rotate {
+  animation: akasha-sacred-rotate var(--sacred-duration, 60s) linear infinite;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+.animate-sacred-rotate-reverse {
+  animation: akasha-sacred-rotate-reverse var(--sacred-duration, 60s) linear infinite;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
 /* === REDUCED MOTION: Wave 24 microinteractions === */
 @media (prefers-reduced-motion: reduce) {
   .animate-count-bounce,
@@ -2315,7 +2463,9 @@ html:not(.dark) {
   .animate-follow-ring,
   .animate-empty-float,
   .animate-pulse-gentle,
-  .animate-spin-smooth {
+  .animate-spin-smooth,
+  .animate-sacred-rotate,
+  .animate-sacred-rotate-reverse {
     animation: none !important;
   }
 }

@@ -53,26 +53,30 @@ export function useToast() {
   return ctx
 }
 
-const severityStyles: Record<Severity, { border: string; icon: React.ReactNode; ariaRole: string }> = {
+const severityStyles: Record<Severity, { border: string; icon: React.ReactNode; ariaRole: string; glow: string }> = {
   success: {
     border: "border-l-[var(--spiritual-gold)]",
     icon: <CheckCircle2 className="size-5 text-[var(--spiritual-gold-dark)]" aria-hidden />,
     ariaRole: "status",
+    glow: "shadow-[var(--shadow-lg),var(--shadow-glow-amber)]",
   },
   info: {
     border: "border-l-[var(--info)]",
     icon: <Info className="size-5 text-[var(--info)]" aria-hidden />,
     ariaRole: "status",
+    glow: "shadow-[var(--shadow-lg),var(--shadow-glow-cyan)]",
   },
   warning: {
     border: "border-l-[var(--warning)]",
     icon: <AlertTriangle className="size-5 text-[var(--warning)]" aria-hidden />,
     ariaRole: "alert",
+    glow: "shadow-[var(--shadow-lg),var(--shadow-glow-amber)]",
   },
   error: {
     border: "border-l-[var(--destructive)]",
     icon: <XCircle className="size-5 text-[var(--destructive)]" aria-hidden />,
     ariaRole: "alert",
+    glow: "shadow-[var(--shadow-lg),0_0_24px_oklch(0.65_0.20_20_/_0.35),0_0_48px_oklch(0.65_0.20_20_/_0.18)]",
   },
 }
 
@@ -169,7 +173,9 @@ function ToastCard({ toast, onDismiss }: ToastCardProps) {
       className={cn(
         "pointer-events-auto relative",
         "bg-[var(--popover)] text-[var(--popover-foreground)]",
-        "rounded-lg border border-[var(--border)] border-l-4 shadow-[var(--shadow-lg)]",
+        // W28 — toast com radius xl (24px) para acolhimento, preservando borda-l-4 da severidade
+        "rounded-[var(--radius-xl)] border border-[var(--border)] border-l-4",
+        style.glow,
         "p-4 pr-10",
         "animate-in slide-in-from-right-4 fade-in duration-[var(--duration-normal)] ease-[var(--ease-spring)]",
         style.border
@@ -190,7 +196,8 @@ function ToastCard({ toast, onDismiss }: ToastCardProps) {
         type="button"
         onClick={() => onDismiss(toast.id)}
         aria-label="Fechar notificação"
-        className="absolute top-3 right-3 inline-flex size-6 items-center justify-center rounded text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
+        // W28 — close button com radius suave (sm = 8px), touch target ≥24px
+        className="absolute top-3 right-3 inline-flex size-7 items-center justify-center rounded-[var(--radius-sm)] text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)] transition-[background-color,color,border-radius] duration-[var(--duration-fast)]"
       >
         <X className="size-3.5" />
       </button>

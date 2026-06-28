@@ -20,8 +20,10 @@ import { cn } from "@/lib/utils"
 const cardVariants = cva(
   [
     "group/card relative flex flex-col gap-4 overflow-hidden",
-    "rounded-lg bg-[var(--card)] text-[var(--card-foreground)]",
-    "transition-all duration-[var(--duration-normal)] ease-[var(--ease-out)]",
+    // W28 — radius suave base lg (16px), conforme padrão de cards modernos.
+    // Usa --radius-lg para alinhar com tokens.ts.
+    "rounded-[var(--radius-lg)] bg-[var(--card)] text-[var(--card-foreground)]",
+    "transition-[border-radius,box-shadow,transform,border-color] duration-[var(--duration-normal)] ease-[var(--ease-out)]",
   ].join(" "),
   {
     variants: {
@@ -31,13 +33,14 @@ const cardVariants = cva(
         floating: "shadow-[var(--shadow-lg)] ring-1 ring-[var(--border)]",
       },
       interactive: {
-        true: "cursor-pointer hover:-translate-y-0.5 hover:shadow-[var(--shadow-xl)] hover:ring-[var(--ring)]/30 active:translate-y-0 active:shadow-[var(--shadow-md)]",
+        // W28 — hover lift com radius ainda maior (lg → xl = 16 → 24px)
+        true: "cursor-pointer hover:-translate-y-0.5 hover:rounded-[var(--radius-xl)] hover:shadow-[var(--shadow-xl)] hover:ring-[var(--ring)]/30 active:translate-y-0 active:shadow-[var(--shadow-md)]",
         false: "",
       },
       variant: {
         default: "",
-        gold: "ring-1 ring-[var(--spiritual-gold)]/40 bg-gradient-to-br from-[var(--card)] via-[var(--card)] to-[var(--spiritual-gold-muted)]/30",
-        violet: "ring-1 ring-[var(--spiritual-violet)]/40 bg-gradient-to-br from-[var(--card)] via-[var(--card)] to-[var(--spiritual-violet)]/10",
+        gold: "ring-1 ring-[var(--spiritual-gold)]/40 bg-gradient-to-br from-[var(--card)] via-[var(--card)] to-[var(--spiritual-gold-muted)]/30 hover:shadow-[var(--shadow-glow-amber)]",
+        violet: "ring-1 ring-[var(--spiritual-violet)]/40 bg-gradient-to-br from-[var(--card)] via-[var(--card)] to-[var(--spiritual-violet)]/10 hover:shadow-[var(--shadow-glow-violet)]",
       },
       padding: {
         none: "p-0",

@@ -27,8 +27,8 @@ import { cn } from "@/lib/utils"
 const buttonVariants = cva(
   [
     "group/button relative inline-flex shrink-0 items-center justify-center gap-2",
-    "rounded-md font-medium whitespace-nowrap select-none",
-    "transition-all duration-[var(--duration-fast)] ease-[var(--ease-out)]",
+    "rounded-[var(--radius-md)] font-medium whitespace-nowrap select-none",
+    "transition-[border-radius,box-shadow,transform,background-color,color] duration-[var(--duration-fast)] ease-[var(--ease-out)]",
     "outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]",
     "disabled:pointer-events-none disabled:opacity-50",
     "active:scale-[0.97]",
@@ -38,16 +38,16 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          "bg-[var(--primary)] text-[var(--primary-foreground)] shadow-[var(--shadow-sm)] hover:bg-[var(--primary)]/90 hover:shadow-[var(--shadow-md)]",
+          "bg-[var(--primary)] text-[var(--primary-foreground)] shadow-[var(--shadow-sm)] hover:bg-[var(--primary)]/90 hover:shadow-[var(--shadow-md),var(--shadow-glow-amber)]",
         secondary:
-          "bg-[var(--secondary)] text-[var(--secondary-foreground)] border border-[var(--border)] hover:bg-[var(--secondary)]/80",
+          "bg-[var(--secondary)] text-[var(--secondary-foreground)] border border-[var(--border)] hover:bg-[var(--secondary)]/80 hover:shadow-[var(--shadow-md),var(--shadow-glow-violet)]",
         ghost:
           "bg-transparent text-[var(--foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]",
         outline:
           "bg-transparent text-[var(--foreground)] border border-[var(--border)] hover:bg-[var(--muted)] hover:border-[var(--border)]/80",
         danger:
           "bg-[var(--destructive)] text-[var(--destructive-foreground)] shadow-[var(--shadow-sm)] hover:bg-[var(--destructive)]/90",
-        link: "bg-transparent text-[var(--primary)] underline-offset-4 hover:underline px-0",
+        link: "bg-transparent text-[var(--primary)] underline-offset-4 hover:underline px-0 rounded-none",
         // Spiritual variants
         gold:
           "bg-gradient-to-br from-[var(--spiritual-gold-dark)] via-[var(--spiritual-gold)] to-[var(--spiritual-gold-light)] text-[var(--accent-foreground)] font-semibold shadow-[var(--shadow-gold)] hover:shadow-[var(--shadow-md)] hover:brightness-110",
@@ -55,10 +55,13 @@ const buttonVariants = cva(
           "bg-gradient-to-br from-[var(--spiritual-violet-dark)] via-[var(--spiritual-violet)] to-[var(--spiritual-violet-light)] text-white font-semibold shadow-[var(--shadow-violet)] hover:brightness-110",
       },
       size: {
-        sm: "h-8 px-3 text-xs rounded-md [&_svg:not([class*='size-'])]:size-3.5",
-        md: "h-10 px-4 text-sm",
-        lg: "h-12 px-6 text-base rounded-lg [&_svg:not([class*='size-'])]:size-5",
-        icon: "size-10 [&_svg:not([class*='size-'])]:size-5",
+        // W28 — radius acompanha tamanho para coerência visual
+        sm: "h-8 px-3 text-xs rounded-[var(--radius-sm)] [&_svg:not([class*='size-'])]:size-3.5",
+        md: "h-10 px-4 text-sm rounded-[var(--radius-md)]",
+        lg: "h-12 px-6 text-base rounded-[var(--radius-lg)] [&_svg:not([class*='size-'])]:size-5",
+        // W28 — pílula leve para CTA principal (full rounding)
+        "lg-pill": "h-12 px-7 text-base rounded-full [&_svg:not([class*='size-'])]:size-5",
+        icon: "size-10 rounded-[var(--radius-md)] [&_svg:not([class*='size-'])]:size-5",
       },
     },
     defaultVariants: {
