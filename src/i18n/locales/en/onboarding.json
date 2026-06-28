@@ -1,0 +1,22 @@
+{
+  "welcome": {
+    "title": "Welcome to Cabala dos Caminhos",
+    "subtitle": "Your spiritual journey begins here"
+  },
+  "birth_data": {
+    "title": "Tell us about yourself",
+    "full_name_label": "Full name (as on birth certificate)",
+    "birth_date_label": "Date of birth",
+    "birth_time_label": "Time of birth",
+    "birth_place_label": "Place of birth"
+  },
+  "consent": {
+    "title": "Sacred data",
+    "body": "Your birth data is used only to generate your Mesa Real reading. We never share it.",
+    "checkbox": "I understand and consent"
+  },
+  "cta": {
+    "continue": "Continue",
+    "back": "Back"
+  }
+}
