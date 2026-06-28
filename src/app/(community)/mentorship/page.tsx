@@ -11,8 +11,7 @@
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import {
-  Sparkles, Search, Loader2, Star, CheckCircle2,
-  GraduationCap, Send, Hash, MessageCircle,
+  Sparkles, Search, Loader2, GraduationCap, Send, Hash, MessageCircle, X,
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -27,6 +26,19 @@ import {
 } from '@/hooks/useMentorship';
 import { useAuth } from '@/hooks/useAuth';
 import { useHaptic } from '@/hooks/useHaptic';
+import { MentorCard } from '@/components/mentorship/MentorCard';
+import {
+  SingleChipGroup,
+  MultiChipGroup,
+} from '@/components/mentorship/FilterChips';
+import {
+  TRADITION_CHIPS,
+  LANGUAGE_CHIPS,
+  TOPIC_CHIPS,
+  type TraditionSlug,
+  type Language,
+  type Topic,
+} from '@/lib/mentorship/types';
 
 // ============================================================
 // Constantes — tradições canônicas (espelham groups/page.tsx)
@@ -72,11 +84,24 @@ export default function MentorshipPage() {
   const { trigger } = useHaptic();
   const devUserId = user?.id ?? undefined;
 
-  const [tradition, setTradition] = useState<string>('');
+  const [tradition, setTradition] = useState<TraditionSlug | ''>('');
   const [search, setSearch] = useState('');
   const [selectedTradition, setSelectedTradition] = useState<string>('');
+  const [languages, setLanguages] = useState<Language[]>([]);
+  const [topics, setTopics] = useState<Topic[]>([]);
   const [requestingMentorId, setRequestingMentorId] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
+
+  const toggleLanguage = (lang: Language) => {
+    setLanguages((prev) =>
+      prev.includes(lang) ? prev.filter((l) => l !== lang) : [...prev, lang]
+    );
+  };
+  const toggleTopic = (topic: Topic) => {
+    setTopics((prev) =>
+      prev.includes(topic) ? prev.filter((t) => t !== topic) : [...prev, topic]
+    );
+  };
 
   const { mentors, loading, error, refresh } = useAvailableMentors({
     tradition: tradition || undefined,
@@ -102,17 +127,38 @@ export default function MentorshipPage() {
     return map;
   }, [myMentorships]);
 
-  // Filtro client-side por search (nome/bio)
+  // Filtro client-side por search (nome/bio) + language + topic
   const filtered = useMemo(() => {
-    if (!search.trim()) return mentors;
-    const needle = search.toLowerCase();
-    return mentors.filter(
-      (m) =>
-        m.displayName.toLowerCase().includes(needle) ||
-        (m.bio?.toLowerCase().includes(needle) ?? false) ||
-        m.traditions.some((t) => t.toLowerCase().includes(needle))
-    );
-  }, [mentors, search]);
+    let list = mentors;
+    if (search.trim()) {
+      const needle = search.toLowerCase();
+      list = list.filter(
+        (m) =>
+          m.displayName.toLowerCase().includes(needle) ||
+          (m.bio?.toLowerCase().includes(needle) ?? false) ||
+          m.traditions.some((t) => t.toLowerCase().includes(needle))
+      );
+    }
+    // Languages/topics are display-only fields on the API DTO today.
+    // If the API doesn't expose them yet, the filter is a no-op
+    // (graceful degradation) — see Wave 20 Worker D note.
+    // To keep the UI honest: only filter when value is present.
+    if (languages.length > 0) {
+      list = list.filter((m) => {
+        const mLanguages = (m as unknown as { languages?: Language[] }).languages;
+        if (!mLanguages) return true; // unknown → keep (no false negatives)
+        return mLanguages.some((l) => languages.includes(l));
+      });
+    }
+    if (topics.length > 0) {
+      list = list.filter((m) => {
+        const mTopics = (m as unknown as { topics?: string[] }).topics;
+        if (!mTopics) return true; // unknown → keep
+        return mTopics.some((t) => topics.includes(t as Topic));
+      });
+    }
+    return list;
+  }, [mentors, search, languages, topics]);
 
   const handleRequest = async (mentor: MentorDto) => {
     if (!user) {
@@ -219,7 +265,8 @@ export default function MentorshipPage() {
 
         {/* Filters */}
         <Card className="card-spiritual bg-slate-900/50 border-slate-800/50">
-          <CardContent className="pt-4 space-y-3">
+          <CardContent className="pt-4 space-y-4">
+            {/* Search */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
               <input
@@ -233,15 +280,64 @@ export default function MentorshipPage() {
               />
             </div>
 
-            <div className="flex items-center gap-2 flex-wrap">
+            {/* Tradition chips */}
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-1.5 text-[11px] uppercase tracking-wider text-slate-400">
+                <Hash className="w-3 h-3" aria-hidden />
+                <span>Tradição</span>
+              </div>
+              <SingleChipGroup
+                options={TRADITION_CHIPS}
+                value={tradition}
+                onChange={(v) => setTradition(v)}
+                label="Filtrar por tradição"
+                testIdPrefix="tradition-chip"
+              />
+            </div>
+
+            {/* Language chips (multi) */}
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-1.5 text-[11px] uppercase tracking-wider text-slate-400">
+                <Sparkles className="w-3 h-3" aria-hidden />
+                <span>Idioma</span>
+              </div>
+              <MultiChipGroup
+                options={LANGUAGE_CHIPS}
+                values={languages}
+                onToggle={toggleLanguage}
+                onClear={() => setLanguages([])}
+                label="Filtrar por idioma"
+                testIdPrefix="language-chip"
+              />
+            </div>
+
+            {/* Topic chips (multi) */}
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-1.5 text-[11px] uppercase tracking-wider text-slate-400">
+                <Sparkles className="w-3 h-3" aria-hidden />
+                <span>Tópicos</span>
+              </div>
+              <MultiChipGroup
+                options={TOPIC_CHIPS}
+                values={topics}
+                onToggle={toggleTopic}
+                onClear={() => setTopics([])}
+                label="Filtrar por tópicos"
+                testIdPrefix="topic-chip"
+              />
+            </div>
+
+            {/* Secondary row: dropdown backup + selectedTradition + clear */}
+            <div className="flex items-center gap-2 flex-wrap pt-2 border-t border-slate-800/50">
               <label className="flex items-center gap-1.5 text-xs text-slate-400">
-                <Hash className="w-3 h-3" />
-                <span>Tradição do mentor:</span>
+                <Hash className="w-3 h-3" aria-hidden />
+                <span>Filtro API:</span>
                 <select
                   value={tradition}
-                  onChange={(e) => setTradition(e.target.value)}
+                  onChange={(e) => setTradition(e.target.value as TraditionSlug | '')}
                   data-testid="mentorship-tradition-filter"
                   className="bg-slate-800/40 border border-slate-700/40 rounded-md px-2 py-1 text-xs text-slate-200 focus:border-amber-500/50 focus:outline-none"
+                  aria-label="Filtro de tradição via API"
                 >
                   {TRADITION_FILTERS.map((opt) => (
                     <option key={opt.value || 'all'} value={opt.value}>
@@ -252,7 +348,7 @@ export default function MentorshipPage() {
               </label>
 
               <label className="flex items-center gap-1.5 text-xs text-slate-400">
-                <Sparkles className="w-3 h-3" />
+                <Sparkles className="w-3 h-3" aria-hidden />
                 <span>Vou pedir mentoria de:</span>
                 <select
                   value={selectedTradition}
@@ -269,18 +365,20 @@ export default function MentorshipPage() {
                 </select>
               </label>
 
-              {(tradition || search) && (
+              {(tradition || search || languages.length > 0 || topics.length > 0) && (
                 <Button
                   size="sm"
                   variant="ghost"
                   onClick={() => {
                     setTradition('');
                     setSearch('');
+                    setLanguages([]);
+                    setTopics([]);
                   }}
                   className="text-xs text-slate-400 hover:text-slate-200"
                   data-testid="mentorship-clear-filters"
                 >
-                  Limpar filtros
+                  <X className="w-3 h-3 mr-1" aria-hidden /> Limpar tudo
                 </Button>
               )}
             </div>
@@ -350,128 +448,5 @@ export default function MentorshipPage() {
         )}
       </div>
     </div>
-  );
-}
-
-// ============================================================
-// MENTOR CARD
-// ============================================================
-
-function MentorCard({
-  mentor,
-  existing,
-  isRequesting,
-  canRequest,
-  onRequest,
-}: {
-  mentor: MentorDto;
-  existing: MentorshipDto | undefined;
-  isRequesting: boolean;
-  canRequest: boolean;
-  onRequest: () => void;
-}) {
-  const primaryTradition = mentor.traditions[0] ?? '';
-  const colorClass =
-    TRADITION_COLOR[primaryTradition] ||
-    'from-slate-500/20 to-slate-500/20 border-slate-500/30 hover:border-slate-500/60';
-
-  return (
-    <Card
-      className={cn(
-        'card-spiritual bg-gradient-to-br border transition-all h-full',
-        colorClass
-      )}
-      data-testid={`mentor-card-${mentor.id}`}
-    >
-      <CardContent className="pt-4 space-y-3">
-        <div className="flex items-start gap-3">
-          <div className="w-12 h-12 rounded-xl bg-slate-950/40 border border-slate-800/50 flex items-center justify-center text-2xl flex-shrink-0">
-            {mentor.displayName[0]?.toUpperCase() ?? '🪶'}
-          </div>
-          <div className="min-w-0 flex-1">
-            <h3 className="font-semibold text-slate-100 truncate">
-              {mentor.displayName}
-            </h3>
-            <div className="flex items-center gap-1 text-xs text-amber-300 mt-0.5">
-              <Star className="w-3 h-3 fill-current" />
-              <span className="font-medium">
-                {mentor.rating > 0 ? mentor.rating.toFixed(1) : 'novo'}
-              </span>
-              {mentor.completed > 0 && (
-                <>
-                  <span className="text-slate-500 mx-1">·</span>
-                  <span className="text-slate-400">
-                    {mentor.completed} concluídas
-                  </span>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {mentor.bio && (
-          <p className="text-xs text-slate-300 leading-relaxed line-clamp-3">
-            {mentor.bio}
-          </p>
-        )}
-
-        <div className="flex items-center flex-wrap gap-1">
-          {mentor.traditions.map((t) => (
-            <Badge
-              key={t}
-              variant="outline"
-              className="text-[10px] border-slate-700 text-slate-400"
-            >
-              {t}
-            </Badge>
-          ))}
-        </div>
-
-        <div className="pt-3 border-t border-slate-800/50">
-          {existing ? (
-            <Link href={`/mentorship/${existing.id}`}>
-              <Button
-                size="sm"
-                variant="outline"
-                className="w-full border-amber-500/40 text-amber-300 hover:bg-amber-500/10"
-                data-testid={`mentorship-open-${mentor.id}`}
-              >
-                {existing.status === 'PENDING' ? (
-                  <>
-                    <Loader2 className="w-3 h-3 mr-1 animate-spin" /> Aguardando aceite
-                  </>
-                ) : (
-                  <>
-                    <CheckCircle2 className="w-3 h-3 mr-1" /> Abrir mentoria
-                  </>
-                )}
-              </Button>
-            </Link>
-          ) : (
-            <Button
-              size="sm"
-              onClick={onRequest}
-              disabled={!canRequest || isRequesting}
-              className="w-full bg-gradient-to-r from-amber-500 to-violet-500 hover:from-amber-600 hover:to-violet-600 text-white border-0 disabled:opacity-40 disabled:cursor-not-allowed"
-              data-testid={`mentorship-request-${mentor.id}`}
-            >
-              {isRequesting ? (
-                <>
-                  <Loader2 className="w-3 h-3 mr-1 animate-spin" /> Enviando...
-                </>
-              ) : !user ? (
-                'Faça login para solicitar'
-              ) : !selectedTradition ? (
-                'Escolha a tradição acima'
-              ) : (
-                <>
-                  <Send className="w-3 h-3 mr-1" /> Solicitar mentoria
-                </>
-              )}
-            </Button>
-          )}
-        </div>
-      </CardContent>
-    </Card>
   );
 }
