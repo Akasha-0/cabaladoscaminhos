@@ -117,9 +117,12 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
           </div>
         )}
 
-        {/* ─── Voice mode (Wave 12): TTS da resposta ────────────────── */}
+        {/* ─── Voice mode (Wave 12 client + Wave 19 server): TTS ────── */}
         {/* Botão "Ouvir" em cada mensagem da Akasha. Mobile-first (44px), */}
         {/* acessível (aria-label dinâmico, aria-pressed, focus-visible). */}
+        {/* W19: ttsEndpoint="auto" → tenta /api/akashic/tts primeiro */}
+        {/* (caches mp3, qualidade neural quando GOOGLE_TTS_API_KEY set). */}
+        {/* Se servidor retornar 503, fallback automático p/ Web Speech. */}
         {!isUser && !message.error && (
           <div className="mt-2 flex items-center justify-between gap-2">
             <FeedbackButtons
@@ -127,7 +130,7 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
               tradition={message.meta?.effective_tradition ?? null}
               deepMode={message.meta?.deep_mode ?? false}
             />
-            <VoiceButton text={message.content} lang="pt-BR" />
+            <VoiceButton text={message.content} lang="pt-BR" ttsEndpoint="auto" />
           </div>
         )}
       </div>

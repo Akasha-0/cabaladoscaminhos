@@ -2,16 +2,34 @@
 
 // ============================================================================
 // VoiceButton — TTS mode for Akashic chat (Wave 12 — 2026-06-27)
+//                Wave 19 server-side upgrade (2026-06-28)
 // ============================================================================
-// Web Speech API (window.speechSynthesis). Zero cost, zero infra, supports
-// pt-BR out of the box in Chromium/Safari/Firefox. Lifecycle:
 //
+// Two TTS paths, both zero-config defaults:
+//
+//   1. Client-only (default)  — window.speechSynthesis.
+//      Zero cost, zero infra, works in Chromium / Safari / Firefox.
+//      pt-BR voice ships in all modern browsers.
+//
+//   2. Server (opt-in via `ttsEndpoint` prop) — POSTs to `/api/akashic/tts`
+//      and plays the returned mp3 via HTMLAudioElement. Routes through
+//      google_cloud / google_free / elevenlabs adapters (see
+//      src/lib/tts/providers.ts). Falls back to client Web Speech if the
+//      server returns 503 or any non-2xx. Cache-friendly: identical text +
+//      voice returns HIT-L2 from disk on subsequent calls.
+//
+// Lifecycle (client):
 //   idle ──click──► loading ──voices ready──► playing ──end──► idle
 //      ▲                                              │
 //      └──────────────── stop ──────────────────────┘
 //
+// Lifecycle (server):
+//   idle ──click──► fetching ──mp3 ready──► playing ──end──► idle
+//      ▲                                  │
+//      └──────────── stop ──────────────┘
+//
 // SSR-safe (checks `typeof window` + `'speechSynthesis' in window`).
-// Cleans up on unmount — no zombie utterances across re-renders.
+// Cleans up on unmount — no zombie utterances / audio elements.
 //
 // Mobile-first: hit-target 44×44 minimum (Apple HIG / WCAG 2.5.5).
 // Accessible: aria-label, aria-pressed, focus-visible ring.
@@ -26,6 +44,7 @@ import { cn } from '@/lib/utils';
 // ============================================================================
 
 type VoiceState = 'idle' | 'loading' | 'playing' | 'error';
+type TtsMode = 'client' | 'server';
 
 export interface VoiceButtonProps {
   /** Texto completo da resposta da Akasha. */
@@ -36,8 +55,19 @@ export interface VoiceButtonProps {
   rate?: number;
   /** Tom (0–2). Default 1.0. */
   pitch?: number;
+  /**
+   * Optional server endpoint. When set, the button first POSTs here for a
+   * cached mp3; if the server returns 503 or fails, it falls back to the
+   * client Web Speech API silently.
+   *
+   * Default: undefined → client-only Web Speech API (Wave 12 behavior).
+   * Pass `'auto'` to use the built-in `/api/akashic/tts` route.
+   */
+  ttsEndpoint?: string | 'auto';
   className?: string;
 }
+
+const DEFAULT_TTS_ENDPOINT = '/api/akashic/tts';
 
 // ============================================================================
 // Component
@@ -48,11 +78,16 @@ export function VoiceButton({
   lang = 'pt-BR',
   rate = 1.0,
   pitch = 1.0,
+  ttsEndpoint,
   className,
 }: VoiceButtonProps) {
   const [state, setState] = useState<VoiceState>('idle');
   const [supported, setSupported] = useState<boolean>(true);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Resolve the endpoint once. `'auto'` → built-in default; explicit string → use it.
+  const endpoint = ttsEndpoint ? (ttsEndpoint === 'auto' ? DEFAULT_TTS_ENDPOINT : ttsEndpoint) : null;
 
   // Detect support once on mount (SSR-safe).
   useEffect(() => {
@@ -68,6 +103,15 @@ export function VoiceButton({
           /* ignore — Safari throws on closed utterance */
         }
       }
+      if (audioRef.current) {
+        try {
+          audioRef.current.pause();
+          audioRef.current.src = '';
+        } catch {
+          /* ignore */
+        }
+        audioRef.current = null;
+      }
     };
   }, []);
 
@@ -75,37 +119,95 @@ export function VoiceButton({
   const trimmed = text?.trim() ?? '';
   const hasContent = trimmed.length > 0;
 
-  const speak = useCallback(() => {
+  // ─── Server-side TTS (Wave 19) ────────────────────────────────────────
+  const speakServer = useCallback(async (): Promise<boolean> => {
+    if (!endpoint || !hasContent) return false;
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          text: trimmed,
+          voiceId: undefined, // server picks a sensible default per locale
+          locale: lang === 'pt-BR' || lang === 'en' || lang === 'es' ? lang : 'pt-BR',
+          rate,
+        }),
+      });
+      if (!res.ok) {
+        // 503 → no provider configured. Fall through to client.
+        return false;
+      }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      audioRef.current = audio;
+      audio.onended = () => {
+        URL.revokeObjectURL(url);
+        setState('idle');
+      };
+      audio.onerror = () => {
+        URL.revokeObjectURL(url);
+        setState('error');
+      };
+      setState('loading');
+      await audio.play();
+      setState('playing');
+      return true;
+    } catch {
+      return false;
+    }
+  }, [endpoint, hasContent, trimmed, lang, rate]);
+
+  // ─── Client-side TTS (Wave 12 — fallback path) ────────────────────────
+  const speakClient = useCallback(() => {
     if (!supported || !hasContent) return;
     try {
-      // Always cancel a previous utterance — avoids queueing duplicates.
       window.speechSynthesis.cancel();
-
       const utterance = new SpeechSynthesisUtterance(trimmed);
       utterance.lang = lang;
       utterance.rate = rate;
       utterance.pitch = pitch;
-
       utterance.onstart = () => setState('playing');
       utterance.onend = () => setState('idle');
       utterance.onerror = () => setState('error');
-
       utteranceRef.current = utterance;
-      setState('loading'); // will flip to 'playing' on onstart
+      setState('loading');
       window.speechSynthesis.speak(utterance);
     } catch {
       setState('error');
     }
   }, [supported, hasContent, trimmed, lang, rate, pitch]);
 
-  const stop = useCallback(() => {
-    if (!supported) return;
-    try {
-      window.speechSynthesis.cancel();
-    } finally {
-      setState('idle');
+  // Top-level entry: server first, client fallback. SSR-safe (no fetch on server).
+  const speak = useCallback(async () => {
+    if (!hasContent) return;
+    if (endpoint && typeof window !== 'undefined') {
+      const ok = await speakServer();
+      if (ok) return;
+      // fall through to client
     }
-  }, [supported]);
+    speakClient();
+  }, [endpoint, hasContent, speakServer, speakClient]);
+
+  const stop = useCallback(() => {
+    // Stop whichever path is active.
+    if (audioRef.current) {
+      try {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      } catch {
+        /* ignore */
+      }
+    }
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      try {
+        window.speechSynthesis.cancel();
+      } catch {
+        /* ignore */
+      }
+    }
+    setState('idle');
+  }, []);
 
   // ─── Unsupported fallback ────────────────────────────────────────────
   if (!supported) {
