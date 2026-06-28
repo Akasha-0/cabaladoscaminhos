@@ -46,7 +46,10 @@ pattern when prerequisites are missing.
 3. Verified latest commit, working tree, MEM, mavis CLI status, npm globals
 4. Wrote this WAVE-LOG.md + BLOCKERS.md to **the repo's `docs/` folder** (not `/workspace/docs/`) so the
    audit trail persists in git history (not just on the wiped ephemeral volume)
-5. Staged and will commit the wave-spawner log files (orchestrator audit, not code change)
+5. ✅ **Committed** as `ab76f22` (`docs(wave-spawner): cycle 18 log + active blockers`)
+6. ✅ **PUSHED to remote** — `a88bc7d..ab76f22 main -> main` via `https://${GITHUB_TOKEN}@github.com/...`
+   - This is the first wave-spawner push that succeeded. Audit trail is now persistent on GitHub.
+   - Future cycles (post-wipe) can `git clone` and find these logs immediately, no `/workspace/docs/` dependency.
 
 **What I did NOT do (and why):**
 - ❌ Spawn workers — `mavis` CLI not installed (BLOCKER 1)
@@ -64,8 +67,9 @@ pattern when prerequisites are missing.
 - If mavis STILL missing: cycle 19 BLOCKED again. Owner action required (see BLOCKERS.md).
 - TSC=643 remains the structural blocker for any push (see BLOCKERS.md → B-TSC-W28).
 
-**Status: 🛑 BLOCKED. Cycle 18 of 18 attempted since 2026-06-27 14:00 UTC. 17 of 18 BLOCKED.
-1 of 18 (cycle 16) cleared bootstrap but still BLOCKED on TSC=643 + mavis missing.**
+**Status: 🛑 BLOCKED. Cycle 18 of 18 attempted since 2026-06-27 14:00 UTC. 17 of 18 BLOCKED on
+prerequisites. Cycle 18's positive: audit trail PUSHED to remote for the first time. Wave-spawner
+log files now survive cron wipes.**
 
 ---
 
