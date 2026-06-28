@@ -1,0 +1,278 @@
+{
+  "$schema": "./daily-prompts.schema.json",
+  "_meta": {
+    "version": "1.0.0",
+    "wave": "W25",
+    "createdAt": "2026-06-28",
+    "owner": "Akasha / Curadoria Espiritual",
+    "rules": [
+      "TODO prompt é um CONVITE, nunca uma instrução ou prescrição.",
+      "TODO prompt deve respeitar o livre arbítrio — não dizer 'faça X'.",
+      "Prompts tradicionais NÃO substituem orientação de praticante, pai/mãe-de-santo, rabbi, mestre ou terapeuta.",
+      "Conteúdo deve ser revisado pelo skill `curator` (Iyá) antes de entrar em produção.",
+      "Adicionar tradição nova = adicionar bloco `prompts: [...]` + atualizar `KNOWN_TRADITIONS` em src/lib/daily-reflection/pool.ts."
+    ],
+    "traditions": {
+      "universal": "Convites não-tradicional-específicos (acolhimento universalista).",
+      "cabala": "Tradição judaico-mística ocidental. Sefirot, Árvore da Vida, meditação nos nomes divinos.",
+      "candomble": "Religião de matriz africana Yorubá no Brasil. Axé, orixás, ebó, fundamento.",
+      "umbanda": "Religião sincrética brasileira. Orixás, caboclos, pretos-velhos, linhas de trabalho.",
+      "ifa": "Sistema oracular Yorubá (Ifá/Lukumi). 16 odus principais, consulta por opel.",
+      "tantra": "Tradições índicas não-duais. Kundalini, chakras, corpo como caminho.",
+      "umbanda_omegna": "Linha complementar da umbanda — entidades e vibrações específicas."
+    }
+  },
+
+  "prompts": [
+    {
+      "id": "universal-001",
+      "tradition": "universal",
+      "tone": "acolhimento",
+      "pt-BR": "Convite à reflexão: o que te trouxe até aqui hoje? Não precisa ser uma resposta bonita — pode ser só um suspiro nomeado.",
+      "en-US": "An invitation to reflect: what brought you here today? It doesn't need to be a pretty answer — it can be just a named sigh."
+    },
+    {
+      "id": "universal-002",
+      "tradition": "universal",
+      "tone": "presença",
+      "pt-BR": "Convite à reflexão: neste momento, o que seu corpo está te dizendo que sua mente ainda não ouviu?",
+      "en-US": "An invitation to reflect: right now, what is your body telling you that your mind hasn't yet heard?"
+    },
+    {
+      "id": "universal-003",
+      "tradition": "universal",
+      "tone": "acolhimento",
+      "pt-BR": "Convite à reflexão: existe uma parte sua que você tem escondido de você mesmo? Como ela pediria pra ser vista?",
+      "en-US": "An invitation to reflect: is there a part of you you've been hiding from yourself? How would it ask to be seen?"
+    },
+    {
+      "id": "universal-004",
+      "tradition": "universal",
+      "tone": "sabedoria",
+      "pt-BR": "Convite à reflexão: o que você sabe há muito tempo mas ainda não viveu?",
+      "en-US": "An invitation to reflect: what have you known for a long time but not yet lived?"
+    },
+    {
+      "id": "universal-005",
+      "tradition": "universal",
+      "tone": "presença",
+      "pt-BR": "Convite à reflexão: se essa semana fosse um capítulo de um livro, qual seria o título?",
+      "en-US": "An invitation to reflect: if this week were a chapter of a book, what would its title be?"
+    },
+    {
+      "id": "universal-006",
+      "tradition": "universal",
+      "tone": "acolhimento",
+      "pt-BR": "Convite à reflexão: hoje, o que seria um 'sim' inteiro — sem culpa — para você?",
+      "en-US": "An invitation to reflect: today, what would a whole 'yes' — without guilt — look like for you?"
+    },
+    {
+      "id": "universal-007",
+      "tradition": "universal",
+      "tone": "sabedoria",
+      "pt-BR": "Convite à reflexão: existe um medo que tem te ensinado algo, mesmo sem você querer?",
+      "en-US": "An invitation to reflect: is there a fear that has been teaching you something, even without your wanting it to?"
+    },
+    {
+      "id": "universal-008",
+      "tradition": "universal",
+      "tone": "presença",
+      "pt-BR": "Convite à reflexão: neste exato segundo, o que está inteiro em você?",
+      "en-US": "An invitation to reflect: in this very second, what is whole in you?"
+    },
+    {
+      "id": "universal-009",
+      "tradition": "universal",
+      "tone": "acolhimento",
+      "pt-BR": "Convite à reflexão: a quem você precisa pedir perdão hoje — incluindo a si mesmo?",
+      "en-US": "An invitation to reflect: to whom do you need to ask forgiveness today — including yourself?"
+    },
+    {
+      "id": "universal-010",
+      "tradition": "universal",
+      "tone": "sabedoria",
+      "pt-BR": "Convite à reflexão: se você pudesse enviar uma mensagem ao 'você de cinco anos atrás', qual seria a primeira frase?",
+      "en-US": "An invitation to reflect: if you could send a message to 'you from five years ago', what would the first sentence be?"
+    },
+
+    {
+      "id": "cabala-001",
+      "tradition": "cabala",
+      "tone": "sefirot",
+      "pt-BR": "Convite à reflexão (Cabala): na Árvore da Vida, qual sefirá você sente mais distante hoje — e qual te acolhe sem pedir nada?",
+      "en-US": "An invitation to reflect (Kabbalah): on the Tree of Life, which sefirah feels most distant today — and which welcomes you without asking anything?"
+    },
+    {
+      "id": "cabala-002",
+      "tradition": "cabala",
+      "tone": "presença",
+      "pt-BR": "Convite à reflexão (Cabala): a sefirá Tiferet convida ao equilíbrio entre Hesed (amor) e Guevurah (disciplina). Onde esse equilíbrio te pede atenção hoje?",
+      "en-US": "An invitation to reflect (Kabbalah): the sefirah Tiferet invites balance between Hesed (love) and Gevurah (discipline). Where does that balance ask for your attention today?"
+    },
+    {
+      "id": "cabala-003",
+      "tradition": "cabala",
+      "tone": "sabedoria",
+      "pt-BR": "Convite à reflexão (Cabala): 'Ein Sof é o vazio antes de qualquer nome'. O que, em você, ainda não tem nome?",
+      "en-US": "An invitation to reflect (Kabbalah): 'Ein Sof is the emptiness before any name.' What in you is still unnamed?"
+    },
+    {
+      "id": "cabala-004",
+      "tradition": "cabala",
+      "tone": "presença",
+      "pt-BR": "Convite à reflexão (Cabala): os 72 nomes de Deus são caminhos de cura. Se cada letra do seu nome fosse um convite, qual você já caminhou?",
+      "en-US": "An invitation to reflect (Kabbalah): the 72 Names of God are paths of healing. If each letter of your name were an invitation, which have you already walked?"
+    },
+    {
+      "id": "cabala-005",
+      "tradition": "cabala",
+      "tone": "acolhimento",
+      "pt-BR": "Convite à reflexão (Cabala): Shevirat HaKelim — a quebra dos vasos — acontece quando luz encontra resistência. Onde uma quebra sua se tornou fundamento?",
+      "en-US": "An invitation to reflect (Kabbalah): Shevirat HaKelim — the breaking of the vessels — happens when light meets resistance. Where has one of your breakages become foundation?"
+    },
+
+    {
+      "id": "candomble-001",
+      "tradition": "candomble",
+      "tone": "axé",
+      "pt-BR": "Convite à reflexão (Candomblé): o seu ori (cabeça) carrega o axé dos seus orixás. O que você tem feito pra honrar essa carga hoje?",
+      "en-US": "An invitation to reflect (Candomblé): your ori (head) carries the axé of your orixás. What have you done to honor that charge today?"
+    },
+    {
+      "id": "candomble-002",
+      "tradition": "candomble",
+      "tone": "axé",
+      "pt-BR": "Convite à reflexão (Candomblé): na roda, aprendemos que ninguém dança sozinho. Quem tem dançado com você — mesmo sem saber?",
+      "en-US": "An invitation to reflect (Candomblé): in the roda, we learn that no one dances alone. Who has been dancing with you — even without knowing?"
+    },
+    {
+      "id": "candomble-003",
+      "tradition": "candomble",
+      "tone": "ebó",
+      "pt-BR": "Convite à reflexão (Candomblé): ebó não é só oferenda — é sacudimento. O que, em você, precisa ser sacudido hoje pra não virar peso?",
+      "en-US": "An invitation to reflect (Candomblé): ebó is not only offering — it is shaking-off. What in you needs to be shaken today so it doesn't become weight?"
+    },
+    {
+      "id": "candomble-004",
+      "tradition": "candomble",
+      "tone": "orixá",
+      "pt-BR": "Convite à reflexão (Candomblé): cada orixá rege uma força da natureza que mora em você. Qual força você tem negligenciado ultimamente?",
+      "en-US": "An invitation to reflect (Candomblé): each orixá rules a force of nature that lives within you. Which force have you been neglecting lately?"
+    },
+    {
+      "id": "candomble-005",
+      "tradition": "candomble",
+      "tone": "axé",
+      "pt-BR": "Convite à reflexão (Candomblé): 'Quem não sabe onde pisa, não chega aonde quer'. Hoje, onde você pisa sem saber?",
+      "en-US": "An invitation to reflect (Candomblé): 'Those who don't know where they step won't arrive where they want.' Today, where are you stepping without knowing?"
+    },
+
+    {
+      "id": "umbanda-001",
+      "tradition": "umbanda",
+      "tone": "entidades",
+      "pt-BR": "Convite à reflexão (Umbanda): seus guias te conhecem antes de você se apresentar. O que, neles, te pede mais verdade?",
+      "en-US": "An invitation to reflect (Umbanda): your guides know you before you introduce yourself. What in them asks you for more truth?"
+    },
+    {
+      "id": "umbanda-002",
+      "tradition": "umbanda",
+      "tone": "linhas",
+      "pt-BR": "Convite à reflexão (Umbanda): cada linha de trabalho cuida de um tipo de dor. Em qual dor você tem pedido ajuda sem aceitar receber?",
+      "en-US": "An invitation to reflect (Umbanda): each line of work cares for a kind of pain. Which pain have you asked for help with while not accepting to receive?"
+    },
+    {
+      "id": "umbanda-003",
+      "tradition": "umbanda",
+      "tone": "humildade",
+      "pt-BR": "Convite à reflexão (Umbanda): os pretos-velhos ensinam que paciência é prece sem palavras. Onde você tem rezado com pressa?",
+      "en-US": "An invitation to reflect (Umbanda): the pretos-velhos teach that patience is prayer without words. Where have you been praying in a hurry?"
+    },
+    {
+      "id": "umbanda-004",
+      "tradition": "umbanda",
+      "tone": "acolhimento",
+      "pt-BR": "Convite à reflexão (Umbanda): 'Caridade começa onde você está'. Quem na sua vizinhança imediata precisa de um gesto seu hoje?",
+      "en-US": "An invitation to reflect (Umbanda): 'Charity begins where you are.' Who in your immediate neighborhood needs a gesture from you today?"
+    },
+    {
+      "id": "umbanda-005",
+      "tradition": "umbanda",
+      "tone": "presença",
+      "pt-BR": "Convite à reflexão (Umbanda): caboclos falam pouco mas enxergam longe. Se um caboclo te olhasse hoje, o que ele veria primeiro?",
+      "en-US": "An invitation to reflect (Umbanda): caboclos speak little but see far. If a caboclo looked at you today, what would he see first?"
+    },
+
+    {
+      "id": "ifa-001",
+      "tradition": "ifa",
+      "tone": "odu",
+      "pt-BR": "Convite à reflexão (Ifá): o odu que rege este dia traz um conselho dos ancestrais. Qual mensagem você tem resistido em ouvir?",
+      "en-US": "An invitation to reflect (Ifá): the odu ruling this day carries advice from the ancestors. Which message have you been resisting hearing?"
+    },
+    {
+      "id": "ifa-002",
+      "tradition": "ifa",
+      "tone": "orun",
+      "pt-BR": "Convite à reflexão (Ifá): Orunmila sabe antes de Akoda (a pessoa). O que, no fundo, você já sabe mas ainda não disse em voz alta?",
+      "en-US": "An invitation to reflect (Ifá): Orunmila knows before Akoda (the person). What, deep down, do you already know but haven't said aloud yet?"
+    },
+    {
+      "id": "ifa-003",
+      "tradition": "ifa",
+      "tone": "ebó",
+      "pt-BR": "Convite à reflexão (Ifá): o ebo (sacrifício) não é perda — é troca. O que você precisa devolver pro orun pra abrir caminho?",
+      "en-US": "An invitation to reflect (Ifá): the ebo (sacrifice) is not loss — it is exchange. What do you need to return to orun to open the path?"
+    },
+    {
+      "id": "ifa-004",
+      "tradition": "ifa",
+      "tone": "iyawó",
+      "pt-BR": "Convite à reflexão (Ifá): feitura de santo não termina na feitura — começa nela. Que iniciação em você ainda não começou?",
+      "en-US": "An invitation to reflect (Ifá): the making of the saint does not end at the making — it begins there. Which initiation in you has not yet begun?"
+    },
+    {
+      "id": "ifa-005",
+      "tradition": "ifa",
+      "tone": "orixá",
+      "pt-BR": "Convite à reflexão (Ifá): seu ori-inu (cabeça interna) ouve antes da boca falar. Qual seria a primeira coisa que ele diria hoje?",
+      "en-US": "An invitation to reflect (Ifá): your ori-inu (inner head) hears before the mouth speaks. What would be the first thing it would say today?"
+    },
+
+    {
+      "id": "tantra-001",
+      "tradition": "tantra",
+      "tone": "corpo",
+      "pt-BR": "Convite à reflexão (Tantra): o corpo é o primeiro texto. Hoje, qual sensação no seu corpo pede só presença — não interpretação?",
+      "en-US": "An invitation to reflect (Tantra): the body is the first text. Today, which sensation in your body asks only for presence — not interpretation?"
+    },
+    {
+      "id": "tantra-002",
+      "tradition": "tantra",
+      "tone": "shakti",
+      "pt-BR": "Convite à reflexão (Tantra): Shakti é a energia que dança. Onde, no seu corpo, a dança parou? Como ela pediria pra voltar?",
+      "en-US": "An invitation to reflect (Tantra): Shakti is the energy that dances. Where in your body has the dance stopped? How would it ask to return?"
+    },
+    {
+      "id": "tantra-003",
+      "tradition": "tantra",
+      "tone": "não-dualidade",
+      "pt-BR": "Convite à reflexão (Tantra): o observador e o observado são, no fundo, um. Hoje, qual separação sua está pronta pra ser dissolvida?",
+      "en-US": "An invitation to reflect (Tantra): the observer and the observed are, in essence, one. Today, which separation of yours is ready to dissolve?"
+    },
+    {
+      "id": "tantra-004",
+      "tradition": "tantra",
+      "tone": "kundalini",
+      "pt-BR": "Convite à reflexão (Tantra): kundalini sobe quando há espaço. Onde, em você, a respiração ainda está curta demais pra deixar subir?",
+      "en-US": "An invitation to reflect (Tantra): kundalini rises when there is space. Where in you is the breath still too short to let it rise?"
+    },
+    {
+      "id": "tantra-005",
+      "tradition": "tantra",
+      "tone": "consciência",
+      "pt-BR": "Convite à reflexão (Tantra): o prazer não é o oposto do sagrado — é uma de suas portas. Onde você tem separado o que é um?",
+      "en-US": "An invitation to reflect (Tantra): pleasure is not the opposite of the sacred — it is one of its doors. Where have you been separating what is one?"
+    }
+  ]
+}

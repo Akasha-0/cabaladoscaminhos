@@ -187,6 +187,10 @@ model User {
   // Histórico de 👍/👎 dados em respostas da Akasha (analytics + retreino).
   akashicFeedback AkashicFeedback[]
 
+  // 2026-06-28 — Wave 25 Daily Reflection
+  // Histórico de reflexões diárias exibidas no dashboard (1/dia).
+  dailyReflections DailyReflection[]
+
   @@index([planoAssinatura])
   @@index([isMentor])
   @@index([createdAt])
@@ -1591,4 +1595,72 @@ model AkashicFeedback {
   @@index([vote, createdAt])
   @@index([tradition, vote])
   @@map("akashic_feedback")
+}
+// ============================================================================
+// DAILY REFLECTION — Wave 25 (2026-06-28)
+// ============================================================================
+// Um convite de reflexão por dia, exibido na home/dashboard do usuário.
+// Conteúdo é curado (não gerado por LLM em runtime) — ver
+// `data/daily-prompts.json`.
+//
+// Por que um registro por usuário+data:
+//   - Permite o card de "reflexão de hoje" voltar idêntico em recarregamentos
+//   - Permite análise de engajamento (futuro) sem mudar a tabela
+//   - Garante idempotência: a primeira request do dia cria; as seguintes leem
+//
+// Privacidade:
+//   - Não salvamos o texto da reflexão do usuário (a journalEntry faz isso)
+//   - Apenas metadata + o promptId selecionado (rastreabilidade)
+//
+// Anti-repetição:
+//   - A API checa últimos 7 dias antes de escolher um novo prompt
+//   - O índice composto (userId, date desc) torna essa consulta O(log n)
+// ============================================================================
+
+enum ReflectionSource {
+  CURATED   // pool curado (data/daily-prompts.json) — única fonte por enquanto
+  COMMUNITY // futuro: prompts contribuídos pela comunidade (com moderação)
+  MENTOR    // futuro: prompts escritos por mentores verificados
+}
+
+model DailyReflection {
+  id        String   @id @default(cuid())
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Data local do usuário (YYYY-MM-DD). Usamos DateTime @db.Date para
+  // garantir idempotência por dia civil (timezone é responsabilidade
+  // do client ao chamar a API).
+  date      DateTime @db.Date
+
+  // Slug canônico da tradição (cabala, candomble, umbanda, ifa, tantra, ...)
+  // 'universal' = prompt não-tradicional-específico
+  tradition String   @default("universal")
+
+  // Identificador do prompt dentro do pool (ex: "cabala-003")
+  promptId  String
+
+  // Locale da UI no momento da exibição (pt-BR, en-US, ...)
+  locale    String   @default("pt-BR")
+
+  // Origem do prompt (auditoria — sempre CURATED nesta onda)
+  source    ReflectionSource @default(CURATED)
+
+  // Caminho de vida numerológico (cache — facilita re-render sem reprocessar)
+  caminhoDeVida Int?
+
+  // Snapshot dos campos que influenciaram a escolha (debug/auditoria)
+  // Ex: { odu: "Alafia", orixa: "Oxalá", yearPersonal: 7 }
+  context Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Idempotência forte: 1 reflexão por user por dia
+  @@unique([userId, date])
+  @@index([userId, date(sort: Desc)])
+  @@index([tradition, date])
+  @@index([createdAt])
+  @@map("daily_reflections")
 }
