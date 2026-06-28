@@ -801,3 +801,69 @@ TSC=1 gate is REAL (per project policy: must be ≤1 to push to main). Without W
 - If `w23/*` branches all pushed: cycle 24 can begin merging them (after Worker A's TSC report).
 - If `w23/*` branches missing: collect failure reports, commit their content to main as `docs/cycle-23-failures/`, document in WAVE-LOG, spawn cycle 24 with same minimal-scope strategy.
 - If Worker A's TSC report comes back: cycle 24 wave-spawner can propose merge train to owner (if TSC=0) or spawn TSC reducers (if TSC>0).
+
+## Cycle 23 results (UPDATE — 2026-06-28 21:38 UTC)
+
+**Status: ✅ BREAKTHROUGH.** Push mechanism confirmed working. TSC=0 verified on w20/tsc-final.
+
+### Worker outcomes
+
+| Worker | Branch | Push | SHA | Status |
+|---|---|---|---|---|
+| A (Coder) | (no branch) | N/A (verification only) | N/A | ✅ TSC=0 CONFIRMED |
+| B (General) | `w23/i18n-en-onboarding` | ✅ | `dedb4b7e` | ✅ 5 keys, 4 sections (welcome/birth/consent/cta) |
+| C (General) | `w23/reflection-content` | ✅ | `4ab9e909` | ✅ 7 daily prompts (PT-BR/EN/ES) |
+| D (General) | `w23/marketplace-content` | ✅ | `25b52838` | ✅ 3 listings (Mesa Real, Orixá, Astrology) |
+
+**3/3 content workers pushed successfully within 90s of spawn.** Push mechanism works.
+
+**TSC=0 is REAL on w20/tsc-final:**
+- `npx tsc --noEmit --skipLibCheck` → **0 errors** in 9.5s
+- `npx tsc --noEmit` (strict, no skip) → **0 errors** in 8.5s
+- npm install: 881 packages in ~2min, no errors
+- Branch SHA: `87ab7c29f1e7b64800ca177447256ae7f417fae1`
+
+### Resolution: B-WORKER-PUSH-VERIFICATION-CYCLE-22 → RESOLVED ✅
+
+**Root cause was timing + scope, not infrastructure.** Workers in cycles 21+22 had 30min cap + heavy work (OAuth, TTS, comments threading, TSC+merger). They got wiped before push. Cycle 23's 15min cap + minimal-scope (single file, single commit) workers pushed within 90s.
+
+**Lesson (durable, cross-project):** When a wave-spawner has a 30-min cron + workers have a 30-min cap, workers that try to do 30min of work will be wiped before push. Cap workers at 15min and scope to ONE file change.
+
+### Now possible: MERGE TRAIN to main (owner action required)
+
+With TSC=0 verified on w20/tsc-final, the merge train is now technically unblocked:
+
+1. `feat/community-platform` (06d0576b) → merge to main (98K lines deleted, v3.0 refactor)
+2. `w20/tsc-final` (87ab7c29) → merge to main (TSC 0)
+3. After (1)+(2): main should be at TSC=0
+4. Then merge all additive w19/w20/w22/w23/w25 branches
+
+**Risks:**
+- `feat/community-platform` deletes 98K lines — could conflict with EVERYTHING
+- Need to verify TSC on main after each merge step (Worker A's verification was on a standalone worktree, not main)
+
+**Owner action recommended:**
+- (a) Review `feat/community-platform` diff for conflicts with current main
+- (b) Decide merge order (current proposed: feat/community-platform → w20/tsc-final → additive)
+- (c) Or, alternative: cherry-pick just the TSC fix from w20/tsc-final without the v3.0 refactor (lower risk)
+
+**Cycle 24 will NOT auto-merge.** Cycle 24 will:
+1. Verify all 4 cycle 23 branches (done — 3/3 + 1 verification report)
+2. Spawn 4 new w24 workers (continue trilhas)
+3. Document merge train status for owner
+
+## Cycle 23 final state
+
+- Workspace: /workspace/cabaladoscaminhos (intact, will be wiped at next cron)
+- MEM: 1367MB available (down from 1974, but still well above threshold)
+- Workers spawned: 4 (1 Coder + 3 General)
+- Workers succeeded: 4/4 (1 TSC verification + 3 content pushes)
+- TSC on main: 643 (unchanged — w23 work is on separate branches, not merged)
+- Wave-spawner push: 5f4b94c (cycle 22 → cycle 23 docs update, on main)
+- Total feature branches: 14 (11 prior + 3 w23)
+
+## Cycle 23 → Cycle 24 handoff
+
+- Owner: review MERGE TRAIN proposal. Approve or reject.
+- Cycle 24: spawn next wave (4-6 workers on remaining trilhas: notifications, audio/video, live streams, moderation, reputation, marketplace real backend, translation tooling real)
+- Cycle 24: continue testing minimal-scope worker pattern (15min cap, single file)
