@@ -946,3 +946,37 @@ With TSC=0 verified on w20/tsc-final, the merge train is now technically unblock
 4. Worker D (General) — `w25/akasha-streaming-ui` — `src/components/akashic/StreamingMessage.tsx` (SSE streaming display with cursor)
 
 **Pattern (validated cycles 23+24):** 15min cap + ONE file + push within 5min = 100% push success in 60-90s.
+
+**Cycle 25 results (90s after spawn):**
+- `w25/reputation-system` (ad4f087e) ✅ PUSHED in <90s — `src/lib/reputation/universalista.ts` (44 lines, 0 TSC errors)
+- `w25/translation-tooling` (ad14405c) ✅ PUSHED in <90s — `scripts/check-i18n-parity.ts` (55 lines, exits 0 = "OK: 13 keys in sync across 3 locales")
+- `w25/mentorship-pairing` (460cc577) ✅ PUSHED in <90s — `src/lib/mentorship/pairing.ts` (67 lines, 0 TSC errors)
+- `w25/akasha-streaming-ui` (e28016b0) ✅ PUSHED in <90s — `src/components/akashic/StreamingMessage.tsx` (54 lines, 0 TSC errors)
+- 0/4 fallback files (no push failures)
+
+**Pattern validated AGAIN (3rd consecutive cycle):** minimal-scope (ONE file, ≤100 lines) + 15min cap + worktree isolation = 100% push success in 60-90s.
+
+**Notable observations:**
+- 5+ parallel Mavis sessions collided on `/workspace/cabaladoscaminhos` (per W24/W26/W27 collision pattern in agent memory)
+- Worker D (akasha) recovered from a parallel `git reset --hard origin/main` mid-flight using `git update-ref` to preserve its branch ref
+- Worker A (reputation) noted a parallel wave-spawner session had committed identical content locally — discarded cleanly by `git reset --hard origin/main` before push
+- All 4 workers used GIT_ASKPASS / URL token injection for push (no shell hangs this cycle)
+- TSC gate on main remains at 1 known error (vitest/globals type def, not a code issue)
+
+**New origin state (cycle 25 close):**
+- 22 worker branches total (18 prior + 4 w25)
+- All w19/w20/w23/w24/w25 branches INTACT
+- Wave-spawner push: 8a604e0 (cycle 25 spawn doc, on main)
+- MEM at cycle close: ~1900MB (4 workers minimal impact, 1 CPU constraint binds)
+
+**Cycle 26 plan:**
+- Verify all 4 w25 deliverables on origin (done — 4/4 PUSHED above)
+- Spawn next wave of 4-6 workers on remaining trilhas:
+  - **Auth integration follow-up** (OAuth + MFA on `w20/auth-pages` base)
+  - **Marketplace real backend** (Prisma model + API routes for listings)
+  - **i18n EN/ES seed expansion** (complement w23/i18n-en-onboarding)
+  - **Voice mode integration in Akashic chat** (combine `wave/w25-voice-mode` + `w25/akasha-streaming-ui`)
+  - **Live stream room UI** (player + chat, complement `w24/live-stream-card`)
+  - **Notifications queue UI** (consumer for `w24/notifications-handler`)
+- Document MERGE TRAIN proposal v2 for owner approval (22+ worker branches now waiting)
+- Continue 15min cap + minimal-scope pattern
