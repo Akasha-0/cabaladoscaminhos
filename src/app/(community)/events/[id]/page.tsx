@@ -86,6 +86,14 @@ export default function EventDetailPage() {
   );
   const { join, joining, error: joinError } = useJoinEvent(devUserId);
   const [joinFeedback, setJoinFeedback] = useState<string | null>(null);
+  // Mirror de Date.now() em render — atualizado via effect para manter purity
+  const [now, setNow] = React.useState<number>(() => Date.now());
+  React.useEffect(() => {
+    setNow(Date.now());
+    // Atualiza a cada 60s caso a página fique aberta
+    const id = window.setInterval(() => setNow(Date.now()), 60_000);
+    return () => window.clearInterval(id);
+  }, []);
 
   const handleJoin = async () => {
     if (!id) return;
@@ -165,7 +173,7 @@ export default function EventDetailPage() {
     TRADITION_LABEL[event.tradition] ?? event.tradition;
   const isFull =
     event.spotsRemaining !== null && event.spotsRemaining <= 0;
-  const isPast = new Date(event.startsAt).getTime() < Date.now();
+  const isPast = new Date(event.startsAt).getTime() < now;
 
   return (
     <div

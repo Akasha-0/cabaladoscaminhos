@@ -128,10 +128,7 @@ export async function removePostBookmark(input: {
 }
 
 type BookmarkWithPost = Prisma.PostBookmarkGetPayload<{
-  include: {
-    // Não temos relation declarada no Prisma para PostBookmark → Post,
-    // então usamos uma query separada. Mantemos o include tipado.
-  };
+  include: Record<string, never>;
 }>;
 
 /**

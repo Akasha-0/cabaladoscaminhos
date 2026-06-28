@@ -72,7 +72,7 @@ export async function sendEmail(opts: {
   const provider: 'resend' | 'stub' = apiKey ? 'resend' : 'stub';
 
   if (provider === 'stub') {
-    // eslint-disable-next-line no-console
+     
     console.log(
       `[email][stub] ${opts.templateId} → ${opts.to} (subject: ${rendered.subject})`
     );
@@ -114,7 +114,7 @@ export async function sendEmail(opts: {
     if (!res.ok) {
       const errorBody = await res.text().catch(() => '');
       const err = `resend_${res.status}:${errorBody.slice(0, 200)}`;
-      // eslint-disable-next-line no-console
+       
       console.error('[email] resend failed', opts.to, err);
       if (!opts.silent) {
         void trackEmailEvent({
@@ -145,7 +145,7 @@ export async function sendEmail(opts: {
     };
   } catch (err) {
     const error = err instanceof Error ? err.message : String(err);
-    // eslint-disable-next-line no-console
+     
     console.error('[email] send error', opts.to, error);
     if (!opts.silent) {
       void trackEmailEvent({
@@ -204,7 +204,7 @@ export async function sendBatch(
         const rendered = renderTemplate(templateId, r.data, {
           unsubscribeToken: r.unsubscribeToken,
         });
-        // eslint-disable-next-line no-console
+         
         console.log(
           `[email][stub][batch] ${templateId} → ${r.email} (subject: ${rendered.subject})`
         );

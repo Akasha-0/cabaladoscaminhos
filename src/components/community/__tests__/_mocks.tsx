@@ -55,7 +55,7 @@ vi.mock('@/components/ui/avatar', () => ({
     </div>
   ),
   AvatarImage: ({ src, alt }: { src?: string; alt?: string }) => (
-    // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+    // eslint-disable-next-line @next/next/no-img-element
     <img data-testid="avatar-image" src={src} alt={alt} />
   ),
   AvatarFallback: ({ children, className }: { children?: React.ReactNode; className?: string }) => (

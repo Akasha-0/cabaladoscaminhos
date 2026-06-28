@@ -846,7 +846,7 @@ function NoResultsState({ query }: { query: string }) {
       <CardContent className="pt-8 pb-8 text-center">
         <Search className="w-12 h-12 mx-auto text-slate-600 mb-3" />
         <h2 className="text-lg font-semibold text-slate-300 mb-2">
-          Nada encontrado para "{query}"
+          Nada encontrado para &ldquo;{query}&rdquo;
         </h2>
         <p className="text-sm text-slate-500 max-w-md mx-auto mb-4">
           Tente outras palavras-chave, ou explore uma tradição específica nos grupos.

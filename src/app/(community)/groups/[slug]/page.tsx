@@ -125,7 +125,7 @@ export default function GroupPage() {
   const handleJoin = async () => {
     const r = await membership.join();
     if (!r.ok && r.error) {
-      // eslint-disable-next-line no-console
+       
       console.warn('[group] join falhou:', r.error);
       alert(r.error);
     }
@@ -136,7 +136,7 @@ export default function GroupPage() {
     if (!confirm(`Tem certeza que deseja sair de ${group.name}?`)) return;
     const r = await membership.leave();
     if (!r.ok && r.error) {
-      // eslint-disable-next-line no-console
+       
       console.warn('[group] leave falhou:', r.error);
       alert(r.error);
     }

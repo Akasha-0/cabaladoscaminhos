@@ -36,7 +36,7 @@ export async function createClient(): Promise<ServerSupabaseClient | null> {
 
   if (!url || !anonKey) {
     if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.warn(
         '[supabase/server] NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY não configuradas. Auth desabilitada.'
       );
@@ -77,7 +77,7 @@ export function createAdminClient(): ServerSupabaseClient | null {
 
   if (!url || !serviceRole) {
     if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.warn('[supabase/server] Service role key ausente — admin client indisponível.');
     }
     return null;

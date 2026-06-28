@@ -11,6 +11,7 @@
  */
 
 import { useEffect, useState, useCallback } from 'react';
+import Link from 'next/link';
 import { CloudOff, RefreshCw, Home, Wifi, Inbox } from 'lucide-react';
 
 interface CachedItem {
@@ -29,6 +30,30 @@ export function OfflinePageClient() {
   const [isOnline, setIsOnline] = useState(false);
   const [isRetrying, setIsRetrying] = useState(false);
   const [cachedItems, setCachedItems] = useState<CachedItem[]>([]);
+
+  // ============================================================
+  // Check cache (declarado antes do effect que o consome)
+  // ============================================================
+  const checkCachedRoutes = useCallback(async (): Promise<CachedItem[]> => {
+    if (typeof window === 'undefined' || !('caches' in window)) return [];
+    const out: CachedItem[] = [];
+    try {
+      const cacheNames = await caches.keys();
+      for (const name of cacheNames) {
+        if (!name.includes('static') && !name.includes('runtime')) continue;
+        const cache = await caches.open(name);
+        for (const route of KNOWN_CACHED_ROUTES) {
+          const match = await cache.match(route.url);
+          if (match) {
+            out.push({ url: route.url, title: route.title });
+          }
+        }
+      }
+    } catch {
+      /* silencioso */
+    }
+    return out;
+  }, []);
 
   // ============================================================
   // Detecta online + lista routes cached
@@ -53,31 +78,7 @@ export function OfflinePageClient() {
       window.removeEventListener('online', onOnline);
       window.removeEventListener('offline', onOffline);
     };
-  }, []);
-
-  // ============================================================
-  // Check cache
-  // ============================================================
-  const checkCachedRoutes = useCallback(async (): Promise<CachedItem[]> => {
-    if (typeof window === 'undefined' || !('caches' in window)) return [];
-    const out: CachedItem[] = [];
-    try {
-      const cacheNames = await caches.keys();
-      for (const name of cacheNames) {
-        if (!name.includes('static') && !name.includes('runtime')) continue;
-        const cache = await caches.open(name);
-        for (const route of KNOWN_CACHED_ROUTES) {
-          const match = await cache.match(route.url);
-          if (match) {
-            out.push({ url: route.url, title: route.title });
-          }
-        }
-      }
-    } catch {
-      /* silencioso */
-    }
-    return out;
-  }, []);
+  }, [checkCachedRoutes]);
 
   // ============================================================
   // Handlers
@@ -161,13 +162,13 @@ export function OfflinePageClient() {
             />
             {isRetrying ? 'Reconectando...' : 'Tentar reconectar'}
           </button>
-          <a
+          <Link
             href="/"
             className="min-h-[52px] rounded-xl border border-slate-700 bg-slate-800/50 text-slate-100 font-medium text-base hover:bg-slate-800 active:scale-[0.98] transition flex items-center justify-center gap-2"
           >
             <Home className="w-5 h-5" aria-hidden="true" />
             Voltar ao início
-          </a>
+          </Link>
         </div>
 
         {/* Cached items */}

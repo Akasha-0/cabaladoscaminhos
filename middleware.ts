@@ -33,7 +33,7 @@ function resolveAllowedOrigins(): string {
     // vai marcar com Vary: * — recomenda-se hard-fail via monitor.
     // O ideal é setar ALLOWED_ORIGINS no painel Vercel antes do deploy.
     if (process.env.NODE_ENV !== 'test') {
-      // eslint-disable-next-line no-console
+       
       console.warn(
         '[middleware] ALLOWED_ORIGINS ausente em produção. Setando fallback restritivo (same-origin only).'
       );
@@ -203,7 +203,7 @@ export async function middleware(request: NextRequest) {
     // Não bloqueia request em caso de erro inesperado no auth — UX pior
     // que cair pra /login. Loga para investigação.
     if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.error('[middleware] updateSession failed:', err);
     }
     return baseResponse;

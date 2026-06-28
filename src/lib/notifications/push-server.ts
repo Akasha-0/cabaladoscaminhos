@@ -199,7 +199,7 @@ export async function sendPush(
       };
     }
 
-    // eslint-disable-next-line no-console
+     
     console.log('[notifications/push-server] (dev) would send:', {
       userId,
       title: payload.title,

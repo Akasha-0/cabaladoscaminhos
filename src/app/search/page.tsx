@@ -745,7 +745,7 @@ function EmptyState({ query, onClear }: { query: string; onClear: () => void }) 
   return (
     <div className="flex flex-col items-center justify-center px-6 py-12 text-center">
       <h3 className="mb-2 text-lg font-semibold text-slate-100">
-        Nada encontrado para "{query}"
+        Nada encontrado para &ldquo;{query}&rdquo;
       </h3>
       <p className="mb-6 max-w-md text-sm leading-relaxed text-slate-400">
         Talvez uma destas sugestões te ajude:

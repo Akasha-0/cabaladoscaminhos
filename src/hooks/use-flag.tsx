@@ -111,18 +111,9 @@ export function useFlag(name: string): UseFlagResult {
   const [standalone, setStandalone] = React.useState<FlagResponse | null>(null);
   const [standaloneLoading, setStandaloneLoading] = React.useState(true);
 
-  // Modo 1: usando Context (preferido)
-  if (ctx) {
-    const flag = ctx.flags[name];
-    return {
-      enabled: flag?.enabled ?? false,
-      loading: ctx.loading,
-      reason: flag?.reason,
-      refetch: ctx.refetch,
-    };
-  }
-
   // Modo 2: standalone (sem provider) — fetch individual
+  // Hooks precisam ser chamados incondicionalmente — sempre computamos o
+  // refetch aqui; o branch do Context apenas escolhe qual resultado expor.
   const refetch = React.useCallback(async () => {
     setStandaloneLoading(true);
     try {
@@ -141,8 +132,20 @@ export function useFlag(name: string): UseFlagResult {
   }, [name]);
 
   React.useEffect(() => {
+    if (ctx) return; // Modo 1 (Context) já tem seu próprio refetch no provider
     void refetch();
-  }, [refetch]);
+  }, [ctx, refetch]);
+
+  // Modo 1: usando Context (preferido)
+  if (ctx) {
+    const flag = ctx.flags[name];
+    return {
+      enabled: flag?.enabled ?? false,
+      loading: ctx.loading,
+      reason: flag?.reason,
+      refetch: ctx.refetch,
+    };
+  }
 
   return {
     enabled: standalone?.enabled ?? false,

@@ -1,5 +1,5 @@
 #!/usr/bin/env tsx
-/* eslint-disable no-console */
+ 
 // ============================================================================
 // Akasha Portal — Embed Articles (popula pgvector embedding)
 // ============================================================================
@@ -22,7 +22,7 @@
 //   - prisma/migrations/20260627_000000_pgvector_enable/migration.sql
 // ============================================================================
 
-import { config } from dotenv;
+import { config } from 'dotenv';
 import { prisma } from '../src/lib/prisma';
 import { embedArticlesBatch } from '../src/lib/ai/embeddings';
 

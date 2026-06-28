@@ -69,7 +69,7 @@ export function ThemeScript({ inline = true }: ThemeScriptProps) {
   if (!inline) return null;
   return (
     <script
-      // eslint-disable-next-line react/no-danger
+       
       dangerouslySetInnerHTML={{ __html: themeBootstrapScript }}
     />
   );

@@ -47,7 +47,7 @@ export async function POST(request: Request) {
   const supabase = await createClient();
   if (!supabase) {
     if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.warn('[auth/resend-verification] Supabase não configurado.');
     }
     return NextResponse.json(
@@ -72,7 +72,7 @@ export async function POST(request: Request) {
 
   if (error) {
     if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.error('[auth/resend-verification] Supabase error:', error);
     }
     // Anti-enumeração: sempre 200 (Supabase devolve erro "user not found" se

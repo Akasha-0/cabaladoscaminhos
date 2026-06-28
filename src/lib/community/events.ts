@@ -56,7 +56,7 @@ type EventWithViewer = Prisma.EventGetPayload<{
   };
 }>;
 
-type EventRow = Prisma.EventGetPayload<{}>;
+type EventRow = Prisma.EventGetPayload<Record<string, never>>;
 
 function eventToDto(
   event: EventRow,
@@ -97,7 +97,7 @@ function eventToDto(
 }
 
 function participantToDto(
-  p: Prisma.EventParticipantGetPayload<{}>
+  p: Prisma.EventParticipantGetPayload<Record<string, never>>
 ): EventParticipantDto {
   return {
     userId: p.userId,

@@ -41,7 +41,7 @@ export async function GET() {
       userId: session?.user?.id || null,
     });
   } catch (err) {
-    // eslint-disable-next-line no-console
+     
     console.error('[Debug /auth/status]', err);
     return NextResponse.json({ error: 'debug_error' }, { status: 500 });
   }

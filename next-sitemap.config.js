@@ -63,7 +63,7 @@ module.exports = {
     // Se DATABASE_URL definida, puxa posts, artigos e grupos para o sitemap
     if (process.env.DATABASE_URL) {
       try {
-        const { PrismaClient } = require('@prisma/client');
+        const { PrismaClient } = require('@prisma/client'); // eslint-disable-line @typescript-eslint/no-require-imports
         const prisma = new PrismaClient();
 
         const [posts, articles, groups] = await Promise.all([

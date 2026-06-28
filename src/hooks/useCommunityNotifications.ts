@@ -103,7 +103,10 @@ export function useCommunityNotifications(
   // Callback ref para evitar re-running de effects quando onNewNotification muda
   // (sem isso, polling seria destruído e recriado a cada render do parent)
   const callbackRef = useRef(onNewNotification);
-  callbackRef.current = onNewNotification;
+  // Atualiza em effect (não em render) para satisfazer react-hooks/refs
+  useEffect(() => {
+    callbackRef.current = onNewNotification;
+  }, [onNewNotification]);
 
   // ============================================================================
   // Fetch helpers
@@ -332,7 +335,7 @@ export function useCommunityNotifications(
       cancelled = true;
       cleanup?.();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [enableRealtime]);
 
   // ============================================================================

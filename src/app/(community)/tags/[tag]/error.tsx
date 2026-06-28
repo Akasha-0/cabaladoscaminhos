@@ -19,7 +19,7 @@ export default function TagError({
   reset: () => void;
 }) {
   useEffect(() => {
-    // eslint-disable-next-line no-console
+     
     console.error('[tag] error boundary:', error);
   }, [error]);
 

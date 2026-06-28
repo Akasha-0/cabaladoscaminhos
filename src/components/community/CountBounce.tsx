@@ -22,17 +22,21 @@ export interface CountBounceProps {
 }
 
 export function CountBounce({ value, className, format }: CountBounceProps) {
-  const reducedMotion = React.useRef(false);
+  const [reducedMotion, setReducedMotion] = React.useState(false);
   React.useEffect(() => {
     if (typeof window === 'undefined') return;
-    reducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReducedMotion(mq.matches);
+    const onChange = () => setReducedMotion(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
   }, []);
 
   return (
     <span
       key={value}
       className={cn(
-        !reducedMotion.current && 'inline-block animate-count-bounce',
+        !reducedMotion && 'inline-block animate-count-bounce',
         className,
       )}
       aria-live="polite"

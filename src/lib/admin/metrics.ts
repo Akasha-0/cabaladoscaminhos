@@ -546,7 +546,7 @@ export async function getAdminUsers(filters: AdminUserFilters): Promise<AdminUse
 
   // Construir where — tipado como any p/ evitar ciclo em Prisma types.
   // (Wave 20) Migrar para Prisma.UserWhereInput quando estabilizar.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const where: any = {};
   if (filters.q) {
     where.OR = [
@@ -560,7 +560,7 @@ export async function getAdminUsers(filters: AdminUserFilters): Promise<AdminUse
   }
 
   // Ordenação
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   let orderBy: any = { createdAt: 'desc' };
   if (filters.sort === 'name') orderBy = { nomeCompleto: 'asc' };
   // 'engagement' = postsCount desc — vamos simular via subselect abaixo
@@ -744,7 +744,7 @@ export async function getModerationQueue(opts: {
   status?: 'PENDING' | 'REVIEWED' | 'ACTIONED' | 'DISMISSED';
   limit?: number;
 }): Promise<ModerationFlagRow[]> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const where: any = {};
   if (opts.status) where.status = opts.status;
   else where.status = 'PENDING';

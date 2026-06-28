@@ -18,7 +18,7 @@ export default function DashboardError({
   const router = useRouter();
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
+     
     console.error('[dashboard] error boundary:', error);
   }, [error]);
 

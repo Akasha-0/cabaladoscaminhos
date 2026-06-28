@@ -270,7 +270,7 @@ async function ensureSpiritualProfile(userId: string, args: EnsureArgs): Promise
     return created.id;
   } catch (err) {
     if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.warn('[auth] Não foi possível criar SpiritualProfile inicial:', err);
     }
     return null;

@@ -113,7 +113,7 @@ export default function SettingsPage() {
         setEmail(data.email ?? user.email ?? '');
       } catch (err) {
         if (cancelled) return;
-        // eslint-disable-next-line no-console
+         
         console.warn('[settings] load falhou:', err);
         setSettings(defaultsFromUser(user!));
         setEmail(user?.email ?? '');

@@ -19,7 +19,7 @@ export default function SignupError({
   reset: () => void;
 }) {
   useEffect(() => {
-    // eslint-disable-next-line no-console
+     
     console.error('[signup] error boundary:', error);
   }, [error]);
 

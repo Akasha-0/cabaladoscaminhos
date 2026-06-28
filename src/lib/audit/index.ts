@@ -118,7 +118,7 @@ export async function logAudit(
   } catch (err) {
     // Falha nunca quebra o request — apenas loga
     if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.warn('[audit] logAudit failed:', { action: event.action, err });
     }
     return { ok: false, error: err instanceof Error ? err.message : 'unknown' };

@@ -1006,7 +1006,7 @@ export async function hashEmailForAnalytics(email: string): Promise<string> {
   }
 
   // Fallback sync (Node)
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+   
   const { createHash } = await import("node:crypto").catch(() => ({ createHash: null }) as never);
   if (createHash) {
     return createHash("sha256").update(normalized).digest("hex").slice(0, 16);

@@ -265,7 +265,7 @@ export default function RootLayout({
             flash white before globals.css loads. Keeps the body bg/text
             consistent during the <1s LCP window. */}
         <style
-          // eslint-disable-next-line react/no-danger
+           
           dangerouslySetInnerHTML={{
             __html: `:root{color-scheme:dark light}html,body{background-color:#020617;color:#e2e8f0}html{font-family:var(--font-raleway),system-ui,sans-serif;-webkit-font-smoothing:antialiased}`,
           }}
@@ -347,7 +347,7 @@ export default function RootLayout({
         {/* Schema.org JSON-LD — Organization + WebSite + SearchAction */}
         <script
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
+           
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>

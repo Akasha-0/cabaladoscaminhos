@@ -19,7 +19,7 @@ export default function PostDetailError({
   reset: () => void;
 }) {
   useEffect(() => {
-    // eslint-disable-next-line no-console
+     
     console.error('[post-detail] error boundary:', error);
   }, [error]);
 

@@ -37,10 +37,14 @@ export function ConfirmCheck({
   className,
 }: ConfirmCheckProps) {
   // Reduced-motion: show solid check instantly
-  const reducedMotion = React.useRef(false);
+  const [reducedMotion, setReducedMotion] = React.useState(false);
   React.useEffect(() => {
     if (typeof window === 'undefined') return;
-    reducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReducedMotion(mq.matches);
+    const onChange = () => setReducedMotion(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
   }, []);
 
   // SVG path total length ≈ 22 for the check shape below
@@ -65,7 +69,7 @@ export function ConfirmCheck({
         style={{
           strokeDasharray: TOTAL_LENGTH,
           strokeDashoffset: active ? 0 : TOTAL_LENGTH,
-          transition: reducedMotion.current
+          transition: reducedMotion
             ? 'none'
             : 'stroke-dashoffset 280ms cubic-bezier(0.16, 1, 0.3, 1)',
         }}

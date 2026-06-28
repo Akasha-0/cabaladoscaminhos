@@ -132,7 +132,7 @@ export async function deleteUserData(userId: string): Promise<DeletionSummary> {
   } catch (e) {
     // SpiritualProfile pode não existir em todos os deploys
     if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.warn('[data-deletion] spiritualProfile step:', e);
     }
   }

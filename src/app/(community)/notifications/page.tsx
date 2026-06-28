@@ -413,7 +413,7 @@ function NotificationListItem({
           <p className="text-sm text-slate-200">{main}</p>
           {excerpt && (
             <p className="text-xs text-slate-400 mt-1 line-clamp-2 italic">
-              "{excerpt}"
+              &ldquo;{excerpt}&rdquo;
             </p>
           )}
           <p className="text-xs text-slate-500 mt-1">

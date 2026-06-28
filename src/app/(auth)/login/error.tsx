@@ -22,7 +22,7 @@ export default function LoginError({
   reset: () => void;
 }) {
   useEffect(() => {
-    // eslint-disable-next-line no-console
+     
     console.error('[login] error boundary:', error);
   }, [error]);
 

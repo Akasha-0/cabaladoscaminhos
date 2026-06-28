@@ -53,6 +53,26 @@ export function BackgroundSyncIndicator({
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // ============================================================
+  // Refresh pending — usado no mount + polling (declarado antes)
+  // ============================================================
+  const refreshPending = useCallback(async () => {
+    if (typeof window === 'undefined') return;
+    try {
+      const [count, byIntent] = await Promise.all([
+        countPending(),
+        pendingByIntent(),
+      ]);
+      if (count > 0) {
+        setState({ kind: 'pending', count, byIntent });
+      } else if (state.kind === 'pending') {
+        setState({ kind: 'idle' });
+      }
+    } catch {
+      /* IndexedDB não disponível — fica idle */
+    }
+  }, [state.kind]);
+
+  // ============================================================
   // Mount: registrar handlers + status inicial
   // ============================================================
   useEffect(() => {
@@ -76,27 +96,7 @@ export function BackgroundSyncIndicator({
       clearInterval(poll);
       if (hideTimer.current) clearTimeout(hideTimer.current);
     };
-  }, []);
-
-  // ============================================================
-  // Refresh pending — usado no mount + polling
-  // ============================================================
-  const refreshPending = useCallback(async () => {
-    if (typeof window === 'undefined') return;
-    try {
-      const [count, byIntent] = await Promise.all([
-        countPending(),
-        pendingByIntent(),
-      ]);
-      if (count > 0) {
-        setState({ kind: 'pending', count, byIntent });
-      } else if (state.kind === 'pending') {
-        setState({ kind: 'idle' });
-      }
-    } catch {
-      /* IndexedDB não disponível — fica idle */
-    }
-  }, [state.kind]);
+  }, [refreshPending]);
 
   // ============================================================
   // Listener: SYNC_COMPLETE vindo do SW

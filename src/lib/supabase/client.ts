@@ -38,7 +38,7 @@ export function createClient(): BrowserSupabaseClient | null {
 
   if (!url || !anonKey) {
     if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.warn(
         '[supabase/client] NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY não configuradas. Auth desabilitada.'
       );

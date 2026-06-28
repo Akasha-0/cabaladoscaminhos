@@ -231,7 +231,7 @@ export function SearchBar({
             </div>
           ) : suggestions.length === 0 ? (
             <div className="px-4 py-3 text-sm text-slate-500">
-              Nenhuma sugestão para "{query}".
+              Nenhuma sugestão para &ldquo;{query}&rdquo;.
               <button
                 type="button"
                 className="ml-2 text-amber-400 hover:text-amber-300"
@@ -277,7 +277,7 @@ export function SearchBar({
                   onClick={() => submitSearch(query.trim())}
                   className="text-xs text-amber-400 hover:text-amber-300"
                 >
-                  Ver todos os resultados para "{query}" →
+                  Ver todos os resultados para &ldquo;{query}&rdquo; →
                 </button>
               </div>
             </>

@@ -33,7 +33,7 @@ export function WebVitalsReporter() {
     let devOff: (() => void) | null = null;
     if (process.env.NODE_ENV !== "production") {
       devOff = onVital((r: VitalReport) => {
-        // eslint-disable-next-line no-console
+         
         console.debug(
           `[web-vital] ${r.metric}=${r.value}ms (${r.rating}) @ ${r.route}`,
         );

@@ -44,7 +44,7 @@ export async function POST(request: Request) {
   const supabase = await createClient();
   if (!supabase) {
     if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.warn('[auth/profile-auto-create] Supabase não configurado.');
     }
     return NextResponse.json(
@@ -120,7 +120,7 @@ export async function POST(request: Request) {
     });
   } catch (err) {
     if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.error('[auth/profile-auto-create] Prisma error:', err);
     }
     // Não vaza detalhes do erro para o cliente (F14 security audit).

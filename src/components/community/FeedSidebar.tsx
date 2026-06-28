@@ -27,6 +27,16 @@ const TRADITION_LABELS: Record<string, string> = {
   ayurveda: 'Ayurveda',
 };
 
+// Membros mock — determinístico por tradição (não usar Math.random em render)
+const TRADITION_MEMBERS: Record<string, number> = {
+  cabala: 482,
+  ifa: 631,
+  xamanismo: 297,
+  tantra: 415,
+  reiki: 753,
+  ayurveda: 218,
+};
+
 export function FeedSidebar() {
   return (
     <div className="space-y-4">
@@ -48,7 +58,7 @@ export function FeedSidebar() {
                 {TRADITION_LABELS[t] || t}
               </span>
               <Badge variant="outline" className="text-xs border-slate-700 text-slate-500">
-                {(Math.floor(Math.random() * 900) + 100)}+ membros
+                {(TRADITION_MEMBERS[t] ?? 200)}+ membros
               </Badge>
             </Link>
           ))}

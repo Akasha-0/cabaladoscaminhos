@@ -18,7 +18,7 @@ export default function SettingsError({
   const router = useRouter();
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
+     
     console.error('[settings] error boundary:', error);
   }, [error]);
 

@@ -42,7 +42,7 @@ export async function createNotification(input: CreateNotificationInput) {
     });
   } catch (err) {
     if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.warn('[notifications] falha ao criar:', err);
     }
   }
@@ -81,7 +81,7 @@ export async function notifyGroupOnNewPost(input: {
     await prisma.notification.createMany({ data });
   } catch (err) {
     if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.warn('[notifications] notifyGroupOnNewPost falhou:', err);
     }
   }

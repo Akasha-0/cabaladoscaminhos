@@ -20,7 +20,7 @@ export default function OnboardingError({
   reset: () => void;
 }) {
   useEffect(() => {
-    // eslint-disable-next-line no-console
+     
     console.error('[onboarding] error boundary:', error);
   }, [error]);
 

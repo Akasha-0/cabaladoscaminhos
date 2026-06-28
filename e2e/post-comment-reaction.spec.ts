@@ -73,7 +73,7 @@ interface MockPost {
 }
 
 async function mockPostAndCommentsApi(page: Page, initialPost?: Partial<MockPost>) {
-  let post: MockPost = {
+  const post: MockPost = {
     id: 'post-e2e-1',
     authorId: 'author-1',
     authorName: 'Maria da Luz',

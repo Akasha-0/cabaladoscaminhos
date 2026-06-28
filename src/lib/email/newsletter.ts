@@ -328,13 +328,13 @@ export async function sendNewsletter(newsletterId: string): Promise<SendResult> 
         });
         if (!res.ok) {
           failed++;
-          // eslint-disable-next-line no-console
+           
           console.error('[newsletter] resend failed', r.email, res.status);
           continue;
         }
       } else {
         // Stub: apenas log (não envia)
-        // eslint-disable-next-line no-console
+         
         console.log(
           `[newsletter][stub] would send "${newsletter.subject}" to ${r.email} (token ${r.unsubscribeToken.slice(0, 8)}…)`
         );
@@ -342,7 +342,7 @@ export async function sendNewsletter(newsletterId: string): Promise<SendResult> 
       delivered++;
     } catch (err) {
       failed++;
-      // eslint-disable-next-line no-console
+       
       console.error('[newsletter] send error', r.email, err);
     }
   }

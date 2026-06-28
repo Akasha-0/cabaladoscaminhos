@@ -57,7 +57,7 @@ export async function POST(request: Request) {
   if (!supabase) {
     // Sandbox: Supabase não configurado. Retorna 503 explícito (não mascara).
     if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.warn('[auth/reset-password] Supabase não configurado.');
     }
     return NextResponse.json(
@@ -83,7 +83,7 @@ export async function POST(request: Request) {
   if (error) {
     // Log detalhado server-side; cliente recebe mensagem neutra.
     if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.error('[auth/reset-password] Supabase error:', error);
     }
     // Anti-enumeração: 200 mesmo em erro genérico.

@@ -439,7 +439,7 @@ type MentorshipRow = Prisma.MentorshipGetPayload<{
 }>;
 
 async function mentorshipToDto(
-  m: Prisma.MentorshipGetPayload<{}> | MentorshipRow
+  m: Prisma.MentorshipGetPayload<Record<string, never>> | MentorshipRow
 ): Promise<MentorshipDto | null> {
   // Count messages separadamente para evitar JOIN sempre
   const messageCount = await prisma.mentorshipMessage.count({

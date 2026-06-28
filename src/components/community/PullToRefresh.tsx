@@ -58,12 +58,15 @@ export function PullToRefresh({
   const [refreshing, setRefreshing] = React.useState(false);
   const [hint, setHint] = React.useState<string | null>(null);
 
-  // Detecta prefers-reduced-motion (uma vez)
-  const reducedMotion = React.useRef(false);
+  // Detecta prefers-reduced-motion (uma vez, com subscribe para mudanças)
+  const [reducedMotion, setReducedMotion] = React.useState(false);
   React.useEffect(() => {
     if (typeof window === 'undefined') return;
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    reducedMotion.current = mq.matches;
+    setReducedMotion(mq.matches);
+    const onChange = () => setReducedMotion(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
   }, []);
 
   const onTouchStart = React.useCallback(
@@ -144,9 +147,9 @@ export function PullToRefresh({
         setHint(null);
         pullDistanceRef.current = 0;
         triggeredRef.current = false;
-      }, reducedMotion.current ? 0 : 400);
+      }, reducedMotion ? 0 : 400);
     }
-  }, [refreshing, mediumHaptic, onRefresh, refreshingHint]);
+  }, [refreshing, mediumHaptic, onRefresh, refreshingHint, reducedMotion]);
 
   // Calcula rotation: 0..360 conforme distância
   const progress = Math.min(1, pullDistance / PULL_THRESHOLD);
@@ -170,7 +173,7 @@ export function PullToRefresh({
         )}
         style={{
           transform: `translateY(${pullDistance - 28}px)`,
-          transition: reducedMotion.current ? 'opacity 100ms linear' : 'transform 80ms ease-out',
+          transition: reducedMotion ? 'opacity 100ms linear' : 'transform 80ms ease-out',
         }}
       >
         <div

@@ -131,7 +131,7 @@ export default function DashboardPage() {
       } catch (err) {
         if (cancelled) return;
         // Graceful degradation — não bloqueia o resto do dashboard
-        // eslint-disable-next-line no-console
+         
         console.warn('[dashboard] stats falhou:', err);
         setStats({
           postsCount: 0,
@@ -216,7 +216,7 @@ export default function DashboardPage() {
         setPopular(Array.isArray(data.items) ? data.items : []);
       } catch (err) {
         if (cancelled) return;
-        // eslint-disable-next-line no-console
+         
         console.warn('[dashboard] popular falhou:', err);
         setPopular([]);
       }

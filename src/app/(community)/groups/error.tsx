@@ -19,7 +19,7 @@ export default function GroupsError({
   reset: () => void;
 }) {
   useEffect(() => {
-    // eslint-disable-next-line no-console
+     
     console.error('[groups] error boundary:', error);
   }, [error]);
 

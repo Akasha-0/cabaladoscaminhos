@@ -19,7 +19,7 @@ export default function ProfileError({
   reset: () => void;
 }) {
   useEffect(() => {
-    // eslint-disable-next-line no-console
+     
     console.error('[profile] error boundary:', error);
   }, [error]);
 

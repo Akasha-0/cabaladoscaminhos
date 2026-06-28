@@ -461,7 +461,7 @@ export function EmptyResults({
       </h3>
       {query ? (
         <p className="mb-5 max-w-md text-sm leading-relaxed text-slate-400">
-          Não encontramos nada para <span className="font-medium text-slate-300">"{query}"</span>.
+          Não encontramos nada para <span className="font-medium text-slate-300">&ldquo;{query}&rdquo;</span>.
           Tente reformular ou usar outras palavras-chave.
         </p>
       ) : (

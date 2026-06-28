@@ -67,7 +67,8 @@ export function FirstValueExperience() {
 
   const [selectedTraditions, setSelectedTraditions] = useState<Set<string>>(new Set());
   const [dismissed, setDismissed] = useState(false);
-  const [enterTime] = useState(Date.now());
+  // Ref + effect — captura instante de entrada para métrica de aha-moment
+  const enterTimeRef = useRef<number>(0);
 
   // Read ?traditions=cabala,ifa from quiz referral
   useEffect(() => {
@@ -79,13 +80,19 @@ export function FirstValueExperience() {
 
   // Track aha moment
   useEffect(() => {
+    // Captura instante de entrada uma única vez no mount
+    if (enterTimeRef.current === 0) {
+      enterTimeRef.current = Date.now();
+    }
+  }, []);
+  useEffect(() => {
     if (!enabled || loading || dismissed) return;
-    const elapsed = Date.now() - enterTime;
+    const elapsed = Date.now() - enterTimeRef.current;
     trackEvent('page_viewed', {
       path: '/first-value',
       query: { user_id: user?.id, elapsed_ms: String(elapsed) },
     });
-  }, [enabled, loading, dismissed, enterTime, user?.id]);
+  }, [enabled, loading, dismissed, enterTimeRef, user?.id]);
 
   // If flag off, just redirect to /feed
   useEffect(() => {

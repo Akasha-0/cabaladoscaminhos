@@ -176,7 +176,7 @@ export async function sendPush(
 
   // Dev mode — log ao invés de enviar
   if (!isVapidConfigured() || process.env.NODE_ENV !== 'production') {
-    // eslint-disable-next-line no-console
+     
     console.log('[notifications/push] (dev) would send:', {
       userId,
       notificationId: notification.id,

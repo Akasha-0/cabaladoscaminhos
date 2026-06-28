@@ -271,7 +271,7 @@ export async function sendNotificationEmail(
     process.env.NODE_ENV !== 'production' ||
     !process.env.RESEND_API_KEY
   ) {
-    // eslint-disable-next-line no-console
+     
     console.log('[notifications/email] (dev) would send:', {
       to,
       subject: rendered.subject,

@@ -48,6 +48,7 @@ const CreatePost = dynamic(
 );
 import { FeedEmpty } from '@/components/community/FeedEmpty';
 import { FeedError } from '@/components/community/FeedErrorBoundary';
+import { FeedSidebar } from '@/components/community/FeedSidebar';
 import {
   useFeed,
   useCreatePost,
@@ -116,7 +117,7 @@ export default function CommunityFeedPage() {
     if (!confirm(t('feed.deleteConfirm'))) return;
     const r = await deletePost(id);
     if (!r.ok) {
-      // eslint-disable-next-line no-console
+       
       console.warn(`[feed] ${t('feed.deleteFailed')}`, r.error);
     }
   };
@@ -132,21 +133,21 @@ export default function CommunityFeedPage() {
   // Aqui só registramos o evento p/ analytics (no-op por enquanto).
   const handleShare = (id: string) => {
     if (typeof console !== 'undefined' && process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.debug('[feed] share', { postId: id });
     }
   };
   // Tracking de bookmark — UX real está no BookmarkButton interno.
   const handleBookmark = (id: string) => {
     if (typeof console !== 'undefined' && process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.debug('[feed] bookmark', { postId: id });
     }
   };
   // Tracking de report — UX real está no FlagButton interno.
   const handleReport = (id: string) => {
     if (typeof console !== 'undefined' && process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.debug('[feed] report', { postId: id });
     }
   };

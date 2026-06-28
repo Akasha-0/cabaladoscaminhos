@@ -93,7 +93,10 @@ export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
 )
 Avatar.displayName = "Avatar"
 
-export interface AvatarImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {}
+export interface AvatarImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+  // placeholder para satisfazer no-empty-object-type — sem members adicionais
+  readonly __brand?: never;
+}
 
 export const AvatarImage = React.forwardRef<HTMLImageElement, AvatarImageProps>(
   ({ className, alt, src, ...props }, ref) => {

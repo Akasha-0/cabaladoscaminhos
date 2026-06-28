@@ -28,7 +28,7 @@ function isAuthorized(request: NextRequest): boolean {
   const expected = process.env.CRON_SECRET;
   if (!expected) {
     if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.warn('[api/cron/process-email-queue] CRON_SECRET não definido; modo dev permissive');
       return true;
     }

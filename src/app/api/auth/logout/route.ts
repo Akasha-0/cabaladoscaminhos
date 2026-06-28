@@ -32,7 +32,7 @@ export async function POST(request: Request) {
       // Não vaza detalhes do erro (F14 — error messages sem reconnaissance).
       // Log detalhado fica server-side; user vê redirect neutro.
       if (process.env.NODE_ENV !== 'production') {
-        // eslint-disable-next-line no-console
+         
         console.error('[auth/logout] signOut error:', error);
       }
       return NextResponse.redirect(new URL('/login?error=logout', request.url), {
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
   } catch (err) {
     // Fail-closed: qualquer erro não-bloqueante → redirect neutro.
     if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.error('[auth/logout] unexpected error:', err);
     }
     return NextResponse.redirect(new URL('/login', request.url), { status: 303 });

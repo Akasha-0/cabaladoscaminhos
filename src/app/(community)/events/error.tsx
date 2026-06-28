@@ -19,7 +19,7 @@ export default function EventsError({
   reset: () => void;
 }) {
   useEffect(() => {
-    // eslint-disable-next-line no-console
+     
     console.error('[events] error boundary:', error);
   }, [error]);
 

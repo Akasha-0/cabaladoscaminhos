@@ -67,7 +67,7 @@ export default function PostDetailPage({ params }: { params: Promise<PostDetailP
             topo, Kether — a coroa — nos lembra que o início e o fim são o mesmo silêncio.
           </p>
           <blockquote className="border-l-4 border-amber-500/40 pl-4 italic text-slate-400">
-            "Quem caminha nas sephiroth não sobe — aprende a descer com graça."
+            &ldquo;Quem caminha nas sephiroth não sobe — aprende a descer com graça.&rdquo;
           </blockquote>
           <p className="text-body text-slate-300 leading-relaxed">
             Vou continuar refletindo sobre isso nos próximos dias. Se alguém quiser compartilhar

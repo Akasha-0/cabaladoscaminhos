@@ -100,7 +100,7 @@ function groupToDto(
   };
 }
 
-function memberToDto(m: Prisma.GroupMemberGetPayload<{}>): GroupMemberDto {
+function memberToDto(m: Prisma.GroupMemberGetPayload<Record<string, never>>): GroupMemberDto {
   return {
     userId: m.userId,
     displayName: extractDisplayName(m.userId),
@@ -576,7 +576,7 @@ export async function acceptInvite(input: {
 }
 
 function inviteToDto(
-  i: Prisma.GroupInviteGetPayload<{}>,
+  i: Prisma.GroupInviteGetPayload<Record<string, never>>,
   groupSlug: string,
   groupName: string
 ): GroupInviteDto {

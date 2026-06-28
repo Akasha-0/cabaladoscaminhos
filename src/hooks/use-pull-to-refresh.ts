@@ -78,6 +78,8 @@ export function usePullToRefresh(options: UsePullToRefreshOptions): PullToRefres
 
   const [pullDistance, setPullDistance] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  // Espelha dragRef.current?.active para evitar ler refs em render
+  const [isDragging, setIsDragging] = useState(false);
 
   const containerRef = useRef<HTMLElement | null>(null);
   const dragRef = useRef<DragState | null>(null);
@@ -134,6 +136,7 @@ export function usePullToRefresh(options: UsePullToRefreshOptions): PullToRefres
         active: true,
         pointerId: e.pointerId,
       };
+      setIsDragging(true);
 
       target.setPointerCapture(e.pointerId);
     },
@@ -188,6 +191,7 @@ export function usePullToRefresh(options: UsePullToRefreshOptions): PullToRefres
       const shouldRefresh = dy >= threshold || velocity >= velocityThreshold;
 
       dragRef.current = null;
+      setIsDragging(false);
       if (rafRef.current !== null) {
         cancelAnimationFrame(rafRef.current);
         rafRef.current = null;
@@ -207,6 +211,7 @@ export function usePullToRefresh(options: UsePullToRefreshOptions): PullToRefres
       const drag = dragRef.current;
       if (!drag?.active || drag.pointerId !== e.pointerId) return;
       dragRef.current = null;
+      setIsDragging(false);
       if (rafRef.current !== null) {
         cancelAnimationFrame(rafRef.current);
         rafRef.current = null;
@@ -236,7 +241,7 @@ export function usePullToRefresh(options: UsePullToRefreshOptions): PullToRefres
         transform: pullDistance > 0 || isRefreshing ? `translateY(${pullDistance}px)` : undefined,
         transition: isRefreshing
           ? 'transform 200ms cubic-bezier(0.2, 0, 0, 1)'
-          : dragRef.current?.active
+          : isDragging
           ? 'none'
           : 'transform 250ms cubic-bezier(0.2, 0, 0, 1)',
         willChange: 'transform',

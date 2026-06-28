@@ -28,7 +28,7 @@ function isAdmin(request: NextRequest): boolean {
   if (!expected) {
     // Em dev sem secret configurado, aceita em modo permissive (log warning)
     if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
+       
       console.warn('[api/admin/newsletter/send] ADMIN_NEWSLETTER_SECRET não definido; modo dev permissive');
       return true;
     }

@@ -291,16 +291,16 @@ if (!loadResult.ok) {
 
   if (isProduction || isTest) {
     // Fail-fast in prod-like contexts.
-    // eslint-disable-next-line no-console
+     
     console.error(msg);
     throw new Error("Invalid environment configuration — see logs above.");
   } else {
     // Development: warn loudly but allow next dev to start with partial env.
-    // eslint-disable-next-line no-console
+     
     console.warn(msg);
   }
 } else if (!loadResult.skipped) {
-  // eslint-disable-next-line no-console
+   
   console.log(`✅ [env] validated (${loadResult.env?.NODE_ENV})`);
 }
 

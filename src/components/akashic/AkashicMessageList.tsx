@@ -304,7 +304,7 @@ function CitationCards({
               {isOpen && (
                 <div className="mt-2 text-[11px] text-slate-300">
                   {s.excerpt && (
-                    <p className="mb-2 italic text-slate-400">"{s.excerpt}"</p>
+                    <p className="mb-2 italic text-slate-400">&ldquo;{s.excerpt}&rdquo;</p>
                   )}
                   <a
                     href={doiLink}

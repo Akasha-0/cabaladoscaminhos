@@ -55,7 +55,7 @@ async function mockAuthAsAuthenticated(page: Page, userId = 'mock-user-id') {
 }
 
 async function mockFollowApi(page: Page, targetUserId = 'target-user-1') {
-  let followState = {
+  const followState = {
     followersCount: 42,
     followingCount: 10,
     isFollowing: false,
