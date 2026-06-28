@@ -20,13 +20,16 @@ import { Button } from '@/components/ui/button';
 import { SignupButton } from '@/components/events/SignupButton';
 import { EventCover } from '@/components/events/EventCover';
 import { getMockEventBySlug, mockEvents } from '@/lib/events/mock';
+import { getServerLocale, getServerT } from '@/lib/i18n/server';
+import type { Locale } from '@/lib/i18n';
+import type { EventType, Tradition } from '@/lib/events/types';
 
 // ============================================================
 // Helpers de formatação
 // ============================================================
 
-function formatFullDate(iso: string): string {
-  return new Date(iso).toLocaleString('pt-BR', {
+function formatFullDate(iso: string, locale: Locale): string {
+  return new Date(iso).toLocaleString(locale, {
     weekday: 'long',
     day: '2-digit',
     month: 'long',
@@ -36,16 +39,26 @@ function formatFullDate(iso: string): string {
   });
 }
 
-function formatDuration(min: number): string {
-  if (min < 60) return `${min} min`;
-  const h = Math.floor(min / 60);
-  const m = min % 60;
-  return m === 0 ? `${h}h` : `${h}h${m}min`;
+function formatShortDate(iso: string, locale: Locale): string {
+  return new Date(iso).toLocaleDateString(locale, {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  });
 }
 
-function formatPrice(priceCents: number | null): string {
-  if (priceCents === null) return 'Gratuito';
-  return (priceCents / 100).toLocaleString('pt-BR', {
+function formatDuration(min: number, t: Awaited<ReturnType<typeof getServerT>>): string {
+  if (min < 60) return t('events.detail.duration.minutes', { min });
+  const h = Math.floor(min / 60);
+  const m = min % 60;
+  return m === 0
+    ? t('events.detail.duration.hours', { h })
+    : t('events.detail.duration.hoursMinutes', { h, min: m });
+}
+
+function formatPrice(priceCents: number | null, t: Awaited<ReturnType<typeof getServerT>>, locale: Locale): string {
+  if (priceCents === null) return t('events.price.free');
+  return (priceCents / 100).toLocaleString(locale, {
     style: 'currency',
     currency: 'BRL',
   });
@@ -70,6 +83,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const event = getMockEventBySlug(slug);
+  // TODO W21: localize metadata via getServerT() once SSR i18n stabilizes.
+  // Google indexes one canonical version anyway (per-page canonical is /workshops/[slug]).
   if (!event) return { title: 'Evento não encontrado' };
 
   return {
@@ -154,8 +169,9 @@ export default async function EventDetailPage({
   const event = getMockEventBySlug(slug);
   if (!event) notFound();
 
-  // i18n: chaves como strings, fallback em PT-BR inline.
-  const t = (key: string, fallback: string) => fallback;
+  // i18n: lê locale do cookie (definido pelo middleware) com fallback pt-BR.
+  const locale = await getServerLocale();
+  const t = await getServerT();
 
   const isFull = event.signupStatus === 'full';
   const remaining =
@@ -167,6 +183,10 @@ export default async function EventDetailPage({
   const otherByHost = mockEvents
     .filter((e) => e.host.id === event.host.id && e.slug !== event.slug)
     .slice(0, 3);
+
+  // Texto do badge de tipo (lookup i18n)
+  const typeBadgeLabel = t(`events.types.${event.type}` as `events.types.${EventType}`) || event.type;
+  const traditionLabel = t(`events.traditions.${event.tradition}` as `events.traditions.${Tradition}`) || event.tradition;
 
   return (
     <>
@@ -201,7 +221,7 @@ export default async function EventDetailPage({
                 data-testid="event-detail-back"
               >
                 <ArrowLeft className="w-4 h-4 mr-1.5" aria-hidden="true" />
-                Eventos
+                {t('events.backToEvents')}
               </Button>
             </Link>
           </div>
@@ -220,35 +240,29 @@ export default async function EventDetailPage({
                   variant="default"
                   className="bg-amber-500/90 text-black font-medium text-[10px] uppercase tracking-wide"
                 >
-                  {event.type === 'workshop'
-                    ? 'Workshop'
-                    : event.type === 'ritual'
-                      ? 'Ritual'
-                      : event.type === 'study-circle'
-                        ? 'Círculo de Estudo'
-                        : 'Meditação'}
+                  {typeBadgeLabel}
                 </Badge>
                 <Badge variant="outline" className="text-[10px] border-slate-700 text-slate-300 uppercase tracking-wide">
-                  {event.tradition}
+                  {traditionLabel}
                 </Badge>
                 {event.priceCents === null ? (
                   <Badge
                     variant="secondary"
                     className="bg-emerald-500/90 text-white text-[10px] font-medium uppercase tracking-wide"
                   >
-                    Gratuito
+                    {t('events.badges.free')}
                   </Badge>
                 ) : (
                   <Badge
                     variant="outline"
                     className="text-[10px] border-amber-500/50 text-amber-300 uppercase tracking-wide"
                   >
-                    {formatPrice(event.priceCents)}
+                    {formatPrice(event.priceCents, t, locale)}
                   </Badge>
                 )}
                 {isFull && (
                   <Badge variant="destructive" className="text-[10px] uppercase tracking-wide">
-                    Lotado
+                    {t('events.badges.full')}
                   </Badge>
                 )}
               </div>
@@ -263,7 +277,7 @@ export default async function EventDetailPage({
                 {event.host.avatarUrl ? (
                   <Image
                     src={event.host.avatarUrl}
-                    alt={`Foto de ${event.host.displayName}`}
+                    alt={t('events.detail.photoOfHost', { name: event.host.displayName })}
                     width={40}
                     height={40}
                     className="w-10 h-10 rounded-full border border-slate-700 object-cover"
@@ -285,47 +299,55 @@ export default async function EventDetailPage({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                 <MetaItem
                   icon={<Calendar className="w-4 h-4 text-amber-400" />}
-                  label={t('events.meta.date', 'Data')}
-                  value={formatFullDate(event.startsAt)}
+                  label={t('events.detail.meta.date')}
+                  value={formatFullDate(event.startsAt, locale)}
                 />
                 <MetaItem
                   icon={<Clock className="w-4 h-4 text-violet-400" />}
-                  label={t('events.meta.duration', 'Duração')}
-                  value={formatDuration(event.durationMin)}
+                  label={t('events.detail.meta.duration')}
+                  value={formatDuration(event.durationMin, t)}
                 />
                 {event.locationKind === 'online' && (
                   <MetaItem
                     icon={<Monitor className="w-4 h-4 text-cyan-400" />}
-                    label="Plataforma"
-                    value={event.platform ?? 'Online'}
+                    label={t('events.detail.meta.platform')}
+                    value={event.platform ?? t('events.detail.defaultLocation.online')}
                   />
                 )}
                 {event.locationKind === 'presencial' && event.city && (
                   <MetaItem
                     icon={<MapPin className="w-4 h-4 text-rose-400" />}
-                    label="Local"
+                    label={t('events.detail.meta.location')}
                     value={`${event.city}${event.neighborhood ? ' · ' + event.neighborhood : ''}`}
                   />
                 )}
                 {event.locationKind === 'hybrid' && (
                   <MetaItem
                     icon={<Globe className="w-4 h-4 text-emerald-400" />}
-                    label="Modalidade"
-                    value={`${event.city ?? 'Presencial'} + ${event.platform ?? 'Online'}`}
+                    label={t('events.detail.meta.modality')}
+                    value={`${event.city ?? t('events.detail.defaultLocation.presencial')} + ${event.platform ?? t('events.detail.defaultLocation.online')}`}
                   />
                 )}
                 {event.capacity > 0 && (
                   <MetaItem
                     icon={<Users className="w-4 h-4 text-pink-400" />}
-                    label="Vagas"
+                    label={t('events.detail.meta.spots')}
                     value={
                       isFull
-                        ? `Lotado (${event.confirmedCount}/${event.capacity})`
-                        : `${event.confirmedCount}/${event.capacity}${
-                            remaining !== null && remaining > 0
-                              ? ` · ${remaining} restantes`
-                              : ''
-                          }`
+                        ? t('events.detail.spots.filledCount', {
+                            confirmed: event.confirmedCount,
+                            capacity: event.capacity,
+                          })
+                        : remaining !== null && remaining > 0
+                          ? t('events.detail.spots.openWithRemaining', {
+                              confirmed: event.confirmedCount,
+                              capacity: event.capacity,
+                              remaining,
+                            })
+                          : t('events.detail.spots.openNoRemaining', {
+                              confirmed: event.confirmedCount,
+                              capacity: event.capacity,
+                            })
                     }
                   />
                 )}
@@ -342,8 +364,8 @@ export default async function EventDetailPage({
                 />
                 <p className="text-[11px] text-slate-500 mt-2 text-center">
                   {event.locationKind === 'online'
-                    ? 'Você receberá o link de acesso por email após a inscrição.'
-                    : 'Confirmação enviada por email. Traga documento com foto.'}
+                    ? t('events.detail.hints.online')
+                    : t('events.detail.hints.presencial')}
                 </p>
               </div>
             </CardContent>
@@ -357,7 +379,7 @@ export default async function EventDetailPage({
             <CardContent className="pt-5 space-y-3">
               <h2 className="text-lg font-heading font-medium text-slate-100 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-amber-400" aria-hidden="true" />
-                Sobre este evento
+                {t('events.detail.aboutEvent')}
               </h2>
               <p className="text-sm md:text-base text-slate-300 leading-relaxed whitespace-pre-line">
                 {event.description}
@@ -387,13 +409,13 @@ export default async function EventDetailPage({
           >
             <CardContent className="pt-5 space-y-3">
               <h2 className="text-lg font-heading font-medium text-slate-100">
-                Sobre o facilitador
+                {t('events.detail.aboutHost')}
               </h2>
               <div className="flex items-start gap-4">
                 {event.host.avatarUrl ? (
                   <Image
                     src={event.host.avatarUrl}
-                    alt={`Foto de ${event.host.displayName}`}
+                    alt={t('events.detail.photoOfHost', { name: event.host.displayName })}
                     width={64}
                     height={64}
                     className="w-16 h-16 rounded-full border border-slate-700 object-cover flex-shrink-0"
@@ -418,7 +440,7 @@ export default async function EventDetailPage({
                       href={`/u/${event.host.handle}`}
                       className="text-xs text-amber-400 hover:text-amber-300 underline-offset-2 hover:underline"
                     >
-                      Ver perfil completo →
+                      {t('events.detail.viewFullProfile')}
                     </Link>
                   )}
                 </div>
@@ -434,7 +456,9 @@ export default async function EventDetailPage({
             >
               <CardContent className="pt-5 space-y-3">
                 <h2 className="text-lg font-heading font-medium text-slate-100">
-                  Mais com {event.host.displayName.split(' ')[0]}
+                  {t('events.detail.moreFromHost', {
+                    name: event.host.displayName.split(' ')[0],
+                  })}
                 </h2>
                 <ul className="space-y-2">
                   {otherByHost.map((o) => (
@@ -448,13 +472,9 @@ export default async function EventDetailPage({
                             {o.title}
                           </p>
                           <p className="text-xs text-slate-500">
-                            {new Date(o.startsAt).toLocaleDateString('pt-BR', {
-                              day: '2-digit',
-                              month: 'short',
-                              year: 'numeric',
-                            })}
+                            {formatShortDate(o.startsAt, locale)}
                             {' · '}
-                            {formatPrice(o.priceCents)}
+                            {formatPrice(o.priceCents, t, locale)}
                           </p>
                         </div>
                         <Badge
@@ -462,12 +482,12 @@ export default async function EventDetailPage({
                           className="text-[10px] border-slate-700 text-slate-400"
                         >
                           {o.type === 'workshop'
-                            ? 'Workshop'
+                            ? t('events.types.workshop')
                             : o.type === 'ritual'
-                              ? 'Ritual'
+                              ? t('events.types.ritual')
                               : o.type === 'study-circle'
-                                ? 'Círculo'
-                                : 'Meditação'}
+                                ? t('events.types.study-circle')
+                                : t('events.types.meditation')}
                         </Badge>
                       </Link>
                     </li>

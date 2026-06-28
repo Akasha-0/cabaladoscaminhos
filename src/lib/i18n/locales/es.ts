@@ -335,6 +335,159 @@ export const es = {
   },
 
   // -----------------------------------------------------------------------
+  // Events (W20 — workshops, rituales, círculos, meditaciones)
+  // -----------------------------------------------------------------------
+  // Mirror of pt-BR `events` namespace. ES copy aligned with PT-BR meaning.
+  // ============================================================================
+  events: {
+    // Página /workshops
+    eyebrow: 'Eventos Akasha',
+    title: 'Workshops, Rituales y Círculos',
+    subtitle:
+      'Catálogo completo de experiencias de la comunidad Akasha. Talleres prácticos, rituales guiados, círculos de estudio y meditaciones — en línea y presencial.',
+    empty: 'No se encontraron eventos',
+    emptyHint: 'Prueba con otro filtro o vuelve pronto.',
+    seeOnlineCircles: 'Ver círculos en línea →',
+    backToEvents: 'Eventos',
+    upcomingCountOne: '{count} evento próximo',
+    upcomingCountOther: '{count} eventos próximos',
+
+    // EventCard
+    badges: {
+      full: 'Lleno',
+      closed: 'Cerrado',
+      free: 'Gratis',
+    },
+    card: {
+      byHostPrefix: 'por',
+    },
+    capacity: {
+      unlimited: 'Sin límite',
+      remainingOne: '{n} plaza',
+      remainingOther: '{n} plazas',
+    },
+    price: {
+      free: 'Gratis',
+    },
+    relativeDay: {
+      past: 'ya pasó',
+      today: 'hoy',
+      tomorrow: 'mañana',
+      inDays: 'en {days} días',
+      inWeeks: 'en {weeks} sem',
+      inMonths: 'en {months} meses',
+    },
+    cta: {
+      seeDetails: 'Ver detalles',
+    },
+
+    // Type labels
+    types: {
+      workshop: 'Workshop',
+      ritual: 'Ritual',
+      'study-circle': 'Círculo de Estudio',
+      meditation: 'Meditación',
+    },
+
+    // Tradition labels
+    traditions: {
+      cabala: 'Cábala',
+      ifa: 'Ifá',
+      astrologia: 'Astrología',
+      tantra: 'Tántrica',
+      reiki: 'Reiki',
+      meditacao: 'Meditación',
+      xamanismo: 'Chamanismo',
+      'cristianismo-mistico': 'Cristianismo Místico',
+      sufismo: 'Sufismo',
+      taoismo: 'Taoísmo',
+      umbanda: 'Umbanda',
+      candomble: 'Candomblé',
+    },
+
+    // EventList — filtros
+    filters: {
+      searchPlaceholder: 'Buscar eventos, facilitadores...',
+      searchAriaLabel: 'Buscar eventos',
+      clearSearch: 'Limpiar búsqueda',
+      typeLabel: 'Tipo',
+      locationLabel: 'Dónde',
+      traditionLabel: 'Tradición',
+      clearAll: 'Limpiar todo',
+      clearFilters: 'Limpiar filtros',
+      featured: 'Destacado',
+      resultsCountOne: '{count} resultado',
+      resultsCountOther: '{count} resultados',
+      typeOptions: {
+        all: 'Todos',
+        workshop: 'Workshops',
+        ritual: 'Rituales',
+        'study-circle': 'Círculos',
+        meditation: 'Meditaciones',
+      },
+      locationOptions: {
+        all: 'Cualquiera',
+        online: 'En línea',
+        presencial: 'Presencial',
+        hybrid: 'Híbrido',
+      },
+      traditionOptions: {
+        all: 'Todas',
+      },
+    },
+
+    // SignupButton — 4 estados
+    signup: {
+      login: 'Inicia sesión para participar',
+      success: 'Inscripción confirmada ✓',
+      full: 'Lleno',
+      closed: 'Inscripciones cerradas',
+      submitting: 'Confirmando...',
+      waitlist: 'Entrar en lista de espera',
+      join: 'Participar en el evento',
+    },
+
+    // Página /workshops/[slug] — detalle
+    detail: {
+      notFound: 'Evento no encontrado',
+      aboutEvent: 'Sobre este evento',
+      aboutHost: 'Sobre el facilitador',
+      moreFromHost: 'Más con {name}',
+      viewFullProfile: 'Ver perfil completo →',
+      photoOfHost: 'Foto de {name}',
+      meta: {
+        date: 'Fecha',
+        duration: 'Duración',
+        platform: 'Plataforma',
+        location: 'Lugar',
+        modality: 'Modalidad',
+        spots: 'Plazas',
+      },
+      duration: {
+        minutes: '{min} min',
+        hours: '{h}h',
+        hoursMinutes: '{h}h{min}min',
+      },
+      spots: {
+        filledCount: 'Lleno ({confirmed}/{capacity})',
+        openWithRemaining: '{confirmed}/{capacity} · {remaining} restantes',
+        openNoRemaining: '{confirmed}/{capacity}',
+      },
+      hints: {
+        online:
+          'Recibirás el enlace de acceso por email tras la inscripción.',
+        presencial:
+          'Confirmación enviada por email. Trae documento con foto.',
+      },
+      defaultLocation: {
+        online: 'En línea',
+        presencial: 'Presencial',
+        hybrid: 'Híbrido',
+      },
+    },
+  },
+
+  // -----------------------------------------------------------------------
   // Common
   // -----------------------------------------------------------------------
   common: {

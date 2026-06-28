@@ -19,6 +19,7 @@ import { useRouter } from 'next/navigation';
 import { LogIn, UserPlus, Clock, Lock, Check, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
+import { useT } from '@/lib/i18n/useT';
 import { cn } from '@/lib/utils';
 import type { SignupStatus } from '@/lib/events/types';
 
@@ -45,6 +46,7 @@ export function SignupButton({
   className,
 }: SignupButtonProps) {
   const { user } = useAuth();
+  const t = useT();
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -64,7 +66,7 @@ export function SignupButton({
         data-testid="signup-button-login"
       >
         <LogIn className="w-4 h-4 mr-2" aria-hidden="true" />
-        <span>Entrar para participar</span>
+        <span>{t('events.signup.login')}</span>
       </Button>
     );
   }
@@ -84,7 +86,7 @@ export function SignupButton({
         data-testid="signup-button-success"
       >
         <Check className="w-4 h-4 mr-2" aria-hidden="true" />
-        Inscrição confirmada ✓
+        {t('events.signup.success')}
       </Button>
     );
   }
@@ -101,7 +103,7 @@ export function SignupButton({
         data-testid="signup-button-disabled"
       >
         <Lock className="w-4 h-4 mr-2" aria-hidden="true" />
-        {isFull ? 'Lotado' : 'Inscrições fechadas'}
+        {isFull ? t('events.signup.full') : t('events.signup.closed')}
       </Button>
     );
   }
@@ -131,17 +133,17 @@ export function SignupButton({
       {submitting ? (
         <>
           <Loader2 className="w-4 h-4 mr-2 animate-spin" aria-hidden="true" />
-          Confirmando...
+          {t('events.signup.submitting')}
         </>
       ) : isWaitlist ? (
         <>
           <Clock className="w-4 h-4 mr-2" aria-hidden="true" />
-          Entrar na lista de espera
+          {t('events.signup.waitlist')}
         </>
       ) : (
         <>
           <UserPlus className="w-4 h-4 mr-2" aria-hidden="true" />
-          Participar do evento
+          {t('events.signup.join')}
         </>
       )}
     </Button>

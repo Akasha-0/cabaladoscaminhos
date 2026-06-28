@@ -334,6 +334,167 @@ export const ptBR = {
   },
 
   // -----------------------------------------------------------------------
+  // Events (W20 — workshops, rituais, círculos, meditações)
+  // -----------------------------------------------------------------------
+  // Cobre /workshops, /workshops/[slug], e componentes:
+  //   - EventCard (badges, preço, capacidade, data relativa)
+  //   - EventList (filtros, search, featured, empty)
+  //   - SignupButton (4 estados: login / sucesso / fechado / cta)
+  // Chave plana para types/traditions para lookup via `t('events.types.workshop')`.
+  // Pluralização PT-BR: sufixos `One` / `Other` (1 resultado vs N resultados).
+  // ============================================================================
+  events: {
+    // Página /workshops
+    eyebrow: 'Eventos Akasha',
+    title: 'Workshops, Rituais e Círculos',
+    subtitle:
+      'Catálogo completo de vivências da comunidade Akasha. ' +
+      'Workshops práticos, rituais guiados, círculos de estudo e meditações — online e presencial.',
+    empty: 'Nenhum evento encontrado',
+    emptyHint: 'Tente outro filtro ou volte em breve.',
+    seeOnlineCircles: 'Ver círculos online →',
+    backToEvents: 'Eventos',
+    // Plural — header da lista
+    upcomingCountOne: '{count} evento futuro',
+    upcomingCountOther: '{count} eventos futuros',
+
+    // EventCard
+    badges: {
+      full: 'Lotado',
+      closed: 'Fechado',
+      free: 'Gratuito',
+    },
+    card: {
+      byHostPrefix: 'por',
+    },
+    capacity: {
+      unlimited: 'Sem limite',
+      remainingOne: '{n} vaga',
+      remainingOther: '{n} vagas',
+    },
+    price: {
+      free: 'Gratuito',
+    },
+    relativeDay: {
+      past: 'já passou',
+      today: 'hoje',
+      tomorrow: 'amanhã',
+      inDays: 'em {days} dias',
+      inWeeks: 'em {weeks} sem',
+      inMonths: 'em {months} meses',
+    },
+    cta: {
+      seeDetails: 'Ver detalhes',
+    },
+
+    // Type labels (lookup em EventCard)
+    types: {
+      workshop: 'Workshop',
+      ritual: 'Ritual',
+      'study-circle': 'Círculo de Estudo',
+      meditation: 'Meditação',
+    },
+
+    // Tradition labels (lookup em EventCard)
+    traditions: {
+      cabala: 'Cabala',
+      ifa: 'Ifá',
+      astrologia: 'Astrologia',
+      tantra: 'Tântrica',
+      reiki: 'Reiki',
+      meditacao: 'Meditação',
+      xamanismo: 'Xamanismo',
+      'cristianismo-mistico': 'Cristianismo Místico',
+      sufismo: 'Sufismo',
+      taoismo: 'Taoísmo',
+      umbanda: 'Umbanda',
+      candomble: 'Candomblé',
+    },
+
+    // EventList — filtros
+    filters: {
+      searchPlaceholder: 'Buscar eventos, facilitadores...',
+      searchAriaLabel: 'Buscar eventos',
+      clearSearch: 'Limpar busca',
+      typeLabel: 'Tipo',
+      locationLabel: 'Onde',
+      traditionLabel: 'Tradição',
+      clearAll: 'Limpar tudo',
+      clearFilters: 'Limpar filtros',
+      featured: 'Em destaque',
+      // Plural — chip "N resultados"
+      resultsCountOne: '{count} resultado',
+      resultsCountOther: '{count} resultados',
+      typeOptions: {
+        all: 'Todos',
+        workshop: 'Workshops',
+        ritual: 'Rituais',
+        'study-circle': 'Círculos',
+        meditation: 'Meditações',
+      },
+      locationOptions: {
+        all: 'Qualquer',
+        online: 'Online',
+        presencial: 'Presencial',
+        hybrid: 'Híbrido',
+      },
+      traditionOptions: {
+        all: 'Todas',
+      },
+    },
+
+    // SignupButton — 4 estados
+    signup: {
+      login: 'Entrar para participar',
+      success: 'Inscrição confirmada ✓',
+      full: 'Lotado',
+      closed: 'Inscrições fechadas',
+      submitting: 'Confirmando...',
+      waitlist: 'Entrar na lista de espera',
+      join: 'Participar do evento',
+    },
+
+    // Página /workshops/[slug] — detalhe
+    detail: {
+      notFound: 'Evento não encontrado',
+      aboutEvent: 'Sobre este evento',
+      aboutHost: 'Sobre o facilitador',
+      moreFromHost: 'Mais com {name}',
+      viewFullProfile: 'Ver perfil completo →',
+      photoOfHost: 'Foto de {name}',
+      meta: {
+        date: 'Data',
+        duration: 'Duração',
+        platform: 'Plataforma',
+        location: 'Local',
+        modality: 'Modalidade',
+        spots: 'Vagas',
+      },
+      duration: {
+        minutes: '{min} min',
+        hours: '{h}h',
+        hoursMinutes: '{h}h{min}min',
+      },
+      spots: {
+        filledCount: 'Lotado ({confirmed}/{capacity})',
+        openWithRemaining: '{confirmed}/{capacity} · {remaining} restantes',
+        openNoRemaining: '{confirmed}/{capacity}',
+      },
+      hints: {
+        online:
+          'Você receberá o link de acesso por email após a inscrição.',
+        presencial:
+          'Confirmação enviada por email. Traga documento com foto.',
+      },
+      defaultLocation: {
+        online: 'Online',
+        presencial: 'Presencial',
+        hybrid: 'Híbrido',
+      },
+    },
+  },
+
+  // -----------------------------------------------------------------------
   // Common (compartilhado)
   // -----------------------------------------------------------------------
   common: {

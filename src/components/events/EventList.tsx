@@ -21,50 +21,31 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { EventCard } from './EventCard';
 import type { Event, EventLocationKind, EventType, Tradition } from '@/lib/events/types';
+import { useT } from '@/lib/i18n/useT';
 import { cn } from '@/lib/utils';
 
 interface EventListProps {
   events: Event[];
   /** Slug do evento em destaque (opcional — vai aparecer primeiro como "featured") */
   featuredSlug?: string;
-  /** Tradução via `t()` (mantido pra EN/ES no futuro) */
-  emptyLabel?: string;
-  emptyHint?: string;
 }
 
-const TYPE_FILTERS: Array<{ value: EventType | 'all'; label: string }> = [
-  { value: 'all', label: 'Todos' },
-  { value: 'workshop', label: 'Workshops' },
-  { value: 'ritual', label: 'Rituais' },
-  { value: 'study-circle', label: 'Círculos' },
-  { value: 'meditation', label: 'Meditações' },
-];
-
-const LOCATION_FILTERS: Array<{ value: EventLocationKind | 'all'; label: string }> = [
-  { value: 'all', label: 'Qualquer' },
-  { value: 'online', label: 'Online' },
-  { value: 'presencial', label: 'Presencial' },
-  { value: 'hybrid', label: 'Híbrido' },
-];
-
-const TRADITION_FILTERS: Array<{ value: Tradition | 'all'; label: string }> = [
-  { value: 'all', label: 'Todas' },
-  { value: 'cabala', label: 'Cabala' },
-  { value: 'ifa', label: 'Ifá' },
-  { value: 'candomble', label: 'Candomblé' },
-  { value: 'umbanda', label: 'Umbanda' },
-  { value: 'tantra', label: 'Tântrica' },
-  { value: 'astrologia', label: 'Astrologia' },
-  { value: 'sufismo', label: 'Sufismo' },
-  { value: 'xamanismo', label: 'Xamanismo' },
+const TRADITION_OPTIONS: Tradition[] = [
+  'cabala',
+  'ifa',
+  'candomble',
+  'umbanda',
+  'tantra',
+  'astrologia',
+  'sufismo',
+  'xamanismo',
 ];
 
 export function EventList({
   events,
   featuredSlug,
-  emptyLabel = 'Nenhum evento encontrado',
-  emptyHint = 'Tente outro filtro ou volte em breve.',
 }: EventListProps) {
+  const t = useT();
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState<EventType | 'all'>('all');
   const [locationFilter, setLocationFilter] = useState<EventLocationKind | 'all'>('all');
@@ -110,6 +91,34 @@ export function EventList({
     setTraditionFilter('all');
   };
 
+  // Filtros derivados da tradução ativa (re-renderizam quando locale muda)
+  const TYPE_FILTERS: Array<{ value: EventType | 'all'; label: string }> = [
+    { value: 'all', label: t('events.filters.typeOptions.all') },
+    { value: 'workshop', label: t('events.filters.typeOptions.workshop') },
+    { value: 'ritual', label: t('events.filters.typeOptions.ritual') },
+    { value: 'study-circle', label: t('events.filters.typeOptions.study-circle') },
+    { value: 'meditation', label: t('events.filters.typeOptions.meditation') },
+  ];
+  const LOCATION_FILTERS: Array<{ value: EventLocationKind | 'all'; label: string }> = [
+    { value: 'all', label: t('events.filters.locationOptions.all') },
+    { value: 'online', label: t('events.filters.locationOptions.online') },
+    { value: 'presencial', label: t('events.filters.locationOptions.presencial') },
+    { value: 'hybrid', label: t('events.filters.locationOptions.hybrid') },
+  ];
+  const TRADITION_FILTERS: Array<{ value: Tradition | 'all'; label: string }> = [
+    { value: 'all', label: t('events.filters.traditionOptions.all') },
+    ...TRADITION_OPTIONS.map((tr) => ({
+      value: tr,
+      label: t(`events.traditions.${tr}` as `events.traditions.${Tradition}`) || tr,
+    })),
+  ];
+
+  const totalResults = filtered.length + (featured ? 1 : 0);
+  const resultsLabel =
+    totalResults === 1
+      ? t('events.filters.resultsCountOne', { count: totalResults })
+      : t('events.filters.resultsCountOther', { count: totalResults });
+
   return (
     <div className="space-y-5" data-testid="event-list">
       {/* Filtros */}
@@ -125,8 +134,8 @@ export function EventList({
               type="search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Buscar eventos, facilitadores..."
-              aria-label="Buscar eventos"
+              placeholder={t('events.filters.searchPlaceholder')}
+              aria-label={t('events.filters.searchAriaLabel')}
               data-testid="event-list-search"
               className={cn(
                 'w-full pl-10 pr-4 py-2.5 rounded-xl',
@@ -140,7 +149,7 @@ export function EventList({
               <button
                 type="button"
                 onClick={() => setSearch('')}
-                aria-label="Limpar busca"
+                aria-label={t('events.filters.clearSearch')}
                 className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-md text-slate-500 hover:text-slate-200 hover:bg-slate-700/50 transition-colors touch-manipulation"
               >
                 <X className="w-4 h-4" aria-hidden="true" />
@@ -150,21 +159,21 @@ export function EventList({
 
           {/* Filter chips */}
           <FilterRow<EventType | 'all'>
-            label="Tipo"
+            label={t('events.filters.typeLabel')}
             options={TYPE_FILTERS}
             value={typeFilter}
             onChange={setTypeFilter}
             testIdPrefix="event-list-type"
           />
           <FilterRow<EventLocationKind | 'all'>
-            label="Onde"
+            label={t('events.filters.locationLabel')}
             options={LOCATION_FILTERS}
             value={locationFilter}
             onChange={setLocationFilter}
             testIdPrefix="event-list-location"
           />
           <FilterRow<Tradition | 'all'>
-            label="Tradição"
+            label={t('events.filters.traditionLabel')}
             options={TRADITION_FILTERS}
             value={traditionFilter}
             onChange={setTraditionFilter}
@@ -174,8 +183,7 @@ export function EventList({
           {hasFilters && (
             <div className="flex items-center justify-between pt-1">
               <Badge variant="outline" className="text-[10px] border-slate-700 text-slate-400">
-                {filtered.length + (featured ? 1 : 0)} resultado
-                {filtered.length + (featured ? 1 : 0) !== 1 ? 's' : ''}
+                {resultsLabel}
               </Badge>
               <Button
                 size="sm"
@@ -184,7 +192,7 @@ export function EventList({
                 className="text-xs text-slate-400 hover:text-slate-200"
                 data-testid="event-list-clear"
               >
-                Limpar tudo
+                {t('events.filters.clearAll')}
               </Button>
             </div>
           )}
@@ -196,7 +204,7 @@ export function EventList({
         <div data-testid="event-list-featured">
           <p className="text-[11px] uppercase tracking-wider text-amber-400/80 font-medium mb-2 flex items-center gap-1.5">
             <Sparkles className="w-3 h-3" aria-hidden="true" />
-            Em destaque
+            {t('events.filters.featured')}
           </p>
           <EventCard event={featured} variant="featured" />
         </div>
@@ -207,8 +215,8 @@ export function EventList({
         <Card size="sm" className="card-spiritual bg-slate-900/40 border-slate-800/40">
           <CardContent className="py-10 text-center space-y-2">
             <Filter className="w-7 h-7 mx-auto text-slate-600" aria-hidden="true" />
-            <p className="text-sm text-slate-300">{emptyLabel}</p>
-            <p className="text-xs text-slate-500">{emptyHint}</p>
+            <p className="text-sm text-slate-300">{t('events.empty')}</p>
+            <p className="text-xs text-slate-500">{t('events.emptyHint')}</p>
             {hasFilters && (
               <Button
                 size="sm"
@@ -216,7 +224,7 @@ export function EventList({
                 onClick={clearAll}
                 className="mt-3 border-amber-500/30 text-amber-300 hover:bg-amber-500/10"
               >
-                Limpar filtros
+                {t('events.filters.clearFilters')}
               </Button>
             )}
           </CardContent>

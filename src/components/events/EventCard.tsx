@@ -22,14 +22,16 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { EventCover } from './EventCover';
 import { cn } from '@/lib/utils';
-import type { Event } from '@/lib/events/types';
+import { useT } from '@/lib/i18n/useT';
+import { useI18n, type Locale } from '@/lib/i18n';
+import type { Event, EventType, Tradition } from '@/lib/events/types';
 
 // ============================================================
 // Helpers de formatação (Intl — sem libs externas)
 // ============================================================
 
-function formatEventDate(iso: string): string {
-  return new Date(iso).toLocaleString('pt-BR', {
+function formatEventDate(iso: string, locale: Locale): string {
+  return new Date(iso).toLocaleString(locale, {
     weekday: 'short',
     day: '2-digit',
     month: 'short',
@@ -38,50 +40,24 @@ function formatEventDate(iso: string): string {
   });
 }
 
-function formatRelativeDay(iso: string): string {
+function formatRelativeDay(iso: string, t: ReturnType<typeof useT>): string {
   const ms = new Date(iso).getTime() - Date.now();
   const days = Math.ceil(ms / (24 * 60 * 60 * 1000));
-  if (days < 0) return 'já passou';
-  if (days === 0) return 'hoje';
-  if (days === 1) return 'amanhã';
-  if (days < 7) return `em ${days} dias`;
-  if (days < 30) return `em ${Math.floor(days / 7)} sem`;
-  return `em ${Math.floor(days / 30)} meses`;
+  if (days < 0) return t('events.relativeDay.past');
+  if (days === 0) return t('events.relativeDay.today');
+  if (days === 1) return t('events.relativeDay.tomorrow');
+  if (days < 7) return t('events.relativeDay.inDays', { days });
+  if (days < 30) return t('events.relativeDay.inWeeks', { weeks: Math.floor(days / 7) });
+  return t('events.relativeDay.inMonths', { months: Math.floor(days / 30) });
 }
 
-function formatPrice(priceCents: number | null): string {
-  if (priceCents === null) return 'Gratuito';
-  return (priceCents / 100).toLocaleString('pt-BR', {
+function formatPrice(priceCents: number | null, t: ReturnType<typeof useT>, locale: Locale): string {
+  if (priceCents === null) return t('events.price.free');
+  return (priceCents / 100).toLocaleString(locale, {
     style: 'currency',
     currency: 'BRL',
   });
 }
-
-// ============================================================
-// Mapa visual por tradição (espelha PostCard.tsx)
-// ============================================================
-
-const TRADITION_LABEL: Record<string, string> = {
-  cabala: 'Cabala',
-  ifa: 'Ifá',
-  astrologia: 'Astrologia',
-  tantra: 'Tântrica',
-  reiki: 'Reiki',
-  meditacao: 'Meditação',
-  xamanismo: 'Xamanismo',
-  'cristianismo-mistico': 'Cristianismo Místico',
-  sufismo: 'Sufismo',
-  taoismo: 'Taoísmo',
-  umbanda: 'Umbanda',
-  candomble: 'Candomblé',
-};
-
-const TYPE_LABEL: Record<string, string> = {
-  workshop: 'Workshop',
-  ritual: 'Ritual',
-  'study-circle': 'Círculo de Estudo',
-  meditation: 'Meditação',
-};
 
 // ============================================================
 // COMPONENT
@@ -94,6 +70,8 @@ interface EventCardProps {
 }
 
 export function EventCard({ event, variant = 'default' }: EventCardProps) {
+  const t = useT();
+  const { locale } = useI18n();
   const isFull = event.signupStatus === 'full';
   const isClosed = event.signupStatus === 'closed';
   const isFree = event.priceCents === null;
@@ -106,7 +84,7 @@ export function EventCard({ event, variant = 'default' }: EventCardProps) {
     if (event.locationKind === 'online') {
       return {
         Icon: Monitor,
-        label: event.platform ?? 'Online',
+        label: event.platform ?? t('events.detail.defaultLocation.online'),
       };
     }
     if (event.locationKind === 'presencial') {
@@ -114,13 +92,13 @@ export function EventCard({ event, variant = 'default' }: EventCardProps) {
         Icon: MapPin,
         label: event.neighborhood
           ? `${event.city ?? ''} · ${event.neighborhood}`
-          : (event.city ?? 'Presencial'),
+          : (event.city ?? t('events.detail.defaultLocation.presencial')),
       };
     }
     // hybrid
     return {
       Icon: Globe,
-      label: event.city ? `${event.city} + Online` : 'Híbrido',
+      label: event.city ? `${event.city} + Online` : t('events.detail.defaultLocation.hybrid'),
     };
   })();
 
@@ -129,7 +107,7 @@ export function EventCard({ event, variant = 'default' }: EventCardProps) {
       href={`/workshops/${event.slug}`}
       data-testid={`event-card-${event.slug}`}
       className="block group h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 rounded-xl"
-      aria-label={`${event.title} — ${formatEventDate(event.startsAt)}`}
+      aria-label={`${event.title} — ${formatEventDate(event.startsAt, locale)}`}
     >
       <Card
         size="sm"
@@ -159,14 +137,14 @@ export function EventCard({ event, variant = 'default' }: EventCardProps) {
               variant="default"
               className="bg-amber-500/90 text-black font-medium text-[10px] uppercase tracking-wide"
             >
-              {TYPE_LABEL[event.type] ?? event.type}
+              {t(`events.types.${event.type}` as `events.types.${EventType}`) || event.type}
             </Badge>
             {(isFull || isClosed) && (
               <Badge
                 variant="destructive"
                 className="text-[10px] font-medium uppercase tracking-wide"
               >
-                {isFull ? 'Lotado' : 'Fechado'}
+                {isFull ? t('events.badges.full') : t('events.badges.closed')}
               </Badge>
             )}
             {isFree && !isFull && !isClosed && (
@@ -174,7 +152,7 @@ export function EventCard({ event, variant = 'default' }: EventCardProps) {
                 variant="secondary"
                 className="bg-emerald-500/90 text-white text-[10px] font-medium uppercase tracking-wide"
               >
-                Gratuito
+                {t('events.badges.free')}
               </Badge>
             )}
           </div>
@@ -184,13 +162,14 @@ export function EventCard({ event, variant = 'default' }: EventCardProps) {
         <div className="flex flex-col flex-1">
           <CardHeader className="gap-1.5">
             <p className="text-[11px] uppercase tracking-wider text-amber-400/80 font-medium">
-              {TRADITION_LABEL[event.tradition] ?? event.tradition}
+              {t(`events.traditions.${event.tradition}` as `events.traditions.${Tradition}`) || event.tradition}
             </p>
             <h3 className="text-base md:text-lg font-heading font-semibold text-slate-100 leading-snug line-clamp-2 group-hover:text-amber-300 transition-colors">
               {event.title}
             </h3>
             <p className="text-xs text-slate-500">
-              por <span className="text-slate-300">{event.host.displayName}</span>
+              {t('events.card.byHostPrefix')}{' '}
+              <span className="text-slate-300">{event.host.displayName}</span>
               {event.host.traditionLine && (
                 <span className="text-slate-500"> · {event.host.traditionLine}</span>
               )}
@@ -201,9 +180,9 @@ export function EventCard({ event, variant = 'default' }: EventCardProps) {
             {/* Data */}
             <div className="flex items-center gap-1.5 text-xs text-slate-300">
               <Calendar className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" aria-hidden="true" />
-              <span>{formatEventDate(event.startsAt)}</span>
+              <span>{formatEventDate(event.startsAt, locale)}</span>
               <span className="text-slate-500">·</span>
-              <span className="text-amber-300/80">{formatRelativeDay(event.startsAt)}</span>
+              <span className="text-amber-300/80">{formatRelativeDay(event.startsAt, t)}</span>
             </div>
 
             {/* Localização */}
@@ -225,11 +204,15 @@ export function EventCard({ event, variant = 'default' }: EventCardProps) {
                       {event.confirmedCount}/{event.capacity}
                     </span>
                     {remaining !== null && remaining > 0 && (
-                      <span className="text-emerald-400">· {remaining} vagas</span>
+                      <span className="text-emerald-400">
+                        · {remaining === 1
+                          ? t('events.capacity.remainingOne', { n: remaining })
+                          : t('events.capacity.remainingOther', { n: remaining })}
+                      </span>
                     )}
                   </>
                 ) : (
-                  <span className="text-slate-500">Sem limite</span>
+                  <span className="text-slate-500">{t('events.capacity.unlimited')}</span>
                 )}
               </span>
               <span
@@ -238,14 +221,14 @@ export function EventCard({ event, variant = 'default' }: EventCardProps) {
                   isFree ? 'text-emerald-300' : 'text-amber-300'
                 )}
               >
-                {formatPrice(event.priceCents)}
+                {formatPrice(event.priceCents, t, locale)}
               </span>
             </div>
 
             {/* CTA hint */}
             <div className="flex items-center justify-end pt-1">
               <span className="text-[11px] text-slate-500 group-hover:text-amber-300 transition-colors flex items-center gap-1">
-                Ver detalhes
+                {t('events.cta.seeDetails')}
                 <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
               </span>
             </div>

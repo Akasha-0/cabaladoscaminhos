@@ -19,6 +19,7 @@ import Link from 'next/link';
 import { Calendar, Sparkles } from 'lucide-react';
 import { mockEvents } from '@/lib/events/mock';
 import { EventList } from '@/components/events/EventList';
+import { getServerT } from '@/lib/i18n/server';
 
 export const metadata: Metadata = {
   title: 'Workshops, Rituais e Círculos | Akasha',
@@ -90,10 +91,12 @@ function EventListJsonLd() {
   );
 }
 
-export default function WorkshopsPage() {
-  // i18n: usamos `t(key) || fallback` — chaves ficam como strings para
-  // wiring futuro em EN/ES (spec: "structure ready for EN/ES").
-  const t = (key: string, fallback: string) => fallback;
+export default async function WorkshopsPage() {
+  // i18n: lê locale do cookie (definido pelo middleware) com fallback pt-BR.
+  // W20 substituiu o stub `t(key, fallback) => fallback` por getServerT() que
+  // consulta os 3 dicionários (PT-BR/EN/ES). O `fallback` continua existindo
+  // como defesa caso uma chave ainda não tenha sido adicionada ao pt-BR.
+  const t = await getServerT();
 
   // Eventos futuros ordenados (mock — substituído por API em W27+)
   const now = Date.now();
@@ -103,6 +106,11 @@ export default function WorkshopsPage() {
       (a, b) =>
         new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime()
     );
+
+  const upcomingCount =
+    upcoming.length === 1
+      ? t('events.upcomingCountOne', { count: upcoming.length })
+      : t('events.upcomingCountOther', { count: upcoming.length });
 
   return (
     <>
@@ -119,41 +127,32 @@ export default function WorkshopsPage() {
           <header className="space-y-2">
             <p className="text-[11px] uppercase tracking-widest text-amber-400/80 font-medium flex items-center gap-1.5">
               <Sparkles className="w-3 h-3" aria-hidden="true" />
-              {t('events.eyebrow', 'Eventos Akasha')}
+              {t('events.eyebrow')}
             </p>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-cinzel font-semibold bg-gradient-to-r from-amber-300 via-violet-300 to-pink-300 bg-clip-text text-transparent">
-              {t('events.title', 'Workshops, Rituais e Círculos')}
+              {t('events.title')}
             </h1>
             <p className="text-sm md:text-base text-slate-400 font-raleway max-w-2xl">
-              {t(
-                'events.subtitle',
-                'Catálogo completo de vivências da comunidade Akasha. ' +
-                  'Workshops práticos, rituais guiados, círculos de estudo e meditações — online e presencial.'
-              )}
+              {t('events.subtitle')}
             </p>
 
             <div className="flex items-center gap-3 pt-2 text-xs text-slate-500">
               <span className="flex items-center gap-1.5">
                 <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
-                {upcoming.length} {upcoming.length === 1 ? 'evento futuro' : 'eventos futuros'}
+                {upcomingCount}
               </span>
               <span aria-hidden="true">·</span>
               <Link
                 href="/events"
                 className="hover:text-amber-300 transition-colors underline-offset-2 hover:underline"
               >
-                Ver círculos online →
+                {t('events.seeOnlineCircles')}
               </Link>
             </div>
           </header>
 
           {/* Lista */}
-          <EventList
-            events={upcoming}
-            featuredSlug={upcoming[0]?.slug}
-            emptyLabel={t('events.empty', 'Nenhum evento encontrado')}
-            emptyHint={t('events.emptyHint', 'Tente outro filtro ou volte em breve.')}
-          />
+          <EventList events={upcoming} featuredSlug={upcoming[0]?.slug} />
         </div>
       </main>
     </>
