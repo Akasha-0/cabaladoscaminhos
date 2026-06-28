@@ -294,11 +294,13 @@ export default function RootLayout({
           title="Akasha Portal — Comunidade (JSON Feed v1)"
           href="/feed.json"
         />
-        {/* Preconnect a recursos externos */}
+        {/* Preconnect a recursos externos (Wave 27 perf — preconnect Supabase + PostHog) */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://images.unsplash.com" />
-        <link rel="dns-prefetch" href="https://*.supabase.co" />
+        <link rel="preconnect" href="https://*.supabase.co" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://us.i.posthog.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://cdn.posthog.com" />
         {/* PWA meta tags iOS */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />

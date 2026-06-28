@@ -20,6 +20,8 @@ Disallow: /login
 Disallow: /register
 Disallow: /dashboard/perfil/
 Disallow: /conta/
+Disallow: /search        # Wave 27 perf — search results shouldn't be indexed
+Disallow: /search?*
 Disallow: /*.json$
 Disallow: /*.tsx$
 

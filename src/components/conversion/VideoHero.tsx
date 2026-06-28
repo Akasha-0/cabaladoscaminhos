@@ -11,6 +11,7 @@
 // ============================================================================
 
 import { useState, useRef } from 'react';
+import Image from 'next/image';
 import { PlayCircle } from 'lucide-react';
 import { useCTATracker } from './LandingTracker';
 
@@ -40,13 +41,14 @@ export function VideoHero({ posterSrc, videoSrc, title }: Props) {
           aria-label={`Reproduzir vídeo: ${title}`}
           className="absolute inset-0 z-10 flex items-center justify-center group"
         >
-          {/* Poster image */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          {/* Poster image (Wave 27 perf — next/image with priority preload) */}
+          <Image
             src={posterSrc}
             alt={title}
-            className="absolute inset-0 w-full h-full object-cover"
-            loading="lazy"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 768px, 1200px"
+            className="object-cover"
+            priority={false}
           />
           {/* Dark overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-slate-950/40" />
