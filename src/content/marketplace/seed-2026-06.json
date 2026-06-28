@@ -1,0 +1,69 @@
+{
+  "version": "2026-06-28",
+  "currency": "BRL",
+  "listings": [
+    {
+      "id": "leitura-mesa-real-60min",
+      "category": "leitura",
+      "type": "Mesa Real session (60 minutes)",
+      "provider_role": "Cigano Ramiro verified reader",
+      "price_brl": 18000,
+      "duration_min": 60,
+      "delivery": "live_video",
+      "languages": ["pt-BR", "en", "es"],
+      "title": {
+        "pt-BR": "Leitura completa da Mesa Real (36 cartas ciganas + cruzamento)",
+        "en": "Complete Mesa Real reading (36 Cigano cards + cross-mapping)",
+        "es": "Lectura completa de Mesa Real (36 cartas gitanas + cruce)"
+      },
+      "description": {
+        "pt-BR": "Sessão ao vivo de 60min com a Mesa Real: 36 cartas ciganas + 36 Odus cruzados com mapa numerológico cabalístico, numerologia tântrica, astrologia natal e Odu de nascimento. Síntese final + 7 dias de chat IA para perguntas.",
+        "en": "60min live session with the Mesa Real: 36 Cigano cards + 36 Odus crossed with Cabalistic numerology map, Tantric numerology, natal astrology, and birth Odu. Final synthesis + 7 days of AI chat for follow-up questions.",
+        "es": "Sesión en vivo de 60min con la Mesa Real: 36 cartas gitanas + 36 Odus cruzados con mapa numerológico cabalístico, numerología tántrica, astrología natal y Odu de nacimiento. Síntesis final + 7 días de chat IA para preguntas."
+      },
+      "tags": ["mesa-real", "cigano", "baralho-cigano", "numerologia", "astrologia", "odú"]
+    },
+    {
+      "id": "pratica-consulta-orixá-30min",
+      "category": "pratica",
+      "type": "Orixá consultation (30 minutes)",
+      "provider_role": "Babalaô verified by terreiro",
+      "price_brl": 12000,
+      "duration_min": 30,
+      "delivery": "audio_call",
+      "languages": ["pt-BR"],
+      "title": {
+        "pt-BR": "Consulta de Orixá regente + Orixá pedindo atenção",
+        "en": "Guardian Orixá consultation + Orixá asking for attention",
+        "es": "Consulta de Orixá regente + Orixá pidiendo atención"
+      },
+      "description": {
+        "pt-BR": "Sessão de 30min para identificar seu Orixá regente (oficial) e o Orixá pedindo passagem (cinético), a partir do seu Odu de nascimento. Inclui recomendações práticas de oferenda, ebó e cuidados.",
+        "en": "30min session to identify your guardian Orixá (official) and the Orixá asking for passage (kinetic), from your birth Odu. Includes practical recommendations for offerings, ebó, and care.",
+        "es": "Sesión de 30min para identificar tu Orixá regente (oficial) y el Orixá pidiendo paso (cinético), desde tu Odu de nacimiento. Incluye recomendaciones prácticas de ofrenda, ebó y cuidados."
+      },
+      "tags": ["orixá", "odú", "candomblé", "umbanda", "babalaô"]
+    },
+    {
+      "id": "leitura-cruzamento-astrologia-45min",
+      "category": "leitura",
+      "type": "Astrology cross-mapping (45 minutes)",
+      "provider_role": "Akasha Astrologer",
+      "price_brl": 15000,
+      "duration_min": 45,
+      "delivery": "live_video",
+      "languages": ["pt-BR", "en"],
+      "title": {
+        "pt-BR": "Cruzamento astrologia + Mesa Real (casa por casa)",
+        "en": "Astrology + Mesa Real cross-mapping (house by house)",
+        "es": "Cruce astrología + Mesa Real (casa por casa)"
+      },
+      "description": {
+        "pt-BR": "Sessão de 45min focada no cruzamento entre seu mapa astral (signo, planetas, casas, Lilith, aspectos) e as 36 casas da Mesa Real. Para cada casa temática (sexualidade, trabalho, família, saúde), o astrólogo explica como os dois sistemas se conversam.",
+        "en": "45min session focused on the cross-mapping between your birth chart (sign, planets, houses, Lilith, aspects) and the 36 houses of the Mesa Real. For each thematic house (sexuality, work, family, health), the astrologer explains how the two systems converse.",
+        "es": "Sesión de 45min enfocada en el cruce entre tu carta astral (signo, planetas, casas, Lilith, aspectos) y las 36 casas de la Mesa Real. Para cada casa temática (sexualidad, trabajo, familia, salud), el astrólogo explica cómo los dos sistemas dialogan."
+      },
+      "tags": ["astrologia", "mapa-natal", "lilith", "mesa-real", "cruzamento"]
+    }
+  ]
+}
