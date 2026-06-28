@@ -9,57 +9,57 @@ evidence, and recommended next step.
 
 ---
 
-## B-MAVIS-1: mavis CLI not installed in sandbox ⛔ CRITICAL
+## B-MAVIS-1: mavis CLI not installed in sandbox ⚠️ PARTIAL (cycle 19 update: daemon tool works)
 
-**Status:** Active since cycle 17 (2026-06-28 18:30 UTC), confirmed again cycle 18.
+**Status:** Active since cycle 17 (2026-06-28 18:30 UTC). **PARTIALLY RESOLVED in cycle 19.**
 
-**Root cause:** The `mavis` CLI binary is not in any of the sandbox's standard install
-locations. The wave-orchestrator cannot spawn specialist workers without it.
+**Cycle 19 update (2026-06-28 19:30 UTC):** The `mavis` CLI binary is STILL missing
+(confirmed: `command -v mavis` exit 1, no `find` hits, npm global lacks it). However, the
+**mavis daemon is reachable through the `mavis` tool** in the agent runtime. The
+wave-spawner can now spawn specialist workers via `communicate spawn` (Branch sessions)
+even without the CLI binary. The CLI is a thin wrapper around the daemon; the daemon is
+the actual capability.
 
-**Evidence (cycle 18):**
+**Evidence (cycle 19):**
 
 ```
 $ command -v mavis ; echo "exit: $?"
 exit: 1
 
-$ which mavis
+$ find / -name "mavis" -type f 2>/dev/null
 (empty)
 
-$ ls /usr/local/bin/mavis /usr/bin/mavis /root/.mavis 2>&1
-ls: cannot access '/usr/local/bin/mavis': No such file or directory
-ls: cannot access '/usr/bin/mavis': No such file or directory
-ls: cannot access '/root/.mavis': No such file or directory
-
-$ find / -name "mavis" -type f 2>/dev/null
-(empty — zero hits)
-
-$ npm root -g && ls $(npm root -g)
-/usr/local/lib/node_modules
-corepack
-npm
-playwright
-pptxgenjs
-tsx
-typescript
-(no mavis)
-
-$ pgrep -af mavis
-(only shows the bash command itself; no actual mavis process)
+$ # Mavis tool (daemon):
+$ mavis({ command: "agent list" })
+{
+  "ok": true,
+  "response": {
+    "agents": [
+      { "agent_name": "General", ... },
+      { "agent_name": "Coder", ... },
+      { "agent_name": "Verifier", ... }
+    ]
+  }
+}
 ```
 
-**Impact:** Wave-orchestrator reduces to `clone + verify + document`. Cannot spawn any of
-the 15 specialist worker trilhas (auth follow-up, Akasha streaming, i18n, voice, events,
-mentorship, comments, notifications, audio/video, daily reflection, live streams,
-moderation, reputation, marketplace, translation).
+**Impact (revised):** Wave-orchestrator can now spawn. Cycles 17 and 18's "BLOCKED" verdicts
+were overly conservative — they tested CLI presence but not daemon reachability. The
+correct gate is daemon reachability, not CLI presence. Cycle 19 used the `mavis` tool +
+`communicate spawn` to dispatch 4 workers in parallel (Coder×2, General×2).
+
+**Residual impact:**
+- CLI-specific features (cron list/get/trigger, drive CRUD, etc.) may be unavailable from
+  bash, but the spawning flow works.
+- Future workers can be spawned via the daemon even on wiped sandboxes.
 
 **Recommended fix (owner action):**
 
-- **Option A (best, long-term):** Install `mavis` CLI in the sandbox base image. Add a
-  setup script in the workspace init hook so every fresh sandbox has it.
-- **Option B (workaround):** Add `npm install -g mavis` to the cron pre-flight hook so each
-  cycle installs it on first use. Slower (~30s) per cycle but self-healing.
-- **Option C (deferral):** Acknowledge wave-spawner is reduced to a status monitor; cancel
-  the cron and re-enable when mavis is fixed.
+- **Option A (best, long-term):** Install `mavis` CLI in the sandbox base image for parity
+  with the daemon tool. (Ergonomic, not functional.)
+- **Option B (workaround):** Use the `mavis` tool + `communicate spawn` flow (cycle 19
+  pattern). Already in production.
+- **Option C (deferral):** Cancel only if spawning via daemon is also blocked.
 
 ---
 
@@ -178,9 +178,15 @@ cycle starts fresh.
 | 16 | 2026-06-28 18:00 | restored | 643 | missing | 0 | 0 | ⚠️ bootstrap OK, TSC fail |
 | 17 | 2026-06-28 18:30 | restored | 643 | missing | 0 | 0 | 🛑 BLOCKED |
 | 18 | 2026-06-28 19:00 | restored | 643 (prior) | missing | 0 | 0 | 🛑 BLOCKED |
-| 19 | 2026-06-28 19:30 (planned) | depends on cron | 643 (prior) | missing | 0 | 0 | 🛑 BLOCKED (predicted) |
+| 19 | 2026-06-28 19:30 | restored | 643 (prior) | **daemon ✅** (CLI ❌) | **4** | 0 (docs) | ⚠️ PARTIAL — 4 workers in flight |
+
+**Cycle 19 (this cycle) — key wins:**
+- **Discovered mavis daemon works via the `mavis` tool** even without CLI binary
+- Spawned 4 workers in parallel (Coder×2, General×2) on 4 trilhas
+- WAVE-LOG + BLOCKERS audit trail persistent in repo (committed, will be pushed)
 
 **Recovery conditions (any one unlocks the next cycle):**
-- Mavis CLI installed → spawn specialists on TSC reduction + 15 feature trilhas
-- TSC=1 (after fix recipe applied) → push gate clears → workers can land code
-- Cron cadence reduced to 2-4h → wipe impact 4-8x less, persistence becomes possible
+- Mavis daemon (already ✅ via `mavis` tool) — can spawn from any sandbox, no CLI required
+- **TSC=1** (after fix recipe applied) — primary remaining gate; unlocks push
+- Worker A's TSC reduction wave (in flight) may drop TSC from 643 to <100
+- Cron cadence reduced to 2-4h → wipe impact 4-8x less, persistence becomes easier

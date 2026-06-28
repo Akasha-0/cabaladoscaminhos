@@ -10,6 +10,97 @@ pattern when prerequisites are missing.
 
 ---
 
+## Cycle 19 — 2026-06-28 19:30 UTC ⚠️ PARTIAL (spawn WORKS, push blocked on TSC=643)
+
+**Pre-flight (post-30min-cron-fire):**
+
+| Check | Result | Notes |
+|---|---|---|
+| `/workspace/cabaladoscaminhos` | ❌ missing | Wipe pattern repeated (17 of last 19 cycles) |
+| `git clone --depth 1` | ✅ OK ~20s | 1497 files |
+| Latest commit on `main` | `e832386` | `docs(wave-spawner): cycle 18 push-success update` (no code changes) |
+| Commits in last 1h | 0 | No upstream activity since W27 a88bc7d |
+| Working tree | clean | Nothing to commit |
+| `.env` | ❌ missing | Owner-only secret, expected |
+| `node_modules` | ❌ missing | Skip `npm install` (cycle 17 already proved TSC=643 with full deps; result identical) |
+| `mavis` CLI in PATH | ❌ NOT INSTALLED | `command -v mavis` exit 1, no `find` hits, npm global lacks it — same as cycle 17/18 |
+| **`mavis` TOOL (Mavis daemon)** | ✅ WORKS | `mavis({ command: "agent list" })` returns roster; `mavis({ command: "session create" })` and `communicate spawn` are functional — the CLI binary is just a wrapper, the daemon is reachable |
+| MEM available | 1978 MB / 2048 MB | > 1000 MB threshold, OK |
+| Disk free | 968T / 1.0P (6%) | OK |
+| NFS mount | healthy | OK |
+| Sandbox uptime | 2h 25min | Fresh after cron wipe at ~17:05 UTC |
+
+**⚠️ CRITICAL DISCOVERY:** Cycles 17 and 18's BLOCKED verdicts were partially wrong. The
+"mavis missing" blocker was literal-CLI-only. The **mavis daemon** is reachable through
+the `mavis` tool, and `communicate spawn` can create real worker sessions. This is the
+first cycle where the wave-spawner can actually spawn. Previous cycles gave up because
+they tested `command -v mavis` (CLI) but not the daemon tool. **Updating BLOCKERS.md to
+reflect this.**
+
+**Procedure vs Reality (this cycle):**
+
+| Step | Spec | Reality |
+|---|---|---|
+| 1. `git log --since="1h ago"` | should count > 0 | **0 commits** — no upstream activity since W27 a88bc7d |
+| 2. `free -m` | should be > 1000 MB | **1978 MB** ✅ |
+| 3. Spawn workers (4-6) | if MEM > 1000 AND workers < 8 | **PARTIAL** — daemon works, will spawn 4 (Coder×2, General×2) |
+| 4. Specialists on 4 prioritized trilhas | i18n, voice, comments, TSC reduction | **DONE** — 4 spawned in parallel via `communicate spawn` |
+| 5. `git push` if TSC=1 | mandatory gate | **SKIP** — TSC=643 unchanged (no new code commits since cycle 17) |
+| 6. Document in WAVE-LOG + BLOCKERS | mandatory | **DONE** (this file + BLOCKERS.md) |
+
+**What I did (cycle 19):**
+1. Pre-flight (11 checks) — all logged above
+2. `git clone --depth 1` to restore repo (succeeded, ~20s, 1497 files)
+3. **Discovered the `mavis` tool is functional even when the CLI is missing** — re-tested
+   the assumption cycles 17/18 made
+4. Updated BLOCKERS.md to add Mavis-CLI-vs-Tool clarification (B-CRON-WIPE-2)
+5. **Spawned 4 workers in parallel** via `communicate spawn` (Branch sessions under this root):
+   - **Worker A — Coder** on TSC reduction (apply cycle 17 recipe: tsconfig exclude expansion,
+     prisma 7.x seed migration, next.config.ts bundle analyzer, middleware.ts(35,9))
+   - **Worker B — General** on i18n PT-BR → EN/ES structure (additive, no TSC impact)
+   - **Worker C — General** on voice mode (TTS) for Akasha (additive, no TSC impact)
+   - **Worker D — Coder** on comments threading + mentions (additive, no TSC impact)
+6. All workers instructed to use **git worktree isolation** (per W28 collision pattern) and
+   NOT commit to main (wave-spawner will review and push after TSC=1)
+7. Wrote this WAVE-LOG.md + BLOCKERS.md update to **the repo's `docs/` folder** (persistent
+   audit trail pattern established in cycle 18)
+8. ✅ Will commit + push this docs update via `https://${GITHUB_TOKEN}@github.com/...` URL
+   injection (cycle 18 confirmed this works)
+
+**What I did NOT do (and why):**
+- ❌ `npm install` — cycle 17 already proved TSC=643 with full deps; re-running is wasteful
+  (~2min) and the result will be identical
+- ❌ `git push` for code changes — no code commits, TSC=643 gate would fail CI
+- ❌ Edit code or make feature commits directly — wave-spawner rule: that's the workers' job
+- ❌ Spawn more than 4 workers — sandbox 2GB total, 4 = 500MB/worker (safe); the spec says
+  4-6, 4 is the conservative end given the new reality
+
+**Worker brief highlights (sent to each):**
+- Repo state: shallow clone of `main` @ `e832386` (cycle 18 doc commit)
+- **Use git worktree per task** — cycle 28 memory: parallel sessions cause collisions
+- **Do NOT commit to main** — wave-spawner will collect, validate TSC, then push
+- **Do NOT push to remote** — only docs/ updates get pushed from this session
+- **30min hard cap** — if work exceeds, deliver partial + report
+- **TSC=643 is real** — any feature work should be additive, not modify existing typed code
+  paths (work in new files, new routes, or with type-safe patterns)
+
+**Cycle 19 → Cycle 20 handoff:**
+- Worker reports (when they self-report) will be reviewed in cycle 20
+- TSC=643 may drop to a lower number if Worker A's reduction wave lands
+- If TSC hits a low number (e.g. <100), wave-spawner can attempt to merge + push Worker A's
+  tsconfig fix and unlock the rest
+- If mavis CLI is installed by 20:00 UTC, cycle 20 can also use CLI commands directly
+  instead of the daemon tool (slight ergonomic improvement, no functional change)
+- If TSC=1 achieved: spawn 8-10 more workers on the remaining 11 trilhas (auth, Akasha
+  streaming, events, mentorship, notifications, audio/video, daily reflection, live
+  streams, moderation, reputation, marketplace, translation)
+
+**Status: ⚠️ PARTIAL. Cycle 19 of 19 attempted. 17 BLOCKED, 1 PARTIAL (cycle 19), 1 WARN
+(cycle 16 bootstrap). Wave-spawner now has spawn capability via daemon tool. Push gate still
+TSC=643. 4 workers in flight, results expected in next cycle.**
+
+---
+
 ## Cycle 18 — 2026-06-28 19:00 UTC 🛑 BLOCKED (prereq missing: mavis CLI)
 
 **Pre-flight (post-30min-cron-fire):**
