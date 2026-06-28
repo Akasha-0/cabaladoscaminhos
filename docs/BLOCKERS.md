@@ -222,3 +222,62 @@ biggest unlocked work item.** Local verification shows TSC 701 → 115 (-84%). T
 
 **Resolved since cycle 18:**
 - ✅ B-MAVIS-1 (PARTIAL): mavis daemon works, CLI is just a wrapper, spawn is functional
+
+---
+
+## B-WORKER-PUSH-VERIFICATION: Worker branches from cycle 19/20 are MISSING from origin (cycle 21)
+
+**Status:** New in cycle 21 (2026-06-28 20:30 UTC). Active.
+
+**Evidence (cycle 21, post-clone):**
+
+```
+$ git fetch --all --prune
+(no output)
+
+$ git branch -a
+* main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/main
+
+$ git branch -r | grep -E "w1[8-9]|w2[0-9]"
+(empty)
+```
+
+**Worker reports (cycle 19, from WAVE-LOG):**
+- Worker A: "Pushed ✅ Yes (commit `53a3bd9` on remote, PR URL: https://github.com/Akasha-0/cabaladoscaminhos/pull/new/w19/worker-a-tsc-reduction)"
+- Worker B: "Pushed ✅ Yes (+1188/-137 lines, 11 files)"
+- Worker C: "Pushed ✅ Yes"
+- Worker D: (in flight at cycle 19 close)
+
+**Worker reports (cycle 20, from WAVE-LOG):**
+- 4 workers spawned, no push details in WAVE-LOG (workers self-report in their own session, not preserved on wipe)
+
+**Root cause hypotheses (none confirmed):**
+1. **Local-only push** — workers reported push success based on `git push` exit code 0, but the ref didn't propagate to `origin` (e.g., wrong remote, auth issue, branch protection blocked)
+2. **Post-push force-delete** — repo housekeeping or owner action deleted the branches between cycle 19/20 and cycle 21
+3. **Wipe-after-push** — pushes happened, branches existed on remote, but the previous wave-spawner session's `git push` was followed by a cron wipe that somehow pruned remote refs (unlikely, remote refs don't get wiped by sandbox reset)
+
+**Impact:** The cycle 19 Worker A TSC reduction (-87.6%, 643→80) is LOST. All cycle 19/20 worker code work is presumed lost. This is a structural blocker for wave-spawner productivity: if workers' pushes don't survive cycles, only docs/ updates accumulate on main, and TSC=1 stays unreachable.
+
+**Cycle 21 mitigation (already applied):**
+- All cycle 21 worker briefs now require: "**verify push with `git ls-remote origin <branch>`** before reporting back, include the SHA in the report"
+- Wave-spawner will `git fetch --all` + `git ls-remote` on cycle 22 start to verify each branch independently
+
+**Recommended fix (owner action):**
+- **Option A (immediate):** Check `https://github.com/Akasha-0/cabaladoscaminhos/branches` for any stale `w19/*` or `w20/*` branches; if they exist, the wave-spawner just needs to fetch with `--all --prune=false`
+- **Option B (preventive):** Update the wave-spawner worker brief template to mandate `git ls-remote` verification (cycle 21 already does this)
+- **Option C (defensive):** Have workers also push to a `cabal-backup` remote (a second GitHub repo or a personal fork) so even if `origin` loses refs, the work survives
+
+---
+
+## B-TSC-W28: TypeScript gate (updated cycle 21)
+
+**Updated status (cycle 21):** Last verified baseline is TSC=643 (cycle 17, real TSC with full deps). Cycle 19 Worker A reported TSC=80 on their branch (`w19/worker-a-tsc-reduction`), but that branch is **MISSING from origin** (see B-WORKER-PUSH-VERIFICATION above). Cycle 20's Worker A recipe verification showed the local TSC delta was 701→115 (with the expanded tsconfig exclude, applied locally + reverted). The actual current TSC on `main` is still **unchanged from cycle 17**: 643 errors, waiting for a verified TSC-finalization wave to land.
+
+**Cycle 21 spawn:** Worker A is dispatched with explicit instruction to: (a) fix `prisma/schema.prisma:1492` (`@unique` on `Newsletter.userId`), (b) stub the remaining missing `@/lib/*` modules, (c) fix the 13 src/app/ prop-type mismatches, (d) **push via URL injection, verify with `git ls-remote`, report the SHA back**. If Worker A's TSC drop is verified by the wave-spawner in cycle 22, the wave-spawner can attempt to merge to main and unblock everything.
+
+**Other active blockers (unchanged from cycle 19/20):**
+- B-TSC-W28: TSC on main is 643, gate is 1, push blocked
+- B-CRON-WIPE-1: 30-min cron triggers sandbox reset; wave-spawner logs persist via git push to remote (cycle 18+), but worker branches MUST be pushed during the cycle or they are lost on next wipe
+- B-WORKER-PUSH-VERIFICATION (NEW cycle 21): cycle 19/20 worker pushes are missing from origin; cycle 21 has explicit `git ls-remote` verification mandate
