@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
+import { useSoundEffects } from '@/hooks/useSoundEffects';
 
 // ============================================================
 // TYPES
@@ -628,7 +629,7 @@ function NotificationsPanel({
   onChange: <K extends keyof UserSettings>(k: K, v: UserSettings[K]) => void;
 }) {
   return (
-    <Panel title="Notificações" description="Escolha como e quando você quer ser notificado.">
+    <Panel title="Notificações & Feedback" description="Como e quando você quer ser notificado, e que tipo de feedback quer receber ao interagir.">
       <Field label="Resumo por email" htmlFor="emailDigest">
         <select
           id="emailDigest"
@@ -691,7 +692,43 @@ function NotificationsPanel({
           testId="settings-notifyOnGroupPost"
         />
       </div>
+
+      <SoundEffectsToggle />
     </Panel>
+  );
+}
+
+// ============================================================================
+// SoundEffectsToggle — Wave 24 microinteractions
+// ============================================================================
+// Toggle opt-in para efeitos sonoros (WebAudio, zero assets). Estado
+// persistido em localStorage via useSoundEffects. Mostra preview no toggle.
+// ============================================================================
+function SoundEffectsToggle() {
+  const { enabled, setEnabled, isSupported, play } = useSoundEffects();
+  if (!isSupported) return null;
+  return (
+    <div className="pt-3 border-t border-slate-800/50 space-y-3">
+      <h3 className="text-xs uppercase tracking-wider text-slate-500 font-cinzel">
+        Feedback ao interagir
+      </h3>
+      <Toggle
+        label="Sons de feedback"
+        description="Toques sutis em ações (like, comentário, submit). Toca um exemplo ao ativar."
+        checked={enabled}
+        onChange={(v) => {
+          setEnabled(v);
+          if (v) {
+            // Toca um sample para confirmar
+            window.setTimeout(() => play('success'), 60);
+          }
+        }}
+        testId="settings-soundEnabled"
+      />
+      <p className="text-xs text-slate-500">
+        Sons são opcionais e respeitam WCAG 1.4.2 (volume baixo, dispensáveis). Haptic continua ativo independentemente.
+      </p>
+    </div>
   );
 }
 
