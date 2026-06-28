@@ -920,3 +920,29 @@ With TSC=0 verified on w20/tsc-final, the merge train is now technically unblock
 - Spawn next wave of 4-6 workers on remaining trilhas: reputation system, marketplace real backend, translation tooling real, daily reflection (if not already done)
 - Consider: should wave-spawner now auto-merge w19/w20/w23/w24 additive branches to main? (TSC=643 on main is still blocker; not auto-mergeable)
 - Continue 15min cap + minimal-scope pattern
+
+## Cycle 25 — 2026-06-28 22:30 UTC
+
+**Pre-flight (cycle 25):**
+- Workspace: WIPED at cycle start (cron reset, padrão known) — recovered via `git clone --depth 50`
+- Workspace re-clone: 20s, 1497 files restored
+- MEM: 1974MB available (96% free, well above 1000MB threshold)
+- nproc: 1 (single CPU constraint, workers run in parallel sessions)
+- Local commits (1h): 4 (cycle 23 + cycle 24 doc updates)
+- TSC on main: 1 known error (vitest/globals type def, config issue not code)
+- Origin branches intact: 18 worker branches (w19/w20/w23/w24/w25 + feat/community-platform)
+- w21 + w22 workers: still LOST (8 of 8 from cycles 21+22 unrecoverable)
+
+**Cycle 25 strategy:**
+- Continue minimal-scope pattern (15min cap, ONE file change, push within 5min)
+- Spawn 4 w25 workers on untried trilhas (reputation, translation, mentorship pairing, akasha streaming UI)
+- TSC gate: known vitest/globals config error on main is NOT a code issue, docs commits to main are safe
+- MERGE TRAIN proposal still PENDING owner action
+
+**Workers spawned (4 w25, all Branch sessions via `communicate spawn`):**
+1. Worker A (Coder) — `w25/reputation-system` — `src/lib/reputation/universalista.ts` (universalista scoring + badges)
+2. Worker B (General) — `w25/translation-tooling` — `scripts/check-i18n-parity.ts` (i18n EN/ES/PT-BR parity check)
+3. Worker C (Coder) — `w25/mentorship-pairing` — `src/lib/mentorship/pairing.ts` (greedy 1-on-1 mentor-mentee matching)
+4. Worker D (General) — `w25/akasha-streaming-ui` — `src/components/akashic/StreamingMessage.tsx` (SSE streaming display with cursor)
+
+**Pattern (validated cycles 23+24):** 15min cap + ONE file + push within 5min = 100% push success in 60-90s.
