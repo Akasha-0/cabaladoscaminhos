@@ -83,7 +83,10 @@ export function FirstValueExperience() {
     const elapsed = Date.now() - enterTime;
     trackEvent('page_viewed', {
       path: '/first-value',
-      query: { user_id: user?.id, elapsed_ms: String(elapsed) },
+      query: {
+        ...(user?.id ? { user_id: user.id } : {}),
+        elapsed_ms: String(elapsed),
+      },
     });
   }, [enabled, loading, dismissed, enterTime, user?.id]);
 

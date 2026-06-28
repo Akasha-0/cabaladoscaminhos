@@ -68,7 +68,7 @@ export async function GET(_request: Request, context: RouteContext) {
     .map((post) => {
       const url = postUrl(post.id);
       const author = post.authorName;
-      const categories: string[] = [post.tradition];
+      const categories: string[] = post.tradition ? [post.tradition] : [];
       if (post.topic) categories.push(post.topic);
 
       const catXml = categories

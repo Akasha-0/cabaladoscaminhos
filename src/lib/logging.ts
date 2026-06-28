@@ -203,7 +203,7 @@ class Logger {
         level: entry.level >= LogLevel.FATAL ? "fatal" : entry.level >= LogLevel.ERROR ? "error" : "warning",
         tags: {
           logger: "akasha-portal",
-          requestId: entry.context?.requestId,
+          ...(entry.context?.requestId ? { requestId: entry.context.requestId } : {}),
         },
         extra: {
           context: entry.context,

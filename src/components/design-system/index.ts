@@ -66,13 +66,13 @@ export {
 export type { ButtonProps } from '@base-ui/react/button';
 export type { VariantProps } from 'class-variance-authority';
 export type { DividerProps, Orientation, Variant as DividerVariant, Thickness as DividerThickness } from './divider';
-export type { LoadingProps, LoadingVariant, LoadingSize } from './loading';
-export type { EmptyProps, EmptyAction, EmptySize, EmptyVariant } from './empty';
+export type { LoadingProps, Variant as LoadingVariant, Size as LoadingSize } from './loading';
+export type { EmptyProps, EmptyAction, Size as EmptySize, Variant as EmptyVariant } from './empty';
 export type { ErrorProps, ErrorSeverity } from './error';
 export type {
   SkeletonProps,
-  SkeletonVariant,
-  SkeletonSize,
+  Variant as SkeletonVariant,
+  Size as SkeletonSize,
 } from './skeleton';
 export type {
   EmptyIllustrationProps,

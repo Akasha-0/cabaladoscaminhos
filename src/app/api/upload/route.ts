@@ -109,13 +109,23 @@ function checkUploadRateLimit(userId: string): {
 // ============================================================================
 
 function uuid(): string {
+  // Captura local para evitar narrowing cross-branch no TS.
+  // Cast generico porque `globalThis.crypto` em ambientes antigos (Node <19)
+  // e `never`/`undefined`, e o TS faz narrowing agressivo dentro do if.
+  const g = globalThis as unknown as { crypto?: { randomUUID?: () => string; getRandomValues?: (a: Uint8Array) => Uint8Array } };
+  const c = g.crypto;
   // Preferir crypto.randomUUID() quando disponível (Node 19+, Edge)
-  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
-    return crypto.randomUUID();
+  if (c?.randomUUID) {
+    return c.randomUUID();
   }
   // Fallback manual
   const bytes = new Uint8Array(16);
-  crypto.getRandomValues(bytes);
+  if (c?.getRandomValues) {
+    c.getRandomValues(bytes);
+  } else {
+    // Ultimo recurso — Math.random nao e cripto-seguro, mas evita throw
+    for (let i = 0; i < bytes.length; i++) bytes[i] = Math.floor(Math.random() * 256);
+  }
   bytes[6] = (bytes[6] & 0x0f) | 0x40;
   bytes[8] = (bytes[8] & 0x3f) | 0x80;
   const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');

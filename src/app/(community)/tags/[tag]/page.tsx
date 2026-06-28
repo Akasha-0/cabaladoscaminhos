@@ -193,10 +193,15 @@ function TagPageInner() {
           {TABS.map((tab) => {
             const Icon = tab.icon;
             const count =
-              tab.id === 'posts' ? data?.counts.posts :
-              tab.id === 'articles' ? data?.counts.articles :
-              tab.id === 'people' ? data?.counts.people :
-              data?.counts.total ?? 0;
+              data == null
+                ? 0
+                : tab.id === 'posts'
+                  ? data.counts.posts
+                  : tab.id === 'articles'
+                    ? data.counts.articles
+                    : tab.id === 'people'
+                      ? data.counts.people
+                      : data.counts.total;
             return (
               <button
                 key={tab.id}

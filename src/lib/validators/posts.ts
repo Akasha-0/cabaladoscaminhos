@@ -16,6 +16,9 @@ export const PostTypeSchema = z.enum([
   'PRACTICE',
 ]);
 
+/** Tipo derivado do schema Zod — útil para `import type { PostType }`. */
+export type PostType = z.infer<typeof PostTypeSchema>;
+
 export const CreatePostSchema = z.object({
   content: z
     .string()

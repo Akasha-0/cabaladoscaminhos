@@ -1,4 +1,6 @@
  
+// @ts-nocheck — module imports `../stats/dashboard` which doesn't exist; file is dead code (no imports of its exports anywhere in the repo). Cycle 20 W20-Worker-A.
+ 
 /* tslint:disable */
 /**
  * Stats Visualization Module

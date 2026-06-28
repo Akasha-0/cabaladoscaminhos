@@ -125,7 +125,7 @@ export function fromZodError(error: unknown) {
   return fail(500, ErrorCode.INTERNAL_ERROR, 'Erro inesperado');
 }
 
-export function handleError(err: unknown) {
+export function handleError(err: unknown, context?: string) {
   if (
     err &&
     typeof err === 'object' &&
@@ -146,6 +146,10 @@ export function handleError(err: unknown) {
     }
   }
   // Erro inesperado
-  console.error('[community-api] erro inesperado:', err);
+  if (context) {
+    console.error(`[community-api] erro inesperado (${context}):`, err);
+  } else {
+    console.error('[community-api] erro inesperado:', err);
+  }
   return fail(500, ErrorCode.INTERNAL_ERROR, 'Erro interno do servidor');
 }

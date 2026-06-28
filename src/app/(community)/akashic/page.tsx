@@ -353,7 +353,7 @@ export default function AkashicChatPage() {
               >
                 Tradição:
               </label>
-              <Select value={tradition} onValueChange={setTradition}>
+              <Select value={tradition} onValueChange={(v) => setTradition(v ?? '__all__')}>
                 <SelectTrigger id="tradition-select" className="h-8 w-full max-w-xs">
                   <SelectValue />
                 </SelectTrigger>

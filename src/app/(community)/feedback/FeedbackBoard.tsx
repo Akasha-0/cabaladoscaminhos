@@ -128,7 +128,7 @@ export function FeedbackBoard({
         credentials: 'same-origin',
       })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      trackEvent('feedback_feature_request_upvoted', { request_id: requestId })
+      trackEvent({ name: 'feedback_feature_request_upvoted', properties: { request_id: requestId } })
     } catch {
       // Roll back optimistic update
       setMyUpvoteSet((s) => {

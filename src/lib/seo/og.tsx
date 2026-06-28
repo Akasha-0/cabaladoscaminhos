@@ -126,6 +126,13 @@ export interface PageSeoInput {
   tags?: string[];
   /** Override OG image alt (defaults to category alt). */
   imageAlt?: string;
+  /**
+   * Internal priority hint for sitemap/crawl scheduling. Higher = crawled more often.
+   * Currently informational only (does not affect Next.js Metadata output).
+   */
+  priority?: number;
+  /** Sitemap changefreq hint. Informational only. */
+  changefreq?: string;
 }
 
 /**

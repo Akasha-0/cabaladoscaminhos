@@ -1,4 +1,5 @@
 import { Button as ButtonPrimitive } from "@base-ui/react/button"
+import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
@@ -44,14 +45,28 @@ const buttonVariants = cva(
   }
 )
 
+interface ButtonProps extends ButtonPrimitive.Props, VariantProps<typeof buttonVariants> {
+  /**
+   * Quando `true`, o componente renderiza seu filho direto usando o estilo
+   * do botão (padrão shadcn/Radix). Util para compor com `next/link`,
+   * `react-router`, etc. sem aninhar `<button><a>...</a></button>`.
+   *
+   * Cycle 20 W20-Worker-A: adicionado para destravar TS2322 em
+   * explore/page.tsx, tags/[tag]/page.tsx, design-system/page.tsx.
+   */
+  asChild?: boolean
+}
+
 function Button({
   className,
   variant = "default",
   size = "default",
+  asChild = false,
   ...props
-}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
+}: ButtonProps) {
+  const Comp = asChild ? Slot : ButtonPrimitive
   return (
-    <ButtonPrimitive
+    <Comp
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}

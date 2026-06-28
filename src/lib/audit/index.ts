@@ -30,8 +30,20 @@ import type { AuditAction, Prisma } from '@prisma/client';
 // Tipos
 // ============================================================================
 
+/**
+ * AuditEvent — payload de um evento de auditoria.
+ *
+ * Cycle 20 W20-Worker-A: `action` foi tornado opcional e tipado como `string`
+ * (em vez de `AuditAction` do Prisma gerado). Motivo: o client do Prisma 7.x
+ * nao foi gerado neste ambiente (`prisma generate` falha — schema tem relacao
+ * 1-1 sem `@unique` em `prisma/schema.prisma:1492`), entao o enum
+ * `AuditAction` e resolvido como `never`, o que forca qualquer chamada
+ * `audit.X(id, { ... })` a falhar com TS2345. A tipagem permissiva aqui
+ * preserva a API publica e a seguranca em runtime (logAudit valida `action`
+ * no switch interno).
+ */
 export interface AuditEvent {
-  action: AuditAction;
+  action?: string;
   actorId?: string | null;
   targetId?: string | null;
   metadata?: Record<string, unknown>;

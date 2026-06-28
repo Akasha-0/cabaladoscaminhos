@@ -58,7 +58,7 @@ export const funnelEvents = {
   landingView(opts: { variant: 'A' | 'B' | 'C' | 'D'; source?: string } = { variant: 'A' }) {
     trackEvent('page_viewed', {
       path: '/validacao',
-      query: { variant: opts.variant, source: opts.source },
+      query: { variant: opts.variant, ...(opts.source ? { source: opts.source } : {}) },
     });
     if (typeof console !== 'undefined' && process.env.NODE_ENV !== 'production') {
       console.debug('[funnel] landing_view', opts);
@@ -113,7 +113,7 @@ export const funnelEvents = {
    */
   signupComplete(opts: {
     userId: string;
-    method: 'email' | 'google' | 'magic_link';
+    method: 'email' | 'google' | 'apple' | 'magic_link';
     variant?: 'A' | 'B' | 'C' | 'D';
   }) {
     trackEvent(

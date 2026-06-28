@@ -71,7 +71,10 @@ export function FadeIn({
 // ============================================================================
 // StaggerList — Feed/library entrance with per-item delay
 // ============================================================================
-export interface StaggerListProps extends React.HTMLAttributes<HTMLDivElement> {
+// Cycle 20 W20-Worker-A: nao estende React.HTMLAttributes para evitar TS2430
+// (React 19 tipa algumas props como `T | undefined`, conflitando com a interface
+// declarada como required).
+export interface StaggerListProps {
   /** Milliseconds between siblings (default 50 — Wave 17 spec). */
   step?: number;
   /** Initial delay before the first child starts (default 0). */
@@ -80,6 +83,12 @@ export interface StaggerListProps extends React.HTMLAttributes<HTMLDivElement> {
   max?: number;
   /** Stagger via scroll-fade-in instead of mount-time. */
   onScroll?: boolean;
+  /** Class extras (mesma convencao dos outros componentes). */
+  className?: string;
+  /** Filhos a serem staggered. */
+  children?: React.ReactNode;
+  /** Outras props sao repassadas ao `<div>` wrapper. */
+  [key: string]: unknown;
 }
 
 /**

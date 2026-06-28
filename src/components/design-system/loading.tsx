@@ -17,8 +17,8 @@ import { Loader2 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
-type Variant = 'spinner' | 'skeleton' | 'overlay';
-type Size = 'sm' | 'md' | 'lg';
+export type Variant = 'spinner' | 'skeleton' | 'overlay';
+export type Size = 'sm' | 'md' | 'lg';
 
 export interface LoadingProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Visual treatment. */
@@ -152,4 +152,3 @@ function Loading({
 }
 
 export { Loading };
-export type { LoadingProps, Variant as LoadingVariant, Size as LoadingSize };

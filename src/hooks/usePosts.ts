@@ -360,6 +360,7 @@ export interface UseCommentsResult {
   loading: boolean;
   error: string | null;
   hasMore: boolean;
+  loadingMore: boolean;
   loadMore: () => Promise<void>;
   prepend: (comment: Comment) => void;
 }

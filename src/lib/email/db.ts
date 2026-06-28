@@ -238,7 +238,7 @@ export async function getQueueStats(): Promise<QueueStats> {
       MIN("scheduledFor") FILTER (WHERE status = 'PENDING') AS oldest_pending
     FROM "email_jobs"
   `;
-  const row = rows[0] ?? { pending: 0n, sent_24h: 0n, failed_24h: 0n, oldest_pending: null };
+  const row = rows[0] ?? { pending: BigInt(0), sent_24h: BigInt(0), failed_24h: BigInt(0), oldest_pending: null };
   return {
     pending: Number(row.pending),
     sent24h: Number(row.sent_24h),

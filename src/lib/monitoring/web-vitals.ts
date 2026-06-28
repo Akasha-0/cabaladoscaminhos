@@ -220,7 +220,7 @@ function observeINP(): () => void {
       }
     }
   });
-  observer.observe({ type: "event", buffered: true, durationThreshold: 16 });
+  observer.observe({ type: "event", buffered: true, durationThreshold: 16 } as PerformanceObserverInit);
 
   const finalize = () => {
     if (worst > 0) reportVital("INP", worst, worstId);

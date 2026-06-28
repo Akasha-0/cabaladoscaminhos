@@ -15,8 +15,8 @@ import { Inbox } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
-type Size = 'sm' | 'md' | 'lg';
-type Variant = 'default' | 'spiritual' | 'minimal';
+export type Size = 'sm' | 'md' | 'lg';
+export type Variant = 'default' | 'spiritual' | 'minimal';
 
 export interface EmptyAction {
   label: string;
@@ -159,4 +159,3 @@ function Empty({
 }
 
 export { Empty };
-export type { EmptyProps, EmptyAction, Size as EmptySize, Variant as EmptyVariant };

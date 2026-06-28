@@ -187,4 +187,3 @@ function Error({
 }
 
 export { Error };
-export type { ErrorProps, ErrorSeverity };

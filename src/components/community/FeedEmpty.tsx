@@ -10,6 +10,8 @@ import { Sparkles } from 'lucide-react';
 
 interface FeedEmptyProps {
   title?: string;
+  /** Alias semantico para `message` — usado por rotas como /groups/[slug]. */
+  subtitle?: string;
   message?: string;
   showCreateCta?: boolean;
 }
@@ -17,6 +19,7 @@ interface FeedEmptyProps {
 export function FeedEmpty({
   title = 'Nenhum post ainda',
   message = 'Seja o primeiro a compartilhar algo com a comunidade.',
+  subtitle,
   showCreateCta = true,
 }: FeedEmptyProps) {
   return (
@@ -27,7 +30,7 @@ export function FeedEmpty({
       <CardContent className="pt-8 pb-8 text-center space-y-3">
         <Sparkles className="w-10 h-10 mx-auto text-amber-400/70" />
         <p className="text-base font-semibold text-slate-200">{title}</p>
-        <p className="text-sm text-slate-400 max-w-sm mx-auto">{message}</p>
+        <p className="text-sm text-slate-400 max-w-sm mx-auto">{message ?? subtitle}</p>
         {showCreateCta && (
           <Link
             href="/explore"

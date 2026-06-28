@@ -65,6 +65,12 @@ interface PublicProfile {
   // Flags
   isOwn: boolean;
   isPrivate: boolean;
+  /**
+   * Indica se o viewer autenticado segue este perfil.
+   * Opcional porque o DTO da API pode omitir (caso nao-autenticado)
+   * — nesse caso a UI mostra estado neutro.
+   */
+  isFollowing?: boolean;
 }
 
 // ============================================================

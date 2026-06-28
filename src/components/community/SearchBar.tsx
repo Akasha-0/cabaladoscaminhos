@@ -74,6 +74,8 @@ export interface SearchBarProps {
   size?: 'md' | 'lg';
   autoFocus?: boolean;
   className?: string;
+  /** Callback disparado quando o usuário submete a busca (Enter ou botão). */
+  onSubmit?: (query: string) => void;
 }
 
 export function SearchBar({
@@ -82,6 +84,7 @@ export function SearchBar({
   size = 'md',
   autoFocus = false,
   className,
+  onSubmit,
 }: SearchBarProps) {
   const router = useRouter();
   const params = useSearchParams();
@@ -141,6 +144,11 @@ export function SearchBar({
   const submitSearch = useCallback(
     (q: string) => {
       setOpen(false);
+      // Notifica consumidor externo (usado em /explore para atualizar URL sem navegar)
+      if (onSubmit) {
+        onSubmit(q);
+        return;
+      }
       const search = new URLSearchParams();
       if (q) search.set('q', q);
       // Mantém outros params (ex: tag)
@@ -149,7 +157,7 @@ export function SearchBar({
       });
       router.push(`/explore?${search.toString()}`);
     },
-    [router, params],
+    [router, params, onSubmit],
   );
 
   const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {

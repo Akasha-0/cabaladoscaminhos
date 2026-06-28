@@ -101,6 +101,8 @@ type Hit =
     }
   | {
       type: 'tag';
+      /** Alias para `tag` — usado em keys/lists. Tags sao identificadas pelo slug. */
+      id: string;
       tag: string;
       kind: 'tradition' | 'topic' | 'article_tag';
       count: number;

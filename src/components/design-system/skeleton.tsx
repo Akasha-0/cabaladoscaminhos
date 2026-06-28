@@ -23,7 +23,7 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 
-type Variant =
+export type Variant =
   | 'text'
   | 'avatar'
   | 'circle'
@@ -33,7 +33,7 @@ type Variant =
   | 'button'
   | 'badge';
 
-type Size = 'sm' | 'md' | 'lg';
+export type Size = 'sm' | 'md' | 'lg';
 
 export interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Shape / meaning of the placeholder. */
@@ -202,4 +202,3 @@ export function NotificationItemSkeleton() {
 }
 
 export { Skeleton };
-export type { SkeletonProps, Variant as SkeletonVariant, Size as SkeletonSize };

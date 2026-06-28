@@ -113,7 +113,12 @@ interface DynamicEntry {
  */
 async function fetchTopArticles(): Promise<DynamicEntry[]> {
   try {
-    const { PrismaClient } = await import("@prisma/client");
+    // Dynamic import + cast: Prisma 7.x client may not be generated in some
+    // environments (e.g. static-export preview without DATABASE_URL).
+    // The surrounding try/catch swallows failures and returns [].
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const PrismaClientModule = await import("@prisma/client") as any;
+    const PrismaClient = PrismaClientModule.PrismaClient;
     const prisma = new PrismaClient();
     try {
       const top = await prisma.article.findMany({
@@ -155,7 +160,9 @@ async function fetchTopArticles(): Promise<DynamicEntry[]> {
  */
 async function fetchUpcomingEvents(): Promise<DynamicEntry[]> {
   try {
-    const { PrismaClient } = await import("@prisma/client");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const PrismaClientModule = await import("@prisma/client") as any;
+    const PrismaClient = PrismaClientModule.PrismaClient;
     const prisma = new PrismaClient();
     try {
       const cutoff = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);

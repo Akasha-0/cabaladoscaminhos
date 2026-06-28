@@ -198,4 +198,4 @@ function ToastCard({ toast, onDismiss }: ToastCardProps) {
   )
 }
 
-export { ToastProvider, useToast, type Severity, type ToastInput }
+export type { Severity, ToastInput }

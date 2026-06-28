@@ -44,6 +44,7 @@ export async function trackEvent(event: AnalyticsEvent): Promise<void> {
   // Quando PostHog estiver configurado, enviar via API client-side
   try {
     if (typeof window !== 'undefined') {
+      // @ts-expect-error posthog-js is an optional runtime dep (only used when NEXT_PUBLIC_POSTHOG_KEY is set); import is wrapped in try/catch.
       const { default: posthog } = await import('posthog-js');
       posthog.capture(enriched.name, enriched.properties ?? {});
     }

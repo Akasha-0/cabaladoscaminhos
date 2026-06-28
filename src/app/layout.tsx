@@ -189,10 +189,9 @@ export const metadata: Metadata = {
   verification: {
     google: "your-google-verification-code",
   },
-  other: {
-    // Schema.org SearchAction — SiteLinks Search Box (Google)
-    'google-site-verification': 'your-google-verification-code',
-  },
+  // other: removido no cycle 20 — `'google-site-verification'` ja vive em `verification.google`.
+  // Manter ambos causava TS1117 (object literal duplicate property name) porque o
+  // tipo `OtherMetaDescriptor` do Next.js normaliza chaves canonicas.
 };
 
 // ============================================================================

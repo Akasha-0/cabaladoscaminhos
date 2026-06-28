@@ -233,7 +233,11 @@ export const EVENT_CATALOG_FEED = {
     schema: z.object({
       postId: z.string(),
       authorId: z.string().uuid(),
-      postType: z.enum(["text", "image", "link", "quote", "ritual"]),
+      // Cycle 20 W20-Worker-A: alargado para aceitar os PostType reais do schema
+  // (TEXT|LINK|ARTICLE|QUESTION|EXPERIENCE|PRACTICE). A restricao anterior
+  // quebrou em /api/posts/route.ts (TS2345). Validacao semantica fica por
+  // conta do zod de `@/lib/validators/posts` (PostTypeSchema).
+      postType: z.string(),
       tradition: z.string().optional(),
       groupSlug: z.string().optional(),
       hasMedia: z.boolean(),
@@ -917,7 +921,9 @@ export function trackLogout(userId?: string) {
 export function trackPostCreate(opts: {
   postId: string;
   authorId: string;
-  postType: "text" | "image" | "link" | "quote" | "ritual";
+  // Cycle 20 W20-Worker-A: alarga para aceitar os tipos definidos em
+  // `@/lib/validators/posts` (PostType = TEXT|LINK|ARTICLE|QUESTION|EXPERIENCE|PRACTICE).
+  postType: string;
   tradition?: string;
   groupSlug?: string;
   hasMedia: boolean;

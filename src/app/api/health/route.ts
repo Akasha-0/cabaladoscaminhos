@@ -177,4 +177,4 @@ async function handler(request: NextRequest): Promise<NextResponse> {
   });
 }
 
-export const GET = withLogging(handler, { path: "/api/health" });
+export const GET = withLogging(handler as unknown as (request: Request) => Promise<Response>, { path: "/api/health" });

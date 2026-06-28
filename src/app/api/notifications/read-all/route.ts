@@ -9,6 +9,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { getViewer } from '@/lib/community/auth';
+import type { NotificationType } from '@/lib/notifications/types';
 
 export const dynamic = 'force-dynamic';
 
@@ -62,11 +63,7 @@ export async function PATCH(request: NextRequest) {
       userId: string;
       read: boolean;
       createdAt?: { lt: Date };
-      type?: z.infer<typeof BodySchema> extends infer T
-        ? T extends { type: infer U }
-          ? U
-          : never
-        : never;
+      type?: NotificationType;
     } = {
       userId: viewer.id,
       read: false,

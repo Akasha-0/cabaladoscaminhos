@@ -20,6 +20,7 @@ import { cn } from '@/lib/utils';
 import { PostCard } from '@/components/community/PostCard';
 import dynamic from 'next/dynamic';
 import { FeedSkeleton } from '@/components/community/FeedSkeleton';
+import { FeedSidebar } from '@/components/community/FeedSidebar';
 // ============================================================================
 // Code split — CreatePost (288 lines + useGroupsList + form state) is loaded
 // lazily so its JS isn't in the feed route's initial bundle. SSR HTML still

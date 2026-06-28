@@ -53,7 +53,7 @@ export async function scheduleWelcomeSeries(
     FROM "email_jobs"
     WHERE "campaignId" = ${campaignId} AND status = 'PENDING'
   `;
-  if (Number(existing[0]?.count ?? 0n) > 0) {
+  if (Number(existing[0]?.count ?? BigInt(0)) > 0) {
     return {
       ok: false,
       campaignId,

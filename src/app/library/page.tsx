@@ -50,6 +50,7 @@ const SECTIONS: Section[] = [
       {
         id: 'c1',
         title: 'Os 4 Mundos e a jornada da alma',
+        tradition: 'cabala',
         excerpt: 'Como Atziluth, Beriah, Yetzirah e Assiah se relacionam com nosso dia a dia.',
         evidence: 'revisado',
         readTime: '8 min',
@@ -57,6 +58,7 @@ const SECTIONS: Section[] = [
       {
         id: 'c2',
         title: 'Meditação com os 72 nomes de Deus',
+        tradition: 'cabala',
         excerpt: 'Prática contemplativa baseada nos shem ha-mephorash.',
         evidence: 'anecdótico',
         readTime: '12 min',
@@ -71,6 +73,7 @@ const SECTIONS: Section[] = [
       {
         id: 'i1',
         title: 'O Odu Ofun e o equilíbrio interior',
+        tradition: 'ifa',
         excerpt: 'Reflexões sobre o Odu que fala de estabilidade e conexão com ancestrais.',
         evidence: 'anecdótico',
         readTime: '6 min',
@@ -85,6 +88,7 @@ const SECTIONS: Section[] = [
       {
         id: 't1',
         title: 'Kundalini e os 7 chakras — uma introdução',
+        tradition: 'tantra',
         excerpt:
           'Visão integrativa dos centros energéticos à luz da neurociência contemporânea.',
         evidence: 'meta-análise',

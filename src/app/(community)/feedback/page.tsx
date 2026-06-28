@@ -23,7 +23,9 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { Suspense } from 'react'
+import type { ReactElement } from 'react'
 import { FeedbackBoard } from './FeedbackBoard'
+import { prisma } from '@/lib/prisma'
 
 export const metadata = {
   title: 'Feature Requests · Akasha Portal',
@@ -59,7 +61,7 @@ export default async function FeedbackPage({
   searchParams,
 }: {
   searchParams: Promise<{ status?: string; category?: string }>
-}): Promise<JSX.Element> {
+}): Promise<ReactElement> {
   const params = await searchParams
   const status = params.status ?? 'all'
   const category = params.category ?? 'all'
@@ -118,8 +120,7 @@ async function loadFeatureRequests(filters: {
   const currentUserId = userData?.user?.id ?? null
 
   // Load feature requests via Prisma (same DB, better filter DSL)
-  const { PrismaClient } = await import('@prisma/client')
-  const prisma = new PrismaClient()
+  // usa o singleton de @/lib/prisma para evitar recriar clients a cada request
   try {
     const rows = await prisma.featureRequest.findMany({
       where: {

@@ -13,9 +13,9 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-type Orientation = 'horizontal' | 'vertical';
-type Variant = 'default' | 'subtle' | 'spiritual' | 'glow';
-type Thickness = 'thin' | 'medium' | 'thick';
+export type Orientation = 'horizontal' | 'vertical';
+export type Variant = 'default' | 'subtle' | 'spiritual' | 'glow';
+export type Thickness = 'thin' | 'medium' | 'thick';
 
 export interface DividerProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Layout axis. Horizontal = full-width line; vertical = full-height line. */
@@ -117,4 +117,3 @@ function Divider({
 }
 
 export { Divider };
-export type { DividerProps, Orientation, Variant, Thickness };

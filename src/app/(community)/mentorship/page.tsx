@@ -459,14 +459,12 @@ function MentorCard({
                 <>
                   <Loader2 className="w-3 h-3 mr-1 animate-spin" /> Enviando...
                 </>
-              ) : !user ? (
-                'Faça login para solicitar'
-              ) : !selectedTradition ? (
-                'Escolha a tradição acima'
-              ) : (
+              ) : canRequest ? (
                 <>
                   <Send className="w-3 h-3 mr-1" /> Solicitar mentoria
                 </>
+              ) : (
+                'Faça login e escolha a tradição'
               )}
             </Button>
           )}
