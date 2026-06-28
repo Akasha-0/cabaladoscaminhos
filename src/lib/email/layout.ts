@@ -39,7 +39,7 @@ export interface LayoutOptions {
   /** Tipo de email — ajusta footer. */
   footer?: 'transactional' | 'marketing';
   /** Token de unsubscribe (obrigatório em marketing, opcional em transactional). */
-  unsubscribeToken?: string;
+  unsubscribeToken?: string | null;
   /** Tipo de notificação do unsubscribe (ex: 'welcome', 'comment'). */
   unsubscribeType?: string;
 }

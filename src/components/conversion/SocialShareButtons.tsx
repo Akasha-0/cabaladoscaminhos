@@ -9,7 +9,7 @@
 // ============================================================================
 
 import { useState } from 'react';
-import { Twitter, Linkedin, MessageCircle, Link as LinkIcon, Check } from 'lucide-react';
+import { Bird, MessageCircle, Link as LinkIcon, Check } from 'lucide-react';
 import { trackEvent } from '@/lib/analytics/events-catalog';
 
 interface Props {
@@ -77,14 +77,14 @@ export function SocialShareButtons({ url, title, variant }: Props) {
     {
       id: 'twitter',
       label: 'Twitter',
-      icon: Twitter,
+      icon: Bird,
       onClick: handleTwitter,
       className: 'hover:bg-sky-500/20 hover:text-sky-300 hover:border-sky-500/40',
     },
     {
       id: 'linkedin',
       label: 'LinkedIn',
-      icon: Linkedin,
+      icon: LinkIcon,
       onClick: handleLinkedIn,
       className: 'hover:bg-blue-500/20 hover:text-blue-300 hover:border-blue-500/40',
     },

@@ -91,7 +91,7 @@ export function CommunityNav({ user, onSearch }: CommunityNavProps) {
   }));
 
   const handleNavClick = (href: string) => {
-    trigger('selection');
+    trigger('light');
     setMobileMenuOpen(false);
   };
 
@@ -178,7 +178,7 @@ export function CommunityNav({ user, onSearch }: CommunityNavProps) {
             {user && (
               <Link
                 href="/notifications"
-                onClick={() => trigger('selection')}
+                onClick={() => trigger('light')}
                 className="relative p-2 rounded-lg text-slate-400 hover:text-amber-300 hover:bg-slate-800/50 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label={`${t('nav.notifications')}${user.notificationsCount && user.notificationsCount > 0 ? ` (${user.notificationsCount} ${t('nav.unreadSuffix')})` : ''}`}
               >
@@ -217,12 +217,12 @@ export function CommunityNav({ user, onSearch }: CommunityNavProps) {
                       setProfileOpen(false);
                       trigger('light');
                     }}
-                    onItemClick={() => trigger('selection')}
+                    onItemClick={() => trigger('light')}
                   />
                 )}
               </div>
             ) : (
-              <Link href="/login" onClick={() => trigger('selection')}>
+              <Link href="/login" onClick={() => trigger('light')}>
                 <Button
                   size="sm"
                   className="bg-gradient-to-r from-amber-500 to-violet-500 hover:from-amber-600 hover:to-violet-600 text-white border-0 min-h-[44px]"
@@ -321,7 +321,7 @@ export function CommunityNav({ user, onSearch }: CommunityNavProps) {
                   key={item.href}
                   href={item.href}
                   onClick={() => {
-                    trigger('selection');
+                    trigger('light');
                   }}
                   className={cn(
                     'relative flex flex-col items-center justify-center gap-0.5 text-[10px] font-medium transition-all min-h-[64px] py-2',

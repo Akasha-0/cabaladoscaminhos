@@ -101,6 +101,7 @@ export default function SettingsPage() {
     let cancelled = false;
 
     async function load() {
+      if (!user) return;
       try {
         const res = await fetch('/api/users/me/settings', {
           credentials: 'include',

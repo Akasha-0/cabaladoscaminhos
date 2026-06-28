@@ -1,8 +1,14 @@
+// ============================================================================
+// AI barrel — public re-exports
+// ============================================================================
+// Note (cycle 19): orphan re-exports for prompt-system, insights/parser,
+// insights/types, and tradition-mapper were removed. The corresponding files
+// don't exist in src/lib/ai/ yet (W21 roadmap). If consumers need them back,
+// add the source files under src/lib/ai/ first, then restore the re-export.
+// ============================================================================
+
 export type { AIResponse, ChatCompletionOptions, ChatMessage, StreamChunk } from './types';
 export { sanitizeInput } from './sanitize';
-export { gerarContextoUsuario } from './prompt-system';
-export { parseInsightResponse, criarInsightFallback } from './insights/parser';
-export type { InsightData } from './insights/types';
 
 // Re-export error types for convenience
 export {
@@ -13,7 +19,3 @@ export {
   resetCircuitBreaker,
   createChatCompletionStream,
 } from './openai';
-
-// Re-export tradition mapper
-export { traditionMapper, TraditionMapper } from './tradition-mapper';
-export type { TraditionConnection, TraditionMapData } from './tradition-mapper';

@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
   try {
     const session = await requireAdmin();
     if (!session.ok) {
-      return fail(ErrorCode.FORBIDDEN, `Admin required (${session.reason})`, 403);
+      return fail(403, ErrorCode.FORBIDDEN, `Admin required (${session.reason})`);
     }
 
     const sp = request.nextUrl.searchParams;

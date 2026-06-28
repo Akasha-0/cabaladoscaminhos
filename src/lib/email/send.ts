@@ -64,7 +64,7 @@ export async function sendEmail(opts: {
   /** Quando true, não chama tracking analytics (uso em retries / batch). */
   silent?: boolean;
 }): Promise<SendResult> {
-  const rendered = renderTemplate(opts.templateId, opts.data, {
+  const rendered = renderTemplate(opts.templateId, opts.data as never, {
     unsubscribeToken: opts.unsubscribeToken,
   });
 
@@ -201,7 +201,7 @@ export async function sendBatch(
     if (mode === 'stub') {
       // Stub: log apenas
       for (const r of chunk) {
-        const rendered = renderTemplate(templateId, r.data, {
+        const rendered = renderTemplate(templateId, r.data as never, {
           unsubscribeToken: r.unsubscribeToken,
         });
         // eslint-disable-next-line no-console

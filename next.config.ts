@@ -11,9 +11,8 @@ const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
   openAnalyzer: false, // CI-friendly; opt-in local open via ANALYZE_OPEN=1
   analyzerMode: "static",
-  reportFilename: "../analyze/[type].html",
   defaultSizes: "gzip",
-});
+} as Parameters<typeof bundleAnalyzer>[0]);
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,

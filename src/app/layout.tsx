@@ -36,7 +36,7 @@ const cinzel = Cinzel({
   weight: ["600"],
   preload: true,
   fallback: ["Georgia", "serif"],
-  adjustFontFallback: "Times New Roman",
+  adjustFontFallback: true,
 });
 
 const cormorant = Cormorant_Garamond({
@@ -46,7 +46,7 @@ const cormorant = Cormorant_Garamond({
   weight: ["500"],
   preload: false,
   fallback: ["Georgia", "serif"],
-  adjustFontFallback: "Times New Roman",
+  adjustFontFallback: true,
 });
 
 const raleway = Raleway({
@@ -56,7 +56,7 @@ const raleway = Raleway({
   weight: ["400", "500", "600"],
   preload: true,
   fallback: ["system-ui", "sans-serif"],
-  adjustFontFallback: "Arial",
+  adjustFontFallback: true,
 });
 
 const imFell = IM_Fell_English({
@@ -66,7 +66,7 @@ const imFell = IM_Fell_English({
   weight: ["400"],
   preload: false,
   fallback: ["Georgia", "serif"],
-  adjustFontFallback: "Times New Roman",
+  adjustFontFallback: true,
 });
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://cabaladoscaminhos.com';

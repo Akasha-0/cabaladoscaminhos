@@ -46,16 +46,16 @@ export async function GET(
   try {
     const session = await requireAdmin();
     if (!session.ok) {
-      return fail(ErrorCode.FORBIDDEN, `Admin required (${session.reason})`, 403);
+      return fail(403, ErrorCode.FORBIDDEN, `Admin required (${session.reason})`);
     }
 
     const { name: rawName } = await params;
     const name = decodeURIComponent(rawName ?? '');
     if (!VALID.has(name)) {
       return fail(
+        400,
         ErrorCode.BAD_REQUEST,
         `Métrica desconhecida: ${name}. Válidas: ${[...VALID].join(', ')}`,
-        400
       );
     }
 

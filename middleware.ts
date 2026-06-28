@@ -32,12 +32,12 @@ function resolveAllowedOrigins(): string {
     // Usamos '*' apenas para evitar 500 no boot, mas a response de API
     // vai marcar com Vary: * — recomenda-se hard-fail via monitor.
     // O ideal é setar ALLOWED_ORIGINS no painel Vercel antes do deploy.
-    if (process.env.NODE_ENV !== 'test') {
-      // eslint-disable-next-line no-console
-      console.warn(
-        '[middleware] ALLOWED_ORIGINS ausente em produção. Setando fallback restritivo (same-origin only).'
-      );
-    }
+    // (Dentro de NODE_ENV==='production' o ramo !=='test' é sempre true —
+    //  removido para satisfazer strict TS narrowing em cycle 19.)
+    // eslint-disable-next-line no-console
+    console.warn(
+      '[middleware] ALLOWED_ORIGINS ausente em produção. Setando fallback restritivo (same-origin only).'
+    );
     return 'same-origin';
   }
 

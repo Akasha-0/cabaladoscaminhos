@@ -30,19 +30,19 @@ export async function POST(
   try {
     const session = await requireAdmin();
     if (!session.ok) {
-      return fail(ErrorCode.FORBIDDEN, `Admin required (${session.reason})`, 403);
+      return fail(403, ErrorCode.FORBIDDEN, `Admin required (${session.reason})`);
     }
 
     const { id: userId } = await params;
     if (!userId) {
-      return fail(ErrorCode.BAD_REQUEST, 'id obrigatório', 400);
+      return fail(400, ErrorCode.BAD_REQUEST, 'id obrigatório');
     }
 
     let body: unknown = {};
     try {
       body = await request.json();
     } catch {
-      return fail(ErrorCode.BAD_REQUEST, 'Body JSON inválido', 400);
+      return fail(400, ErrorCode.BAD_REQUEST, 'Body JSON inválido');
     }
 
     const parsed = BodySchema.safeParse(body);
@@ -63,7 +63,7 @@ export async function POST(
     );
   } catch (err) {
     if (err instanceof Error && err.message === 'USER_NOT_FOUND') {
-      return fail(ErrorCode.NOT_FOUND, 'Usuário não encontrado', 404);
+      return fail(404, ErrorCode.NOT_FOUND, 'Usuário não encontrado');
     }
     return handleError(err, 'POST /api/admin/users/[id]/promote-mentor');
   }

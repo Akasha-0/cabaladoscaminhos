@@ -47,7 +47,7 @@ export interface UseAuthReturn {
     email: string,
     password: string,
     metadata?: SignUpMetadata
-  ) => Promise<AuthActionResult>;
+  ) => Promise<AuthActionResult<User>>;
   /** Wave 20 — magic link (passwordless) via Supabase signInWithOtp. */
   signInWithMagicLink: (
     email: string,
@@ -91,7 +91,7 @@ export function useAuth(): UseAuthReturn {
       email: string,
       password: string,
       metadata?: SignUpMetadata
-    ): Promise<AuthActionResult> => {
+    ): Promise<AuthActionResult<User>> => {
       if (!ctx.supabase) {
         return { ok: false, error: 'Serviço de autenticação indisponível' };
       }

@@ -26,19 +26,19 @@ export async function POST(
   try {
     const session = await requireAdmin();
     if (!session.ok) {
-      return fail(ErrorCode.FORBIDDEN, `Admin required (${session.reason})`, 403);
+      return fail(403, ErrorCode.FORBIDDEN, `Admin required (${session.reason})`);
     }
 
     const { id: userId } = await params;
     if (!userId) {
-      return fail(ErrorCode.BAD_REQUEST, 'id obrigatório', 400);
+      return fail(400, ErrorCode.BAD_REQUEST, 'id obrigatório');
     }
 
     let body: unknown = {};
     try {
       body = await request.json();
     } catch {
-      return fail(ErrorCode.BAD_REQUEST, 'Body JSON inválido', 400);
+      return fail(400, ErrorCode.BAD_REQUEST, 'Body JSON inválido');
     }
 
     const parsed = BodySchema.safeParse(body);
@@ -48,7 +48,7 @@ export async function POST(
 
     // Não banir a si mesmo
     if (userId === session.userId) {
-      return fail(ErrorCode.BAD_REQUEST, 'Você não pode banir a si mesmo', 400);
+      return fail(400, ErrorCode.BAD_REQUEST, 'Você não pode banir a si mesmo');
     }
 
     const result = await banUser({
