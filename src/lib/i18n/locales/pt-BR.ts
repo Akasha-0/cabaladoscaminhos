@@ -334,6 +334,94 @@ export const ptBR = {
   },
 
   // -----------------------------------------------------------------------
+  // Home (landing page — src/app/page.tsx)
+  // -----------------------------------------------------------------------
+  home: {
+    badge: 'Comunidade + IA co-evoluindo',
+    titleAkasha: 'Akasha',
+    titleSubline: 'Comunidade Viva de Espiritualidade',
+    subtitle:
+      'Compartilhe, aprenda e evolua com uma comunidade de praticantes, guiado por uma IA curadora alimentada por',
+    subtitleTraditions: 'tradições ancestrais',
+    subtitleAnd: 'e',
+    subtitleScience: 'artigos científicos',
+    ctaWaitlist: 'Entrar na lista de espera',
+    ctaExplore: 'Explorar tradições',
+    stats: {
+      practitioners: '1.200+ praticantes',
+      articles: '50+ artigos curados',
+      traditions: '8 tradições representadas',
+      nonprofit: 'Sem fins lucrativos',
+    },
+    pillarsTitle: 'Uma consciência coletiva em movimento',
+    pillarsSubtitle:
+      'Não é uma rede social qualquer. É um espaço onde a sabedoria ancestral encontra a ciência, e onde a IA aprende com cada interação da comunidade.',
+    pillar1Title: 'Comunidade real',
+    pillar1Desc:
+      'Pessoas compartilhando jornadas, práticas, dúvidas e descobertas. Sem gurus, sem promessas mirabolantes — só gente que caminha junto.',
+    pillar2Title: 'IA curadora',
+    pillar2Desc:
+      'Uma IA que aprende com os artigos, papers e conversas da comunidade. Ela sugere leituras, encontra correlações, conecta saberes — sem prescrever.',
+    pillar3Title: 'Evidência + tradição',
+    pillar3Desc:
+      'Artigos com nível de evidência classificado (anecdótico, revisado por pares, meta-análise). Tradições ancestrais respeitadas e estudadas.',
+    traditionsTitle: '8 tradições representadas',
+    traditionsSubtitle: 'Universalista, não proselitista. Cada tradição com seu grupo dedicado.',
+    ctaFinalTitle: 'Pronto pra despertar junto?',
+    ctaFinalBody:
+      'Entre na comunidade, compartilhe sua primeira reflexão, descubra artigos e conheça pessoas que trilham caminhos parecidos.',
+    ctaFinalButton: 'Ver detalhes do beta',
+  },
+
+  // -----------------------------------------------------------------------
+  // Manifesto (princípios da comunidade — src/app/manifesto/page.tsx)
+  // -----------------------------------------------------------------------
+  manifesto: {
+    kicker: 'Manifesto',
+    title: 'Nossos princípios',
+    intro:
+      'Cinco compromissos inegociáveis que guiam cada decisão técnica, editorial e comunitária do Akasha Portal.',
+    p01Title: 'Universalismo sem proselitismo',
+    p01Body:
+      'Cada tradição tem seu valor. Não hierarquizamos caminhos, não convertemos praticantes. Sua jornada é sua.',
+    p02Title: 'Evidência como bússola',
+    p02Body:
+      'Valorizamos papers revisados por pares, meta-análises e séries de casos bem desenhadas. Tradição é respeitada, mas não blindada da ciência.',
+    p03Title: 'Transparência por padrão',
+    p03Body:
+      'Quando a IA erra, dizemos. Quando um moderador age, registramos. Quando algo muda, comunicamos. Sem caixas-pretas.',
+    p04Title: 'Cuidado > escala',
+    p04Body:
+      'Preferimos 50 membros conscientes a 5.000 perdidos. Crescer é consequência de fazer bem feito, não o objetivo.',
+    p05Title: 'IA co-evolui, não substitui',
+    p05Body:
+      'A curadora IA é uma ferramenta da comunidade, não sua dona. Quem decide é você, com informação.',
+    closing: '“Caminhos diferentes, mesma direção: o despertar consciente.”',
+  },
+
+  // -----------------------------------------------------------------------
+  // Welcome (first-value experience — src/app/welcome/page.tsx)
+  // -----------------------------------------------------------------------
+  welcome: {
+    metaTitle: 'Bem-vindo · Akasha Portal',
+    metaDescription: 'Sua jornada multi-tradição começa agora.',
+    fallbackHint: 'Preparando sua jornada…',
+  },
+
+  // -----------------------------------------------------------------------
+  // Language switcher (UI chrome — accessible label + cookie name)
+  // -----------------------------------------------------------------------
+  languageSwitcher: {
+    label: 'Idioma',
+    ptBR: 'Português (Brasil)',
+    en: 'English',
+    es: 'Español',
+    ariaLabel: 'Selecionar idioma',
+    saveToast: 'Idioma salvo',
+    cookieName: 'akasha-locale',
+  },
+
+  // -----------------------------------------------------------------------
   // Common (compartilhado)
   // -----------------------------------------------------------------------
   common: {

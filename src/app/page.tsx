@@ -1,22 +1,44 @@
 'use client';
 
 // ============================================================================
-// AKASHA PORTAL — Landing Page
+// AKASHA PORTAL — Landing Page (Wave 19 i18n)
 // ============================================================================
 // Apresenta a comunidade + CTA pra entrar.
+// Migration W19: todas as strings viraram t('home.*') — PT-BR/EN/ES.
 // ============================================================================
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { LanguageSwitcher } from '@/components/i18n/LanguageSwitcher';
 import {
   Sparkles, Users, BookOpen, Heart, ArrowRight, Star,
   Brain, MessageCircle, Lightbulb, Globe, Loader2,
 } from 'lucide-react';
 import { InlineEmailCapture } from '@/components/conversion/InlineEmailCapture';
+import { useT } from '@/lib/i18n/useT';
 
 export default function HomePage() {
+  const t = useT();
+
+  // Tradições estáticas (nomes próprios preservados em todos os locales)
+  const TRADITIONS = [
+    { name: 'Cabala', emoji: '✡️', slug: 'cabala' },
+    { name: 'Ifá', emoji: '🪶', slug: 'ifa' },
+    { name: 'Xamanismo', emoji: '🌿', slug: 'xamanismo' },
+    { name: 'Tantra', emoji: '🕉️', slug: 'tantra' },
+    { name: 'Reiki', emoji: '🙏', slug: 'reiki' },
+    { name: 'Ayurveda', emoji: '🌺', slug: 'ayurveda' },
+    { name: 'Meditação', emoji: '🧘', slug: 'meditacao' },
+    { name: 'Astrologia', emoji: '⭐', slug: 'astrologia' },
+  ];
+
   return (
     <div className="min-h-screen">
+      {/* Top-right language switcher (não conflita com CTAs mobile) */}
+      <div className="fixed top-4 right-4 z-40 print:hidden">
+        <LanguageSwitcher variant="pill" />
+      </div>
+
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-violet-500/10 to-pink-500/10" />
@@ -27,24 +49,24 @@ export default function HomePage() {
         <div className="relative max-w-6xl mx-auto px-4 py-20 md:py-32 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs text-caps mb-6">
             <Sparkles className="w-3 h-3" />
-            Comunidade + IA co-evoluindo
+            {t('home.badge')}
           </div>
 
           <h1 className="text-display-7xl mb-6">
             <span className="bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 bg-clip-text text-transparent">
-              Akasha
+              {t('home.titleAkasha')}
             </span>
             <br />
             <span className="bg-gradient-to-r from-violet-400 via-pink-400 to-violet-400 bg-clip-text text-transparent text-display-5xl">
-              Comunidade Viva de Espiritualidade
+              {t('home.titleSubline')}
             </span>
           </h1>
 
           <p className="text-lg text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Compartilhe, aprenda e evolua com uma comunidade de praticantes,
-            guiado por uma IA curadora alimentada por{' '}
-            <span className="text-amber-300 font-medium">tradições ancestrais</span> e{' '}
-            <span className="text-emerald-300 font-medium">artigos científicos</span>.
+            {t('home.subtitle')}{' '}
+            <span className="text-amber-300 font-medium">{t('home.subtitleTraditions')}</span>{' '}
+            {t('home.subtitleAnd')}{' '}
+            <span className="text-emerald-300 font-medium">{t('home.subtitleScience')}</span>.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -53,7 +75,7 @@ export default function HomePage() {
                 size="lg"
                 className="bg-gradient-to-r from-amber-500 to-violet-500 hover:from-amber-600 hover:to-violet-600 text-white border-0 px-8 h-12 text-base"
               >
-                Entrar na lista de espera
+                {t('home.ctaWaitlist')}
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
@@ -63,23 +85,23 @@ export default function HomePage() {
                 variant="outline"
                 className="border-slate-700 bg-slate-800/50 hover:bg-slate-700/50 h-12 px-8"
               >
-                Explorar tradições
+                {t('home.ctaExplore')}
               </Button>
             </Link>
           </div>
 
           <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-tiny text-slate-500">
             <span className="flex items-center gap-1.5">
-              <Users className="w-3 h-3" /> 1.200+ praticantes
+              <Users className="w-3 h-3" /> {t('home.stats.practitioners')}
             </span>
             <span className="flex items-center gap-1.5">
-              <BookOpen className="w-3 h-3" /> 50+ artigos curados
+              <BookOpen className="w-3 h-3" /> {t('home.stats.articles')}
             </span>
             <span className="flex items-center gap-1.5">
-              <Globe className="w-3 h-3" /> 8 tradições representadas
+              <Globe className="w-3 h-3" /> {t('home.stats.traditions')}
             </span>
             <span className="flex items-center gap-1.5">
-              <Heart className="w-3 h-3" /> Sem fins lucrativos
+              <Heart className="w-3 h-3" /> {t('home.stats.nonprofit')}
             </span>
           </div>
         </div>
@@ -89,11 +111,10 @@ export default function HomePage() {
       <section className="max-w-6xl mx-auto px-4 py-16">
         <div className="text-center mb-12">
           <h2 className="text-display-5xl bg-gradient-to-r from-amber-400 to-violet-400 bg-clip-text text-transparent mb-3">
-            Uma consciência coletiva em movimento
+            {t('home.pillarsTitle')}
           </h2>
           <p className="text-body text-slate-400 max-w-2xl mx-auto">
-            Não é uma rede social qualquer. É um espaço onde a sabedoria ancestral
-            encontra a ciência, e onde a IA aprende com cada interação da comunidade.
+            {t('home.pillarsSubtitle')}
           </p>
         </div>
 
@@ -101,20 +122,20 @@ export default function HomePage() {
           <FeatureCard
             icon={<Users className="w-6 h-6" />}
             color="amber"
-            title="Comunidade real"
-            description="Pessoas compartilhando jornadas, práticas, dúvidas e descobertas. Sem gurus, sem promessas mirabolantes — só gente que caminha junto."
+            title={t('home.pillar1Title')}
+            description={t('home.pillar1Desc')}
           />
           <FeatureCard
             icon={<Brain className="w-6 h-6" />}
             color="violet"
-            title="IA curadora"
-            description="Uma IA que aprende com os artigos, papers e conversas da comunidade. Ela sugere leituras, encontra correlações, conecta saberes — sem prescrever."
+            title={t('home.pillar2Title')}
+            description={t('home.pillar2Desc')}
           />
           <FeatureCard
             icon={<BookOpen className="w-6 h-6" />}
             color="emerald"
-            title="Evidência + tradição"
-            description="Artigos com nível de evidência classificado (anecdótico, revisado por pares, meta-análise). Tradições ancestrais respeitadas e estudadas."
+            title={t('home.pillar3Title')}
+            description={t('home.pillar3Desc')}
           />
         </div>
       </section>
@@ -123,32 +144,23 @@ export default function HomePage() {
       <section className="max-w-6xl mx-auto px-4 py-16">
         <div className="text-center mb-10">
           <h2 className="text-3xl text-slate-200 mb-2">
-            8 tradições representadas
+            {t('home.traditionsTitle')}
           </h2>
           <p className="text-caption text-slate-400">
-            Universalista, não proselitista. Cada tradição com seu grupo dedicado.
+            {t('home.traditionsSubtitle')}
           </p>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {[
-            { name: 'Cabala', emoji: '✡️' },
-            { name: 'Ifá', emoji: '🪶' },
-            { name: 'Xamanismo', emoji: '🌿' },
-            { name: 'Tantra', emoji: '🕉️' },
-            { name: 'Reiki', emoji: '🙏' },
-            { name: 'Ayurveda', emoji: '🌺' },
-            { name: 'Meditação', emoji: '🧘' },
-            { name: 'Astrologia', emoji: '⭐' },
-          ].map((t) => (
+          {TRADITIONS.map((trad) => (
             <Link
-              key={t.name}
-              href={`/groups/${t.name.toLowerCase()}`}
+              key={trad.slug}
+              href={`/groups/${trad.slug}`}
               className="p-4 rounded-2xl bg-slate-900/50 border border-slate-800/50 hover:border-amber-500/30 hover:bg-slate-800/50 transition-all text-center group"
             >
-              <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">{t.emoji}</div>
+              <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">{trad.emoji}</div>
               <p className="text-caption text-slate-300 group-hover:text-amber-300 transition-colors">
-                {t.name}
+                {trad.name}
               </p>
             </Link>
           ))}
@@ -160,18 +172,17 @@ export default function HomePage() {
         <div className="p-8 md:p-12 rounded-3xl bg-gradient-to-br from-amber-500/10 via-violet-500/10 to-pink-500/10 border border-amber-500/20">
           <Sparkles className="w-10 h-10 mx-auto text-amber-400 mb-4" />
           <h2 className="text-3xl text-slate-100 mb-3">
-            Pronto pra despertar junto?
+            {t('home.ctaFinalTitle')}
           </h2>
           <p className="text-body text-slate-400 mb-6 max-w-xl mx-auto">
-            Entre na comunidade, compartilhe sua primeira reflexão,
-            descubra artigos e conheça pessoas que trilham caminhos parecidos.
+            {t('home.ctaFinalBody')}
           </p>
           <Link href="/validacao">
             <Button
               variant="outline"
               className="border-amber-500/40 text-amber-300 hover:bg-amber-500/10 px-6 h-11"
             >
-              Ver detalhes do beta
+              {t('home.ctaFinalButton')}
             </Button>
           </Link>
         </div>

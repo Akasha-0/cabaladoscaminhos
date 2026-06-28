@@ -333,6 +333,94 @@ export const en = {
   },
 
   // -----------------------------------------------------------------------
+  // Home (landing page)
+  // -----------------------------------------------------------------------
+  home: {
+    badge: 'Community + AI co-evolving',
+    titleAkasha: 'Akasha',
+    titleSubline: 'Living Community of Spirituality',
+    subtitle:
+      'Share, learn and grow with a community of practitioners, guided by a curator AI fed by',
+    subtitleTraditions: 'ancestral traditions',
+    subtitleAnd: 'and',
+    subtitleScience: 'scientific papers',
+    ctaWaitlist: 'Join the waiting list',
+    ctaExplore: 'Explore traditions',
+    stats: {
+      practitioners: '1,200+ practitioners',
+      articles: '50+ curated articles',
+      traditions: '8 traditions represented',
+      nonprofit: 'Non-profit',
+    },
+    pillarsTitle: 'A collective consciousness in motion',
+    pillarsSubtitle:
+      "It's not just another social network. It's a space where ancestral wisdom meets science, and where the AI learns from each community interaction.",
+    pillar1Title: 'Real community',
+    pillar1Desc:
+      'People sharing journeys, practices, questions and discoveries. No gurus, no wild promises — just people walking together.',
+    pillar2Title: 'Curator AI',
+    pillar2Desc:
+      'An AI that learns from the community\'s articles, papers and conversations. It suggests readings, finds correlations, connects knowledge — without prescribing.',
+    pillar3Title: 'Evidence + tradition',
+    pillar3Desc:
+      'Articles classified by evidence level (anecdotal, peer-reviewed, meta-analysis). Ancestral traditions respected and studied.',
+    traditionsTitle: '8 traditions represented',
+    traditionsSubtitle: 'Universalist, not proselytizing. Each tradition with its dedicated group.',
+    ctaFinalTitle: 'Ready to awaken together?',
+    ctaFinalBody:
+      'Join the community, share your first reflection, discover articles and meet people walking similar paths.',
+    ctaFinalButton: 'See beta details',
+  },
+
+  // -----------------------------------------------------------------------
+  // Manifesto (community principles)
+  // -----------------------------------------------------------------------
+  manifesto: {
+    kicker: 'Manifesto',
+    title: 'Our principles',
+    intro:
+      'Five non-negotiable commitments guiding every technical, editorial, and community decision at Akasha Portal.',
+    p01Title: 'Universalism without proselytism',
+    p01Body:
+      'Each tradition has its value. We do not rank paths, we do not convert practitioners. Your journey is yours.',
+    p02Title: 'Evidence as compass',
+    p02Body:
+      'We value peer-reviewed papers, meta-analyses and well-designed case series. Tradition is respected, but not shielded from science.',
+    p03Title: 'Transparency by default',
+    p03Body:
+      "When the AI errs, we say so. When a moderator acts, we log it. When something changes, we communicate. No black boxes.",
+    p04Title: 'Care > scale',
+    p04Body:
+      'We prefer 50 conscious members to 5,000 lost ones. Growth is a consequence of doing things well, not the goal.',
+    p05Title: 'AI co-evolves, it does not replace',
+    p05Body:
+      'The curator AI is a tool of the community, not its owner. You decide, with information.',
+    closing: '"Different paths, same direction: conscious awakening."',
+  },
+
+  // -----------------------------------------------------------------------
+  // Welcome (first-value experience)
+  // -----------------------------------------------------------------------
+  welcome: {
+    metaTitle: 'Welcome · Akasha Portal',
+    metaDescription: 'Your multi-tradition journey begins now.',
+    fallbackHint: 'Preparing your journey…',
+  },
+
+  // -----------------------------------------------------------------------
+  // Language switcher (UI chrome — accessible label + cookie name)
+  // -----------------------------------------------------------------------
+  languageSwitcher: {
+    label: 'Language',
+    ptBR: 'Português (Brasil)',
+    en: 'English',
+    es: 'Español',
+    ariaLabel: 'Select language',
+    saveToast: 'Language saved',
+    cookieName: 'akasha-locale',
+  },
+
+  // -----------------------------------------------------------------------
   // Common
   // -----------------------------------------------------------------------
   common: {

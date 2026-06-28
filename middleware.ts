@@ -5,6 +5,77 @@ import { generateRequestId } from '@/lib/logging';
 import { updateSession } from '@/lib/supabase/middleware';
 
 // ============================================
+// Locale Detection (Wave 19)
+// ============================================
+//
+// Server-side locale resolution for SSR-first paint (evita flash de PT-BR
+// quando user prefere EN/ES). Ordem de precedência:
+//   1. Cookie `akasha-locale` (escrito pelo LanguageSwitcher.client.tsx)
+//   2. Header `Accept-Language` (preference do browser, parseado pelo BCP 47)
+//   3. Default `pt-BR` (fonte da verdade do projeto)
+//
+// Se a request NÃO traz cookie e NÃO traz header, deixamos o client decidir
+// (já há fallback localStorage em useI18n). Se Accept-Language bater em EN
+// ou ES, gravamos cookie na response para a próxima request vir server-side
+// resolvida — UX sem flash de locale errado.
+const SUPPORTED_LOCALES = ['pt-BR', 'en', 'es'] as const;
+type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
+const LOCALE_COOKIE = 'akasha-locale';
+const DEFAULT_LOCALE: SupportedLocale = 'pt-BR';
+
+function parseAcceptLanguage(header: string | null): SupportedLocale | null {
+  if (!header) return null;
+  // Parse entries like "en-US,en;q=0.9,pt-BR;q=0.8,pt;q=0.7"
+  const entries = header
+    .split(',')
+    .map((part) => {
+      const [tag, ...attrs] = part.trim().split(';');
+      const qAttr = attrs.find((a) => a.trim().startsWith('q='));
+      const q = qAttr ? parseFloat(qAttr.split('=')[1] || '1') : 1;
+      return { tag: tag.trim(), q: Number.isFinite(q) ? q : 0 };
+    })
+    .filter((e) => e.tag.length > 0)
+    .sort((a, b) => b.q - a.q);
+
+  for (const entry of entries) {
+    // Exact match (pt-BR, en, es)
+    if ((SUPPORTED_LOCALES as readonly string[]).includes(entry.tag)) {
+      return entry.tag as SupportedLocale;
+    }
+    // Language-only match (en-US → en, es-MX → es, pt → pt-BR)
+    const lang = entry.tag.split('-')[0]?.toLowerCase();
+    if (lang === 'en') return 'en';
+    if (lang === 'es') return 'es';
+    if (lang === 'pt') return 'pt-BR';
+  }
+  return null;
+}
+
+function resolveLocale(request: NextRequest): {
+  locale: SupportedLocale;
+  source: 'cookie' | 'accept-language' | 'default';
+} {
+  // 1. Cookie has highest precedence (explicit user choice)
+  const cookieLocale = request.cookies.get(LOCALE_COOKIE)?.value;
+  if (
+    cookieLocale &&
+    (SUPPORTED_LOCALES as readonly string[]).includes(cookieLocale)
+  ) {
+    return {
+      locale: cookieLocale as SupportedLocale,
+      source: 'cookie',
+    };
+  }
+  // 2. Accept-Language header — best-effort inference
+  const headerLocale = parseAcceptLanguage(request.headers.get('accept-language'));
+  if (headerLocale) {
+    return { locale: headerLocale, source: 'accept-language' };
+  }
+  // 3. Default
+  return { locale: DEFAULT_LOCALE, source: 'default' };
+}
+
+// ============================================
 // Rate Limiting Configuration
 // ============================================
 
@@ -131,9 +202,29 @@ const SECURITY_HEADERS = buildSecurityHeaders(IS_DEV);
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
+  // 0. Locale detection (Wave 19) — SSR-friendly i18n
+  const { locale, source } = resolveLocale(request);
+  const baseResponse = NextResponse.next({ request });
+  // Expose resolved locale to downstream RSC via request header (optional read).
+  // Components may read via headers().get('x-akasha-locale') if needed.
+  baseResponse.headers.set('X-Akasha-Locale', locale);
+  baseResponse.headers.set('X-Akasha-Locale-Source', source);
+  // Vary tells caches/CDNs that response varies by Accept-Language
+  // (and implicitly by cookie when stored next to it).
+  baseResponse.headers.append('Vary', 'Accept-Language');
+  // If locale came from header (not cookie), persist it as cookie so next
+  // request is server-side resolved without re-parsing. Path=/ + 1y + Lax.
+  if (source !== 'cookie') {
+    baseResponse.cookies.set(LOCALE_COOKIE, locale, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365,
+      sameSite: 'lax',
+      httpOnly: false, // readable by client (useI18n reads from localStorage primarily)
+    });
+  }
+
   // 1. Security headers — aplicados em toda resposta
   const requestId = generateRequestId();
-  const baseResponse = NextResponse.next({ request });
   baseResponse.headers.set('X-Request-Id', requestId);
   Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
     baseResponse.headers.set(key, value);
