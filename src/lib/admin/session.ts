@@ -109,3 +109,74 @@ export async function requireAdminOrThrow(): Promise<{ userId: string; email: st
   }
   return { userId: result.userId, email: result.email };
 }
+
+// ============================================================================
+// Wave 25 — Comments Moderation: requireModerator()
+// ============================================================================
+// Aceita tanto ADMIN quanto MODERADOR. ADMIN ⊃ MODERADOR (todo admin pode
+// moderar). Resolve a sessão Supabase uma vez e checa os dois caminhos.
+//
+// Política:
+//   - ADMIN  → ADMIN_EMAILS env OR planoAssinatura='ADMIN'
+//   - MODER  → User.isModerator = true (operacional, definido manualmente)
+//
+// Retorna o mesmo shape discriminado que requireAdmin. Use em endpoints
+// públicos-de-interno (queue + action de moderação).
+// ============================================================================
+
+export interface ModeratorSessionResult {
+  ok: boolean;
+  reason?: 'no_session' | 'not_admin' | 'not_moderator' | 'config_error';
+  userId?: string;
+  email?: string;
+  /** Tag do papel efetivo: ADMIN sempre pode, MODERATOR se isModerator=true. */
+  role?: 'ADMIN' | 'MODERATOR';
+}
+
+export async function requireModerator(): Promise<ModeratorSessionResult> {
+  // Caminho 1: ADMIN (reusa requireAdmin; se ok, é admin ⊃ moderator)
+  const adminResult = await requireAdmin();
+  if (adminResult.ok) {
+    return {
+      ok: true,
+      userId: adminResult.userId,
+      email: adminResult.email,
+      role: 'ADMIN',
+    };
+  }
+
+  // ADMIN falhou por config_error em prod é fatal — não tenta fallback
+  if (adminResult.reason === 'config_error') {
+    return { ok: false, reason: 'config_error' };
+  }
+
+  // Caminho 2: MODERADOR site-wide (User.isModerator = true)
+  // Recria o client Supabase (requireAdmin acima já consumiu; refazer é barato)
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase.auth.getUser();
+
+    if (error || !data?.user) {
+      return { ok: false, reason: 'no_session' };
+    }
+
+    const dbUser = await prisma.user.findUnique({
+      where: { id: data.user.id },
+      select: { isModerator: true, email: true },
+    });
+
+    if (!dbUser?.isModerator) {
+      return { ok: false, reason: 'not_moderator' };
+    }
+
+    return {
+      ok: true,
+      userId: data.user.id,
+      email: (dbUser.email ?? data.user.email ?? '').toLowerCase(),
+      role: 'MODERATOR',
+    };
+  } catch {
+    return { ok: false, reason: 'not_moderator' };
+  }
+}
+

@@ -113,15 +113,31 @@ export function FlagModal({
     setSubmitting(true);
     setError(null);
     try {
-      const res = await fetch('/api/flags', {
+      // Wave 25 (2026-06-28): endpoint dedicado para comentários.
+      // Para outros target types (POST/USER/GROUP), mantém fallback no
+      // /api/flags (handler a ser implementado em wave futuro).
+      const endpoint =
+        targetType === 'COMMENT'
+          ? `/api/comments/${targetId}/report`
+          : '/api/flags';
+
+      const body =
+        targetType === 'COMMENT'
+          ? {
+              reason,
+              description: description.trim() || null,
+            }
+          : {
+              targetType,
+              targetId,
+              reason,
+              description: description.trim() || null,
+            };
+
+      const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          targetType,
-          targetId,
-          reason,
-          description: description.trim() || null,
-        }),
+        body: JSON.stringify(body),
       });
       const json = (await res.json().catch(() => null)) as
         | { data?: { id: string; alreadyReported?: boolean }; error?: { message: string } }

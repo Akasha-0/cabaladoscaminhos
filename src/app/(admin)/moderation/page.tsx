@@ -2,12 +2,16 @@
 // /admin/moderation — Fila de moderação (Wave 20)
 // ============================================================================
 // Server Component carrega flags PENDING; Queue client-side gerencia ações.
+//
+// Wave 25 (2026-06-28): gate por requireModerator (ADMIN ou isModerator=true).
 // ============================================================================
 
 import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import { AdminNav } from '@/components/admin/AdminNav';
 import { ModerationQueue } from '@/components/admin/ModerationQueue';
 import { getModerationQueue } from '@/lib/admin/metrics';
+import { requireModerator } from '@/lib/admin/session';
 
 export const metadata: Metadata = {
   title: 'Admin · Moderação',
@@ -31,6 +35,12 @@ const REASON_TONE: Record<string, string> = {
 };
 
 export default async function AdminModerationPage() {
+  // Gate: ADMIN ou MODERADOR (Wave 25)
+  const session = await requireModerator();
+  if (!session.ok) {
+    redirect('/auth/login?next=/admin/moderation&reason=not_authorized');
+  }
+
   const flags = await getModerationQueue({ status: 'PENDING', limit: 100 });
 
   // Stats rápidas (PENDING por reason)
@@ -47,6 +57,9 @@ export default async function AdminModerationPage() {
         <h1 className="text-2xl font-bold text-slate-100">Moderação</h1>
         <p className="text-sm text-slate-400">
           Fila de flags pendentes · ação manual ou em lote
+          <span className="ml-2 text-xs text-slate-500">
+            (papel: {session.role})
+          </span>
         </p>
       </header>
 

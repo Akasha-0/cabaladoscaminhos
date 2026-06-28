@@ -8,12 +8,14 @@
 //
 // Toda ação é auditada em AuditLog. Conteúdo é modificado via soft-delete
 // no Post/Comment (deletedAt) — nunca hard delete, para preservar audit.
+//
+// Wave 25 (2026-06-28): aceita MODERADOR (isModerator=true) além de ADMIN.
 // ============================================================================
 
 import { NextRequest } from 'next/server';
 import { ok, fail, fromZodError, handleError, ErrorCode } from '@/lib/community/api';
 import { prisma } from '@/lib/prisma';
-import { requireAdmin } from '@/lib/community/admin';
+import { requireModerator } from '@/lib/admin/session';
 import { FlagActionSchema } from '@/lib/validators/flags';
 
 export const dynamic = 'force-dynamic';
@@ -23,11 +25,14 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    let admin;
+    let session;
     try {
-      admin = await requireAdmin();
+      session = await requireModerator();
     } catch {
-      return fail(403, ErrorCode.FORBIDDEN, 'Acesso restrito a administradores');
+      return fail(403, ErrorCode.FORBIDDEN, 'Acesso restrito a moderadores');
+    }
+    if (!session.ok) {
+      return fail(403, ErrorCode.FORBIDDEN, 'Acesso restrito a moderadores');
     }
 
     const { id } = await params;
@@ -110,7 +115,7 @@ export async function POST(
       data: {
         status: newStatus,
         reviewedAt: now,
-        reviewerId: admin.userId,
+        reviewerId: session.userId!,
         actionTaken: parsed.data.action,
       },
       select: {
@@ -125,7 +130,7 @@ export async function POST(
     try {
       await prisma.auditLog.create({
         data: {
-          actorId: admin.userId,
+          actorId: session.userId!,
           targetId: flag.targetId,
           action:
             parsed.data.action === 'delete' || parsed.data.action === 'hide'
@@ -140,6 +145,7 @@ export async function POST(
             action: parsed.data.action,
             note: parsed.data.note ?? null,
             contentAffected,
+            actorRole: session.role,
           },
         },
       });
@@ -153,6 +159,7 @@ export async function POST(
       reviewedAt: updated.reviewedAt?.toISOString() ?? null,
       actionTaken: updated.actionTaken,
       contentAffected,
+      role: session.role,
     });
   } catch (err) {
     return handleError(err);

@@ -4,7 +4,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  // Prisma 7+: connection URL lives in prisma.config.ts (datasource.url),
+  // not here. See https://pris.ly/d/config-datasource
 }
 
 // ============================================================================
@@ -187,8 +188,18 @@ model User {
   // Histórico de 👍/👎 dados em respostas da Akasha (analytics + retreino).
   akashicFeedback AkashicFeedback[]
 
+  // 2026-06-28 — Wave 25 Comments Moderation
+  // Flag site-wide para moderadores de comentários.
+  // - true: usuário pode acessar /admin/moderation e tomar ações em
+  //         denúncias de comentários (hide/dismiss/delete).
+  // - false: usuário comum (não tem acesso ao painel de moderação).
+  // Não confundir com `planoAssinatura='ADMIN'` (admin geral com acesso
+  // total). ADMIN ⊃ MODERADOR — todo admin pode moderar.
+  isModerator Boolean @default(false)
+
   @@index([planoAssinatura])
   @@index([isMentor])
+  @@index([isModerator])
   @@index([createdAt])
   @@index([dataNascimento])
   @@index([stripeSubscriptionId])
@@ -1489,7 +1500,7 @@ model NewsletterSubscription {
   email     String   @unique
 
   // Opcional: se o inscrito também é usuário autenticado, vincula
-  userId    String?
+  userId    String?   @unique
   user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   // Tradições de interesse (vazio = recebe tudo). Slugs canônicos.

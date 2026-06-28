@@ -7,12 +7,14 @@
 // - hide:    soft-delete do alvo + flag ACTIONED
 // - delete:  soft-delete do alvo + flag ACTIONED
 // - warn:    no-op no alvo, registra intenção de aviso (Wave 21 = notif)
+//
+// Wave 25 (2026-06-28): aceita MODERADOR (isModerator=true) além de ADMIN.
 // ============================================================================
 
 import { NextRequest } from 'next/server';
 import { z } from 'zod';
 import { ok, fail, fromZodError, ErrorCode, handleError } from '@/lib/community/api';
-import { requireAdmin } from '@/lib/admin/session';
+import { requireModerator } from '@/lib/admin/session';
 import { resolveFlag } from '@/lib/admin/metrics';
 
 export const runtime = 'nodejs';
@@ -26,9 +28,13 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await requireAdmin();
+    const session = await requireModerator();
     if (!session.ok) {
-      return fail(ErrorCode.FORBIDDEN, `Admin required (${session.reason})`, 403);
+      return fail(
+        ErrorCode.FORBIDDEN,
+        `Moderator access required (${session.reason ?? 'denied'})`,
+        403
+      );
     }
 
     const { id: flagId } = await params;
@@ -50,11 +56,14 @@ export async function POST(
 
     const result = await resolveFlag({
       flagId,
-      adminId: session.userId,
+      adminId: session.userId!,
       action: parsed.data.action,
     });
 
-    return ok(result, { meta: { flagId }, cache: { noStore: true } });
+    return ok(result, {
+      meta: { flagId, role: session.role },
+      cache: { noStore: true },
+    });
   } catch (err) {
     if (err instanceof Error && err.message === 'FLAG_NOT_FOUND') {
       return fail(ErrorCode.NOT_FOUND, 'Flag não encontrada', 404);

@@ -4,12 +4,15 @@
 // Query params:
 //   status — PENDING (default) | REVIEWED | ACTIONED | DISMISSED
 //   limit  — default 50, max 200
+//
+// Wave 25 (2026-06-28): aceita MODERADOR (isModerator=true) além de ADMIN.
+// ADMIN ⊃ MODERADOR — todo admin pode ver a fila.
 // ============================================================================
 
 import { NextRequest } from 'next/server';
 import { z } from 'zod';
 import { ok, fail, fromZodError, ErrorCode, handleError } from '@/lib/community/api';
-import { requireAdmin } from '@/lib/admin/session';
+import { requireModerator } from '@/lib/admin/session';
 import { getModerationQueue } from '@/lib/admin/metrics';
 
 export const runtime = 'nodejs';
@@ -23,9 +26,13 @@ const QuerySchema = z.object({
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await requireAdmin();
+    const session = await requireModerator();
     if (!session.ok) {
-      return fail(ErrorCode.FORBIDDEN, `Admin required (${session.reason})`, 403);
+      return fail(
+        ErrorCode.FORBIDDEN,
+        `Moderator access required (${session.reason ?? 'denied'})`,
+        403
+      );
     }
 
     const sp = request.nextUrl.searchParams;
@@ -44,7 +51,11 @@ export async function GET(request: NextRequest) {
     });
 
     return ok(data, {
-      meta: { total: data.length, status: parsed.data.status ?? 'PENDING' },
+      meta: {
+        total: data.length,
+        status: parsed.data.status ?? 'PENDING',
+        role: session.role,
+      },
       // Fila muda rápido quando staff age; refresh a cada 15s
       cache: { sMaxage: 15, staleWhileRevalidate: 30 },
     });
