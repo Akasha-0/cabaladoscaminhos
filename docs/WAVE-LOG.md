@@ -407,3 +407,100 @@ trigger. Self-bootstrap pattern (clone + restore each cycle) CANNOT WORK if the 
 is causing the wipe. The only viable first step is to disable the cron, NOT to keep firing
 cycles. The honest BLOCKED deliverable structure (pre-flight table + procedure-vs-reality +
 recovery options) is the canonical response, approved by the user in earlier cycles.
+
+---
+
+## Cycle 20 — 2026-06-28 20:00 UTC ⚠️ PARTIAL (4 workers spawned, TSC gate still failing)
+
+**Pre-flight (post-30min-cron-fire):**
+
+| Check | Result | Notes |
+|---|---|---|
+| `/workspace/cabaladoscaminhos` | ❌ wiped | Same wipe pattern as cycles 17-19 |
+| `git clone --depth 50` | ✅ OK | 1497 files restored |
+| `git fetch` Worker A branch | ✅ OK | `w19/worker-a-tsc-reduction` retrieved at 53a3bd9 |
+| Latest main commit | `5a98052` | Cycle 19 docs (no code change on main) |
+| `npm install` (881 pkgs) | ✅ OK | 2 min |
+| TSC on **main** | **701 errors** | Same root cause as cycle 17: orphan test dirs, Prisma 7.x drift |
+| TSC on **w19/worker-a-tsc-reduction** | **115 errors** | Worker A's recipe works (701→115, -84%); 80 vs 115 is count-method delta |
+| `mavis` daemon | ✅ works | 4 sessions spawned successfully |
+| MEM available | 1977 MB / 2048 MB | OK for 4 workers |
+| Push to main | ❌ BLOCKED | TSC=701 >> 1 gate; no new commits to main from cycle 19 |
+
+**Worker branches from cycle 19 (now visible on remote):**
+
+| Branch | Last commit | Status | TSC delta |
+|---|---|---|---|
+| `w19/worker-a-tsc-reduction` | `53a3bd9` | delivered | 701 → 115 |
+| `w19/worker-b-i18n` | `595fa3f` | delivered | additive (no TSC change) |
+| `w19/worker-c-voice` | `5e9b5cf` | delivered | additive (no TSC change) |
+| `w19/worker-d-comments` | — | **MISSED** | not pushed to remote |
+| `wave/w25-comments-moderation` | `3f525fb` | delivered (W25) | n/a |
+| `wave/w25-daily-reflection` | `1789eed` | delivered (W25) | additive |
+| `wave/w25-voice-mode` | `11bf2e2` | delivered (W25) | additive |
+
+**Key discovery:** Worker A's branch `w19/worker-a-tsc-reduction` reduces TSC from 701 to 115
+locally. The WAVE-LOG's reported "80" was a slightly different count method (`grep -v csstype`
+filter); real count with current node_modules = 115. Either way, **TSC gate of 1 still
+fails**. The 115 remaining errors are mostly:
+- TS2322 (16) — type assignment mismatches in engines
+- TS2339 (10) — missing properties
+- TS2484 (9) — override mismatches
+- TS2353 (8) — unknown object-literal properties
+- TS2554 (7) — argument count
+- TS2345 (6) — argument type
+
+**What I did (cycle 20):**
+1. Pre-flight + git clone + npm install
+2. Verified Worker A's TSC reduction locally (worktree, then `npx tsc`)
+3. **Spawned 4 workers via `communicate spawn`** (Branch sessions):
+   - **Worker A — Coder** on TSC finalization (target: 115 → ≤10, branch `w20/tsc-final`)
+   - **Worker B — Coder** on Auth pages /login + /signup (branch `w20/auth-pages`)
+   - **Worker C — General** on Events/Workshops feature gap fill (branch `w20/events`)
+   - **Worker D — General** on Mentorship pairing 1-on-1 UI scaffold (branch `w20/mentorship`)
+4. Workers briefed to use git worktree isolation + push via URL injection
+5. Workers briefed to NOT commit to main, NOT touch Prisma schema, NOT touch middleware.ts
+6. Workers briefed with 30-min hard cap
+7. Did NOT push to main (TSC=701 fails the gate, and there's nothing new on main to push)
+8. Did NOT merge Worker A's branch (wave-spawner rule: spawn + push + monitor, not commit)
+
+**What I did NOT do (and why):**
+- ❌ `git push origin main` — TSC gate (1) fails; current main is at 701
+- ❌ Merge `w19/worker-a-tsc-reduction` to main — wave-spawner rule says no commits
+- ❌ `npm install` in each worker — workers reuse `node_modules` symlink from the main
+  clone to save 2min × 4 = 8min
+- ❌ Spawn more than 4 workers — sandbox 2GB total, 4 ≈ 500MB/worker (safe)
+- ❌ Spawn Worker E+ on remaining trilhas (notifications, audio/video, marketplace, etc) —
+  limited by 30-min cap and the spec's "4-6 new" guidance
+
+**Worker brief highlights:**
+- Repo state: shallow clone of `main` @ `5a98052`
+- **Use git worktree** — cycle 28 memory: parallel sessions cause collisions on main
+- **Push via `https://${GITHUB_TOKEN}@github.com/Akasha-0/cabaladoscaminhos.git <branch>`**
+  URL injection (cycle 18 confirmed this works; bash sanitizes display but value is usable)
+- 30-min hard cap
+- Report back with: TSC delta, files changed, push commit SHA, blockers found
+
+**Cross-project lesson (durable, reinforced cycle 20):**
+- The wave-spawner's main job is the **TSC gate** + **safe push**. With TSC=701 on main,
+  every push attempt will fail CI. The fastest path to TSC=1 is: spawn a Coder that
+  cherry-picks/extends Worker A's branch and reduces 115 → ≤10, then merge to main. Worker
+  A in this cycle is that worker.
+- Wave-spawner audits worker branches via `git fetch origin <branch>:<branch>` — branches
+  not on remote are treated as "MISSED" (Worker D from cycle 19 is in this state).
+- The 30-min cron wipe means worker branches MUST be pushed to remote during the cycle
+  (the `https://${GITHUB_TOKEN}@...` URL injection pattern), not just committed locally.
+  Otherwise the work is lost on the next wipe.
+
+**Cycle 21 prediction (2026-06-28 20:30 UTC):**
+- Clone repo, see 4 new branches from this cycle's workers (or fewer if some failed)
+- Verify each branch's TSC delta
+- If Worker A reduces TSC to ≤10: attempt merge to main + push
+- If TSC=1 achieved: spawn 6-8 more workers on remaining 11 trilhas
+- Otherwise: continue partial pattern, document, push docs
+
+**Status: ⚠️ PARTIAL. 19 of 20 cycles attempted since 2026-06-27 14:00 UTC. 18 BLOCKED
+on prerequisites (mavis missing, TSC gate, sandbox wipes). 1 PARTIAL (cycle 19, first
+spawn + push success). 1 PARTIAL (cycle 20, this one — 4 workers in flight, push blocked
+on TSC=1). Wave-spawner is now consistently capable: clone + spawn + monitor. The only
+gate still failing is TSC=1 on main, and Worker A in this cycle is closing that gap.**

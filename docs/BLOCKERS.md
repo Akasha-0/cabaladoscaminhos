@@ -190,3 +190,35 @@ cycle starts fresh.
 - **TSC=1** (after fix recipe applied) — primary remaining gate; unlocks push
 - Worker A's TSC reduction wave (in flight) may drop TSC from 643 to <100
 - Cron cadence reduced to 2-4h → wipe impact 4-8x less, persistence becomes easier
+
+---
+
+## Cycle 20 update — 2026-06-28 20:00 UTC
+
+**Worker A's TSC reduction branch (`w19/worker-a-tsc-reduction` @ 53a3bd9) is the
+biggest unlocked work item.** Local verification shows TSC 701 → 115 (-84%). The WAVE-LOG's
+"80" was a slightly different filter; the count is 115 with the standard `npx tsc
+--noEmit --skipLibCheck` invocation.
+
+**Remaining 115 errors (cycle 20 worktree-verify, distribution):**
+- TS2322 (16) — type not assignable
+- TS2339 (10) — property doesn't exist
+- TS2484 (9) — override mismatch
+- TS2353 (8) — unknown property in object literal
+- TS2554 (7) — argument count
+- TS2345 (6) — argument type
+- TS2741, TS2737, TS2323 (4 each)
+- TS2307 (3) — missing module
+- ... (rest)
+
+**Spawned cycle 20 Worker A (Coder) with target TSC 115 → ≤10** on branch
+`w20/tsc-final`. If it lands, the wave-spawner can merge + push, unblocking future cycles.
+
+**Other active blockers (unchanged from cycle 19):**
+- B-TSC-W28: TSC on main is 701, gate is 1, push blocked
+- B-CRON-WIPE-1: 30-min cron triggers sandbox reset; wave-spawner logs persist via git
+  push to remote (cycle 18+), but worker branches MUST be pushed during the cycle or
+  they are lost on next wipe
+
+**Resolved since cycle 18:**
+- ✅ B-MAVIS-1 (PARTIAL): mavis daemon works, CLI is just a wrapper, spawn is functional
