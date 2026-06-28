@@ -208,7 +208,7 @@ Auditar e atualizar qualquer script que use o PAT antigo:
 
 ```bash
 # Localizar refs:
-grep -rl "[REDACTED]" /workspace /opt /etc 2>/dev/null
+grep -rl "[REDACTED-GITHUB-TOKEN]" /workspace /opt /etc 2>/dev/null
 grep -rl "Akasha-0/cabaladoscaminhos" ~/.local/bin ~/bin 2>/dev/null
 
 # Padrão de substituição em scripts:
@@ -225,7 +225,7 @@ grep -rl "Akasha-0/cabaladoscaminhos" ~/.local/bin ~/bin 2>/dev/null
 **Owner roda localmente (sandbox bash trava em `git log`):**
 ```bash
 # Encontrar commit exato:
-git log --all --oneline -S "[REDACTED]"
+git log --all --oneline -S "[REDACTED-GITHUB-TOKEN]"
 # Esperado: 1-2 commits Wave 22 que introduziram W22-DELIVERABLE.md e STATE-VERIFY-W22.md
 ```
 
@@ -253,7 +253,7 @@ brew install bfg  # macOS
 cp -r cabaladoscaminhos cabaladoscaminhos-backup-pre-bfg
 
 # 3. Criar arquivo com token (uma linha por secret)
-echo "[REDACTED]" > /tmp/secrets-to-remove.txt
+echo "[REDACTED-GITHUB-TOKEN]" > /tmp/secrets-to-remove.txt
 
 # 4. Rodar BFG (substitui por ***REMOVED***)
 bfg --replace-text /tmp/secrets-to-remove.txt cabaladoscaminhos
@@ -517,7 +517,7 @@ git fetch origin
 git status  # deve funcionar sem pedir senha
 
 # === BLOCO 6: BFG cleanup (DEPOIS de Bloco 1-5) ===
-echo "[REDACTED]" > /tmp/secrets.txt
+echo "[REDACTED-GITHUB-TOKEN]" > /tmp/secrets.txt
 bfg --replace-text /tmp/secrets.txt --no-blob-protection .
 git reflog expire --expire=now --all && git gc --prune=now --aggressive
 git push --force origin main
