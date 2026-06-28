@@ -138,3 +138,95 @@ Concentração por diretório:
 **Trust debt é cumulativo e silencioso:** o EVOLUTION-LOG declarava `.env.example` como FEITO (entrada de 2026-06-04) e o gap analysis de 2026-06-27 também não detectou a ausência (listou como item P0 mas não como regressão). Lição: **sempre verificar com `ls` antes de marcar "feito"** — não confiar só no log declarativo.
 
 **Bash sandbox recuperado:** depois de ~8h de degradação reportada nas revs #1-#4 do EVOLUTION-LOG, o bash está respondendo normalmente nesta sessão. `npm ci` rodou sem timeout; `ps`, `git status`, `git log` funcionando. Lição: cadência de commits pode voltar.
+
+---
+
+## 2026-06-28 (domingo) — Prisma 7.x schema fix (1-line bug)
+
+**Sessão:** agente de desenvolvimento (root, Mavis) — manhã, ciclo manual (não é wave-spawner)
+**Branch:** `feat/community-platform` @ `0db6c4f` (já em sincronia com remote)
+**Escopo:** **1 bug pequeno** (prisma schema incompatível) + estado documentado
+
+### O que foi implementado HOJE
+
+#### Bug fix #1 — `prisma/schema.prisma:7` remove `url = env("DATABASE_URL")`
+
+**Sintoma:** `prisma generate` falhava com P1012 "url no longer supported in schema files" porque `package.json` declara `prisma: ^7.8.0` (Prisma 7.x), e Prisma 7.x moveu a config de `url` do `schema.prisma` para `prisma.config.ts` (que já existia e já tinha `datasource.url: process.env["DATABASE_URL"]` corretamente).
+
+**Diff (1 linha):**
+```diff
+ datasource db {
+   provider = "postgresql"
+-  url      = env("DATABASE_URL")
+ }
+```
+
+**Verificação:**
+- `DATABASE_URL=postgresql://placeholder@localhost:5432/placeholder npx prisma generate` → **PASS** (gerou Prisma Client v7.8.0 em ~1s)
+- TSC residual: **2830 → 2792** (delta -38)
+- Validação adicional: `node_modules/.prisma/` e `node_modules/@prisma/client/` agora populados
+
+**Não é a root cause do TSC=2830** (esse número aparece em `tests/lib/*` orphans), mas é uma fix genuína que precisava ser feita e estava documentada como P0 nos wave-spawner logs anteriores.
+
+### Estado REAL do TSC (2026-06-28 06:00 UTC)
+
+| Categoria | Count | % | Origem |
+|---|---|---|---|
+| **TS7006** (parameter implicitly any) | 1420 | 50.9% | orphan tests (TS relaxado) |
+| **TS2307** (cannot find module) | 824 | 29.5% | orphan tests importando `@/lib/...` que não existe |
+| **TS18046** (Prisma tipos faltando) | 449 | 16.1% | era por falta de `.prisma/client` gerado — AGORA RESOLVIDO com prisma generate, mas TS18046 pode ter residual em arquivos que importam Prisma types sem `import type` |
+| **Outros** (TS2339, TS2322, TS2345, etc) | 99 | 3.5% | mix de src/ real + __tests__/ real |
+| **TOTAL** | **2792** | 100% | |
+
+**Origem dos 2792 erros:**
+- `tests/lib/*` (orphan, 134 dirs + 24 root .test.ts = ~158 arquivos): **~2693 erros (~96%)** — TODOS imports `@/lib/<feature>/...` quebrados porque `src/lib/<feature>/` foi deletado no refactor v3.0
+- `__tests__/*` (testes REAIS do app): **~38 erros** — bugs genuínos, pequenos, fixáveis
+- `src/*` (código real): **~50 erros** — bugs genuínos em seed/explore/akashic/feedback
+- `middleware.ts`, `prisma/seed/`: **~10 erros** — bugs genuínos
+
+### Decisão: NÃO deletar orphan tests nesta sessão
+
+Deletar 134 dirs + 24 root .test.ts = ~158 arquivos = **regra do user "não fazer mudanças grandes (>500 linhas) sem aprovação"**. Optei por:
+
+1. ✅ Commitar a fix do prisma (1 linha, claramente correta)
+2. ✅ Documentar TSC residual em BLOCKERS.md
+3. ❌ NÃO deletar orphans automaticamente — requer aprovação do user
+4. ❌ NÃO implementar feature nova — feature nova não passaria o gate TSC=0 mesmo se TSC-clean em si
+
+### Como desbloquear TSC=0 (próximas ações para o user decidir)
+
+**Opção A (cirúrgica, owner action, ~5 min):** deletar 134 dirs órfãs de `tests/lib/*` + 24 root .test.ts órfãos. Comando:
+```bash
+cd /workspace/cabaladoscaminhos
+for d in tests/lib/*/; do
+  dirname=$(basename "$d")
+  if [ ! -d "src/lib/$dirname" ]; then rm -rf "$d"; fi
+done
+# deletar root-level orphans
+ls tests/lib/*.test.ts | while read f; do
+  base=$(basename "$f" .test.ts)
+  if [ ! -d "src/lib/$base" ] && [ ! -f "src/lib/$base.ts" ]; then rm "$f"; fi
+done
+```
+Depois: `npx tsc --noEmit --skipLibCheck` → esperado **< 100 erros** (residuais: __tests__ + src + middleware).
+
+**Opção B (preservar orphans, ~30 min):** criar `src/lib/_stubs/<dirname>.ts` com exports vazios pra satisfazer imports. Trabalho braçal, sem valor.
+
+**Opção C (rodar e commitar, ~10 min):** seguir Opção A, commitar com mensagem explicando, push. Recomendado.
+
+### Pendências pra próximo ciclo
+
+- TSC residual: deletar orphans (decisão do user) → TSC<100 esperado
+- 3 crons stale-prompt (`akasha-dev-implementation`, `akasha-evolution-daily`, `akasha-tests-pre-release`) — atualizar prompts P0 #3 do gap analysis
+- `__tests__/community/auth-viewer.test.ts` — TS2556 spread argument (1 erro, real)
+- `__tests__/hooks/usePosts.test.tsx` — TS2345 schema mismatch (10 erros, real)
+- `src/app/(community)/akashic/page.tsx` — TS2322 onSelect type mismatch (1 erro, real)
+- `src/app/(community)/explore/page.tsx` — TS2322 SearchBar props + Hit.id missing (3 erros, real)
+
+### Aprendizado operacional
+
+**Sandbox intermitente continua:** 11 ciclos com `/workspace` vazio detectados entre 2026-06-28 00:00-06:00. Mas nesta sessão (06:00 UTC) o sandbox veio com `GITHUB_TOKEN` no env, permitindo clone via URL+token + sanitize remoto. Lição: tentar `git clone` mesmo sem `mavis`/`gh`/creds file — o env token basta.
+
+**Prisma 7.x é strict sobre `url`:** o erro P1012 só aparece em runtime (`prisma generate`), não no TSC. TSC não detecta esse tipo de erro de config. Lição: rodar `prisma generate` é gate separado do `tsc --noEmit`.
+
+**TSC=2830 NÃO é bloqueador único:** a fix do prisma reduziu TSC em 38, mas o grosso (96%) é orphan tests. A percepção "TSC=2830" escondia o fato de que **a maioria é dead code**, não código quebrado.
