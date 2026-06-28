@@ -13,6 +13,7 @@ import { MysticDivider } from '@/components/shared/MysticDivider';
 import { GoogleOAuthButton } from '@/components/auth/GoogleOAuthButton';
 import { Eye, EyeOff, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { LiveRegion } from '@/components/a11y/LiveRegion';
 
 interface LoginFormProps {
   className?: string;
@@ -26,6 +27,8 @@ export function LoginForm({ className = '', onSuccess }: LoginFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+  // W24 a11y: announce login success to screen readers (WCAG 4.1.3).
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -64,6 +67,8 @@ export function LoginForm({ className = '', onSuccess }: LoginFormProps) {
         setServerError(result.error ?? 'Erro ao fazer login');
         return;
       }
+      // Anuncia sucesso para screen readers antes do redirect.
+      setSuccessMessage('Login realizado com sucesso. Redirecionando...');
       if (onSuccess) onSuccess();
       else router.push(redirectTo);
     } catch {
@@ -107,12 +112,17 @@ export function LoginForm({ className = '', onSuccess }: LoginFormProps) {
             onChange={(e) => setEmail(e.target.value)}
             disabled={isLoading}
             aria-invalid={Boolean(errors.email)}
+            aria-describedby={errors.email ? 'login-email-error' : undefined}
             className={cn(
               'h-11 bg-slate-900/80 border-slate-700 focus:border-spiritual-gold focus:ring-spiritual-gold/30 text-foreground placeholder:text-slate-500',
               errors.email && 'border-red-500 focus:border-red-500 focus:ring-red-500/30'
             )}
           />
-          {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
+          {errors.email && (
+            <p id="login-email-error" role="alert" className="text-red-400 text-sm mt-1">
+              {errors.email}
+            </p>
+          )}
         </div>
 
         {/* Password */}
@@ -134,6 +144,7 @@ export function LoginForm({ className = '', onSuccess }: LoginFormProps) {
               onChange={(e) => setPassword(e.target.value)}
               disabled={isLoading}
               aria-invalid={Boolean(errors.password)}
+              aria-describedby={errors.password ? 'login-password-error' : undefined}
               className={cn(
                 'h-11 bg-slate-900/80 border-slate-700 focus:border-spiritual-gold focus:ring-spiritual-gold/30 text-foreground placeholder:text-slate-500 pr-12',
                 errors.password && 'border-red-500 focus:border-red-500 focus:ring-red-500/30'
@@ -150,7 +161,11 @@ export function LoginForm({ className = '', onSuccess }: LoginFormProps) {
               {showPassword ? <EyeOff className="w-4 h-4" aria-hidden="true" /> : <Eye className="w-4 h-4" aria-hidden="true" />}
             </button>
           </div>
-          {errors.password && <p className="text-red-400 text-sm mt-1">{errors.password}</p>}
+          {errors.password && (
+            <p id="login-password-error" role="alert" className="text-red-400 text-sm mt-1">
+              {errors.password}
+            </p>
+          )}
         </div>
 
         {/* Server Error */}
@@ -162,6 +177,9 @@ export function LoginForm({ className = '', onSuccess }: LoginFormProps) {
             {serverError}
           </div>
         )}
+
+        {/* W24 a11y: live region anuncia sucesso para screen readers. */}
+        <LiveRegion message={successMessage} testId="login-success" />
 
         {/* Submit */}
         <Button

@@ -41,7 +41,9 @@ export default async function FlagsAdminPage() {
 
   return (
     <main
-      className="mx-auto min-h-screen w-full max-w-3xl px-4 py-6 sm:px-6 sm:py-8"
+    id="main-content"
+    tabIndex={-1}
+      className="focus:outline-none mx-auto min-h-screen w-full max-w-3xl px-4 py-6 sm:px-6 sm:py-8"
       aria-label="Feature flags admin"
     >
       <header className="mb-6">

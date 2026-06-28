@@ -43,6 +43,7 @@ import {
 } from '@/lib/validation/auth';
 import { completeOnboardingAction, type ActionResult } from '@/app/actions/auth';
 import { useAuth } from '@/hooks/useAuth';
+import { LiveRegion } from '@/components/a11y/LiveRegion';
 
 const STEPS = [
   { key: 'name', title: 'Seu Nome', subtitle: 'Como aparece no documento' },
@@ -85,6 +86,8 @@ export function OnboardingFlow({ className, onComplete }: OnboardingFlowProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+  // W24 a11y: announce step transitions to screen readers (WCAG 4.1.3).
+  const [stepAnnouncement, setStepAnnouncement] = useState<string>(STEPS[0].title);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const [formData, setFormData] = useState<{
@@ -150,11 +153,17 @@ export function OnboardingFlow({ className, onComplete }: OnboardingFlowProps) {
     if (!canProceed) return;
     if (currentStep < STEPS.length - 1) {
       setCurrentStep((s) => s + 1);
+      // W24 a11y: announce new step.
+      setStepAnnouncement('Passo ' + (currentStep + 2) + ' de ' + STEPS.length + ': ' + STEPS[currentStep + 1].title);
     }
   };
 
   const goBack = () => {
-    if (currentStep > 0) setCurrentStep((s) => s - 1);
+    if (currentStep > 0) {
+      setCurrentStep((s) => s - 1);
+      // W24 a11y: announce previous step.
+      setStepAnnouncement('Passo ' + (currentStep) + ' de ' + STEPS.length + ': ' + STEPS[currentStep - 1].title);
+    }
   };
 
   const handleSubmit = async () => {
@@ -315,6 +324,9 @@ export function OnboardingFlow({ className, onComplete }: OnboardingFlowProps) {
               />
             )}
           </div>
+
+          {/* W24 a11y: live region anuncia transição de passos */}
+          <LiveRegion message={stepAnnouncement} testId="onboarding-step" />
 
           {serverError && (
             <div
@@ -494,9 +506,14 @@ function Step3BirthDate({
         className={cn('h-12 text-lg', error && 'border-red-500')}
         max={new Date().toISOString().slice(0, 10)}
         aria-invalid={Boolean(error)}
+        aria-describedby={error ? 'birthDate-error' : undefined}
         autoFocus
       />
-      {error && <p className="text-red-400 text-sm">{error}</p>}
+      {error && (
+        <p id="birthDate-error" role="alert" className="text-red-400 text-sm">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
@@ -522,13 +539,18 @@ function Step4BirthTime({
         onChange={(e) => onChange(e.target.value)}
         className={cn('h-12 text-lg', error && 'border-red-500')}
         aria-invalid={Boolean(error)}
+        aria-describedby={error ? 'birthTime-error' : 'birthTime-help'}
         autoFocus
       />
-      <p className="text-xs text-muted-foreground flex items-center gap-1">
-        <Sparkles className="w-3 h-3 text-spiritual-gold" />
+      <p id="birthTime-help" className="text-xs text-muted-foreground flex items-center gap-1">
+        <Sparkles className="w-3 h-3 text-spiritual-gold" aria-hidden="true" />
         A hora exata aumenta a precisão da sua carta astral.
       </p>
-      {error && <p className="text-red-400 text-sm">{error}</p>}
+      {error && (
+        <p id="birthTime-error" role="alert" className="text-red-400 text-sm">
+          {error}
+        </p>
+      )}
       {value && (
         <button
           type="button"
@@ -570,9 +592,14 @@ function Step5BirthPlace({
           onChange={(e) => onChangePlace(e.target.value)}
           className={cn('h-12 text-lg', errors.birthPlace && 'border-red-500')}
           aria-invalid={Boolean(errors.birthPlace)}
+          aria-describedby={errors.birthPlace ? 'birthPlace-error' : undefined}
           autoFocus
         />
-        {errors.birthPlace && <p className="text-red-400 text-sm">{errors.birthPlace}</p>}
+        {errors.birthPlace && (
+          <p id="birthPlace-error" role="alert" className="text-red-400 text-sm">
+            {errors.birthPlace}
+          </p>
+        )}
       </div>
       <div className="space-y-2">
         <Label htmlFor="birthCountry" className="font-cinzel uppercase text-xs tracking-widest text-spiritual-gold">
@@ -587,8 +614,13 @@ function Step5BirthPlace({
           onChange={(e) => onChangeCountry(e.target.value)}
           className={cn('h-12 text-lg', errors.birthCountry && 'border-red-500')}
           aria-invalid={Boolean(errors.birthCountry)}
+          aria-describedby={errors.birthCountry ? 'birthCountry-error' : undefined}
         />
-        {errors.birthCountry && <p className="text-red-400 text-sm">{errors.birthCountry}</p>}
+        {errors.birthCountry && (
+          <p id="birthCountry-error" role="alert" className="text-red-400 text-sm">
+            {errors.birthCountry}
+          </p>
+        )}
       </div>
     </div>
   );

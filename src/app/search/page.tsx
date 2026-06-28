@@ -889,7 +889,7 @@ export default function SearchPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 py-8">
+      <main id="main-content" tabIndex={-1} className="focus:outline-none mx-auto max-w-6xl px-4 py-8">
         <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
           {/* Sidebar desktop */}
           <div className="hidden lg:block">

@@ -83,7 +83,7 @@ export default function BookmarksPage() {
   );
 
   return (
-    <main className="max-w-4xl mx-auto px-4 py-4 sm:py-6 space-y-4">
+    <main id="main-content" tabIndex={-1} className="max-w-4xl mx-auto px-4 py-4 sm:py-6 space-y-4 focus:outline-none">
       <header className="flex items-center gap-3">
         <Link
           href="/feed"

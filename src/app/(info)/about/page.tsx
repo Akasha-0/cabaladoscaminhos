@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen p-4 md:p-6 lg:p-8">
+    <main id="main-content" tabIndex={-1} className="focus:outline-none min-h-screen p-4 md:p-6 lg:p-8">
       <div className="max-w-3xl mx-auto space-y-8">
         <header className="text-center space-y-3 pt-6">
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-amber-500 to-violet-500 shadow-lg shadow-amber-500/20">

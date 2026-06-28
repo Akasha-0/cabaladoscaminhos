@@ -69,7 +69,13 @@ export function ResetPasswordForm() {
 
   if (sent) {
     return (
-      <div className="card-spiritual p-8 rounded-2xl max-w-md w-full text-center">
+      // W24 a11y: status="polite" para screen readers anunciarem o sucesso
+      // sem interromper navegação (WCAG 4.1.3 Status Messages).
+      <div
+        role="status"
+        aria-live="polite"
+        className="card-spiritual p-8 rounded-2xl max-w-md w-full text-center"
+      >
         <div className="w-16 h-16 mx-auto rounded-full bg-emerald-500/15 flex items-center justify-center mb-6">
           <CheckCircle2 className="w-8 h-8 text-emerald-400" aria-hidden="true" />
         </div>
@@ -126,6 +132,7 @@ export function ResetPasswordForm() {
             }}
             disabled={loading}
             aria-invalid={Boolean(error)}
+            aria-describedby={error ? 'reset-email-error' : undefined}
             className={cn(
               'h-11 bg-slate-900/80 border-slate-700 focus:border-spiritual-gold focus:ring-spiritual-gold/30 text-foreground placeholder:text-slate-500',
               error && 'border-red-500 focus:border-red-500 focus:ring-red-500/30'
@@ -135,6 +142,7 @@ export function ResetPasswordForm() {
 
         {error && (
           <div
+            id="reset-email-error"
             role="alert"
             className="bg-red-500/10 border border-red-500/30 rounded-lg p-3 text-red-400 text-sm text-center"
           >

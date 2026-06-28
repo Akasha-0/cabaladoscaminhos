@@ -120,7 +120,7 @@ export function FirstValueExperience() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100 px-4 py-10 md:py-16">
+    <main id="main-content" tabIndex={-1} className="focus:outline-none min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100 px-4 py-10 md:py-16">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">

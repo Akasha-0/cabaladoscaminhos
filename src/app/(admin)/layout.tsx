@@ -33,10 +33,12 @@ export default async function AdminLayout({
         </div>
       )}
       <div className="mx-auto max-w-7xl md:px-4 md:py-6">
+        {/* W24 a11y: id="main-content" permite o SkipToContent (WCAG 2.4.1)
+            focar este main via teclado. id legado "admin-main" removido. */}
         <main
-          id="admin-main"
+          id="main-content"
           tabIndex={-1}
-          className="w-full flex-1 px-4 py-4 pb-20 md:pb-4"
+          className="w-full flex-1 px-4 py-4 pb-20 md:pb-4 focus:outline-none"
         >
           {children}
         </main>

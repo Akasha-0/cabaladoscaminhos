@@ -14,6 +14,7 @@ import { GoogleOAuthButton } from '@/components/auth/GoogleOAuthButton';
 import { Eye, EyeOff, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { trackSignup } from '@/lib/analytics/events-catalog';
+import { LiveRegion } from '@/components/a11y/LiveRegion';
 
 interface RegisterFormProps {
   className?: string;
@@ -76,6 +77,8 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+  // W24 a11y: announce signup success to screen readers (WCAG 4.1.3).
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const router = useRouter();
   const { signUp, supabase } = useAuth();
@@ -122,6 +125,8 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
       if (result.data?.id) {
         trackSignup(result.data.id, 'email');
       }
+      // W24 a11y: announce signup success to screen readers (WCAG 4.1.3).
+      setSuccessMessage('Conta criada com sucesso. Iniciando onboarding...');
       if (onSuccess) onSuccess();
       else router.push('/onboarding');
     } catch {
@@ -164,12 +169,17 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
             onChange={(e) => handleChange('fullName', e.target.value)}
             disabled={isLoading}
             aria-invalid={Boolean(errors.fullName)}
+            aria-describedby={errors.fullName ? 'register-fullName-error' : undefined}
             className={cn(
               'h-11 bg-slate-900/80 border-slate-700 focus:border-spiritual-gold focus:ring-spiritual-gold/30 text-foreground placeholder:text-slate-500',
               errors.fullName && 'border-red-500 focus:border-red-500 focus:ring-red-500/30'
             )}
           />
-          {errors.fullName && <p className="text-red-400 text-sm mt-1">{errors.fullName}</p>}
+          {errors.fullName && (
+            <p id="register-fullName-error" role="alert" className="text-red-400 text-sm mt-1">
+              {errors.fullName}
+            </p>
+          )}
         </div>
 
         {/* Email */}
@@ -190,12 +200,17 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
             onChange={(e) => handleChange('email', e.target.value)}
             disabled={isLoading}
             aria-invalid={Boolean(errors.email)}
+            aria-describedby={errors.email ? 'register-email-error' : undefined}
             className={cn(
               'h-11 bg-slate-900/80 border-slate-700 focus:border-spiritual-gold focus:ring-spiritual-gold/30 text-foreground placeholder:text-slate-500',
               errors.email && 'border-red-500 focus:border-red-500 focus:ring-red-500/30'
             )}
           />
-          {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
+          {errors.email && (
+            <p id="register-email-error" role="alert" className="text-red-400 text-sm mt-1">
+              {errors.email}
+            </p>
+          )}
         </div>
 
         {/* Password */}
@@ -217,6 +232,7 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
               onChange={(e) => handleChange('password', e.target.value)}
               disabled={isLoading}
               aria-invalid={Boolean(errors.password)}
+              aria-describedby={errors.password ? 'register-password-error' : undefined}
               className={cn(
                 'h-11 bg-slate-900/80 border-slate-700 focus:border-spiritual-gold focus:ring-spiritual-gold/30 text-foreground placeholder:text-slate-500 pr-12',
                 errors.password && 'border-red-500 focus:border-red-500 focus:ring-red-500/30'
@@ -233,7 +249,11 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
             </button>
           </div>
           {formData.password && <PasswordStrengthIndicator password={formData.password} />}
-          {errors.password && <p className="text-red-400 text-sm mt-1">{errors.password}</p>}
+          {errors.password && (
+            <p id="register-password-error" role="alert" className="text-red-400 text-sm mt-1">
+              {errors.password}
+            </p>
+          )}
         </div>
 
         {/* Confirm Password */}
@@ -255,6 +275,9 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
               onChange={(e) => handleChange('confirmPassword', e.target.value)}
               disabled={isLoading}
               aria-invalid={Boolean(errors.confirmPassword)}
+              aria-describedby={
+                errors.confirmPassword ? 'register-confirmPassword-error' : undefined
+              }
               className={cn(
                 'h-11 bg-slate-900/80 border-slate-700 focus:border-spiritual-gold focus:ring-spiritual-gold/30 text-foreground placeholder:text-slate-500 pr-12',
                 errors.confirmPassword &&
@@ -272,7 +295,13 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
             </button>
           </div>
           {errors.confirmPassword && (
-            <p className="text-red-400 text-sm mt-1">{errors.confirmPassword}</p>
+            <p
+              id="register-confirmPassword-error"
+              role="alert"
+              className="text-red-400 text-sm mt-1"
+            >
+              {errors.confirmPassword}
+            </p>
           )}
         </div>
 
@@ -341,6 +370,9 @@ export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
             {serverError}
           </div>
         )}
+
+        {/* W24 a11y: live region anuncia sucesso para screen readers. */}
+        <LiveRegion message={successMessage} testId="register-success" />
 
         {/* Submit */}
         <Button

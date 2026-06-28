@@ -111,7 +111,7 @@ export default function FeedPage() {
       </header>
 
       {/* Feed body — handles all 5 states */}
-      <main className="mx-auto max-w-3xl px-4 py-8">
+      <main id="main-content" tabIndex={-1} className="focus:outline-none mx-auto max-w-3xl px-4 py-8">
         {state === 'loading' && (
           <SectionLoading message="Carregando reflexões da comunidade…" />
         )}
@@ -172,14 +172,23 @@ function PostCard({ post }: { post: FeedPost }) {
       <p className="text-body mb-4 leading-relaxed text-slate-300">{post.excerpt}</p>
 
       <div className="text-tiny flex items-center gap-6 text-slate-500">
-        <button className="flex items-center gap-1.5 transition-colors hover:text-amber-400">
-          <Heart className="h-4 w-4" /> {post.likes}
+        <button
+          className="flex items-center gap-1.5 transition-colors hover:text-amber-400 min-h-[44px] min-w-[44px] px-2"
+          aria-label={`Curtir publicação (${post.likes} curtidas)`}
+        >
+          <Heart className="h-4 w-4" aria-hidden="true" /> {post.likes}
         </button>
-        <button className="flex items-center gap-1.5 transition-colors hover:text-violet-400">
-          <MessageCircle className="h-4 w-4" /> {post.comments}
+        <button
+          className="flex items-center gap-1.5 transition-colors hover:text-violet-400 min-h-[44px] min-w-[44px] px-2"
+          aria-label={`Ver comentários (${post.comments} comentários)`}
+        >
+          <MessageCircle className="h-4 w-4" aria-hidden="true" /> {post.comments}
         </button>
-        <button className="flex items-center gap-1.5 transition-colors hover:text-emerald-400">
-          <Share2 className="h-4 w-4" /> Compartilhar
+        <button
+          className="flex items-center gap-1.5 transition-colors hover:text-emerald-400 min-h-[44px] min-w-[44px] px-2"
+          aria-label="Compartilhar publicação"
+        >
+          <Share2 className="h-4 w-4" aria-hidden="true" /> Compartilhar
         </button>
       </div>
 

@@ -120,7 +120,7 @@ export default function TermsPage() {
         </header>
 
         {/* Content */}
-        <main className="container mx-auto px-4 py-12 max-w-4xl">
+        <main id="main-content" tabIndex={-1} className="focus:outline-none container mx-auto px-4 py-12 max-w-4xl">
           {/* Title */}
           <div className="text-center mb-12">
             <Heading variant="display" glow="gold" className="mb-4">

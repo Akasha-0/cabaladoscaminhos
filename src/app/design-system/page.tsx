@@ -236,7 +236,7 @@ export default function DesignSystemPage() {
   const [hasError, setHasError] = useState(true);
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main id="main-content" tabIndex={-1} className="focus:outline-none min-h-screen bg-background text-foreground">
       <PageHeader />
       <SectionNav />
 

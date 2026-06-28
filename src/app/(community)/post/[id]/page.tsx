@@ -184,7 +184,7 @@ export default function PostDetailPage() {
 
   if (loading) {
     return (
-      <main className="max-w-2xl mx-auto px-4 py-8">
+      <main id="main-content" tabIndex={-1} className="max-w-2xl mx-auto px-4 py-8 focus:outline-none">
         <div className="flex items-center justify-center min-h-[40vh] text-slate-400">
           <Loader2 className="w-5 h-5 animate-spin mr-2" />
           Carregando post…
@@ -195,7 +195,7 @@ export default function PostDetailPage() {
 
   if (error || !post) {
     return (
-      <main className="max-w-2xl mx-auto px-4 py-8">
+      <main id="main-content" tabIndex={-1} className="max-w-2xl mx-auto px-4 py-8 focus:outline-none">
         <Button
           variant="ghost"
           size="sm"
@@ -228,7 +228,7 @@ export default function PostDetailPage() {
   };
 
   return (
-    <main className="max-w-2xl mx-auto px-4 py-4 sm:py-6 space-y-4">
+    <main id="main-content" tabIndex={-1} className="max-w-2xl mx-auto px-4 py-4 sm:py-6 space-y-4 focus:outline-none">
       <ReadProgressBar postId={postId} articleSelector="article[data-post-content]" mode="sticky" />
 
       <Button

@@ -175,7 +175,11 @@ export default function LibraryPage() {
       </header>
 
       {/* Sections */}
-      <main className="mx-auto max-w-5xl px-4 py-10">
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="mx-auto max-w-5xl px-4 py-10 focus:outline-none"
+      >
         {state === 'loading' && (
           <div className="space-y-12">
             <section>

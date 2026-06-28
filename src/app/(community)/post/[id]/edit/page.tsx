@@ -163,7 +163,7 @@ export default function PostEditPage() {
   // ─── Loading ───────────────────────────────────────────────────────────
   if (loading) {
     return (
-      <main className="max-w-2xl mx-auto px-4 py-6">
+      <main id="main-content" tabIndex={-1} className="focus:outline-none max-w-2xl mx-auto px-4 py-6">
         <div
           className="flex items-center justify-center py-12 text-slate-400"
           aria-live="polite"
@@ -178,7 +178,7 @@ export default function PostEditPage() {
   // ─── Forbidden (não é o autor) ─────────────────────────────────────────
   if (forbidden) {
     return (
-      <main className="max-w-2xl mx-auto px-4 py-6 space-y-4">
+      <main id="main-content" tabIndex={-1} className="focus:outline-none max-w-2xl mx-auto px-4 py-6 space-y-4">
         <Button
           variant="ghost"
           size="sm"
@@ -208,7 +208,7 @@ export default function PostEditPage() {
 
   // ─── Editor ────────────────────────────────────────────────────────────
   return (
-    <main className="max-w-2xl mx-auto px-4 py-4 sm:py-6 space-y-4">
+    <main id="main-content" tabIndex={-1} className="focus:outline-none max-w-2xl mx-auto px-4 py-4 sm:py-6 space-y-4">
       <Button
         variant="ghost"
         size="sm"

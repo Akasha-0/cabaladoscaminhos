@@ -78,7 +78,7 @@ export default function NotificationsPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-2xl px-4 py-8">
+      <main id="main-content" tabIndex={-1} className="focus:outline-none mx-auto max-w-2xl px-4 py-8">
         {state === 'loading' && (
           <div className="space-y-3">
             <NotificationItemSkeleton />

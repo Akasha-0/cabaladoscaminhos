@@ -90,7 +90,9 @@ export function OfflinePageClient() {
 
   return (
     <main
-      className="min-h-[100dvh] flex flex-col items-center justify-center px-6 py-10 text-center bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950"
+      id="main-content"
+      tabIndex={-1}
+      className="focus:outline-none min-h-[100dvh] flex flex-col items-center justify-center px-6 py-10 text-center bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950"
       style={{
         paddingTop: 'max(2.5rem, env(safe-area-inset-top))',
         paddingBottom: 'max(2.5rem, env(safe-area-inset-bottom))',

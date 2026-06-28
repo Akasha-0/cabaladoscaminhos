@@ -75,7 +75,7 @@ export default function AkashicChatPage() {
       </header>
 
       {/* Messages */}
-      <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-8 space-y-4 overflow-y-auto">
+      <main id="main-content" tabIndex={-1} className="focus:outline-none flex-1 max-w-3xl w-full mx-auto px-4 py-8 space-y-4 overflow-y-auto">
         {messages.map((m) => (
           <div
             key={m.id}

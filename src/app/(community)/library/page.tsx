@@ -309,8 +309,13 @@ export default function LibraryPage() {
                         )}
                       </div>
                     </div>
-                    <button className="p-2 rounded-lg text-slate-500 hover:text-amber-300 hover:bg-amber-500/10 transition-all flex-shrink-0">
-                      <Bookmark className="w-4 h-4" />
+                    <button
+                      type="button"
+                      className="p-2 rounded-lg text-slate-500 hover:text-amber-300 hover:bg-amber-500/10 transition-all flex-shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                      aria-label="Salvar artigo nos favoritos"
+                      aria-pressed={false}
+                    >
+                      <Bookmark className="w-4 h-4" aria-hidden="true" />
                     </button>
                   </div>
                 </CardContent>

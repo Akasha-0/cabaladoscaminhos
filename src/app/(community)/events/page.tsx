@@ -124,7 +124,13 @@ export default function EventsPage() {
 
   return (
     <div className="min-h-screen p-4 md:p-6 lg:p-8" data-testid="events-list-page">
-      <div className="max-w-5xl mx-auto space-y-6 pb-24 md:pb-8">
+      {/* W24 a11y: id="main-content" + tabIndex={-1} permitem o SkipToContent
+          (WCAG 2.4.1 Bypass Blocks) focar este container via teclado. */}
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="max-w-5xl mx-auto space-y-6 pb-24 md:pb-8 focus:outline-none"
+      >
         {/* Header */}
         <header className="flex items-start justify-between gap-3 flex-wrap">
           <div>
@@ -268,7 +274,7 @@ export default function EventsPage() {
             ))}
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 }

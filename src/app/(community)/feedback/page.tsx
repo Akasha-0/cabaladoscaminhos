@@ -70,7 +70,11 @@ export default async function FeedbackPage({
   })
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+    <main
+      id="main-content"
+      tabIndex={-1}
+      className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8 focus:outline-none"
+    >
       <header className="mb-8 space-y-2">
         <h1 className="text-3xl font-serif text-amber-100 sm:text-4xl">
           ✦ Pedidos da Comunidade

@@ -52,7 +52,7 @@ export default async function AdminNewsletterPage() {
     ]);
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-10 sm:py-14">
+    <main id="main-content" tabIndex={-1} className="focus:outline-none mx-auto max-w-5xl px-4 py-10 sm:py-14">
       <header className="mb-8">
         <p className="text-xs uppercase tracking-[0.3em] text-spiritual-gold/80">
           Admin

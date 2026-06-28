@@ -28,7 +28,7 @@ export default function FeedLoading() {
           <div className="h-4 w-96 max-w-full rounded skeleton" />
         </div>
       </header>
-      <main className="mx-auto max-w-3xl space-y-6 px-4 py-8">
+      <main id="main-content" tabIndex={-1} className="focus:outline-none mx-auto max-w-3xl space-y-6 px-4 py-8">
         <PostCardSkeleton />
         <PostCardSkeleton />
         <PostCardSkeleton />

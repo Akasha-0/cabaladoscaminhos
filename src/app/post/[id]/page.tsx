@@ -30,7 +30,7 @@ export default function PostDetailPage({ params }: { params: Promise<PostDetailP
         </div>
       </div>
 
-      <main className="max-w-3xl mx-auto px-4 py-10">
+      <main id="main-content" tabIndex={-1} className="focus:outline-none max-w-3xl mx-auto px-4 py-10">
         {/* Meta header */}
         <div className="mb-6">
           <span className="text-caps text-tiny text-amber-300 mb-3 inline-block">
@@ -77,14 +77,23 @@ export default function PostDetailPage({ params }: { params: Promise<PostDetailP
 
         {/* Actions */}
         <div className="flex items-center gap-6 py-4 border-y border-slate-800/50 mb-8">
-          <button className="flex items-center gap-2 text-caption text-slate-400 hover:text-amber-300 transition-colors">
-            <Heart className="w-5 h-5" /> 42
+          <button
+            className="flex items-center gap-2 text-caption text-slate-400 hover:text-amber-300 transition-colors min-h-[44px] min-w-[44px] px-2"
+            aria-label="Curtir publicação (42 curtidas)"
+          >
+            <Heart className="w-5 h-5" aria-hidden="true" /> 42
           </button>
-          <button className="flex items-center gap-2 text-caption text-slate-400 hover:text-violet-300 transition-colors">
-            <MessageCircle className="w-5 h-5" /> 7 comentários
+          <button
+            className="flex items-center gap-2 text-caption text-slate-400 hover:text-violet-300 transition-colors min-h-[44px] min-w-[44px] px-2"
+            aria-label="Ver comentários (7 comentários)"
+          >
+            <MessageCircle className="w-5 h-5" aria-hidden="true" /> 7 comentários
           </button>
-          <button className="flex items-center gap-2 text-caption text-slate-400 hover:text-emerald-300 transition-colors">
-            <Share2 className="w-5 h-5" /> Compartilhar
+          <button
+            className="flex items-center gap-2 text-caption text-slate-400 hover:text-emerald-300 transition-colors min-h-[44px] min-w-[44px] px-2"
+            aria-label="Compartilhar publicação"
+          >
+            <Share2 className="w-5 h-5" aria-hidden="true" /> Compartilhar
           </button>
         </div>
 

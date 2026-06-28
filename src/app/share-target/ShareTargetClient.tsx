@@ -175,7 +175,7 @@ export function ShareTargetClient({ title, text, url }: ShareTargetClientProps) 
   // ============================================================
   if (authLoading) {
     return (
-      <main className="min-h-[100dvh] flex items-center justify-center bg-gradient-to-b from-slate-950 to-slate-900">
+      <main id="main-content" tabIndex={-1} className="focus:outline-none min-h-[100dvh] flex items-center justify-center bg-gradient-to-b from-slate-950 to-slate-900">
         <Loader2 className="w-8 h-8 text-[var(--spiritual-gold)] animate-spin" aria-hidden="true" />
       </main>
     );
@@ -183,7 +183,7 @@ export function ShareTargetClient({ title, text, url }: ShareTargetClientProps) 
 
   if (!isAuthenticated) {
     return (
-      <main className="min-h-[100dvh] flex flex-col items-center justify-center p-6 text-center bg-gradient-to-b from-slate-950 to-slate-900">
+      <main id="main-content" tabIndex={-1} className="focus:outline-none min-h-[100dvh] flex flex-col items-center justify-center p-6 text-center bg-gradient-to-b from-slate-950 to-slate-900">
         <div className="max-w-md">
           <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-[var(--spiritual-gold)] to-purple-600 flex items-center justify-center">
             <Share2 className="w-8 h-8 text-black" aria-hidden="true" />
@@ -216,7 +216,9 @@ export function ShareTargetClient({ title, text, url }: ShareTargetClientProps) 
 
   return (
     <main
-      className="min-h-[100dvh] bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950"
+      id="main-content"
+      tabIndex={-1}
+      className="focus:outline-none min-h-[100dvh] bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950"
       style={{ paddingTop: 'env(safe-area-inset-top, 0)' }}
     >
       {/* Header */}

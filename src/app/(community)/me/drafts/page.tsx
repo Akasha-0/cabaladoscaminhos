@@ -68,7 +68,7 @@ export default async function MeDraftsPage() {
   });
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-3xl flex-col gap-4 px-4 py-4 sm:px-6 sm:py-6">
+    <main id="main-content" tabIndex={-1} className="mx-auto flex min-h-screen w-full max-w-3xl flex-col gap-4 px-4 py-4 sm:px-6 sm:py-6 focus:outline-none">
       <header className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-semibold text-zinc-900 sm:text-2xl dark:text-zinc-100">

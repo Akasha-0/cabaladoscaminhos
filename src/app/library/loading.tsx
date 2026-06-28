@@ -31,7 +31,11 @@ export default function LibraryLoading() {
           </div>
         </div>
       </header>
-      <main className="mx-auto max-w-5xl space-y-12 px-4 py-10">
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="mx-auto max-w-5xl space-y-12 px-4 py-10 focus:outline-none"
+      >
         <section>
           <div className="mb-6 space-y-2">
             <div className="h-6 w-40 rounded skeleton" />

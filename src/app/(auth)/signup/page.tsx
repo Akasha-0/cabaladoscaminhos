@@ -28,7 +28,7 @@ function SignupFormFallback() {
 
 export default function SignupPage() {
   return (
-    <main className="min-h-screen flex items-center justify-center px-4 py-12 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+    <main id="main-content" tabIndex={-1} className="focus:outline-none min-h-screen flex items-center justify-center px-4 py-12 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
       <Suspense fallback={<SignupFormFallback />}>
         <OptimizedSignupForm />
       </Suspense>

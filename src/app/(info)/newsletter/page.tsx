@@ -53,7 +53,7 @@ export default async function NewsletterPage() {
   });
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-12 sm:py-16">
+    <main id="main-content" tabIndex={-1} className="focus:outline-none mx-auto max-w-3xl px-4 py-12 sm:py-16">
       <header className="mb-10 text-center">
         <p className="text-xs uppercase tracking-[0.3em] text-spiritual-gold/80">
           Digest semanal

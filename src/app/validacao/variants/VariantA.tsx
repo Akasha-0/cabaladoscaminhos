@@ -54,7 +54,7 @@ const TRUST_SIGNALS = [
 
 export function VariantAPage({ userId, source, referralCode }: Props) {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100">
+    <main id="main-content" tabIndex={-1} className="focus:outline-none min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100">
       <LandingTracker variant="A" userId={userId} />
 
       <section className="relative overflow-hidden">
