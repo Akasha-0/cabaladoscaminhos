@@ -174,7 +174,7 @@ export function buildPageMetadata(input: PageSeoInput): Metadata {
   };
 
   if (type === "article") {
-    openGraph.type = "article";
+    // openGraph.type already set to "article" via `type` param above (line 167).
     // Next.js Metadata typing for article-specific fields. Cast to allow
     // optional fields without type narrowing fights.
     const articleOg = openGraph as unknown as {

@@ -137,6 +137,7 @@ export function PostCard({
   const time = formatRelativeTime(post.createdAt, t);
 
   return (
+    <Card data-testid="post-card" data-post-id={post.id}>
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-3">
           <Link
