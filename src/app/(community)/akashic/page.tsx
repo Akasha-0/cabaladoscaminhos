@@ -1,33 +1,35 @@
 'use client';
 
 // ============================================================================
-// AKASHIC CHAT — /akashic (Wave 12 — 2026-06-27)
+// AKASHIC CHAT — /akashic (Wave 26 — 2026-06-28)
 // ============================================================================
-// Interface de chat com a Akasha IA. Consome /api/akashic/chat/stream via
-// Server-Sent Events (SSE): tokens chegam incrementalmente, sources ficam
-// disponíveis antes do primeiro token, meta aparece junto.
+// Interface de chat com a Akasha IA. SSE streaming via
+// `useAkashaStream` (src/hooks/use-akasha-stream.ts): tokens chegam
+// incrementalmente, sources ficam disponíveis antes do primeiro token,
+// meta aparece junto.
 //
-// Eventos SSE consumidos:
-//   sources  → { sources: RagSource[] }     (antes do primeiro token)
-//   meta     → { model, rag_degraded }      (antes do stream)
-//   token    → { content: "..." }           (chunks de texto, typing effect)
-//   done     → { ok: true }                 (fim do stream)
-//   error    → { code, message }            (se algo falhar)
+// Hook expõe: status, content (incremental), sources, meta, error,
+// send/retry/abort/reset. Aborta no unmount e previne double-connection.
 //
 // Features:
 //   - Lista de mensagens com distinção user / assistant
 //   - Painel lateral de sources (citações) com similaridade — atualiza incremental
 //   - Filtro de tradição (select)
-//   - Estado de loading + erro
+//   - Toggle "Modo estudo profundo" (Wave 18)
+//   - Estado de loading + erro + retry
 //   - Mobile-first (stack vertical, sources colapsáveis)
 //
-// Wave 12 (2026-06-27) — Voice Mode + SSE streaming:
-//   - Voice Mode: botão "Ouvir" em cada resposta (TTS via Web Speech API).
-//     Componente: src/components/akashic/VoiceButton.tsx
-//   - SSE streaming: consome /api/akashic/chat/stream (ReadableStream).
-//     Tokens chegam incrementalmente (typing effect natural).
-//     Sources chegam ANTES do primeiro token (sidebar atualiza cedo).
-//   - Docs: docs/VOICE-MODE-W12.md, docs/AKASHIC-STREAMING-W12.md
+// Wave 12 (2026-06-27) — Voice Mode (TTS via Web Speech API)
+//   Componente: src/components/akashic/VoiceButton.tsx
+//   Docs: docs/VOICE-MODE-W12.md
+//
+// Wave 26 (2026-06-28) — Streaming refactor:
+//   - Extracted SSE consumer into src/hooks/use-akasha-stream.ts
+//   - AbortController cleanup on unmount
+//   - Double-submit guard (ref-based)
+//   - Retry button on stream error
+//   - Persistent deepMode state
+//   - Docs: docs/AKASHIC-STREAMING-W12.md (still authoritative)
 // ============================================================================
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
@@ -38,6 +40,7 @@ import {
   Loader2,
   AlertTriangle,
   RotateCcw,
+  BookOpen,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -49,6 +52,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
+import {
+  useAkashaStream,
+  type AkashaHistoryMessage,
+  type RagSource,
+  type AkashaStreamMeta,
+} from '@/hooks/use-akasha-stream';
 
 // ============================================================================
 // Code split (Wave 11 perf) — heavy off-viewport pieces become dynamic chunks
@@ -85,29 +94,15 @@ const ThinkingBubble = dynamic(
 );
 
 // ============================================================================
-// Types
+// Types — local ChatMessage augmented with `error` flag for UI rendering.
 // ============================================================================
-
-interface RagSource {
-  id: string;
-  title: string;
-  slug: string;
-  similarity: number;
-  excerpt?: string;
-  tradition?: string;
-}
 
 interface ChatMessage {
   id: string;
   role: 'user' | 'assistant';
   content: string;
   sources?: RagSource[];
-  meta?: {
-    model: string;
-    took_ms: number;
-    rag_degraded?: boolean;
-    rag_reason?: string;
-  };
+  meta?: AkashaStreamMeta;
   error?: boolean;
 }
 
@@ -128,6 +123,38 @@ const TRADITIONS = [
 ];
 
 // ============================================================================
+// LiveStreamMessage — renders in-flight tokens as they arrive (Wave 26)
+// ============================================================================
+// Lightweight bubble that shows the streaming text + a blinking caret.
+// Lives outside the persisted `messages` array (it's not a finished turn).
+// Mobile-first: no heavy chrome, just a soft fade-in on each new chunk.
+// ============================================================================
+
+function LiveStreamMessage({ content }: { content: string }) {
+  return (
+    <article
+      className="flex justify-start"
+      aria-live="polite"
+      aria-label="Akasha está respondendo"
+    >
+      <div className="max-w-[85%] rounded-2xl bg-slate-800/60 px-4 py-3 text-sm text-slate-100 ring-1 ring-slate-700/50 md:text-base">
+        <div className="flex items-center gap-2">
+          <Sparkles className="h-3 w-3 text-amber-300" aria-hidden />
+          <span className="text-caps text-tiny text-amber-300">Akasha</span>
+        </div>
+        <div className="mt-1 whitespace-pre-wrap break-words leading-relaxed">
+          {content}
+          <span
+            className="ml-0.5 inline-block h-4 w-[2px] translate-y-0.5 animate-pulse bg-amber-300/80 align-middle"
+            aria-hidden
+          />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+// ============================================================================
 // Page
 // ============================================================================
 
@@ -135,9 +162,23 @@ export default function AkashicChatPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [tradition, setTradition] = useState<string>('__all__');
-  const [loading, setLoading] = useState(false);
+  const [deepMode, setDeepMode] = useState<boolean>(false);
   const [showSources, setShowSources] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+
+  // Wave 26 — streaming delegated to a typed hook. Returns live state +
+  // send/retry/abort/reset. See src/hooks/use-akasha-stream.ts.
+  const {
+    status: streamStatus,
+    content: streamContent,
+    sources: streamSources,
+    meta: streamMeta,
+    error: streamError,
+    send,
+    retry,
+    abort: abortStream,
+    reset: resetStream,
+    isStreaming,
+  } = useAkashaStream();
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -147,17 +188,70 @@ export default function AkashicChatPage() {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages, loading]);
+  }, [messages, streamContent]);
 
   // Foco no input ao montar
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
+  // ─── Stream → message sync ────────────────────────────────────────────
+  // The hook owns the live tokens. We mirror its state into the message
+  // list when the stream finishes (status === 'done' | 'error' | 'aborted'),
+  // so the persisted chat history carries the final text + sources + meta.
+  // During streaming the ThinkingBubble carries the visual.
+  const lastStreamStatusRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (streamStatus === 'idle' || streamStatus === 'connecting') return;
+    if (streamStatus === 'streaming') return;
+    // Skip duplicate emissions (strict-mode double-invoke + re-renders).
+    if (lastStreamStatusRef.current === streamStatus) return;
+    lastStreamStatusRef.current = streamStatus;
+
+    const assistantMsg: ChatMessage = {
+      id: crypto.randomUUID(),
+      role: 'assistant',
+      content:
+        streamStatus === 'aborted'
+          ? '[parado]'
+          : streamStatus === 'error'
+            ? `Desculpa, tive um problema técnico: ${
+                streamError?.message ?? 'erro desconhecido'
+              }\n\nVocê pode tentar de novo ou reformular a pergunta.`
+            : streamContent,
+      sources: streamSources.length > 0 ? streamSources : undefined,
+      meta: streamMeta ?? undefined,
+      error: streamStatus === 'error',
+    };
+
+    // Replace the placeholder ('__current_stream__') with the final message,
+    // OR append if there's no placeholder (e.g. retry created a fresh stream).
+    setMessages((prev) => {
+      const placeholderIdx = prev.findIndex(
+        (m) => m.id === '__current_stream__',
+      );
+      if (placeholderIdx >= 0) {
+        const next = prev.slice();
+        next[placeholderIdx] = assistantMsg;
+        return next;
+      }
+      // Avoid double-append if assistantMsg already exists at end (defensive)
+      const last = prev[prev.length - 1];
+      if (
+        last?.role === 'assistant' &&
+        last.content === assistantMsg.content &&
+        last.error === assistantMsg.error
+      ) {
+        return prev;
+      }
+      return [...prev, assistantMsg];
+    });
+  }, [streamStatus, streamContent, streamSources, streamMeta, streamError]);
+
   const sendMessage = useCallback(
-    async (text: string) => {
+    (text: string) => {
       const trimmed = text.trim();
-      if (!trimmed || loading) return;
+      if (!trimmed || isStreaming) return;
 
       const userMsg: ChatMessage = {
         id: crypto.randomUUID(),
@@ -165,190 +259,38 @@ export default function AkashicChatPage() {
         content: trimmed,
       };
 
-      // Histórico ANTES da nova msg do user (sem placeholders vazios)
-      const history = messages
-        .filter((m) => !m.error && m.content)
+      // Histórico ANTES da nova msg do user (sem erros, sem vazios)
+      const history: AkashaHistoryMessage[] = messages
+        .filter((m) => !m.error && m.content && m.id !== '__current_stream__')
         .slice(-20) // cap
         .map((m) => ({
-          role: m.role as 'user' | 'assistant',
+          role: m.role,
           content: m.content,
         }));
 
-      // Placeholder assistant — vai ser preenchido incrementalmente pelo stream
-      const assistantId = crypto.randomUUID();
-
+      // Placeholder invisível — substituído pelo efeito acima quando o
+      // stream termina. ID sentinel pra detectar "stream em curso".
       setMessages((prev) => [
         ...prev,
         userMsg,
-        { id: assistantId, role: 'assistant', content: '' },
+        {
+          id: '__current_stream__',
+          role: 'assistant',
+          content: '',
+        },
       ]);
       setInput('');
-      setLoading(true);
-      setError(null);
 
-      const startedAt = performance.now();
-
-      try {
-        const res = await fetch('/api/akashic/chat/stream', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({
-            message: trimmed,
-            tradition: tradition === '__all__' ? null : tradition,
-            history,
-            topK: 5,
-            threshold: 0.6,
-          }),
-        });
-
-        if (!res.ok) {
-          const errBody = await res.json().catch(() => ({}));
-          const errMsg =
-            errBody?.error?.message ??
-            `Erro ${res.status}: não foi possível obter resposta`;
-          throw new Error(errMsg);
-        }
-
-        if (!res.body) {
-          throw new Error('Resposta sem corpo (stream vazio)');
-        }
-
-        // ── SSE consumer (ReadableStream + TextDecoder) ───────────────
-        const reader = res.body.getReader();
-        const decoder = new TextDecoder();
-        let buffer = '';
-        let receivedTokens = false;
-
-        while (true) {
-          const { value, done } = await reader.read();
-          if (done) break;
-
-          buffer += decoder.decode(value, { stream: true });
-
-          // SSE events separados por linha em branco
-          const parts = buffer.split('\n\n');
-          buffer = parts.pop() ?? ''; // guarda parcial
-
-          for (const part of parts) {
-            if (!part.trim()) continue;
-
-            let event = 'message';
-            let data = '';
-            for (const line of part.split('\n')) {
-              if (line.startsWith('event:')) {
-                event = line.slice(6).trim();
-              } else if (line.startsWith('data:')) {
-                data += line.slice(5).trim();
-              }
-            }
-            if (!data) continue;
-
-            let parsed: unknown;
-            try {
-              parsed = JSON.parse(data);
-            } catch {
-              continue;
-            }
-            const p = parsed as {
-              sources?: RagSource[];
-              model?: string;
-              rag_degraded?: boolean;
-              rag_reason?: string;
-              content?: string;
-              message?: string;
-              ok?: boolean;
-            };
-
-            switch (event) {
-              case 'sources':
-                setMessages((prev) =>
-                  prev.map((m) =>
-                    m.id === assistantId
-                      ? { ...m, sources: p.sources ?? [] }
-                      : m,
-                  ),
-                );
-                break;
-              case 'meta':
-                setMessages((prev) =>
-                  prev.map((m) =>
-                    m.id === assistantId
-                      ? {
-                          ...m,
-                          meta: {
-                            model: p.model ?? 'gpt-4o',
-                            took_ms: m.meta?.took_ms ?? 0,
-                            rag_degraded: p.rag_degraded ?? false,
-                            rag_reason: p.rag_reason,
-                          },
-                        }
-                      : m,
-                  ),
-                );
-                break;
-              case 'token':
-                receivedTokens = true;
-                setMessages((prev) =>
-                  prev.map((m) =>
-                    m.id === assistantId
-                      ? { ...m, content: m.content + (p.content ?? '') }
-                      : m,
-                  ),
-                );
-                break;
-              case 'done':
-                setMessages((prev) =>
-                  prev.map((m) =>
-                    m.id === assistantId
-                      ? {
-                          ...m,
-                          meta: {
-                            ...m.meta,
-                            took_ms: Math.round(performance.now() - startedAt),
-                          },
-                        }
-                      : m,
-                  ),
-                );
-                break;
-              case 'error':
-                throw new Error(p.message ?? 'Erro no stream');
-            }
-          }
-        }
-
-        if (!receivedTokens) {
-          setMessages((prev) =>
-            prev.map((m) =>
-              m.id === assistantId
-                ? {
-                    ...m,
-                    content: 'A Akasha não retornou conteúdo.',
-                    error: true,
-                  }
-                : m,
-            ),
-          );
-        }
-      } catch (err) {
-        const msg = err instanceof Error ? err.message : 'Erro desconhecido';
-        setError(msg);
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === assistantId
-              ? {
-                  ...m,
-                  content: `Desculpa, tive um problema técnico: ${msg}\n\nVocê pode tentar de novo ou reformular a pergunta.`,
-                  error: true,
-                }
-              : m,
-          ),
-        );
-      } finally {
-        setLoading(false);
-      }
+      send({
+        message: trimmed,
+        tradition: tradition === '__all__' ? null : tradition,
+        history,
+        deepMode,
+        topK: 5,
+        threshold: 0.6,
+      });
     },
-    [loading, messages, tradition, deepMode],
+    [isStreaming, messages, tradition, deepMode, send],
   );
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -360,7 +302,8 @@ export default function AkashicChatPage() {
 
   const resetConversation = () => {
     setMessages([]);
-    setError(null);
+    resetStream();
+    lastStreamStatusRef.current = null;
     inputRef.current?.focus();
   };
 
@@ -459,22 +402,43 @@ export default function AkashicChatPage() {
             ) : (
               <div className="mx-auto flex max-w-3xl flex-col gap-4">
                 {messages.map((m) => {
-                  // Esconde placeholder assistant vazio até o primeiro token chegar
+                  // Esconde placeholder invisível (stream em curso)
+                  if (m.id === '__current_stream__') return null;
+                  // Esconde assistant vazio sem erro (placeholder residual)
                   if (m.role === 'assistant' && !m.content && !m.error) {
                     return null;
                   }
                   return <MessageBubble key={m.id} message={m} />;
                 })}
-                {loading && <ThinkingBubble />}
+                {isStreaming && streamContent === '' && (
+                  <ThinkingBubble />
+                )}
+                {isStreaming && streamContent !== '' && (
+                  <LiveStreamMessage content={streamContent} />
+                )}
               </div>
             )}
           </div>
 
-          {/* Error banner */}
-          {error && (
-            <div className="border-t border-amber-800/50 bg-amber-950/30 px-4 py-2 text-xs text-amber-200 md:px-6">
-              <AlertTriangle className="mr-1.5 inline h-3.5 w-3.5" />
-              {error}
+          {/* Error banner + retry (Wave 26) */}
+          {streamError && (
+            <div className="flex items-center justify-between gap-3 border-t border-amber-800/50 bg-amber-950/30 px-4 py-2 text-xs text-amber-200 md:px-6">
+              <div className="flex items-center gap-1.5">
+                <AlertTriangle className="h-3.5 w-3.5" aria-hidden />
+                <span>
+                  {streamError.code === 'RATE_LIMIT_EXCEEDED'
+                    ? 'Muitas requisições — aguarde um instante.'
+                    : streamError.message}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={retry}
+                className="rounded-full border border-amber-700/60 px-2 py-0.5 text-[10px] uppercase tracking-wide text-amber-200 hover:bg-amber-900/40"
+                aria-label="Tentar novamente"
+              >
+                Tentar de novo
+              </button>
             </div>
           )}
 
@@ -490,7 +454,7 @@ export default function AkashicChatPage() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Pergunte à Akasha… (ela nunca prescreve, sempre cita)"
-                disabled={loading}
+                disabled={isStreaming}
                 aria-label="Mensagem para Akasha"
                 className="min-h-[44px] flex-1 bg-slate-800/60 text-base text-slate-100 placeholder:text-slate-500"
                 maxLength={2000}
@@ -499,11 +463,11 @@ export default function AkashicChatPage() {
                 type="submit"
                 variant="golden"
                 size="default"
-                disabled={loading || !input.trim()}
+                disabled={isStreaming || !input.trim()}
                 className="min-h-[44px] min-w-[44px] px-4"
                 aria-label="Enviar mensagem"
               >
-                {loading ? (
+                {isStreaming ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
                   <Send className="h-4 w-4" />
