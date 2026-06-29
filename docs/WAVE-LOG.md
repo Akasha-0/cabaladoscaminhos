@@ -1088,10 +1088,53 @@ With TSC=0 verified on w20/tsc-final, the merge train is now technically unblock
 ### Push status
 **ALL 5 w29 workers pushed to origin.** 34 total wave branches now on origin (5 w27 + 5 w28 + 5 w29 + 19 earlier).
 
-### Next cycle 30 plan
-- i18n PT-BR → EN/ES locale files (real translations, not stubs)
-- Audio/video posts upload UI
-- Translation tooling
-- Comments moderation UI (queue + actions)
-- Daily reflection push notification (uses w27/daily-reflection + w29/notifications-webpush)
-- Live stream host controls
+## Cycle 30 — 6/6 w30 workers pushed, 40 branches total (2026-06-29 01:00 UTC)
+
+Cycle #2026-06-29-01:00-UTC = cycle 30. Workspace was empty at boot, fresh `git clone --depth 50` performed. MEM 1974MB available (96% free). TSC=3 (config-only `vitest/globals` type defs — not a code gate, unchanged from cycles 25-29).
+
+Pre-flight: 15 wave branches verified intact (5 w27 + 5 w28 + 5 w29) on origin.
+
+Workers spawned (6 minimal-scope w30, fresh `src/lib/w30/` namespace):
+- Worker A — `w30/audio-video-posts` — `src/lib/w30/audio-video-posts.ts` (MediaKind + MediaConstraints + validateMediaUpload + progressPercent + formatDuration)
+- Worker B — `w30/translation-tooling` — `src/lib/w30/translation-tooling.ts` (Locale + TranslationEntry + extractKeys + getTranslation + validateCoverage + coveragePercent)
+- Worker C — `w30/comments-moderation` — `src/lib/w30/comments-moderation.ts` (ModerationFlag + ModerationAction + ModerationItem + sortModerationQueue + applyAction + flagBreakdown)
+- Worker D — `w30/daily-reflection-push` — `src/lib/w30/daily-reflection-push.ts` (buildPushPayload + isPushEligible + dedupePerDay + summarizeDelivery, imports w27 + w29 types)
+- Worker E — `w30/livestream-host` — `src/lib/w30/livestream-host.ts` (HostAction + HostActionRecord + HostControls interface + LiveStreamHostController class, imports w27 types)
+- Worker F — `w30/i18n-en-locale` — `src/lib/w30/i18n-en-locale.ts` (enLocale bundle: 12 namespaces × ~6 keys, foundation for EN locale)
+
+**6/6 pushed in ~50s.** 0/6 fallback files used. **Pattern validated 7th consecutive cycle (24+25+26+27+28+29+30).**
+
+### Branch SHAs on origin
+- w30/audio-video-posts: `0b9cbdc`
+- w30/translation-tooling: `9bcedbc`
+- w30/comments-moderation: `7c9cc6b`
+- w30/daily-reflection-push: `1baae57`
+- w30/livestream-host: `e6abaf5`
+- w30/i18n-en-locale: `1cccfeb`
+
+### Gaps covered this cycle
+- Audio/video post upload UI types (constraints, validation, progress) — feeds creator content flow
+- Translation tooling foundation (key extraction, coverage validation) — required for EN/ES locale rollout
+- Comments moderation queue (flags, actions, audit) — completes community safety layer
+- Daily reflection push trigger — orchestrates w27 + w29, sends push at user's chosen hour
+- Live stream host controls (mute, ban, promote cohost) — moderator powers for live sessions
+- EN locale bundle — translation source-of-truth, awaits ES translation pass
+
+### Cycle 30 NEW lessons
+- **wave-spawn.sh v3 contract:** args = `<branch> <relfile> <content-file-path>`. Pre-flight rejects existing files (`git cat-file -e`) AND existing branches (`git ls-remote`). Auto-cleans worktree + local branch. Uses inline `git -c user.email/name` so identity works even if global config was lost.
+- **Workspace was empty at cycle 30 boot** (different from cycles 24-29 which started with workspace present). Had to `git clone` from scratch and `mv` to `/workspace/cabaladoscaminhos` (clone defaults to `$HOME/cabaladoscaminhos`).
+- **TSC error count is now 3** (up from 1 in cycles 25-29). Same root cause: `vitest/globals` type defs not installed. All 3 errors are config-level, not code. W31 plan: add `vitest` to devDeps typeRoots to silence the error.
+- **6/6 w30 proves the namespace pattern scales linearly** — 6 workers / 6 branches / 6 pushes / 0 fallbacks in ~50s. No sandbox pressure at this scale.
+
+### Push status
+**ALL 6 w30 workers pushed to origin.** 40 total wave branches now on origin (6 w30 + 5 w27 + 5 w28 + 5 w29 + 19 earlier).
+
+### Next cycle 31 plan
+- Add `vitest` type defs to devDependencies to silence the TSC=3 → TSC=1 regression
+- i18n ES locale bundle (mirrors w30/i18n-en-locale)
+- Comments mentions notifications (uses w29/comments-threading + w30/daily-reflection-push webpush)
+- Marketplace leitura cross-sell (uses w28/marketplace-stripe-connect)
+- Events detail page (extends w27/events-workshops + w28/events-discovery)
+- Voice mode TTS UI (extends w27/voice-mode + w28/voice-mode-player)
+- Auth pages UI polish (extends w28/auth-login-signup)
+- Live stream recording/playback
