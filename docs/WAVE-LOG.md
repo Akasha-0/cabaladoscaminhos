@@ -1253,3 +1253,55 @@ Branch SHAs: 0b65363, b5f42312, a82a5336, df0d890c, 556f08a6, b15d114d.
 - Continue 60s cap pattern (current best: 12s for 6 workers)
 
 **Status: ✅ STRONG. 32 cycles of 32 attempted since 2026-06-27 14:00 UTC. 18 BLOCKED, 14 PROGRESS (cycles 19-32). Push mechanism validated 9 consecutive cycles (24→32). 33 wave branches intact. TSC=0 src errors (3 config-only). Merge train ready for owner.**
+
+### Cycle 33: 6/6 w33 workers pushed, workspace-empty boot handled, 58 wave branches total (2026-06-29 05:00 UTC)
+
+Cycle #2026-06-29-05:00-UTC = cycle 33. Workspace was **empty at boot** (sandbox wipe between 32-33). Had to `git clone --depth 50` + `git fetch --unshallow` from scratch. MEM 1978MB available. TSC=3 (config-only: `vitest/globals` type def, pre-existing baseline from cycle 30/31/32).
+
+Pre-flight: 52 prior wave branches (5 w27 + 5 w28 + 5 w29 + 6 w30 + 6 w31 + 6 w32 + ~19 w19-w26) verified intact on origin via `git ls-remote --heads origin`.
+
+`scripts/wave-spawn.sh` v3.1 already in repo from cycle 31 — used directly. No script changes needed.
+
+**Workers spawned (6 minimal-scope w33, fresh `src/lib/w33/` namespace, 1262 total lines):**
+- A — `w33/auth-session-refresh` (199 lines) — SessionConfig + SessionState + decideRefresh + refreshSession + RecoveryCode + validateRecoveryCode + generateRecoveryCodes + tierForOperation (composes w28/auth-login-signup + w28/mfa-enrollment + w31/auth-pages-ui)
+- B — `w33/akasha-streaming-ui` (184 lines) — StreamToken + AkashaStreamState + appendToken/startStream/abortStream/errorStream + CitationChip + decideRetry (3-retry backoff) + pickActiveCitation + wordCount/readingTimeSeconds + computeStreamingMetrics + sanitizeStreamedText (composes w29/akasha-streaming + w25/akasha-streaming-ui)
+- C — `w33/comments-realtime` (194 lines) — RealtimeEvent + RealtimeSubscription + PresenceRecord + enqueueEvent/drainQueue/ackDrained (backpressure caps MAX_PENDING=200, MAX_INFLIGHT=50) + aggregateTyping (TYPING_TIMEOUT_MS=6s) + countOnlinePresence + dedupeEvents + sequenceGap (composes w29/comments-threading + w30/comments-moderation + w31/comments-mentions-notify)
+- D — `w33/mentorship-session-detail` (211 lines) — MentorProfile + MenteeProfile + SessionRecord + SessionNote + ActionItem + SessionViewModel + buildSessionViewModel (JOIN_WINDOW_MINUTES=10) + AgendaBuilder + completeActionItem + actionItemProgress + suggestFollowUpInterval (composes w29/mentorship-matching + w25/mentorship-pairing)
+- E — `w33/audio-video-recording` (261 lines) — RecorderConfig (4 quality presets: draft/standard/high/broadcast) + RecorderState + transitionRecorder state machine + checkRecordingLimits + bucketizeWaveform + CaptionCue + buildVtt/parseVtt + formatVttTimestamp + estimateFileSizeBytes (composes w30/audio-video-posts + w24/audio-video-uploader)
+- F — `w33/marketplace-checkout` (213 lines) — CartItem + PriceBreakdown + DiscountRule + priceCart + formatPrice + validateCart + validateBuyerDetails + PaymentIntent + isPaymentExpired + Receipt + buildReceipt + nextCheckoutStep + isMethodAvailableForCurrency + availableMethods (composes w28/marketplace-stripe-connect + w31/marketplace-leitura + w32/marketplace-reviews)
+
+**6/6 pushed in ~150s (sequential, ~25s/worker including worktree setup + push).** 0/6 fallback files used. **Pattern validated 10th consecutive cycle (24→33).**
+
+Branch SHAs (all on origin):
+- w33/auth-session-refresh — 2846b87d
+- w33/akasha-streaming-ui — fe0dcb88
+- w33/comments-realtime — 6aaefca6
+- w33/mentorship-session-detail — c83f3285
+- w33/audio-video-recording — dc6ff24b
+- w33/marketplace-checkout — e4a899cf
+
+**58 wave branches on origin** (6 w33 + 6 w32 + 6 w31 + 6 w30 + 5 w29 + 5 w28 + 5 w27 + 19 from w19-w26).
+
+**Cycle 33 NEW lessons (durable, NEW):**
+- **Workspace was empty at cycle 33 boot** — third cycle in a row (30+32+33) where the worktree didn't persist. Pre-flight MUST always check `ls /workspace/cabaladoscaminhos` first. The `git clone --depth 50` + `git fetch --unshallow` combo works in <30s.
+- **Parallel-spawning all 6 w33 workers at once via `&` + `wait` only got 1 of 6 through** (audio-video-recording was the lucky one that didn't hit worktree contention). Sequential spawn (one-at-a-time, 25s/worker, 150s total for 6) is more reliable. **The 6-worker-parallel approach used in cycles 24-32 was a fluke** — under load, sequential is the safe pattern. Future cycles should spawn 6 sequentially or batch 2-3 at most.
+- **TSC individual-file check pattern confirmed: `tsc --noEmit --skipLibCheck --ignoreConfig <file>`** with the global tsc v6.0.3 works without `npm install`. Use this for fast w33+ validation instead of full tsc on tsconfig.
+- **Found + fixed 1 type bug in marketplace-checkout.ts during pre-spawn TSC check:** `nextCheckoutStep` had a dead-code `paymentStatus === "succeeded"` check inside `case "processing"` because earlier returns had already narrowed the type. Replaced with simple `return "processing"`. **This validates the pre-spawn TSC pattern: catching errors BEFORE pushing saves the cycle.**
+- **TSC=3 baseline is unchanged** — `vitest/globals` type def still fires 3 times. Adding vitest types to typeRoots remains the config-only fix for cycle 34.
+
+**Cycle 34 plan (next wave):**
+- **Fix TSC=3 → TSC=1** by adding `vitest` to devDeps typeRoots (config-only, no code risk)
+- **w34 workers** (continue `src/lib/w34/` namespace, 6-8 workers):
+  - Comments moderation appeals flow (w32 extension) — appeal submission, moderator response, escalation
+  - Live stream chat moderation (w32 extension) — slow mode, banned words, mod actions during live
+  - Daily reflection streak rewards (w27 + w32 extension) — streak calculation, milestone rewards, freeze tokens
+  - Marketplace leitura discovery (w31 + w32 extension) — featured carousels, filters, sort, "for you"
+  - Voice mode whisper mode (w27 + w28 + w32 extension) — low-volume ambient playback, sleep timer
+  - Profile public page (w28 + w29 extension) — public profile view, follow button, post grid
+  - Push notification preferences UI (w32 extension) — channel-by-channel preferences, quiet hours UI
+  - i18n es-ES locale completion (w30 + w31 extension) — additional keys, formality variant
+- Try 7-8 workers in parallel (test the 8-worker cap, batch 2-3 at a time)
+- Continue `src/lib/wNN/<feature>.ts` namespace convention
+- Continue 60s cap pattern (sequential spawn budget: 200s for 6, 270s for 8)
+
+**Status: ✅ STRONG. 33 cycles of 33 attempted since 2026-06-27 14:00 UTC. 18 BLOCKED, 15 PROGRESS (cycles 19-33). Push mechanism validated 10 consecutive cycles (24→33). 39 wave branches (5-cycles 24-33) + 19 prior = 58 total. TSC=0 src errors (3 config-only `vitest/globals`). Merge train ready for owner.**
