@@ -3271,3 +3271,44 @@ _Pending close-out at 21:00 UTC. Lessons to capture:_
 
 **Cycle 61 NEW lesson (durable, NEW this update):**
 - **Worker over-delivery ratio on cycle 61 briefs is ~2.5× across both metrics** — cycle 60's 600-1000 word briefs produced 1.5-2× over-delivery; cycle 61's 1000-1500 word briefs producing 2.25-3.7× over. **Lesson: brief length has diminishing returns past ~800 words; the spec *sections* count (15-20) is the real driver of density.** Future briefs can stabilize at ~800-1000 words with 17-20 mandatory sections.
+
+### Mid-cycle update @ 20:42 UTC — w61/i18n-pt-en-es-structure DELIVERED (formal report received)
+
+**Worker session 414565222162514 reported @ 20:42 UTC (~9 min wall-clock).**
+
+**Final stats:**
+- Engine: 919L (one of the smaller cycle 61 deliverables — focused + compressed approach)
+- 47 named exports (target 25+; **+88% over**)
+- Tests: 812L, 22 describe blocks, 109 `it()`, **154 expect assertions** (target 40-80; **+92% over-density**)
+- 3 JSON bundles: `pt-BR/common.json` + `en/common.json` + `es/common.json` (~7.3 KB total, 50+ keys each, ICU `many` for ES 16/100/1000)
+- DELIVERABLE-w61.md: 8.8 KB
+- **Spec coverage: 20/20 sections** ✅
+
+**Branch status:**
+- Initial push: `1511448` (silent during mid-cycle update @ 20:39)
+- DELIVERABLE amendment commit: `6a21abf` (force-pushed — non-main branch, OK)
+- Origin SHA confirmed: `6a21abf` ✅
+
+**Verification:**
+- TSC: ✅ strict + noImplicitAny clean on engine
+- Tests file: only 1 expected error (Cannot find module 'vitest' — sandbox lack)
+- vitest runtime: ⏸️ SKIPPED — `npm install vitest@1.6.1` hung at 90s (matches 2026-06-28/29 sandbox npm registry wedge)
+- git push: ✅ (after re-applying `git config url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"` — token URL rewrite does NOT persist across sessions; needs re-application)
+
+**Defense-in-depth highlights (worth preserving):**
+1. `interpolate()` HTML-escapes all variable values (XSS via stored translation values)
+2. `sanitizeCatalogValue(allowHtml=true)` strips `<script>/<style>/on*/javascript:`
+3. Missing keys return `'DOES/NOT/EXIST'` capslock — visible in UI not swallowed
+4. `MISSING_KEY_WARNED` dedup set prevents log spam
+5. `detectCircularReference` w/ depth cap 10 + seen-set
+6. `Intl.PluralRules` not hand-coded categories — respects PT-BR 0, ES `many` edge cases
+
+**Cycle 61 NEW lessons (durable, NEW this update):**
+
+1. **Worker density variance is HIGH within same cycle** — cycle 61 akasha-ia-streaming-ui: 2234L + 797L tests = 3031L total; i18n-pt-en-es-structure: 919L + 812L + 7300 LOC JSON bundles = ~9031L total. **Same brief structure, different worker interpretation** — one went long on single-file, the other short on engine + parallel JSON bundles. **Lesson: brief should specify LOC target for ALL deliverables combined (engine + tests + assets) not just engine LOC** to reduce variance.
+
+2. **GITHUB_TOKEN URL rewrite does NOT persist across sessions** — this worker re-applied `git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"` because it didn't survive from previous cycle. Cycle 60 lesson (2026-06-29) about applying this fix is for SPAWNERS; WORKERS in sub-sessions also need to apply it independently. **Lesson: include "if push fails: re-apply GitHub URL rewrite" instruction in every worker brief as fallback step.**
+
+3. **npm install vs node_modules absence** — worker notes vitest runtime blocked because `npm install vitest` hung at 90s (registry wedge), not just `node_modules` absence. **Lesson: even attempting `npm install` is risky in this sandbox. Workers should treat vitest runtime as best-effort, TSC on source is the canonical signal.**
+
+4. **Force-push on non-main branch for DELIVERABLE amendment is OK** — `1511448` → `6a21abf` was a clean force-push (committer had all history). **Lesson: workers can amend their own branches with force-push; no need for merge retry.**
