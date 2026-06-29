@@ -1,0 +1,81 @@
+{
+  "version": "2026.06.0",
+  "lastReviewedAt": "2026-06-29T20:30:00Z",
+  "auth": {
+    "login": {
+      "title": "Sign in",
+      "email-label": "Email",
+      "password-label": "Password",
+      "submit": "Sign in",
+      "forgot-password": "Forgot your password?",
+      "signup-cta": "Don't have an account? Sign up"
+    },
+    "signup": {
+      "title": "Create account",
+      "name-label": "Full name",
+      "email-label": "Email",
+      "password-label": "Password",
+      "confirm-label": "Confirm password",
+      "submit": "Sign up",
+      "terms": "By continuing you accept the terms"
+    },
+    "logout": {
+      "title": "Sign out",
+      "confirm": "Are you sure you want to sign out?"
+    },
+    "password-reset": {
+      "title": "Reset password",
+      "email-label": "Email",
+      "submit": "Send link",
+      "sent": "We sent a link to {email}"
+    },
+    "errors": {
+      "invalid-credentials": "Incorrect email or password",
+      "email-taken": "This email is already in use",
+      "weak-password": "Password must be at least 8 characters"
+    }
+  },
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "error": "Something went wrong",
+    "success": "Success",
+    "loading": "Loading...",
+    "back": "Back",
+    "next": "Next",
+    "yes": "Yes",
+    "no": "No",
+    "items-count": "You have {count, plural, one {# item} other {# items}}",
+    "messages-count": "You have {count, plural, one {# message} other {# messages}}",
+    "welcome": "Welcome, {name}",
+    "search": "Search",
+    "close": "Close",
+    "legal": {
+      "terms-link": "Terms of use",
+      "privacy-link": "Privacy policy",
+      "terms-body": "<h2>Terms</h2><p>Terms content.</p><!-- raw-html -->",
+      "privacy-body": "<p>Privacy.</p>"
+    }
+  },
+  "errors": {
+    "network": "Connection error",
+    "server": "Server error",
+    "rate-limited": "Too many attempts. Please wait",
+    "forbidden": "Access denied",
+    "not-found": "Page not found",
+    "invalid-email": "Invalid email",
+    "password-mismatch": "Passwords do not match",
+    "session-expired": "Your session has expired"
+  },
+  "sacred": {
+    "greeting": "Greetings, {name}",
+    "blessing": "May light accompany you",
+    "reflection-prompt": "What does your heart ask today?",
+    "odu-of-birth": {
+      "title": "Your Birth Odu",
+      "placeholder": "Calculating your Odu..."
+    }
+  }
+}

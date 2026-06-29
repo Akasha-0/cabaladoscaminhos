@@ -1,0 +1,81 @@
+{
+  "version": "2026.06.0",
+  "lastReviewedAt": "2026-06-29T20:30:00Z",
+  "auth": {
+    "login": {
+      "title": "Entrar",
+      "email-label": "E-mail",
+      "password-label": "Senha",
+      "submit": "Entrar",
+      "forgot-password": "Esqueceu a senha?",
+      "signup-cta": "Não tem conta? Cadastre-se"
+    },
+    "signup": {
+      "title": "Criar conta",
+      "name-label": "Nome completo",
+      "email-label": "E-mail",
+      "password-label": "Senha",
+      "confirm-label": "Confirmar senha",
+      "submit": "Cadastrar",
+      "terms": "Ao continuar você aceita os termos"
+    },
+    "logout": {
+      "title": "Sair",
+      "confirm": "Tem certeza que deseja sair?"
+    },
+    "password-reset": {
+      "title": "Redefinir senha",
+      "email-label": "E-mail",
+      "submit": "Enviar link",
+      "sent": "Enviamos um link para {email}"
+    },
+    "errors": {
+      "invalid-credentials": "E-mail ou senha incorretos",
+      "email-taken": "Este e-mail já está em uso",
+      "weak-password": "A senha precisa ter pelo menos 8 caracteres"
+    }
+  },
+  "common": {
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "error": "Algo deu errado",
+    "success": "Sucesso",
+    "loading": "Carregando...",
+    "back": "Voltar",
+    "next": "Próximo",
+    "yes": "Sim",
+    "no": "Não",
+    "items-count": "Você tem {count, plural, one {# item} other {# itens}}",
+    "messages-count": "Você tem {count, plural, one {# mensagem} other {# mensagens}}",
+    "welcome": "Bem-vindo, {name}",
+    "search": "Buscar",
+    "close": "Fechar",
+    "legal": {
+      "terms-link": "Termos de uso",
+      "privacy-link": "Política de privacidade",
+      "terms-body": "<h2>Termos</h2><p>Conteúdo dos termos.</p><!-- raw-html -->",
+      "privacy-body": "<p>Política.</p>"
+    }
+  },
+  "errors": {
+    "network": "Erro de conexão",
+    "server": "Erro no servidor",
+    "rate-limited": "Muitas tentativas. Aguarde um momento",
+    "forbidden": "Acesso negado",
+    "not-found": "Página não encontrada",
+    "invalid-email": "E-mail inválido",
+    "password-mismatch": "As senhas não conferem",
+    "session-expired": "Sua sessão expirou"
+  },
+  "sacred": {
+    "greeting": "Axé, {name}",
+    "blessing": "Que a luz te acompanhe",
+    "reflection-prompt": "O que seu coração pede hoje?",
+    "odu-of-birth": {
+      "title": "Seu Odu de Nascimento",
+      "placeholder": "Calculando seu Odu..."
+    }
+  }
+}

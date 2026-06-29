@@ -1,0 +1,81 @@
+{
+  "version": "2026.06.0",
+  "lastReviewedAt": "2026-06-29T20:30:00Z",
+  "auth": {
+    "login": {
+      "title": "Iniciar sesión",
+      "email-label": "Correo electrónico",
+      "password-label": "Contraseña",
+      "submit": "Entrar",
+      "forgot-password": "¿Olvidaste tu contraseña?",
+      "signup-cta": "¿No tienes cuenta? Regístrate"
+    },
+    "signup": {
+      "title": "Crear cuenta",
+      "name-label": "Nombre completo",
+      "email-label": "Correo electrónico",
+      "password-label": "Contraseña",
+      "confirm-label": "Confirmar contraseña",
+      "submit": "Registrarse",
+      "terms": "Al continuar aceptas los términos"
+    },
+    "logout": {
+      "title": "Salir",
+      "confirm": "¿Estás seguro de que quieres salir?"
+    },
+    "password-reset": {
+      "title": "Restablecer contraseña",
+      "email-label": "Correo electrónico",
+      "submit": "Enviar enlace",
+      "sent": "Enviamos un enlace a {email}"
+    },
+    "errors": {
+      "invalid-credentials": "Correo o contraseña incorrectos",
+      "email-taken": "Este correo ya está en uso",
+      "weak-password": "La contraseña debe tener al menos 8 caracteres"
+    }
+  },
+  "common": {
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "error": "Algo salió mal",
+    "success": "Éxito",
+    "loading": "Cargando...",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "yes": "Sí",
+    "no": "No",
+    "items-count": "Tienes {count, plural, one {# elemento} other {# elementos}}",
+    "messages-count": "Tienes {count, plural, one {# mensaje} other {# mensajes}}",
+    "welcome": "Bienvenido, {name}",
+    "search": "Buscar",
+    "close": "Cerrar",
+    "legal": {
+      "terms-link": "Términos de uso",
+      "privacy-link": "Política de privacidad",
+      "terms-body": "<h2>Términos</h2><p>Contenido de los términos.</p><!-- raw-html -->",
+      "privacy-body": "<p>Privacidad.</p>"
+    }
+  },
+  "errors": {
+    "network": "Error de conexión",
+    "server": "Error del servidor",
+    "rate-limited": "Demasiados intentos. Espera un momento",
+    "forbidden": "Acceso denegado",
+    "not-found": "Página no encontrada",
+    "invalid-email": "Correo inválido",
+    "password-mismatch": "Las contraseñas no coinciden",
+    "session-expired": "Tu sesión ha expirado"
+  },
+  "sacred": {
+    "greeting": "Aché, {name}",
+    "blessing": "Que la luz te acompañe",
+    "reflection-prompt": "¿Qué te pide hoy el corazón?",
+    "odu-of-birth": {
+      "title": "Tu Odu de Nacimiento",
+      "placeholder": "Calculando tu Odu..."
+    }
+  }
+}
