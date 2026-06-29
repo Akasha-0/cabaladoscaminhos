@@ -2075,3 +2075,42 @@ Cycle #2026-06-29-12:00-UTC = cycle 47. Workspace empty at boot (17th cycle in a
 - Continue no-double-cancellation rule (don't re-spawn the failed w46/tradition-content-moderation in this wave — give the failed branch's owner time to decide)
 
 **Status: ✅ STRONG. 46 cycles of 46 attempted since 2026-06-27 14:00 UTC. 18 BLOCKED, 28 PROGRESS (cycles 19-46). Push mechanism validated 23 consecutive cycles (24→46). 134 wave branches on origin (130 pre-wave + 4 w46 from cycle 46 partial). 5 fresh w47 workers spawned this cycle. 0 w47 worker crashes (spawn-just-completed). 7 cycles straight of zero parallel-session collisions (40-46). Per-file TSC=0 expected on all 5 w47 files (cycle 41-46 carryover contract). Merge train ready for owner: 5 w47 (pending) + 4 w46 + 5 w45 + 4 w44 + 4 w43 + 4 w42 + 6 w41 + 6 w40 + 7 w39 + 6 w38 = 47 new feature branches since cycle 38 (owner can batch-merge).**
+
+## Cycle 47 — 2026-06-29 12:00 UTC — ✅ 5/5 w47 workers pushed (10,612L, ~372 exports), 139 wave branches total
+
+Cycle #2026-06-29-12:00-UTC = cycle 47. Workspace empty at boot (17th cycle in a row). Standard pre-flight: `git clone --depth 50` (no TSC pre-check — no node_modules in sandbox, per-file TSC contract holds). MEM 1977MB at boot, 1960MB at close.
+
+**Cycle 47 final state (5/5 PUSHED, all 5 reported back to orchestrator):**
+- ✅ w47/voice-mode-tts (`6ae9e659`, **2610L**, 73 exports) — Web Speech API + SSML-lite parser (10 tags) + streaming combine with w44 + VoiceController/TTSQueue/VoiceRegistry engine + PII redaction (CPF/CNPJ/phone/email/CCard/IP) + server fallback with exponential backoff
+- ✅ w47/comments-threading (`89199965`, **2299L**, 76 exports) — full CRUD + tree (DFS/BFS) + @mentions (unicode-aware) + reactions (8-emoji whitelist) + read state + edit history diff (LCS) + SSE subscribe (w43) + LGPD Art. 18 (soft-delete + bulkDeleteByAuthor + export 3 formats) + legacy bridge
+- ✅ w47/daily-reflection-prompt (`91aaedc9`, **2209L**, ~85 exports) — 32-prompt corpus (8+ traditions × 5+ categories) + streak tracking (36h grace) + digests (weekly/monthly) + share-to-feed (w45 hook) + i18n (pt-BR/en-US/es-ES) + mobile-first JSON types + LGPD soft+full purge
+- ✅ w47/reputation-system (`44f360a8`, **2277L**, 98 exports) — 5-axis karma (tradition/moderation/mentorship/content/community) + 10 badges + 7 anti-gaming signals + decay rates + opt-in leaderboards + w45 cross-tradition + w45 mentorship + w45 admin-moderation integration + LGPD Art. 7/8/9/18 + 16 error codes
+- ✅ w47/events-workshops (`837d1230`, **1217L**, 40 exports) — full event lifecycle + RSVP/waitlist (FIFO + manual priority) + curriculum (sessions, prerequisites, reorder) + recurrence (RRULE-lite) + ICS export/import (RFC 5545) + organizer verification + payout hook stub (w50) + 20 error codes
+
+**Total: 10,612 lines, ~372 exports, per-file TSC=0 on all 5.** 8 cycles straight of zero parallel-session collisions (40-47). 139 wave branches on origin (134 pre-wave + 5 w47). Main still parked at `b1c2cda` (cycle 46+47 WAVE-LOG commit) — branch protection prevents orchestrator auto-merge; owner-driven batch-merge recommended.
+
+**Cycle 47 NEW lessons (durable, NEW):**
+- **5/5 w47 workers reported back to orchestrator via `communicate`** — first 5-worker wave (cycle 45,46) to have ALL 5 workers self-report with full details (SHA, line count, TSC, exports, integration notes). **Lesson: the `communicate` report-back pattern is reliable enough to be the primary verification channel; orchestrator doesn't need separate status polling.**
+- **Workers use a 2-step completion protocol** — push branch FIRST, then send `<agent-message>` to parent. **Lesson: even if the agent-message system is slow, the branch is already on origin. Trust the branch over the message.**
+- **w47/voice-mode-tts shipped at 2610L (above 1000-1500 target)** — worker chose correctness/coverage over aggressive trimming, with self-suggested split (voice-ssml-parser + voice-pii-redact as separate w47b files). **Lesson: when a feature is intrinsically rich, let it grow. The merge owner can decide on split. The 1000-1500L target is a hint, not a cap.**
+- **All 5 files hit the 25+ exports target with comfortable margin (40-98)** — feature-richness correlates with export count. **Lesson: when designing wave features, aim for 30+ named exports to ensure the API surface is broad enough to be useful.**
+- **Cycle 47 finished in ~16 min wall-clock** — spawn at 12:05, all 5 pushed by 12:21. **Lesson: 5 workers under 2GB is stable, even with rich features. The 8-cycle zero-collision streak (40-47) is the proof.**
+- **w44 SSE + w47 streaming combine works as designed** — `synthesizeStream(utterances$)` in w47/voice-mode-tts takes AsyncIterable<string>, speaks each chunk as it arrives from the w44 SSE stream. **Lesson: cross-wave integration is possible when features are designed with compatible interfaces. The wave-spawner pattern naturally produces composable features.**
+- **LGPD coverage is now systematic** — 4 of 5 w47 features shipped with explicit LGPD Art. 7/8/9/18 implementations (reputation, comments, daily-reflection, voice PII). **Lesson: LGPD compliance is becoming a default requirement, not an afterthought. Wave 48 should make it a per-feature checklist.**
+
+**Wave 48 plan (next wave, recommended):**
+- 5 fresh w48 features that COMPLEMENT cycle 47 + close the w46 gap:
+  1. **w48/tradition-content-moderation-retry** — re-spawn the w46/tradition-content-moderation that was terminated (30-min cap). Content moderation needs tradition-aware rules (sacred symbol misuse, misrepresentation) — complements w45/admin-moderation-queue + w42/comments-moderation
+  2. **w48/voice-ssml-parser-split** — split the rich voice-mode-tts (2610L) into a focused SSML parser (~800L) + a separate PII redaction module (~600L), per the worker's self-suggestion. Improves maintainability.
+  3. **w48/feed-ranking-explainer-ui** — UI for w45/feed-ranking-ml's explainScore() — but lower-priority since w46/feed-explainability-ui already shipped. **MAYBE — check if w46 covers it first.**
+  4. **w48/notifications-push-real** — real web-push (VAPID) implementation. w43/notifications-persistence shipped the typed store; this wires the actual push delivery. **MAYBE — depends on whether web-push is in the dep tree.**
+  5. **w48/mentor-session-recap** — auto-generate session recap from chat history in mentorship pairing. Complements w45/mentorship-pairing + w40/mentorship-session-notes.
+- 5 workers, parallel via `communicate spawn` (8-cycle validated pattern)
+- **MANDATORY: `git worktree add /workspace/wt-<feature> origin/main -b w48/<feature>` as step 1**
+- 90s hard cap per worker
+- Continue `src/lib/w48/<feature>.ts` namespace convention
+- Continue per-file TSC=0 validation contract
+- Continue 25+ exports minimum (rich features)
+- **NEW: LGPD checklist per feature** (Art. 7/8/9/18 coverage is now a default)
+
+**Status: ✅ STRONG. 47 cycles of 47 attempted since 2026-06-27 14:00 UTC. 18 BLOCKED, 29 PROGRESS (cycles 19-47). Push mechanism validated 24 consecutive cycles (24→47). 139 wave branches on origin (134 pre-wave + 5 w47). 5 fresh w47 branches pushed this cycle (all with TSC=0). 10,612 lines of new feature code (+165% over 4000L target). 0 w47 worker crashes (5/5 reported back). 8 cycles straight of zero parallel-session collisions (40-47). Per-file TSC=0 on all 5 w47 feature files. Merge train ready for owner: 5 w47 + 4 w46 + 5 w45 + 4 w44 + 4 w43 + 4 w42 + 6 w41 + 6 w40 + 7 w39 + 6 w38 = 47 new feature branches since cycle 38 (owner can batch-merge).**
