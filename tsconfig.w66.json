@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ESNext", "DOM"],
+    "strict": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUncheckedIndexedAccess": false,
+    "types": []
+  },
+  "include": [
+    "src/lib/w66/translation-tooling.ts",
+    "src/lib/w66/translation-tooling.spec.ts",
+    "src/lib/w66/**/*.d.ts"
+  ]
+}
