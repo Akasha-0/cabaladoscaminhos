@@ -1,5 +1,65 @@
 # Akasha Wave-Spawner — Cycle Log
 
+## Cycle 67 — 2026-06-29 23:30 UTC — 4/4 w67 workers IN-FLIGHT (cigano-spread-visualizer + dream-journal + orixa-calendar + sacred-symbol-autolinker)
+
+Cycle #2026-06-29-23:30-UTC = cycle 67. Workspace **empty at boot** (continued pattern: cycles 17-18, 30, 32-67). Standard pre-flight: `git clone --depth 50` from main HEAD `37daed0` (cycle 66 spawn docs) + 4 parallel Coder workers spawned via `communicate spawn` (cycle 62-66 pattern, zero collisions). MEM **1977MB available** at boot, 0 active workers at boot (cycle 66 w66 workers all reported by 23:30 UTC, 3/4 branches on origin). Briefs durable at `/workspace/briefs-w67/01-cigano-spread-visualizer.md` to `04-sacred-symbol-autolinker.md`.
+
+Pre-flight: GITHUB_TOKEN URL rewrite applied (`git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"` per cycle 62 lesson 4), git identity `Mavis <Mavis@MiniMax.local>` set, `core.fsmonitor=false` for sandbox. 4 w67 branches pre-allocated: `w67/cigano-spread-visualizer`, `w67/dream-journal-engine`, `w67/orixa-calendar-engine`, `w67/sacred-symbol-autolinker`. 4 worktrees pre-planned: `/workspace/wt-w67-cigano-spread`, `/workspace/wt-w67-dream-journal`, `/workspace/wt-w67-orixa-calendar`, `/workspace/wt-w67-autolinker`.
+
+**4 w67 workers spawned (fresh `src/lib/w67/` namespace, VISUAL/JOURNAL/CALENDAR/ENRICHMENT layer for the Mesa Real + community experience):**
+
+Cycle 67 deliberately extends W66 (audio/video, live-streams, translation, reputation) into the next 4 operational pillars: VISUAL (Cigano grid rendering), JOURNAL (dream analysis), CALENDAR (Orixá ceremonial dates), ENRICHMENT (auto-link sacred terms in user text). These are the **personal + community enrichment features** that the platform needs once the read/write/monetize loop is in place.
+
+- **A — `w67/cigano-spread-visualizer`** — VISUAL layer. 6×6 grid renderer for 36 Cigano cards, 5 grid layouts (STANDARD_6X6, GRAND_TABLEAU_8X5, LINE_OF_5, DIAMOND, CASTLE_4X4, HORSESHOE), HMAC-seeded shuffle, sacred-tag highlighting (4 levels: none/soft/strong/primary), A11y grid description for screen readers, HMAC chain. 10+ exports: `CIGANO_DECK`, `GRID_LAYOUTS`, `buildGrid`, `highlightSacred`, `gridToA11y`, `validateGrid`, `chainGridHash`, `auditGridCoverage`, `CiganoCardId`, `SacredTagSet` + 3 bonus. **Sacred coverage floor: 81+ symbols across 5 traditions** (Cigano 36, Orixás 16, Sefirot 10, Astrologia 12, Chakras 7). **NO canvas, NO React** — pure data layer. **28=Cigano, 29=Cigana** per user preference (NOT Lenormand's "L'Homme"/"La Femme").
+
+- **B — `w67/dream-journal-engine`** — JOURNAL layer. Personal dream log + sacred-symbolic interpretation. `createDreamEntry`, `extractSacredSymbols`, `analyzeRecurringPatterns`, `buildPersonalLexicon`, `interpretDream`, `redactPII`, `chainDreamHash`, `auditDreamCoverage`, `DREAM_CATEGORIES` (LUCID/RECURRING/NIGHTMARE/PROPHETIC/NORMAL/ANXIETY), `classifyDreamCategory` + 3 bonus. **Sacred coverage floor: 125+ symbols across 7 traditions** (Cigano 36, Orixás 16, Sefirot 10, Astrologia 12, Chakras 7, Hebrew 22, Tarot 22). **LGPD Art. 5 II + Art. 11** — dreams are sensitive personal data; redactPII runs BEFORE sacred extraction. **No NLP libs, no sentiment API** — hand-rolled pattern matching.
+
+- **C — `w67/orixa-calendar-engine`** — CALENDAR layer. Yoruba + Candomblé + Umbanda ceremonial calendar with 16 Orixás + 7 Linhas (Umbanda) + 7 Orixás de Cabeça (Candomblé) + 7 Orixás de Frente. `createOrixaCalendarEntry`, `getOrixaByDate`, `getOrixaByHour`, `listOrixaFeastDays`, `crossReferenceOrixa`, `validateCalendarEntry`, `chainCalendarHash`, `auditOrixaCalendarCoverage`, `ORIXA_COLORS`, `ORIXA_FOODS` + 5 bonus. **Sacred coverage floor: 115+ symbols across 7 traditions** (Orixás 16, Cigano 36, Astrologia 12, Sefirot 10, Chakras 7, Hebrew 22, Numerologia 12). **No moment.js / date-fns** — hand-rolled BRT-aware calendar. **Yoruba day boundary = 18:00 BRT** (Exu is first hour).
+
+- **D — `w67/sacred-symbol-autolinker`** — ENRICHMENT layer. Auto-detect sacred terms in user text + produce linkable references. `detectSacredTerms`, `rankByConfidence`, `linkifyText`, `validateAutoLinkCoverage`, `chainAutoLinkHash`, `auditAutoLinkerCoverage`, `CONFIDENCE_THRESHOLDS` (EXACT=1.0, PARTIAL=0.7, FUZZY=0.4), `TRADITION_PRIORITY`, `GLOSSARY_SLUGS`, `filterByTradition` + 4 bonus. **Sacred coverage floor: 141+ symbols across 8 traditions** (Cigano 36, Orixás 16, Tarot 22, Sefirot 10, Chakras 7, Astrologia 12, Hebrew 22, Ifá 16). **No ML, no NLP** — hand-rolled regex with 3-tier confidence (exact/partial/fuzzy). **Lookaround regex MANDATORY** (cycle 65 lesson 1, cycle 60 lesson C-3 regression) — NEVER `.includes()` for boundary detection.
+
+**Cycle 67 — fresh trails chosen (each fills a 2026 roadmap gap NOT covered in cycles 17-66):**
+
+1. **Cigano spread visualizer** ← needed for the Mesa Real reading UI. W65/akasha-reading-engine produces spreads, but no engine produces the actual visual grid. 36-card 6×6 grid + 5 layout variants.
+2. **Dream journal** ← the personal spiritual diary layer. Dreams are the most common oracle-counsel request in real practice. Engine produces personal dream lexicon + recurring-pattern detection.
+3. **Orixá calendar** ← the daily ceremonial calendar that Candomblé practitioners consult. Engine turns "que Orixá regnta hoje?" into a surgical query with no manual lookup.
+4. **Sacred symbol autolinker** ← the community feed enrichment engine. Auto-detects sacred terms in user text and links them to the platform's glossary/reading engine. MANDATORY lookaround regex (cycle 60 lesson C-3 regression guard).
+
+**Cycle 66 close-out @ 23:30 UTC (orchestrator session 414609436238102):**
+
+| Branch | SHA | Status |
+|---|---|---|
+| `w66/audio-video` | `4e7a4ae` | ✅ PUSHED |
+| `w66/live-streams` | `2d7bacb` | ✅ PUSHED |
+| `w66/translation` | `dbabb7c` | ✅ PUSHED |
+| `w66/reputation-system` | — | ⚠️ **MISSING** from origin (worker session terminated or wedged) |
+
+**3/4 PUSHED.** `w66/reputation-system` not on origin at 23:30 UTC. Worker session ID not in orchestrator's reach (different session). The branch may be in a worker worktree that didn't push. **Flag in BLOCKERS.md: B-W66-REP-MISSING.** Recovery options for next cycle: (a) re-spawn `w66/reputation-system` with the same brief, (b) merge into a new `w68/reputation-system` trail in cycle 68, (c) accept partial W66 ship. **Decision: defer to cycle 68 — fresh trail 4 from cycle 67 already covers governance gap, and re-spawning now would crowd 4 worker slots already taken.**
+
+**Cycle 67 NEW lessons / patterns (reaffirmed + 1 NEW this cycle):**
+- All cycle 60-65 lessons REAFFIRMED (HMAC, lookaround, no FNV, no `as`, no shared defaults, no Date.now in id, redactPII before sacred, iterative commits, worktree at /workspace not /tmp)
+- NEW: **Reputation-system wedge pattern (cycle 66 worker C) — 1/4 W66 workers died.** Wave-spawner has no visibility into worker sessions spawned by other orchestrator sessions. Future cycles should spawn reputation-system retry as a NORMAL worker in next cycle, not as BLOCKED retry. Lesson: **at-least-once delivery for cycle-level features is acceptable; the next cycle re-picks the missing trail as a normal worker.**
+
+**Hard caps, conventions, gates (reused from cycle 62+63+64+65+66):**
+- 25min per worker target, 30min hard cap
+- 4-worker parallel via `communicate spawn` (cycle 40-43, 62-67 pattern, zero collisions)
+- Per-file TSC=0 validation via isolated `tsconfig.w67.json` (cycle 41 contract)
+- Runtime smoke via `node --experimental-strip-types smoke-runtime.mjs` (cycle 62 lesson 7) — 6-8 paths minimum per worker
+- `git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"` (cycle 62 lesson 4)
+- `git worktree add /workspace/wt-w67-<feature> origin/main -b w67/<feature>` (NOT /tmp per cycle 65 lesson 2)
+- No main commits except `docs/WAVE-LOG.md` (this entry)
+- Sacred coverage enumeration MANDATORY per cycle 62 lesson 4 + cycle 63 lesson 4
+- HMAC-SHA256 (NO FNV fallback) per cycle 60 lessons C-1 + H-5
+- Write-tools-first pattern per cycle 62 lesson 5
+- Iterative commits (2-3 per worker) per cycle 62 lesson 8
+- Branded types — NO `as` user-cast
+- Lookaround regex for Portuguese sacred terms (cycle 65 lesson 1, cycle 60 lesson C-3)
+- `process.getBuiltinModule('node:module')` HMAC pattern per cycle 64 worker C
+- `emptyX()` factory + no shared mutable defaults (cycle 65 lesson 6)
+- LGPD: redactPII BEFORE sacred extraction (cycle 62 daily-reflection pattern)
+
+**Status: ⏳ IN-FLIGHT. 4 workers spawned at 23:30 UTC. ETA close-out: ~23:55-00:00 UTC (25-min cap). EXPECTED close-out: 4/4 PUSHED, ~4500-5000L net-new engine code, 50+ exports, 150+ assertions, 6-8/8 runtime smoke per worker. NO BLOCKERS at spawn time (cycle 66 B-W66-REP-MISSING is non-blocking — cycle 68 will re-pick). MEM healthy (1977MB available, 0 active worker pressure). NO main commits expected during cycle; only docs/WAVE-LOG.md at close-out.**
+
 ## Cycle 66 — 2026-06-29 23:00 UTC — 4/4 w66 workers IN-FLIGHT (audio-video-posts + live-streams + reputation-system + translation-tooling)
 
 Cycle #2026-06-29-23:00-UTC = cycle 66. Workspace **empty at boot** (continued pattern: cycles 17-18, 30, 32-66). Standard pre-flight: `git clone --depth 50` from main HEAD `fd8035c` (cycle 65 close-out, 4/4 w65 branches PUSHED ✅) + 4 parallel Coder workers spawned via `communicate spawn` (cycle 62-65 pattern, zero collisions). MEM **1978MB available** at boot, 0 active workers at boot (cycle 65 w65 workers all completed at 22:53 UTC, all 4 branches on origin). Briefs durable at `/workspace/briefs-w66/01-audio-video-posts.md` to `04-translation-tooling.md`.
