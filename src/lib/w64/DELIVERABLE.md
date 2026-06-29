@@ -121,9 +121,9 @@ git add src/lib/w64/sacred_text_quote_engine.ts \
         src/lib/w64/DELIVERABLE.md \
         tsconfig.w64.json \
         smoke-runtime.mjs
-git commit -m "feat(w64/sacred-text-quote-engine): ..."
+git commit -m "feat(w64/sacred-text-quote-engine): add 100 curated quotes across 8 traditions + pickQuoteByCard + pickQuoteByNumerology + anti-misuse guardrails (30+ exports, 338 assertions, 9/9 runtime smoke)"
 git push -u origin w64/sacred-text-quote-engine
 git ls-remote origin w64/sacred-text-quote-engine
 ```
 
-SHA recorded after push in commit log (see `git log -1 --format=%H` after push).
+**Pushed SHA:** `44e58e3b31b91d8134585e61aca4f15dbb3c4c03` on branch `w64/sacred-text-quote-engine` (verified via `git ls-remote`).
