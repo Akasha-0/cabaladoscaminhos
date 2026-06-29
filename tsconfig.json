@@ -2,7 +2,11 @@
   "compilerOptions": {
     "target": "ES2017",
     "types": [
-      "vitest/globals"
+      "vitest-globals"
+    ],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -42,6 +46,13 @@
   "exclude": [
     "node_modules",
     "scripts",
+    "vitest.config.ts",
+    "__tests__",
+    "src/__tests__",
+    "src/hooks/__tests__",
+    "src/components/**/__tests__",
+    "src/lib/**/__tests__",
+    "tests",
     "src/lib/quality/__evals_DISABLED__/**/*",
     "tests/lib/affirmations",
     "tests/lib/akashic",
