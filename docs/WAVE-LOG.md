@@ -1,5 +1,60 @@
 # Akasha Wave-Spawner — Cycle Log
 
+## Cycle 63 — 2026-06-29 21:30 UTC — 4/4 w63 workers IN-FLIGHT (akasha-explainability + notifications-prefs-engine + search-facets-engine + onboarding-state-engine)
+
+Cycle #2026-06-29-21:30-UTC = cycle 63. Workspace **empty at boot** (continued pattern: cycles 17-18, 30, 32-63). Standard pre-flight: `git clone --depth 50` + 4 parallel `git worktree add` (zero-collision pattern validated 4+ cycles straight). MEM 1978MB available at boot, 0 active workers at boot. TSC baseline unchanged.
+
+Pre-flight: main HEAD `1b5fd80` (cycle 62 close-out). 4 w63 branches created upfront via `git worktree add` from `origin/main`:
+- `/workspace/wt-w63-akasha-xplain` → `w63/akasha-explainability`
+- `/workspace/wt-w63-notifprefs` → `w63/notifications-prefs-engine`
+- `/workspace/wt-w63-searchfeats` → `w63/search-facets-engine`
+- `/workspace/wt-w63-onboarding` → `w63/onboarding-state-engine`
+
+All 4 worktrees HEAD at `1b5fd80`. GITHUB_TOKEN URL rewrite applied (best-effort, persists across sessions per cycle-61 lesson).
+
+**Cycle 63 final state:**
+
+- TBD — workers in flight, close-out pending mid-cycle + final entries
+
+**Workers spawned (4 w63, fresh `src/lib/w63/` namespace, SACRED EXPANSION beyond W62):**
+
+Cycle 63 deliberately expands beyond the W62 features (voice-mode, daily-reflection, oraculo-multimodal, streak-tracker) into trust/transparency, prefs, search, and onboarding — closing the four largest user-journey gaps in cabaladoscaminhos:
+
+- A — `w63/akasha-explainability` (session `414580033646819`) — Akasha IA trust/transparency engine: citations (Cigano 1-36, Orixás 16, Odus 16, Astrologia 12+10+12, Numerologia 1-9+11/22/33, Sefirot 10, Tarot 22, Tantra 7 chakras), confidence scoring (5 tiers: foundational→speculative), trace timeline (`startTrace().push().finish()` pattern), guardrails (`flagLowConfidence`, `flagRedundantCitations`), coverage audit (`auditExplainabilityCoverage` with ≥60 sacred symbols required). **Sacred coverage floor: 60+ symbols across 8 traditions.** This addresses the cycle 62 gap — Akasha IA has prompts but no explainability layer, so user trust depends on faith.
+
+- B — `w63/notifications-prefs-engine` (session `414580799815769`) — Notification preferences engine: 20 `NotificationKind` values (comment_reply, comment_mention, follow, like, repost, mentorship_*, marketplace_*, event_reminder, live_stream_start, akasha_response, streak_at_risk, reputation_earned, badge_unlocked, moderation_alert, security_alert, newsletter), 4 channels (push/email/in_app/suppressed), quiet hours (with midnight wrap), bundling, digests (hourly/daily/weekly cadence), validation, sanitization, channel routing with priority boost for urgent, sacred cross-cut (`notifyOnSacredEvent` mapping sacred tradition → notification kind). **Sacred coverage: 20+ NotificationKind values mapped across orixás/chakras/arcanos/sefirot.**
+
+- C — `w63/search-facets-engine` (session `414580033646820`) — Search + faceted filters engine: query parser with `scope:` prefix (community/marketplace/events/mentorship/akasha/all), facet operators (tradition:/tag:/lang:/since:/until:/price:/sort:/page:), Levenshtein + Damerau-Levenshtein + fuzzy scoring, BM25-lite ranking, faceted counts with `selected` flag, paginate, scope→entity routing, tradition coverage audit (≥ 9 traditions × ≥ 4 tags). **Sacred coverage: 9+ traditions × 4 tags = 36+ sacred/tradition tokens.**
+
+- D — `w63/onboarding-state-engine` (session `414579948073138`) — First-run onboarding wizard state machine: 7 steps (welcome→tradition→intent→profile_basics→suggested_follows→review→done), 12 `TraditionOption` × 3 locale labels (pt-BR/en/es), 7 `IntentOption` × descriptions, validation (displayName 2..40, bio 0..280, intentions ≤5, weeklyMinutes 5..600), suggestions builder (tradition/intent/mentor match), sacred cross-cut (`notifyOnSacredTradition` returns next-step; `promptsByTradition` for ≥6 traditions × ≥5 prompts = 30+ sacred prompts). **Sacred coverage: 12 traditions × 3 labels = 36+ labels + 30+ prompts.**
+
+**Cycle 63 — fresh trails chosen from cycle 60/62 review:**
+
+1. **Akasha IA explainability** ← addressing "trust gap" noted in cycle 62 (oracles have no audit trail). Aligns with cycle 60 review (no SacredGuardResult.hits.raw equivalent for AI).
+2. **Notifications preferences** ← cycle 60 review found `push-prefs-ui.ts` had hard-coded defaults with no UI. This worker makes the prefs a first-class engine module consumable by any UI.
+3. **Search + facets** ← cycle 58/61 never shipped a search engine despite marketplace/mentorship needing it. New trail.
+4. **Onboarding state machine** ← cycle 60 review found `/signup` page lacks wizard. This worker provides the engine; UI integration is a follow-up.
+
+**Hard caps, conventions, gates (reused from cycle 62):**
+- 25min per worker hard cap (cycle 61+62 validated)
+- 4-worker parallel via `communicate spawn` (cycle 40+41+42+43+62 pattern, zero collisions)
+- Per-file TSC=0 validation via `tsc --ignoreConfig --strict --moduleResolution bundler` (cycle 41 contract)
+- Runtime smoke via `node --experimental-strip-types` (cycle 62 fallback if cached vitest binary at `/root/.npm/_npx/69c381f8ad94b576/node_modules/.bin/vitest` unavailable)
+- `git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"` (best-effort persistence)
+- `git worktree add /workspace/wt-w63-<feature> origin/main -b w63/<feature>` step 1
+- No main commits except `docs/WAVE-LOG.md` (this entry)
+- Sacred coverage enumeration MANDATORY per cycle 62 lesson 4
+
+**Status: ⏳ IN-FLIGHT. 4 workers spawned at 21:34 UTC. ETA close-out: ~22:00 UTC (25-min cap). EXPECTED close-out: 4/4 PUSHED (cycle 62-style), ~4500L net-new engine code, 80+ exports, 320+ assertions. NO BLOCKERS at spawn time. MEM healthy (1978MB available).**
+
+## Cycle 62 — 2026-06-29 21:14 UTC — 4/4 w62 workers PUSHED (9192L total, 152+ exports, 610+ assertions, 94/94 vitest PASS) — COMPLETE
+
+Cycle #2026-06-29-21:00-UTC = cycle 62. Workspace empty at boot. Standard pre-flight. MEM 1978MB available.
+
+Pre-flight: main HEAD ~`1b5fd80` (cycle 61 close-out). 4 w62 branches created via worktree: w62/voice-mode-tts-akasha, w62/daily-reflection-prompt, w62/oraculo-multimodal-input, w62/streak-tracker-daily-checkin.
+
+(Full detail in cycle 62 close-out commit `1b5fd80` — abbreviated here for cycle 63 spawn entry context.)
+
 ## Cycle 42 — 2026-06-29 09:30 UTC — 4/4 w42 workers pushed (3221L), 100+ branches total, TSC=1 carryover
 
 Cycle #2026-06-29-09:30-UTC = cycle 42. Workspace **empty at boot** (12th cycle in a row: 30, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42). Standard pre-flight: `git clone --depth 50` + 4 parallel `git worktree add` (cycle 40+41 pattern, **zero collisions confirmed**). MEM 1978MB available at boot, 1975MB at close.
