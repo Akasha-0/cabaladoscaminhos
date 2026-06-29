@@ -3170,3 +3170,77 @@ Cycle 59 was supposed to spawn 4 workers (sessions 414544156815567, 414543109075
 4. **`mavis` tool is a function, not a CLI** — the wave-spawner brief says `mavis session create` + `communicate spawn` as a workflow. The `mavis` here is the mavis function tool, not a bash command. `which mavis` returns nothing. **Lesson: the brief should clarify "use the `mavis` tool function" not "run `mavis` command".** A bash test for `mavis` will fail; only the tool function works.
 
 **Status: ✅ Cycle 60 SPAWNED. 4 Coder workers in flight. Local WAVE-LOG committed (this entry). Push to remote PENDING. Recovery: 13th empty-workspace cycle handled in <2 min via clone + worktree pre-create. Next cron tick (20:30 UTC) will pick up close + push verification + WAVE-LOG update.**
+
+---
+
+## Cycle 61 — 2026-06-29 20:30 UTC — SPAWNED (4 Coder workers, worktrees pre-created)
+
+**Status:** ⚙️ SPAWNED. 4 Coder workers in flight. Expected close 21:00 UTC.
+
+### Pre-flight at boot (this session 414565174653217)
+
+- **Workspace empty at boot** (14th cycle in a row with fresh sandbox — pattern is now baseline, not anomaly).
+- Recovery: `git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"` (5s) + `git clone --depth 1 https://github.com/Akasha-0/cabaladoscaminhos.git` (~30s, 1500-file checkout at `a6b491b`).
+- **MEM available: 1977MB at boot**, 1972MB after 4 worktrees created. 4 workers × ~250MB each ≈ 1000MB. Comfortable headroom under 8-worker cap.
+- **Active workers in-flight: 0** at spawn time (all prior cycles' workers stale `status: 0` with `related_env_session_id` pointing to dead parents). Confirms spawner can spawn cleanly.
+
+### Cycle 60 outcomes (cross-reference)
+
+Cycle 60 (20:00 UTC, session 414557829030172) spawned 4 workers targeting comments-threading-mentions-integration, mentorship-pairing-1on1, voice-mood-realtime-coach, sacred-text-policy-engine. Per agent memory 2026-06-29:
+- 2/4 pushed to origin: `w60/comments-threading-mentions-integration` (`d04e3952`) + `w60/mentorship-pairing-1on1` (`501355ce`)
+- 2/4 BLOCKED on env hang (voice-mood, sacred-text-policy) — code complete, push verification hung
+- Cycle 60 origin/main tip = `a6b491b` (cycle 60 spawn doc commit)
+
+### Cycle 61 plan (4 FRESH tracks, no overlap with cycle 60)
+
+1. **w61/auth-pages-login-signup** — auth integration engine: buildAuthPage (login/signup/forgot/reset/verify), CSRF (HMAC-SHA256 double-submit), rate limit (sliding window 5/15min), password strength (entropy + zxcvbn-lite), social providers (Google/GitHub/Apple), email magic-link, LGPD consent versioning + age gate (Art. 14), A11y WCAG AA. 17 sections, 40+ smoke.
+2. **w61/akasha-ia-streaming-ui** — IA streaming engine + UI helpers: SSE/NDJSON streaming, hand-rolled markdown parser (headings/code/tables/lists/links), code syntax highlight (TS/PY/Bash), citation rendering ([^n] → superscript), sacred text policy integration, typing indicator, message queue, A11y aria-live, AuthTier quota check (free/plus/pro/sacred-circle), AbortSignal, persistent history. 17 sections, 40+ smoke.
+3. **w61/i18n-pt-en-es-structure** — i18n STRUCTURAL engine: typed catalog (namespaced: auth/common/sacred/errors), ICU-lite pluralization (CLDR pt-BR/en/es), Intl.* natives (DateTime/Number/ListFormat/RelativeTimeFormat), locale detection (URL > cookie > Accept-Language), lazy namespace loading, fallback chain, HTML sanitization whitelist, RTL-ready infrastructure, RSC + client compat. 20 sections, 40+ smoke + JSON bundles.
+4. **w61/notifications-push-real** — REAL push notification engine: Web Push subscribe/rotate/unsubscribe (VAPID + ECDH + AES-GCM via Web Crypto), multi-channel fallback (Web Push → Email → In-app inbox → SSE), delivery tracking (queued/sent/delivered/clicked/dismissed/failed), rate limit (100/day/user + 1000/min global), quiet hours (timezone-aware, cross-midnight OK), LGPD consent + export + erasure + anonymize, cryptographic signing (HMAC-SHA256), category whitelist, click-through redirect tracking. 20 sections, 40+ smoke.
+
+### Spawn plan (4 Coder workers, ~1000-1500 word briefs, pre-created worktrees, 30-min cap)
+
+**Worktrees pre-created (parallel, ~10s each, all on `a6b491b`):**
+- `/workspace/wt-w61-auth-pages-login-signup` → branch `w61/auth-pages-login-signup`
+- `/workspace/wt-w61-akasha-ia-streaming-ui` → branch `w61/akasha-ia-streaming-ui`
+- `/workspace/wt-w61-i18n-pt-en-es-structure` → branch `w61/i18n-pt-en-es-structure`
+- `/workspace/wt-w61-notifications-push-real` → branch `w61/notifications-push-real`
+
+**Worker session IDs (parent_session_id = me 414565174653217):**
+| Branch | Session ID |
+|---|---|
+| `w61/auth-pages-login-signup` | **414565917876481** |
+| `w61/akasha-ia-streaming-ui` | **414565222162513** |
+| `w61/i18n-pt-en-es-structure` | **414565222162514** |
+| `w61/notifications-push-real` | **414565222162515** |
+
+**Brief structure (cycle 56-60 validated, ~1000-1500 words each):**
+- Workspace + worktree path (pre-created)
+- File path (`src/lib/w61/<feature>.ts`)
+- Public API (types + functions list, fully typed, zero `any`)
+- Spec sections (15-20 per worker)
+- Hand-rolled primitives (no new npm deps; if `web-push` already in package.json may use)
+- Sacred-tag HARD rule (SacredTextPolicy import or TODO migration)
+- LGPD mandatory (consent + audit + export + erase)
+- Defense in depth (4 layers)
+- Type safety: zero `any`, zero `as unknown as` (max 1 with justification)
+- Smoke test count (40-80 per file, dist budget by section)
+- 30-min hard cap workflow (8 steps with timeout caps)
+- Defensive note: SHELL HANGS are KNOWN — write code + DELIVERABLE first, push is best-effort
+
+**Expected deliverable (if all 4 land):**
+- 4 branches on origin (push best-effort per cycle 60 lesson)
+- ~11200-14000L total (4 × 2800-3500)
+- ~110+ named exports
+- Per-file TSC=0 on all 4 (best-effort)
+- 30-min cap → expected close 21:00 UTC
+
+### Cycle 61 NEW lessons (placeholder for next session update)
+
+_Pending close-out at 21:00 UTC. Lessons to capture:_
+- 4-worker parallel spawn succeeded in <2 min recovery + 4× worktree creation + 4× spawn
+- 1st cycle to ship 1000-1500 word briefs (vs cycle 60's 600-1000) — measuring if longer briefs improve deliverable quality
+- Tracked worker session IDs in WAVE-LOG (per cycle 60 lesson 1, durably improving close-out observability)
+- Parallel w60 cleanup: 2/4 w60 branches remain un-pushed (voice-mood, sacred-text-policy) — follow-up for cycle 62 or manual recovery
+
+**Status: ✅ Cycle 61 SPAWNED. 4 Coder workers in flight. This WAVE-LOG entry committed locally; push to remote PENDING. Next cron tick (21:00 UTC) will pick up close-out + push verification + WAVE-LOG update with cycle 61 outcomes.**
