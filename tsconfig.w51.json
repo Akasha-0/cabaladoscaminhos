@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": [],
+    "ignoreDeprecations": "6.0"
+  },
+  "include": [
+    "src/lib/w51/search-analytics-dashboard.ts"
+  ]
+}
