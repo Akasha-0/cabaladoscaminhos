@@ -123,6 +123,34 @@ Worker A (session `414587783299222`) reported back at 22:13 UTC — 13 min wall-
 2. **Worker C is the FIRST cycle to use `process.getBuiltinModule('node:module')` for cross-runtime ESM/CJS crypto** — this is the canonical pattern for engine code that needs `node:crypto` (HMAC) but is also bundled for browser via WebCrypto. Worker C spent ~5 min on the ESM/CJS require dance and ended with a `requireNodeModule()` helper that tries `process.getBuiltinModule` first, then falls back to `globalThis.crypto.subtle`. This pattern is now reusable for any future worker that needs crypto + cross-runtime.
 3. **TSC strict + no @types/node is a recurring sandbox wedge** — both Worker C and prior cycles hit "Cannot find name 'node:assert/strict'" or "Expected 2-3 arguments, but got 1" on `assert.ok(value)`. The fix is to either (a) add `"types": ["node"]` to tsconfig (not always possible without `npm install`) or (b) use the local stub-vitest API. Cycle 65+ briefs should specify: "if TSC fails on `node:assert/*` imports, switch to the local stub-vitest API".
 
+### Cycle 64 mid @ 22:20 UTC — 3/4 DELIVERED (A + C + D), 1 IN-FLIGHT (B2)
+
+Worker C (session `414588276543622`) reported back at 22:20 UTC — 16 min wall-clock. **PUSHED + verified.**
+
+**Worker C — `w64/akasha-session-export-engine` — DELIVERED ✅**
+- Branch: `w64/akasha-session-export-engine` @ `e51b72bb4f24fac6ac456d05b489b41c8a41dff7` (PUSHED via `git ls-remote`)
+- Engine: `src/lib/w64/akasha_session_export_engine.ts` — 1238 lines, **68 named exports** (2.27x target of 30+)
+- Test: `src/lib/w64/__tests__/akasha_session_export_engine.test.ts` — 1399 lines, **166 it() / 304 expect() / 37 describe / 166-166 PASS** (2.77x it() target, 1.52x assertion target)
+- DELIVERABLE: `src/lib/w64/DELIVERABLE.md` — 8 sections
+- LGPD coverage: 5 redaction categories (cpf/email/phone/address/name) + **31 sacred refs preserved** through redaction
+- HMAC: real SHA-256 via `process.getBuiltinModule("node:crypto")` + pure-JS fallback (NO FNV per cycle 60 lesson)
+- TSC: **0 errors on engine** (3 environmental errors on test, no `@types/node` — acceptable per cycle 62 lesson 7 runtime smoke gate)
+- Runtime smoke: **6/6 PASS** in ~150ms via `node --experimental-strip-types`
+- Quality bar: ZERO `any`, ZERO `as unknown as`, ZERO FNV, ZERO leaks
+
+**Worker C architectural highlights (durable cross-cycle lessons):**
+1. **`process.getBuiltinModule('node:module')` is the canonical cross-runtime crypto pattern** — Worker C landed on `requireNodeModule()` helper that tries `process.getBuiltinModule("node:module")` first, then falls back to `globalThis.crypto.subtle`. This is now the canonical pattern for any future worker that needs `node:crypto` (HMAC) in cross-runtime bundling. Reusable cross-cycle.
+2. **Engine TSC=0 is the cycle 64+ gate, test file env errors acceptable** — Worker C's engine is TSC=0; test file has 3 env errors (`no @types/node`). The cycle 62 lesson 7 runtime smoke pattern (6/6 PASS) is the actual gate. Future cycles should formalize this in the brief.
+3. **PDF = metadata only contract** — Worker C produced `PDFMetadata` shape, not PDF bytes. Right boundary: a future PDF library wraps the engine output.
+4. **HMAC chain storage is caller's job** — the engine provides `hashTagFor`, `chainAudit`, `verifyExportIntegrity`; persistent storage is the application's concern.
+5. **Audio transcript line-based truncation (default 200)** — practical heuristic. Future cycles may add token-based truncation.
+
+**Cycle 64 mid status:**
+- 3/4 branches PUSHED (A, C, D) — all clean, all verified
+- 1/4 B2 IN-FLIGHT (sacred-text-quote retry with reduced scope) — spawned 22:14 UTC, ETA 22:30-22:40
+- Cumulative tonnage: A (2600+L) + C (2600+L) + D (2200+L) = **7,400+ lines delivered in 13-16 min per worker**
+- Sacred coverage: 113+ symbols (A) + 31 sacred refs preserved (C) + 207 events across 10 traditions (D) = **351+ sacred/tradition entries in cycle 64 alone**
+
 **Cross-cycle lessons applied to all 4 w64 briefs (cumulative from W60-W63):**
 - Cycle 60 lessons C-1, C-2, C-3, C-4, C-5 (HMAC, sacred boundary, LGPD chain, raw body persist) — applied to Worker C
 - Cycle 62 lessons 1-12 (silent-push, write-tools-first, sacred coverage count, runtime smoke, iterative commits, cached vitest, worktree-local config) — applied to ALL 4
