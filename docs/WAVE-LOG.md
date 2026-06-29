@@ -56,6 +56,73 @@ Cycle 64 deliberately expands beyond the W63 features (akasha-explainability, no
 
 **Status: ⏳ IN-FLIGHT. 4 workers spawned at 22:00 UTC. ETA close-out: ~22:30 UTC (25-min cap). EXPECTED close-out: 4/4 PUSHED, ~4500-5000L net-new engine code, 120+ exports, 800+ assertions, 6/6 runtime smoke per worker. NO BLOCKERS at spawn time. MEM healthy (1978MB available, 0 active worker pressure).**
 
+### Cycle 64 mid @ 22:14 UTC — 2/4 DELIVERED (A + D), 1 IN-FLIGHT (C), 1 DEAD (B)
+
+Worker A (session `414587783299222`) reported back at 22:13 UTC — 13 min wall-clock. Worker D (session `414587325726846`) reported back at 22:14 UTC — 14 min wall-clock. Both PUSHED + verified on origin.
+
+**Worker A — `w64/divination-interpretation-engine` — DELIVERED ✅**
+- Branch: `w64/divination-interpretation-engine` @ `f33fe38462732f96a517243deb60bc83e403f665` (PUSHED via `git ls-remote`)
+- Engine: `src/lib/w64/divination_interpretation_engine.ts` — 1488 lines, **64 runtime exports** (23 sections, 0 external deps)
+- Test: `src/lib/w64/__tests__/divination_interpretation_engine.test.ts` — 971 lines, **152 it() / 202+ expect() / 17 describe / 0 fail** (PASS via `node --experimental-strip-types`)
+- DELIVERABLE: `src/lib/w64/DELIVERABLE.md` — 149 lines, 8 sections
+- Sacred coverage: **113+ symbols across 7 traditions** (cigano 36/36 ✓, orixa 19/19 ✓, cabala 10/10 ✓, signos 12/12 ✓, casas 12/12 ✓, numerologia 12/12 ✓, planetas 10/11 with Terra documented as classical-Cigano omission)
+- TSC strict (`tsc --ignoreConfig --target ES2022 --module ES2022 --moduleResolution Bundler --strict --esModuleInterop`): **0 errors**
+- Runtime smoke: **6/6 PASS** (1-card, 3-card, 5-card, 36-card Mesa Real, crossHouse, auditSacredCoverage)
+- Quality bar: ZERO `any`, ZERO `as unknown as`, ZERO external deps, ZERO FNV fallback (HMAC-only), 0/0 throws at public API surface
+
+**Worker A architectural highlights (durable cross-cycle lessons):**
+1. **`LooseValue` + `const STRICT_VALUES: readonly LooseValue[]` pattern** — `NumerologyNumber` widened to 1..36 to fit Cigano cards (cards 10/12-21/23-32/34-36 don't fit strict 1-9+11/22/33); strict taxonomy preserved as `NUMEROLOGY_NUMBERS` const for audit. **Canonical pattern: any w65+ engine with strict-subset taxonomy** uses this shape with `STRICT_VALUES.includes(x)` checks.
+2. **Engine decoupling via `externalContext?`** — `crossHouse` requires the 4 other maps (Astrologia/Numerologia/Orixá/Odu) via externalContext param. Engine does NOT import those engines; caller wires them. **Right boundary for cross-engine synthesis** in cabaladoscaminhos.
+3. **`interpretSpread` 1/3/5/9 + `interpretMesaReal` handles 36** — clean separation, no double-interpretation. `SPREAD_36_MESA_REAL` routes to `interpretMesaReal` which does its own interpretation + house crossings. Good API design.
+4. **CrossHouseForSlot fallback to card 1** — never-throws graceful per cycle 63 lesson 10.
+5. **Orixá dual-mapping cards** — card 7=Oxumare+Ireme, card 9=Oxum+Oxum-Igbon, card 32=Iemanjá+Iama. Sacred overlap (cycle 63 lesson 3) applied to specific Orixá pairs. Useful reference for cycle 65+ cards database normalization.
+6. **Planet Terra omission is documented and intentional** — classical Cigano uses 7 planets, not modern 10. Tradition-faithful decision.
+
+**Worker D — `w64/tradition-ritual-calendar-engine` — DELIVERED ✅**
+- Branch: `w64/tradition-ritual-calendar-engine` @ `86858cbc81696217cb2ce2f994c9cf82430fe00d` (PUSHED via `git ls-remote`)
+- Engine: `src/lib/w64/tradition_ritual_calendar_engine.ts` — 1375 lines, **55 named exports**
+- Test: `src/lib/w64/__tests__/tradition_ritual_calendar_engine.test.ts` — **73 it() / 326 assertions / 73-73 PASS** via `node --experimental-strip-types`
+- DELIVERABLE: `src/lib/w64/DELIVERABLE.md` — 8 sections
+- Sacred coverage: **207 events across 10 traditions** (Candomblé Ketu=22, Bantu=21, Nagô=21, Umbanda=22, Cabala=22, Astrologia=23, Wicca=21, Numerologia=21, Tantra=12 luas cheias, Cigano Ramiro=22)
+- TSC strict: **0 errors**
+- Runtime smoke: **6/6 PASS** (getEventsForDateRange, getOrixaOfTheDay, getMoonPhase, getSabbats, getMercuryRetrogradeWindows, auditSacredCoverage)
+- Quality bar: ZERO `any`, ZERO `as unknown as`, ZERO external deps
+
+**Worker D architectural highlights (durable cross-cycle lessons):**
+1. **Per-tradition audit floor = natural cardinality** — Tantra=12 luas cheias is the tradition's natural cardinality. Worker D correctly identified the brief's internal inconsistency (it said "≥20 per tradition" but listed Tantra=12) and lowered the per-tradition floor to ≥12 for Tantra specifically. **Cycle 65+ brief rule**: when a tradition's natural cardinality is N (luas cheias=12, sabbats=8, chakras=7), the per-tradition audit floor should match N, not the global default.
+2. **Lunar cycle 29.53d mean vs 29.53059d** — practical approximation, drift is ~17 minutes per synodic month (10 days per ~85 months = 7 years). For 1-year forecasts, drift is sub-day. Future cycles can switch to Meeus astronomical algorithms.
+3. **Sun sign ±1d cusp ambiguity** — modal ingress dates are standard convention. 1-day cusp is real (e.g. Jan 18-22 between Capricorn/Aquarius). Callers wanting strict signs should specify "no cusp" mode; future cycle could add `cuspMode: 'strict' | 'modal' | 'inclusive'`.
+
+**Worker C — `w64/akasha-session-export-engine` — IN-FLIGHT ⏳ (last activity 22:16:54 UTC)**
+- Engine written: 1234L, 46KB, all 4 export formats implemented, all 5 PII redactions, HMAC-SHA256 chain, auditExportCoverage
+- Runtime smoke: **6/6 PASS** (verified at 22:15:42 UTC)
+- Currently: debugging 2-3 TSC edge cases in the test file (`assert.ok` arity, no @types/node, `node:assert/strict` import)
+- ETA close-out: 5-10 min
+
+**Worker B — `w64/sacred-text-quote-engine` — DEAD ❌ (model error during planning)**
+- Worker B (session `414587331752041`) died with `finish_reason: "error"` at 22:09:45 UTC — 5 min into the work
+- Worktree empty (only `__tests__/` dir created); no engine file written
+- Last log: was planning the 200+ quote catalog structure, hit a response-size error
+- **NEW durable lesson: 200+ quote catalog is too much for a single worker response. 100-150 is the safe ceiling.**
+
+**Worker B2 — RETRY spawned @ 22:14 UTC with REDUCED scope (100-150 quotes)**
+- Session: `414591521708033` (W64 Worker B2 — sacred-text-quote-engine)
+- Brief: 100-150 quotes (was 200+), 8 traditions × 10-15 each
+- ETA close-out: ~22:30-22:40 UTC
+
+**Cycle 64 mid status:**
+- 2/4 branches PUSHED (A, D) — both clean, both verified
+- 1/4 IN-FLIGHT (C) — runtime smoke 6/6, debugging TSC edge cases
+- 1/4 DEAD (B) — replaced by B2 retry with smaller scope
+- 1/4 B2 SPAWNED — fresh work, smaller scope, ETA 22:30-22:40
+- Cumulative tonnage so far: A (2600+ lines) + D (2200+ lines) = **4,800+ lines delivered in 13-14 min per worker**
+
+**Cycle 64 NEW lessons (durable, NEW from mid-cycle):**
+
+1. **200+ quote catalog is the single-response ceiling** — Worker B died with `finish_reason: "error"` during planning for 200+ quotes. The model output limit hit before the engine was even written. **Cycle 65+ brief rule**: sacred text catalogs ≥ 100 entries must be split across multiple constants (`QUOTES_CANDOMBLE`, `QUOTES_IFA`, etc.) to keep each response under 50 lines. The retry (Worker B2) uses 100-150 quotes + 8 separate tradition constants.
+2. **Worker C is the FIRST cycle to use `process.getBuiltinModule('node:module')` for cross-runtime ESM/CJS crypto** — this is the canonical pattern for engine code that needs `node:crypto` (HMAC) but is also bundled for browser via WebCrypto. Worker C spent ~5 min on the ESM/CJS require dance and ended with a `requireNodeModule()` helper that tries `process.getBuiltinModule` first, then falls back to `globalThis.crypto.subtle`. This pattern is now reusable for any future worker that needs crypto + cross-runtime.
+3. **TSC strict + no @types/node is a recurring sandbox wedge** — both Worker C and prior cycles hit "Cannot find name 'node:assert/strict'" or "Expected 2-3 arguments, but got 1" on `assert.ok(value)`. The fix is to either (a) add `"types": ["node"]` to tsconfig (not always possible without `npm install`) or (b) use the local stub-vitest API. Cycle 65+ briefs should specify: "if TSC fails on `node:assert/*` imports, switch to the local stub-vitest API".
+
 **Cross-cycle lessons applied to all 4 w64 briefs (cumulative from W60-W63):**
 - Cycle 60 lessons C-1, C-2, C-3, C-4, C-5 (HMAC, sacred boundary, LGPD chain, raw body persist) — applied to Worker C
 - Cycle 62 lessons 1-12 (silent-push, write-tools-first, sacred coverage count, runtime smoke, iterative commits, cached vitest, worktree-local config) — applied to ALL 4
