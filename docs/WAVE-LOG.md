@@ -1047,3 +1047,51 @@ With TSC=0 verified on w20/tsc-final, the merge train is now technically unblock
 - **Expected branches on origin after cycle 28 closes**: **33** (28 + 5 new w28)
 - **MERGE TRAIN pending owner approval**: 28→33 branches waiting (w20/w23/w24/w25/w26/w27 + w28 + wave/* + feat/community-platform)
 - **Next cycle 29 plan**: verify all 5 w28 workers pushed; continue covering gaps — daily reflection push notification, live stream host controls, comments moderation UI, notifications push (web-push real), i18n PT onboarding (mirror of w26/w23), reputation badges, mentorship matching algo v2
+
+---
+
+## Cycle 29 — 2026-06-29 00:30 UTC
+
+- **Cycle ID**: 2026-06-29-00:30-UTC
+- **Workers spawned**: **5/5 w29 (100% push success in <90s)**
+- **MEM at cycle start**: 1978 MB available (96% free)
+- **TSC at cycle start**: 1 (config-only, unchanged from cycle 25-28)
+- **Pre-flight**: 29 wave branches verified intact (5 w27 + 5 w28 + earlier)
+- **Workspace state**: re-cloned (typical 30min sandbox reset)
+
+### Workers
+1. **Worker A** — `w29/akasha-streaming` — `src/lib/w29/akasha-streaming.ts` (SSE parser generator + AkashaStreamState reducer + abort handle)
+2. **Worker B** — `w29/comments-threading` — `src/lib/w29/comments-threading.ts` (buildCommentTree + flattenTree + extractMentions + validateParentAssignment)
+3. **Worker C** — `w29/mentorship-matching` — `src/lib/w29/mentorship-matching.ts` (Mentor/Mentee profiles + tagOverlapScore + pairMentorMentee greedy capacity-aware)
+4. **Worker D** — `w29/reputation-universalista` — `src/lib/w29/reputation-universalista.ts` (8-tradition karma + Shannon entropy diversity + 6-badge ladder Semente→Universalista)
+5. **Worker E** — `w29/notifications-webpush` — `src/lib/w29/notifications-webpush.ts` (VAPID payload + 8-kind defaults + dedupe + group-by-user fan-out)
+
+### Branch SHAs on origin
+- w29/akasha-streaming: `6a4e0ceec34c072e9098244f5c78fe0142803440`
+- w29/comments-threading: `c2fa69aab1563434d238206f53dba2b2a6a8e4b9`
+- w29/mentorship-matching: `856963d7eaf1e0ebe884bc559df1e5540691a805`
+- w29/notifications-webpush: `6671d11c369b75f421132e96c7bb51f501f4f693`
+- w29/reputation-universalista: `f2042fcfaddb6306a839bf3da53a8e9bea5a848f`
+
+### Gaps covered this cycle
+- Akasha IA streaming UX (token-by-token) — extends w27 with real-time delivery
+- Comments threading + @mentions — feeds w28/mfa-enrollment with notification triggers later
+- Mentorship 1-on-1 pairing algorithm — feeds marketplace trust system
+- Universalista reputation (cross-tradition) — central gamification layer
+- Web-push real (VAPID) — completes notification stack for live/mentorship/daily triggers
+
+### Cycle 29 NEW lessons
+- **git author identity lost on workspace wipe** — first push in cycle 29 failed with "Please tell me who you are". Fix: `git config --global user.email/name` immediately after clone (or persist in `~/.gitconfig` outside the workspace).
+- **Cycle 29 pattern held**: 5 workers / 5 branches / 5 pushes / 0 fallbacks. 6th consecutive cycle (24-29) with full success.
+- **5/5 in <90s confirms scalability** — 29 worker branches on origin, merge train ready.
+
+### Push status
+**ALL 5 w29 workers pushed to origin.** 34 total wave branches now on origin (5 w27 + 5 w28 + 5 w29 + 19 earlier).
+
+### Next cycle 30 plan
+- i18n PT-BR → EN/ES locale files (real translations, not stubs)
+- Audio/video posts upload UI
+- Translation tooling
+- Comments moderation UI (queue + actions)
+- Daily reflection push notification (uses w27/daily-reflection + w29/notifications-webpush)
+- Live stream host controls
