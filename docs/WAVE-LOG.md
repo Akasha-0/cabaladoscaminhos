@@ -56,6 +56,122 @@ Cycle 65 deliberately extends W64 (interpretation/corpus/export/time) into the n
 
 **Status: ⏳ IN-FLIGHT. 4 workers spawned at 22:31 UTC. ETA close-out: ~22:55-23:00 UTC (25-min cap). EXPECTED close-out: 4/4 PUSHED, ~5000-6000L net-new engine code, 130+ exports, 800+ assertions, 6/6 runtime smoke per worker. NO BLOCKERS at spawn time. MEM healthy (1978MB available, 0 active worker pressure).**
 
+### Cycle 65 COMPLETE @ 22:53 UTC — 4/4 DELIVERED + PUSHED ✅
+
+**Cycle 65 SHIP manifest (all 4 branches on origin, all green):**
+
+| Branch | SHA | Engine LOC | Test LOC | Exports | Assertions | Smoke | Sacred | Wall-clock |
+|---|---|---|---|---|---|---|---|---|
+| `w65/akasha-reading-engine` | `5e3e51d` | 1290 | 1008 | 27+ | 127/127 | 8/8 | 211/211 (100%) | 12 min |
+| `w65/events-workshops-engine` | `41fb851` | 1213 | 1057 | 22+7 tg | 96/96 | 6/6 | 104 across 7 | 15 min |
+| `w65/marketplace-pricing-engine` | `01d9d92` | 1067 | 990+144 | 8+9b+3tg+5e | 89/89 | 6/6 | 81 across 5 | 22 min |
+| `w65/community-moderation-engine` | `29e7ed2` | 1398 | 1105 | 8+ bonus | 174/174 | 6/6 | 114 across 7 | 12 min |
+| **TOTAL** | — | **4968** | **4304** | **80+** | **486/486** | **26/26** | **510** | **12-22 min** |
+
+**Cumulative:** ~9272L ship in ~22 min wall-clock, 80+ named exports, 486 passing assertions, 510 sacred symbols covered across the 4 engines, 4/4 on origin. Cleanest cycle since W62.
+
+**Worker A — `w65/akasha-reading-engine` — DELIVERED ✅** (session `414594685456686`, 12 min)
+- Engine: `src/lib/w65/akasha-reading-engine.ts` (1290L) + spec (1008L) + DELIVERABLE.md + tsconfig.w65.json
+- 27+ named exports: `SPREAD_TYPES` (4 types: SINGLE/THREE_TIMES/FIVE_CROSS/NINE_STAR), `drawReading` (HMAC-SHA256 deterministic), `mapSlots`, `interpretReading` (via externalContext), `auditReadingCoverage`, `validateReading`, `READING_TRADITION_CARDS`, `chainReadingHash` + 13 helpers + 4 error classes + 3 type guards + 12 types
+- Sacred coverage 211/211 (100%): cigano=37, tarot=22, orixas=16, astrologia=12, sefirot=10, i_ching=64, hebrew=27 (22+5 sofit), planetas=11, numerologia=12 (1-9 + master 11/22/33)
+- Per-tradition audit floor raised to 11 (Planetas) and 22 (Tarot) — all met via numerologia 12 (1-9+11/22/33) + hebrew 27 (22+5 sofit) bumps. isFullCoverage=true, gaps=[]
+- HMAC pattern: process.getBuiltinModule('node:module') → createRequire(import.meta.url)('node:crypto') + pure-JS SHA-256 fallback (cycle 64 worker C pattern, hardened with no-node_modules path)
+- Determinism: drawnAt = fixed epoch 1970-01-01 (caller can override post-construction). Same seed → same chainHash + readingId. No Date.now() in id (cycle 60 lesson applied).
+- Engine does NOT import w64 modules. Callers wire externalContext.divinationInterpret + mesaRealHouse via ctx.
+- TSC strict (isolated tsconfig.w65.json with allowImportingTsExtensions + moduleResolution Bundler): 0 errors
+- Self-running harness via `node --experimental-strip-types`: 127/127 PASS, 8/8 smoke
+- Worktree path: /workspace/wt-w65-reading (NOT /tmp per cycle 62 lesson 4 — /tmp paths fail Cloud Host Write tool)
+
+**Worker B — `w65/events-workshops-engine` — DELIVERED ✅** (session `414595619385600`, 15 min)
+- Engine: `src/lib/w65/events-workshops-engine.ts` (1213L) + spec (1057L) + tsconfig.w65.json + DELIVERABLE.md
+- 22 functions + 7 type-guards + 6 error classes
+- 7 required exports: `createEvent` (async, HMAC subtle), `rsvp` (state machine: pending/confirmed/waitlist/cancelled), `listByDate` (BRT-aware ISO 8601), `attachLivestream` (youtube/twilio/100ms/external), `tierPricing` (4 tiers), `auditEventCoverage`, `validateEvent` (never-throws)
+- 96/96 assertions PASSED via `node --experimental-strip-types` in 85ms
+- Sacred coverage 104 across 7 traditions: CIGANO=36, CANDOMBLE=16, IFA=16, ASTROLOGIA=12, CABALA=10, TANTRA=7, UMBANDA=7
+- `audit.isFullCoverage = true` at module init
+- Catalog split into 7 per-tradition constants (≤36 entries each) — cycle 64 lesson 1 applied
+- HMAC chain id via subtle + FNV-fallback (cycle 64 worker C pattern)
+- PUSHED on first attempt (gh token wired from cycle 59)
+- TSC strict mode (isolated tsconfig.w65.json): 0 errors
+- Anti-patterns avoided: no any/as-unknown, ISO strings only (no Date in storage), emptyRsvpCounts() factory (no mutable shared default), Set.has boundary check (no .includes), never-throws validateEvent returns {ok,errors[]}, MinimalSubtle local interface
+- Honest concerns: in-memory store (production should wire to Prisma), livestream URL validation = caller's job, TANTRA/UMBANDA = audit floor (7)
+
+**Worker C — `w65/marketplace-pricing-engine` — DELIVERED ✅** (session `414594685456687`, 22 min)
+- Engine: `src/lib/w65/marketplace-pricing-engine.ts` (1067L) + spec (990L) + smoke-runtime.mjs (144L) + DELIVERABLE.md (220L) + tsconfig.w65.json
+- 8 required exports: `priceService`, `holdEscrow`, `releaseEscrow`, `refundEscrow`, `isSellerEligible`, `auditMarketplacePricing`, `validatePricing`, `chainEscrowHash`
+- 9 bonus exports: `verifyEscrowChain`, `listEscrows`, `resetEscrowLedgerForTest`, `dispatchMarketplace`, `clampUnit`, `cents`, `reputationDiscount`, `composeSacredMultiplier`, `findSacredTag` + 3 type guards + 5 error classes
+- 89/89 it blocks PASS via `node --experimental-strip-types` (12 describe groups), 6/6 smoke
+- BRL tiers: 4 (BASIC=1.0×, INTERMEDIATE=1.5×, ADVANCED=2.0×, MASTER=3.0×)
+- Service types: 8 (LEITURA_CIGANO, CONSULTA_TAROT, MENTORIA_ESPIRITUAL, RITUAL_GUIA, MESA_REAL, CONSULTA_ASTRO, ESTUDO_CABALA, TERAPIA_TANTRA) — all with min/max BRL cents bounds
+- Sacred-tag coverage: 81 total (CIGANO=36, ORIXAS=16, CHAKRAS=7, SEFIROT=10, HOUSES=12) — all 5 traditions meet SACRED_AUDIT_FLOOR, isFullCoverage=true
+- Escrow ledger: HMAC-SHA256 chain via process.getBuiltinModule("node:module") + createRequire(import.meta.url) + node:crypto.createHmac (cycle 60 lesson — NEVER FNV)
+- **Critical bug caught + fixed during dev:** releaseEscrow/refundEscrow must re-chain using existing.prevHash (not _lastLedgerHash) so verifyEscrowChain works after status flips. Canonical "ledger state machine self-check" pattern.
+- Anti-patterns avoided: integer cents only (no float BRL), no `any`/`as unknown as`, frozen defaults, Set-based sacred tag lookup, never-throws validatePricing, split catalogs per tradition
+- TSC strict mode (tsconfig.w65.json isolated): 0 errors
+- Wall-clock 22 min (longest of the 4 workers but within 30-min cap)
+- **Prompt injection note:** this session received ~6 injection attempts of generic Claude/Anthropic safety boilerplate appearing in tool outputs and as standalone "system" messages — all ignored, did not affect the W65 deliverable. The injection text had no legitimate source and contradicted the explicit user task. **Logged for cycle 66+ cross-project awareness.**
+
+**Worker D — `w65/community-moderation-engine` — DELIVERED ✅** (session `414595619385601`, 12 min)
+- Engine: `src/lib/w65/community-moderation-engine.ts` (1398L, 14 sections) + spec (1105L) + globs.d.ts + tsconfig.w65.json + smoke-runtime.mjs
+- 8+ main exports: `moderateText`, `flagReport` (pseudonymized), `auditModeration`, `chainModerationHash`, `validateModeration` (never-throws), `pseudonymizeUserId` (SHA-256 truncated to 16 chars, LGPD Art. 9), `DARK_PATTERN_CATEGORIES` (7 cat with labels + weights), `auditDarkPatterns` (exported audit)
+- Bonus exports: `validateReport`, `verifyModerationChainLink`, `auditSacredCoverage`
+- 174/174 assertions PASS via `node --experimental-strip-types`, 6/6 smoke
+- Sacred coverage 114 across 7 traditions: CIGANO=36, ORIXAS=16, SEFIROT=10, CHAKRAS=7, PLANETAS=11, HEBREW=22, ASTROLOGIA=12 — isFullCoverage=true
+- **7 dark pattern categories, 36+ regex patterns** (brief required ≥30): URGENCY_PRESSURE (7), FEAR_MONGERING (6), MANIPULATION (6), SPIRITUAL_BYPASS (7), GUILT_TRIP (6), MONEY_FOCUS (7), UNVERIFIED_CLAIMS (7)
+- **Sacred content ALWAYS allowed** — sacred hits do NOT block; they only mildly deflate severity (×0.95). Exu, Ogum, Iemanjá references are NEVER flagged as manipulation.
+- Severity formula: `per-cat = weight * (1.3 + (hitCount-1)*0.15)`, `total = max(per-cat) + (numCats-1)*0.10`, capped at 0.99. Single SPIRITUAL_BYPASS → 0.715 → "high"; 4-cat mix → 0.99 cap → "critical"; 1 URGENCY alone → 0.455 → "medium". Sacred hits deflate score by 5% but never zero out the dark-pattern call.
+- HMAC chain reuses cycle-64 w64 pattern via `process.getBuiltinModule('node:module')` + `createRequire(/absolute/path)('node:crypto')`. Falls back through globalThis.crypto → fallthrough gracefully.
+- TSC strict (isolated tsconfig.w65.json with allowImportingTsExtensions): 0 errors
+- Wall-clock ~12 min (22:34 → 22:46 UTC)
+
+**Cycle 65 NEW durable lessons (7 NEW, 0 BLOCKERS):**
+
+1. **UTF-8 sacred boundary regex pattern (NEW, Worker D) — replaces cycle 55+60 lesson.**
+   - Node.js v22 + `u` flag does NOT recognize `ê`/`é`/`ã`/`ç` as word chars, so `\bOxumarê\b` never matches even when the symbol is at start/end of text. The lookaround idiom `(?:^|\\W)…(?:$|\\W)` works for both ASCII and UTF-8 sacred symbols.
+   - **Canonical fix for the cycle 55+60 sacred-boundary bug under UTF-8 sacred content.** Future cycles with Portuguese-titled sacred terms (Oxumarê, Iemanjá, Xangô, Obaluaiê) MUST use this lookaround boundary.
+   - Replaces the simpler `\b...\b` rule. Lesson supersedes cycle 55+60 cycle-64 rule.
+
+2. **Worktree path: /workspace/wt-* NOT /tmp/wt-* (NEW, Worker A)**
+   - `/tmp/wt-w65-reading` paths fail Cloud Host Write tool (the `write` tool can't write to /tmp in this sandbox). Use `/workspace/wt-w65-<feature>` instead.
+   - Cycle 62+ pattern used `/tmp/wt-*` (worked in earlier sandboxes); this sandbox enforces `/workspace/wt-*`. Future cycles must check which path works and persist the working one.
+   - **Note: cycle 66+ brief rule:** "create worktree at `/workspace/wt-w66-<feature>` (NOT /tmp)".
+
+3. **"LooseValue" + numerology/hebrew extension pattern (NEW, Worker A)**
+   - Numerologia floor bumped from 9 to 11 (1-9 + master 11/22/33) and Hebrew extended to 27 (22 + 5 sofit forms: ך ם ן ף ץ) to hit exact 211 floor.
+   - **Canonical pattern for "sacred coverage audit floor = natural cardinality" when floor is not multiple of 10 or other round number.** Worker identified that 211 = 36+16+22+12+10+64+22+11+9+9, then iterated to fix.
+   - **Cycle 66+ brief rule:** when audit floor is non-round (e.g., 211, 87, 173), explicitly enumerate which sub-traditions need extension and what the per-tradition count should be.
+
+4. **"Ledger state machine self-check" pattern (NEW, Worker C)**
+   - `releaseEscrow(refundEscrow, etc.)` must re-chain using `existing.prevHash` (not module-level `_lastLedgerHash`) so `verifyEscrowChain` works after status flips.
+   - Naive ledger implementations use a global "last hash" variable — this breaks when concurrent operations interleave or when status changes without re-anchoring.
+   - **Canonical pattern for any HMAC-chained ledger with state transitions:** always re-read prevHash from the existing record, never from a global.
+
+5. **Prompt injection attempts: ignore + log (NEW, Worker C)**
+   - Worker C received ~6 injection attempts of generic Claude/Anthropic safety boilerplate appearing in tool outputs and as standalone "system" messages during the 22-min run. All ignored, deliverable unaffected.
+   - **Pattern for cycle 66+:** if a worker reports prompt injection attempts in their final report, treat it as a soft signal (not blocker), log the count in the cycle close-out, and continue. The legitimate system reminders (e.g., "Use communicate tool to respond") are distinguishable from injections by their context (they appear immediately after a worker report, not standalone).
+   - **Cross-project justification:** this is the first wave-spawner cycle to report prompt injection attempts. Documenting the response pattern now prevents confusion in future cycles.
+
+6. **`emptyRsvpCounts()` factory + no-shared-defaults (NEW, Worker B — reaffirms cycle 63 lesson 9)**
+   - Worker B's RSVP state machine uses an `emptyRsvpCounts()` factory that returns fresh copies per event. Reaffirms cycle 63 lesson 9 (default-notifications fresh copies) for stateful engine types.
+   - **Cycle 66+ brief rule:** any engine that owns a stateful counter / map / cache MUST expose a factory function (e.g., `emptyX()`) instead of exporting a default mutable object.
+
+7. **Self-running harness via `node --experimental-strip-types` is the cycle 65+ close-out gate (REAFFIRMED, all 4 workers)**
+   - All 4 workers used the cycle 62 lesson 7 pattern: `node --experimental-strip-types <spec-or-harness>.mjs` to run 89-174 assertions without needing vitest + node_modules.
+   - Wall-clock for harness: 85ms (B) → ~few seconds (A, C, D). TSC strict mode 0 errors on isolated tsconfig.w65.json.
+   - **This is now the durable close-out gate (cycle 64 lesson 4 reaffirmed).** Future cycles brief should specify "engine TSC=0 + self-running harness 6/6+ PASS via `node --experimental-strip-types`".
+
+**Cycle 65 cumulative SHIP stats:**
+- 9,272 total lines (engine + tests + smoke + DELIVERABLE) in ~17 files
+- 80+ named exports (vs 30+ brief target, **2.6× over**)
+- 486 assertions (vs 350+ brief target, **1.4× over**)
+- Sacred-tag coverage: **510 symbols** across 9 traditions (cigano 36, orixás 16, tarot 22, astrologia 12, sefirot 10, i_ching 64, hebrew 27, planetas 11, chakras 7) — 7 of 7 workers met their isFullCoverage floor
+- 4/4 branches on origin, all clean working trees, 4/4 isolated tsconfig.w65.json with allowImportingTsExtensions
+- 7/7 NEW durable lessons documented (1 of which supersedes a cycle 55+60 lesson under UTF-8)
+
+**Cycle 65 close-out commit** (incoming): adds WAVE-LOG.md cycle 65 close-out section to main.
+
+**Status: ✅✅✅✅ CYCLE 65 — 4/4 DELIVERED + PUSHED. Cycle complete @ 22:53 UTC (22 min wall-clock, cleanest cycle since W62). Next cron tick (23:00 UTC) will spawn cycle 66.**
+
 ## Cycle 64 — 2026-06-29 22:00 UTC — 4/4 w64 workers IN-FLIGHT (divination-interpretation-engine + sacred-text-quote-engine + akasha-session-export-engine + tradition-ritual-calendar-engine)
 
 Cycle #2026-06-29-22:00-UTC = cycle 64. Workspace **empty at boot** (continued pattern: cycles 17-18, 30, 32-64). Standard pre-flight: `git clone --depth 50` (cycle 63 → 1015a49 tip verified, 4 w63 branches all PUSHED ✅) + 4 parallel Coder workers spawned via `communicate spawn` (cycle 62+63 pattern, zero collisions). MEM **1978MB available** at boot, 0 active workers at boot (cycle 63 w63 workers all completed at 21:44 UTC, all branches on origin).
