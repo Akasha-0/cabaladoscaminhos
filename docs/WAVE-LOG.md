@@ -2761,3 +2761,43 @@ Hypothesis: the model returned stop_reason that wasn't in the allowlist. Most li
 3. Earlier intervention — if a worker hasn't shown file activity by 15 min, spawn replacement immediately rather than waiting for the 30-min cap.
 
 **Status: ⚠️ CYCLE 55 PARTIAL. 3/5 features pushed. 2 features (vapid + i18n) need cycle 56 replacement spawn.**
+
+## Cycle 56 spawn — 17:30 UTC tick (this session 414513573949669)
+
+Cycle 56 spawn fired at 2026-06-29 17:30 UTC. **5 workers spawned in parallel via Coder agent.**
+
+**Cycle 56 features (2 replacements + 3 fresh):**
+1. **w55/notifications-vapid-push-real** (RETRY) — same brief as cycle 55; new Coder worker session
+2. **w55/i18n-locale-fallback-chain** (RETRY) — same brief as cycle 55; new Coder worker session
+3. **w56/voice-mode-tts-akasha** — NEW. Voice mode engine for Akasha IA. TTS playback state machine + cue chunking + rate/pitch + sacred-mute override + LGPD.
+4. **w56/daily-reflection-prompt** — NEW. Seeded daily prompt rotation (deterministic by userId+date) + mood/tradition/sacred filters + no-repeat 30d + LGPD.
+5. **w56/marketplace-leitura-praticas** — NEW. Marketplace listings for readings/practices + search facets + BM25 ranker + sacred-listing exclusion + verification levels + LGPD.
+
+**Worker agent swap (Coder instead of General):**
+Last 2 cycle 55 General-agent workers hit `stop_reason: error` at ~10-min mark. Cycles 53-54 used Coder exclusively with 5/5 first-attempt success and zero errors. Hypothesizing Coder is more resilient for code-heavy 1500-2800L shapes with hand-rolled crypto. Test in cycle 56.
+
+**Brief length cut (-50% vs cycle 55):**
+Cycle 55 briefs were ~1200 words each. Cycle 56 briefs are ~600 words each. Hypothesis: cycle 55's error pattern correlates with overly-rich input context. Simpler briefs = more headroom for output.
+
+**Worktrees:**
+- `/workspace/wt-w55-vapid` — reuses cycle 55 orphan (no file written; clean origin/main base)
+- `/workspace/wt-w55-i18n` — reuses cycle 55 orphan
+- `/workspace/wt-w56-voice` — new
+- `/workspace/wt-w56-reflection` — new
+- `/workspace/wt-w56-marketplace` — new
+
+**MEM:** 1974MB available at spawn. 5 workers × ~250MB each ≈ 1250MB. Under 2GB cap.
+
+**Cycle 56 expected deliverable (if all 5 land):**
+- 5 branches on origin (2 w55 retries + 3 w56 fresh)
+- ~7,500-14,000L total
+- ~150+ exports
+- Per-file TSC=0 on all 5
+- 30-min cap → expected close 18:00 UTC
+
+**Cycle 56 mitigation patterns (vs cycle 55 error pattern):**
+1. Coder agent instead of General (cycles 53-54 5/5 with Coder)
+2. Shorter briefs (~600 words vs ~1200) — less input context, more output headroom
+3. Earlier intervention if no file activity by 15 min (vs 30 min wait in cycle 55)
+
+**Status: ⚙️ 5 WORKERS IN FLIGHT (Coder agent). ~25 min until expected close (18:00 UTC).**
