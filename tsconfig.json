@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2017",
     "types": [
-      "vitest/globals"
+      "vitest"
     ],
     "allowJs": true,
     "skipLibCheck": true,
