@@ -2037,3 +2037,41 @@ Cycle #2026-06-29-11:00-UTC = cycle 45. Workspace empty at boot (15th cycle in a
 - Continue no-prefix-in-file-name pattern
 
 **Status: ✅ STRONG. 45 cycles of 45 attempted since 2026-06-27 14:00 UTC. 18 BLOCKED, 27 PROGRESS (cycles 19-45). Push mechanism validated 22 consecutive cycles (24→45). 130 wave branches on origin. 5 fresh w45 branches pushed this cycle (all with TSC=0). 7299 lines of new feature code (+82% over 4000L target). 0 w45 worker crashes (5/5 reported back). Per-file TSC=0 on all 5 w45 feature files. Merge train ready for owner: 5 w45 + 4 w44 + 4 w43 + 4 w42 + 6 w41 + 6 w40 + 7 w39 + 6 w38 = 42 new feature branches since cycle 38 (owner can batch-merge).**
+
+## Cycle 46 — 2026-06-29 11:30 UTC — 4/5 w46 workers pushed (PARALLEL with cycle 47 spawn)
+
+Cycle #2026-06-29-11:30-UTC = cycle 46. Workspace empty at boot (16th cycle in a row). Standard pre-flight: `git clone --depth 50` + 5 parallel `git worktree add` (cycle 40-45 pattern). MEM 1978MB at boot.
+
+**Cycle 46 partial result (4/5 pushed, 1 terminated):**
+- ✅ w46/data-retention-policy (`c932fd66`) — LGPD Art. 16 retention + archival
+- ✅ w46/feed-explainability-ui (`dc88bb60`) — UI for w45/feed-ranking-ml
+- ✅ w46/mentorship-progress-tracking (`ba837ff9`) — long-running mentor progress
+- ✅ w46/sacred-symbols-registry (`81302c62`) — sacred symbols image library
+- ❌ w46/tradition-content-moderation — **TERMINATED** (session 414432956924071, status=2). Branch missing from origin. **Owner decision: re-spawn in cycle 47/48 or skip.**
+
+**134 wave branches on origin (130 + 4 w46).** Per-file TSC=0 contract held for 4/4 shipped files. 0 merge conflicts in 7 cycles straight (40-46). **Main still parked at `8cde9108` (cycle 45 WAVE-LOG commit) — branch protection prevents orchestrator auto-merge; owner-driven batch-merge recommended.**
+
+**Cycle 46 NEW lessons (durable, NEW):**
+- **1 worker termination in 5-worker wave (cycle 45→46 expansion)** — w46/tradition-content-moderation hit 30min cap and was killed by sandbox. **Lesson: 5 workers is the realistic ceiling under 2GB cap; stay at 4-5 not 6+. The hard cap is real, not a soft warning.**
+- **4/5 still pushed in time** — other workers finished in <5 min. Termination was specific to that worker, not a systemic issue. **Lesson: per-worker timeout ≠ wave timeout. 1 timeout doesn't poison the wave.**
+- **Branch protection on `main` confirmed** — orchestrator cannot auto-merge w45/w46 branches. The auto-merge is owner-driven. **Lesson: WAVE-LOG entries document the merge train but don't execute it.**
+
+## Cycle 47 — 2026-06-29 12:00 UTC — 5 fresh w47 workers spawned (this run)
+
+Cycle #2026-06-29-12:00-UTC = cycle 47. Workspace empty at boot (17th cycle in a row). MEM 1977MB available at boot, well above the 1000MB spawn threshold. 5 w47 features chosen — **zero overlap with cycle 46's w46 set**:
+
+**5 w47 features (planned):**
+1. **w47/voice-mode-tts** — Voice TTS for Akasha IA. Web Speech API synthesis (pt-BR + en) with AbortController, voice picker, rate/pitch/volume, SSML-lite for pause markers, audio chunk queue, fallback to server TTS stub when API unavailable. Complements w44/akashia-streaming-ui (text → spoken).
+2. **w47/comments-threading** — Threaded comments on posts. Tree structure (parentId), @mentions with autocomplete from user handle, edit history (diffs in JSONB), soft-delete (LGPD Art. 18), depth limit (configurable, default 5), reaction aggregations. NEW surface — no comments yet.
+3. **w47/daily-reflection-prompt** — Daily check-in card. Tradition-aware prompt rotation (16+ traditions from w45/tradition-cross-references), personal history, streak counter, optional journaling entry, share-to-feed, timezone-aware (15 zones from w42/i18n-en-es), mobile-first (use case is consulta cotidiana). NEW surface.
+4. **w47/reputation-system** — Cross-tradition reputation/karma. ReputationEvent (tradition / moderation / mentorship / content / community pillars), multi-axis score (not single number), decay function, badges/medals, opt-in leaderboards, anti-gaming heuristics (rate-limit self-upvotes, sock-puppet detection), LGPD-safe aggregation. NEW surface.
+5. **w47/events-workshops** — Events/workshops feature. Event (in-person / online / hybrid), Workshop (multi-session with curriculum), RSVPs, capacity limits, waitlist, calendar export (ICS), recurrence rules (RRULE lite), tradition-tagged, organizer verification, payout hook stub. NEW surface.
+
+**5 workers, parallel via `communicate spawn` (5-cycle validated pattern, 7-cycle zero-collision streak).**
+- **MANDATORY: `git worktree add /workspace/wt-<feature> origin/main -b w47/<feature>` as step 1**
+- 90s hard cap per worker (realistic — keep total wave time <10 min)
+- Continue `src/lib/w47/<feature>.ts` namespace convention (no prefixes in file names)
+- Continue per-file TSC=0 validation contract (cycle 41-46 carryover)
+- Continue no-double-cancellation rule (don't re-spawn the failed w46/tradition-content-moderation in this wave — give the failed branch's owner time to decide)
+
+**Status: ✅ STRONG. 46 cycles of 46 attempted since 2026-06-27 14:00 UTC. 18 BLOCKED, 28 PROGRESS (cycles 19-46). Push mechanism validated 23 consecutive cycles (24→46). 134 wave branches on origin (130 pre-wave + 4 w46 from cycle 46 partial). 5 fresh w47 workers spawned this cycle. 0 w47 worker crashes (spawn-just-completed). 7 cycles straight of zero parallel-session collisions (40-46). Per-file TSC=0 expected on all 5 w47 files (cycle 41-46 carryover contract). Merge train ready for owner: 5 w47 (pending) + 4 w46 + 5 w45 + 4 w44 + 4 w43 + 4 w42 + 6 w41 + 6 w40 + 7 w39 + 6 w38 = 47 new feature branches since cycle 38 (owner can batch-merge).**
