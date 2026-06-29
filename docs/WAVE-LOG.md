@@ -1,5 +1,61 @@
 # Akasha Wave-Spawner — Cycle Log
 
+## Cycle 65 — 2026-06-29 22:31 UTC — 4/4 w65 workers IN-FLIGHT (akasha-reading-engine + events-workshops-engine + marketplace-pricing-engine + community-moderation-engine)
+
+Cycle #2026-06-29-22:30-UTC = cycle 65. Workspace **empty at boot** (continued pattern: cycles 17-18, 30, 32-65). Standard pre-flight: `git clone --depth 50` from main HEAD `a3318d4` (cycle 64 close-out, 4/4 w64 branches PUSHED ✅) + 4 parallel Coder workers spawned via `communicate spawn` (cycle 62+63+64 pattern, zero collisions). MEM **1978MB available** at boot, 0 active workers at boot (cycle 64 w64 workers all completed at 22:26 UTC, all 4 branches on origin). Briefs durable at `/workspace/briefs-w65/01-akasha-reading-engine.md` to `04-community-moderation-engine.md`.
+
+Pre-flight: GITHUB_TOKEN URL rewrite applied (`git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"`), git identity `Mavis <Mavis@MiniMax.local>` set, `core.fsmonitor=false` for sandbox. 4 w65 branches pre-allocated: `w65/akasha-reading-engine`, `w65/events-workshops-engine`, `w65/marketplace-pricing-engine`, `w65/community-moderation-engine`. 4 worktrees pre-planned: `/tmp/wt-w65-reading`, `/tmp/wt-w65-events`, `/tmp/wt-w65-market`, `/tmp/wt-w65-moderation`.
+
+**4 w65 workers spawned (fresh `src/lib/w65/` namespace, BRAIN/EVENTS/REVENUE/SAFETY layer for the Akasha + Marketplace experience):**
+
+Cycle 65 deliberately extends W64 (interpretation/corpus/export/time) into the next 4 pillars: BRAIN (deterministic reading session), EVENTS (community + livestream), REVENUE (marketplace + escrow), SAFETY (moderation + LGPD). These complete the operational layer that W64's read-time engines need at write-time (creating readings) and post-time (moderation + monetization).
+
+- **A — `w65/akasha-reading-engine`** (session [TBD], Coder) — The BRAIN layer: deterministic reading session. 4 spread types (SINGLE, THREE_TIMES, FIVE_CROSS, NINE_STAR), HMAC-SHA256(seed + cardIndex) draw, slot-to-semantic mapping per tradition, interpretation hooks via `externalContext.divinationInterpret` (reuses w64/divination-interpretation-engine). 8+ exports including `SPREAD_TYPES`, `drawReading`, `mapSlots`, `interpretReading`, `auditReadingCoverage`, `validateReading`, `READING_TRADITION_CARDS`, `chainReadingHash`. **Sacred coverage floor: 211+ symbols across 9 traditions** (Cigano 36, Orixás 16, Tarot 22, Astrologia 12, Sefirot 10, I Ching 64, Hebrew 22, Planetas 11).
+
+- **B — `w65/events-workshops-engine`** (session [TBD], Coder) — The EVENTS layer: ceremonies + workshops + RSVP + livestream bridge. State machine for RSVP (pending/confirmed/waitlist/cancelled), calendar query with BRT/ISO 8601, optional livestream attach (YouTube/Twilio/100ms). 7+ exports including `createEvent`, `rsvp`, `listByDate`, `attachLivestream`, `tierPricing`, `auditEventCoverage`, `validateEvent`. **Sacred coverage floor: 104+ symbols across 7 traditions** (Cigano 36, Orixás 16, Ifá 16, Astrologia 12, Kabbalistic 10, Tantra 7, Umbanda 7). **BRL tier pricing:** BASIC R$30-100 / INTERMEDIATE R$100-300 / ADVANCED R$300-1000 / MASTER R$1000+.
+
+- **C — `w65/marketplace-pricing-engine`** (session [TBD], Coder) — The REVENUE layer: BRL-cents pricing + HMAC-chained escrow ledger + seller eligibility (≥ 10 readings + reputation ≥ 4.0). 8+ exports including `priceService`, `holdEscrow`, `releaseEscrow`, `refundEscrow`, `isSellerEligible`, `auditMarketplacePricing`, `validatePricing`, `chainEscrowHash`. **Sacred coverage floor: 81+ symbols across 5 traditions** (Cigano 36, Orixás 16, Chakras 7, Sefirot 10, Astrologia 12). **Service types ≥ 6** (LEITURA_CIGANO, CONSULTA_TAROT, MENTORIA_ESPIRITUAL, RITUAL_GUIA, MESA_REAL, CONSULTA_ASTRO, ESTUDO_CABALA, TERAPIA_TANTRA).
+
+- **D — `w65/community-moderation-engine`** (session [TBD], Coder) — The SAFETY layer: sacred-aware text moderation. Distinguishes legitimate sacred content (allowed) from 7 dark pattern categories (URGENCY_PRESSURE, FEAR_MONGERING, MANIPULATION, SPIRITUAL_BYPASS, GUILT_TRIP, MONEY_FOCUS, UNVERIFIED_CLAIMS). LGPD Art. 9 pseudonymization (SHA-256 + salt truncated 16 chars). 8+ exports including `moderateText`, `flagReport`, `auditModeration`, `chainModerationHash`, `validateModeration`, `pseudonymizeUserId`, `DARK_PATTERN_CATEGORIES`, `auditDarkPatterns`. **Sacred coverage floor: 114+ symbols across 7 traditions** (Cigano 36, Orixás 16, Sefirot 10, Chakras 7, Planetas 11, Hebrew 22, Astrologia 12). **Dark patterns: 7 categories, 30+ regex patterns.**
+
+**Cycle 65 — fresh trails chosen (each fills a 2026 roadmap gap):**
+
+1. **Akasha reading engine** ← the most foundational engine. W64 worker A produces interpretations, but there's no engine that actually draws a reading session (spread + cards + slots + interpretation hooks). This is the read-time → write-time boundary.
+2. **Events + workshops + RSVP + livestream** ← W58 had events retry + live-streams retry, both wedged. Combining them in one engine with state machine + BRT calendar + tier pricing is the cleanest realization.
+3. **Marketplace pricing + escrow** ← the revenue layer. W57 reputation system + W64 session export are inputs. Escrow ledger needs HMAC chain (reuse w64 worker C pattern).
+4. **Community moderation** ← the safety layer. W58 comments-moderation retry was wedged. Sacred-aware moderation with 7 dark-pattern categories + LGPD pseudonymization is the production-grade version.
+
+**Hard caps, conventions, gates (reused from cycle 62+63+64):**
+- 25min per worker target, 30min hard cap (cycle 61+62+63+64 validated)
+- 4-worker parallel via `communicate spawn` (cycle 40-43, 62-65 pattern, zero collisions)
+- Per-file TSC=0 validation via `npx tsc --noEmit --skipLibCheck <file>` (cycle 41 contract)
+- Runtime smoke via `node --experimental-strip-types smoke.mjs` (cycle 62 lesson 7) — 6 paths minimum per worker
+- `git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"` (cycle 62 lesson 4, best-effort persistence)
+- `git worktree add /tmp/wt-w65-<feature> origin/main -b w65/<feature>` step 1
+- No main commits except `docs/WAVE-LOG.md` (this entry)
+- Sacred coverage enumeration MANDATORY per cycle 62 lesson 4 + cycle 63 lesson 4 (TRADITION_CATALOG.canonicalNames)
+- `boostScoreByCitations` cap 0.99 per cycle 63 lesson 1
+- `combineScore` 5-aggregator pattern per cycle 63 lesson 2
+- HMAC-SHA256 (NO FNV fallback) for Workers C + D per cycle 60 lessons C-1 + H-5
+- Write-tools-first pattern per cycle 62 lesson 5
+- Iterative commits (2-3 per worker) per cycle 62 lesson 8
+- Branded types (`toCardId`, `toISODate`, `toSessionId`, `toEventId`) — NO `as` user-cast
+- Never-throws graceful-degradation at public API surface (cycle 63 lesson 10)
+- Word-boundary regex for sacred tags (`\b...\b`) per cycle 55+60 lesson (Workers A + D)
+- `process.getBuiltinModule('node:module')` HMAC pattern per cycle 64 worker C (Workers A + C + D)
+- `isFullCoverage` audit flag per cycle 64 lesson 2 (all 4 workers)
+- `externalContext` engine decoupling per cycle 64 lesson 7 (Worker A)
+- Per-tradition audit floor = natural cardinality per cycle 64 lesson 5 (all 4 workers: chakras=7, luas cheias=12, etc.)
+- Split catalogs ≥ 100 into per-tradition constants per cycle 64 lesson 1 (Worker A: I Ching 64 + Tarot 78 + Hebrew 22)
+- `LooseValue` + `STRICT_VALUES` const pattern per cycle 64 lesson 6 (Worker A: NumerologyNumber 1..36)
+- `LooseValue` strict-subset for any w65+ engine with strict taxonomy
+
+**Cycle 65 — gap-coverage rationale:**
+- W57 reputation system + W60 mentorship + W60 comments-threading + W60 sacred-text-policy + W61 auth/akasha-streaming/i18n/notifications-push + W62 voice-mode/daily-reflection/oraculo-multimodal/streak-tracker + W63 akasha-explainability/notifications-prefs/search-facets/onboarding-state + W64 divination-interpretation/sacred-text-quote/akasha-session-export/tradition-ritual-calendar = 24 features already on origin across W57-W64. Cycle 65 adds the **write-time operational layer** (reading, events, marketplace, moderation) that completes the platform loop.
+- Cycle 65 fills 4 of the 5 remaining gaps from the original 2026 roadmap (events, marketplace, reputation=W57 ✅, moderation, translation=W58 ✅). After cycle 65, the platform is ~80% feature-complete for the B2C + community PWA launch.
+
+**Status: ⏳ IN-FLIGHT. 4 workers spawned at 22:31 UTC. ETA close-out: ~22:55-23:00 UTC (25-min cap). EXPECTED close-out: 4/4 PUSHED, ~5000-6000L net-new engine code, 130+ exports, 800+ assertions, 6/6 runtime smoke per worker. NO BLOCKERS at spawn time. MEM healthy (1978MB available, 0 active worker pressure).**
+
 ## Cycle 64 — 2026-06-29 22:00 UTC — 4/4 w64 workers IN-FLIGHT (divination-interpretation-engine + sacred-text-quote-engine + akasha-session-export-engine + tradition-ritual-calendar-engine)
 
 Cycle #2026-06-29-22:00-UTC = cycle 64. Workspace **empty at boot** (continued pattern: cycles 17-18, 30, 32-64). Standard pre-flight: `git clone --depth 50` (cycle 63 → 1015a49 tip verified, 4 w63 branches all PUSHED ✅) + 4 parallel Coder workers spawned via `communicate spawn` (cycle 62+63 pattern, zero collisions). MEM **1978MB available** at boot, 0 active workers at boot (cycle 63 w63 workers all completed at 21:44 UTC, all branches on origin).
