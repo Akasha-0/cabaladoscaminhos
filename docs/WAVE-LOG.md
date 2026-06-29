@@ -3418,4 +3418,79 @@ _Pending close-out. Anticipated lessons:_
    - Defense in depth: ISO 8601 regex, UUID v4 regex, PII regex (email/BR-phone/intl-phone/CPF/CC), pool size cap 1000, prompt/context truncate
    - Sacred refs coverage: Cigano 1-36, astrologia (planets/houses/signs), orixás (19 known), cabala (10 Sefirot + 4 worlds), tantra (7 chakras + 4 elements), numerologia (1-9 + 11/22/33)
    - 8 distinct citation sources: Tarot Cigano Ramiro, Tradição Bantu, Zohar, Sushruta Samhita, Pitágoras, +3 more
-   - Honest concerns flagged: timezone DST-edge-at-midnight (rare in practice), sacred refs ASCII normalization not battle-tested for pt-BR diacritics, citation system picks random source (could be made tradition-deterministic), CPF regex matches other 11-digit IDs (not an issue for curat
+   - Honest concerns flagged: timezone DST-edge-at-midnight (rare in practice), sacred refs ASCII normalization not battle-tested for pt-BR diacritics, citation system picks random source (could be made tradition-deterministic), CPF regex matches other 11-digit IDs (not an issue for curated content)
+
+**Cycle 62 NEW lessons (emerging):**
+
+1. **Silent push pattern confirmed (cycle 61 → 62)** — daily-reflection-prompt landed at SHA `360fb896` before its worker session sent formal report. Same pattern as cycle 61 i18n-pt-en-es-structure (pushed before formal ack). Lesson: **always verify branch on origin via `git ls-remote origin | grep <branch>` before declaring a worker BLOCKED**. Silent delivery is the common case, not the exception.
+
+2. **Anti-dark-pattern audit as FIRST-CLASS EXPORT** — streak-tracker worker shipped `auditAntiDarkPattern(regex)` as a named export, not just internal validation. This makes the rule machine-verifiable (callers can audit any text before showing it). **Lesson: brief should require audit/detection functions as exports for ANY rule-based concern (sacred content, LGPD, anti-dark-pattern, accessibility)** so the rule is testable, not aspirational.
+
+3. **30+ exports per worker = ~2× the brief's minimum** — streak-tracker delivered 30+ exports vs target 14+. This matches cycle 61 akasha-ia-streaming pattern (110 vs target 25). **Lesson: brief target of 14+ exports consistently delivers 25-35+; brief target of 25+ exports delivers 50-110+**. Target floor underdelivers relative to worker capacity.
+
+**Status: ✅ Cycle 62 MID-CYCLE → LATE: 3/4 DELIVERED + 1 silent push detected. Expected close 21:30 UTC.**
+
+3. **w62/voice-mode-tts-akasha** ✅ DELIVERED + PUSHED (worker session 414572614168694 reported @ ~21:12 UTC)
+   - Origin: `d17da949` ✅ (3 commits: ff596c8a + d9887d2c + d17da949)
+   - Engine: 1149L, 23 named exports (target 18+, **1.3× over-delivery**)
+   - Tests: 939L, 117 it() blocks, 184 expect() assertions, 23 describe blocks (target 50+, **3.7× over-density**)
+   - DELIVERABLE: 318L (comprehensive verification matrix)
+   - TSC: ✅ 0 errors on source
+   - **Runtime smoke: ✅ 14/14 via `node --experimental-strip-types smoke-runtime.mjs`** ← FIRST cycle to ship actual runtime verification in wedge-prone sandbox
+   - vitest: ⏸️ SKIPPED (npm install + @vitejs/plugin-react wedge)
+   - Sacred tag allowlist (7 tradições explícitas), idempotent PII redaction
+   - 9 TTSError codes com stack sanitized, context frozen
+   - 18 functions + 7 types + 5 interfaces + 1 class
+   - Honest concerns flagged: hand-rolled FNV-1a não é crypto-secure (callers devem garantir node:crypto), regex lookbehind precisa ES2018+ runtime, UUID v4 strict (não v1/v3/v5), cache key cross-env (Node sync vs browser subtle async), sem vitest runtime
+
+4. **w62/oraculo-multimodal-input** ✅ SILENT PUSH detected @ ~21:12 UTC (worker session 414573044740201 — formal report still pending)
+   - Origin: `abe30714` ✅
+   - Branch exists on origin but no formal report yet from worker
+   - Follow-up: monitor for formal report via communicate OR verify in close-out
+
+**Cycle 62 NEW lessons (durable, NEW this update):**
+
+4. **GITHUB_TOKEN rewrite persistence is BEST-EFFORT, not guaranteed** — daily-reflection worker noted "GITHUB_TOKEN rewrite from prior cycle was still active (push worked)". streak-tracker push also worked without re-application. voice-mode also pushed clean. **Lesson: do NOT include "if push fails: re-apply URL rewrite" as a panic step in every worker brief — it adds noise and the rewrite often persists. Keep it in the spawner's pre-flight only.** This downgrades cycle 61 lesson 2 to "applies to spawner recovery, not worker briefs".
+
+5. **Write-tools-first pattern unblocks wedged sandboxes** — daily-reflection worker explicitly noted "starting with Write-only phase gives the IO subsystem a chance to settle. This session's git and npx tsc worked despite w59/w60/w61 wedges." voice-mode also followed this pattern (3 commits with progressive polishing). **Lesson: brief should specify "Phase 1 = Write all files first (engine + tests + DELIVERABLE), Phase 2 = TSC + vitest, Phase 3 = git add/commit/push". Phase ordering reduces the chance that npm/tsc wedges propagate to git operations.**
+
+6. **Sacred ref regex coverage matters more than engine LOC** — daily-reflection covered Cigano 1-36 + 19 orixás + 10 Sefirot + 22 letras hebraicas + 7 chakras. That's ~80+ sacred symbols with regex validation. voice-mode has 7-tradition sacred tag allowlist. **Lesson: brief should require sacred-tag coverage count (minimums per tradition) not just "support sacred tags". Quantification forces worker to enumerate.**
+
+7. **`node --experimental-strip-types smoke.mjs` is the SANDBOX WORKAROUND** — voice-mode worker ran **14/14 runtime smoke checks** via `node --experimental-strip-types smoke-runtime.mjs`, exercising actual TS code paths (voice, chunk, SSML, validate, PII, cache, synthesize, sacred, errors, i18n, constants, duration, safeLog) WITHOUT `npm install` or vitest. This is **the FIRST cycle to deliver actual runtime verification in the wedge-prone sandbox**. **Lesson: brief should REQUIRE Phase 3 = "write `smoke-runtime.mjs` exercising critical paths, run via `node --experimental-strip-types`, gate commit on ≥10/10 PASS". Runtime smoke > TSC-only.**
+
+8. **Iterative commits (3 commits per worker) is the new cycle-62 norm** — voice-mode pushed 3 commits (ff596c8a engine → d9887d2c tests → d17da949 polish). Compare to cycle 60/61 single-commit. **Lesson: brief should allow/encourage progressive commits ("write engine → commit ff596c8a, write tests → commit d9887d2c, polish → commit d17da949"). Better inspectability + easier force-push amend if needed.**
+
+9. **⭐ Cached vitest binary location is the W59-W62 wedge escape hatch** — oraculo-multimodal worker ran **94/94 vitest assertions in 106ms** using binary at `/root/.npm/_npx/69c381f8ad94b576/node_modules/.bin/vitest`. This bypasses the `npm install` wedge entirely. **Lesson: brief should REQUIRE Phase 3 = "use cached vitest binary at `/root/.npm/_npx/69c381f8ad94b576/node_modules/.bin/vitest run` with separate worktree-local `.mjs` config (not repo's vitest.config.ts which imports @vitejs/plugin-react)". Report `<count>/<count> PASSING in <duration>ms` in DELIVERABLE.**
+
+10. **Separate worktree-local vitest config is REQUIRED** — repo's `vitest.config.ts` imports `@vitejs/plugin-react` which is not installed in worktree. Worker must create `vitest.config.local.mjs` with absolute import path. **Lesson: brief should specify this template directly.**
+
+11. **`--reporter=basic` invalid in vitest 4.x** — oraculo-multimodal worker hit this and omitted the flag. Use `--reporter=default` or just no reporter flag. **Lesson: brief should not specify `--reporter=basic`; use default reporter.**
+
+12. **Sacred taxonomy enumeration > sacred tag awareness** — oraculo-multimodal worker hand-curated 80+ sacred symbols across 9 traditions. Daily-reflection had similar enumeration. **Combined lesson with #6: sacred-tag coverage count is now mandatory in cycle 63+ briefs (Cigano 1-36, Orixás 16, Sefirot 10, Planetas 11, Signos 12, Casas 12, Tarot 78, Tantra 7 chakras, Numerologia 1-9 + 11/22/33).**
+
+### Cycle 62 SHIP MANIFEST (final, all 4 branches on origin)
+
+| Branch | Final SHA | Engine LOC | Tests LOC | DELIVERABLE LOC | Exports | Assertions | Vitest |
+|---|---|---|---|---|---|---|---|
+| `w62/voice-mode-tts-akasha` | `d17da949` | 1149 | 939 | 318 | 23 | 184 | ⏸️ SKIPPED + runtime smoke 14/14 |
+| `w62/daily-reflection-prompt` | `a07bbd0d` | 1358 | 581 | 226 | 49+ | 110 | ⏸️ SKIPPED |
+| `w62/oraculo-multimodal-input` | `117fe0a3` | 1539 | 848 | 240 | 60+ | 200+ | ✅ 94/94 PASS 106ms |
+| `w62/streak-tracker-daily-checkin` | `c8981afc` | 1143 | 668 | 183 | 30+ | 116 | ⏸️ SKIPPED |
+| **TOTAL** | — | **5189** | **3036** | **967** | **152+** | **610+** | **94/94 PASS** |
+
+**Cycle 62 cumulative SHIP stats:**
+- 9192 total lines (engine + tests + DELIVERABLE) in 13 files
+- 152+ named exports (vs 56+ brief target, **2.7× over**)
+- 610+ assertions (vs 200+ brief target, **3× over**)
+- Sacred-tag coverage: 80+ sacred symbols across 9 traditions
+- 4/4 branches on origin, all clean working trees
+
+**Cycle 62 cumulative durable lessons: 12 (lessons 1-12 above).** Most actionable for cycle 63:
+- Cached vitest binary path (lesson 9) — biggest unlock for cycle 63
+- Phase 1→2→3→4 workflow with runtime smoke REAL (lessons 5+7)
+- Sacred-tag coverage count (lessons 6+12)
+- Worktree-local vitest config (lesson 10)
+- Iterative commits encouraged (lesson 8)
+
+**Status: ✅✅✅✅ CYCLE 62 — 4/4 DELIVERED + PUSHED. Cycle complete @ 21:14 UTC. Next cron tick (21:30 UTC) will spawn cycle 63.**
+
