@@ -2419,6 +2419,7 @@ This is the **16:00 UTC cron tick (session 414498569478327)**. The 14:50 UTC tic
 
 **Status: ⚙️ 5 WORKERS IN FLIGHT. 1 w52 replacement (policy-export-portability) + 4 w53 (cockpit-widget-bundle-installer / prayer-submission-moderation-queue / voice-mood-realtime-coach / redaction-policy-vault). Expected close: 16:30-16:50 UTC. 162 branches projected on origin (158 pre-wave + 1 w52 + 4 w53). Total workers spawned this tick: 5. MEM 1973MB available, well below 8-worker cap.**
 
+<<<<<<< HEAD
 ## Cycle 53 — 16:28 UTC mid-cycle close + cycle 54 spawn
 
 This is the **16:28 UTC cron tick (session 414498569478327)** — continuing the orchestrator work from the 16:00 tick.
@@ -2489,3 +2490,61 @@ This is the **16:28 UTC cron tick (session 414498569478327)** — continuing the
 - Replacement-spawn over spec-split for ≤2800L features
 
 **Status: ⚙️ 5 WORKERS IN FLIGHT (1 w53 replacement + 4 w54 fresh). Cycle 53 3/4 pushed, 4/4 expected by 16:50 UTC. Branches projected on origin: 163 (158 pre-wave + 5 this tick). MEM 1973MB available, well below 8-worker cap.**
+
+---
+
+## Cycle 53 monitoring tick — 16:30 UTC (session 414506193543267, fresh clone after sandbox reset)
+
+This is the **16:30 UTC cron tick** resuming after the cold-start sandbox reset at 16:08 UTC. This session found `/workspace/cabaladoscaminhos` MISSING (sandbox wiped between cycles). It re-cloned the repo via `git clone --filter=tree:0 https://github.com/Akasha-0/cabaladoscaminhos.git` (14s, 1500 files), reset `git config user.{name,email}` + `git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"` per the 2026-06-29 sandbox-git GitHub credential fix, ran `yarn install --frozen-lockfile` (660 modules, 60s, tsc accessible via `node node_modules/typescript/bin/tsc`).
+
+**Verified state on handoff (at 16:35 UTC):**
+- origin/main HEAD: `1f5825ea` (cycle 53 mid-cycle close + cycle 54 spawn, by 16:28 same-session orchestrator 414498569478327)
+- 162 wave branches on origin (153 pre-wave + 5 w51 + 3 w53 round-1 + 1 w52 replacement = 162 verified by `git ls-remote origin 'refs/heads/w*' | wc -l`)
+- 5 workers IN-FLIGHT from 16:28 same-session tick (NOT my session): 1× w53/voice-mood-realtime-coach (replacement) + 4× w54 fresh (cockpit-widget-bundle-telemetry, prayer-submission-rate-limiter, voice-mood-coach-leaderboard, redaction-policy-vault-recovery). Each ~395MB per worker's own node process = ~2GB total worker memory. Their memory will appear in `free -m` once they actually start typing code (a few minutes from spawn).
+- This session's MEM available: 1972MB (BEFORE the 5 in-flight workers occupy their memory).
+- git working tree: conflicted rebase of my earlier 16:32 commit on top of 16:28 commit (WAVE-LOG.md merge conflict).
+
+**DECISION: DEFER spawning this tick. Reason: 5 workers already in-flight in this same 2GB sandbox (cycle 53 16:28 same-session orchestrator). Adding 5 MORE would put us at ~10 concurrent workers = 5×395MB workers × 2 = 3.95GB, ~2× the 2GB sandbox cap = OOM risk. The safer pattern is to wait for 17:00 cron tick when the 5 in-flight will have either pushed or hit cap (with worktrees cleaned up by then).**
+
+**What I did instead (sub-resource actions this tick):**
+1. Cloned repo (cold start, 14s)
+2. `git config` setup (sandbox credential fix per 2026-06-29 memory)
+3. `yarn install --frozen-lockfile` (60s, 660 modules)
+4. Re-validated that per-file TSC is functional: `node node_modules/typescript/bin/tsc --version` → 5.9.3. Workers in-flight / future workers can invoke TSC directly without npm script overhead.
+5. Built cycle 53 round-2 plan (5 features: cockpit-bundle-rollback-flow, policy-import-validator, search-analytics-export-bundle, voice-mood-cohort-dashboard, webhook-dlq-metrics) — verified ALL 5 names FREE on origin. Plan ready to fire at 17:00 cron.
+6. **Did NOT spawn** — see DECISION above.
+
+**Cycle 53 round-2 plan READY for 17:00 cron tick (handoff to next session):**
+1. **w53/cockpit-bundle-rollback-flow** (`src/lib/w53/cockpit_bundle_rollback_flow.ts`, ~2200L, 80+ exports) — recovery flow for w51 widget bundles. 6-state rollback machine (IDLE → DIFF → SNAPSHOT → CONFIRM → ROLLBACK → NOTIFY). Composes (by shape) w51/cockpit-widget-bundle + w20 feature-flags + w52/cockpit-bundle-publish-flow. LGPD Art. 7/18 + sacred-text policy.
+2. **w53/policy-import-validator** (`src/lib/w53/policy_import_validator.ts`, ~2200L, 80+ exports) — validate imported redaction policies for w51/redaction-policy-builder. Hand-rolled JSON Schema 2020-12 subset. 5-stage pipeline (PARSE → SCHEMA → SANITIZE → CONFLICT → COMMIT). LGPD Art. 7/9 + sacred-text policy.
+3. **w53/search-analytics-export-bundle** (`src/lib/w53/search_analytics_export_bundle.ts`, ~2200L, 80+ exports) — portable signed bundle from w51/search-analytics-dashboard. Async iterator pattern w/ chunked streaming, SHA-256 manifest, Ed25519-style hand-rolled signing. Composes w52/search-analytics-stream-realtime via shape. LGPD Art. 7/9/18 + sacred-text policy.
+4. **w53/voice-mood-cohort-dashboard** (`src/lib/w53/voice_mood_cohort_dashboard.ts`, ~2200L, 80+ exports) — cohort analysis of voice-mood samples from w49/w50/w52 chain. k-anonymous aggregation (k≥5), 6 cohort axes, chi-squared non-parametric comparison. 8-section dashboard config. LGPD Art. 7/9/18 + sacred-text policy.
+5. **w53/webhook-dlq-metrics** (`src/lib/w53/webhook_dlq_metrics.ts`, ~2200L, 80+ exports) — observability for w52/webhook-dead-letter-queue + w51 webhook. 12 metric families, 6 alerting rules, hand-rolled exponential-bucket histogram. LGPD Art. 7/18 + sacred-text policy (P0 alert on sacred failure rate).
+
+**Each worker spec template (proven cycle 52/53 base):**
+- Agent: Coder (Branch session under current orchestrator). Title: `w53/<feature>`.
+- Worktree: `git worktree add /tmp/wt-<feature> origin/main -b w53/<feature>` (step 1).
+- Dependency path (sandbox-tuned): `ln -sf /workspace/cabaladoscaminhos/node_modules /tmp/wt-<feature>/node_modules` if `/workspace/cabaladoscaminhos` exists in the next session; otherwise `yarn install --frozen-lockfile --silent --offline` in worktree (fallback).
+- TSC: `node /workspace/cabaladoscaminhos/node_modules/typescript/bin/tsc --noEmit --skipLibCheck /tmp/wt-<feature>/src/lib/w53/<feature>.ts` MUST report 0 errors (or the absolute paths if worktree is elsewhere).
+- Commit: Conventional Commits format. Use `feat(w53): <feature> — <one-liner>`.
+- Push: `git push -u origin w53/<feature>` (REQUIRES the `git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"` line — set BEFORE push).
+- Report-back: SHA + line count + named-export count + TSC result + elapsed minutes via `communicate` to parent.
+- Hard cap: 30 min wall-clock per worker.
+
+**Wave 54 hand-off note:**
+- The 16:28 same-session orchestrator already spawned 4 w54 features (cockpit-widget-bundle-telemetry, prayer-submission-rate-limiter, voice-mood-coach-leaderboard, redaction-policy-vault-recovery).
+- The 17:00 cron tick should: (a) verify those 4 w54 + 1 w53 replacement all pushed, (b) close out cycle 54 documentation, (c) spawn cycle 53 round-2's 5 features (above) IF all in-flight are confirmed closed, OR defer to 17:30 if any in-flight is still running.
+
+**Durable lessons (this 16:30 tick):**
+
+1. **Sandbox-reset detection is critical** — this session found `/workspace/cabaladoscaminhos` MISSING entirely. A naive orchestrator with a hard-coded path would have failed silently or with cryptic errors. **Lesson: every orchestrator tick should run `test -d /workspace/cabaladoscaminhos || (echo "[orchestrator] cold-start: re-clone required" && git clone --filter=tree:0 https://github.com/Akasha-0/cabaladoscaminhos.git /workspace/cabaladoscaminhos)` as a defensive prologue. Add to cron prompt template.**
+
+2. **`yarn install --frozen-lockfile` is faster and safer than `npm install`** for this repo (660 modules in 60s vs npm's defunct-zombie state). **Lesson: workers should prefer yarn; orchestrators should `yarn install` not `npm install` for cold-start.**
+
+3. **TSC binary path is `node node_modules/typescript/bin/tsc` not `npx tsc`** when `.bin/` is not symlinked. **Lesson: workers should use absolute TSC path. The "TSC passes" contract depends on this.**
+
+4. **DEFER-not-spawn is the right call when in-flight count + my-spawn count > 8-worker sandbox cap** — even if MEM looks healthy at spawn time, worker process memory accumulates AFTER spawn, not before. **Lesson: cross-orchestrator concurrency requires conservative counting. Even if MY orchestrator sees 1974MB available, the OTHER orchestrator's 5 workers will eat into that within minutes. Coordinated spawning means the wave-spawner pattern requires sub-resource monitoring ticks (like this one) between major spawn cycles.**
+
+5. **WAVE-LOG rebase conflicts are normal between concurrent orchestrators** — the canonical fix is to keep both entries, with the later tick's entry appended after the earlier one's. **Lesson: do not abort-and-retry on rebase conflicts; resolve by sequence-preserve.**
+
+**Status: ⚙️ MONITORING TICK. NO NEW SPAWNS. 5 workers in-flight from 16:28 same-session orchestrator (cycle 53 4th + cycle 54 4-fresh). MEM 1972MB available now (pre-worker load). Cycle 53 round-2 plan + worker spec templates READY for 17:00 cron tick. Per-file TSC functional via `node node_modules/typescript/bin/tsc`. 162 wave branches on origin (verified).**
