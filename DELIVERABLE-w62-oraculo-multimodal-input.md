@@ -2,8 +2,11 @@
 
 **Cycle**: W62
 **Branch**: `w62/oraculo-multimodal-input`
-**Status**: ✅ DELIVERED (verification BLOCKED on env, see below)
+**Status**: ✅ DELIVERED + VERIFIED + PUSHED
 **Date**: 2026-06-29
+**Commit**: `abe307144651353ae3484469d5dd3f2f2448de2a`
+**Tests**: 94/94 passing (vitest runtime)
+**TSC**: 0 errors (isolated config, skipLibCheck)
 
 ---
 
@@ -19,8 +22,8 @@ Engine completo de **Oráculo Multimodal Input** — aceita texto + até 3 image
 
 | File | Lines | Purpose |
 | --- | --- | --- |
-| `src/lib/w62/oraculo_multimodal_input.ts` | ~1130 | Engine principal — 19 seções, 60+ named exports |
-| `src/lib/w62/__tests__/oraculo_multimodal_input.test.ts` | ~640 | 14 describe blocks, ~85 it() blocks, 200+ assertions (target era 50) |
+| `src/lib/w62/oraculo_multimodal_input.ts` | ~1300 | Engine principal — 19 seções, 60+ named exports |
+| `src/lib/w62/__tests__/oraculo_multimodal_input.test.ts` | ~650 | 14 describe blocks, 94 it() blocks, 200+ assertions (target era 50) |
 | `DELIVERABLE-w62-oraculo-multimodal-input.md` | this | Report |
 
 ---
@@ -162,12 +165,15 @@ Engine completo de **Oráculo Multimodal Input** — aceita texto + até 3 image
 
 | Check | Result | Notes |
 | --- | --- | --- |
-| TSC (per-file, isolated) | SKIPPED | Sandbox `tsc` invocation past 90s → SKIP per cycle-59/60/61 pattern |
-| Vitest runtime | SKIPPED | `npm install vitest` wedge in cabaladoscaminhos sandbox |
-| Git commit | OK | Pre-existing `--global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"` carried forward from cycle-59 |
-| Git push | PENDING | See procedure below |
+| TSC engine file (isolated config) | ✅ 0 errors | `--skipLibCheck --target ES2017 --module esnext --moduleResolution bundler --strict` |
+| TSC test file | ✅ 0 errors except expected | Only `Cannot find module 'vitest'` (sandbox has no node_modules) |
+| Vitest runtime | ✅ 94/94 passing | Used cached npx vitest at `/root/.npm/_npx/.../vitest` |
+| Git commit | OK | `abe30714` |
+| Git push | OK | `abe30714` pushed to `origin/w62/oraculo-multimodal-input` |
 
-The cabaladoscaminhos sandbox is known to wedge on `npm install` and `tsc` invocations in 2GB environments (4 consecutive cycles as of 2026-06-29). The engine is delivered as **code only** with structural correctness validated by hand-review of the imports/exports/types/assertion count.
+**Initial test run had 3 failures (PNG tEXt test had malformed IHDR chunk, MIME validation was too lenient, "0 images -> 0 cost" expected 0 but output tokens still accrue). All 3 fixed in-place; final run is 94/94 green.**
+
+Vitest was invoked via a custom config file (not the repo's `vitest.config.ts` which requires `@vitejs/plugin-react`). The test file uses `import { describe, it, expect } from "vitest"` directly, so it works without the React plugin.
 
 ---
 
@@ -176,20 +182,21 @@ The cabaladoscaminhos sandbox is known to wedge on `npm install` and `tsc` invoc
 ```bash
 cd /workspace/wt-w62-oraculo-multimodal-input
 
-# Type check
-npx tsc --noEmit --skipLibCheck --ignoreConfig \
-  --target ES2017 --module esnext --moduleResolution bundler --strict \
-  src/lib/w62/oraculo_multimodal_input.ts
+# Type check (isolated config — bypasses the repo's React plugin)
+npx tsc --noEmit --project /tmp/tsconfig.w62.json
 
-# Run tests
-npx vitest run src/lib/w62/__tests__/oraculo_multimodal_input.test.ts
+# Run tests (custom config that doesn't pull in @vitejs/plugin-react)
+npx vitest run --config /workspace/wt-w62-oraculo-multimodal-input/vitest.w62.config.mjs
 
 # Commit and push
 git add src/lib/w62/ DELIVERABLE-w62-oraculo-multimodal-input.md
 git commit -m "feat(w62): oraculo-multimodal-input — text + image context with EXIF strip, vision mock, LGPD, sacred symbols"
 git push origin w62/oraculo-multimodal-input
-git rev-parse HEAD
 ```
+
+**Already executed** in this cycle:
+- `git commit` → `abe30714` (3 files, 2618 insertions)
+- `git push origin w62/oraculo-multimodal-input` → OK
 
 ---
 
@@ -216,9 +223,11 @@ git rev-parse HEAD
 ## Cross-cycle lessons applied (from w59/w60/w61)
 
 - ✅ Single 79KB+ Write succeeded (engine is 50KB; tests 28KB; deliverable 12KB)
-- ✅ No `npm install` invocation (sandboxes wedge) — relied on pre-existing deps
-- ✅ TSC verification was attempted but skipped when bash hung (per env-hang defensive rule)
-- ✅ Git commit pre-flight with `--global` insteadOf already configured (from cycle 59) — push should succeed
+- ✅ No `npm install` invocation (sandboxes wedge) — used pre-cached npx vitest at `/root/.npm/_npx/...`
+- ✅ TSC verification ran successfully with isolated config (NOT skipping this time!)
+- ✅ Git commit + push worked: pre-existing `--global` insteadOf config from cycle 59 carried forward
+- ✅ Vitest ran via custom config to avoid `@vitejs/plugin-react` resolution failure
+- **NEW lesson saved**: cabaladoscaminhos sandbox has `vitest` cached at `/root/.npm/_npx/69c381f8ad94b576/node_modules/vitest` — use it directly when `node_modules` is missing in the worktree
 
 ---
 
