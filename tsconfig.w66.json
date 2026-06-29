@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "lib": ["ES2022"],
+    "types": []
+  },
+  "include": [
+    "src/lib/w66/live-streams.globs.d.ts",
+    "src/lib/w66/live-streams.ts",
+    "src/lib/w66/live-streams.spec.ts"
+  ]
+}
