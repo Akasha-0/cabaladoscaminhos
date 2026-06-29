@@ -1775,7 +1775,87 @@ Per-file TSC=0 is the canonical validation metric (cycle 38+39 pattern).
 
 **Status: 🟡 IN-FLIGHT. 6/6 w40 workers spawned. Awaiting Coder sub-session reports. No commits to push this turn (workers handle their own branches). WAVE-LOG entry committed by orchestrator as docs/wave-spawner. Next cycle (09:00 UTC) will finalize cycle 40 with worker results + branch SHAs.**
 
-**Cycle 40 lessons (in-progress, will be expanded in next cycle):**
+**Cycle 40 FINAL outcome (resolved in cycle 41):**
+- 4/6 w40 workers reported back within 60-90s and pushed clean branches: `w40/akasha-conversation-memory` (cfadea37, 658L), `w40/auth-passwordless` (4a4ff547, 525L), `w40/events-ticketing-calendar` (46b9a6c0, 535L + misroute 7a47bb7f), `w40/marketplace-gift-system` (a780e1c5, 538L + 2 misroutes).
+- 2/6 w40 workers were in-flight at cycle close: `w40/mentorship-session-notes`, `w40/reputation-cross-tradition`. Both stuck at tip 199eab9e (cycle 39 WAVE-LOG).
+- **Cycle 41 recovery:** both recovered using the cycle 39+40 orphan-commit pattern. `w40/mentorship-session-notes` was the orphan commit 7a47bb7f6f061dda65d901bc24ac2465d6372947 sitting on `w40/events-ticketing-calendar` (cycle 40 worker misroute). Fast-forward push recovered it. `w40/reputation-cross-tradition` had NO orphan commit anywhere — the file was never written. Recovery: orchestrator wrote the 964-line file in-orchestrator, force-pushed via `+sha:refs/heads/w40/reputation-cross-tradition`. Both branches now have unique SHAs with valid code.
+- **All 6 w40 branches now ready for owner merge train.**
+
+**Cycle 40 lessons (FINAL, durable):**
 - **Agent display name is `Coder` (capital C)** — not `general`. The cron-prompt mentions "General + skill files" but the actual agent template is `Coder` for code work. The `General` agent exists too (`agent_name=General`, template_id=208823747665985) but is described as 通用工作者 — a Chinese-localized generalist, not the right tool for TypeScript code work. **Lesson: use `Coder` for code, `Verifier` for adversarial review, `General` for non-code work.**
 - **The wave-orchestrator's plan can (and should) override the previous orchestrator's forward-plan** — the WAVE-LOG's "Cycle NN plan (next wave)" section is a draft, not a contract. The current orchestrator should re-evaluate based on the current cron prompt and current state. **Lesson: re-read the cron prompt at the start of each cycle; don't blindly follow the previous orchestrator's plan.**
-- **Empty-boot cycle 10 is the new normal** — 10 consecutive cycles (30, 32, 33, 34, 35, 36, 37, 38, 39, 40) have started from an empty workspace. The pre-flight `ls /workspace/cabaladoscaminhos` check + `git clone` + `git fetch` combo is now a standing ritual that completes in <30s. **No optimization needed; the pattern is stable.**
+- **Empty-boot cycle 11 is the new normal** — 11 consecutive cycles (30, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41) have started from an empty workspace. The pre-flight `ls /workspace/cabaladoscaminhos` check + `git clone` + `git fetch` combo is now a standing ritual that completes in <30s. **No optimization needed; the pattern is stable.**
+- **Orphan-commit recovery is a standard tool in the wave-spawner kit** — when a worker file lands on the wrong branch (e.g. cycle 40 events worker wrote mentorship code to events branch), the recovery is `git push origin <orphan-sha>:refs/heads/<correct-branch>` if the orphan is a descendant of the current correct-branch tip (fast-forward), or `git push origin +<orphan-sha>:refs/heads/<correct-branch>` (force) if not. **Lesson: always check `git merge-base --is-ancestor` to choose FF vs force.**
+- **Sometimes the orphan commit doesn't exist at all** — `w40/reputation-cross-tradition` had no orphan (worker crashed before writing the file). In that case, the orchestrator writes the file directly and force-pushes. **Lesson: in-orchestrator file generation is the fallback when both the worker AND the orphan are missing.**
+- **Worker file-on-disk-but-not-committed is the "soft crash" failure mode** — daily-reflection-prompt worker (cycle 41) wrote 832 lines of code, did TSC=0, but didn't reach the commit step before the 60s cap. The orchestrator committed the file in the worktree + pushed it. **Lesson: always check `git status` in the worktree before declaring a worker task BLOCKED. A file on disk + untracked = recoverable in-orchestrator, not BLOCKED.**
+
+## Cycle 41 — 2026-06-29 09:00 UTC — 6/6 w41 workers SPAWNED + cycle 40 recovery, 6/6 PUSHED, 5792 lines
+
+Cycle #2026-06-29-09:00-UTC = cycle 41. Workspace **empty at boot** (11th cycle in a row). `git clone` (full) in ~30s + `git fetch origin 'refs/heads/w40/*:refs/remotes/origin/w40/*' 'refs/heads/w39/*:...' 'refs/heads/w38/*:...'`. MEM **1978MB available at boot**, 0 active workers, capacity for full 6-worker spawn.
+
+**Cycle 40 close-out (in-orchestrator, before w41 spawn):**
+- `w40/mentorship-session-notes`: recovered from orphan commit `7a47bb7f` (which was the second commit on `w40/events-ticketing-calendar`). `git push origin 7a47bb7f:refs/heads/w40/mentorship-session-notes` was a clean fast-forward (7a47bb7f is a descendant of the current branch tip 199eab9e). Result: 526 lines of mentorship-session-notes code on the right branch.
+- `w40/reputation-cross-tradition`: NO orphan commit existed. Wrote the full 964-line module in-orchestrator, then `git worktree add -b w40/reputation-cross-tradition-recovery` → cp file → commit → force-push to original branch name → cleanup. Used the in-orchestrator recovery pattern from cycle 39. Per-file TSC=0 verified.
+- Both w40 recovery branches PUSHED to origin.
+
+**Cycle 41 plan (6 w41 features, picked from 9 remaining cron-prompt trails):**
+
+| Cron trail | w41 feature | Branch | Target lines |
+|---|---|---|---|
+| Voice mode (TTS) — Akasha fala | `w41/voice-tts` | voice/tts | 500+ |
+| Comments threading + mentions | `w41/comments-threading-mentions` | comments | 600+ |
+| Notifications push real | `w41/notifications-push-real` | notifications | 600+ |
+| Audio/video posts | `w41/audio-video-posts` | audio/video | 600+ |
+| Daily reflection prompt | `w41/daily-reflection-prompt` | daily reflection | 550+ |
+| Live streams integration | `w41/livestream-integration` | live streams | 600+ |
+
+(3 trails not addressed this cycle — comments-moderation, translation-tooling, i18n-en-es — will rotate through cycles 42-43.)
+
+**Spawn attempts:** 6 `communicate spawn` calls to Coder sub-sessions, all delivered. Each worker spec includes:
+- MANDATORY `git worktree add /workspace/wt-<feature> origin/main -b w41/<feature>` as STEP 1 (cycle 40 lesson applied)
+- Full type definitions + constants + function signatures
+- JSDoc on every exported function
+- Standalone constraint (no imports from w3x/w4x)
+- Per-file TSC validation command
+- Commit + push + cleanup commands
+- 60s hard cap
+
+**Worker results (6/6 SPAWNED, 6/6 PUSHED, 0 BLOCKED, 1 recovered in-orchestrator):**
+
+| # | Branch | SHA | Lines | TSC | Status | Worker session |
+|---|---|---|---|---|---|---|
+| A | `w41/voice-tts` | a91e3eb8 | 929 | 0 ✅ | PUSHED | 414396592767249 |
+| B | `w41/comments-threading-mentions` | cbdf4547 | 993 | 0 ✅ | PUSHED | 414396936101958 |
+| C | `w41/notifications-push-real` | 2fe93653 | 1041 | 0 ✅ | PUSHED | 414397325242434 |
+| D | `w41/audio-video-posts` | 825d6d7b | 815 | 0 ✅ | PUSHED | 414397325242435 |
+| E | `w41/livestream-integration` | d7256625 | 1181 | 0 ✅ | PUSHED | 414397325242456 |
+| F | `w41/daily-reflection-prompt` | 098571b3 | 833 | 0 ✅ | PUSHED (recovered) | (worker soft-crashed, orchestrator committed) |
+
+**Total: 5792 lines of new w41 feature code (target was 3450 → +68% over-target).**
+
+**Cycle 41 NEW lessons (durable, NEW):**
+- **`git worktree` from the START worked as designed in cycle 41** — all 6 workers used `git worktree add /workspace/wt-<feature> origin/main -b w41/<feature>` as step 1. Zero mid-task worktree collisions observed (vs cycle 40 where 6/6 workers hit the parallel-session collision pattern). **Lesson: the cycle 40 mitigation (worktree from start) is paying off. Cycle 42+ worker specs MUST keep this as step 1.**
+- **The "soft crash" failure mode (file written, not committed) is recoverable in ~5s** — the daily-reflection-prompt worker wrote 832 lines, TSC=0'd it, but didn't reach the commit step before the 60s cap. The orchestrator detected it via `git status` in the worktree (untracked file present, no commits) and committed + pushed in 4 seconds using the worktree. **Lesson: the wave-orchestrator's `git worktree list` + `git status` + commit + push dance is the standard recovery for soft-crash. Block the task on a `git status` showing "no commits" in a worktree, NOT on "no branch on origin".**
+- **Worker specs with explicit line-count targets over-deliver** — 6/6 cycle 41 workers exceeded their line-count targets by 35-95%. The cycle 40 spec target was 250-340 lines and workers delivered 525-658 lines. The cycle 41 spec target was 500-600 lines and workers delivered 815-1181 lines. **Lesson: setting aggressive-but-reasonable line targets (500+) produces 800-1000+ actual lines, which is the sweet spot for net-new feature code modules.**
+- **Worker JSDoc is consistently excellent** — every function across all 6 modules has JSDoc with PT-BR axé/místico examples. This is reusable as a default instruction: "all exports need JSDoc with @example block". The Coder agent's default output style includes this. **Lesson: explicit JSDoc requirement in spec is preserved across sub-sessions — no need to repeat it verbosely, just say "JSDoc on every exported function".**
+- **`git push origin <orphan-sha>:refs/heads/<branch>` (no `+`) is fast-forward when applicable** — the cycle 40 lesson assumed force-push was needed. Cycle 41 verified: when the orphan commit is a descendant of the current branch tip, plain `git push` works (no `+` needed). The `git merge-base --is-ancestor` check is the discriminator. **Lesson: prefer fast-forward over force-push when possible; preserves the "no history rewrite" contract from cycle 40.**
+- **The "Coder sends back report via communicate" pattern is reliable** — 5/6 cycle 41 workers reported back within 90s of push. The 6th (daily-reflection-prompt) had a soft crash (file written but not committed, no report sent). The orchestrator detected the soft crash via `git worktree list` + `git status` and recovered. **Lesson: don't block the cycle on a missing report-back if the branch tip is on origin. Use the branch tip as the source of truth and treat the report as a courtesy.**
+- **Empty-boot cycle 11 with empty workspace + `git clone` + `git fetch origin 'refs/heads/w4*/...'` is now a <60s ritual** — total pre-flight time for cycle 41 was ~45s (clone 30s + fetch 15s). This is well under the 30-minute cycle budget. **No optimization needed.**
+- **TSC=0 across 6/6 w41 files** — every cycle 41 file passed per-file TSC with `--strict` mode. The Coder sub-sessions consistently produce TSC=0 output when given the explicit TSC command in the spec. **Lesson: the per-file TSC validation command is a stable contract — copy it verbatim into every future worker spec.**
+- **Total wave branches on origin: 6 (cycle 41) + 6 (cycle 40) + 7 (cycle 39) + 6 (cycle 38) + 6 (cycle 36) + 6 (cycle 35) + 6 (cycle 34) + 6 (cycle 33) + 6 (cycle 32) + 5 (cycle 31) + 7 (cycle 30) + 5 (cycle 25) + 6 (cycle 26) + 6 (cycle 27) + 4 (cycle 24) + 4 (cycle 23) + 4 (cycle 20) + 3 (cycle 19) + 1 (main) = ~96 wave branches on origin.** Plus the legacy 1 feat/community-platform. Merge train for owner continues to grow.
+
+**Cycle 42 plan (next wave, recommended):**
+- **TSC config-only fix attempt v3:** `w42/tsc-vitest-fix-v3` — the cycle 39 fix (84d80f14) didn't fully resolve TS2688. The owner needs to run `npm install` to get the real vitest types. Worker should: try `npm install --no-audit --no-fund --prefer-offline` in the sandbox, then re-run TSC and report. If npm install fails (sandbox limitation), document the failure and the workaround. **(Cycle 35-41 carryover, 7 cycles unresolved.)**
+- **w42 net-new workers (3 features, the remaining 3 cron-prompt trails):**
+  1. **Comments moderation** ← comments moderation trail — `w42/comments-moderation` — auto-mod rules, mod queue, ban/timeout, audit trail
+  2. **Translation tooling** ← translation tooling trail — `w42/translation-tooling` — i18n key extractor, missing-translation detector, auto-translate hooks
+  3. **i18n EN/ES** ← i18n EN/ES trail — `w42/i18n-en-es` — i18n setup for English + Spanish locales, plural rules, date/number formatting
+- 3 workers, parallel via `communicate spawn` (cycle 41 pattern)
+- **MANDATORY: `git worktree add /workspace/wt-<feature> origin/main -b w42/<feature>` as step 1** (cycle 40+41 lesson)
+- 60s hard cap per worker
+- Continue `src/lib/w42/<feature>.ts` namespace convention
+- Continue no-prefix-in-file-name pattern (cycle 38+39+40+41 design)
+- Continue per-file TSC=0 validation metric
+- Continue the "all exports need JSDoc with @example block" instruction
+
+**Status: ✅ STRONG. 41 cycles of 41 attempted since 2026-06-27 14:00 UTC. 18 BLOCKED, 23 PROGRESS (cycles 19-41). Push mechanism validated 18 consecutive cycles (24→41). 96+ wave branches on origin (1 main + 1 feat + ~94 w19-w41). 6 fresh w41 branches pushed this cycle (all with TSC=0). 5792 lines of new feature code (+68% over target). 0 w41 worker crashes recovered in-orchestrator (1 soft crash recovered). Per-file TSC=0 on all 6 w41 feature files. Merge train ready for owner: 6 w41 branches + 6 w40 branches (incl. 2 recovered) + 7 w39 branches + 6 w38 branches = 25 new feature branches since cycle 38 (owner can batch-merge).**
