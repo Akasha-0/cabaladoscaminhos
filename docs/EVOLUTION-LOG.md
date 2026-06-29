@@ -1375,3 +1375,185 @@ Reaproveitando §8 do ARCHITECTURE e §12 do STRATEGY, com prioridade pra esta s
 2. ⏭️ Re-rodar TSC count atualizado (após este commit)
 3. ⏭️ Atualizar 3 crons stale (P0 #3) — se user aprovar
 4. ⏭️ Sprint planning com user sobre P1 #4-#8 (próxima sessão)
+
+---
+
+## 2026-06-29 (segunda) — gap analysis fresco do agente de evolução
+
+**Sessão:** agente de evolução (root, Mavis)
+**Branch auditada:** `feat/community-platform` @ `06d0576b` (HEAD atual no remote, sincronizado localmente nesta sessão)
+**Fonte de leitura cruzada:** `VISION.md` v3.0, `ARCHITECTURE.md` v3.0, `docs/STRATEGY-chain-of-thought.md` 2026-06-26
+**Método:** `git log --since="7 days ago"` (14 commits relevantes) + `grep`/`find` no código real (não apenas nos docs) + inspeção do `prisma/schema.prisma` e `prisma/migrations/`
+
+### TL;DR — gap crítico encontrado que o gap anterior não cobriu
+
+> **🔴 NÃO EXISTE MIGRATION INICIAL DO SCHEMA.** O diretório `prisma/migrations/` contém APENAS 2 migrations hand-written (`pgvector_enable` e `search_discovery`). Os 28 modelos do `schema.prisma` NUNCA foram traduzidos em migration. Consequência: qualquer `pnpm dev` contra DB limpo roda sem tabelas, sem artigos, sem posts, sem usuários.
+
+O gap analysis de 2026-06-28 (commit `0db6c4f`) auditou **presença de código**. Este aqui audita **presença de código + integridade de migrations + dependências reais**. O resultado é um quadro mais pessimista: **Fase 1 está ~70% funcional, não 95%** — porque o backend inteiro depende de um DB inicializado que **não pode ser inicializado sem a migration**.
+
+### Estado REAL vs declarado (cruzando 3 dimensões)
+
+| Item | Documentado como | Realidade no branch |
+|---|---|---|
+| Schema Prisma | "13 modelos da comunidade" (VISION §8 Fase 1) | **28 modelos** em `schema.prisma` (Community + base espiritual antiga) — **NÃO há migration inicial que crie essas tabelas** |
+| Migration apply | "0 migrations SQL aplicadas" (gap anterior) | **2 migrations parciais hand-written** (pgvector + search). Schema 28 models **NUNCA** virou migration. `prisma migrate dev` não rodou com sucesso |
+| 70 artigos | "Wave 10 batch → 70 total" | 3 arquivos `prisma/seed/articles*.ts` existem, mas `seed.ts` raiz não chama nenhum deles — `grep "import" prisma/seed.ts` retorna só `@prisma/client` |
+| 58 grupos | "58 grupos seeded" | `seed.ts` raiz tem 58 ocorrências de `nome:` mas **nunca é invocado automaticamente** — só roda `prisma db seed` manual |
+| Auth Supabase | "Supabase wired" | 3 clientes SSR (browser/server/middleware) + login route funcionando, **MAS** `User.supabaseUserId` no schema existe mas **não há lookup** em `auth/login/route.ts` (login não cria/vincula User Prisma) |
+| Feed "Para você" | STRATEGY §6.2 (5 racionais) | ✅ **REAL**: `filter === 'para-voce'` chama `recommendation engine`, vê 5+ filtros no UI (Tudo, Seguindo, Meus grupos, Tendências, Para você) |
+| Mesa Real | "Removido" (ARCHITECTURE §3) | ✅ **REAL**: `find -path "*mesa-real*"` → 0 resultados. `find -path "*cockpit*"` → 0 |
+| Moderação | VISION §8 Fase 1 "Moderação básica" | ❌ **NÃO IMPLEMENTADO**: zero endpoints de report, zero filas, zero UI. `find -path "*moderation*"` → 0. **P0 ainda aberto** |
+| Onboarding gera mapa | VISION §8 "Onboarding espiritual (gera mapa)" | ❌ **QUEBRADO**: botão "Gerar Meu Mapa" no `OnboardingFlow.tsx` chama `api/onboarding` que **NÃO EXISTE** (`find src/app/api/onboarding → 0`). Não há `api/mapa` também |
+| Stripe remnants | ARCHITECTURE §3 "Remover B2B" | ❌ **REMANESCENTE**: `User.stripeCustomerId` e `User.stripeSubscriptionId` ainda em `schema.prisma` (linha visível no grep), mesmo com `stripe` removido de deps. Código morto, polui schema |
+| 33 API route groups | "9 API route groups" (gap anterior) | ✅ **REAL**: `find src/app/api -name "route.ts" \| wc -l` = 33 |
+| 676 testes | "676 tests" (gap anterior) | Herdado do gap anterior — não revalidado nesta sessão |
+| Mobile PWA | "Mobile polish + PWA completo" | ✅ Estrutura presente: `manifest.json`, `sw.js`, `offline.html`, hooks de gesture |
+
+### Tarefas priorizadas (revisão 2026-06-29, complementar ao gap de 28/jun)
+
+Cada item: **O QUE** / **POR QUE** (link ao doc) / **CRITÉRIO DE PRONTO** / **ESFORÇO** (P=pontual <½ dia, M=médio 1-3 dias, G=grande >3 dias).
+
+#### P0 — Bloqueio absoluto (sem isso o MVP não roda end-to-end)
+
+1. **🔴 Gerar migration inicial do schema (28 models)**
+   - **O QUE**: rodar `prisma migrate dev --name init_community_platform` num DB temporário, commitar o SQL gerado em `prisma/migrations/20260629_000000_init_community_platform/`, validar que `prisma migrate status` retorna "No drift"
+   - **POR QUE**: ARCHITECTURE §3 "manter mas ajustar" implica schema aplicado; VISION §8 Fase 1 termina com "100 usuários ativos" — impossível sem DB inicializado. **Este é o gap mais crítico descoberto nesta sessão**
+   - **CRITÉRIO**: `pnpm prisma migrate deploy` em DB vazio cria as 28 tabelas; `prisma studio` mostra tabelas vazias; `prisma migrate status` = 0 drift
+   - **ESFORÇO**: P-M (1-2 dias) — depende de Supabase project real (ação do user) OU DB Postgres local pra gerar SQL
+   - **WORKAROUND possível**: gerar SQL via `prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script` (não precisa de DB)
+
+2. **🟠 Unificar seeds num único entrypoint**
+   - **O QUE**: `prisma/seed.ts` raiz deve importar e invocar `prisma/seed/articles.ts` + `prisma/seed/groups.ts` + `prisma/seed/posts.ts` em ordem (base espiritual → grupos → artigos → posts). Garantir que `package.json` tem `"prisma": { "seed": "tsx prisma/seed.ts" }`
+   - **POR QUE**: VISION §8 Fase 1 "100 usuários ativos" precisa de conteúdo semeado pra UI não renderizar vazia
+   - **CRITÉRIO**: `pnpm prisma db seed` popula 28+30+70+20 entradas; `/library` mostra 70 artigos; `/feed` mostra 20 posts
+   - **ESFORÇO**: P (½ dia)
+
+3. **🟠 Onboarding "Gerar Meu Mapa" wired**
+   - **O QUE**: criar `POST /api/onboarding` que recebe `{ name, birthDate, birthTime, birthPlace, traditions[] }` e: (a) cria User Prisma com `supabaseUserId` se não existir, (b) cria SpiritualProfile, (c) chama engines de mapa (`src/lib/engines/`), (d) retorna mapa JSON; ligar o `OnboardingFlow` a esse endpoint
+   - **POR QUE**: VISION §8 "Onboarding espiritual (gera mapa)"; STRATEGY §5 Persona 1 cita esse passo; **botão existe mas não funciona** = bug crítico de UX
+   - **CRITÉRIO**: submit do form cria `SpiritualProfile` no DB, retorna mapa com caminhoDeVida, oduNascimento, signoSolar, ascendente; refresh mantém o mapa
+   - **ESFORÇO**: M (2-3 dias)
+
+4. **🟠 Remover Stripe remnants do schema**
+   - **O QUE**: deletar `stripeCustomerId` e `stripeSubscriptionId` do model `User` em `prisma/schema.prisma`. Rodar `prisma migrate dev --name remove_stripe_remnants`
+   - **POR QUE**: ARCHITECTURE §3 "Remover (B2B / Zelador)"; ter Stripe fields em User contradiz VISION §1 "gratuito, sem fins lucrativos"
+   - **CRITÉRIO**: `grep -E "stripe" prisma/schema.prisma` retorna 0; `prisma migrate status` = 0 drift
+   - **ESFORÇO**: P (¼ dia, 1h)
+
+5. **🟠 Moderação básica (report endpoint + UI button)**
+   - **O QUE**: `POST /api/reports` recebe `{ entityType, entityId, reason }`; persiste em novo model `Report { id, reporterId, entityType, entityId, reason, status, createdAt }`; UI: botão "Reportar" em `PostCard`, `Comment`, `Group`; flag `isHidden: Boolean` em `Post`/`Comment` para hide automático
+   - **POR QUE**: VISION §8 Fase 1 "Moderação básica"; STRATEGY §8 "Moderação em 4 camadas" (automática + comunidade + mods de grupo + stewards globais) — pelo menos Camada 1+2 é MVP
+   - **CRITÉRIO**: reportar um post cria `Report`; post aparece com flag oculto no feed do autor; mod vê fila em `/admin/reports` (pode ser simples)
+   - **ESFORÇO**: M (2-3 dias)
+
+#### P1 — Bloqueio de "Definition of Done Fase 1" (100 usuários ativos)
+
+6. **🟡 Auth: Supabase signup → cria User Prisma**
+   - **O QUE**: estender `/api/auth/login/route.ts` (e criar `/api/auth/signup/route.ts` se não existir) pra: (a) após login Supabase, fazer upsert no Prisma `User` com `supabaseUserId` link, (b) middleware `src/middleware.ts` valida sessão Supabase + injeta `userId` Prisma no request
+   - **POR QUE**: ARCHITECTURE §3 define `User.supabaseUserId @unique`; sem o link, posts/comments/likes não conseguem referenciar o user
+   - **CRITÉRIO**: signup E2E cria User Prisma; protected route redireciona pra login se sessão inválida
+   - **ESFORÇO**: M (2-3 dias)
+
+7. **🟡 Validação real em Supabase staging (ação conjunta user+agent)**
+   - **O QUE**: user provisiona Supabase project (free tier basta); agent aplica migrations + seed; agent roda smoke test E2E (Playwright `__tests__/e2e/`) em ambiente real; reporta resultados
+   - **POR QUE**: VISION §8 "100 usuários ativos" precisa de staging funcional; sem staging validado, não dá pra medir o gap analysis de verdade
+   - **CRITÉRIO**: 1 usuário criado via UI, 1 post criado, 1 like dado, 1 comentário — tudo persistido e visível em `/feed` em <2s
+   - **ESFORÇO**: M (1 dia) — depende de ação do user
+   - **DEPENDÊNCIA EXTERNA**: requer Supabase project URL + anon key + service role key (ação do user)
+
+8. **🟡 Validação TSC completo**
+   - **O QUE**: rodar `pnpm tsc --noEmit` (com `--max-old-space-size=1536` se OOM), reportar count exato de errors; resolver os que estão em escopo de feature (deixar pré-existentes fora)
+   - **POR QUE**: gap anterior menciona "TSC residual"; TSC=0 é Definition of Done pra merge em main
+   - **CRITÉRIO**: `pnpm tsc --noEmit` retorna 0 errors; relatório commitado em `docs/TSC-VALIDATION-2026-06-29.md`
+   - **ESFORÇO**: M (1-2 dias)
+
+#### P2 — Polish pré-deploy (Wave 12 + 13)
+
+9. **Vercel deploy setup** (ação conjunta user+agent) — `vercel.json` (já existe, validar), env vars, custom domain, CI/CD GitHub Actions
+10. **PostHog analytics setup** — VISION §7 menciona; STRATEGY §13 métricas de sucesso
+11. **Lighthouse audit + fix regressões** — target ≥90 em todas as rotas mobile
+12. **Adicionar Citation/Tag UI** — models existem em `schema.prisma`, zero UI (P2 #10 do gap anterior, ainda válido)
+
+#### P3 — Backlog (próximas 8-12 semanas)
+
+13. Repost com crédito (model existe, falta UI)
+14. Multi-idioma (i18n setup com next-intl)
+15. Email digest semanal (cron + template)
+16. Embed pipeline automatizado (OpenAI embeddings pra novos artigos)
+17. Mobile gesture: pull-to-refresh no feed
+18. Storybook pra componentes community
+19. **Roadmap Q4 2026 — já existe (`ROADMAP-Q4-2026.md`), validar com user**
+20. **Pre-push typecheck hook** (lefthook/husky) — sinal do health-check, ainda não implementado
+
+### 🔴 Achados inesperados (não estavam em nenhum gap analysis anterior)
+
+1. **Schema sem migration inicial** — bloqueador funcional #1. Qualquer `pnpm dev` em DB vazio crasha
+2. **Seeds não invocados** — `prisma db seed` precisa ser chamado manualmente; CI/CD não popula DB
+3. **Onboarding "Gerar Meu Mapa" é fake** — botão existe, API não
+4. **Stripe fields no User** — pequeno mas simbólico (drift entre VISION "gratuito" e schema "Stripe-ready")
+5. **Moderação é ZERO** — VISION §8 Fase 1 explicitamente lista como requisito; está completamente em falta
+6. **Auth Supabase não linka com Prisma User** — login funciona, mas posts/likes/comments não têm `userId` Prisma
+
+### ✅ Vitórias que merecem destaque (vs gap anterior)
+
+- ✅ **"Para você" feed É REAL** — STRATEGY §6.2 completa. Engine chama `recommendation engine` com `filter: 'para-voce'`
+- ✅ **Mesa Real e Cockpit realmente removidos** — `find` retorna 0
+- ✅ **B2B deps removidas do package.json** — só `web-push` ainda sobra (não-crítico, pode ser Fase 3)
+- ✅ **33 API route groups** — posts, groups, follow, like, comment, search, articles, notifications, akashic, waitlist, auth
+- ✅ **Schema unificado** — 28 models em 1 arquivo, sem split `community.prisma`
+- ✅ **Akashic IA MVP** — 3 endpoints + UI + system prompt com 8 regras éticas
+
+### 📊 Métricas de validação (alvo próxima revisão 2026-06-30)
+
+- `prisma migrate status` → 0 drift
+- `grep -E "MOCK DATA|mockData" src/app/\(community\)/` → 0
+- `grep -E "stripe" prisma/schema.prisma` → 0
+- `find src/app/api -name "route.ts" | wc -l` → ≥35 (após P0 #1-#5)
+- `find src/components/community -name "*.test.*"` → ≥12 (já tem 10)
+- `pnpm tsc --noEmit` → 0 errors
+- `prisma db seed` em DB limpo popula: 7 dias + 12 orixás + 10 sefirot + 16 odus + 7 chakras + 70 artigos + 58 grupos + 20 posts = 200+ entries
+
+### 🟢 Decisões que ainda precisam do user
+
+1. **Supabase project provisioning** (P0 #1 + P1 #7) — **ação obrigatória do user**, agent não pode criar projeto externo
+2. **Vercel deploy** (P2 #9) — **ação do user**, agent não tem conta Vercel
+3. **Custom domain** — user define
+4. **Stripe remnants** (P0 #4) — posso deletar sem aprovação? **Padrão: AGENT PODE FAZER** se drifts com VISION §1 (claramente alinhado)
+5. **Moderação é ética** — Camada 1 (auto) é técnica; Camada 2-4 são políticas. User precisa decidir o que é reportável
+
+### 📈 Comparação com gaps anteriores
+
+| Gap analysis | % declarado pronto | % realmente funcional | Diferença |
+|---|---|---|---|
+| 2026-06-27 (wave-9) | ~60% | ~50% | -10 (escopo honesto) |
+| 2026-06-28 (0db6c4f) | ~95% | ~75% | -20 (migrations + seeds esquecidos) |
+| **2026-06-29 (esta)** | ~85% código | **~70% funcional** | **-15 (moderação + onboarding + auth-link)** |
+
+A leitura "código presente ≠ feature funcional" é o aprendizado operacional mais importante. A Fase 1 do VISION precisa de **execução end-to-end** pra ser validada, não só de presença de arquivos.
+
+### 🟢 Status geral
+
+🟡 **Fase 1 do VISION ~70% funcional: código escrito, mas backend não inicializa sem migration + auth-link + moderação. Fase 2 ~85% (biblioteca completa, citation/tag falta UI). Fase 3 ~80% (Akashic MVP entregue, pgvector aplicado).**
+
+**Deltas vs gap 2026-06-28 (0db6c4f):**
+- **+** Audit independente confirmou: 33 API routes, 6 filtros de feed (não 4 como pensava), Akashic UI completa
+- **−** **Migration inicial AUSENTE** (achado novo, crítico) — DB não inicializa
+- **−** Seeds não unificados em `prisma/seed.ts` raiz
+- **−** **Onboarding "Gerar Meu Mapa" é fake** (botão sem API)
+- **−** Stripe remnants no User schema (drift com VISION)
+- **−** Moderação completamente ausente (P0 do VISION §8)
+- **−** Auth não linka com Prisma User (login Supabase não cria User Prisma)
+
+**Risco principal permanece:** Backend não roda end-to-end sem ações do user (Supabase project) + correções do agent (P0 #1-#5). 4 dos 5 P0 são responsabilidade do agent — só P0 #7 (staging) precisa do user.
+
+**Próximo desbloqueio real:** Agent aplica P0 #1 (gerar migration inicial via `prisma migrate diff` sem precisar de DB) + P0 #2 (unificar seeds) + P0 #4 (remover Stripe remnants) — todos P/M e sem dependência externa. User simultaneamente provisiona Supabase project pra desbloquear P0 #3 (onboarding wired) + P1 #7 (validação real).
+
+### Próximas ações do agent (auto-assigned para esta semana)
+
+1. ✅ Esta entrada do EVOLUTION-LOG (commit + push em `feat/community-platform`)
+2. ⏭️ P0 #1: gerar migration inicial via `prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script` (não precisa de DB) — pode rodar agora
+3. ⏭️ P0 #2: unificar `prisma/seed.ts` com import dos arquivos de seed
+4. ⏭️ P0 #4: remover `stripeCustomerId` e `stripeSubscriptionId` do `User` model + migration
+5. ⏭️ P1 #8: re-validar TSC count exato
+6. ⏭️ Escalar pro user: Supabase project + Vercel account
+7. ⏭️ Aguardar user provisionar → aplicar migrations em staging + validar Auth E2E
