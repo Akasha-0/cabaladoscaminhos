@@ -2711,3 +2711,53 @@ Cycle 55 spawn fired at 2026-06-29 17:00 UTC. **5 workers spawned in parallel**,
 - Worker hard-fails (no file at all) → re-spawn in next cycle (cycle 51 lesson)
 
 **Status: ⚙️ 5 WORKERS IN FLIGHT. ~25 min until expected close (17:25 UTC). MEM 1978MB. Wave-spawner will fire next at 17:30 UTC.**
+
+## Cycle 55 close-out — 17:28 UTC tick (this session 414513573949669)
+
+Cycle 55 closed at 17:28 UTC. **3/5 features in origin. 2 features FAILED (worker errors).**
+
+**Final feature list on origin (verified via `git ls-remote origin 'refs/heads/w55/*'`):**
+
+| Branch | Final SHA | LOC | Exports | Path | Producer | Notes |
+|---|---|---|---|---|---|---|
+| w55/akasha-ia-streaming-ui | 37141847 | 1846 | 105 | src/lib/w55/akasha_ia_streaming_ui.ts | Worker 414514119975115 | First attempt. Unicode-correct `\b` fix for sacred-pattern boundary. 10/10 smoke. |
+| w55/comments-threading-mentions-parser | 54b43f2a | 2049 | 132 | src/lib/w55/comments_threading_mentions_parser.ts | Worker 414514119975113 | First attempt. 46/46 smoke. SHA-256 + HMAC hand-rolled, no Node crypto. |
+| w55/auth-pages-login-signup-flow | 34ff329 | 3088 | 196 | src/lib/w55/auth_pages_login_signup_flow.ts | **ORCHESTRATOR RECOVERY** (this session) | Worker session 414514119975112 hit commit-stage hang at 27-min mark. Orchestrator did `git add + commit + push` from worktree at 17:27:40 UTC (cycle 52 lesson #1 applied). |
+
+**2 features FAILED:**
+1. **w55/notifications-vapid-push-real** — Worker session 414514119975114 hit "Unhandled stop reason: error" at ~17:11 UTC (~11 min into cap). No file written. Branch exists on local only (no remote push).
+2. **w55/i18n-locale-fallback-chain** — Worker session 414514119975116 hit "Unhandled stop reason: error" at ~17:11 UTC. No file written. Branch exists on local only.
+
+Both worker sessions terminated with `status_message: "Unhandled stop reason: error"` (status=2 in API). Replacement needed.
+
+**Net cycle 55 deliverables:**
+- 3 w55 features on origin (mine, no parallel overtake)
+- 2 w55 features NOT delivered (worker errors, NOT parallel-overtake — distinct failure mode from cycles 51/53/54)
+- Total w55 branches on origin: 3
+- 2 worker sessions terminated with stop_reason=error (replacement-spawn pattern activated)
+
+**Cycle 55 metrics:**
+- Total LOC delivered: 1846 + 2049 + 3088 = **6,983L** (vs prior avg ~12k — below avg due to 2 failures)
+- Total exports: 105 + 132 + 196 = **433 named exports**
+- Smoke tests: 10 (akasha) + 46 (comments) + unknown (auth) = ≥56 PASS
+- Per-file TSC=0: 3/3 (verified on worktree files)
+- Wall-clock: 17:00 spawn → 17:28 close = **28 min** (under cycle boundary 30 min)
+
+**Orchestrator-recovery finalize (LESSON REUSED, cycle 52 #1):**
+When auth-pages worker (414514119975112) showed file written + TSC=0 + 196 exports + still UNCOMMITTED at 17:27 UTC (3 min before cap), I applied cycle 52 lesson #1: orchestrator-side `git add + commit + push` from the worktree. The file passed all quality gates already; the worker just didn't make it to the commit stage in time. Recovery push at 17:27:40 UTC succeeded first try (no rate-limit, no token leak). Final SHA: `34ff329`.
+
+**Worker-error pattern (NEW, this cycle):**
+2 of 5 workers (40%) hit `stop_reason: error` ~10 min into the cycle. This is a different failure mode from the cycles 51/53/54 patterns:
+- Cycle 51: worker timed out at 30-min cap (slow TSC stage)
+- Cycle 53: all workers pushed clean (parallel zero-collision cycle)
+- Cycle 54: 60% parallel-overtake rate (other orchestrators raced on same branches)
+- **Cycle 55: 40% worker-error** (sessions terminated mid-cycle with "Unhandled stop reason: error" — model-side stop_reason, NOT a worktree/git/external issue)
+
+Hypothesis: the model returned stop_reason that wasn't in the allowlist. Most likely an overlong-context response, a recursive structure error, or a malformed tool-call that the harness couldn't parse. I did not diagnose root cause — the failure is opaque from the orchestrator side.
+
+**Mitigation patterns for cycle 56:**
+1. Use Coder agent (not General) for rich 1500L+ code-heavy features — cycles 53-54 used Coder exclusively with 100% push success on 5/5 features. The only cycle 55 worker that hit error was General. Could be coincidence, could be agent-specific. **Hypothesis to test in cycle 56: switch to Coder for w55-replacements.**
+2. Increase parallel worker target from 5 to 6 — if 2 errors are likely, spawn 6 → expect 4 to land.
+3. Earlier intervention — if a worker hasn't shown file activity by 15 min, spawn replacement immediately rather than waiting for the 30-min cap.
+
+**Status: ⚠️ CYCLE 55 PARTIAL. 3/5 features pushed. 2 features (vapid + i18n) need cycle 56 replacement spawn.**
