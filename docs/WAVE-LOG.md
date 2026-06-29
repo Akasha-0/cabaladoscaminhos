@@ -2313,3 +2313,47 @@ This is a follow-up by the **14:30 UTC cron tick (session 414476715741356)**, wh
 - **Cron tick can inherit partially-completed cycles** — the 14:00 tick hit its 30-min cap with 4/5 + 1 timed-out, and the 14:30 tick took over. **Lesson: design orchestrator to be stateless about which tick spawned which worker. Use `git ls-remote` and session status to recover state, not in-memory knowledge.**
 - **Duplicate WAVE-LOG commits are a handoff risk** — both ticks tried to document cycle 51. **Lesson: subsequent ticks should always `git pull --ff-only` BEFORE writing WAVE-LOG, and `git stash drop` any local duplicate. The 14:30 tick detected the duplicate via "tip of current branch is behind" push error and recovered cleanly.**
 - **Per-file TSC=0 contract is robust across handoff** — re-validation on 4 files from previous tick took ~10 seconds. **Lesson: always re-validate TSC at handoff even if previous tick reported TSC=0. Cheap, fast, and catches any drift.**
+
+## Cycle 51 — 14:50 UTC final 5/5 confirmation
+
+**Replacement worker SUCCEEDED.** Cycle 51 final state is now **5/5 PUSHED**.
+
+- ✅ **w51/voice-mood-history-export** (`d9e7b4f1c477e4fd74ce0e2b8e6a43b693f27c0a`, **2315L**, **128 exports**) — Engine that exports user's voice-mood detection history. Composes (by shape, no imports) w49/voice-mood-detection + w50/mood-devotional-tone. 30/90/365/forever windows (cap 5y), JSON/CSV/JSONL formats, SHA-256 + FNV-1a integrity, 5 redaction levels, LGPD Art. 7/9/18 + immutable audit log, hand-rolled SHA-256 (64-round FIPS 180-4), 6 typed errors, 12+ validators, 14/14 smoke GREEN. TSC=0 first attempt. Worker reported back to this orchestrator via `communicate` at 14:48 UTC (worker elapsed: ~18 min, well under 30-min cap).
+
+**Cycle 51 final totals (5/5 PUSHED):**
+- **12,283L net-new feature code** (5 files; 1847-2794 range; 2456.6 avg)
+- **707 named exports** (79-183 range; 141.4 avg)
+- **Per-file TSC=0 on all 5** (re-validated by this orchestrator at 14:49 UTC)
+- **5/5 branches on origin** (4af32c3d, 3a319076, be1fd646, da2b5940, d9e7b4f1)
+- **0 worker crashes** (the 1 timeout was recovered via replacement spawn)
+- **12 cycles straight of zero parallel-session collisions** (40-51)
+- **158 wave branches on origin** (153 pre-wave + 5 w51)
+
+**B-W51-VMHE-TIMEOUT RESOLVED.** The previous tick's BLOCKER entry in `docs/BLOCKERS.md` is now stale. This follow-up tick will mark it RESOLVED in a separate commit.
+
+**Cycle 51 NEW lessons (final, durable, NEW):**
+- **Replacement worker pattern is reliable** — when a worker hits the 30-min cap, spawning a fresh worker with the same spec in a new cron tick is a clean recovery. **Lesson: keep a "spec template" in the orchestrator's brain so the replacement worker gets a self-contained brief, not a copy-paste of the original. The 14:30 handoff used the same spec as the 14:00 timeout; the replacement worker shipped in 18 min.**
+- **Workers that hit 30-min cap on first attempt often succeed on second attempt** — the spec wasn't too ambitious, the timing was tight. **Lesson: prefer replacement-spawn over spec-split for ≤2800L features. The previous tick's "split into w52a/w52b" recommendation in BLOCKERS.md was over-engineered; the replacement worked as a single 2315L file.**
+- **5/5 w51 cycle shipped 12,283L total** — on par with cycle 50 (12,235L) and cycle 49 (10,785L). **Lesson: the 5-worker parallel pattern with 1500-2800L rich features produces 10,000-12,500L per cycle. This is the steady-state output.**
+- **Memory stayed at 1974-1978MB throughout** — 5+1 workers in 2GB sandbox is stable for 30+ min. **Lesson: the 30-min cap is the bottleneck, not memory.**
+- **The 14:30 handoff was clean** — 4/5 already on origin, replacement spawn succeeded, WAVE-LOG appended (not duplicated), TSC re-validated. **Lesson: cron-tick handoffs work as long as the orchestrator reads state from git (not from memory). The 14:30 tick wrote a 26-line follow-up instead of a 50-line duplicate, which is the right size for an incremental handoff.**
+- **Total cycle 51 wall-clock** — 14:00 spawn → 14:48 push = 48 min (including the 1 timeout recovery). 14:30 handoff → 14:48 push = 18 min for the replacement worker. **Lesson: 30-min cap is per-worker, not per-cycle. A cycle with 1 timeout takes ~50 min total to fully close.**
+
+**Wave 52 plan (next wave, recommended):**
+- 5 fresh w52 features that COMPLEMENT cycle 51 + close gaps:
+  1. **w52/cockpit-bundle-publish-flow** — publish w51/cockpit-widget-bundle to a user-facing marketplace (curation + opt-in + LGPD Art. 7/18)
+  2. **w52/webhook-dead-letter-queue** — DLQ for w51/prayer-submission-webhook (retry + exponential backoff + dead-letter + manual replay)
+  3. **w52/policy-export-portability** — export w51/redaction-policy-builder policies as portable artifacts (JSON Schema + signed + LGPD export)
+  4. **w52/search-analytics-stream-realtime** — real-time stream of w51/search-analytics-dashboard events (SSE + webhook + LGPD)
+  5. **w52/voice-mood-history-anonymizer** — companion to w51/voice-mood-history-export (k-anonymous aggregation + cohort-level export + LGPD Art. 18 anonymization)
+- 5 workers, parallel via `communicate spawn` (13-cycle validated pattern at this point)
+- **MANDATORY: `git worktree add /tmp/wt-<feature> origin/main -b w52/<feature>` as step 1**
+- 30-min hard cap per worker
+- Continue `src/lib/w52/<feature>.ts` namespace convention
+- Continue per-file TSC=0 validation contract
+- Continue 100+ exports minimum (with quality signals), 1500-3000L rich features
+- **MANDATORY: LGPD coverage (Art. 7/8/9/18) per feature**
+- **MANDATORY: sacred-text policy (reserved slots require curator + double-review for sensitivity 4-5)**
+- **NEW: when a feature hits the 30-min cap, prefer replacement-spawn over spec-split for ≤2800L features** (cycle 51 lesson applied)
+
+**Status: ✅ STRONG. 51 cycles of 51 attempted since 2026-06-27 14:00 UTC. 18 BLOCKED, 33 PROGRESS (cycles 19-51). Push mechanism validated 28 consecutive cycles (24→51). 158 wave branches on origin (153 pre-wave + 5 w51). 5 fresh w51 branches pushed this cycle (all with TSC=0). 12,283 lines of new feature code (+207% over 4000L target). 0 w51 worker crashes (1 timeout recovered via replacement spawn). 12 cycles straight of zero parallel-session collisions (40-51). Per-file TSC=0 on all 5 w51 feature files. Merge train ready for owner: 5 w51 + 5 w50 + 5 w49 + 4 w48 + 5 w47 + 4 w46 + 5 w45 + 4 w44 + 4 w43 + 4 w42 + 6 w41 + 6 w40 + 7 w39 + 6 w38 = 66 new feature branches since cycle 38 (owner can batch-merge).**
