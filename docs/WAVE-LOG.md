@@ -1016,3 +1016,34 @@ With TSC=0 verified on w20/tsc-final, the merge train is now technically unblock
   - **5/5 in <60s proves the pattern scales** — no slowdowns with more workers, no quota issues. The 30-min cron + sandbox wipe is the only blocker left.
 - **Next cycle 28 plan**: cover remaining gaps — auth pages (login/signup UI) on top of w20/auth-pages, MFA enrollment flow, marketplace Stripe Connect onboarding, events detail page, voice mode audio player UI, daily reflection push notification, live stream host controls, comments moderation UI
 - **MERGE TRAIN pending owner approval**: 28 branches waiting (w20/w23/w24/w25/w26/w27 + wave/* + feat/community-platform)
+
+
+## Cycle 28 — 2026-06-29 00:00 UTC (SPAWN)
+- **Pre-flight**:
+  - Workspace wipe detected — `git clone --depth 50` successful (1497 files)
+  - MEM available: **1973MB / 2048MB** (96% free) → SAFE to spawn
+  - TSC: **1 error** (config-only `vitest/globals` type def — known, not a code gate)
+  - Branches on origin: **28** (w19/w20/w23/w24/w25/w26/w27 + wave/* + feat/community-platform) — verified via `git ls-remote origin`
+  - 7 active crons, 3 agents available (General, Coder, Verifier)
+- **Workers spawned**: **5** (all under fresh `src/lib/w28/` namespace — no collision with main)
+  1. **Worker A (General)** — `w28/auth-login-signup` — `src/lib/w28/auth-login-signup.ts` (LoginSchema + SignupSchema + useAuthForm hook stub, zod)
+  2. **Worker B (Coder)** — `w28/mfa-enrollment` — `src/lib/w28/mfa-enrollment.ts` (MfaEnrollmentChallenge + TotpCodeSchema + RecoveryCodeSchema + start/confirm stubs)
+  3. **Worker C (General)** — `w28/marketplace-stripe-connect` — `src/lib/w28/marketplace-stripe-connect.ts` (ConnectAccount + PayoutConfig + calculatePayout + startSellerOnboarding stub)
+  4. **Worker D (Coder)** — `w28/events-discovery` — `src/lib/w28/events-discovery.ts` (EventFilters + EventSort + filterEvents for workshops, extends w27)
+  5. **Worker E (General)** — `w28/voice-mode-player` — `src/lib/w28/voice-mode-player.ts` (VoicePlayerQueue + state machine + next/prev/hasNext/hasPrev helpers, extends w27)
+- **Gaps covered this cycle**:
+  - Auth UX layer (login/signup forms) — extends w20/auth-pages page stubs with typed schemas
+  - MFA enrollment types (TOTP + recovery codes) — security hardening
+  - Stripe Connect Express onboarding for marketplace sellers — extends w27/marketplace-praticas with KYC + payout schedule
+  - Events discovery page logic (search/filter/sort) — extends w27/events-workshops
+  - Voice mode player UI state — extends w27/voice-mode with queue + state machine
+- **Push status**: PENDING — workers running in background, will be verified in next cycle
+- **Cycle 28 anti-patterns avoided**:
+  - `mkdir -p src/lib/w28` pre-emptively in worker prompts (cycle 26 lesson: silent failure on missing parent dir)
+  - `git cat-file -e origin/main:<path>` pre-flight in every worker (cycle 27 lesson: don't overwrite existing main code)
+  - `git ls-remote origin <branch>` pre-flight to detect leftover branches from failed spawns
+  - Cleanup protocol (`worktree remove --force + worktree prune`) in every worker (cycle 27 lesson: worktree left behind blocks next spawn)
+  - TYPE-only imports from `src/lib/w27/*` compile to nothing — zero risk of broken module refs
+- **Expected branches on origin after cycle 28 closes**: **33** (28 + 5 new w28)
+- **MERGE TRAIN pending owner approval**: 28→33 branches waiting (w20/w23/w24/w25/w26/w27 + w28 + wave/* + feat/community-platform)
+- **Next cycle 29 plan**: verify all 5 w28 workers pushed; continue covering gaps — daily reflection push notification, live stream host controls, comments moderation UI, notifications push (web-push real), i18n PT onboarding (mirror of w26/w23), reputation badges, mentorship matching algo v2
