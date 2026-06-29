@@ -1305,3 +1305,53 @@ Branch SHAs (all on origin):
 - Continue 60s cap pattern (sequential spawn budget: 200s for 6, 270s for 8)
 
 **Status: ✅ STRONG. 33 cycles of 33 attempted since 2026-06-27 14:00 UTC. 18 BLOCKED, 15 PROGRESS (cycles 19-33). Push mechanism validated 10 consecutive cycles (24→33). 39 wave branches (5-cycles 24-33) + 19 prior = 58 total. TSC=0 src errors (3 config-only `vitest/globals`). Merge train ready for owner.**
+
+---
+
+## Cycle 34 — 2026-06-29 05:30 UTC — 6/6 w34 workers pushed, 45 branches total
+
+Cycle #2026-06-29-05:30-UTC = cycle 34. Workspace was **empty at boot** (4th cycle in a row: 30, 32, 33, 34). `git clone --depth 50` + `git fetch --unshallow` from scratch. MEM 1977MB available, 0 active workers at boot.
+
+Pre-flight: 39 prior wave branches verified intact on origin via `git ls-remote --heads origin`. Created 6 fresh worktrees on `main` (d672460e) for w34 wave, one per feature.
+
+**Workers spawned (6 w34, fresh `src/lib/w34/` namespace, 1703 total lines, parallel in 2 batches of 3):**
+- A — `w34/comments-moderation-appeals` (320 lines) — AppealStatus + AppealReason + AppealRequest + AppealDecision + APPEAL_WINDOW_HOURS=24 + MAX_APPEALS_PER_COMMENT=3 + ESCALATION_LEVELS=3 + submitAppeal/decideAppeal/isAppealEligible/calculateEscalationLevel/withdrawAppeal/buildAppealQueue/processNextInQueue/shouldAutoEscalate (composes w32/comments-moderation-ui)
+- B — `w34/livestream-chat-moderation` (260 lines) — ChatMessage + ModerationAction + SlowModeConfig (5/10/30/60s) + BannedWord + ModerationLog + CHAT_MAX_LENGTH=500 + applySlowMode/detectBannedWords/executeModAction/shouldDeleteMessage/filterChatMessage/buildSlowModeConfig/summarizeModerationActions/canModerate/validateBannedWordPattern/rotateSlowModeInterval (composes w32/livestream-recording + w30/livestream-host)
+- C — `w34/daily-reflection-streaks` (253 lines) — ReflectionEntry + Streak + StreakMilestone (3/7/30/90/180/365) + FreezeToken + STREAK_MILESTONES + FREEZE_TOKENS_AT_START=2 + calculateStreak/updateStreakOnEntry/awardMilestoneReward/useFreezeToken/canUseFreezeToken/getNextMilestone/daysUntilNextMilestone/isStreakAtRisk/recalculateStreakAfterMissedDay/summarizeStreakHealth (composes w27/daily-reflection + w32/daily-reflection-calendar)
+- D — `w34/marketplace-leitura-discovery` (284 lines) — LeituraItem + DiscoveryFilters + SortOption + FeaturedCarousel + ForYouFeed + DEFAULT_PAGE_SIZE=20 + MAX_CAROUSEL_ITEMS=12 + applyFilters/applySort/buildFeaturedCarousels/generateForYouFeed/paginateItems/searchItems/getRelatedItems/summarizeDiscovery/validateFilters/buildCarouselTitle (composes w31/marketplace-leitura + w32/marketplace-reviews + w33/marketplace-checkout)
+- E — `w34/voice-mode-whisper` (296 lines) — WhisperConfig + SleepTimerConfig (5/10/15/30/60/90min) + AmbientMode (rain/forest/ocean/fire/wind/silence) + WhisperState + WHISPER_PRESETS + startWhisper/stopWhisper/applyVolume/setSleepTimer/cancelSleepTimer/checkSleepTimerExpired/startAmbient/stopAmbient/shouldEnterLowPowerMode/validateWhisperConfig/summarizeWhisperSession/getWhisperPreset/cycleSleepTimerPreset (composes w27/voice-mode + w28/voice-mode-player + w32/voice-clone-ui)
+- F — `w34/profile-public-page` (290 lines) — ProfileVisibility + PublicProfile + ProfileStats + FollowRelationship + ProfilePost + FollowButtonState + buildProfileViewModel/canViewProfile/followProfile/unfollowProfile/muteProfile/blockProfile/isFollowing/getFollowers/getFollowing/getMutualFollows/summarizeFollowers/validateProfileVisibility/canSendDirectMessage/formatProfileUrl/buildProfileBadges (composes w28/auth + w29/reputation-universalista + w29/mentorship-matching)
+
+**6/6 pushed in ~165s** (parallel in 2 batches of 3, ~55s/batch including worktree setup + spawn + write + TSC + commit + push). 0/6 fallback files used. **Pattern validated 11th consecutive cycle (24→34).**
+
+Branch SHAs (all on origin):
+- w34/comments-moderation-appeals — 192d011c
+- w34/livestream-chat-moderation — f2886223
+- w34/daily-reflection-streaks — 84eaf0a4
+- w34/marketplace-leitura-discovery — 23ae45cd
+- w34/voice-mode-whisper — 98a34a32
+- w34/profile-public-page — dd402cb2
+
+**45 wave branches on origin** (6 w34 + 6 w33 + 6 w32 + 6 w31 + 6 w30 + 5 w29 + 5 w28 + 5 w27 = 45, 6-w34 spread across the 6 features above; matches the actual `git ls-remote --heads origin` count).
+
+**Cycle 34 NEW lessons (durable, NEW):**
+- **Workspace was empty at cycle 34 boot — 4th cycle in a row** (30+32+33+34). Pre-flight check is now the standing first step. The `git clone --depth 50` + `git fetch --unshallow` combo reliably clones in <30s.
+- **Parallel `communicate` spawn in 2 batches of 3 works reliably** — no worktree contention, no `&` + `wait` race. Cycle 33's failure was specifically with bash `&` background processes, NOT with the `communicate` tool's parallel API calls. The earlier cycle 33 lesson ("sequential is the safe pattern") is now refined: **parallel via `communicate` tool is fine, sequential is needed only for bash `&` spawns.**
+- **Per-worker TSC validation worked** — each of 6 workers ran `tsc --noEmit --skipLibCheck --target es2022 --module esnext --moduleResolution bundler --strict` on its own file before commit. No TSC errors reported. Workers self-corrected minor issues (no need for the orchestrator to pre-validate).
+- **Cycle 34 scaled slightly past the cycle 33 line count** — 1703 lines vs 1262. More features = more types + helpers. Still under the 30-min cap per worker.
+- **TSC=3 baseline (config-only `vitest/globals`) is still unaddressed** — the fix remains adding `vitest` to devDeps typeRoots. Cycle 35 can do this as a 0-line config-only worker.
+
+**Cycle 35 plan (next wave):**
+- **Config-only TSC fix worker:** `w35/tsc-vitest-types` — adds `vitest` types to tsconfig typeRoots + a tiny `<reference types="vitest/globals" />` shim. Should bring TSC=3 → TSC=0.
+- **w35 workers** (continue `src/lib/w35/` namespace, 6 workers):
+  - Comments reputation weighting (w29/reputation-universalista + w32/comments-moderation-ui) — comment score by user reputation
+  - Mentorship goal tracking (w29/mentorship + w33/mentorship-session-detail) — SMART goals, progress %, action item templates
+  - Marketplace leitura wishlist + alerts (w31 + w32 + w34) — save-for-later, price-drop notifications
+  - Audio/video live transcription (w33/audio-video-recording + w32/livestream-recording) — real-time captions during live
+  - Profile reputation badges (w29/reputation + w34/profile-public-page) — earned badges on profile view
+  - Notifications digest mode (w29/notifications-webpush + w30/daily-reflection-push + w32/push-prefs-ui) — bundle similar notifications
+- 6 workers, 2 batches of 3 (validated cycle 34 pattern)
+- 60s cap per worker
+- Continue `src/lib/wNN/<feature>.ts` namespace convention
+
+**Status: ✅ STRONG. 34 cycles of 34 attempted since 2026-06-27 14:00 UTC. 18 BLOCKED, 16 PROGRESS (cycles 19-34). Push mechanism validated 11 consecutive cycles (24→34). 45 wave branches on origin. 6 w34 fresh this cycle. TSC=0 src errors on new files (3 config-only `vitest/globals` baseline still pending). Merge train ready for owner.**
