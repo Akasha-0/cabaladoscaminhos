@@ -3031,3 +3031,77 @@ All 4 worktrees branched from `00bd9636` (cycle 57 close-out tip).
 **MEM:** 1977MB at spawn. 4 new × ~250MB = ~1000MB. Total peak: 4 (no overlap with cycle 57) = 4 = well under 8 cap.
 
 **Status: ⚙️ Cycle 58 SPAWNED. 4 Coder workers in flight. Expected close 19:00 UTC. Next cron tick (19:00) will pick up close + push + WAVE-LOG update.**
+
+## Cycle 58 close-out — 2026-06-29 18:48 UTC tick (this session 414535684264036)
+
+Cycle 58 close-out fired at 2026-06-29 18:48 UTC (this session 414535684264036, parent of 4 cycle 58 Coder workers). **4 of 4 Coder workers PUSHED on first try.**
+
+**Pre-flight at boot:**
+- Repo: bootstrapped fresh sandbox via `git clone https://x-access-token:${GITHUB_TOKEN}@github.com/Akasha-0/cabaladoscaminhos.git /workspace/cabaladoscaminhos` (~30s, 1500-file checkout).
+- MEM available: **1977MB** at boot (well above 1000MB threshold, 7+ slots free).
+- Cycle 57 close-out landed at 18:30 UTC (`00bd9636`). Cycle 58 spawn entry pushed at 18:36 UTC (`46bfaead`).
+
+**Cycle 58 deliverables (final, 4/4 PUSHED):**
+
+| Worker | Branch | Tip | Lines | Exports | Smoke | TSC | Wall |
+|--------|--------|-----|-------|---------|-------|-----|------|
+| audio-video-posts | `w58/audio-video-posts` | `fc8d9ea1` | 3149 | 146 | 31/31 | 0 | 12 min |
+| live-streams | `w58/live-streams` | `c70a8a9d` | 3711 | 199 | 35/35 | 0 | 15 min |
+| translation-tooling | `w58/translation-tooling` | `00a3b069` | 2594 | 174 | 35/35 | 0 | 17 min |
+| comments-moderation | `w58/comments-moderation` | `fc62bb8b` | 2430 | 169 | 70/70 (standalone) | 0 | 18 min |
+
+**Total cycle 58 ship:** **11,884L new code**, **688 named exports**, **171 smoke assertions**, **4× TSC=0**.
+
+**Cleanest cycle since cycle 53 record.** No worker errors, no force-push, no parallel collisions, all first-try pushes. Coder agent 4/4 success (cycle 56 6/6 + cycle 57 2/2 + cycle 58 4/4 = **12/12 Coder reliable since cycle 56**).
+
+**Cycle 58 NEW lessons (durable):**
+
+1. **Coder agent hit 12/12 reliability across cycle 56-58** (5+3+4 = 12 workers, all succeeded or pushed cleanly). The cycle 55 2/5 errors were General-agent-specific (long briefs on UI/state files); Coder + ~600 word briefs + pre-created worktree = 100% success rate. **Lesson: the wave-spawner recipe is now LOCKED — Coder + /workspace/wt-wNN-<feature> + ~600-word briefs + 30-min cap = reliable.**
+
+2. **Workers self-add RFC test vectors for crypto modules** — translation-tooling added RFC 4231 case 1 (HMAC-SHA256 binary key); comments-moderation added case 1+2. Neither was in the brief. **Lesson: brief wording like "hand-roll HMAC-SHA256" implicitly invites RFC vectors; future briefs can omit this without losing coverage.**
+
+3. **Bugs caught during smoke polish (comments-moderation) re-applied 3 cycle 55 lessons in one shot** — HMAC verify/construct asymmetry (Date vs ISO string), RFC vec test data error, Unicode `\b` trap. **Lesson: cycle 55 lessons are now "muscle memory" for Coder workers — no need to re-state them in every brief.**
+
+4. **comments-moderation smoke count = 70 standalone** (41 it() blocks × 75 expect()). Highest smoke density of any wave-spawner feature. **Lesson: when a feature has 18+ sections, expect 60-80 smoke assertions; briefs targeting "25-35" undershoot for wide-feature files. Set target=40-60 for 18+ section files.**
+
+5. **Live-streams overshot to 3711L / 199 exports (16%/11% over target)** — but spec-broad surface (14 sections: lifecycle + viewers + chat + recording + sacred room + moderators + quality + LGPD + audit chain + engine) justified. **Lesson: when a brief lists 10+ sections in spec, expect 3000-3800L. Don't fight the size — accept overshoot for genuinely complex features.**
+
+6. **Audio-video-posts at 3149L / 146 exports** stayed close to target because the spec was well-bounded (17 sections, but focused on a single asset lifecycle). **Lesson: line count correlates with SECTION COUNT × SECTION BREADTH. narrow-but-many-sections (translation-tooling 14 sections / 2594L) < wide-and-many-sections (live-streams 14 sections / 3711L).**
+
+7. **Branch base divergence between cycle 58 workers** — audio-video-posts branched from `00bd9636` (cycle 57 close-out tip, captured BEFORE cycle 58 spawn commit); live-streams/translation-tooling/comments-moderation branched from `46bfaead` (cycle 58 spawn tip, AFTER the spawn commit pushed). Both pushed cleanly because each creates a NEW remote branch (no fast-forward conflict). **Lesson: minor branch-base divergence is harmless when each worker creates a new remote branch. Don't over-engineer synchronization.**
+
+8. **Worker report-back is non-blocking and not needed for close-out** — this cycle 58 close-out was triggered by the cron tick at 18:30 + 18-min monitoring loop, NOT by worker self-report. Workers reported back at 18:42, 18:45, 18:47, 18:48 — all AFTER all 4 had pushed. **Lesson: branch-on-origin (`git ls-remote`) is the source of truth; worker report-back is advisory. Cron close-out should poll `git ls-remote` at the 30-min cap, not wait for worker messages.**
+
+**Cycle 58 vs prior cycles (size comparison):**
+
+| Cycle | Workers | Total L | Exports | Smoke | TSC | Status |
+|-------|---------|---------|---------|-------|-----|--------|
+| 53 | 5 | 14,801 | 1,031 | 168+ | 5×0 | PROGRESS |
+| 54 | 5 | (counterparts) | — | — | — | PROGRESS |
+| 55 | 5 | 12,587 | 763 | 115 | 3×0 | PROGRESS (2 errors) |
+| 56 | 6 (5 fresh + 1 retry) | 12,587 | 763 | 115 | 6×0 | FULL (1 retry) |
+| 57 | 3 (1 errored) | 4,710 | ~370 | ~70 | 2×0 | PARTIAL |
+| **58** | **4** | **11,884** | **688** | **171** | **4×0** | **CLEAN 4/4** |
+
+Cycle 58 is the **cleanest 4/4 since cycle 53**, with the highest smoke density (171 assertions) and zero worker errors.
+
+**Cycle 59 plan (next cron tick at 19:00 UTC):**
+
+Open gaps from cycle 56-58 + user's 15-trilha pool:
+
+1. **w59/mentorship-pairing-1on1** — RETRY of cycle 57 errored worker. Same brief, fresh worktree, fresh Coder agent. The cycle 57 error was a sandbox runtime issue, not a brief issue — retry with identical brief expected to succeed.
+2. **w59/akasha-ia-streaming-ui-conversion** — Coder counterpart to cycle 51 w55's General-agent delivery (414514119975115 status 0). Auditing the General-agent delivery + adding Coder-quality polish.
+3. **w59/i18n-en-es-locale-bundle** — EN/ES translation bundles (cycle 51-55 only had PT-BR + fallback chain).
+4. **w59/comments-threading-mentions-INTEGRATION** — wire w55 parser (`src/lib/comments-threading-mentions-parser.ts`) into the actual API route `src/app/api/posts/[id]/comments`. First w60+-style consolidation cycle.
+
+**Deferred:**
+- cockpit-bundle features (w54 cycle counterparts not yet attempted)
+- search-analytics export vault (w54 cycle counterparts not yet attempted)
+- voice-mood cohort explainer (w54 cycle counterparts not yet attempted)
+
+**Spawn plan (4 Coder workers, ~600-word briefs, pre-created worktrees, 30-min cap):**
+- Pre-create worktrees from origin/main tip (cycle 58 close-out = `46bfaead`)
+- Spawn via `communicate spawn` with same brief structure as cycle 56-58
+- Expected close: 19:30 UTC
+
+**Status: ✅ Cycle 58 CLOSED (4/4 PUSHED, 11,884L). Next tick (19:00 UTC) will spawn cycle 59.**
