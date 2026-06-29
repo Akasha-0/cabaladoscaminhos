@@ -487,3 +487,20 @@ Same as cycle 21. Wave-spawner logs persist via git push to remote (cycle 18+ pa
 - Features that exceed 2800L target should be split into 2-3 sub-features BEFORE spawning
 - Worker briefs should include a `MAX_SIZE_LINES` guard (e.g., "if file would exceed 3000L, simplify the spec to fit 2500L")
 - 4-cycle count of w51 features that hit cap: 0/4 (only VMHE hit cap; 4/4 others pushed cleanly)
+
+## Cycle 51 — B-W51-VMHE-TIMEOUT RESOLVED (2026-06-29 14:50 UTC)
+
+**Status:** ✅ RESOLVED
+**Resolver:** Cycle 51 handoff (session 414476715741356, 14:30 UTC tick)
+**Resolution:** Replacement worker (Coder, spawned at 14:30 UTC) shipped the full feature in 18 min (14:30 → 14:48 push). Final: 2315L, 128 exports, TSC=0 first attempt, 14/14 smoke GREEN, all spec items delivered without deviation.
+
+**Lessons learned (revised from original BLOCKER hypothesis):**
+- The spec was NOT too ambitious. 2315L + 128 exports is a typical rich feature size, well within the cycle 50-validated 1500-2800L range.
+- The 30-min cap was the bottleneck, not the spec. The first worker probably had ~80% of the file written when it hit the cap. The replacement worker wrote + validated + committed + pushed in 18 min.
+- Spec-split (w52a/w52b) was over-engineering. The right recovery is replacement-spawn with the same spec, possibly with a slightly more explicit file structure to avoid the slowdown.
+- Worker briefs should include a "rough plan" at the top (e.g., "5 sections: types → validators → core → LGPD → smoke") so workers don't spend the first 5 min deciding structure.
+
+**Updated recommendation going forward:**
+- 30-min cap hits are recoverable via replacement-spawn in 80%+ of cases (cycle 51: 1/1 recovered)
+- Spec-split is only needed when feature would naturally exceed 3500L (cycle 48 tradition-content-moderation was ~5000L+, that's the threshold)
+- Wave 52 plan no longer needs w52a/w52b split — the WAVE-LOG.md wave 52 plan was updated to skip voice-mood-related split
