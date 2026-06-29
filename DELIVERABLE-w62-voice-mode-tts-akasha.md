@@ -13,9 +13,9 @@
 
 | File | Lines | Bytes | Description |
 |------|-------|-------|-------------|
-| `src/lib/w62/voice_mode_tts_akasha.ts` | 1,089 | 33,263 | Engine principal (TTS) |
-| `src/lib/w62/__tests__/voice_mode_tts_akasha.test.ts` | 738 | 31,378 | Smoke + edge tests (vitest) |
-| `DELIVERABLE-w62-voice-mode-tts-akasha.md` | — | — | Este relatório |
+| `src/lib/w62/voice_mode_tts_akasha.ts` | 1,149 | 35,746 | Engine principal (TTS) |
+| `src/lib/w62/__tests__/voice_mode_tts_akasha.test.ts` | 939 | 31,362 | Smoke + edge tests (vitest) |
+| `DELIVERABLE-w62-voice-mode-tts-akasha.md` | 318 | ~14,500 | Este relatório |
 
 ---
 
