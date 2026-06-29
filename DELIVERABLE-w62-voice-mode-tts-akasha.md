@@ -2,8 +2,10 @@
 
 **Cycle:** W62 (2026-06-29)
 **Branch:** `w62/voice-mode-tts-akasha`
-**Status:** ✅ DELIVERED + TSC PASS + Git Push PENDING
+**Status:** ✅ DELIVERED + TSC PASS + RUNTIME SMOKE PASS + Git Push OK
 **Worktree:** `/workspace/wt-w62-voice-mode-tts-akasha`
+**Commit:** `ff596c8a`
+**Remote:** https://github.com/Akasha-0/cabaladoscaminhos/tree/w62/voice-mode-tts-akasha
 
 ---
 
@@ -197,24 +199,21 @@ Engine é puro TypeScript que **gera** SSML; a síntese de áudio real fica a ca
 - **Resultado:** 0 type errors no engine file
 - **Test file:** 1 expected warning "Cannot find module 'vitest'" (sandbox sem node_modules) — não bloqueia
 
+### Runtime smoke (Node 22 --experimental-strip-types)
+- **Status:** ✅ PASS — 14/14 runtime checks passaram
+- **Método:** `node --experimental-strip-types smoke-runtime.mjs` (script ad-hoc, removido após verificação)
+- **Coverage:** getVoiceProfile, chunkTextForTTS, buildSSML, validateSSML (happy + XSS), redactPIIForTTS, getTTSCacheKey (deterministic), synthesizeOracularResponse (com sacred tag), isValidSacredTag (allowlist), TTSError (RATE_OUT_OF_RANGE), CONSENT_MISSING, i18n keys (12 por locale), TTS_CONSTANTS, estimateAudioDurationMs, safeLog
+- **Hash engine:** `sha256` hand-rolled com FNV-1a como fallback quando Node crypto não está disponível
+
 ### Vitest runtime
-- **Status:** ⏸️ SKIPPED (sandbox wedge em `npm install`)
-- **Comando tentado:** `npm install vitest` — hung at 90s (matches cycle 59/60/61 wedge pattern)
+- **Status:** ⏸️ SKIPPED (sandbox wedge em `npm install` + vitest config requer `@vitejs/plugin-react`)
 - **Decisão:** pulou runtime per env-hang defensive protocol
 - **Recovery:** vitest tests devem rodar em CI ou local após `npm install` completar
 
 ### Git push
-- **Status:** ⏸️ PENDING (sandbox wedge em git ops)
-- **Comando tentado:** `git add src/lib/w62/ DELIVERABLE-w62-voice-mode-tts-akasha.md`
-- **Recovery command (for close-out session):**
-  ```bash
-  cd /workspace/wt-w62-voice-mode-tts-akasha
-  git add src/lib/w62/voice_mode_tts_akasha.ts \
-          src/lib/w62/__tests__/voice_mode_tts_akasha.test.ts \
-          DELIVERABLE-w62-voice-mode-tts-akasha.md
-  git commit -m "feat(w62): voice-mode-tts-akasha — TTS engine with 3 locales, 9 voice profiles, SSML, sacred tags, LGPD, 117 test assertions"
-  git push origin w62/voice-mode-tts-akasha
-  ```
+- **Status:** ✅ OK
+- **Commit:** `ff596c8a` em branch `w62/voice-mode-tts-akasha`
+- **Push:** `* [new branch] w62/voice-mode-tts-akasha -> w62/voice-mode-tts-akasha` (3 files, 2407 insertions)
 
 ---
 
@@ -312,8 +311,8 @@ Cada worker w62 opera em worktree isolado + branch dedicada, com commits indepen
 
 ## Sign-off
 
-**DELIVERED + TSC PASS.** Vitest SKIPPED por env-hang (matches cycles 59-61). Push PENDING — recovery command documentado acima.
+**FULLY DELIVERED + TSC PASS + RUNTIME SMOKE PASS + PUSHED.** Vitest SKIPPED por env-hang (sandbox sem node_modules + vitest config requer deps não instaladas) — runtime smoke via Node 22 strip-types cobriu os 14 paths críticos.
 
 Author: Coder agent @ cabaladoscaminhos
 Cycle: W62 — 2026-06-29
-Wall-clock: ~25 min (write phase)
+Wall-clock: ~28 min (write + verify + push)
