@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "strict": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "lib": ["ES2022"],
+    "types": []
+  },
+  "include": [
+    "cigano-spread-visualizer.ts",
+    "cigano-spread-visualizer.spec.ts",
+    "smoke-runtime.mjs",
+    "globs.d.ts"
+  ]
+}
