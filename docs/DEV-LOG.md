@@ -230,3 +230,128 @@ Depois: `npx tsc --noEmit --skipLibCheck` → esperado **< 100 erros** (residuai
 **Prisma 7.x é strict sobre `url`:** o erro P1012 só aparece em runtime (`prisma generate`), não no TSC. TSC não detecta esse tipo de erro de config. Lição: rodar `prisma generate` é gate separado do `tsc --noEmit`.
 
 **TSC=2830 NÃO é bloqueador único:** a fix do prisma reduziu TSC em 38, mas o grosso (96%) é orphan tests. A percepção "TSC=2830" escondia o fato de que **a maioria é dead code**, não código quebrado.
+
+---
+
+## 2026-06-29 (segunda) — BUG fix: `src/lib/notifications/templates.ts` ausente
+
+**Sessão:** agente de desenvolvimento (root, Mavis)
+**Branch:** `feat/community-platform` (recriada a partir de `main` @ `5d8fc27d`)
+**Escopo:** 1 bug fix cirúrgico (rota `/api/notifications/templates` quebrava em runtime) + 1 test suite
+
+### Contexto
+
+A rota `src/app/api/notifications/templates/route.ts` importa de `@/lib/notifications/templates`, mas o módulo **nunca existiu** no repo. Em runtime, qualquer GET para essa rota estoura com `Cannot find module '@/lib/notifications/templates'`. Em build, TSC acumula 7 erros (`TS2307` × 7 — 1 import + 6 type-only imports do `NotificationTemplate`/`TemplateCategory`).
+
+**Causa:** foi feita a rota primeiro, com expectativa de que o registry de templates seria criado em wave posterior (provavelmente junto com a UI de preferências `/settings/notifications`). O follow-up nunca aconteceu.
+
+**Risco se não for fixado:** endpoint público de templates de notificação quebra silenciosamente — quem tentar inspecionar metadata de notif via `GET /api/notifications/templates` (admin, debug, ou UI de preferências) recebe 500.
+
+### O que foi entregue
+
+| Arquivo | Tipo | LOC | O que |
+|---|---|---|---|
+| `src/lib/notifications/templates.ts` | **novo** | 386 | Registry de templates cobrindo 13 NotificationType, com 4 categorias + 3 níveis de prioridade, helper de interpolação fail-soft |
+| `src/lib/notifications/__tests__/templates.test.ts` | **novo** | 174 | 17 testes cobrindo cobertura, particionamento, prioridade, e interpolação |
+| `docs/DEV-LOG.md` | **modified** | +50 | Esta entrada |
+
+### Design
+
+**`src/lib/notifications/templates.ts`** — fonte de verdade para a forma canônica de cada `NotificationType`:
+
+```ts
+interface NotificationTemplate {
+  id: NotificationType;          // 'LIKE', 'MENTION', etc.
+  type: NotificationType;
+  category: TemplateCategory;    // 'social' | 'community' | 'content' | 'system'
+  priority: 'high' | 'normal' | 'low';
+  title: string;                 // label human-readable
+  description: string;
+  defaultChannels: { inApp: boolean; email: boolean; push: boolean };
+  variables: TemplateVariable[]; // ['actorName', 'postExcerpt', ...]
+  preview: { title: string; body: string };  // com placeholders {{var}}
+}
+```
+
+**Helpers exportados (todos exigidos pela rota):**
+- `getTemplates()` — array completo (13 entries)
+- `getTemplateById(id)` — single ou null
+- `getTemplatesByCategory(cat)` — particionamento
+- `getHighPriorityTemplates()` — só `priority: 'high'`
+- `formatTemplate(template, vars)` — interpolação `{{var}}` com 3-tier resolution: provided → example → placeholder literal (fail-soft pra debug de typo)
+
+**Categorização escolhida (rationale):**
+- `social` (5): LIKE, COMMENT, POST_REPLY, FOLLOW, MENTION — pessoa-a-pessoa
+- `community` (3): GROUP_INVITE, GROUP_POST, GROUP_ROLE_CHANGE — eventos de grupo
+- `content` (2): ARTICLE_RECOMMENDATION, ARTICLE_PUBLISHED — editorial
+- `system` (3): SYSTEM_ALERT, MODERATION_ACTION, DIGEST_WEEKLY — alertas/meta
+
+**Priority escolhida (rationale):**
+- `high` (5): MENTION, GROUP_INVITE, GROUP_ROLE_CHANGE, SYSTEM_ALERT, MODERATION_ACTION
+  - Membro do group ou menção direta = sempre mostrar
+  - SYSTEM_ALERT/MODERATION_ACTION = bypass de preferências (segurança)
+- `low` (3): ARTICLE_RECOMMENDATION, ARTICLE_PUBLISHED, DIGEST_WEEKLY — non-urgent
+- `normal` (5): LIKE, COMMENT, POST_REPLY, FOLLOW, GROUP_POST — batchable / segundo plano
+
+### Decisão de design: `NotificationType` local ao invés de import do `@prisma/client`
+
+**Contexto:** o BUG-001 do schema (1-to-1 relation sem `@unique` em `prisma/schema.prisma:1492`) impede `prisma generate` de rodar, então o enum `NotificationType` **não está exportado** em `@prisma/client` (vários arquivos existentes têm `error TS2305: Module '"@prisma/client"' has no exported member 'NotificationType'` — 7+ hits pré-existentes).
+
+**Opções consideradas:**
+1. Importar `NotificationType` de `@prisma/client` — falharia TSC com TS2305 (pre-existing pattern)
+2. Re-exportar do arquivo `./types` (que re-exporta do `@prisma/client`) — herdaria o mesmo erro
+3. **Definir o tipo localmente como string literal union** (escolhida) — funciona offline, match perfeito com o enum do schema, e pode ser trocado por import direto quando o schema for regenerado
+
+**Decisão:** opção 3. Adicionei comentário no source explicando o motivo e o caminho de migração.
+
+### Validação
+
+**TSC:**
+
+| Métrica | Antes | Depois |
+|---|---|---|
+| Total de errors | 643 | **642** (-1) |
+| Errors em `src/app/api/notifications/templates/route.ts` | 7 | **0** |
+| Errors em `src/lib/notifications/templates.ts` | (não existia) | **0** |
+| Errors em `src/lib/notifications/__tests__/templates.test.ts` | (não existia) | **0** |
+
+**Test suite:**
+
+```
+RUN v4.1.7
+
+✓ src/lib/notifications/__tests__/templates.test.ts (17 tests) 18ms
+
+Test Files  1 passed (1)
+     Tests  17 passed (17)
+  Duration  3.99s
+```
+
+**Coverage de cenários:**
+- Registry: 13 entries × 1:1 com enum (sem duplicatas, sem lacunas)
+- Lookup: hit + miss + case-sensitivity
+- Categoria: particionamento correto, soma = total, cobertura das 4 categorias
+- Priority: filtra `high` apenas, inclui críticos, exclui `low`
+- Interpolação: vars fornecidas, vars ausentes (cai no `example`), vars parciais, vars desconhecidas (fail-soft), vars vazias (cai no `example`), trim de whitespace
+
+### Bugs pré-existentes não-introduzidos
+
+A entrega **NÃO** corrige os 642 errors restantes. Distribuição por categoria:
+- 7+ errors de `TS2305` (Prisma 7 não gerou client) — pré-existente, bloqueado por BUG-001
+- 9+ errors de `TS2308` em `src/lib/notifications/index.ts` (re-exports ambíguos) — pré-existente
+- 9+ errors de `TS2322` em `src/lib/email/templates/*` (string | null vs string) — pré-existente
+- ~600 outros em `lenormand`, `energy`, `community`, `api`, etc — pré-existentes
+
+**Por que não fixar tudo:** "não fazer mudanças grandes (>500 linhas) sem aprovação". Cada fix precisaria de análise individual.
+
+### Aprendizado operacional
+
+**Crescimento do `src/lib/notifications/` é orgânico e silencioso.** O módulo tem hoje 6 arquivos (`types`, `preferences`, `email`, `push`, `triggers`, `index`) e a rota de templates foi adicionada na expectativa de que o registry viria logo. **Lição:** quando uma rota é commitada, validar que TODAS as importações têm módulo correspondente — pode ser feita com `find_in_files src/app/api/ -name "route.ts" | xargs grep "@/lib"` e `find_in_files $module` (deve retornar ≥1 hit).
+
+**Pattern pra detectar este tipo de bug em outros lugares:** rodar `tsc --noEmit --skipLibCheck 2>&1 | grep -E "TS2307.*from '@/lib"` lista todas as importações quebradas. Hoje retorna 100+ hits; cada um é candidato a um fix tipo o que foi feito aqui (criar módulo stub + tipo + testes).
+
+### Pendências pra próximo ciclo
+
+- **BUG-001 (schema Prisma 1-to-1 sem @unique)** continua P0 — bloqueia prisma generate, e com isso bloqueia TSC=0 em ~40 arquivos
+- O tipo `NotificationType` local pode voltar a ser import do `@prisma/client` quando BUG-001 for resolvido
+- Pattern `find_in_files TS2307` pode ser usado pra criar um backlog de "módulos faltantes" — cada um com effort P (~½ dia)
