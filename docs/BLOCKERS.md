@@ -548,3 +548,29 @@ Same as cycle 21. Wave-spawner logs persist via git push to remote (cycle 18+ pa
 - At-least-once delivery for cycle-level features: re-pick missing trails as normal workers in next cycle
 - Don't block current cycle on a previous cycle's missing feature
 - Wave-spawner recovery loop: spawn → verify via `git ls-remote origin` → if missing, log to BLOCKERS.md and defer to next cycle
+
+## B-W66-REP-MISSING — RESOLVED (2026-06-29 23:48 UTC)
+
+**Status:** ✅ RESOLVED
+**Resolver:** Cycle 66 orchestrator session 414602069405916 (this session), B2 retry of the original reputation worker session 414603274154196
+**Resolution:** B2 retry spawned at 23:38 UTC, completed at 23:48 UTC. Engine 1668L, spec 1299L, 113 assertions, 128/128 sacred symbols, 6/6 smoke, TSC=0, NO derogatory policy enforced. Pushed to `origin/w66/reputation` at SHA `cd5a8d2743a1ce9d89d5dd329ab21cacb114a74a`. **Branch is now on origin.**
+
+**Final cycle 66 SHIP tally:** 4/4 PUSHED ✅ (audio-video, live-streams, translation, reputation)
+
+**Refined cycle 66 lessons (post-resolution):**
+1. **B2 retry from the SAME session ID can succeed** — the original worker session was reused with a fresh brief, saving session ID churn and keeping audit trail intact.
+2. **Parallel session cross-checks are valuable but can be false-positive** — the cycle 67 parallel session's BLOCKER entry was correct at 23:30 (reputation wasn't on origin yet) but became incorrect by 23:48 (B2 retry pushed). Lesson: when BLOCKER is flagged at 23:30 and the originating session is still active, give the originating session ~15-20 min to recover before treating the BLOCKER as final.
+3. **Cycle 66 wall-clock was 48 min** (longest in wave-spawner history) but 4/4 PUSHED. The B2 recovery pattern from cycle 64 (and validated in cycle 51) works in cycles 66+ — spec-split is NOT needed, replacement-spawn is enough.
+4. **The 30-min cap hit at 23:31 for the reputation worker, B2 retry started at 23:38, completed at 23:48** — that's 7 min for the B2 retry worker to read context + finish spec + validate + commit + push. Cycle 64 B2 retry was 18 min (full spec); cycle 66 B2 retry was 10 min (mostly-done spec). **Lesson: B2 retry wall-clock is proportional to remaining work, not full spec.**
+
+**Updated cycle 66 cross-cycle lesson:**
+- ✅ At-least-once delivery still applies
+- ✅ Don't block current cycle on a previous cycle's missing feature still applies
+- ✅ Wave-spawner recovery loop: spawn → verify → if missing, log to BLOCKERS + spawn B2 retry IN PARALLEL with the current cycle's spawn (cycle 66+ rule)
+- **NEW:** B2 retry from same session ID is preferred (audit trail intact) but cross-session B2 retry also works (cycle 64 pattern)
+
+**Honest concerns:**
+- The parallel cycle 67 session's "MISSING" claim is now incorrect. Future parallel-session BLOCKER entries should include a "verify at +15 min" instruction.
+- The cycle 66 wall-clock was 48 min vs typical 22-26 min. Future workers with similar scope (large data layer, multiple sub-systems) should consider splitting into 2 sub-features per cycle 51 lesson.
+
+**Status: ✅ B-W66-REP-MISSING RESOLVED. Cycle 66 SHIP complete @ 23:48 UTC. 4/4 on origin, 10,897 LOC total.**

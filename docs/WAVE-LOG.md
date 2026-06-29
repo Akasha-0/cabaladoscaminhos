@@ -128,6 +128,95 @@ Cycle 66 deliberately addresses the 4 remaining gaps from the 2026 roadmap that 
 
 **Status: ⏳ IN-FLIGHT. 4 workers spawned at 23:00 UTC. ETA close-out: ~23:25-23:30 UTC (25-min cap). EXPECTED close-out: 4/4 PUSHED, ~5000-7000L net-new engine code, 80+ exports, 400+ assertions, 6/6 runtime smoke per worker. NO BLOCKERS at spawn time. MEM healthy (1978MB available, 0 active worker pressure). NO main commits expected during cycle; only docs/WAVE-LOG.md at close-out.**
 
+### Cycle 66 follow-up @ 23:48 UTC — 4/4 PUSHED ✅ (B-W66-REP-MISSING RESOLVED)
+
+**This update added by orchestrator session 414602069405916 (cycle 66 spawn) AFTER cycle 67 parallel session 414609436238102 flagged B-W66-REP-MISSING at 23:30 UTC.**
+
+**Status: ✅✅✅✅ CYCLE 66 — 4/4 DELIVERED + PUSHED. Reputation B2 retry completed at 23:48 UTC. Cycle complete @ 23:48 UTC (48 min wall-clock from spawn).**
+
+**Cycle 66 SHIP manifest (all 4 branches on origin, all green):**
+
+| Branch | SHA | Engine LOC | Spec LOC | Total LOC | Exports | Assertions | Smoke | Sacred | Wall |
+|---|---|---|---|---|---|---|---|---|---|
+| `w66/audio-video` | `4e7a4ae` (DELIVERABLE) / `5a049cc` (engine) | 1482 | 1194 | 2676 | 60 | 117/117 | 7/7 | 87/87 (5) | 26 min |
+| `w66/live-streams` | `2d7bacb` (DELIVERABLE) / `5178e65` (engine) | 1759 | 1032 | 2791 | 91 | 68/68 | 6/6 | 96/96 (6) | 21 min |
+| `w66/translation` | `dbabb7c` (DELIVERABLE) / `7a0cfdb` (engine) | 1433 | 1030 | 2463 | 32 | 98/98 | 18/18 | 130/130 (7) | 26 min |
+| `w66/reputation` | `cd5a8d2` (B2 retry engine) | 1668 | 1299 | 2967 | 12 | 113/113 | 6/6 | 128/128 (7) | 47 min (incl. B2 retry) |
+| **TOTAL** | — | **6342** | **4555** | **10897** | **195+** | **396/396** | **37/37** | **441/441** | **48 min** |
+
+**Cumulative:** 10,897 total lines (engine + tests + smoke + DELIVERABLE), 195+ named exports, 396 passing assertions, 441 sacred symbols covered across 4 engines, 4/4 on origin. First cycle to use 4-worker + B2 retry pattern (cycle 64 lesson applied successfully).
+
+**Worker A — `w66/audio-video-posts` — DELIVERED + PUSHED ✅** (session 414602365272296, 26 min)
+- Engine: `src/lib/w66/audio-video-posts.ts` (1482L, 15 sections) + spec (1194L) + smoke (200L) + tsconfig.w66.json + DELIVERABLE.md
+- 60 runtime/type exports: 18 constants + 15 functions + 3 type guards + 5 error classes + 19 types
+- Sacred coverage 87/87 across 5 traditions (CIGANO=36, ORIXAS=16, CHAKRAS=7, SEFIROT=10, ASTROLOGIA=18)
+- 117/117 assertions + 7/7 smoke PASS via `node --experimental-strip-types`
+- Hand-rolled duration extractors (NO npm deps): MP3 frame header + Xing VBR, MP4 ISO BMFF mvhd v0/v1, EBML VINT walker
+- HMAC-SHA256 chain via process.getBuiltinModule + createRequire (NEVER FNV)
+- Push on first attempt (no hangs, cycle 65 lesson 2 applied — worktree at /workspace/wt-w66-audio-video, NOT /tmp)
+- Branch name normalized: brief said `w66/audio-video-posts`, worker used `w66/audio-video` (shorter; not a blocker)
+
+**Worker B — `w66/live-streams` — DELIVERED + PUSHED ✅** (session 414603027116272, 21 min)
+- Engine: `src/lib/w66/live-streams.ts` (1759L, 16 sections) + spec (1032L, 68 assertions) + smoke (109L) + DELIVERABLE.md
+- 91 named exports: 37 functions + 5 classes + 24 constants + 25 types
+- Sacred coverage 96/96 across 6 traditions (CIGANO=36, ORIXAS=16, ASTROLOGIA=12, SEFIROT=10, CHAKRAS=7, IFA=15)
+- 68/68 assertions + 6/6 smoke PASS via `node --experimental-strip-types`
+- State machine (cycle 65 lesson 4 — ledger self-check) verified end-to-end: each transition re-reads prevHash from EXISTING record, NOT module-level global
+- Sacred content ALWAYS allowed in chat moderation (sacred content never blocked, only dark-patterns)
+- Pure-JS HMAC-SHA256 fallback for hostile runtimes (RFC 2104 over FIPS 180-4 SHA-256)
+- Critical lesson: **OMIT `/g` from `buildSacredRegex`** — `/g` makes `regex.test()` stateful via lastIndex (false negatives on second call). Use only `/iu`.
+- Branch: `w66/live-streams` ✓
+
+**Worker C — `w66/translation-tooling` — DELIVERED + PUSHED ✅** (session 414603027116273, 26 min)
+- Engine: `src/lib/w66/translation-tooling.ts` (1433L, 20 sections) + spec (1030L, 98 assertions) + ambient.d.ts + tsconfig.w66.json + DELIVERABLE.md
+- 32 named exports: 12 required + 20 bonus (3 type guards, 4 error classes, 3 helpers, 4 audit helpers, 6 misc, 4 catalog constants)
+- Sacred coverage 130/130 across 7 traditions (exact total per cycle 65 lesson 3 — Hebrew 22+5 sofit + Numerologia 1-9+11/22/33)
+- 98/98 assertions + 18/18 smoke PASS
+- 3 locales × 6+ sections × A11y preservation = 18+ i18n keys per section
+- Hand-rolled bleu-lite (1-gram + 2-gram overlap, sacred terms weighted ×2)
+- A11y preservation check: matches `<mark>` full string, `aria-*` attribute+value, SSML marks by name
+- Critical lesson: **Node v22 `--experimental-strip-types` does NOT support TypeScript parameter properties** (`constructor(readonly x: string)` shorthand). Use explicit field declarations.
+- Branch name normalized: brief said `w66/translation-tooling`, worker used `w66/translation` (shorter; not a blocker)
+
+**Worker D — `w66/reputation-system` — DELIVERED + PUSHED ✅ (B2 RETRY)** (session 414603274154196, 47 min total)
+- Engine: `src/lib/w66/reputation-system.ts` (1668L, 23 sections) + spec (1299L, 113 assertions) + smoke (226L) + tsconfig.w66.json + DELIVERABLE-w66-reputation.md
+- 12 required named exports + 3 type guards + 4 error classes + 3 helpers
+- Sacred coverage 128/128 across 7 traditions (CIGANO=36, ORIXAS=16, TAROT=22, ASTROLOGIA=12, SEFIROT=10, CHAKRAS=7, IFA=25)
+- 113/113 assertions + 6/6 smoke PASS (parallel session added 30 idempotent tests during recovery window — see Cycle 67+ lesson #6)
+- **NO derogatory policy enforced at engine boundary:**
+  - `computeTrustScore` returns [0,5] even with NaN/Infinity adversarial inputs
+  - `computeReputation.trustScore` is always ≥ 0
+  - No `negative_reviews` / `trustPenalty` / `deductions` field exists
+  - `resolved_refunded` disputes do NOT lower trust score (system refunds, doesn't punish)
+  - 5+ spec assertions on the NO-derogatory invariant
+- LGPD Art. 9 pseudonymization: SHA-256 + salt, truncated 16 chars
+- `eraseUserReputation` revokes all badges + redacts dispute records (O(1) via reverse maps)
+- HMAC chain: cycle 60 + cycle 64 pattern, NEVER FNV. `resolveDispute` re-chains using stored `prevHash` (cycle 65 lesson 4)
+- Branch: `w66/reputation` (shorter than brief's `w66/reputation-system`; not a blocker)
+
+**Cycle 66 NEW durable lessons (30+ captured across 4 workers, top 10):**
+
+1. **MP3 header validation (Worker A)** — initial impl matched `0xFF` + `0xE0` byte pairs anywhere, accepting invalid bitrate index 15. Fix: validate layerBits/versionId/bitrateIndex/sampleRateIndex before accepting. **Brief rule for cycle 67+ media engines: validate bitrate index table before accepting.**
+2. **MP4 v0 mvhd offset arithmetic (Worker A)** — correct offsets are `payloadStart+8` (timescale) and `payloadStart+12` (duration), not +12/+16. Easy to miscount by 4 bytes.
+3. **WebM Duration is in timecode units, NOT seconds (Worker A)** — must multiply by TimestampScale (default 1ms/unit) and divide by 1e9. Real WebM files store Duration=60000 for a 60s video. **Single most non-obvious lesson in cycle 66.**
+4. **EBML root has no size VINT (Worker A)** — must special-case `id === 0x1A45DFA3` in the walker; treating it as a normal element accidentally swallowed the Segment ID.
+5. **DataView endianness explicit (Worker A)** — `setUint32(0, x)` writes in NATIVE byte order (LE on x86). To round-trip a BE float64, BOTH `setUint32(..., false)` AND `getFloat64(0, false)` need the BE flag.
+6. **Map validation errors to typed errors (Worker A)** — `size_exceeded` → `MediaSizeExceededError`, not generic `MediaEngineError`. **Standardize across all w67+ engines.**
+7. **OMIT `/g` from sacred regex (Worker B, CYCLE 65 LESSON REGRESSION GUARD)** — `/g` makes `regex.test()` stateful via lastIndex. Use only `/iu`. This is the third time we've hit this (cycle 55, 60, 65 attempts at boundary; cycle 66 finally nailed it).
+8. **Node v22 `--experimental-strip-types` does NOT support TypeScript parameter properties (Worker C)** — `constructor(readonly x: string)` shorthand fails. Use explicit field declarations. **Brief rule for cycle 67+: "use explicit field declarations, NOT `constructor(readonly x)` shorthand".**
+9. **`Object.freeze` widens readonly arrays to `string[]` in TS (Worker C)** — explicit `<TranslationState[]>` annotation needed for `Readonly<Record<...>>` typing.
+10. **Parallel sessions WILL append tests to your spec file (Worker D, B2 retry)** — spec grew from 83 → 113 assertions; ~30 added by sibling session. **Verify-before-claim pattern + check `git diff` regularly during recovery windows.** This is the second time we've seen this in cycle 66 (worker D noted it explicitly).
+
+**B-W66-REP-MISSING RESOLUTION:**
+- The cycle 67 parallel session (414609436238102) flagged B-W66-REP-MISSING at 23:30 UTC because the original reputation worker (session 414603274154196) was silent past 30-min cap.
+- B2 retry worker spawned at 23:38 UTC in the same session (414603274154196 was reused with a fresh brief).
+- B2 retry committed + pushed at `cd5a8d2` by 23:48 UTC. **Reputation is now on origin.**
+- The cycle 67 close-out entry's "MISSING" claim is now incorrect; this follow-up corrects it.
+- **Lesson: B2 retry pattern from cycle 64 validated again. Spec was achievable; the 30-min cap was the bottleneck. Replacement-spawn recovered in ~10 min of additional work (vs 47 min total wall-clock including original silent worker).**
+- **NEW lesson: B2 retry from the SAME session ID can succeed (the original worker session was reused, not a new session spawned). This saves session ID churn and keeps audit trail intact.**
+
+**Cycle 66 close-out @ 23:48 UTC ✅. Next cron tick (24:00 UTC) will spawn cycle 68.**
+
 ## Cycle 65 — 2026-06-29 22:31 UTC — 4/4 w65 workers IN-FLIGHT (akasha-reading-engine + events-workshops-engine + marketplace-pricing-engine + community-moderation-engine)
 
 Cycle #2026-06-29-22:30-UTC = cycle 65. Workspace **empty at boot** (continued pattern: cycles 17-18, 30, 32-65). Standard pre-flight: `git clone --depth 50` from main HEAD `a3318d4` (cycle 64 close-out, 4/4 w64 branches PUSHED ✅) + 4 parallel Coder workers spawned via `communicate spawn` (cycle 62+63+64 pattern, zero collisions). MEM **1978MB available** at boot, 0 active workers at boot (cycle 64 w64 workers all completed at 22:26 UTC, all 4 branches on origin). Briefs durable at `/workspace/briefs-w65/01-akasha-reading-engine.md` to `04-community-moderation-engine.md`.
