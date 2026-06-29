@@ -71,6 +71,45 @@ Worker A (session `414580033646819`) reported back at 21:39 UTC — ~5 min ahead
 
 **3 workers remaining (B/C/D):** notifications-prefs-engine, search-facets-engine, onboarding-state-engine — still in flight, ETA close-out 22:00 UTC.
 
+### Cycle 63 mid @ 21:44 UTC — w63/notifications-prefs-engine DELIVERED + w63/onboarding-state-engine SILENT-PUSHED ✅
+
+Worker B (session `414580799815769`) reported back at 21:44 UTC — ~10 min ahead of 25-min hard cap (14 min wall-clock). Worker D (session `414579948073138`) silent-pushed at 21:43 UTC (pattern: per cycle 62 lesson 2, silent push precedes formal report).
+
+**Worker B — `w63/notifications-prefs-engine` — DELIVERED ✅**
+- Branch: `w63/notifications-prefs-engine` @ `abf03f757ca1d5f17545629dfb8087a3a081e2e0` (PUSHED via `git ls-remote`)
+- Engine: `src/lib/w63/notifications_prefs_engine.ts` — **972 lines**, **54 exports** (2.45x target)
+- Test: `src/lib/w63/__tests__/notifications_prefs_engine.test.ts` — 607 lines, **213 pass / 0 fail**
+- DELIVERABLE: `DELIVERABLE-w63-notifications-prefs-engine.md` — 304 lines
+- Sacred coverage: **55 sacred mappings** (floor 18 — satisfied 3x over: 7 chakras + 22 arcanos + 16 orixás + 10 sefirot)
+- 12/12 spec sections covered (including bonus i18n pt-BR/en-US/es-ES and NotificationsPrefsError with code+details)
+- TSC strict (`tsc --project /tmp/tsconfig.w63test.json`): **0 errors**
+
+**Worker B architectural highlights (durable cross-cycle lessons):**
+- **Channel routing cascade — 6-stage preference ordering:**
+  1. Kind-suppression: `kind ∈ suppressed` → blocked
+  2. Quiet hours override (urgent DEFERRED, non-obvious, saves wake-up spam)
+  3. Urgent priority boost → push
+  4. Per-channel gating (push/email/inApp enabled?)
+  5. Per-kind preference
+  6. `pickAvailableChannel` fallback
+  This is the **canonical preference-cascade pattern** for any notification/permission system. Future cycles should copy.
+- **720 sample decisions** in `auditChannelRoutes` — 26x the 27-decs brief floor. Cycle 64+ should ask for ≥ 100 sample decisions for any routing engine.
+- **No shared refs in defaults** — `DEFAULT_NOTIFICATION_PREFERENCES(userId)` returns fresh copies per user. Anti-pattern to copy: never share default objects across consumers.
+- **`sanitizePreferences` never throws, clamps silently** — this is the "graceful-degradation" pattern for any user-facing settings API.
+- **Bundle window strict < boundary** — `bundled-notif.createdAt < window-end` not `<=`. Cycle 64+ bundling engines must use strict inequality at boundaries to avoid double-bundle on exact-millisecond edges.
+
+**Worker B ack:** sent at 21:44 UTC, cycle 62 lesson 7 applied.
+
+**Worker D — `w63/onboarding-state-engine` — SILENT-PUSHED ⏳ (awaiting formal report)**
+- Branch: `w63/onboarding-state-engine` @ `7a406193abae7f4b4ca773cc8675940375a362e7` (PUSHED, visible on origin)
+- Worker D still running, formal ack/report expected soon
+- Per cycle 62 lesson 2 ("silent push precedes formal report"): branch is on origin, awaiting worker D's report-back to confirm file content + assertions
+
+**Cycle 63 mid status:**
+- 3/4 branches PUSHED (A, B, D) — silent-push pattern confirmed for D per cycle 62 lesson
+- 1/4 still in flight (C — `w63/search-facets-engine`)
+- Cumulative tonnage: A (1,491 lines) + B (1,883 lines) = **3,374 lines delivered in 14-16 min per worker**
+
 ## Cycle 62 — 2026-06-29 21:14 UTC — 4/4 w62 workers PUSHED (9192L total, 152+ exports, 610+ assertions, 94/94 vitest PASS) — COMPLETE
 
 Cycle #2026-06-29-21:00-UTC = cycle 62. Workspace empty at boot. Standard pre-flight. MEM 1978MB available.
