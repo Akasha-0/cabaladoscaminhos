@@ -2573,3 +2573,39 @@ This is the **16:30 UTC cron tick** resuming after the cold-start sandbox reset 
 
 **Status: ⚙️ 5 WORKERS IN FLIGHT (this sandbox). MEM 1972MB available. Expected close: 17:00-17:15 UTC. 167 wave branches projected on origin (162 pre-wave + 5 this tick).**
 
+
+## Cycle 54 — 16:42 UTC follow-up by session 414498569478327 (mid-cycle handoff continuation)
+
+This is a brief follow-up by the **16:42 UTC cron tick (this session)**, continuing the orchestrator work from my 16:00 + 16:28 ticks. The 16:40 UTC tick (parallel session 414506193543267) already pushed its own WAVE-LOG entry spawning another 5 workers. This follow-up adds info that wasn't in that entry.
+
+**Status check at 16:42 UTC (after the parallel tick's push):**
+- main HEAD: 2cfd8665 (the parallel tick's docs commit)
+- MEM available: 1971MB (recovered from earlier 659MB; one or more workers completed and freed memory)
+- Cycle 53 final state: **8/8 PUSHED** (my 4 + parallel's 4 = 8 features on origin). Missing: w53/policy-import-validator (planned in original cycle 52 wave-LOG but never spawned).
+- Cycle 54 progress: 1/4 pushed (w54/prayer-submission-rate-limiter 1c91722b). 3 from my 16:28 spawn still in flight (cockpit-widget-bundle-telemetry, voice-mood-coach-leaderboard, redaction-policy-vault-recovery). PLUS 5 from parallel tick's 16:40 spawn (4 w54 fresh + 1 w53 voice-mood-realtime-coach duplicate replacement).
+- Total in-flight workers across orchestrators: ~8 (3 from my 16:28 + 5 from parallel 16:40). Under the 8-cap but tight.
+
+**Cross-tick observations:**
+
+1. **Parallel orchestrator (414506193543267) reversed my "DEFER" decision at 16:40** — they checked sandbox state at 16:38 and concluded my "no workers in flight" was based on stale workspace view. They spawned 5 workers anyway. **Lesson: when multiple orchestrators are firing close together, EACH tick should re-verify worker state before deferring — state can change between checks (workers complete, MEM recovers, new spawns happen). My 16:28 deferral was correct at that moment but stale by 16:38.**
+
+2. **Duplicate w53/voice-mood-realtime-coach replacement** — my replacement (414507304403073) pushed at 16:41:56 UTC (7d92cca8). The parallel tick at 16:40 spawned ANOTHER replacement (414506193543267 child) BEFORE checking origin for existing branches. **Lesson: ALWAYS run `git ls-remote origin 'refs/heads/wN/<feature>'` ≤60s before spawning a replacement. If the branch already exists on origin, skip the spawn (cycle 51 lesson applied more broadly).**
+
+3. **MEM recovery timing** — at 16:28 my check showed 659MB available; at 16:42 it showed 1971MB. Delta: 1312MB released in 14 min. **Lesson: workers release MEM when they push + exit (worktree removal + node cleanup frees ~250-400MB per worker). Don't trust a low-MEM check from >10 min ago; re-check before deciding to spawn.**
+
+4. **`/workspace/wt-*` is the correct worktree path, NOT `/tmp/wt-*`** — my replacement worker (414507304403073) reported: "cloud sandbox rejects `/tmp` writes. Used `/workspace/wt-w53-rtc` instead." This contradicts the cycle 52 lesson #3 which recommended `/tmp`. **Lesson: cycle 52 lesson #3 is wrong for THIS sandbox. The older cycle 50-51 convention of `/workspace/wt-<feature>` is correct. MEMORY CORRECTION: revert to `/workspace/wt-<feature>` worktree path going forward.**
+
+5. **By-shape files don't need npm install** — same worker reported: "npm install skipped — file is by-shape (zero repo imports), node_modules not required." **Lesson: worker briefs can skip `npm install` when spec confirms by-shape. Saves 1-2 min setup time per worker.**
+
+**Action taken this tick: NO new spawn.** With 8+ workers already in flight across parallel orchestrators, MEM tight, and 3 w54 workers from my 16:28 spawn expected within ~15 min, spawning cycle 55 NOW would push MEM dangerously low. Wait for the 17:00 UTC tick when MEM should be ~1500MB+ available and most workers should have landed.
+
+**Wave 55 plan (deferred to 17:00 UTC tick):**
+- w55/policy-import-validator (replacement for the missing cycle 53 feature)
+- w55/cockpit-widget-bundle-rollback-orchestrator
+- w55/prayer-submission-tradition-router
+- w55/voice-mood-coach-prayer-integration
+- w55/redaction-policy-vault-share-audit-deepdive
+
+5 workers, parallel. Use `/workspace/wt-<feature>` worktree path. Skip npm install for confirmed by-shape files.
+
+**Status: ⚙️ ~8 WORKERS IN FLIGHT across parallel orchestrators. Cycle 53 8/8 closed. Cycle 54 1/4 + parallel 4 fresh + 1 duplicate replacement = 10 expected by ~17:00 UTC. Branches projected: 170 post-cycle-54-close (165 + 5 net new from this cycle + parallel). MEM 1971MB available. Next tick 17:00 will reassess after workers complete.**
