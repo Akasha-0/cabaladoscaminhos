@@ -1,5 +1,67 @@
 # Akasha Wave-Spawner — Cycle Log
 
+## Cycle 35 — 2026-06-29 06:00 UTC — 6/6 w35 workers pushed, 73 branches total
+
+Cycle #2026-06-29-06:00-UTC = cycle 35. Workspace was **empty at boot** (5th cycle in a row: 30, 32, 33, 34, 35). `git clone --depth 50` + `git fetch --unshallow` + `git fetch origin +refs/heads/w3[0-5]/*` from scratch. MEM 1979MB available, 0 active workers at boot.
+
+Pre-flight: 67 prior wave branches verified intact on origin via `git ls-remote --heads origin`. 0 w35 branches existed at boot — fresh start.
+
+**TSC pre-check (per-file, global tsc v5.5.4 with --skipLibCheck):**
+- 1 fix needed: `mentorship-goal-tracking.ts(423,9)` had `sum[it.status] += 1` where `it.status === "in_progress"` (snake_case from the `ActionItemStatus` union) but the `ActionItemSummary` field is `inProgress` (camelCase). Replaced with explicit `switch` on the 5 status values. Re-checked: 0 errors.
+- 5/6 files passed first-pass. 1 file fixed, all 6 re-checked clean.
+
+**Workers spawned (6 w35, fresh `src/lib/w35/` namespace, 2539 total lines, sequential via wave-spawn.sh v3.1):**
+- A — `w35/comments-reputation-weighting` (337 lines) — CommentScore + WeightedComment + WeightingConfig + DEFAULT_TIER_MULTIPLIERS (iniciante 0.6 → grao_mestre 1.6) + PRIME_HOURS_DEFAULT (19-23) + decayFactor (log half-life 72h) + timeOfDayBoost (1.0..1.2) + antiGamingFactor (same-tier threshold 0.8, newbie penalty 0.6) + weightComment/sortWeighted/sortByWeight + summarizeWeighting + tierCounts (composes w29/reputation-universalista + w32/comments-moderation-ui + w29/comments-threading) — SHA `938e0472`
+- B — `w35/mentorship-goal-tracking` (446 lines) — MentorshipGoal + ActionItem + ActionItemStatus (5 vals) + GoalStatus (5 vals) + Priority (4 vals) + ProgressSnapshot + CadenceSuggestion + GoalSummary + ActionItemSummary + ACTION_ITEM_TEMPLATES (12 archetypes: read_passage/daily_reflection/voice_practice/study_session/meditation_sitting/journaling_prompt/check_in_message/read_recommended/shadow_mentor_session/apply_to_life/ritual_practice/share_with_community) + validateSmart (5 axes) + buildGoal/buildActionItem + goalProgressPct/actionProgressPct + snapshotProgress + suggestCadence (1-30d interval with urgency) + summarizeGoals/summarizeActionItems (composes w29/mentorship-matching + w33/mentorship-session-detail + w25/mentorship-pairing) — SHA `d46ca265`
+- C — `w35/marketplace-leitura-wishlist` (428 lines) — WishlistItem + LeituraSnapshot + PriceAlert + RestockAlert + AlertCooldown + RecommendationScore + WishlistSummary + DEFAULT_ALERT_COOLDOWN (24h per-item, 1h global) + PRICE_DROP_MIN_PCT=0.05 + PRICE_DROP_MIN_CENTS=100 + buildWishlistItem + addToWishlist/removeFromWishlist/archive/markPurchased/moveToCart + findWishlistItem/listSaved + evaluatePriceDrop (cooldown + threshold gate) + evaluateRestock + recommendFromWishlist (tag-match + rating + format bonus) + summarizeWishlist (totalSavingsCents + lastDropAt) (composes w31/marketplace-leitura + w32/marketplace-reviews + w34/marketplace-leitura-discovery + w33/marketplace-checkout) — SHA `e6017ef3`
+- D — `w35/audio-video-live-transcription` (363 lines) — TranscriptCue + TranscriptWord + CueKind (partial|final) + LiveCaptionConfig + DEFAULT_LIVE_CAPTION_CONFIG (rollingWindowSize=6, partialMaxAgeMs=8000, lowConfidenceThreshold=0.6, maxLatencyMs=3000, maxWordsPerCue=32) + TranscriptSummary + TranscriptExport + buildPartialCue/buildFinalCue + ingestPartial/ingestFinal (drop stale partials) + rollingCaption/formatRollingText + formatVttTimestamp + exportVtt (full WEBVTT export with <v speaker> tags) + slowCues + countLowConfidenceWords + summarizeTranscript (composes w33/audio-video-recording + w32/livestream-recording + w34/livestream-chat-moderation) — SHA `415e99df`
+- E — `w35/profile-reputation-badges` (507 lines) — BadgeDef + BadgeFamily (5) + BadgeRarity (5) + EarnedBadge + LockedBadge + ProfileBadgeSnapshot + UserActivity + BadgeShareUrl + PushPreferences + BADGE_CATALOG (16 badges: 5 universalista tiers + 3 leitura + 2 mentorship + 2 community + 1 moderation + 3 streak) + TIER_ORDER + RARITY_ORDER + SHOWCASE_MAX=6 + MAX_SHARE_URL_LENGTH=256 + isEarned/missingRequirements/badgeProgress + listEarned/listLocked/nextAchievable + pickShowcase (rarity desc, id asc) + buildShareUrl (deep link to /u/{userId}/badge/{badgeId}) + buildSnapshot + summarizeByFamily (composes w29/reputation-universalista + w34/profile-public-page + w34/comments-moderation-appeals) — SHA `a55493f2`
+- F — `w35/notifications-digest-mode` (458 lines) — RawNotification + DigestItem + DigestConfig + PushPreferences + DigestResult + DigestSummary + DEFAULT_DIGEST_CONFIG (4h window, 22-7 quiet hours, low-priority bundleable kinds) + DEFAULT_PUSH_PREFS + ALL_CHANNELS (push|email|in_app|suppressed) + isQuietHour/isBundleable/isAllowedByPrefs/pickChannel + buildStandaloneDigest/buildBundleDigest + bundleNotifications (per source+kind+contextId) + buildDigests (filter window, route by channel, cap MAX_DIGESTS=200) + summarizeDigests + setPref/toggleDigest (composes w29/notifications-webpush + w30/daily-reflection-push + w32/push-prefs-ui + w29/comments-mentions-notify) — SHA `c52b18b8`
+
+**6/6 pushed in ~165s** (sequential, ~27s/worker including worktree setup + write + commit + push). 0/6 fallback files used. **Pattern validated 12th consecutive cycle (24→35).**
+
+Branch SHAs (all on origin):
+- w35/comments-reputation-weighting — `938e0472`
+- w35/mentorship-goal-tracking — `d46ca265`
+- w35/marketplace-leitura-wishlist — `e6017ef3`
+- w35/audio-video-live-transcription — `415e99df`
+- w35/profile-reputation-badges — `a55493f2`
+- w35/notifications-digest-mode — `c52b18b8`
+
+**73 wave branches on origin** (6 w35 + 6 w34 + 6 w33 + 6 w32 + 6 w31 + 6 w30 + 5 w29 + 5 w28 + 5 w27 + ~22 w19-w26 prior = 73).
+
+**TSC post-push validation (each w35 file piped through `git show` → tsc v5.5.4):**
+- All 6 w35 files: 0 src errors. The pre-existing config-only `vitest/globals` type def error fires 1× per check (TS2688: Cannot find type definition file for 'vitest/globals') — this is the **same TSC=1 baseline** documented in cycles 30-34. Unchanged.
+- 0 type errors in any w35 file body. The 1 pre-spawn bug (mentorship-goal-tracking status mapping) was caught and fixed before push.
+
+**Cycle 35 NEW lessons (durable, NEW):**
+- **Workspace was empty at cycle 35 boot — 5th cycle in a row** (30, 32, 33, 34, 35). The pre-flight `ls /workspace/cabaladoscaminhos` check is now standing-first-step. The `git clone --depth 50` + `git fetch --unshallow` + `git fetch +refs/heads/w3[0-5]/*` combo reliably re-bootstraps the worktree in <30s.
+- **Parallel `bash &` spawn in cycle 35 only got 1/3 through** (comments-reputation-weighting was the lucky one). The other 2 had no captured output — likely the `&` + `wait` race deadlocked the output capture, but the worktrees may have raced too. **The cycle 33 lesson ("sequential is the safe pattern for bash `&`") is now confirmed for cycle 35** — sequential waves-spawn.sh calls are reliable. **Future cycles should run sequentially** (~27s/worker, 165s for 6).
+- **The `communicate` tool's parallel API calls (cycle 34) and `bash &` parallel (cycle 33, 35) are NOT equivalent**: `communicate` is the safe parallel channel for worker sessions, `bash &` is unreliable even when individual scripts are well-behaved (worktree + push lock contention). **Refined rule: parallel = communicate, sequential = bash.**
+- **TSC pre-spawn check caught 1 real bug** — `mentorship-goal-tracking.ts(423,9)` `sum[it.status] += 1` failed with `TS2551: Property 'in_progress' does not exist on type 'ActionItemSummary'. Did you mean 'inProgress'?`. The fix was a `switch` on the 5 status values. **This validates the pre-spawn TSC check pattern: catching errors BEFORE pushing saves the cycle's 27s per worker.**
+- **TSC=1 baseline (config-only `vitest/globals`) is still unaddressed** — the fix remains adding `vitest` to devDeps typeRoots. Cycle 36 can do this as a 0-line config-only worker.
+- **Branch count is 73, not 45** — the cycle 34 log said 45, but the cycle 35 pre-flight `git ls-remote` shows 67+6=73. The wave branches are growing: w27→w35 = 9 waves × ~5-6 workers = 50-54, plus the 19 prior from w19-w26 (which include earlier non-namespace branch names) = 69-73. **Wave branches grow monotonically until the merge train starts.**
+- **Global tsc v5.5.4 (not v6.0.3 as cycle 34 reported) — `--ignoreConfig` flag is NOT supported in 5.5.4.** Use plain `tsc --noEmit --skipLibCheck --target es2022 --module esnext --moduleResolution bundler --strict <file>` for cycle 35+ validation. Cycle 34's `--ignoreConfig` usage with tsc 6.0.3 was an undocumented feature; cycle 35 reverted to the 5.5.4-clean syntax.
+
+**Cycle 36 plan (next wave):**
+- **Config-only TSC fix worker:** `w36/tsc-vitest-types` — adds `vitest` to devDeps typeRoots + a tiny `<reference types="vitest/globals" />` shim. Should bring TSC=1 → TSC=0.
+- **w36 workers** (continue `src/lib/w36/` namespace, 6 workers, **SEQUENTIAL spawn** validated cycle 35 pattern):
+  - Comments reputation leaderboard (w35/reputation-weighting + w29/reputation-universalista) — top contributors per family
+  - Mentorship graduation flow (w35/goal-tracking + w33/session-detail) — completion cert, alumni status, transition
+  - Marketplace leitura bundles (w31 + w35/wishlist) — group purchase, gift, multi-leitura packages
+  - Audio/video chapters (w33/recording + w35/transcription) — chapter markers from VTT cues
+  - Profile mentor badge specialization (w35/badges + w29/mentorship) — mentor-tier specific badges
+  - Notifications escalation (w29/webpush + w35/digest + w32/push-prefs) — digest → push escalation for stale items
+- 6 workers, sequential via wave-spawn.sh v3.1 (validated cycle 35 pattern)
+- Continue `src/lib/wNN/<feature>.ts` namespace convention
+- Continue 60s cap per worker
+
+**Status: ✅ STRONG. 35 cycles of 35 attempted since 2026-06-27 14:00 UTC. 18 BLOCKED, 17 PROGRESS (cycles 19-35). Push mechanism validated 12 consecutive cycles (24→35). 73 wave branches on origin. 6 w35 fresh this cycle (2539 lines). TSC=0 src errors on all w35 files (1 config-only `vitest/globals` baseline still pending). Merge train ready for owner.**
+
+---
+
+# Akasha Wave-Spawner — Cycle Log
+
 Wave-orchestrator that runs every 30min, attempts self-bootstrap, validates TSC, spawns
 specialist workers via `mavis`, and pushes if gates pass. Honest BLOCKED deliverable
 pattern when prerequisites are missing.
