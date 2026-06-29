@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "moduleResolution": "Bundler",
+    "types": []
+  },
+  "include": [
+    "src/lib/w65/events-workshops-engine.ts",
+    "src/lib/w65/events-workshops-engine.spec.ts"
+  ]
+}
