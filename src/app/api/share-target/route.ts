@@ -1,25 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 // ============================================================================
-// /share-target — Web Share Target receiver (Wave 20)
+// /api/share-target — Web Share Target receiver (Wave 20)
 // ============================================================================
-// O manifest.json declara share_target.action = "/share-target" com method POST.
-// Quando o usuário compartilha de outro app, o SO abre este URL com POST
-// multipart/form-data. Não podemos renderizar uma página direto de um POST —
-// então:
+// O manifest.json declara share_target.action = "/api/share-target" com
+// method POST. Quando o usuário compartilha de outro app, o SO abre este URL
+// com POST multipart/form-data. Não podemos renderizar uma página direto de
+// um POST — então:
 //   1) Esta route captura o POST
 //   2) Extrai title/text/url
 //   3) Faz 303 redirect para /share-target?title=...&text=...&url=...
 //   4) A página /share-target/page.tsx renderiza o form pré-preenchido
 //
-// Compartilhamento cai em 3 cenários:
-//   - title + url: postar link (ex: compartilhar um paper)
-//   - text + url: postar citação com referência
-//   - só text: postar reflexão/experiência
-//
 // Por que não criar post server-side aqui: precisamos que o usuário revise e
 // adicione tradição/tópico, ou descarte (UX de privacidade). Redirecionar para
 // a página de compose com os dados pré-preenchidos é o padrão mais seguro.
+//
+// Movido de /share-target/route.ts → /api/share-target/route.ts para evitar
+// conflito com a página page.tsx no mesmo path (proibido no App Router).
 // ============================================================================
 
 export const dynamic = 'force-dynamic';
@@ -52,10 +50,4 @@ export async function POST(request: NextRequest) {
       status: 303,
     });
   }
-}
-
-// GET também suportado (deep link / abrir manualmente)
-export async function GET(request: NextRequest) {
-  // Sem modificações — deixa a página renderizar
-  return NextResponse.next();
 }
