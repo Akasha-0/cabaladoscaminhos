@@ -447,3 +447,43 @@ Same as cycle 21. Wave-spawner logs persist via git push to remote (cycle 18+ pa
 - Recovery patterns used: `git worktree add` for branch isolation, `git update-ref` to restore branch pointer after parallel `git reset --hard origin/main`
 - Workers that did not use worktrees still recovered cleanly via `git update-ref` + `git reset --hard origin/main`
 - Token-push via GIT_ASKPASS (no URL/reflog exposure) was used by all 4 w25 workers — no shell hangs observed
+
+## Cycle 51 — w51/voice-mood-history-export terminated at 30-min cap (2026-06-29)
+
+**Blocker ID:** B-W51-VMHE-TIMEOUT
+**Worker session:** 414469786947810 (Coder, status 2 "Request timed out.")
+**Worktree:** `/workspace/wt-w51-voice-mood-history-export` (cleaned up, branch deleted)
+**Symptom:** Empty worktree at `3f5effdf` (origin/main), no file written in `src/lib/w51/`, no commit on `w51/voice-mood-history-export`.
+
+**Spec (too ambitious for 30-min cap):**
+- 4 export formats (json/jsonl/csv/ndjson-bundle)
+- 5 window constants (30/90/180/365/all days)
+- aggregate stats (mood distribution, top mood, mood trends, peak hour)
+- bundle checksum (SHA-256)
+- LGPD Art. 7 (consent) + Art. 18 (export/delete) + anonymization
+- 8 error codes VMHE_001..008
+- 30+ named exports
+
+**Root cause analysis (matches cycle 48 w48/tradition-content-moderation):**
+1. Feature spans 4 distinct concerns (data model + export formats + aggregation + LGPD) — 4 conceptual units
+2. Spec asked for ~30+ named exports — usually a 2000L+ file
+3. Combined with 4 export formats × 5 windows + LGPD, the natural size is 2500-3500L
+4. Single-worker 30-min cap is proven for 1500-2800L rich features (cycle 50 = 12,235L / 5 workers = 2447L avg)
+5. The cap hit exactly at 30 min suggests the worker was on track but didn't get to write+commit+push in time
+
+**Recommended owner action:** split into 2 sub-features for w52:
+- w52a/voice-mood-history-store (~1200L) — query model + storage + LGPD consent + delete
+- w52b/voice-mood-history-export (~1500L) — 4 export formats + bundle checksums + aggregate stats
+
+**Alternative:** re-spawn with explicit 60-90 min cap and a focused MVP (3 export formats, no anonymization). Owner decision required.
+
+**Historical context:**
+- Cycle 48: w48/tradition-content-moderation terminated (10 traditions × 3-8 rules = 30-80 rules too ambitious)
+- Cycle 51: w51/voice-mood-history-export terminated (4 concerns × 30+ exports too ambitious)
+- Pattern: features that span N distinct concerns in a single file are too ambitious for 30 min when N ≥ 4
+
+**Mitigation going forward:**
+- Wave-spawner should pre-budget 1500-2800L per file, with 30+ exports
+- Features that exceed 2800L target should be split into 2-3 sub-features BEFORE spawning
+- Worker briefs should include a `MAX_SIZE_LINES` guard (e.g., "if file would exceed 3000L, simplify the spec to fit 2500L")
+- 4-cycle count of w51 features that hit cap: 0/4 (only VMHE hit cap; 4/4 others pushed cleanly)
