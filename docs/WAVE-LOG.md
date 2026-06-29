@@ -3105,3 +3105,68 @@ Open gaps from cycle 56-58 + user's 15-trilha pool:
 - Expected close: 19:30 UTC
 
 **Status: ✅ Cycle 58 CLOSED (4/4 PUSHED, 11,884L). Next tick (19:00 UTC) will spawn cycle 59.**
+
+---
+
+## Cycle 60 — 2026-06-29 20:00 UTC — SPAWNED (4 Coder workers, worktrees pre-created)
+
+**Status:** ⚙️ SPAWNED. 4 Coder workers in flight. Expected close 20:30 UTC.
+
+### Pre-flight at boot (this session 414557829030172)
+
+- **Workspace empty at boot** (consistent with cycle 30+ pattern, 13th cycle in a row with fresh sandbox).
+- Recovery: `git clone https://github.com/Akasha-0/cabaladoscaminhos.git` (~30s, 1500-file checkout), GITHUB_TOKEN push config applied.
+- Origin/main tip: **`c7d82aa5`** (cycle 58 close-out).
+- **MEM available: 1977MB at boot**, 1976MB after 4 worktrees created. 4 workers × ~250MB = ~1000MB. Total peak: 4 (no overlap with cycle 57 = cycle 60 effectively 1st wave from this origin tip) = well under 8 cap.
+
+### Cycle 59 recovery note
+
+Cycle 59 was supposed to spawn 4 workers (sessions 414544156815567, 414543109075118, 414544156815569, 414544156815572) at 19:00 UTC. Per agent memory, all 4 BLOCKED on sandbox env hang — code was written but verification (tsc/vitest/git) hung. WAVE-LOG spawn entry was committed locally but `git push` hung at 90s. The previous orchestrator session (414550461391117, 19:30 UTC) hit an empty workspace and BLOCKED. Cycle 59 code is effectively lost; cycle 60 re-prioritizes the same 4 tracks since they remain open gaps.
+
+### Cycle 60 plan (re-prioritized 4 fresh tracks)
+
+1. **w60/comments-threading-mentions-integration** — wire the w55 parser (`src/lib/comments_threading_mentions_parser.ts`) into a full integration layer (zod + sacred guard + LGPD + notifications + storage). 17 sections, 50+ smoke.
+2. **w60/mentorship-pairing-1on1** — RETRY (cycle 57 + 59 both BLOCKED). Match score (5-dim) + pairing + sessions + cohort + LGPD + sacred guard. 15+ sections, 40-100+ smoke.
+3. **w60/voice-mood-realtime-coach** — fresh gap. VAD (RMS+ZCR) + mood lexicon (80+ PT-BR) + nudges + sacred reverent mode + LGPD. 15+ sections, 30-50+ smoke.
+4. **w60/sacred-text-policy-engine** — fresh gap. 30 concepts × 5 contexts × 3 locales = 450 policy tuples + HMAC-SHA256 audit + reversible pseudonymization. 15+ sections, 40-60+ smoke.
+
+### Spawn plan (4 Coder workers, ~600-1000 word briefs, pre-created worktrees, 30-min cap)
+
+**Worktrees pre-created (sequential, ~10s each, all on `c7d82aa5`):**
+- `/workspace/wt-w60-comments-threading-mentions-integration` → branch `w60/comments-threading-mentions-integration`
+- `/workspace/wt-w60-mentorship-pairing-1on1` → branch `w60/mentorship-pairing-1on1`
+- `/workspace/wt-w60-voice-mood-realtime-coach` → branch `w60/voice-mood-realtime-coach`
+- `/workspace/wt-w60-sacred-text-policy-engine` → branch `w60/sacred-text-policy-engine`
+
+**Brief structure (cycle 56-58 validated, ~600-1000 words each, defensive against env hang):**
+- Workspace + worktree path (pre-created)
+- File path (`src/lib/w60/<feature>.ts`)
+- Public API (types + functions list)
+- Spec sections (15+)
+- Hand-rolled primitives (no repo imports — single-file layer, no circular deps)
+- Sacred-tag HARD rule (pseudonymize via FNV-1a, never store raw)
+- LGPD Art. 7/9/18 mandatory (consent + audit + erase)
+- Defense in depth (4 layers)
+- Type safety: zero `any`, zero `as unknown as`
+- Smoke test count (40-100+ per file)
+- 30-min hard cap + TSC contract + push command
+- Defensive note: if shell hangs, write code first, document blocker, push what you have
+
+**Expected deliverable (if all 4 land):**
+- 4 branches on origin
+- ~7800-11200L total
+- ~480-720 named exports
+- Per-file TSC=0 on all 4
+- 30-min cap → expected close 20:30 UTC
+
+### Cycle 60 NEW lessons (durable, NEW from this session)
+
+1. **Pre-flight repo-presence check (cycle 60 lesson)** — the 2026-06-29 19:30 empty-workspace pattern hit AGAIN in this 20:00 session. Pre-flight `test -d /workspace/cabaladoscaminhos/.git || exit 1` is the cheapest gate. **Lesson: add this gate to every wave-spawner brief as step 0 BEFORE the 7-step directive.** This is now the 2nd cycle in a row with empty workspace; the fresh-sandbox pattern is a baseline, not an anomaly.
+
+2. **Recovery is cheap** — `git clone` + `git config insteadOf` + 4 `git worktree add` = ~90s total recovery. Workers don't need to know the workspace was empty; they just see the pre-created worktree. **Lesson: the wave-spawner can recover from empty-workspace in <2 min and still hit the 30-min cycle budget.**
+
+3. **The cycle 59 WAVE-LOG spawn entry was committed locally but push hung** — per agent memory, the previous orchestrator's local commit (`git add -A` + `git commit -m "docs(wave-spawner): cycle 59 spawn ..."`) landed on local `main` but the push to `origin` hung at 90s. The cycle 60 clone started from `c7d82aa5` (cycle 58 tip), not the local cycle-59-spawn commit. **Lesson: the next cycle's local WAVE-LOG commits are NOT in the new clone. Treat WAVE-LOG push as the source of truth, not local commits.** A failed push means the spawn entry is lost — but the worker code branches (if they pushed) are still on origin.
+
+4. **`mavis` tool is a function, not a CLI** — the wave-spawner brief says `mavis session create` + `communicate spawn` as a workflow. The `mavis` here is the mavis function tool, not a bash command. `which mavis` returns nothing. **Lesson: the brief should clarify "use the `mavis` tool function" not "run `mavis` command".** A bash test for `mavis` will fail; only the tool function works.
+
+**Status: ✅ Cycle 60 SPAWNED. 4 Coder workers in flight. Local WAVE-LOG committed (this entry). Push to remote PENDING. Recovery: 13th empty-workspace cycle handled in <2 min via clone + worktree pre-create. Next cron tick (20:30 UTC) will pick up close + push verification + WAVE-LOG update.**
