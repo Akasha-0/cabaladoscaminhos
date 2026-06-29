@@ -1,0 +1,68 @@
+src/app/(community)/akashic/page.tsx(277,41): error TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(value: string | null, eventDetails: SelectRootChangeEventDetails) => void'.
+src/app/(community)/explore/page.tsx(310,13): error TS2322: Type '{ initialQuery: string; placeholder: string; size: "md"; onSubmit: (q: any) => void; }' is not assignable to type 'IntrinsicAttributes & SearchBarProps'.
+src/app/(community)/explore/page.tsx(310,24): error TS7006: Parameter 'q' implicitly has an 'any' type.
+src/app/(community)/explore/page.tsx(484,52): error TS2339: Property 'id' does not exist on type 'Hit'.
+src/app/(community)/explore/page.tsx(855,19): error TS2322: Type '{ children: Element; asChild: true; variant: "outline"; className: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; golden: string; "golden-outline": string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+src/app/(community)/feedback/FeedbackBoard.tsx(131,54): error TS2554: Expected 1 arguments, but got 2.
+src/app/(community)/feedback/__tests__/FeedbackBoard.test.tsx(45,5): error TS2353: Object literal may only specify known properties, and 'author_handle' does not exist in type 'FeatureRequestRow'.
+src/app/(community)/feedback/__tests__/FeedbackBoard.test.tsx(56,5): error TS2353: Object literal may only specify known properties, and 'author_handle' does not exist in type 'FeatureRequestRow'.
+src/app/(community)/feedback/page.tsx(62,13): error TS2503: Cannot find namespace 'JSX'.
+src/app/(community)/feedback/page.tsx(124,31): error TS2339: Property 'featureRequest' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+src/app/(community)/feedback/page.tsx(137,53): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/app/(community)/feedback/page.tsx(151,32): error TS2339: Property 'featureUpvote' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+src/app/(community)/feedback/page.tsx(155,36): error TS7006: Parameter 'u' implicitly has an 'any' type.
+src/app/(community)/groups/[slug]/page.tsx(436,9): error TS2322: Type '{ title: string; subtitle: string; }' is not assignable to type 'IntrinsicAttributes & FeedEmptyProps'.
+src/app/(community)/tags/[tag]/page.tsx(215,26): error TS18048: 'count' is possibly 'undefined'.
+src/app/(community)/tags/[tag]/page.tsx(250,25): error TS2322: Type '{ children: Element; asChild: true; variant: "outline"; className: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; golden: string; "golden-outline": string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+src/app/(community)/u/[handle]/page.tsx(127,31): error TS2339: Property 'isFollowing' does not exist on type 'PublicProfile'.
+src/app/(community)/u/[handle]/page.tsx(128,33): error TS2339: Property 'isFollowing' does not exist on type 'PublicProfile'.
+src/app/(community)/u/[handle]/page.tsx(208,38): error TS2339: Property 'isFollowing' does not exist on type 'PublicProfile'.
+src/app/(community)/u/[handle]/page.tsx(210,31): error TS2339: Property 'isFollowing' does not exist on type 'PublicProfile'.
+src/app/(community)/u/[handle]/page.tsx(215,30): error TS2339: Property 'isFollowing' does not exist on type 'PublicProfile'.
+src/app/actions/auth.ts(319,15): error TS2353: Object literal may only specify known properties, and 'displayName' does not exist in type '(Without<UserUpdateInput, UserUncheckedUpdateInput> & UserUncheckedUpdateInput) | (Without<...> & UserUpdateInput)'.
+src/app/api/notifications/read-all/route.ts(79,7): error TS2322: Type '"LIKE" | "COMMENT" | "POST_REPLY" | "FOLLOW" | "MENTION" | "GROUP_INVITE" | "GROUP_POST" | "GROUP_ROLE_CHANGE" | "ARTICLE_RECOMMENDATION" | "ARTICLE_PUBLISHED" | "SYSTEM_ALERT" | "MODERATION_ACTION" | "DIGEST_WEEKLY"' is not assignable to type 'undefined'.
+src/app/api/notifications/route.ts(118,9): error TS2322: Type '{ userId: string; read?: boolean | undefined; type?: NotificationType | undefined; OR?: unknown[] | undefined; }' is not assignable to type 'NotificationWhereInput'.
+src/app/api/users/profile/route.ts(112,30): error TS2551: Property 'orixaSecundario' does not exist on type '{ id: string; userId: string; createdAt: Date; updatedAt: Date; signoSolar: string | null; signoLunar: string | null; ascendente: string | null; numeroCabalistico: number | null; ... 8 more ...; sefirotDominante: string | null; }'. Did you mean 'oduSecundario'?
+src/app/design-system/page.tsx(89,19): error TS2322: Type '{ children: Element; asChild: boolean; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; golden: string; "golden-outline": string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+src/app/design-system/page.tsx(92,37): error TS2322: Type '{ children: Element; variant: "outline"; asChild: boolean; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; golden: string; "golden-outline": string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+src/app/layout.tsx(158,3): error TS1117: An object literal cannot have multiple properties with the same name.
+src/components/community/CommunityNav.tsx(71,13): error TS2345: Argument of type '"selection"' is not assignable to parameter of type 'HapticPattern | undefined'.
+src/components/community/CommunityNav.tsx(150,40): error TS2345: Argument of type '"selection"' is not assignable to parameter of type 'HapticPattern | undefined'.
+src/components/community/CommunityNav.tsx(189,48): error TS2345: Argument of type '"selection"' is not assignable to parameter of type 'HapticPattern | undefined'.
+src/components/community/CommunityNav.tsx(194,58): error TS2345: Argument of type '"selection"' is not assignable to parameter of type 'HapticPattern | undefined'.
+src/components/community/CommunityNav.tsx(293,29): error TS2345: Argument of type '"selection"' is not assignable to parameter of type 'HapticPattern | undefined'.
+src/components/design-system/divider.tsx(120,15): error TS2484: Export declaration conflicts with exported declaration of 'DividerProps'.
+src/components/design-system/empty.tsx(162,15): error TS2484: Export declaration conflicts with exported declaration of 'EmptyProps'.
+src/components/design-system/empty.tsx(162,27): error TS2484: Export declaration conflicts with exported declaration of 'EmptyAction'.
+src/components/design-system/error.tsx(190,15): error TS2484: Export declaration conflicts with exported declaration of 'ErrorProps'.
+src/components/design-system/error.tsx(190,27): error TS2484: Export declaration conflicts with exported declaration of 'ErrorSeverity'.
+src/components/design-system/loading.tsx(155,15): error TS2484: Export declaration conflicts with exported declaration of 'LoadingProps'.
+src/hooks/__tests__/useAuth.test.tsx(85,29): error TS2339: Property 'error' does not exist on type 'UseAuthReturn'.
+src/hooks/__tests__/useAuth.test.tsx(100,29): error TS2339: Property 'error' does not exist on type 'UseAuthReturn'.
+src/hooks/__tests__/useAuth.test.tsx(128,73): error TS2345: Argument of type 'string' is not assignable to parameter of type 'SignUpMetadata'.
+src/hooks/__tests__/useAuth.test.tsx(149,73): error TS2345: Argument of type 'string' is not assignable to parameter of type 'SignUpMetadata'.
+src/hooks/useAuth.ts(110,26): error TS2322: Type 'User | undefined' is not assignable to type 'void | undefined'.
+src/hooks/usePosts.ts(424,31): error TS2561: Object literal may only specify known properties, but 'loadingMore' does not exist in type 'UseCommentsResult'. Did you mean to write 'loadMore'?
+src/lib/ai/embeddings.ts(55,38): error TS2353: Object literal may only specify known properties, and 'abstract' does not exist in type 'ArticleSelect<DefaultArgs>'.
+src/lib/ai/embeddings.ts(59,40): error TS2339: Property 'abstract' does not exist on type '{ id: string; url: string | null; externalUrl: string | null; type: ArticleType; title: string; body: string | null; createdAt: Date; updatedAt: Date; content: string; ... 21 more ...; publishedAt: Date | null; }'.
+src/lib/ai/index.ts(3,38): error TS2307: Cannot find module './prompt-system' or its corresponding type declarations.
+src/lib/ai/index.ts(4,60): error TS2307: Cannot find module './insights/parser' or its corresponding type declarations.
+src/lib/ai/index.ts(5,34): error TS2307: Cannot find module './insights/types' or its corresponding type declarations.
+src/lib/ai/index.ts(18,50): error TS2307: Cannot find module './tradition-mapper' or its corresponding type declarations.
+src/lib/ai/index.ts(19,60): error TS2307: Cannot find module './tradition-mapper' or its corresponding type declarations.
+src/lib/ai/rag.ts(101,5): error TS2322: Type '{ id: string; url: string | null; externalUrl: string | null; type: ArticleType; title: string; body: string | null; createdAt: Date; updatedAt: Date; content: string; ... 21 more ...; publishedAt: Date | null; }[]' is not assignable to type '{ id: string; tradition: string | null; abstract: string | null; content: string | null; }[]'.
+src/lib/ai/rag.ts(106,9): error TS2353: Object literal may only specify known properties, and 'abstract' does not exist in type 'ArticleSelect<DefaultArgs>'.
+src/lib/analytics/events.ts(47,49): error TS2307: Cannot find module 'posthog-js' or its corresponding type declarations.
+src/lib/community/notifications.ts(81,44): error TS2322: Type '{ userId: string; type: "NEW_POST_FROM_GROUP"; actorId: string; groupId: string; postId: string; payload: InputJsonValue; }[]' is not assignable to type 'NotificationCreateManyInput | NotificationCreateManyInput[]'.
+src/lib/community/notifications.ts(146,7): error TS2322: Type '{ userId: string; type: "GROUP_NEW_MEMBER"; actorId: string; groupId: string; }[]' is not assignable to type 'NotificationCreateManyInput | NotificationCreateManyInput[]'.
+src/lib/community/posts.ts(58,7): error TS2698: Spread types may only be created from object types.
+src/lib/community/search.ts(756,38): error TS2339: Property 'id' does not exist on type 'SearchHit'.
+src/lib/notifications/push.ts(196,30): error TS2307: Cannot find module 'web-push' or its corresponding type declarations.
+src/lib/notifications/push.ts(198,28): error TS2307: Cannot find module 'web-push' or its corresponding type declarations.
+src/lib/prisma-optimized.ts(43,9): error TS2353: Object literal may only specify known properties, and 'assinatura' does not exist in type 'UserInclude<DefaultArgs>'.
+src/lib/prisma-optimized.ts(54,9): error TS2353: Object literal may only specify known properties, and 'assinatura' does not exist in type 'UserInclude<DefaultArgs>'.
+src/lib/prisma-optimized.ts(105,9): error TS2353: Object literal may only specify known properties, and 'credito' does not exist in type 'UserWhereInput'.
+src/lib/prisma-optimized.ts(110,9): error TS2353: Object literal may only specify known properties, and 'credito' does not exist in type 'UserInclude<DefaultArgs>'.
+src/lib/prisma-optimized.ts(132,33): error TS2339: Property 'credito' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+src/lib/prisma-optimized.ts(147,19): error TS2339: Property 'transacaoCredito' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+src/lib/statistics/stats-visualization.ts(17,8): error TS2307: Cannot find module '../stats/dashboard' or its corresponding type declarations.

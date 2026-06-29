@@ -1,0 +1,50 @@
+       × notifs nao-lidas tem classe com border-amber-500/20 21ms
+       × notifs lidas tem classe mais discreta 20ms
+ ❯ src/components/community/__tests__/CommunityNav.test.tsx (23 tests | 8 failed) 1647ms
+       ✓ renderiza sem crash quando deslogado 74ms
+       ✓ renderiza sem crash quando logado 20ms
+       ✓ mostra o logo "Akasha" 32ms
+       ✓ renderiza os 3 links de navegacao principais 243ms
+       × tem um botao de busca acessivel (aria-label="Buscar") 246ms
+       ✓ mostra o botao "Entrar" 42ms
+       ✓ nao mostra badge de notificacoes sem usuario 18ms
+       ✓ nao renderiza bottom-nav em mobile sem usuario 10ms
+       ✓ nao mostra o botao "Entrar" 50ms
+       ✓ mostra o avatar do usuario no header 20ms
+       × mostra badge com contador de notificacoes quando count > 0 33ms
+       × cap o contador em "9+" quando count > 9 28ms
+       ✓ nao mostra badge quando notificationsCount e 0 18ms
+       ✓ renderiza bottom-nav em mobile com link para o perfil 61ms
+       ✓ marca o link correspondente ao pathname atual como ativo 29ms
+       ✓ marca /feed como ativo quando pathname === /feed 47ms
+       ✓ links de rotas diferentes nao recebem o destaque 50ms
+       × aciona onSearch ao digitar na busca expandida 95ms
+       × abre e fecha a barra de busca ao clicar no botao 80ms
+       × abre o menu mobile ao clicar no botao de menu 67ms
+       × fecha o menu mobile ao clicar em um link do menu 62ms
+       ✓ abre o profile dropdown ao clicar no avatar e mostra opcoes 100ms
+       × profile dropdown tem link para o perfil do usuario 219ms
+ ❯ src/components/community/__tests__/group-member.test.ts (12 tests | 5 failed) 23ms
+     ✓ grupo público: cria membership via upsert + incrementa contador 3ms
+     ✓ grupo privado: lança GroupPrivateError (não cria membership) 1ms
+     ✓ grupo inexistente: lança GroupNotFoundError 0ms
+     ✓ último ADMIN não pode sair 1ms
+     ✓ se há múltiplos admins, ADMIN pode sair 0ms
+     ✓ MODERATOR pode sair sem last-admin guard 1ms
+     ✓ idempotente: não-membro pode chamar leave sem erro 0ms
+     × ADMIN pode promover MEMBER → MODERATOR 6ms
+     × rebaixar último ADMIN para MEMBER é bloqueado 3ms
+     × promover MODERATOR → ADMIN é permitido 1ms
+     × remover último ADMIN é bloqueado 4ms
+     × remover MEMBER decrementa contador 0ms
+ ✓ src/components/community/__tests__/groups-page.test.tsx (14 tests) 1428ms
+       ✓ passa tradition para o hook useGroupsList  402ms
+       ✓ search atualiza debouncedSearch após 300ms  423ms
+ ✓ src/components/community/__tests__/CommunityShell.test.tsx (7 tests) 551ms
+ ✓ src/components/community/__tests__/FeedSkeleton.test.tsx (4 tests) 74ms
+ ✓ src/components/community/__tests__/FeedErrorBoundary.test.tsx (5 tests) 297ms
+ ✓ src/components/community/__tests__/FeedEmpty.test.tsx (5 tests) 267ms
+ Test Files  6 failed | 5 passed (11)
+      Tests  48 failed | 114 passed (162)
+   Start at  10:10:56
+   Duration  52.90s (transform 3.74s, setup 2.15s, import 9.47s, tests 14.77s, environment 23.39s)

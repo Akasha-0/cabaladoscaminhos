@@ -5,6 +5,330 @@
 
 ---
 
+## 2026-06-29 (community-platform — branch feat/community-platform, HEAD 260efd3f)
+
+### Objetivo
+Bateria de testes pré-release diária para a branch `feat/community-platform`
+(HEAD `260efd3f`, 31 commits à frente de `main`/`origin/main` `7693fa45`).
+Cobre:
+
+1. Validação estática (TypeScript + ESLint)
+2. Execução da suite vitest do escopo `src/components/community/__tests__`
+3. Mapeamento de cobertura dos arquivos `.ts/.tsx` modificados vs `main`
+4. Reporte honesto do estado atual — sem maquiar fails pré-existentes
+
+### Ambiente
+- **Sandbox:** 2 GB RAM, 2 vCPU, Node v22.17.0, npm 10.9.2
+- **Workaround de OOM:** `NODE_OPTIONS='--max-old-space-size=1500'`
+- **Setup novo:** rodei `npm install` (~2 min, 854 pacotes) — TSC e vitest
+  puderam ser executados sem o problema histórico de OOM. **O Prisma client
+  foi gerado pela primeira vez nesta sessão** (`npx prisma generate`).
+- **Outputs brutos** (logs completos pra auditoria):
+  - `docs/.tsc-output-2026-06-29.log` (349 KB, 2856 linhas)
+  - `docs/.tsc-src-errors-2026-06-29.log` (12 KB, **só src/**)
+  - `docs/.lint-output-2026-06-29.log` (25 KB, 265 linhas)
+  - `docs/.vitest-community-2026-06-29.log` (534 KB, 10409 linhas)
+
+### Status geral
+
+| Gate | Resultado | Observação |
+|------|-----------|------------|
+| `prisma generate` | ✅ **OK** | 1.01s, primeiro generate em sandbox desde o pivot community |
+| `tsc --noEmit --skipLibCheck` | ❌ **FAIL** | **2791 errors** total; **68 errors em src/** (era 97 antes do prisma generate) |
+| `eslint src` (escopo reduzido) | ⚠️ **PARTIAL** | **13 errors + 110 warnings** (lint completo em `eslint .` excedeu 50s) |
+| `vitest run src/components/community/__tests__` | ❌ **FAIL** | **48/162 testes falham (29.6%)** em 6/11 arquivos |
+| `vitest run` (suite completa) | ⏭️ **SKIPPED** | 692 arquivos `.test.ts/.tsx` no repo — fora do budget de tempo/memória do sandbox |
+| Cobertura de testes nos 329 arquivos modificados | ❌ **1.5%** | Apenas 5/329 `.ts/.tsx` modificados têm teste |
+
+**Decisão de release:** **NÃO APROVAR MERGE** até resolver:
+- Os **16 erros de src/ que são bugs reais** (não débitos técnicos
+  pré-existentes): referências a modelos B2B removidos, módulos faltando,
+  typos em tipos, etc.
+- Os **48 testes vitest que falham** (6 arquivos: feed-page, notifications-page,
+  CommunityNav, group-member, library-page, group-detail-page).
+
+Os demais 2752 erros de TSC são **débitos técnicos pré-existentes em arquivos
+de teste sem tipagem explícita** (TS7006 `Parameter implicitly has 'any' type`).
+Não bloqueiam compilação runtime mas indicam que a suite de testes precisa de
+um sweep de tipos.
+
+### 1. Validação estática — TypeScript
+
+```bash
+$ npx tsc --noEmit --skipLibCheck
+$ # 2791 errors, exit code 1
+```
+
+**Distribuição por tipo de erro (TOP 10):**
+
+| Código | Qtd | Categoria |
+|--------|-----|-----------|
+| TS7006 | 1450 | Parameter implicitly has `any` type (test files) |
+| TS2307 | 823 | Cannot find module (test files referencing non-existent `@/lib/...`) |
+| TS18046 | 449 | `e` is of type `unknown` (test files) |
+| TS2305 | 28 | Module has no exported member (Prisma enum drift) |
+| TS2339 | 14 | Property does not exist |
+| TS2540 | 12 | … |
+| TS2345 | 10 | Argument type mismatch |
+| TS2322 | 9 | Type not assignable |
+| TS7053 | 7 | … |
+| TS2484 | 6 | … |
+
+**Erros em `src/` (apenas código de produção, 68 total):**
+
+| Arquivo | Qtd | Tipo |
+|---------|-----|------|
+| `src/app/(community)/akashic/page.tsx` | 1 | Select onChange type mismatch |
+| `src/app/(community)/explore/page.tsx` | 3 | SearchBar prop mismatch, Hit.id missing |
+| `src/app/(community)/feedback/FeedbackBoard.tsx` | 1 | `Expected 1 arguments, but got 2` |
+| `src/app/(community)/feedback/page.tsx` | 3 | JSX namespace, PrismaClient.featureRequest |
+| `src/app/(community)/groups/[slug]/page.tsx` | 1 | FeedEmpty prop mismatch |
+| `src/app/(community)/tags/[tag]/page.tsx` | 2 | `count` possibly undefined, Button prop |
+| `src/app/(community)/u/[handle]/page.tsx` | 5 | `PublicProfile.isFollowing` missing |
+| `src/app/actions/auth.ts` | 1 | `displayName` not in UserUpdateInput |
+| `src/app/api/notifications/route.ts` | 1 | NotificationWhereInput mismatch |
+| `src/app/api/notifications/read-all/route.ts` | 1 | Notification type drift |
+| `src/app/api/users/profile/route.ts` | 1 | `orixaSecundario` → should be `oduSecundario` |
+| `src/app/design-system/page.tsx` | 2 | Button asChild variant |
+| `src/app/layout.tsx` | 1 | Duplicate property in object literal |
+| `src/components/community/CommunityNav.tsx` | 5 | Haptic pattern type |
+| `src/components/design-system/{error,empty,loading,divider}.tsx` | 8 | Button prop variants |
+| `src/hooks/useAuth.ts` | 1 | User | undefined not assignable |
+| `src/hooks/usePosts.ts` | 1 | `loadingMore` typo (should be `loadMore`) |
+| `src/lib/ai/embeddings.ts` | 2 | `abstract` field doesn't exist on Article |
+| `src/lib/ai/index.ts` | 5 | Cannot find module `./prompt-system`, `./insights/parser`, etc |
+| `src/lib/ai/rag.ts` | 2 | Article shape drift |
+| `src/lib/analytics/events.ts` | 1 | `posthog-js` not installed |
+| `src/lib/community/notifications.ts` | 2 | Prisma enum `NEW_POST_FROM_GROUP` / `GROUP_NEW_MEMBER` drift |
+| `src/lib/community/posts.ts` | 1 | Spread types may only be created from object types |
+| `src/lib/community/search.ts` | 1 | `SearchHit.id` doesn't exist |
+| `src/lib/notifications/push.ts` | 2 | `web-push` not installed |
+| `src/lib/prisma-optimized.ts` | 6 | **`assinatura`, `credito`, `transacaoCredito`** — **B2B models removidos** |
+| `src/lib/statistics/stats-visualization.ts` | 1 | Cannot find module `../stats/dashboard` |
+
+**Bugs REAIS identificados (16 erros, prioridade P0):**
+1. `src/lib/prisma-optimized.ts` (×6) — referências a `assinatura`/`credito`/
+   `transacaoCredito`, modelos B2B removidos no pivot community (commit
+   408d122a, gap analysis 2026-06-27). **Arquivo deve ser deletado ou refatorado.**
+2. `src/app/actions/auth.ts:319` — `displayName` não existe no `UserUpdateInput`.
+   Provavelmente renomeado em algum wave.
+3. `src/app/api/users/profile/route.ts:112` — `orixaSecundario` deve ser
+   `oduSecundario` (typo ou rename não propagado).
+4. `src/lib/community/notifications.ts:81,146` — `NEW_POST_FROM_GROUP` e
+   `GROUP_NEW_MEMBER` não existem no enum Prisma atual. Provavelmente
+   renomeados em algum refactor de schema.
+5. `src/lib/ai/embeddings.ts:55,59` + `src/lib/ai/rag.ts:101,106` — `abstract`
+   field não existe no modelo `Article`. Provavelmente renomeado para
+   `summary` ou `excerpt`.
+6. `src/hooks/usePosts.ts:424` — typo `loadingMore` → `loadMore`.
+7. `src/app/layout.tsx:158` — duplicate property em object literal.
+8. `src/app/(community)/u/[handle]/page.tsx:127-215` — `isFollowing` não
+   existe no tipo `PublicProfile`. Provavelmente adicionado no componente
+   mas não no type.
+9. `src/app/(community)/feedback/page.tsx:62,124,151` — `JSX` namespace
+   removido no React 19 + `PrismaClient.featureRequest` (modelo removido?).
+10. `src/lib/ai/index.ts:3-19` — 4 módulos não encontrados (`./prompt-system`,
+    `./insights/parser`, `./insights/types`, `./tradition-mapper`). **Arquivos
+    foram deletados ou nunca commitados.**
+11. `src/lib/analytics/events.ts:47` — `posthog-js` não está em `package.json`.
+    Era uma dep de B2B? Ou dependência não adicionada.
+12. `src/lib/notifications/push.ts:196,198` — `web-push` não está em
+    `package.json`. Necessário para push real (não mock).
+13. `src/lib/statistics/stats-visualization.ts:17` — `../stats/dashboard` não
+    existe. Provavelmente renomeado/movido.
+14. `src/app/(community)/feedback/FeedbackBoard.tsx:131` — função chamada com
+    2 args quando espera 1.
+15. `src/components/community/CommunityNav.tsx:71,150` — `'selection'` não é
+    um `HapticPattern` válido.
+16. Vários erros de Button props (variant mismatch) — API do Button mudou
+    com a migração para shadcn/ui v4 (golden/golden-outline variants).
+
+### 2. Validação estática — ESLint
+
+```bash
+$ timeout 50 npx eslint src
+$ # 123 problems: 13 errors + 110 warnings
+```
+
+**Distribuição por severidade:**
+- 13 errors (bloqueantes)
+- 110 warnings (predominantemente `@typescript-eslint/no-unused-vars` — código
+  importando coisas que não usa após refactors)
+- 22 warnings auto-fixable com `--fix`
+
+**Linha de comando `next lint --max-warnings=999` não é suportada** (Next 16
+removeu esse flag). O comando `next lint .` foi removido; usar `eslint`
+diretamente. **Recomendação:** atualizar `package.json` script `lint`.
+
+**ESLint completo (`eslint .`) excedeu 50s no sandbox** — não foi possível
+rodar a suite completa. Rodar localmente antes de merge.
+
+### 3. Suite vitest — community
+
+```bash
+$ NODE_OPTIONS='--max-old-space-size=1500' npx vitest run src/components/community/__tests__
+$ # 11 test files, 162 tests
+$ # 6 files FAILED, 5 files PASSED
+$ # 48 tests FAILED, 114 tests PASSED
+$ # Duration: 54.07s
+```
+
+**Resultado por arquivo:**
+
+| Arquivo | Tests | Pass | Fail | Status |
+|---------|-------|------|------|--------|
+| `library-page.test.tsx` | 26 | 24 | 2 | ❌ |
+| `feed-page.test.tsx` | 26 | 13 | **13** | ❌ |
+| `group-detail-page.test.tsx` | 19 | 18 | 1 | ❌ |
+| `notifications-page.test.tsx` | 21 | 2 | **19** | ❌ (pior) |
+| `CommunityNav.test.tsx` | 23 | 15 | 8 | ❌ |
+| `group-member.test.ts` | 12 | 7 | 5 | ❌ |
+| `groups-page.test.tsx` | 14 | 14 | 0 | ✅ |
+| `CommunityShell.test.tsx` | 7 | 7 | 0 | ✅ |
+| `FeedSkeleton.test.tsx` | 4 | 4 | 0 | ✅ |
+| `FeedErrorBoundary.test.tsx` | 5 | 5 | 0 | ✅ |
+| `FeedEmpty.test.tsx` | 5 | 5 | 0 | ✅ |
+
+**Análise dos fails (por arquivo):**
+
+**`feed-page.test.tsx` (13 fails) — sintomas:**
+- Filtros/composição assíncrona: testes que dependem de interações
+  sequenciais (foco → texto → publicar) sem `act()` wrapping. Gera o warning
+  "An update to CommunityFeedPage inside a test was not wrapped in act(...)"
+  repetidamente.
+- PostCard interações (Curtir, Salvar, Comentar, Compartilhar) — handlers
+  não estão sendo invocados no jsdom (provavelmente por event listener
+  binding em portals ou refs).
+
+**`notifications-page.test.tsx` (19 fails) — sintomas:**
+- DOM renderiza "Tudo lido ✨" mas não renderiza as 7 notificações mock —
+  provavelmente porque o componente depende de fetch assíncrono que não
+  resolve no jsdom sem mock.
+- Filtros "Não lidas" / "Lidas" não estão sendo clicáveis ou não mudam
+  estado.
+- "Marcar todas como lidas" não está ocultando o botão depois de clicar.
+
+**`CommunityNav.test.tsx` (8 fails) — sintomas:**
+- Botão de busca (`aria-label="Buscar"`) não encontrado no DOM.
+- Badge de contador de notificações não aparece quando `count > 0`.
+- Menu mobile não abre/fecha ao clicar.
+- Profile dropdown não tem link para o perfil.
+
+**`group-member.test.ts` (5 fails) — sintomas:**
+- Operações de admin (promover/rebaixar/remover) falham. Provavelmente
+  o Prisma mock não está capturando os métodos corretos, OU o schema
+  mudou (campos renomeados).
+
+**`library-page.test.tsx` (2 fails) — sintomas:**
+- Filtro "todas" não volta a listar todos os artigos.
+- Singular/plural: "1 artigo" vs "N artigos" não está respeitando o edge case.
+
+**`group-detail-page.test.tsx` (1 fail) — sintomas:**
+- Tabs: "Posts" não está ativa por padrão.
+
+### 4. Cobertura de testes nos arquivos modificados
+
+```bash
+$ git diff main..HEAD --name-only | grep -E '\.(ts|tsx)$' | grep -vE '(__tests__|\.test\.|test-)'
+$ # 329 arquivos modificados (.ts/.tsx, não-test)
+```
+
+**Distribuição por diretório:**
+
+| Diretório | Qtd |
+|-----------|-----|
+| `src/app/**` | 157 |
+| `src/lib/**` | 78 |
+| `src/components/**` | 70 |
+| `src/hooks/**` | 7 |
+| `prisma/seed/**` | 3 |
+| `src/types/**` | 1 |
+| `src/styles/**` | 1 |
+| `sentry.*.config.ts` | 2 |
+| `scripts/**` | 1 |
+| `e2e/**` (Playwright, não vitest) | 5 |
+| `playwright.config.ts` | 1 |
+| `next.config.ts` | 1 |
+| `middleware.ts` | 1 |
+| `health-test.ts` | 1 |
+
+**Cobertura efetiva:**
+- **TOTAL arquivos modificados:** 329
+- **Com teste co-localizado:** 5
+- **Sem teste:** 324 (98.5%)
+
+**Observação:** a cobertura é medida por teste co-localizado (ex:
+`posts.ts` ↔ `posts.test.ts`). Muitos dos arquivos modificados são páginas
+Next.js (`page.tsx`) que exercitam fluxos cobertos indiretamente via
+componentes. **Cobertura real por `npx vitest run --coverage` precisa ser
+medida em CI local** (não rodei no sandbox por limitação de tempo).
+
+### 5. Pendências
+
+#### P0 — bloqueia merge
+- [ ] **Resolver 16 bugs reais de src/** (ver lista na §1). Itens críticos:
+  - [ ] Deletar/refatorar `src/lib/prisma-optimized.ts` (B2B residue)
+  - [ ] Corrigir `displayName` em `src/app/actions/auth.ts:319`
+  - [ ] Corrigir `orixaSecundario` → `oduSecundario` em `src/app/api/users/profile/route.ts:112`
+  - [ ] Corrigir enums `NEW_POST_FROM_GROUP` / `GROUP_NEW_MEMBER` em `src/lib/community/notifications.ts`
+  - [ ] Corrigir field `abstract` em `src/lib/ai/embeddings.ts` e `src/lib/ai/rag.ts`
+  - [ ] Corrigir typo `loadingMore` → `loadMore` em `src/hooks/usePosts.ts:424`
+  - [ ] Resolver duplicate property em `src/app/layout.tsx:158`
+  - [ ] Adicionar `isFollowing` ao tipo `PublicProfile` em `src/app/(community)/u/[handle]/page.tsx`
+  - [ ] Investigar/criar módulos faltando em `src/lib/ai/index.ts`
+  - [ ] Adicionar deps `posthog-js` e `web-push` em `package.json` (ou removê-las)
+  - [ ] Investigar `src/lib/statistics/stats-visualization.ts` (módulo não existe)
+- [ ] **Corrigir 48 testes vitest falhando** (6 arquivos — ver §3)
+
+#### P1 — não bloqueia merge mas é débito técnico
+- [ ] Sweep de tipos em **todas as 692 arquivos de teste** (TS7006 + TS18046
+      são 1899/2791 = 68% dos erros de TSC). Adicionar tipos explícitos
+      nos parâmetros de `.forEach`, `.map`, etc.
+- [ ] Resolver 110 warnings de ESLint (predominantemente imports não usados)
+- [ ] Atualizar `package.json` script `lint` (Next 16 removeu `next lint`)
+- [ ] Medir cobertura real com `npx vitest run --coverage` em CI
+- [ ] Criar testes para pelo menos os **78 arquivos de `src/lib/` modificados**
+      (lógica de negócio, não UI)
+- [ ] Criar testes para **70 arquivos de `src/components/`** (UI components)
+- [ ] Configurar CI gate para falhar o PR se TSC > 0 ou testes falhando
+
+#### P2 — nice-to-have
+- [ ] Migrar `test:` scripts para `vitest --run` (Next 16.2.6 deprecou `vitest run`)
+- [ ] Adicionar testes E2E com Playwright para os fluxos community
+- [ ] Configurar Husky pre-commit hook para rodar `tsc --noEmit` automaticamente
+
+### 6. Comandos para reproduzir localmente
+
+```bash
+git checkout feat/community-platform
+git pull origin feat/community-platform
+npm install                    # ~2 min, 854 pacotes
+npx prisma generate            # 1s, necessário para TSC
+npx tsc --noEmit --skipLibCheck | tee docs/.tsc-output.log
+npx eslint src                 # ~30s, mais rápido que . (root)
+npx vitest run src/components/community/__tests__   # ~55s
+```
+
+### 7. Arquivos criados/modificados neste report
+- `docs/TEST-REPORT.md` (atualizado, +este bloco)
+- `docs/.tsc-output-2026-06-29.log` (349 KB)
+- `docs/.tsc-src-errors-2026-06-29.log` (12 KB)
+- `docs/.lint-output-2026-06-29.log` (25 KB)
+- `docs/.vitest-community-2026-06-29.log` (534 KB)
+- `docs/.vitest-community-2026-06-29-summary.log` (3 KB)
+
+**Decisão final:** ❌ **NÃO APROVAR MERGE** — 16 bugs reais em src/ +
+48 testes falhando.
+
+---
+
+# 🧪 Test Report — Akasha Portal
+
+> Caderno de bordo do cron `akasha-tests-pre-release`
+> Status diário dos testes
+
+---
+
 ## 2026-06-27 (community-platform — branch feat/community-platform, HEAD b45eb352)
 
 ### Objetivo
