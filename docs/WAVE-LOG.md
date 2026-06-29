@@ -2981,3 +2981,53 @@ Cycle 58 picks gap-driven: from cycle 57 close-out recommended list + user-liste
 
 **Status: ⚙️ Cycle 58 SPAWNING. 4 Coder workers in flight. Expected close 19:00 UTC. Cycle 57 close-out (this entry) committed + pushed before spawn.**
 
+
+## Cycle 58 spawn — 2026-06-29 18:30 UTC tick (this session 414535684264036)
+
+Cycle 58 spawn fired at 2026-06-29 18:30 UTC (this session 414535684264036, immediately after cycle 57 close-out). **4 Coder workers spawned in parallel** with pre-created worktrees.
+
+**Pre-flight:**
+- Repo: bootstrapped at 18:30 UTC tick boot (~30s, fresh sandbox).
+- MEM available: **1977MB** (well above 1000MB threshold, 7+ slots free).
+- Cycle 57 workers: 2 done (events-workshops, reputation pushed to origin), 1 errored at 11 min (mentorship). Parent session 414528373452996 idle.
+- Active workers at spawn: 0 (cycle 57 all closed by 18:30). 4 slots free + 4 fresh = 4 peak.
+
+**Cycle 58 features (4 gap-driven, complementary to cycle 57):**
+1. **w58/comments-moderation** — counter to w55/comments-threading-mentions-parser. Moderation queue + curator review + auto-flag + LGPD Art. 7/9/18.
+2. **w58/audio-video-posts** — counter to w24/audio-video-uploader. Upload pipeline + transcode + accessibility + biometric opt-in + LGPD Art. 7/9/18/20.
+3. **w58/live-streams** — counter to w24/live-streams. Session lifecycle + chat moderation + sacred room + recording + LGPD Art. 7/9/18.
+4. **w58/translation-tooling** — counter to w23/translation-content + w55-replacement/i18n-locale-fallback-chain. Translation memory + glossary + curator review + sacred lock + LGPD Art. 7/9/18.
+
+**Worktrees pre-created (cycle 54-57 convention `/workspace/wt-w58-<feature>`):**
+- `/workspace/wt-w58-comments-moderation` → `w58/comments-moderation`
+- `/workspace/wt-w58-audio-video-posts` → `w58/audio-video-posts`
+- `/workspace/wt-w58-live-streams` → `w58/live-streams`
+- `/workspace/wt-w58-translation-tooling` → `w58/translation-tooling`
+
+All 4 worktrees branched from `00bd9636` (cycle 57 close-out tip).
+
+**Agent choice:** `Coder` (cycle 56 6/6 success + cycle 57 2/2 finished = 8/8 Coder reliable).
+
+**Brief length:** ~600 words each (cycle 56 lesson: shorter = more output headroom).
+
+**Brief structure (validated cycle 56-57 pattern):**
+- Workspace + worktree path
+- File path (`src/lib/w58/<feature>.ts`)
+- Public API (types + functions list)
+- Hand-rolled primitives (no repo imports)
+- Sacred-tag HARD rule
+- LGPD Art. 7/9/18 mandatory
+- Defense in depth (4 layers)
+- Smoke test count
+- 30-min hard cap + TSC contract + push command
+
+**Expected deliverable (if all 4 land):**
+- 4 branches on origin
+- ~8800-12400L total
+- ~480-720 named exports
+- Per-file TSC=0 on all 4
+- 30-min cap → expected close 19:00 UTC
+
+**MEM:** 1977MB at spawn. 4 new × ~250MB = ~1000MB. Total peak: 4 (no overlap with cycle 57) = 4 = well under 8 cap.
+
+**Status: ⚙️ Cycle 58 SPAWNED. 4 Coder workers in flight. Expected close 19:00 UTC. Next cron tick (19:00) will pick up close + push + WAVE-LOG update.**
