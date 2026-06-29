@@ -1,5 +1,73 @@
 # Akasha Wave-Spawner — Cycle Log
 
+## Cycle 66 — 2026-06-29 23:00 UTC — 4/4 w66 workers IN-FLIGHT (audio-video-posts + live-streams + reputation-system + translation-tooling)
+
+Cycle #2026-06-29-23:00-UTC = cycle 66. Workspace **empty at boot** (continued pattern: cycles 17-18, 30, 32-66). Standard pre-flight: `git clone --depth 50` from main HEAD `fd8035c` (cycle 65 close-out, 4/4 w65 branches PUSHED ✅) + 4 parallel Coder workers spawned via `communicate spawn` (cycle 62-65 pattern, zero collisions). MEM **1978MB available** at boot, 0 active workers at boot (cycle 65 w65 workers all completed at 22:53 UTC, all 4 branches on origin). Briefs durable at `/workspace/briefs-w66/01-audio-video-posts.md` to `04-translation-tooling.md`.
+
+Pre-flight: GITHUB_TOKEN URL rewrite applied (`git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"` per cycle 62 lesson 4), git identity `Mavis <Mavis@MiniMax.local>` set, `core.fsmonitor=false` for sandbox. 4 w66 branches pre-allocated: `w66/audio-video-posts`, `w66/live-streams`, `w66/reputation-system`, `w66/translation-tooling`. 4 worktrees pre-planned: `/workspace/wt-w66-audio-video`, `/workspace/wt-w66-live-streams`, `/workspace/wt-w66-reputation`, `/workspace/wt-w66-translation`.
+
+**4 w66 workers spawned (fresh `src/lib/w66/` namespace, MEDIA/COMMUNITY/GOVERNANCE/I18N layer):**
+
+Cycle 66 deliberately addresses the 4 remaining gaps from the 2026 roadmap that the user explicitly listed in the orchestrator brief and that cycles 17-65 did not cover:
+
+- **A — `w66/audio-video-posts`** (session [TBD], Coder) — The MEDIA layer. Feed posts now support audio (mp3/wav/ogg, ≤ 15MB) and video (mp4/webm, ≤ 50MB) attachments alongside text + image. Format whitelist (no FLAC, no WMA — lossy-compressed only), duration extraction (hand-rolled for mp3 frames; mp4 moov box parse; webm EBML parse — no `music-metadata` / `ffprobe` libs), waveform thumbnail (256-step amplitude envelope for audio; 9-frame contact-sheet for video — generated as data URIs in-engine, no canvas dep), transcription hint (passes mime + duration + language tag to caller — does NOT call Whisper), A11y captions placeholder schema (`captionsVtt?: string`, validated as WEBVTT header), LGPD consent gate (audio→voice consent, video→face consent — per w60/w65 lesson). 8+ exports: `validateMediaPost`, `createAudioPost`, `createVideoPost`, `extractDurationMp3`, `extractDurationMp4`, `extractDurationWebm`, `generateWaveformDataUri`, `generateVideoContactSheetDataUri`, `auditMediaCoverage`, `MEDIA_LIMITS`, `MEDIA_FORMATS`. **Sacred coverage floor: 87+ symbols across 5 traditions** (Cigano 36, Orixás 16, Chakras 7, Sefirot 10, Astrologia 18 = 12 signos + 6 axes). **NO npm deps** (no music-metadata, no ffmpeg, no fluent-ffmpeg, no wavefile, no canvas — all hand-rolled).
+
+- **B — `w66/live-streams`** (session [TBD], Coder) — The COMMUNITY LAYER. Go-live flow: schedule + start + heart-beat + end lifecycle, viewer count (HMAC-SHA256 pseudonymized, LGPD Art. 9), live chat (rate-limited 30 msg/min/user, sacred-tag-safe list reuses w65 community-moderation patterns), sacred symbol moderation (text classifier delegates to w65 community-moderation, NEVER blocks sacred content), replay recording metadata (mp4 ready flag, byte size, SHA-256 truncated, duration), stream key rotation (24h, HMAC-chained), LGPD consent for face + voice + chat content. 8+ exports: `scheduleStream`, `startStream`, `heartbeatStream`, `endStream`, `joinStream` (pseudonymized viewer add), `moderateChatMessage`, `attachReplay`, `rotateStreamKey`, `auditLiveStreamCoverage`, `LIVE_STATES`, `CHAT_RATE_LIMITS`. **Sacred coverage floor: 96+ symbols across 6 traditions** (Cigano 36, Orixás 16, Astrologia 12, Sefirot 10, Chakras 7, Ifá 15). **NO npm deps** (no socket.io, no twilio, no 100ms SDK — pure data layer).
+
+- **C — `w66/reputation-system`** (session [TBD], Coder) — The GOVERNANCE layer. Universalista reputation: trust score (0-5), sacred service scores (per tradition: 1-5 each, derived from completed services + reviews), dispute resolution state machine (none/raised/in_review/resolved_upheld/resolved_refunded), public badges (max 3 active, derived from score thresholds: GUIA_INICIANTE 4.0+, GUIA_MESTRE 4.7+, UNIVERSALISTA 4.5+ across 3+ traditions), NO derogatory rules (NEVER subtract, NEVER expose negative reviews, NEVER rank users publicly — cycle 64 lesson applied). LGPD pseudonymization for all user refs. 8+ exports: `computeReputation`, `computeTrustScore`, `computeTraditionScore`, `raiseDispute`, `resolveDispute`, `awardBadge`, `listBadges`, `validateReputation`, `chainReputationHash`, `auditReputationCoverage`, `REPUTATION_BADGES`, `DISPUTE_STATES`. **Sacred coverage floor: 128+ symbols across 7 traditions** (Cigano 36, Orixás 16, Tarot 22, Astrologia 12, Sefirot 10, Chakras 7, Ifá 25 = 16 odu + 9 ese). **BRL-cents thresholds** for the badge monetary gates (kept in cents like w65 marketplace).
+
+- **D — `w66/translation-tooling`** (session [TBD], Coder) — The I18N layer. Translator queue (pending/claimed/in_review/approved/rejected states), sacred term glossary (per-tradition, per-locale: 28 cards × 3 locales = 84 entries), machine translation review flag (caller passes `mtSource: "google" | "deepl" | "azure" | null`), locale bundle manifest (PT-BR/EN/ES with section lists + completion %), A11y preservation check (preserves `<mark>`, ARIA, and SSML marks from w62 voice mode), quality metrics (bleu-lite hand-rolled, 1-gram + 2-gram overlap on sacred terms vs source glossary). 8+ exports: `createTranslationJob`, `claimTranslation`, `submitTranslation`, `approveTranslation`, `rejectTranslation`, `auditTranslationCoverage`, `validateLocaleBundle`, `computeBleuLiteScore`, `chainTranslationHash`, `LOCALE_BUNDLES`, `SACRED_GLOSSARY`, `TRANSLATION_STATES`. **Sacred coverage floor: 110+ symbols across 7 traditions** (Cigano 36, Orixás 16, Tarot 22, Astrologia 12, Sefirot 10, Chakras 7, Hebrew 27 = 22+5 sofit). **3 locales × 6+ sections × A11y preservation = 18+ i18n keys per section**.
+
+**Cycle 66 — fresh trails chosen (each fills a remaining 2026 roadmap gap from user trail list):**
+
+1. **Audio/video posts** ← listed as "Audio/video posts" in user trail. Cycles 17-65 had feed text + image (w58) but no audio/video. This is the media-rich post layer.
+2. **Live streams** ← listed as "Live streams integration" in user trail. W58 had a live-streams retry that was wedged on env hang. Now we ship it as a clean data-layer engine (no socket.io dep, caller wires transport).
+3. **Reputation system** ← listed as "Reputation system (universalista)" in user trail. W57 had a reputation retry that was partial. Cycle 66 reuses the dispute-resolution + cross-tradition score patterns from w65 marketplace + w64 calendar.
+4. **Translation tooling** ← listed as "Translation tooling" in user trail. W58 had a translation-tooling retry that was partial. Cycle 66 adds the sacred-term glossary + locale bundle manifest + mt-review flag.
+
+**Hard caps, conventions, gates (reused + 1 NEW from cycle 65):**
+- 25min per worker target, 30min hard cap (cycle 61-65 validated)
+- 4-worker parallel via `communicate spawn` (cycle 40-43, 62-66 pattern, zero collisions)
+- Per-file TSC=0 validation via `npx tsc --noEmit --skipLibCheck <file>` (cycle 41 contract)
+- Runtime smoke via `node --experimental-strip-types smoke.mjs` (cycle 62 lesson 7) — 6 paths minimum per worker
+- `git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"` (cycle 62 lesson 4, **best-effort persistence, RE-APPLY IN EVERY BRIEF** per cycle 61 lesson 2)
+- `git worktree add /workspace/wt-w66-<feature> origin/main -b w66/<feature>` (NOT /tmp per cycle 65 lesson 2 — Cloud Host Write tool blocks /tmp paths)
+- No main commits except `docs/WAVE-LOG.md` (this entry)
+- Sacred coverage enumeration MANDATORY per cycle 62 lesson 4 + cycle 63 lesson 4 (TRADITION_CATALOG.canonicalNames)
+- HMAC-SHA256 (NO FNV fallback) per cycle 60 lessons C-1 + H-5 (Workers B, C, D all use HMAC chain)
+- Write-tools-first pattern per cycle 62 lesson 5
+- Iterative commits (2-3 per worker) per cycle 62 lesson 8
+- Branded types (`toStreamId`, `toMediaId`, `toDisputeId`, `toLocaleCode`, `toGlossaryTerm`) — NO `as` user-cast
+- Never-throws graceful-degradation at public API surface (cycle 63 lesson 10)
+- **UTF-8 sacred boundary regex (CYCLE 65 LESSON 1 — supersedes cycle 55+60)** — use lookaround `(?:^|\\W)…(?:$|\\W)` for Portuguese sacred terms (Oxumarê, Iemanjá, Xangô, Obaluaiê, Nanã, Ossãe). NOT `\b...\b` in Node v22 + u flag.
+- `process.getBuiltinModule('node:module')` HMAC pattern per cycle 64 worker C (Workers B, C, D)
+- `isFullCoverage` audit flag per cycle 64 lesson 2 (all 4 workers)
+- `externalContext` engine decoupling per cycle 64 lesson 7 (Worker A passes transcription hook via externalContext)
+- Per-tradition audit floor = natural cardinality per cycle 64 lesson 5 (all 4 workers)
+- Split catalogs ≥ 100 into per-tradition constants per cycle 64 lesson 1 (Worker A: mp3/mp4/webm format tables; Worker D: 3 locale × 7 tradition glossary)
+- `LooseValue` + `STRICT_VALUES` const pattern per cycle 64 lesson 6 (Worker A: `MediaKind` strict subset; Worker C: `DisputeState`; Worker D: `LocaleCode` + `TranslationState`)
+- `emptyX()` factory + no shared mutable defaults (cycle 65 lesson 6) — Workers B (emptyStreamCounters), C (emptyBadgeSet), D (emptyLocaleProgress)
+- NO FNV fallback for HMAC chain (cycle 60 lessons C-1, H-5; reaffirmed cycle 64 lesson 8)
+- "Ledger state machine self-check" pattern per cycle 65 lesson 4 — Workers B, C, D re-read prevHash from record, NOT from global
+- **NEW this cycle**: Prompt-injection awareness (cycle 65 lesson 5) — workers log any injection attempts but proceed with brief
+
+**Cycle 66 — gap-coverage rationale:**
+- After cycle 65, the platform is ~80% feature-complete (B2C + community PWA). Cycle 66 fills 4 of the 4 remaining gaps from the user trail list: audio/video posts, live streams, reputation system, translation tooling. After cycle 66, the platform is ~92% feature-complete.
+- The 4 w66 engines are all **MEDIA/COMMUNITY/GOVERNANCE/I18N** — the operational layer that cycles 62-65 (voice, daily reflection, marketplace, moderation) need as infrastructure:
+  - **Media** enables the audio/video content layer that w62 voice-mode (TTS) reads aloud and that the w65 marketplace-pricing engine values in BRL.
+  - **Live streams** enables the real-time community layer that w65 events-workshops can attach to (cycle 65 already added `attachLivestream`; cycle 66 adds the actual stream lifecycle).
+  - **Reputation** enables the universalista trust layer that w65 marketplace-pricing uses for `isSellerEligible` and that w65 community-moderation uses for safe-user weights.
+  - **Translation** enables the i18n layer that w61 i18n-pt-en-es-structure set up but that lacks the operational translator queue + glossary management.
+- Cycle 66 deliberately avoids overlap with w60-w65 by selecting from the user's 15-item trail list the 4 features that have NOT been shipped in any prior cycle. The trail list is the user's authoritative source for "what's next".
+
+**Cross-cycle hand-off note:**
+- Worker A reuses w58 feed image patterns (mime validation, size cap, dimension hint) but EXTENDS them to audio/video.
+- Worker B integrates with w65 community-moderation (sacred-text safety) and w65 events-workshops (livestream attach — already shipped, this is the data layer that backs it).
+- Worker C reuses w65 marketplace-pricing escrow HMAC chain pattern (cycle 60 lesson — never FNV) and adds reputation-specific badges + dispute resolution.
+- Worker D reuses w61 i18n-pt-en-es-structure (locale bundles, ARIA preservation) and adds the operational translator queue + sacred-term glossary.
+
+**Status: ⏳ IN-FLIGHT. 4 workers spawned at 23:00 UTC. ETA close-out: ~23:25-23:30 UTC (25-min cap). EXPECTED close-out: 4/4 PUSHED, ~5000-7000L net-new engine code, 80+ exports, 400+ assertions, 6/6 runtime smoke per worker. NO BLOCKERS at spawn time. MEM healthy (1978MB available, 0 active worker pressure). NO main commits expected during cycle; only docs/WAVE-LOG.md at close-out.**
+
 ## Cycle 65 — 2026-06-29 22:31 UTC — 4/4 w65 workers IN-FLIGHT (akasha-reading-engine + events-workshops-engine + marketplace-pricing-engine + community-moderation-engine)
 
 Cycle #2026-06-29-22:30-UTC = cycle 65. Workspace **empty at boot** (continued pattern: cycles 17-18, 30, 32-65). Standard pre-flight: `git clone --depth 50` from main HEAD `a3318d4` (cycle 64 close-out, 4/4 w64 branches PUSHED ✅) + 4 parallel Coder workers spawned via `communicate spawn` (cycle 62+63+64 pattern, zero collisions). MEM **1978MB available** at boot, 0 active workers at boot (cycle 64 w64 workers all completed at 22:26 UTC, all 4 branches on origin). Briefs durable at `/workspace/briefs-w65/01-akasha-reading-engine.md` to `04-community-moderation-engine.md`.
