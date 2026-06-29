@@ -1714,3 +1714,68 @@ The wave-orchestrator itself performed the carry-over TSC fix (small enough to i
 - **If the w40/tsc-npm-install worker lands cleanly, this resolves the 5-cycle TSC carry-over**
 
 **Status: ✅ STRONG. 39 cycles of 39 attempted since 2026-06-27 14:00 UTC. 18 BLOCKED, 21 PROGRESS (cycles 19-39). Push mechanism validated 16 consecutive cycles (24→39). 103 wave branches on origin (1 main + 1 feat + 98 w19-w39 + 3 wave/w25 legacy). 7 w39 fresh this cycle (6 net-new features + 1 carry-over TSC fix). 3682 lines of new feature code (cycle 38's 2220 + 66%). 0 w39 worker crashes recovered in-orchestrator. Per-file TSC=0 on all 6 w39 feature files. Carry-over TSC=1 → TSC=0 (config) finally resolved on the w39/tsc-vitest-types branch (owner needs to merge to main); remaining 8381 global TSC errors on main are pre-existing code-level missing-types in sandbox, not regressions. Merge train ready for owner: 7 w39 branches deliver 6 new features (thread viz, marketplace trending, mentorship feedback, clip moments, mentor pipeline, digests archive) + 1 long-awaited config fix.**
+
+## Cycle 40 — 2026-06-29 08:30 UTC — 6/6 w40 workers SPAWNED (in-flight), 103 branches baseline
+
+Cycle #2026-06-29-08:30-UTC = cycle 40. Workspace was **empty at boot** (10th cycle in a row: 30+32+33+34+35+36+37+38+39+40). `git clone` (full) in ~30s + `git fetch origin`. MEM **1977MB available at boot**, 0 active workers, capacity for full 6-worker spawn.
+
+**Pre-flight:**
+- `/workspace/cabaladoscaminhos` ❌ missing → `git clone` OK (1500 files, ~30s)
+- `git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"` ✅
+- Latest commit on `main` at boot: `d389d72a` (cycle 39 status report)
+- 7 w39 branches on origin ✅ (tsc-vitest-types + 6 net-new features)
+- 0 w40 branches existed on origin — fresh start
+- TSC baseline (global): 1 error (TS2688 — `vitest/globals` type def). Carry-over from cycles 30-39; resolved in `w39/tsc-vitest-types` (commit `84d80f14`, not yet merged to main).
+
+**Plan divergence from prior cycle 40 plan:**
+The cycle 39 WAVE-LOG "Cycle 40 plan (next wave)" suggested v2/v3 features extending w38/w39 work (thread-stats dashboard, mentor-effectiveness leaderboard, leitura personalization, chapter+clip export, mentor network graph, digest recommendations + tsc-npm-install). This orchestrator (cycle 40) **pivots to the user's cron-prompt 15 trails** (the cron task that spawned this session lists 15 high-level areas). Rationale: the cron prompt is the canonical instruction; the WAVE-LOG forward-plans are advisory drafts. The 6 chosen w40 features map directly to cron-prompt trails:
+
+| Cron trail | w40 feature |
+|---|---|
+| Auth integration follow-up | `w40/auth-passwordless` |
+| Akasha IA streaming UI | `w40/akasha-conversation-memory` |
+| Mentorship pairing 1-on-1 | `w40/mentorship-session-notes` |
+| Reputation system (universalista) | `w40/reputation-cross-tradition` |
+| Marketplace leitura/práticas | `w40/marketplace-gift-system` |
+| Events/workshops feature | `w40/events-ticketing-calendar` |
+
+(9 trails not addressed this cycle — voice/TTS, comments threading+mentions, notifications push, audio/video posts, daily reflection, live streams, comments moderation, translation tooling, i18n EN/ES — will rotate through cycles 41-43.)
+
+**Spawn attempts (1st round — failed with "Agent 'general' not found"):**
+- All 6 `communicate spawn` calls returned `Agent "general" not found for user=486795649982947334 biz=Mavis`. The `general` (lowercase) was the wrong name.
+- `mavis agent list` revealed the correct display name is **`Coder`** (capital C, `template_id=208823747665986`). Also available: `General` (capital G, 通用工作者) and `Verifier` (template_id=208823747665987).
+- **Coder** is the right pick for code work (description: "Hands-on software engineer — reads code, writes code, ships code").
+
+**Spawn attempts (2nd round — DELIVERED):**
+6/6 `communicate spawn` calls delivered to Coder sub-sessions:
+
+| # | Branch | Title | Lines (target) | TSC | Status |
+|---|---|---|---|---|---|
+| A | `w40/auth-passwordless` | Magic link + OTP + TOTP + sessions, 5 types, 13 functions, 8 constants | ~250 | 0 required | SPAWNED |
+| B | `w40/akasha-conversation-memory` | 5 personas, context window mgmt, persona switch, insight extraction | ~280 | 0 required | SPAWNED |
+| C | `w40/mentorship-session-notes` | Shared notes, sections, whiteboard, action items, merge | ~270 | 0 required | SPAWNED |
+| D | `w40/reputation-cross-tradition` | 11 traditions, 12 zodiacs, 6 matrix contexts, zodiac bonus, diversification | ~310 | 0 required | SPAWNED |
+| E | `w40/marketplace-gift-system` | 10 gift themes, 7 status states, delivery conf, history, summaries | ~330 | 0 required | SPAWNED |
+| F | `w40/events-ticketing-calendar` | Multi-tier ticketing, RSVP, waitlist, RFC 5545 ICS export | ~340 | 0 required | SPAWNED |
+
+**Each worker spec includes:** full type definitions, all required constants, all required function signatures, JSDoc requirement, standalone constraint (no imports from w3x files which are not in main's working tree), TSC validation command, commit message, push command, and report-back protocol.
+
+**Capacity decision:** 1977MB available ÷ ~150MB per Coder sub-session ≈ 13 sessions theoretical, capped at 8 by sandbox rule, 6 chosen per cron-prompt guidance ("4-6 novos"). 6/6 fits.
+
+**TSC validation per worker (validated command, copied from cycle 38+39):**
+```
+timeout 60 npx tsc --noEmit --skipLibCheck --ignoreConfig --target es2022 --module esnext --moduleResolution bundler --strict src/lib/w40/<feature>.ts
+```
+Per-file TSC=0 is the canonical validation metric (cycle 38+39 pattern).
+
+**In-flight expectations:**
+- Workers have 60s hard cap per spec, but Coder sub-sessions may need 60-180s for code generation + TSC + commit + push.
+- 6/6 expected to report back to parent session 414388281778240 within 5 minutes.
+- Next cycle (08:30 UTC + 30min = 09:00 UTC) will collect results, commit WAVE-LOG update, push to main.
+
+**Status: 🟡 IN-FLIGHT. 6/6 w40 workers spawned. Awaiting Coder sub-session reports. No commits to push this turn (workers handle their own branches). WAVE-LOG entry committed by orchestrator as docs/wave-spawner. Next cycle (09:00 UTC) will finalize cycle 40 with worker results + branch SHAs.**
+
+**Cycle 40 lessons (in-progress, will be expanded in next cycle):**
+- **Agent display name is `Coder` (capital C)** — not `general`. The cron-prompt mentions "General + skill files" but the actual agent template is `Coder` for code work. The `General` agent exists too (`agent_name=General`, template_id=208823747665985) but is described as 通用工作者 — a Chinese-localized generalist, not the right tool for TypeScript code work. **Lesson: use `Coder` for code, `Verifier` for adversarial review, `General` for non-code work.**
+- **The wave-orchestrator's plan can (and should) override the previous orchestrator's forward-plan** — the WAVE-LOG's "Cycle NN plan (next wave)" section is a draft, not a contract. The current orchestrator should re-evaluate based on the current cron prompt and current state. **Lesson: re-read the cron prompt at the start of each cycle; don't blindly follow the previous orchestrator's plan.**
+- **Empty-boot cycle 10 is the new normal** — 10 consecutive cycles (30, 32, 33, 34, 35, 36, 37, 38, 39, 40) have started from an empty workspace. The pre-flight `ls /workspace/cabaladoscaminhos` check + `git clone` + `git fetch` combo is now a standing ritual that completes in <30s. **No optimization needed; the pattern is stable.**
