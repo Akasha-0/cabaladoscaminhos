@@ -697,17 +697,19 @@ export function rotr32(x: number, n: number): number {
   return ((x >>> n) | (x << (32 - n))) >>> 0;
 }
 
-/** Compute SHA-256 of a UTF-8 string, returned as 32-byte array. */
-export function sha256(input: string): number[] {
-  const bytes = utf8ToBytes(input);
-  // Padding: append 0x80, then zeros, then 64-bit big-endian length.
+/**
+ * Internal SHA-256 over a raw byte array (0x00-0xFF). Lossless for any byte
+ * sequence — no UTF-8 interpretation. Use this when the input is raw bytes
+ * (HMAC pads, hash outputs, etc.). For string input, prefer `sha256()` which
+ * routes through UTF-8.
+ */
+function sha256OfBytes(bytes: readonly number[]): number[] {
   const len = bytes.length;
-  const padLen = (((len + 9) + 63) & ~63) - len; // round up to multiple of 64
+  const padLen = (((len + 9) + 63) & ~63) - len;
   const padded = new Array(len + padLen);
   for (let i = 0; i < len; i++) padded[i] = bytes[i] ?? 0;
   padded[len] = 0x80;
   for (let i = len + 1; i < len + padLen - 8; i++) padded[i] = 0;
-  // length in bits, big-endian, 64-bit
   const bitLen = len * 8;
   const hi = Math.floor(bitLen / 0x100000000);
   const lo = bitLen >>> 0;
@@ -720,13 +722,11 @@ export function sha256(input: string): number[] {
   padded[len + padLen - 2] = (lo >>> 8) & 0xff;
   padded[len + padLen - 1] = lo & 0xff;
 
-  // Initial hash values
   const h: number[] = [
     SHA256_H_INIT[0] ?? 0, SHA256_H_INIT[1] ?? 0, SHA256_H_INIT[2] ?? 0, SHA256_H_INIT[3] ?? 0,
     SHA256_H_INIT[4] ?? 0, SHA256_H_INIT[5] ?? 0, SHA256_H_INIT[6] ?? 0, SHA256_H_INIT[7] ?? 0,
   ];
 
-  // Process each 512-bit chunk
   const w: number[] = new Array(64);
   for (let chunk = 0; chunk < padded.length; chunk += 64) {
     for (let i = 0; i < 16; i++) {
@@ -769,7 +769,6 @@ export function sha256(input: string): number[] {
     h[7] = ((h[7] ?? 0) + hh) >>> 0;
   }
 
-  // Output big-endian
   const out: number[] = new Array(32);
   for (let i = 0; i < 8; i++) {
     const v = h[i] ?? 0;
@@ -781,13 +780,23 @@ export function sha256(input: string): number[] {
   return out;
 }
 
-/** Compute HMAC-SHA256(key, message) — hand-rolled. */
+/** Compute SHA-256 of a UTF-8 string, returned as 32-byte array. */
+export function sha256(input: string): number[] {
+  return sha256OfBytes(utf8ToBytes(input));
+}
+
+/**
+ * Compute HMAC-SHA256(key, message) — hand-rolled.
+ * key and message are UTF-8 strings; the result is a 32-byte byte array.
+ * Implementation builds the (key-pad || msg) byte array directly to avoid
+ * lossy round-trips through strings for the binary pads.
+ */
 export function hmacSha256(key: string, message: string): number[] {
   const keyBytes = utf8ToBytes(key);
   const blockSize = 64;
   let k: number[];
   if (keyBytes.length > blockSize) {
-    k = sha256(bytesToLatin1(keyBytes));
+    k = sha256OfBytes(keyBytes);
     while (k.length < blockSize) k.push(0);
   } else {
     k = keyBytes.slice();
@@ -799,8 +808,8 @@ export function hmacSha256(key: string, message: string): number[] {
     oKeyPad[i] = (k[i] ?? 0) ^ 0x5c;
     iKeyPad[i] = (k[i] ?? 0) ^ 0x36;
   }
-  const inner = sha256(bytesToLatin1(iKeyPad.concat(utf8ToBytes(message))));
-  return sha256(bytesToLatin1(oKeyPad.concat(inner)));
+  const inner = sha256OfBytes(iKeyPad.concat(utf8ToBytes(message)));
+  return sha256OfBytes(oKeyPad.concat(inner));
 }
 
 /** Constant-time comparison of two byte arrays. */
@@ -2145,15 +2154,21 @@ export const SACRED_TAG_KEYS: readonly string[] = [
   "toque_personalizado",
 ] as const;
 
-/** Sacred value patterns — regex fragments that signal sacred payload contents. */
+/**
+ * Sacred value patterns — regex fragments that signal sacred payload contents.
+ * NOTE: \b in JS regex is ASCII-only (matches the transition between \w=[A-Za-z0
+ * 9_] and non-\w), so accented letters like á, ç, ã are NOT considered word chars
+ * and \b will NOT match at their boundary. We use explicit Unicode-aware
+ * boundaries: (?![\p{L}\p{N}_]) for end, (?<![\p{L}\p{N}_]) for start.
+ */
 export const SACRED_VALUE_PATTERNS: readonly RegExp[] = [
-  /\b(faixa\s+de\s+preto|faixa\s+vermelha|faixa\s+branca)\b/iu,
-  /\b(babalorix[áa]|iyalorix[áa]|og[ãa]n|ekedi)\b/iu,
-  /\b(feiticeiro|feiticeira|m[ãa]e[-\s]?de[-\s]?santo|pai[-\s]?de[-\s]?santo)\b/iu,
-  /\b(7\s+l[íi]nh[ae]s|na[çc][ãa]o\s+ketu|na[çc][ãa]o\s+angola|na[çc][ãa]o\s+jeje)\b/iu,
-  /\b(ax[éÉ])\s+recebido/iu,
-  /\b(data\s+de\s+feitura|tempo\s+de\s+casa)\b/iu,
-  /\b(segredo\s+de\s+candombl[ée]|cabal[íi]stico\s+privado)\b/iu,
+  /(?<![\p{L}\p{N}_])(faixa\s+de\s+preto|faixa\s+vermelha|faixa\s+branca)(?![\p{L}\p{N}_])/iu,
+  /(?<![\p{L}\p{N}_])(babalorix[áa]|iyalorix[áa]|og[ãa]n|ekedi)(?![\p{L}\p{N}_])/iu,
+  /(?<![\p{L}\p{N}_])(feiticeiro|feiticeira|m[ãa]e[-\s]?de[-\s]?santo|pai[-\s]?de[-\s]?santo)(?![\p{L}\p{N}_])/iu,
+  /(?<![\p{L}\p{N}_])(7\s+l[íi]nh[ae]s|na[çc][ãa]o\s+ketu|na[çc][ãa]o\s+angola|na[çc][ãa]o\s+jeje)(?![\p{L}\p{N}_])/iu,
+  /(?<![\p{L}\p{N}_])(ax[éÉ])\s+recebido/iu,
+  /(?<![\p{L}\p{N}_])(data\s+de\s+feitura|tempo\s+de\s+casa)(?![\p{L}\p{N}_])/iu,
+  /(?<![\p{L}\p{N}_])(segredo\s+de\s+candombl[ée]|cabal[íi]stico\s+privado)(?![\p{L}\p{N}_])/iu,
 ] as const;
 
 /** Check if a key is a sacred-tag key. */
@@ -2966,13 +2981,12 @@ export const FILE_METADATA: FileMetadata = {
   ],
 } as const;
 
-/** Count the number of exported top-level declarations in this file (heuristic). */
+/** Count the number of exported top-level declarations in this file. */
 export function countExports(): number {
-  // Heuristic: returns the count of named exports that we author above. This
-  // function is the source of truth used at smoke-test time and during
-  // consolidation; the literal number is preserved here so the file remains
-  // self-contained.
-  return 122;
+  // Maintained manually — counts every export statement in this file:
+  // functions, constants, interfaces, types, and const enums. Verified against
+  // `grep -c '^export ' src/lib/w55/auth_pages_login_signup_flow.ts` at delivery.
+  return 196;
 }
 
 /** Engine metadata envelope (returned by meta() at smoke-test entrypoint). */
@@ -3041,48 +3055,12 @@ export function summarize(): string {
 }
 
 /* =============================================================================
- * Self-check (runs when the file is imported as a script via tsx).
- * Only emits output if run via `node --import tsx ./auth_pages_login_signup_flow.ts`.
- * Disabled when imported as a module (typeof module !== 'undefined' but
- * import.meta.main is not used — TS6 friendly).
+ * Self-check entrypoint (callable by callers / smoke-test runner).
+ * Re-export kept stable for callers that want a single function to validate
+ * the engine in isolation.
  * ============================================================================= */
 export function selfCheck(): { pass: boolean; passed: number; failed: number; details: readonly string[] } {
   const all = runAllSmokeTests();
   const details = all.results.map((r) => `${r.pass ? "PASS" : "FAIL"} — ${r.name}: ${r.detail}`);
   return { pass: all.failed === 0, passed: all.passed, failed: all.failed, details };
 }
-
-/* =============================================================================
- * Re-export the public API surface (stable import paths).
- * ============================================================================= */
-export const W55_PUBLIC_API = {
-  engineVersion: ENGINE_VERSION,
-  policyVersion: POLICY_VERSION,
-  a11yProfile: A11Y_PROFILE,
-  // Note: const enums (AuthMode, OAuthProvider, etc.) cannot be referenced as
-  // runtime values inside object literals — they would erase at compile time.
-  // Import them directly from this module instead.
-  constants: {
-    MAGIC_LINK_TTL_MS,
-    MAGIC_LINK_TTL_MS_ERASURE,
-    RATE_LIMIT_EMAIL_MAX_PER_60S,
-    RATE_LIMIT_IP_MAX_PER_60S,
-    RATE_LIMIT_WINDOW_MS,
-    RATE_LIMIT_COOLDOWN_MS,
-    PASSWORD_MIN_LENGTH,
-    PASSWORD_MAX_LENGTH,
-    DISPLAY_NAME_MAX_LENGTH,
-    EMAIL_MAX_LENGTH,
-    ONBOARDING_HANDOFF_TTL_MS,
-    OAUTH_PROVIDER_LIST,
-    TRADITION_LIST,
-    LANGUAGE_OPT_IN_LIST,
-    CONSENT_TEXT_VERSION,
-    PRIVACY_POLICY_VERSION,
-    TERMS_OF_SERVICE_VERSION,
-    DEFAULT_BUILD_OPTIONS,
-  },
-  meta,
-  summarize,
-  selfCheck,
-} as const;
