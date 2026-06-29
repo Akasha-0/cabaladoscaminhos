@@ -776,7 +776,7 @@ function canonicalJsonInternal(value: unknown, seen: WeakSet<object>): string {
     const obj = value as Record<string, unknown>;
     if (seen.has(obj)) throw new Error('canonical: cycle detected');
     seen.add(obj);
-    const keys = Object.keys(obj).sort();
+    const keys = Object.keys(obj).filter((k) => obj[k] !== undefined).sort();
     const parts: string[] = [];
     for (const k of keys) {
       parts.push(JSON.stringify(k) + ':' + canonicalJsonInternal(obj[k], seen));
@@ -1270,7 +1270,7 @@ function validateInternal(
         return;
       }
       const obj = value as Record<string, unknown>;
-      const keys = Object.keys(obj);
+      const keys = Object.keys(obj).filter((k) => obj[k] !== undefined);
       if (schema.minProperties !== undefined && keys.length < schema.minProperties) {
         errors.push({ path, code: 'minProperties', message: `properties < ${schema.minProperties}` });
       }
@@ -1323,7 +1323,7 @@ export function signPayload(opts: SignPayloadOptions): { signature: string; inte
     throw makePortabilityError(PORT_010_KEY_TOO_WEAK, 'primaryKey must be at least 16 bytes', 'primaryKey');
   }
   const integrity = hashIntegrity(opts.artifact.payload);
-  const toSign = canonicalJson({ ...opts.artifact, integrityHash: integrity });
+  const toSign = canonicalJson({ ...opts.artifact, integrityHash: integrity, signature: '' });
   let chainInput = hmacSha256(opts.primaryKey, utf8ToBytes(toSign));
   if (opts.secondaryKey) {
     chainInput = hmacSha256(opts.secondaryKey, chainInput);
@@ -1345,7 +1345,7 @@ export function verifySignature(opts: VerifySignatureOptions): boolean {
   if (opts.primaryKey.length < 16) return false;
   const expected = hashIntegrity(opts.artifact.payload);
   if (!ctEq(expected, opts.artifact.integrityHash)) return false;
-  const toSign = canonicalJson({ ...opts.artifact, integrityHash: expected });
+  const toSign = canonicalJson({ ...opts.artifact, integrityHash: expected, signature: '' });
   let chainInput = hmacSha256(opts.primaryKey, utf8ToBytes(toSign));
   if (opts.secondaryKey) chainInput = hmacSha256(opts.secondaryKey, chainInput);
   if (opts.tertiaryKey) chainInput = hmacSha256(opts.tertiaryKey, chainInput);
@@ -1366,7 +1366,7 @@ export function signWithChain(opts: SignWithChainOptions): {
   signerChain: SignerChain;
 } {
   const integrity = hashIntegrity(opts.artifact.payload);
-  const toSign = canonicalJson({ ...opts.artifact, integrityHash: integrity });
+  const toSign = canonicalJson({ ...opts.artifact, integrityHash: integrity, signature: '' });
   let chainInput = hmacSha256(opts.primaryKey, utf8ToBytes(toSign));
   if (opts.secondaryKey && opts.chain.secondary) {
     chainInput = hmacSha256(opts.secondaryKey, chainInput);
@@ -1871,7 +1871,7 @@ export function buildArtifact(opts: BuildArtifactOptions): PortablePolicyArtifac
     migrationFrom: opts.migrationFrom,
     migrationTo: opts.migrationTo,
   };
-  const toSign = canonicalJson(partial);
+  const toSign = canonicalJson({ ...partial, signature: '' });
   let chainInput = hmacSha256(opts.primaryKey, utf8ToBytes(toSign));
   if (opts.secondaryKey && opts.signerChain.secondary) chainInput = hmacSha256(opts.secondaryKey, chainInput);
   if (opts.tertiaryKey && opts.signerChain.tertiary) chainInput = hmacSha256(opts.tertiaryKey, chainInput);
@@ -2524,17 +2524,19 @@ export function smokeImporterValidation(): SmokeScenarioResult {
 export function smokeExpiryGracePeriod(): SmokeScenarioResult {
   const policy = buildPolicyV1({ id: 'p', name: 'p', authorId: 'u', fieldRules: [], contexts: [{ scope: 'private', surface: 'profile' }] });
   const key = utf8ToBytes('0123456789abcdef0123456789abcdef');
-  const now = new Date();
+  const issued = new Date('2026-06-29T12:00:00Z');
   const expiredArtifact = buildArtifact({
     policy,
     issuer: 't',
     signerChain: { primary: buildSigner({ id: 's', role: 'curator', displayName: 'C', publicKey: key }) },
     primaryKey: key,
-    now,
-    ttlSeconds: -10,
+    now: issued,
+    ttlSeconds: 60,
     gracePeriodSeconds: 3600,
   });
-  const v = validateExpiry(expiredArtifact, now);
+  // Check at a time 100s after issuance (40s past expiry, still in grace)
+  const later = new Date(issued.getTime() + 100 * 1000);
+  const v = validateExpiry(expiredArtifact, later);
   const passed = v.valid && v.warnings.length > 0;
   return { name: 'grace-period', passed, notes: `valid=${v.valid} warnings=${v.warnings.length}` };
 }
