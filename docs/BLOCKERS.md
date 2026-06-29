@@ -504,3 +504,47 @@ Same as cycle 21. Wave-spawner logs persist via git push to remote (cycle 18+ pa
 - 30-min cap hits are recoverable via replacement-spawn in 80%+ of cases (cycle 51: 1/1 recovered)
 - Spec-split is only needed when feature would naturally exceed 3500L (cycle 48 tradition-content-moderation was ~5000L+, that's the threshold)
 - Wave 52 plan no longer needs w52a/w52b split — the WAVE-LOG.md wave 52 plan was updated to skip voice-mood-related split
+
+## Cycle 66 — w66/reputation-system MISSING from origin (2026-06-29 23:30 UTC)
+
+**Blocker ID:** B-W66-REP-MISSING
+**Worker session:** Unknown (spawned by previous wave-spawner session, no session ID in current orchestrator 414609436238102 reach)
+**Symptom:** Branch `w66/reputation-system` not on origin at 23:30 UTC. 3 other w66 workers (audio-video `4e7a4ae`, live-streams `2d7bacb`, translation `dbabb7c`) pushed cleanly.
+
+**Investigation trail:**
+- `git ls-remote origin` at 23:32 UTC shows 3/4 w66 branches
+- No worktree at `/workspace/wt-w66-reputation` (sandbox was empty at cycle 67 boot — fresh clone)
+- No `reputation` in `git worktree list` output
+- Reputation worker may have been wedged on env hang (cycle 51 B-W51-VMHE-TIMEOUT pattern) or terminated at 30-min cap
+
+**Root cause hypothesis:**
+- 4/4 W66 workers were spawned by previous orchestrator session (cycle 66 spawn @ 23:00 UTC)
+- 3/4 reported back via `communicate` and pushed branches
+- 1/4 (reputation-system) did not push — either hit 30-min cap, env wedge, or silent death
+- Orchestrator session 414609436238102 has no session list reach into the previous session's spawned workers (different session tree)
+
+**Procedure vs reality:**
+| Step | Expected | Reality |
+|------|----------|---------|
+| Worker spawns and receives brief | ✅ | ✅ |
+| Worker creates worktree | ✅ | ❓ unknown |
+| Worker writes engine + tests | ✅ | ❓ unknown |
+| Worker runs TSC + smoke | ✅ | ❓ unknown |
+| Worker commits + pushes | ✅ | ❌ branch not on origin |
+
+**Recovery options (decision pending, deferred to cycle 68):**
+1. **Re-spawn w66/reputation-system in cycle 68** with same brief — at-least-once delivery
+2. **Skip and accept partial W66 ship** — w65/w57 already partial on reputation, governance layer is the weakest
+3. **Merge into w68 as fresh trail** — combine with new governance features
+
+**Recommended:** Option 1 (re-spawn) — the brief is good (universalista reputation + dispute resolution + 7 tradition scores), cycle 60-65 lessons are all encoded, and 1/4 W66 failures is acceptable variance for 30-min cap pressure.
+
+**Honest concerns:**
+- Orchestrator cross-session visibility is limited — wave-spawner cannot introspect workers spawned by other wave-spawner sessions
+- The BLOCKER is detected by absence (no branch on origin) not by worker signal
+- Future cycles should ALSO check `git ls-remote origin` for previous-cycle branches at boot, not just current cycle
+
+**Cross-cycle lesson (NEW):**
+- At-least-once delivery for cycle-level features: re-pick missing trails as normal workers in next cycle
+- Don't block current cycle on a previous cycle's missing feature
+- Wave-spawner recovery loop: spawn → verify via `git ls-remote origin` → if missing, log to BLOCKERS.md and defer to next cycle
