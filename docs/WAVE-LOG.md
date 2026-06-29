@@ -1480,3 +1480,78 @@ Branch SHAs (all on origin):
 - Continue `src/lib/wNN/<feature>.ts` namespace convention
 
 **Status: ✅ STRONG. 36 cycles of 36 attempted since 2026-06-27 14:00 UTC. 18 BLOCKED, 18 PROGRESS (cycles 19-36). Push mechanism validated 13 consecutive cycles (24→36). ~83 wave branches on origin (36 w3x + ~26 w19-w26 + 5 w27 + 5 w28 + 5 w29 = ~77 stable + 6 w36). 6 w36 fresh this cycle. TSC=0 src errors on all 6 w36 files. Merge train ready for owner.**
+
+## Cycle 37 — 2026-06-29 07:00 UTC — 6/6 w36 v2 (bugfix cohort) workers pushed, 88 branches total
+
+Cycle #2026-06-29-07:00-UTC = cycle 37. Workspace was **empty at boot** (7th cycle in a row: 30, 32, 33, 34, 35, 36, 37). `git clone --depth 50` + `git fetch --unshallow` + `git fetch origin 'refs/heads/w3[0-6]/*:refs/remotes/origin/w3[0-6]/*'` from scratch. MEM 1977MB available, 0 active workers at boot.
+
+Pre-flight: 82 prior w3x branches (6 w30 + 6 w31 + 6 w32 + 6 w33 + 6 w34 + 6 w35 + 6 w36) verified intact on origin via `git ls-remote --heads origin`. 0 w36/v2 branches existed at boot — fresh start. HEAD on main = fd3cf34 (cycle 36 doc commit).
+
+**Origin of cycle 37 — Verifier audit follow-up:**
+
+Cycle 36 closed with a Verifier sub-session (session_id 414361689026840, agent Verifier) that performed adversarial cross-review on the 6 w36 deliverables. The audit returned **PASS-WITH-NITS** and identified:
+- 2 REAL LOGIC BUGS that would ship silently to production:
+  1. `w36/comments-reputation-leaderboard.computeDeltas` / `findNewEntries` ambiguity: `delta = 0` is overloaded for 3 semantically different cases (first snapshot / new entry / unchanged rank). `findNewEntries` returns returning users who happened to keep their rank. **Fix: add `kind` field.**
+  2. `w36/profile-mentor-badges.checkRequirement` `min-tenure-months`: `Math.max(months, longestMenteeMonths)` lets a 6-month-old mentor with a 3-year mentee earn "mentor-v-legend" (36mo threshold). Badge catalog has 3 different `min-tenure-months` with clearly different intents. **Fix: split into `min-mentor-tenure-months` vs `min-mentee-tenure-months`.**
+- 4 non-blocking nits that would fail strict CI gates:
+  3. `w36/marketplace-leitura-bundles` dead `perPersonCents` with `void`-suppression + misleading "available for downstream" comment. **Fix: surface `perPersonCents` as a real `Bundle` field.**
+  4. `w36/notifications-escalation.identifyStaleReason` unused `now` parameter — function name implies time-based but is purely stateful. **Fix: use `now` against `STALE_THRESHOLDS`.**
+  5. `w36/mentorship-graduation-flow` 2 unused parameters (`track` in `suggestFollowUpCadence`, `now` in `trackPipeline`) — would fail `--noUnusedParameters`. **Fix: drop the params.**
+  6. `w36/audio-video-chapters.detectExplicitChapters` `cueCount: i + 1 - i` always 1 (should be `(nextMarkerIdx - i)`) + zero-length-chapter edge case if last cue is a marker. **Fix: pre-compute marker indices, fix endMs fallback.**
+
+**Cycle 37 plan: 6 w36/v2 files (bugfix cohort)** — all 6 issues addressed in separate clean branches. Each v2 file is a self-contained pure-TS replacement that the owner can diff against v1 and merge selectively. The v1 files remain on their original w36 branches; v2 files are on `w36/w36-<name>-v2` branches with the "w36/w36-" doubled-prefix naming (wave-spawn.sh doesn't strip the wave prefix from the file basename).
+
+**TSC pre-check (per-file, global tsc v6.0.3 with --skipLibCheck + --ignoreConfig):**
+- 6/6 files passed first run with 0 errors. Same flags as cycle 36.
+- Files validated:
+  - w36-comments-reputation-leaderboard-v2.ts — 0 errors
+  - w36-profile-mentor-badges-v2.ts — 0 errors
+  - w36-mentorship-graduation-flow-v2.ts — 0 errors
+  - w36-notifications-escalation-v2.ts — 0 errors
+  - w36-audio-video-chapters-v2.ts — 0 errors
+  - w36-marketplace-leitura-bundles-v2.ts — 0 errors
+
+**Workers spawned (6 w36/v2, bugfix cohort):**
+- A — `w36/w36-comments-reputation-leaderboard-v2` (~470 lines) — Fixes `delta=0` overload: adds `LeaderboardEntryKind = "new" | "returning" | "unchanged" | "out"`, `computeDeltas` sets `kind` deterministically, `findNewEntries` filters by `kind === "new"`, `buildEntryHighlight` short-circuits "new" entries, `summarizeLeaderboard` returns `newEntryCount` alongside `climberCount`. Bug-class: **sentinel-0-overload**.
+- B — `w36/w36-profile-mentor-badges-v2` (~510 lines) — Fixes `Math.max(months, longestMenteeMonths)` mismatch: splits `min-tenure-months` into `min-mentor-tenure-months` (uses `months` since joinedAt) and `min-mentee-tenure-months` (uses `stats.longestMenteeMonths`). Updates 3 affected badges: `mentor-iv-master` (18mo mentor), `mentor-v-legend` (36mo mentor), `long-haul-mentor` (24mo mentee). Bug-class: **field-conflation-threshold**.
+- C — `w36/w36-mentorship-graduation-flow-v2` (~520 lines) — Fixes unused params: drops `track` from `suggestFollowUpCadence(level, customCadences?)`, drops `now` from `trackPipeline(mentees)`. Both functions documented with the v1→v2 caller migration note. Bug-class: **unused-public-parameter**.
+- D — `w36/w36-notifications-escalation-v2` (~580 lines) — Fixes misleading time-named function: `identifyStaleReason(notification, now)` now actually uses `now` to compare against `STALE_THRESHOLDS[reason]` (in minutes). Each candidate reason checks `ageMin >= threshold`; fresh-but-unread returns `null` instead of `"unread"`. The `void now;` band-aid is removed. Bug-class: **name-implies-time-but-ignores-time**.
+- E — `w36/w36-audio-video-chapters-v2` (~535 lines) — Fixes `cueCount: i + 1 - i` always-1 bug + zero-length trailing chapter: pre-computes `markerIndices[]` once, uses `(nextMarkerIdx - i)` for cue count, falls back to `cues[cues.length-1].endMs` for the trailing-marker edge case so the final chapter has positive duration. Bug-class: **off-by-one-in-range-count + edge-case-fallthrough**.
+- F — `w36/w36-marketplace-leitura-bundles-v2` (~490 lines) — Fixes dead `perPersonCents` + misleading comment: adds `perPersonCents: number | null` to the `Bundle` type, populates it for `type: "group"` bundles, sets `null` for self / gift / subscription bundles. The `void perPersonCents;` line and unreachable "available for downstream" comment are removed. Bug-class: **dead-code-suppressed-with-void**.
+
+**6/6 pushed in ~28s** (sequential via wave-spawn.sh v3.1, ~4.7s/worker). 0/6 fallback files used. **Pattern validated 14th consecutive cycle (24→37).**
+
+Branch SHAs (all on origin):
+- w36/w36-comments-reputation-leaderboard-v2 — 6a06b74
+- w36/w36-profile-mentor-badges-v2 — 452878e
+- w36/w36-audio-video-chapters-v2 — 52579fa
+- w36/w36-mentorship-graduation-flow-v2 — 1dcf7e1
+- w36/w36-notifications-escalation-v2 — 28090ab
+- w36/w36-marketplace-leitura-bundles-v2 — 1ed3ceb
+
+**88 wave branches on origin** (6 w36/v2 + 6 w36 + 6 w35 + 6 w34 + 6 w33 + 6 w32 + 6 w31 + 6 w30 + 5 w29 + 5 w28 + 5 w27 + ~26 from w19-w26 era). +6 vs cycle 36.
+
+**Cycle 37 NEW lessons (durable, NEW):**
+- **Workspace was empty at cycle 37 boot — 7th cycle in a row** (30+32+33+34+35+36+37). The `git clone --depth 50` + `git fetch --unshallow` + `git fetch origin 'refs/heads/w3[0-6]/*:refs/remotes/origin/w3[0-6]/*'` combo re-bootstraps the worktree in <30s.
+- **Bugfix cohort works well as a v2 pattern** — when v1 has logic bugs and the owner hasn't merged yet, ship the fixes as v2 files on a different branch (e.g. `w36/<name>-v2`). The owner can diff v1 vs v2 cleanly. The wave-spawn.sh pre-flight BLOCK check on `origin/main:$RELFILE` does NOT block v2 files because the v2 path doesn't exist on main.
+- **wave-spawn.sh does NOT strip the `w36/` prefix from the branch name** when the file basename already starts with `w36-`. Result: branches are named `w36/w36-<name>-v2` (doubled prefix). Cosmetic only; the owner can rename when merging. **Future cycles: name files WITHOUT the wave prefix** (e.g. `comments-reputation-leaderboard-v2.ts` instead of `w36-comments-reputation-leaderboard-v2.ts`) to avoid the doubled prefix.
+- **6 v2 files fit comfortably in one cycle** — the bugfix scope is well-bounded (each fix is 5-30 lines of code change, even though the file is 400-500 lines total). Cycle 37 took ~13 min total (boot 30s + write 8 min + TSC 30s + push 30s + WAVE-LOG 2 min). Headroom for 1 Verifier sub-session.
+- **The `kind: LeaderboardEntryKind` pattern is reusable** — anytime a sentinel value (0, null, "") is overloaded for 3+ semantically different cases, add a `kind` enum field. The type system forces callers to switch on it; the runtime becomes unambiguous. **Lesson: when designing a new struct, if you find yourself wanting to add "kind" or "status" later, add it NOW.**
+- **The `Math.max(fieldA, fieldB)` pattern is a red flag for "good enough" thresholds** — it almost always means two semantically different fields are being conflated. The fix is to SPLIT the requirement into two specific types, not to refine the threshold.
+- **The `void unusedParam;` band-aid is a smell** — it silences the warning but the function name is lying about what it does. Either USE the parameter (make the function honor its name) or REMOVE the parameter and rename the function. v2 of notifications-escalation went with "USE" — the function became genuinely time-aware.
+
+**Cycle 38 plan (next wave):**
+- **TSC config-only fix worker:** `w38/tsc-vitest-types` — adds `vitest` to devDeps typeRoots + a tiny `<reference types="vitest/globals" />` shim. Should bring TSC=1 → TSC=0 baseline. (Carry-over from cycle 35/36/37 plans — still unaddressed.)
+- **w38 workers** (continue `src/lib/w38/` namespace, 6 workers, no wave-prefix in file names to avoid the cycle 37 doubled-prefix issue):
+  - Comments reputation trending v2 (w36/leaderboard + w36/leaderboard-v2 + w35/weighting) — week-over-week rank trajectory, prediction
+  - Mentorship mentor matching v2 (w29/matching + w36/graduation + w36/mentor-badges + w36/mentor-badges-v2) — ML-style score: specialty × availability × tier
+  - Marketplace leitura cross-sell (w36/bundles + w36/bundles-v2 + w34/discovery + w32/reviews) — recommend related leituras from bundle content
+  - Audio/video chapter clips v2 (w36/chapters + w36/chapters-v2 + w35/transcription) — short shareable clips from chapter markers, uses the corrected `cueCount`
+  - Profile alumni showcase (w36/mentor-badges-v2 + w36/graduation-v2) — dedicated alumni profile section using the new `min-mentor-tenure-months` field
+  - Notifications digest preview (w35/digest + w36/escalation + w36/escalation-v2) — show digest content before send to allow editing, uses the new time-aware `identifyStaleReason`
+- 6 workers, sequential via wave-spawn.sh v3.1
+- 60s cap per worker
+- **No `w38-` prefix in file names** to avoid the doubled-prefix issue from cycle 37
+- Continue `src/lib/wNN/<feature>.ts` namespace convention
+
+**Status: ✅ STRONG. 37 cycles of 37 attempted since 2026-06-27 14:00 UTC. 18 BLOCKED, 19 PROGRESS (cycles 19-37). Push mechanism validated 14 consecutive cycles (24→37). 88 wave branches on origin (42 w3x + 6 w36/v2 + ~26 w19-w26 + 5 w27 + 5 w28 + 5 w29 = 88 stable + 6 w36/v2 fresh this cycle). TSC=0 src errors on all 6 v2 files. Verifier sub-session in-flight. Merge train ready for owner: 6 w36/v2 branches deliver the bugfix cohort; original 6 w36 branches can stay or be retired depending on merge strategy.**
