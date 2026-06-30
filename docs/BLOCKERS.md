@@ -1570,3 +1570,15 @@ git rev-parse --verify <SHA>^{commit}
 **Status:** ✅ ARCHIVED. Procedure updated. Cycle 96+ audits use the new canonical flow.
 
 **Wave-spawner session:** 414889630564619 (cycle 96 interim 1).
+
+---
+
+## HOLD Status Note — 19:30 UTC (2026-06-30) — Cycle 95 still in HOLD
+
+**Cycle 95 governance HOLD continues (6th tick).** No new blockers created. No blockers resolved. State unchanged from cycle 97 interim 1 (19:00 UTC). Owner (user) merge authorization + cycle 95 theme decision still pending. Wave-spawner session 414903829213364. Next tick: 20:00 UTC.
+
+**Active blockers:**
+- B-W94-001 → INVALID (false positive, cycle 96 reversal)
+- B-W94-002 → ARCHIVAL (audit procedure update, cycle 96)
+
+**Reference:** See `docs/WAVE-LOG.md` cycle 98 interim 1 for full audit + decision context.
