@@ -7836,3 +7836,45 @@ Sibling wave-spawner 414815374045425 already spawned 2 DEFENSIVE workers at 13:4
 - Cycle 92 plan: continue DEFENSIVE 2-worker scope until 3+ consecutive clean cycles
 - **NEW RULE for future waves:** wait 3× expected work time before declaring silent-stuck CASCADE; better yet, trust agent-message self-reports
 
+### Cycle 91 SPAWN — wave-spawner 414823242133669 @ 14:00 UTC
+
+Fresh wave-spawner session after sibling 414815374045425 closed. Took over cycle 91 at 14:00 UTC.
+
+**Pre-flight @ 14:00 UTC:**
+- Workspace was empty (fresh CSI mount per-session). Cloned fresh `git clone --depth 50 https://github.com/Akasha-0/cabaladoscaminhos.git`
+- main @ `717c69f` (cycle 90 SIBLING RE-CORRECTION)
+- `git ls-remote origin | grep w91` = empty (cycle 91 not started on origin yet)
+- 3 SHIPPED w90s/* branches on origin: `w90s/audio-posts-upload` @ 144851b, `w90s/dm-threads` @ 4b00f5ee, `w90s/live-stream-chat-ext` @ 0041cdc
+- MEM 1978MB available / 2048MB
+- node_modules: NONE (parent must run npm install)
+
+**npm install in parent (cycle 89 + 90 SIBLING pattern, cycle 88 anti-pattern avoided):**
+- `timeout 300 npm install --no-audit --no-fund --ignore-scripts --prefer-offline` → ✅ 881 packages in 2 min
+- node_modules: 650 dirs, 1.2GB
+- tsc 5.9.3 + vitest 4.1.7 + next 16.2.6 functional
+
+**Worktree isolation (cycle 88 lessons applied):**
+- `git worktree add /workspace/wt-w91-notifications-prefs origin/main -b w91/notifications-prefs` → ✅
+- `git worktree add /workspace/wt-w91-reputation-leaderboard origin/main -b w91/reputation-leaderboard` → ✅ (one timed out at 20s, but both branches were created — second came up "locked", unlocked manually)
+- **node_modules symlinked** from parent to both worktrees: `ln -s /workspace/cabaladoscaminhos/node_modules <worktree>/node_modules` (saves workers 2-3 min of npm install)
+- tsc verified in both worktrees: Version 5.9.3
+
+**Spawn decisions:**
+- Spawned **2 DEFENSIVE workers** (not 4-6) — cascade rate still 23% across cycles 83-90, defensive scope is the new normal
+- Themes per sibling 414815374045425's plan: `w91/notifications-prefs-engine` (fresh) + `w91/reputation-leaderboard-ui` (W90-A retry)
+- Both briefs include: source-inspection spec pattern, TSC per-file gate, commit+push before 25-min mark, explicit sacred-cultural compliance
+
+**Workers dispatched @ 14:00 UTC:**
+- W91-A `w91/notifications-prefs` (Coder) — notifications-prefs engine
+- W91-B `w91/reputation-leaderboard` (Coder) — leaderboard UI
+
+**Expected:** SHIPPED by ~14:30 UTC, commits pushed to `w91/notifications-prefs` + `w91/reputation-leaderboard`.
+
+**Cycle 91 cascade-risk mitigation:**
+1. Symlinked node_modules — workers skip the npm install step that caused 4/4 cascade in cycle 88
+2. /workspace/wt-* worktree location (NOT /tmp) — /tmp is permanently unreachable in cycle 88+
+3. Reduced scope (1400 + 1530 LOC) — workers can finish in 20-25 min, leaving 5-10 min buffer
+4. Commit+push before 25-min mark mandatory in brief
+5. Defensive per-file TSC (not full repo TSC=2071 from orphan test files)
+6. Source-inspection spec only (no jsdom render tests, no vitest RPC teardown bug)
+
