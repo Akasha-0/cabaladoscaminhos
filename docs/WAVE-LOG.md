@@ -5377,3 +5377,49 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 
 ---
 
+## Cycle 74 — 2026-06-30 04:00 / 04:30 UTC — BLOCKED ❌ (parent Mavis hit Token Plan limit 2056)
+
+**Status (2026-06-30 05:00 UTC, tick 414690567004426):** ❌ **BOTH CYCLE 74 TICKS FAILED.** Orchestrator sessions 414683158180055 (04:00 UTC) and 414675805905169 (04:30 UTC) both terminated with `Token Plan usage limit reached: Upgrade your Token Plan or purchase Credits for more usage. (2056)`. As a result, the 4 cycle 74 child Coder sessions (414676751659177 W74-A akashia-offering-tracking + 414676751659178 W74-B synastry-compatibility-v2 + 414676213973301 W74-C numerology-daily-card + 414676213973302 W74-D achievements-progress-engine) were spawned but all errored with the same token limit before delivering.
+
+**Branch state on origin @ 05:00 UTC:** NO `w74/*` branches exist. Verified via `git ls-remote --heads origin | grep w74` → 0 results. All 4 cycle 74 attempts are NO-OPs.
+
+**Recovery decision:** cycle 75 RESPAWNS the 2 highest-priority cycle 74 themes (akashia-offering-tracking + synastry-advanced) PLUS 2 new themes (mesa-real-cross-house + sacred-geometry-engine) — see cycle 75 entry below. This treats cycle 74 as effectively null (no partial work to recover) and treats cycle 75 as a fresh attempt that happens to overlap on 2 themes.
+
+**Cross-cycle durable lesson (cycle 74 lessons learned):**
+1. **Token Plan limit is a parent-level constraint, not a per-session one** — when the orchestrator hits 2056, ALL pending child sessions also error out, even if the children were spawned successfully.
+2. **Spawn-confirmation check is MANDATORY** after every tick: `git ls-remote --heads origin | grep w7X` should match the expected number of branches within 30 sec. If 0, the parent failed and the cycle is a no-op.
+3. **Respawn on the SAME themes is acceptable** when the original work didn't actually land. The branches are w75/* not w74/*, so no collision. Owner can compare v1 (failed) vs v2 (this cycle) if curious.
+4. **Dual-orchestrator with token exhaustion is the cycle 74 failure mode** — the 04:00 tick and 04:30 tick BOTH errored on the same token limit. The cron is set to retry every 30 min, so the 05:00 tick (this session) is the recovery.
+
+**Status @ 05:00 UTC: ❌ CYCLE 74 NULL. Spawning cycle 75 with respawn of 2 + 2 new themes.**
+
+---
+
+## Cycle 75 — 2026-06-30 05:00 UTC — SPAWNED 🟡 (4 NEW Coder workers: mesa-real-cross-house + akashia-offering-tracking + sacred-geometry-engine + synastry-advanced)
+
+**Spawn confirmation (tick 414690567004426, 05:00 UTC).** Sandbox was fresh — repo was just cloned. 4 NEW Coder sessions spawned in parallel under this orchestrator (parent_session_id = 414690567004426). All themes are NEW (not in cycle 60-73) — 2 respawns from failed cycle 74 + 2 entirely new.
+
+| Worker | Session ID | Branch | Theme | NEW vs Respawn |
+|---|---|---|---|---|
+| **A** | `414691250647213` | `w75/mesa-real-cross-house` | Mesa Real 12-house × 4-map cross-interpretation (Cigano + Astrologia + Numerologia + Orixás) | NEW |
+| **B** | `414691441430746` | `w75/akashia-offering-tracking` | Akashia offering tracker (kind, recipient, intention, correspondence, pattern detection) | RESPAWN (was W74-A) |
+| **C** | `414691730145563` | `w75/sacred-geometry-engine` | 13 sacred geometry patterns (Flower of Life, Metatron's Cube, Tree of Life, etc.) + 7-tradition correspondences + SVG paths | NEW |
+| **D** | `414691250647214` | `w75/synastry-advanced` | Synastry compatibility scoring (0-100), 7 cross-aspects, couple's Mesa Real, Orixá compatibility matrix | RESPAWN (was W74-B) |
+
+**Cycle 75 design rationale:**
+- **Mesa Real cross-house (NEW)** — user priority HIGH (mentioned explicitly in profile: "cruzamento por casa" is the cycle 75+ north star). 12 of 36 houses in this slice, extensible later.
+- **Akashia offering tracking (RESPAWN)** — pattern detection + journal sync. Highest community-value spiritual practice tool.
+- **Sacred geometry (NEW)** — visual + meditation tool, no engine exists. 13 patterns with full tradition coverage + cymatic frequencies + SVG paths.
+- **Synastry advanced (RESPAWN)** — extends W70 synastry-engine. Compatibility scoring + aspect highlighting + couple's Mesa Real.
+
+**System state @ 05:00 UTC:**
+- Sandbox: 2048MB total, 1977MB available (well above 1000MB threshold — plenty of headroom for 4 workers)
+- Active workers: 4 (W75-A/B/C/D, all status 0 = active)
+- Active peer Mavis sessions: 0 (cycle 74 sessions all terminated)
+- Workers have 30-min hard cap; ship before 05:30 UTC
+- All 4 themes carry cycle 60-74 lessons in their briefs (worktree-isolated tsconfig, branded types, master-number preservation, sacred regex, etc.)
+
+**Status @ 05:00 UTC: 🟡 CYCLE 75 SPAWNED. 4/4 in flight. Next verification @ 05:30 UTC.**
+
+---
+
