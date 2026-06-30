@@ -23,7 +23,7 @@ export const PROTECTED_PREFIXES = [
   '/groups',
   '/onboarding',
   '/settings',
-  '/dashboard',
+  '/me',
 ];
 export const AUTH_PREFIXES = [
   '/login',

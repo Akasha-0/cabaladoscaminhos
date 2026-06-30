@@ -109,7 +109,7 @@ export default function DashboardPage() {
   // Auth redirect — defesa em profundidade, layout (community) já lida
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push('/login?redirectTo=/dashboard');
+      router.push('/login?redirectTo=/me/dashboard');
     }
   }, [authLoading, user, router]);
 

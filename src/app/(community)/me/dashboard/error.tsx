@@ -58,7 +58,7 @@ export default function DashboardError({
           </button>
           <button
             type="button"
-            onClick={() => router.push('/login?redirectTo=/dashboard')}
+            onClick={() => router.push('/login?redirectTo=/me/dashboard')}
             className="min-h-[44px] px-5 rounded-xl border border-slate-700 bg-slate-800/50 hover:bg-slate-700/50 text-slate-200 text-sm font-semibold inline-flex items-center gap-2"
           >
             <LogIn className="w-4 h-4" />

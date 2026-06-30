@@ -20,7 +20,7 @@ interface CachedItem {
 
 const KNOWN_CACHED_ROUTES = [
   { url: '/feed', title: 'Feed da comunidade' },
-  { url: '/dashboard', title: 'Dashboard pessoal' },
+  { url: '/me/dashboard', title: 'Dashboard pessoal' },
   { url: '/calendario', title: 'Calendário energético' },
   { url: '/chat', title: 'Chat com a curadora' },
 ];

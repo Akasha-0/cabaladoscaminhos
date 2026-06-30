@@ -55,7 +55,7 @@ export async function POST(request: Request) {
         maxAge: 60 * 60 * 24 * 7 // 1 week
       })
 
-      return NextResponse.redirect(new URL('/dashboard', request.url))
+      return NextResponse.redirect(new URL('/me/dashboard', request.url))
     }
 
     // Fallback to Supabase auth
@@ -81,7 +81,7 @@ export async function POST(request: Request) {
       maxAge: 60 * 60 * 24 * 7
     })
 
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+    return NextResponse.redirect(new URL('/me/dashboard', request.url))
 
   } catch (err) {
     return NextResponse.redirect(new URL('/login?error=server', request.url))
