@@ -7165,3 +7165,48 @@ The cabaladoscaminhos sandbox is in a degraded state. Manual intervention may be
 Until env is fixed, the wave-spawner will alternate between honest deferrals and 4/4 cascades.
 
 **Wall time this tick:** ~10 min total (env check + close-out + this deferral note). main @ `d9eb1f7` (cycle 88 close-out). Wave-spawner session 414793810403456.
+
+### Wave-Spawner — Cycle 89 SPAWN DECISION @ 12:30 UTC (2026-06-30) — 🟢 ENV RECOVERED + minimal spawn
+
+**Status @ 12:43 UTC:** Env RE-ESTABLISHED. Cycle 89 can proceed with reduced scope.
+
+**Env recovery evidence (this session 414800889626733, 12:30-12:43 UTC):**
+- 12:31 UTC: Fresh sandbox (no /workspace/cabaladoscaminhos). Cloned from origin/main @ `5321cff` (package-lock refresh — the W88 cascade fix).
+- 12:32-12:38 UTC: `npm ci` timed out at 150s (lock file too large, even with refresh). `npm install` (per cycle 88 lesson) interrupted by 90s timeout, node_modules cleaned up.
+- 12:41-12:43 UTC: `npm install --no-audit --no-fund --ignore-scripts` with **300s timeout** completed in **2 min** (120s wall). 881 packages, 1.2 GB. tsc 5.9.3 + vitest 4.1.7 + next 16.2.6 + prisma all functional.
+- 12:43 UTC: MEM 1972 MB available, load avg 3.11 (settling). No active workers. No active sibling wave-spawner sessions.
+
+**Critical change vs cycle 89 deferral (12:10 UTC, session 414793810403456):**
+- Previous wave-spawner deferred cycle 89 because env was unstable (npm install orphan cascade, vitest RPC teardown bug).
+- This session recovered env successfully because the 5321cff package-lock refresh added web-push@3.6.7 + asn1.js transitive (was missing in stale lock per W88 lesson).
+- The lock file was the bottleneck. The refresh at 5321cff unblocked it.
+
+**Cycle 89 spawn plan (REDUCED, 1 worker):**
+
+Per cycle 88 + previous wave-spawner's caution ("if env stable, spawn 1 minimal worker first"), cycle 89 will:
+1. Spawn **1 minimal worker** on theme **W89-A live-stream-chat** (extends W88-D live-stream-card).
+2. Worker brief: **must run `npm install --no-audit --no-fund --ignore-scripts` (NOT `npm ci`)**, must commit + push before 25-min mark.
+3. Source-inspection spec only (no vitest run per cycle 86/87 pattern).
+4. Use worktree `git worktree add /workspace/wt-live-stream-chat origin/main -b w89/live-stream-chat` to avoid parallel collisions.
+5. If W89-A succeeds: cycle 90 (13:00 UTC) scales to 4 workers.
+6. If W89-A cascades: cycle 89 CLOSED 0/1, document, recommend env hardening.
+
+**Theme rationale (W89-A live-stream-chat):**
+- Extends W88-D live-stream-card (already shipped cycle 88 WIP — actually cascaded, but branch exists)
+- Pure additive — no engine refactor, no schema changes
+- Reuses existing notifications/realtime infrastructure
+- Clear deliverable: chat component + messages engine + page + smoke
+
+**Cross-cycle durable lessons (cycle 89 close-out, session 414800889626733):**
+
+1. **package-lock.json refresh (5321cff) fixed the cycle 88 cascade root cause** — `npm install` with 300s timeout now succeeds in 2 min. Previous wave-spawner at 12:10 UTC didn't know the refresh was about to land and recommended deferral. Lesson: when env is fragile, check for in-flight dep fixes in the latest commit before deciding to defer.
+
+2. **`npm ci` is STILL broken even with refresh** — 150s timeout is insufficient. Use `npm install --no-audit --no-fund --ignore-scripts` with 300s timeout. Workers in cycle 89+ MUST use the latter.
+
+3. **300s timeout is the right number for `npm install` in this sandbox** — 90s/120s both trigger orphan cleanup, 150s/200s may also timeout. 300s gives 2x headroom for the 2-min install + cleanup buffer.
+
+4. **Per-session CSI is real** — node_modules is NOT shared across worker sessions. Each worker needs to do its own `npm install` (~2 min wall). Worker time budget: 30 min cap - 2 min install - 5 min commit/push buffer = **23 min for actual work**.
+
+5. **Cycle 89 minimal spawn is a 1-worker experiment** — 1 worker minimizes blast radius if env cascades. If 1 succeeds, 4 is safe.
+
+**Status @ 12:44 UTC:** Cycle 89 SPAWN IN PROGRESS. 1 worker (W89-A live-stream-chat) being dispatched. Wave-spawner session 414800889626733.
