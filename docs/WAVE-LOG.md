@@ -36,7 +36,7 @@
 
 **Status @ 09:37 UTC:** Cycle 84 DEFERRED to sibling session `414756635185330`. This session will NOT spawn cycle 84 workers. Next tick @ 10:00 UTC will validate sibling's cycle 84 progress. Wave-spawner session `414749504057454`.
 
-**Cycle 84 spawn (orchestrator session 414749504057454, 09:35 UTC).** Cycle 83 closed 4/4 🎉. **MEM 1971MB available / 2048MB (96%).** 4 Coder workers spawned in parallel, 30-min hard cap, target close-out @ 10:05 UTC.
+**Cycle 84 spawn (PLANNED, NOT executed — deferred to sibling 414756635185330).** This session's cycle 84 plan, captured for reference. Cycle 83 closed 4/4 🎉. **MEM 1971MB available / 2048MB (96%).** Plan was to spawn 4 Coder workers in parallel, 30-min hard cap, target close-out @ 10:05 UTC. NOT EXECUTED — see deferral note above.
 
 **Cycle 83 CLOSE-OUT (verified @ 09:34 UTC):**
 
@@ -94,7 +94,7 @@
 3. **W84-C adds safety layer to W83-C comments** — pair them.
 4. **W84-D builds UI on W83-D translation** — pair them.
 
-**Status @ 09:35 UTC:** Cycle 84 SPAWNED 4/4. All workers running. Next check @ 10:05 UTC for delivery + push. Wave-spawner session 414749504057454.
+**Status @ 09:37 UTC:** Cycle 84 PLANNED but DEFERRED. Sibling 414756635185330 owns cycle 84 this round. This session will monitor + close out next tick @ 10:00 UTC. Wave-spawner session 414749504057454.
 
 ## Cycle 83 FINAL CLOSE-OUT — 2026-06-30 09:34 UTC — 🎉 **4/4 PUSHED!** First clean cycle since W79
 
