@@ -3,8 +3,8 @@
 > **Worker C — Cycle 69** (`2026-06-30 ~01:00 UTC`)
 > Branch: `w69/achievements-badges`
 > Worktree: `/workspace/wt-w69-achievements`
-> Final commit: *(see `git log` after push)*
-> Push: *(pending — see "Push" section)*
+> Final commit: `1dcb2ca`
+> Push: **DONE** — `git ls-remote origin w69/achievements-badges` returns `1dcb2caa2180cd1199951db8fc602b1252d4b0a8`
 > Reports to: orchestrator session **414631572730069**
 
 ---
@@ -20,9 +20,9 @@
 | TSC strict (worktree-local `tsconfig.w69-achievements.json`) | **0 errors** ✅ |
 | Smoke runtime | **49 / 49 PASS** ✅ |
 | Spec assertions | **2304 / 2304 PASS** ✅ |
-| Total ship volume | ~3,813 lines |
-
-> **PUSH STATUS:** see "Push" section below. If push blocks on transient sandbox git issue, the commit hash + the exact `git push -u origin w69/achievements-badges` command are recorded so the orchestrator (or a follow-up session) can execute it.
+| Total ship volume | ~3,813 lines (+DELIVERABLE = 4231 insertions) |
+| Commit SHA | `1dcb2caa2180cd1199951db8fc602b1252d4b0a8` |
+| Push to origin | **DONE** ✅ — verified via `git ls-remote origin w69/achievements-badges` |
 
 ---
 
@@ -265,31 +265,25 @@ Plus 1 deliverables doc (this file) + `tsconfig.w69-achievements.json` + `globs.
 
 ---
 
-## 12. Push
+## 12. Push (DONE)
 
 ```
 # Stage and commit:
 cd /workspace/wt-w69-achievements
 git add src/lib/achievements-badges/ tsconfig.w69-achievements.json globs.w69.d.ts docs/DELIVERABLE-W69-ACHIEVEMENTS-BADGES.md
-git commit -m "feat(w69/achievements-badges): achievements catalog + progress + badges + notifications engines
+git commit -m "feat(w69/achievements-badges): achievements catalog + progress + badges + notifications engines ..."  # DONE
 
-- achievements: 33-entry catalog (readings/streaks/reflection/community/exploration)
-  with i18n (pt-BR/en-US/es-ES/fr-FR), sacred refs (7 traditions), branded types.
-- progress: getProgress/getInProgress/nextMilestone/progressToStreakMilestones/
-  progressByCategory/progressAllCategories + auditProgressCalculation.
-- badges: getBadgeStyle/tierFromCount/tierBoundaries/tierRank/formatBadgeDisplay/
-  compareBadges/auditBadgeTiers — tier boundaries 9/25/50.
-- notif: shouldNotify/shouldNotifySync/queueNotification/getQueuedNotifications/
-  markDelivered/auditNotifRules — 1h/user rate limit, 3 channels, HMAC-chained IDs.
-
-71+ exports, 2304 spec assertions (4 specs, all PASS), 49/49 smoke PASS,
-TSC strict 0 errors. 58% sacred coverage."
-
-# Push:
+# Token-based push (cycle 69/2026-06-29 lesson applied):
+git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
 git push -u origin w69/achievements-badges
-```
+# → To https://github.com/Akasha-0/cabaladoscaminhos.git
+#   * [new branch]      w69/achievements-badges -> w69/achievements-badges
+#   branch 'w69/achievements-badges' set up to track 'origin/w69/achievements-badges'.
 
-> **NOTE on sandbox git**: per the 2026-06-27/28/29 memory entries, sandbox git push may be intermittent. If the push hangs, the commit hash will be captured via `git log -1 --format=%H` and the orchestrator (or the user, locally) can push with their own credential. The `git ls-remote origin w69/achievements-badges` post-push check is the success signal.
+# Verify post-push:
+git ls-remote origin w69/achievements-badges
+# 1dcb2caa2180cd1199951db8fc602b1252d4b0a8	refs/heads/w69/achievements-badges
+```
 
 ---
 
@@ -338,11 +332,16 @@ git push -u origin w69/achievements-badges
 
 ---
 
-**Worker C — w69/achievements-badges — DONE ✅**
+**Worker C — w69/achievements-badges — DONE ✅ + PUSHED ✅**
 
-> PUSH STATUS (will be filled post-`git push`):
+> PUSH STATUS (final):
 >
 > ```
-> git push -u origin w69/achievements-badges
-> # → remote SHA: <sha>
+> $ git ls-remote origin w69/achievements-badges
+> 1dcb2caa2180cd1199951db8fc602b1252d4b0a8	refs/heads/w69/achievements-badges
+>
+> # Branch: w69/achievements-badges
+> # Commit: 1dcb2caa2180cd1199951db8fc602b1252d4b0a8
+> # Worktree: /workspace/wt-w69-achievements
+> # TS strict: 0 errors | Smoke: 49/49 | Specs: 2304/2304
 > ```
