@@ -286,8 +286,13 @@ bonus traditions (Orixás, Cabala&Tantra, Tarot, Runas) each appear in at least
 
 ```
 Branch: w75/mesa-real-cross-house
-Commit: 2272068c87fbd6835acb4dcc6e99f6991d61c9cc
-Push:   PUSHED ✅ (origin/w75/mesa-real-cross-house)
+Commits on branch (origin):
+  - 33d366f6 merge: bring W75-A engine + spec + smoke onto w75 branch
+  - 5ed8e437 docs(w75-A): add commit SHA to deliverable (2272068c)
+  - 2272068c feat(w75-A): mesa-real-cross-house engine + spec + smoke (cycle 75)
+
+Push:   PUSHED ✅ to origin/w75/mesa-real-cross-house
+        PUSHED ✅ to origin/main (also has feat + docs commits)
 ```
 
 ---
