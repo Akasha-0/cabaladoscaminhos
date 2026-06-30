@@ -194,6 +194,11 @@ model User {
   paymentsAsAffiliate  Payment[]       @relation("PaymentAffiliate")
   payouts              Payout[]
 
+  // 2026-06-30 — Wave 32 Beta Invite System
+  // Convites que este usuário gerou (referral / admin) + convites que ele aceitou
+  betaInvitesSent     BetaInvite[]    @relation("BetaInviteInviter")
+  betaInvitesAccepted BetaInvite[]    @relation("BetaInviteAcceptor")
+
   @@index([planoAssinatura])
   @@index([isMentor])
   @@index([createdAt])
@@ -2077,4 +2082,70 @@ model PaymentAuditLog {
   @@index([action])
   @@index([paymentId])
   @@map("payment_audit_log")
+}
+
+// ============================================================================
+// BETA INVITE SYSTEM — Wave 32 (2026-06-30)
+// ============================================================================
+// Convites beta fechados para as 3 ondas (50 vagas total, ~17 por onda).
+// Tokens são HMAC-SHA256 (plaintext nunca persiste); single-use; expiração
+// configurável por onda (default 7d). Auditoria via AuditLog + logAdmin.
+//
+// LGPD: e-mail e IP são PII; token plaintext nunca deve aparecer em logs.
+// Tabela rastreia wave + status para dashboard admin sem expor identificador.
+// ============================================================================
+
+enum InviteStatus {
+  PENDING    // gerado mas ainda não enviado (dry-run / batch aguardando)
+  SENT       // email enviado; aguardando o destinatário abrir
+  OPENED     // destinatário abriu o link (tracking pixel)
+  ACCEPTED   // converteu em conta (token consumido; status final)
+  EXPIRED    // passou expiresAt sem aceite
+  REVOKED    // admin cancelou manualmente
+}
+
+model BetaInvite {
+  id            String        @id @default(cuid())
+
+  // Destinatário (PII — hash em analytics; nunca logar em plaintext)
+  email         String
+
+  // Token canônico (HMAC-SHA256). Único no DB; o plaintext só existe no
+  // email enviado ao destinatário e nunca é logado.
+  token         String        @unique
+
+  // Wave 1 (founders), 2 (early community), 3 (public soft-launch)
+  wave          Int
+
+  // Máquina de estados do convite
+  status        InviteStatus  @default(PENDING)
+
+  // Timestamps de tracking (LGPD Art. 37 — registro de operações)
+  sentAt        DateTime?
+  openedAt      DateTime?
+  acceptedAt    DateTime?
+
+  // Expiração — configurável por onda (default 7 dias)
+  expiresAt     DateTime
+
+  // Origem: admin que gerou OU referral opcional
+  inviterId     String?
+  inviter       User?         @relation(fields: [inviterId], references: [id], onDelete: SetNull)
+
+  // userId preenchido quando status=ACCEPTED (FK criada depois do signup)
+  userId        String?       // relação declarada em User.betaInvite (logo abaixo)
+  user          User?         @relation("BetaInviteAcceptor", fields: [userId], references: [id], onDelete: SetNull)
+
+  // Contexto técnico (UTMs, IP hash do solicitante, batch id, etc) — sem PII cru
+  metadata      Json?
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([email, status])
+  @@index([token])
+  @@index([wave])
+  @@index([status, expiresAt])
+  @@index([inviterId])
+  @@map("beta_invites")
 }
