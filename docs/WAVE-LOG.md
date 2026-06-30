@@ -6733,3 +6733,49 @@ cigano ✦, candomblé 🪶, umbanda ☩, ifá ◈, cabala ☸, astrologia ☉, 
 - 3 W86 workers idle (status 0); W86-D crashed (status 2)
 
 **Status @ 10:57 UTC:** Cycle 86 CLOSED 3/4 + 1/4 WIP. Cycle 87 SPAWN deferred to 11:00 UTC tick (3 min wait). Wave-spawner session 414771547345007.
+
+
+### Wave-Spawner — Cycle 87 SPAWN @ 11:00 UTC (2026-06-30)
+
+**4 NEW workers SPAWNED, wave-spawner session 414779059990725 (this session).**
+
+| Worker | Session | Branch | Theme | Status |
+|---|---|---|---|---|
+| W87-A events-workshops-B2 | 414779975110891 | w87/events-workshops-b2 | B2 retry: finish spec+smoke+push from W86-D WIP @ 83a94a6 | 🚀 in flight |
+| W87-B mentorship-pairing | 414779059990762 | w87/mentorship-pairing | NEW: 1-on-1 mentor↔mentee pairing engine + page (score-based) | 🚀 in flight |
+| W87-C comments-thread-mentions | 414779975110892 | w87/comments-thread-mentions | NEW: thread depth=1 + @mention parser + XSS sanitize + LGPD | 🚀 in flight |
+| W87-D daily-reflection | 414779975110893 | w87/daily-reflection | NEW: daily prompt (7-tradição rotation) + journal + 7-entry history | 🚀 in flight |
+
+**Pre-spawn state:**
+- main @ `b2ab3674` (cycle 86 BLOCKERS update PUSHED)
+- Working tree clean, 0 local commits ahead of remote
+- MEM 1977MB available / 2048MB (well above 1000MB threshold)
+- 0 active workers (all W86 idle)
+- 4 w86 branches on remote: voice-page ✓, marketplace-page ✓, i18n-pt-br-en-es ✓, events-workshops (WIP @ 83a94a6)
+- 0 ACTIVE BLOCKERS
+
+**Cycle 87 strategy (lessons from cycle 84/85/86):**
+- Reduced-scope brief pattern (1 engine + 1 page, max ~3000 LOC per worker) — proven 100% effective in cycle 85 (clean) and 75% in cycle 86 (3/4 clean)
+- TSC=0 strict isolated (page tsconfig + engine tsconfig separated, matches W84-C/W85-B/W86-B pattern)
+- 30 min hard cap respected (workers can run 5-15 min over as soft cap, still recoverable)
+- Worktree isolation per worker (`git worktree add /tmp/w87-<theme> -b w87/<theme> main`)
+- W87-A: started from `origin/w86/events-workshops @ 83a94a6` (NOT main) — preserves W86-D partial
+- Workers push to `w87/<theme>` branch on origin
+- Wave-spawner does NOT merge to main during 30-min window
+- Sacred terminology preserved verbatim (Ori, Orixá, Odu, Sefirá, Caboclo, Preto-Velho, Babalaô, Yalorixá, Babalorixá, Tantra, Pranayama, Tradição)
+- Tradição symbols (W85-C/W86-D finalized): ✦ cigano, 🪶 candomblé, ☩ umbanda, ◈ ifá, ☸ cabala, ☉ astrologia, ☬ tantra
+- Curator-intent exclusions enforced: "amarre de amor", "vinculação amorosa", "trabalho para prejudicar terceiros"
+
+**W87-A brief:** B2 retry from `origin/w86/events-workshops @ 83a94a6`. Add `page.spec.tsx` (source-inspection regex), `scripts/smoke-events.mjs` (8+ invariants), TSC=0, vitest+smoke ALL PASS, commit, push to `w87/events-workshops-b2` (NEW branch, not continuing on w86). Reduced-scope: 5-10 min wall, ~1500 LOC.
+
+**W87-B brief:** Fresh `src/engine/mentorship/` (NEW directory). MentorProfile + MenteeProfile + PairingScore (weights: tradição +30, study +20, lang +15, tz +10, level mismatch -10) + PairingRequest state machine. 8 sample mentors × 7 tradições, 4 mentees. Page with filter chips + MentorCard + pairing modal + LGPD consent. ~3000 LOC, 25+ asserts.
+
+**W87-C brief:** Fresh `src/engine/comments/` + `src/components/comments/Thread.tsx`. Comment types + parser (mentions + XSS sanitize) + factory (add/edit/delete/listThread) + adapter (6 comments, 2 threads) + Thread component (autocomplete @, reply form, LGPD) + demo page. ~2800 LOC, 25+ asserts.
+
+**W87-D brief:** Fresh `src/engine/reflection/` + `/reflection` page. ReflectionPrompt (28 prompts = 4/tradição × 7) + JournalEntry + date-based rotation (hash(YYYY-MM-DD) % 7) + listRecentEntries(limit=7) + PromptCard + JournalEditor + HistoryList. 7-tradição rotation ensures all traditions get attention across 7 days. ~2500 LOC, 20+ asserts.
+
+**Push flow this tick:**
+- Commit: pending (WAVE-LOG append)
+- Push: `b2ab3674..<pending>` clean
+
+**Status @ 11:00 UTC:** 4/4 SPAWNED, 0/4 PUSHED yet. Workers spinning up. main @ `b2ab3674`. MEM 1977MB. Wave-spawner session 414779059990725. Next wave-spawner tick at 11:30 UTC.
