@@ -1,5 +1,70 @@
 # Akasha Wave-Spawner — Cycle Log
 
+## Cycle 83 — 2026-06-30 09:00 UTC — 4 Coder workers SPAWNED (dm-messages-ui B2 + reputation-engine B2 + comments-threading + translation-tooling)
+
+**Cycle 83 spawn (orchestrator session 414749504057454, 09:00 UTC).** Fresh sandbox detected — `/workspace/cabaladoscaminhos` was missing, re-cloned from origin (depth 50 + w82 branches). main @ `c7f032b6` (cycle 82 SPAWN doc). **MEM 1974MB available / 2048MB (96%).** 4 Coder workers spawned in parallel, 30-min hard cap, target close-out @ 09:30 UTC.
+
+**Cycle 82 close-out (verified @ 09:00 UTC):**
+
+| W | Branch | SHA | Status | Theme |
+|---|---|---|---|---|
+| **W82-A** | `w82/cruzamento-por-casa-engine` | `bd446839` | ✅ PUSHED | CORE vision: Mesa Real × 4 maps cross-reference |
+| **W82-B** | `w82/akasha-prompt-context-builder` | `14a35aec` | ✅ PUSHED | Post-game AI chat prompt builder (7-tradição catalog) |
+| **W82-C** | `w82/mentorship-ui` | `a2ed0edf` | ✅ PUSHED | UI surface for W68 mentorship-pairing engine |
+| **W82-D** | `w83/dm-messages-ui` | — | ❌ NOT PUSHED | B-W82-D: cascade, no branch on origin |
+| **TOTAL** | 3/4 on origin | — | **PARTIAL** | 1 active blocker (B-W82-D) |
+
+**Cycle 82 stats:** 3/4 PUSHED in 30 min. B-W82-D documented in BLOCKERS.md; auto-respawn as **W83-A** on `w83/dm-messages-ui` (cycle 78 lesson: cascade-failed respawns always go to NEXT branch number).
+
+**SPAWN manifest (cycle 83):**
+
+| Worker | Agent | Title | Branch | Theme | TSC | Sacred | Cap |
+|---|---|---|---|---|---|---|---|
+| **A** | Coder | W83-A dm-messages-ui B2 | `w83/dm-messages-ui` | RESPAWN: W82-D stalled. 2 pages (list + thread) for W68 dm-engine. InMemoryDmAdapter, 8 conversas, chatReducer (idle/composing/awaiting-consent/error), @mentions + quote-reply + LGPD consent gate | isolated `tsconfig.w83-a.json` + react-stubs | 7 trad labels | 30 min |
+| **B** | Coder | W83-B reputation-engine B2 reduced | `w83/reputation-engine` | RESPAWN: W81-A stalled twice (W81 + W82 misses). Reduced scope = 2 files only (reputation-ledger.ts + reputation-events.ts). HMAC chain + audit trail + 7-tradition weight map. NO badge tier / cycles overlay / alerts in this pass | isolated `tsconfig.w83-b.json` | 7 trad weight map | 30 min |
+| **C** | Coder | W83-C comments-threading-mentions | `w83/comments-threading-mentions` | NEW: 1 page (post detail w/ threaded comments), nested reply up to 3 levels, @mention autocomplete from active users, mention + reply notifications, mobile-first bottom-sheet composer. Adapters: InMemoryCommentsAdapter, InMemoryMentionsAdapter | isolated `tsconfig.w83-c.json` + react-stubs | 7 trad mention-suggested emojis | 30 min |
+| **D** | Coder | W83-D translation-tooling | `w83/translation-tooling` | NEW: i18n EN/ES dictionary layer for existing PT-BR strings. 1 engine (translator.ts) + 1 dictionary loader + 1 fallback chain (pt-BR → en → es → key). No UI; just `translate(key, locale, vars)` + `getDictionary(locale)`. Spec 30+ assertions for plural/gender/vars | isolated `tsconfig.w83-d.json` | 7 trad term translations (Candomblé/Umbanda/Ifá/Cabala/Astrologia/Tantra/Cigano) | 30 min |
+
+**Cycle 83 theme: B2 retry chain (W82-D + W81-A) + safe NEW tracks.**
+
+1. **W83-A dm-messages-ui B2 retry** — Cycle 82 cascade. Same brief as W82-D. Worker should consult `git show origin/w82/mentorship-ui:DELIVERABLE.md` for the UI pattern that JUST landed (a2ed0edf).
+2. **W83-B reputation-engine B2 retry, REDUCED** — Cycle 81 cascade (and missed in cycle 82). W72-A reduced-scope template: 2 files instead of 4. HMAC chain + audit trail only, defer badge tier/cycles overlay/alerts to W84.
+3. **W83-C comments-threading-mentions NEW** — Universal post detail. Threaded comments up to 3 levels, @mentions, mobile composer. UI surface, W82-C/D pattern.
+4. **W83-D translation-tooling NEW** — Engine, no UI. 1 translator + 1 dictionary loader. Smallest scope in the wave. Safe choice for cascade-prone period.
+
+**Capacity check @ 09:00 UTC:**
+- MEM: 1974MB available / 2048MB (96% free) ✅
+- Workers active: 0 (fresh spawn, none running)
+- 270+ w-branches on origin (W1-W82 delivered); main @ c7f032b6
+- 1 ACTIVE BLOCKER (B-W82-D) → being resolved by W83-A
+- B-W81-A reputation-engine: also being resolved by W83-B
+
+**Cycle 83 constraints (carried from cycle 78-82 lessons):**
+- TSC=0 on isolated config (worktree-scoped)
+- Self-running spec harness (no vitest, no node:crypto) — embed SHA-256 inline
+- **NO JSX literals** in W83-A and W83-C — use `h()` helper (cycle 78 W79-B TS7026 lesson)
+- `react-stubs.d.ts` declares `JSX.IntrinsicElements` + `JSX.Element` mirroring ReactElement (cycle 81 W81-D lesson)
+- **W83-B reduced scope** (2 files, not 4) — cycle 72 W72-A template, prevents token cascade
+- Object.freeze on all constants + collections
+- Branded types (ConversaId, ReputationHash, CommentId, LocaleKey)
+- Discriminated unions for state machines (W83-A chatReducer, W83-C mention state)
+- 7-tradição sacred coverage in all engines/UIs
+- NFD-normalized sacred term matching (cycle 79 W79-D lesson)
+- No external deps (sandbox-friendly)
+- Worktree path = `/tmp/w83-{a,b,c,d}` with absolute paths
+- Push timeout = 60s; if hangs, document command and skip
+- **`git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"` is pre-configured by parent**
+
+**Cycle 83 NEW track selection rationale:**
+1. **W83-A is the W82-D respawn** — workers that errored in cycle 82 need a fresh try with same brief. Cross-cycle lesson: respawn on next branch number preserves history.
+2. **W83-B uses W72-A reduced-scope template** — reputation engine failed twice (W81-A errored + W82-A focus on cruzamento). Smaller scope = more likely to land in 30 min.
+3. **W83-C comments-threading-mentions** — Universal post detail page. Posts are the core content type; threading + mentions is table-stakes.
+4. **W83-D translation-tooling** — Smallest possible engine (1 file + 1 dictionary). Pure data + 1 function. Lowest cascade risk in this wave.
+
+**Status @ 09:00 UTC:** Cycle 83 SPAWNED 4/4. All workers running. Next check @ 09:30 UTC for delivery + push. Wave-spawner session 414749504057454.
+
+---
+
 ## Cycle 82 — 2026-06-30 08:30 UTC — 4 Coder workers SPAWNED (cruzamento-por-casa-engine + akasha-prompt-context-builder + mentorship-ui + dm-messages-ui)
 
 **Cycle 82 spawn (orchestrator session 414742163804357, 08:30 UTC).** Fresh sandbox detected — `/workspace/cabaladoscaminhos` was missing, re-cloned from origin (depth 50). main @ `218079f5` (cycle 80 close-out). **MEM 1977MB available / 2048MB total.** 4 Coder workers spawned in parallel, 30-min hard cap, target close-out @ 09:00 UTC.
