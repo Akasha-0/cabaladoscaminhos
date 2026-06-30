@@ -1,0 +1,815 @@
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/__tests__/api/search-api.test.ts
+  151:11  warning  'req' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  221:11  warning  'req' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/__tests__/auth-flow.test.tsx
+  18:15  warning  'SupabaseClient' is defined but never used  @typescript-eslint/no-unused-vars
+  70:10  warning  'OnboardingFlow' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/__tests__/components/PostCard.test.tsx
+  8:37  warning  'within' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/__tests__/components/autocomplete.test.tsx
+  9:46  warning  'act' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/__tests__/mobile-layout.test.tsx
+  114:11  warning  'navs' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/__tests__/notifications-api.test.ts
+  205:11  warning  'json' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/__tests__/pwa.test.ts
+  10:36  warning  'readdirSync' is defined but never used  @typescript-eslint/no-unused-vars
+  10:49  warning  'statSync' is defined but never used     @typescript-eslint/no-unused-vars
+  18:5   warning  'indexHtml' is defined but never used    @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/middleware.ts
+   36:7  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+  165:7  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/next-sitemap.config.js
+  60:27  warning  'config' is defined but never used       @typescript-eslint/no-unused-vars
+  66:34  error    A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/prisma/seed/posts.ts
+  21:7  warning  'TRADITIONS' is assigned a value but only used as a type  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/public/sw.js
+  145:12  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+  188:12  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+  210:12  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+  254:12  warning  'e' is defined but never used    @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/scripts/check-bundle-size.ts
+  2:1  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/scripts/embed-articles.ts
+  25:23  error  Parsing error: Module specifier must be a string literal
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/scripts/run-evolution.ts
+    6:23  warning  'ALL_EVALS' is defined but never used               @typescript-eslint/no-unused-vars
+    8:3   warning  'AutoEvolutionEngine' is defined but never used     @typescript-eslint/no-unused-vars
+    9:8   warning  'EvolutionConfig' is defined but never used         @typescript-eslint/no-unused-vars
+   10:8   warning  'QualityReport' is defined but never used           @typescript-eslint/no-unused-vars
+   12:3   warning  'calculateGrade' is defined but never used          @typescript-eslint/no-unused-vars
+   90:11  warning  'priorityOrder' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  194:63  warning  'gap' is defined but never used                     @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/scripts/test-browser.ts
+  2:13  warning  'fs' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/scripts/verify-notifications-realtime.ts
+  2:1  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/(community)/explore/page.tsx
+   18:29  warning  'CardHeader' is defined but never used                           @typescript-eslint/no-unused-vars
+   18:41  warning  'CardTitle' is defined but never used                            @typescript-eslint/no-unused-vars
+   22:44  warning  'Layers' is defined but never used                               @typescript-eslint/no-unused-vars
+  849:32  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  849:40  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/(community)/feed/page.tsx
+   14:10  warning  'Avatar' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+   14:18  warning  'AvatarFallback' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  @typescript-eslint/no-unused-vars
+   17:20  warning  'BookOpen' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+   18:3   warning  'Heart' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @typescript-eslint/no-unused-vars
+   18:10  warning  'MessageCircle' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-unused-vars
+   18:25  warning  'Share2' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+   94:30  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/(community)/feed/page.tsx:94:30
+  92 |               </span>
+  93 |               <Badge variant="outline" className="text-xs border-slate-700 text-slate-500">
+> 94 |                 {(Math.floor(Math.random() * 900) + 100)}+ membros
+     |                              ^^^^^^^^^^^^^ Cannot call impure function
+  95 |               </Badge>
+  96 |             </Link>
+  97 |           ))}  react-hooks/purity
+  186:7   warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+  278:25  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+  282:25  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+  286:25  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+  290:25  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+  295:25  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/(community)/feedback/__tests__/FeedbackBoard.test.tsx
+  8:26  warning  'fireEvent' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/(community)/groups/[slug]/page.tsx
+   20:34  warning  'AvatarImage' is defined but never used                                        @typescript-eslint/no-unused-vars
+  128:7   warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+  139:7   warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/(community)/groups/page.tsx
+   9:27  warning  'useMemo' is defined but never used    @typescript-eslint/no-unused-vars
+  16:41  warning  'CardTitle' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/(community)/library/page.tsx
+  10:8   warning  'Link' is defined but never used        @typescript-eslint/no-unused-vars
+  16:21  warning  'Filter' is defined but never used      @typescript-eslint/no-unused-vars
+  17:3   warning  'Brain' is defined but never used       @typescript-eslint/no-unused-vars
+  17:56  warning  'TrendingUp' is defined but never used  @typescript-eslint/no-unused-vars
+  17:68  warning  'Sparkles' is defined but never used    @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/(community)/notifications/page.tsx
+   23:20  warning  'Mail' is defined but never used                                 @typescript-eslint/no-unused-vars
+   23:26  warning  'Loader2' is defined but never used                              @typescript-eslint/no-unused-vars
+  416:15  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  416:25  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  513:3   warning  'filter' is defined but never used                               @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/(community)/tags/[tag]/page.tsx
+  19:3   warning  'Search' is defined but never used        @typescript-eslint/no-unused-vars
+  20:3   warning  'Loader2' is defined but never used       @typescript-eslint/no-unused-vars
+  21:17  warning  'ExternalLink' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/(community)/u/[handle]/page.tsx
+  23:39  warning  'MapPin' is defined but never used          @typescript-eslint/no-unused-vars
+  24:13  warning  'Users' is defined but never used           @typescript-eslint/no-unused-vars
+  24:20  warning  'BookOpen' is defined but never used        @typescript-eslint/no-unused-vars
+  25:20  warning  'MoreHorizontal' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/actions/auth.ts
+  273:7  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/actions/posts.ts
+  28:3  warning  'commentToDto' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/api/akashic/records/route.ts
+  28:7  warning  'AkashicRecordSchema' is assigned a value but only used as a type  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/api/auth/create-test/route.ts
+  36:13  warning  'data' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/api/auth/login-form/route.ts
+  86:12  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/api/auth/logout/route.ts
+  35:9  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+  49:7  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/api/auth/status/route.ts
+  44:5  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/api/auth/test/route.ts
+   6:11  warning  'supabase' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  13:11  warning  'email' is assigned a value but never used     @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/api/groups/[slug]/members/route.ts
+  14:10  warning  'getViewer' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/api/notifications/spiritual/route.ts
+  22:7  warning  'SpiritualNotificationSchema' is assigned a value but only used as a type  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/api/notifications/stream/route.ts
+   1:23  warning  'NextResponse' is defined but never used  @typescript-eslint/no-unused-vars
+  30:27  warning  '_request' is defined but never used      @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/api/notifications/templates/route.ts
+  10:3  warning  'formatTemplate' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/api/users/profile/route.ts
+  17:23  warning  'NextResponse' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/design-system/page.tsx
+   23:3   warning  'Check' is defined but never used              @typescript-eslint/no-unused-vars
+   48:27  warning  'semanticColor' is defined but never used      @typescript-eslint/no-unused-vars
+  236:10  warning  'hasError' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/layout.tsx
+  244:11  warning  Unused eslint-disable directive (no problems were reported from 'react/no-danger')
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/app/page.tsx
+  12:49  warning  'Star' is defined but never used           @typescript-eslint/no-unused-vars
+  13:10  warning  'MessageCircle' is defined but never used  @typescript-eslint/no-unused-vars
+  13:25  warning  'Lightbulb' is defined but never used      @typescript-eslint/no-unused-vars
+  13:43  warning  'Loader2' is defined but never used        @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/components/community/CommunityNav.tsx
+  70:27  warning  'href' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/components/community/PostCard.tsx
+  44:7  warning  'POST_TYPE_ICONS' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/components/community/SearchBar.tsx
+  234:37  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  234:45  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  280:48  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  280:56  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/components/community/__tests__/CommunityNav.test.tsx
+  6:34  warning  'fireEvent' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/components/community/__tests__/_mocks.tsx
+  58:5  warning  Unused eslint-disable directive (no problems were reported from 'jsx-a11y/alt-text')
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/components/community/__tests__/feed-page.test.tsx
+  13:26  warning  'within' is defined but never used     @typescript-eslint/no-unused-vars
+  13:34  warning  'fireEvent' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/components/community/__tests__/groups-page.test.tsx
+  216:45  warning  'opts' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/components/community/__tests__/library-page.test.tsx
+  15:26  warning  'within' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/components/community/__tests__/notifications-page.test.tsx
+  144:13  warning  'marina' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  145:13  warning  'bia' is assigned a value but never used     @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/components/onboarding/OnboardingFlow.tsx
+  38:8  warning  'OnboardingStep1Input' is defined but never used  @typescript-eslint/no-unused-vars
+  39:8  warning  'OnboardingStep2Input' is defined but never used  @typescript-eslint/no-unused-vars
+  40:8  warning  'OnboardingStep3Input' is defined but never used  @typescript-eslint/no-unused-vars
+  41:8  warning  'OnboardingStep4Input' is defined but never used  @typescript-eslint/no-unused-vars
+  42:8  warning  'OnboardingStep5Input' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/components/ui/avatar.tsx
+  42:18  error  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-object-type
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/components/ui/tooltip-info.tsx
+   6:48  warning  'props' is defined but never used    @typescript-eslint/no-unused-vars
+  11:40  warning  'props' is defined but never used    @typescript-eslint/no-unused-vars
+  16:44  warning  'asChild' is defined but never used  @typescript-eslint/no-unused-vars
+  16:56  warning  'props' is defined but never used    @typescript-eslint/no-unused-vars
+  21:47  warning  'props' is defined but never used    @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/hooks/useAuth.ts
+  164:5  warning  React Hook useMemo has a missing dependency: 'redirectAfterAuth'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/hooks/useCommunityNotifications.ts
+  106:3  error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/hooks/useCommunityNotifications.ts:106:3
+  104 |   // (sem isso, polling seria destruído e recriado a cada render do parent)
+  105 |   const callbackRef = useRef(onNewNotification);
+> 106 |   callbackRef.current = onNewNotification;
+      |   ^^^^^^^^^^^^^^^^^^^ Cannot update ref during render
+  107 |
+  108 |   // ============================================================================
+  109 |   // Fetch helpers  react-hooks/refs
+  335:5  warning  Unused eslint-disable directive (no problems were reported from 'react-hooks/exhaustive-deps')
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/hooks/useGroups.ts
+  261:5  warning  React Hook useCallback has a missing dependency: 'headers'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  274:6  warning  React Hook useCallback has a missing dependency: 'headers'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  292:5  warning  React Hook useCallback has a missing dependency: 'headers'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  307:5  warning  React Hook useCallback has a missing dependency: 'headers'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/hooks/useNotifications.ts
+  211:16  warning  'err' is defined but never used             @typescript-eslint/no-unused-vars
+  240:28  warning  'close' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  266:26  warning  'close' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/hooks/usePosts.ts
+  15:3  warning  'CreateCommentInput' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/lib/community/groups.ts
+  103:54  error  The `{}` ("empty object") type allows any non-nullish value, including literals like `0` and `""`.
+- If that's what you want, disable this lint rule with an inline comment or configure the 'allowObjectTypes' rule option.
+- If you want a type meaning "any object", you probably want `object` instead.
+- If you want a type meaning "any value", you probably want `unknown` instead  @typescript-eslint/no-empty-object-type
+  579:35  error  The `{}` ("empty object") type allows any non-nullish value, including literals like `0` and `""`.
+- If that's what you want, disable this lint rule with an inline comment or configure the 'allowObjectTypes' rule option.
+- If you want a type meaning "any object", you probably want `object` instead.
+- If you want a type meaning "any value", you probably want `unknown` instead  @typescript-eslint/no-empty-object-type
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/lib/community/notifications.ts
+  45:7  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+  84:7  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/lib/community/search.ts
+  169:10  warning  'buildHeadline' is defined but never used   @typescript-eslint/no-unused-vars
+  233:10  warning  'buildScoreExpr' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/lib/i18n/index.ts
+  135:15  warning  '_locale' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/lib/lazy.tsx
+  50:1  warning  Assign object to a variable before exporting as module default  import/no-anonymous-default-export
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/lib/logging.ts
+  193:34  warning  '_entry' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/lib/notifications/email.ts
+  274:5  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/lib/notifications/push.ts
+  179:5  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/lib/notifications/triggers.ts
+  127:5  warning  'entityType' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  128:5  warning  'entityId' is assigned a value but never used    @typescript-eslint/no-unused-vars
+  129:5  warning  'postId' is assigned a value but never used      @typescript-eslint/no-unused-vars
+  130:5  warning  'commentId' is assigned a value but never used   @typescript-eslint/no-unused-vars
+  131:5  warning  'groupId' is assigned a value but never used     @typescript-eslint/no-unused-vars
+  132:5  warning  'articleId' is assigned a value but never used   @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/lib/odu/HyperCorrelationEngine.ts
+  428:1  warning  Assign object to a variable before exporting as module default  import/no-anonymous-default-export
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/lib/redis.ts
+  16:11  warning  'InMemoryStore' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/lib/supabase/client.ts
+  41:7  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/src/lib/supabase/server.ts
+  39:7  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+  80:7  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/api/auth-login.test.ts
+  304:13  warning  'response' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/api/health.test.ts
+   59:13  warning  'request' is assigned a value but never used  @typescript-eslint/no-unused-vars
+   74:13  warning  'request' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  103:13  warning  'request' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  129:13  warning  'request' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  144:13  warning  'request' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  161:13  warning  'request' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  178:13  warning  'request' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  196:13  warning  'request' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/api/stripe-webhook.test.ts
+  272:71  warning  'sig' is defined but never used     @typescript-eslint/no-unused-vars
+  272:81  warning  'secret' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/calculators/engines.test.ts
+   9:3  warning  'calculateExpression' is defined but never used  @typescript-eslint/no-unused-vars
+  10:3  warning  'calculateMotivation' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/components/AIMeditationGuide.test.tsx
+  99:13  warning  'onComplete' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/components/dashboard/RealTimeInsightsPanel.test.tsx
+  2:46  warning  'waitFor' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/components/dashboard/UserProfileBadge.test.tsx
+  3:10  warning  'useUserProfileStore' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/components/layout/PageHeader.test.tsx
+  37:13  warning  'container' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/components/mapa/NumerologiaCard.test.tsx
+  91:13  warning  'expandedDetails' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/components/mapa/TarotCard.test.tsx
+  2:48  warning  'afterEach' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/components/onboarding/OnboardingWizard.test.tsx
+  3:18  warning  'screen' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/components/shared/MysticDivider.test.tsx
+  3:18  warning  'screen' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/hooks/usePrevisaoMensal.test.ts
+  4:62  warning  'PrevisaoMensal' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/hooks/useSearchHistory.test.ts
+  6:7  warning  'mockGetItem' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/hooks/useSpiritualHistory.test.ts
+  24:11  warning  'today' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/hooks/useUserPreferences.test.ts
+  2:22  warning  'waitFor' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/integration/api/correlation-deep.test.ts
+  48:10  warning  'NextRequest' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/integration/api/correlation-diagnosis.test.ts
+  19:36  warning  'diagnosis' is defined but never used                          @typescript-eslint/no-unused-vars
+  29:40  warning  'getSpiritualPrescription' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  48:10  warning  'createGetRequest' is defined but never used                   @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/integration/middleware-auth.test.ts
+  12:55  warning  'vi' is defined but never used           @typescript-eslint/no-unused-vars
+  13:10  warning  'NextRequest' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/integration/payments.test.ts
+   8:36  warning  'beforeEach' is defined but never used  @typescript-eslint/no-unused-vars
+  70:38  warning  'key' is defined but never used         @typescript-eslint/no-unused-vars
+  78:38  warning  'key' is defined but never used         @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/ai/mapa-insights.test.ts
+  9:10  warning  'Ope' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/analytics.test.ts
+  2:49  warning  'FunnelStepName' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/auth-jwt.test.ts
+  8:36  warning  'beforeEach' is defined but never used  @typescript-eslint/no-unused-vars
+  9:8   warning  'jwt' is defined but never used         @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/awakening/awakening-data.test.ts
+  1:32  warning  'beforeEach' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/awakening/v2/awakening-data.test.ts
+  1:32  warning  'beforeEach' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/birth-chart/chart-calculator.test.ts
+  2:61  warning  'getDominantPlanet' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/calendar/calendar-events.test.ts
+  9:3  warning  'CalendarEvent' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/calendar/moon-phases.test.ts
+  1:32  warning  'beforeEach' is defined but never used  @typescript-eslint/no-unused-vars
+  1:44  warning  'vi' is defined but never used          @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/chart/chart-interpretations.test.ts
+  4:3  warning  'getPlanetSignInterpretation' is defined but never used  @typescript-eslint/no-unused-vars
+  6:3  warning  'getElementInterpretation' is defined but never used     @typescript-eslint/no-unused-vars
+  7:3  warning  'getSignInterpretation' is defined but never used        @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/chakra-chakra.test.ts
+  30:13  warning  'result' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/chakra-numerology.test.ts
+  11:15  warning  'ChakraNumerology' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/chakra-odu.test.ts
+  11:8  warning  'ChakraOduMapping' is defined but never used  @typescript-eslint/no-unused-vars
+  12:8  warning  'OduInfo' is defined but never used           @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/correlation-types.test.ts
+  5:8  warning  'OduCorrelation' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/day-energy.test.ts
+  11:8  warning  'DayEnergy' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/day-odu.test.ts
+  16:8  warning  'DayOduMapping' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/day-portal-analyzer.test.ts
+  6:8  warning  'DayAnalysis' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/element-chakra.test.ts
+  355:13  warning  'uniqueChakras' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/element-numerology.test.ts
+  15:8  warning  'ElementNumerology' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/element-tarot.test.ts
+  14:3  warning  'ELEMENTOS' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/frequency-element.test.ts
+  17:8  warning  'FrequencyElementMapping' is defined but never used  @typescript-eslint/no-unused-vars
+  18:8  warning  'Elemento' is defined but never used                 @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/frequency-numerology.test.ts
+  15:8  warning  'FrequencyNumerologyMapping' is defined but never used  @typescript-eslint/no-unused-vars
+  16:8  warning  'Numerologia' is defined but never used                 @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/frequency-odu.test.ts
+  21:8  warning  'FrequencyOduMapping' is defined but never used  @typescript-eslint/no-unused-vars
+  22:8  warning  'Elemento' is defined but never used             @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/frequency-planet.test.ts
+  18:8  warning  'FrequencyPlanetMapping' is defined but never used  @typescript-eslint/no-unused-vars
+  19:8  warning  'Planeta' is defined but never used                 @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/frequency-sephirot.test.ts
+  19:8  warning  'FrequencySephirotMapping' is defined but never used  @typescript-eslint/no-unused-vars
+  20:8  warning  'Sephirah' is defined but never used                  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/moon-element.test.ts
+  16:8  warning  'Elemento' is defined but never used  @typescript-eslint/no-unused-vars
+  17:8  warning  'FaseLua' is defined but never used   @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/moon-frequency.test.ts
+  18:8  warning  'MoonFrequencyMapping' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/moon-numerology.test.ts
+  18:8  warning  'MoonNumerologyMapping' is defined but never used  @typescript-eslint/no-unused-vars
+  19:7  warning  'FaseLua' is defined but never used                @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/moon-odu.test.ts
+  16:8  warning  'MoonOduMapping' is defined but never used     @typescript-eslint/no-unused-vars
+  17:8  warning  'OduCorrespondence' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/moon-orixa.test.ts
+  309:19  warning  'phase' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/moon-phase-ritual.test.ts
+  8:8  warning  'MoonPhaseRitual' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/moon-planet.test.ts
+  15:8  warning  'MoonPlanetMapping' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/moon-sephirot.test.ts
+  11:8  warning  'MoonSephirot' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/moon-zodiac.test.ts
+  259:19  warning  'phase' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/numerology-chakra.test.ts
+  10:8  warning  'NumerologyChakraMapping' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/numerology-element.test.ts
+  14:8  warning  'NumerologyElement' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/numerology-frequency.test.ts
+  16:8  warning  'NumerologyFrequencyMapping' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/numerology-moon.test.ts
+  15:8  warning  'NumerologyMoonMapping' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/numerology-odu.test.ts
+  15:8  warning  'NumerologyOduMapping' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/numerology-sephirot.test.ts
+  7:8  warning  'NumerologySephirot' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/numerology-tarot.test.ts
+  13:8  warning  'NumerologyTarotMapping' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/numerology-zodiac.test.ts
+  15:8  warning  'NumerologyZodiacMapping' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/oddu-day.test.ts
+  5:85  warning  'getAllOduNames' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/odtu-frequency.test.ts
+  6:102  warning  'getAllOduNamesYoruba' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/odu-orixa.test.ts
+  20:8  warning  'OduOrixa' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/odu-sephirot.test.ts
+  11:8  warning  'OduSephirah' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/odu-tarot.test.ts
+  21:8  warning  'OduTarotMapping' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/odu-zodiac.test.ts
+  21:15  warning  'Signo' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/orixa-frequency.test.ts
+  368:13  warning  'arFreqs' is assigned a value but never used    @typescript-eslint/no-unused-vars
+  369:13  warning  'eterFreqs' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/orixa-herb.test.ts
+  18:3  warning  'OrixaName' is defined but never used     @typescript-eslint/no-unused-vars
+  19:3  warning  'HerbCategory' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/orixa-zodiac.test.ts
+  388:19  warning  'orixa' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/planet-day.test.ts
+  18:8  warning  'Planet' is defined but never used     @typescript-eslint/no-unused-vars
+  19:8  warning  'PlanetDay' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/planet-frequency.test.ts
+  14:8  warning  'PlanetFrequencyMapping' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/planet-herb.test.ts
+  19:3  warning  'PlanetName' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/planet-odu.test.ts
+  10:8  warning  'PlanetOduMapping' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/planet-orixa.test.ts
+  335:13  warning  'solMapping' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/planet-sephirot.test.ts
+  11:8  warning  'PlanetSephirot' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/planet-tarot.test.ts
+  11:8  warning  'PlanetTarotMapping' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/sephirot-chakra.test.ts
+  9:8  warning  'SephirotChakra' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/sephirot-day.test.ts
+   7:8   warning  'SephirahDay' is defined but never used  @typescript-eslint/no-unused-vars
+  24:55  warning  'key' is defined but never used          @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/sephirot-frequency.test.ts
+  14:8  warning  'SephirotFrequency' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/sephirot-numerology.test.ts
+  8:8  warning  'SephirotNumerology' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/sephirot-orixa.test.ts
+  4:3  warning  'getOrixaSephirot' is defined but never used         @typescript-eslint/no-unused-vars
+  6:3  warning  'SEPHIROT_ORIXA_MAPPINGS' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/sephirot-planet.test.ts
+  12:8  warning  'SephirotPlanet' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/sign-element.test.ts
+  2:164  warning  'getSignsByDirection' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/sound-day.test.ts
+  17:8  warning  'SoundDayCorrelation' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/sound-planet.test.ts
+  211:40  warning  'planeta' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/sound-sephirot.test.ts
+  21:8  warning  'SoundSephirot' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/useTodayCorrelation.test.ts
+  11:3  warning  'useTodayCorrelation' is defined but never used  @typescript-eslint/no-unused-vars
+  12:8  warning  'TodayCorrelation' is defined but never used     @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/zodiac-element.test.ts
+  13:8  warning  'ZodiacElementMapping' is defined but never used  @typescript-eslint/no-unused-vars
+  14:8  warning  'SignoZodiac' is defined but never used           @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/zodiac-numerology.test.ts
+  17:8  warning  'ZodiacNumerologyMapping' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/correlation/zodiac-sephirot.test.ts
+  13:8  warning  'ZodiacSephirot' is defined but never used  @typescript-eslint/no-unused-vars
+  14:8  warning  'Sephirah' is defined but never used        @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/divination/oracle-cards.test.ts
+  8:8  warning  'OracleCard' is defined but never used  @typescript-eslint/no-unused-vars
+  9:8  warning  'OracleDeck' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/education/paths.test.ts
+  2:56  warning  'getLesson' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/elements/element-data.test.ts
+  2:19  warning  'ELEMENT_DATASET' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/energy/balance.test.ts
+  3:15  warning  'EnergyBalance' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/energy/energy-flow.test.ts
+  1:44  warning  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/engines/mapa-alma.test.ts
+   40:3   warning  'odusData' is defined but never used              @typescript-eslint/no-unused-vars
+  410:38  warning  'index' is defined but never used                 @typescript-eslint/no-unused-vars
+  436:13  warning  'knownOrixas' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  478:13  warning  'mapaC' is assigned a value but never used        @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/engines/mapa-insights.test.ts
+  9:15  warning  'Ope' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/engines/pattern-recognizer.test.ts
+  17:10  warning  'PatternRecognizer' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/engines/predictive-synthesis.test.ts
+  10:3  warning  'predictiveSynthesisEngine' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/engines/spiritual-engine.test.ts
+  1207:44  warning  'anoPessoal' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/frequency/frequency-analysis.test.ts
+  2:24  warning  'AnaliseFrequencia' is defined but never used  @typescript-eslint/no-unused-vars
+  2:48  warning  'ResultadoAnalise' is defined but never used   @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/gamification.test.ts
+  28:8  warning  'Achievement' is defined but never used   @typescript-eslint/no-unused-vars
+  30:8  warning  'Mission' is defined but never used       @typescript-eslint/no-unused-vars
+  32:8  warning  'Reward' is defined but never used        @typescript-eslint/no-unused-vars
+  34:8  warning  'StreakReward' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/gamification/streaks.test.ts
+  2:67  warning  'Streak' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/goals/achievements.test.ts
+  2:47  warning  'getAchievementsByCategory' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/goals/tracking.test.ts
+  2:21  warning  'getGoalProgress' is defined but never used    @typescript-eslint/no-unused-vars
+  2:72  warning  'getActiveGoals' is defined but never used     @typescript-eslint/no-unused-vars
+  2:88  warning  'getCompletedGoals' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/healing/healing-sessions.test.ts
+  2:36  warning  'getAllSessions' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/herb-data.test.ts
+  2:30  warning  'herbs' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/journal/journal-entries.test.ts
+  2:49  warning  'getEntryById' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/journey/journey-tracking.test.ts
+  1:44  warning  'afterEach' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/karma/karma-patterns.test.ts
+  7:3  warning  'analyzePatterns' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/learning/learning-content.test.ts
+  2:52  warning  'getModulesByCategory' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/learning/learning-progress.test.ts
+  2:108  warning  'getCompletedCount' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/learning/lessons-library.test.ts
+  2:41  warning  'getLessonsByCategory' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/learning/quiz-system.test.ts
+  2:53  warning  'getNextUnanswered' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/mantra/mantra-data.test.ts
+  12:17  warning  'key' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/meditation/meditation-progress.test.ts
+  6:8  warning  'ProgressData' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/meditation/meditation-timer.test.ts
+   2:46  warning  'TimerControls' is defined but never used      @typescript-eslint/no-unused-vars
+   2:66  warning  'TimerState' is defined but never used         @typescript-eslint/no-unused-vars
+  11:25  warning  '_remaining' is defined but never used         @typescript-eslint/no-unused-vars
+  13:32  warning  '_phaseIndex' is defined but never used        @typescript-eslint/no-unused-vars
+  13:53  warning  '_phaseName' is defined but never used         @typescript-eslint/no-unused-vars
+  36:13  warning  'controls' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/meditation/series-tracking.test.ts
+  7:8  warning  'SeriesEntry' is defined but never used         @typescript-eslint/no-unused-vars
+  8:8  warning  'TrackSeriesOptions' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/meditation/session-tracking.test.ts
+  6:8  warning  'TrackingResult' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/notifications/scheduling.test.ts
+  3:15  warning  'ScheduledNotification' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/oracle/oracle-data.test.ts
+   1:32  warning  'beforeAll' is defined but never used   @typescript-eslint/no-unused-vars
+  10:8   warning  'OracleData' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/oracle/oracle-reading.test.ts
+    6:8   warning  'OracleReading' is defined but never used      @typescript-eslint/no-unused-vars
+    7:8   warning  'ReadingSpread' is defined but never used      @typescript-eslint/no-unused-vars
+  251:15  warning  'allCards' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/orixa/oxala-data.test.ts
+  2:44  warning  'getOxalaByElement' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/past-life/past-life-data.test.ts
+   6:3  warning  'getProfilesByCulture' is defined but never used       @typescript-eslint/no-unused-vars
+   7:3  warning  'getProfilesBySpiritualAge' is defined but never used  @typescript-eslint/no-unused-vars
+   8:3  warning  'getRelationshipById' is defined but never used        @typescript-eslint/no-unused-vars
+   9:3  warning  'getRelationshipsByType' is defined but never used     @typescript-eslint/no-unused-vars
+  11:3  warning  'getThemesByCategory' is defined but never used        @typescript-eslint/no-unused-vars
+  13:3  warning  'getSkillsByDomain' is defined but never used          @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/planetary/correspondences.test.ts
+  5:3  warning  'getCorrespondencesByDay' is defined but never used     @typescript-eslint/no-unused-vars
+  6:3  warning  'getCorrespondencesByChakra' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/quality/runner.test.ts
+  52:17  warning  'category' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  63:17  warning  'category' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/rituais/ritual-library.test.ts
+  2:59  warning  'getRitualsByOrixa' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/sacred-geometry/geometric-patterns.test.ts
+  7:3  warning  'getMetatronRelations' is defined but never used  @typescript-eslint/no-unused-vars
+  8:3  warning  'getAllElements' is defined but never used        @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/schedule.test.ts
+  22:8  warning  'SetReminderInput' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/soul/soul-data.test.ts
+  5:8  warning  'SoulData' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/spirit/spirit-data.test.ts
+  5:8  warning  'SpiritData' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/spiritual-engines-validation.test.ts
+  109:9  warning  'testNames' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/stats/dashboard.test.ts
+  2:70  warning  'generateCategoryBreakdown' is defined but never used  @typescript-eslint/no-unused-vars
+  2:97  warning  'getDefaultAchievements' is defined but never used     @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/sync/sync-conflict-resolution.test.ts
+   5:32  warning  'beforeEach' is defined but never used          @typescript-eslint/no-unused-vars
+   5:44  warning  'afterEach' is defined but never used           @typescript-eslint/no-unused-vars
+   5:55  warning  'vi' is defined but never used                  @typescript-eslint/no-unused-vars
+  12:8   warning  'ConflictResolution' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/sync/sync-data.test.ts
+  10:8  warning  'SyncData' is defined but never used      @typescript-eslint/no-unused-vars
+  11:8  warning  'SyncMetadata' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/transformation/transformation.test.ts
+   6:3  warning  'TransformationData' is defined but never used      @typescript-eslint/no-unused-vars
+  12:3  warning  'TransformationProgress' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/lib/vibration/v2/vibration-data.test.ts
+  2:38  warning  'VibrationData' is defined but never used  @typescript-eslint/no-unused-vars
+
+/run/csi/mount-root/nas/eab0d61a99b6696edb3d2aff87b585e8/cabaladoscaminhos/tests/middleware/rate-limit.test.ts
+    9:10  warning  'NextRequest' is defined but never used              @typescript-eslint/no-unused-vars
+   20:7   warning  'EXCLUDED_PATHS' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  142:15  warning  'response' is assigned a value but never used        @typescript-eslint/no-unused-vars
+
+✖ 363 problems (15 errors, 348 warnings)
+  0 errors and 26 warnings potentially fixable with the `--fix` option.
+
