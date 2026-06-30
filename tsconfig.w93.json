@@ -1,0 +1,29 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "skipLibCheck": true,
+    "incremental": false,
+    "types": ["vitest/globals", "node"]
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/lib/w93/auth-integration.ts",
+    "src/components/auth/AppleOAuthButton.tsx",
+    "src/components/auth/OAuthButtons.tsx",
+    "src/components/auth/AuthGuard.tsx",
+    "src/app/(auth)/login/page.tsx",
+    "src/app/(auth)/login/LoginForm.tsx",
+    "src/app/(auth)/signup/page.tsx",
+    "src/app/(auth)/signup/SignupForm.tsx",
+    "src/app/(auth)/forgot/page.tsx",
+    "src/app/(auth)/forgot/ForgotForm.tsx",
+    "src/app/(auth)/reset/[token]/page.tsx",
+    "src/app/(auth)/reset/[token]/ResetTokenForm.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "scripts",
+    "src/lib/w93/__tests__/**"
+  ]
+}

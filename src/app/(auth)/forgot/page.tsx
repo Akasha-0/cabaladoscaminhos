@@ -1,23 +1,23 @@
 // ============================================================================
-// /login — Entrar (Wave 93-B — versão canonical)
+// /forgot — Esqueci minha senha (Wave 93-B)
 // ============================================================================
-// Server component shell que envolve LoginForm (client island).
-// Usa a versão co-localizada (com suporte a `?next=` + OAuth combinado) que
-// estende a versão legacy em @/components/auth/LoginForm.
+// Server component shell que envolve ForgotForm (client island).
+// Rota canonical W93-B (alias de /reset-password legacy).
 //
-// Suspense: useSearchParams() requer CSR bailout boundary (Next 16).
+// Suspense: useSearchParams() no ForgotForm requer CSR bailout boundary
+// (consistente com /login).
 // ============================================================================
 
 import { Suspense } from 'react';
-import { LoginForm } from './LoginForm';
+import { ForgotForm } from './ForgotForm';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
 
 export const metadata = {
-  title: 'Entrar · Akasha Portal',
-  description: 'Entre na sua conta do Akasha Portal e conecte-se ao seu caminho espiritual.',
+  title: 'Recuperar senha · Akasha Portal',
+  description: 'Receba um link por email para redefinir sua senha.',
 };
 
-function LoginFormFallback() {
+function ForgotFormFallback() {
   return (
     <div className="card-spiritual p-8 rounded-2xl max-w-md w-full flex items-center justify-center min-h-[420px]">
       <LoadingSpinner variant="gold" size="md" />
@@ -25,11 +25,11 @@ function LoginFormFallback() {
   );
 }
 
-export default function LoginPage() {
+export default function ForgotPage() {
   return (
     <main className="min-h-screen flex items-center justify-center px-4 py-12 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
-      <Suspense fallback={<LoginFormFallback />}>
-        <LoginForm />
+      <Suspense fallback={<ForgotFormFallback />}>
+        <ForgotForm />
       </Suspense>
     </main>
   );

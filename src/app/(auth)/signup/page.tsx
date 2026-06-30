@@ -1,21 +1,23 @@
 // ============================================================================
-// /signup — Cadastro (Wave 20 — Optimized 1-step flow)
+// /signup — Cadastro (Wave 93-B — versão canonical com tradição primária)
 // ============================================================================
-// Renderiza OptimizedSignupForm (1-step, magic link primary, Google OAuth
-// prominent, social proof inline). Mantém RegisterForm legacy disponível
-// para rollback via flag.
+// Server component shell que envolve SignupForm (client island).
 //
-// Suspense envolve o form (consistente com /login e futuras extensões).
+// Diferença em relação à versão legacy (OptimizedSignupForm):
+//   - Estrutura tradicional multi-campo (brief W93-B)
+//   - Tradição primária opcional (brief W93-B)
+//   - LGPD consent explícito
+//   - Redirect pós-signup → /onboarding
 // ============================================================================
 
 import { Suspense } from 'react';
-import { OptimizedSignupForm } from '@/components/auth/OptimizedSignupForm';
+import { SignupForm } from './SignupForm';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
 
 export const metadata = {
   title: 'Criar conta · Akasha Portal',
   description:
-    'Crie sua conta espiritual em 1 passo. Magic link ou Google. Sem fricção.',
+    'Crie sua conta espiritual e inicie sua jornada. Tradição primária opcional.',
 };
 
 function SignupFormFallback() {
@@ -30,7 +32,7 @@ export default function SignupPage() {
   return (
     <main className="min-h-screen flex items-center justify-center px-4 py-12 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
       <Suspense fallback={<SignupFormFallback />}>
-        <OptimizedSignupForm />
+        <SignupForm />
       </Suspense>
     </main>
   );
