@@ -1,7 +1,7 @@
 # Akasha Wave-Spawner — Active Blockers
 
-> **Last updated:** 2026-06-28 19:00 UTC (cycle 18)
-> **Status:** 🛑 Wave-spawner cannot self-recover. Owner intervention required.
+> **Last updated:** 2026-06-30 01:30 UTC (cycle 69 close-out, cycle 70 spawn)
+> **Status:** 🟡 One blocker active (B-W69-CC-MISSING). B2 retry in flight as cycle 70 Worker E.
 
 This file tracks every structural blocker that prevents the wave-orchestrator from doing its
 job (spawn workers, run TSC gate, push to remote). Each blocker has: status, root cause,
@@ -574,3 +574,42 @@ Same as cycle 21. Wave-spawner logs persist via git push to remote (cycle 18+ pa
 - The cycle 66 wall-clock was 48 min vs typical 22-26 min. Future workers with similar scope (large data layer, multiple sub-systems) should consider splitting into 2 sub-features per cycle 51 lesson.
 
 **Status: ✅ B-W66-REP-MISSING RESOLVED. Cycle 66 SHIP complete @ 23:48 UTC. 4/4 on origin, 10,897 LOC total.**
+
+---
+
+## B-W69-CC-MISSING — w69/community-circles worker did not push (cycle 69 PARTIAL close-out)
+
+**Status:** 🟡 ACTIVE — B2 retry spawned in cycle 70 (2026-06-30 01:30 UTC, orchestrator session 414638574882927).
+**Detected:** 2026-06-30 01:30 UTC (this orchestrator session)
+**Original spawn:** 2026-06-30 01:00 UTC (cycle 69 orchestrator session 414631572730069)
+**Trail:** w69/community-circles — Group-based spiritual community circles (4 engine files: circles/membership/feed/governance)
+
+**Verification trail:**
+
+| Step | Expected | Reality |
+|------|----------|---------|
+| Worker spawned with brief | ✅ | ✅ |
+| Worker creates worktree `/workspace/wt-w69-circles` | ✅ | ❓ unknown (worktree in original sandbox, not in this fresh clone) |
+| Worker writes 4 engine + 4 spec + 1 smoke | ✅ | ❓ unknown |
+| Worker runs TSC + smoke | ✅ | ❓ unknown |
+| Worker commits + pushes branch | ✅ | ❌ branch `w69/community-circles` NOT on `origin` |
+
+**Recovery plan (B2 retry in cycle 70):**
+1. **B2 retry spawned as cycle 70 Worker E** (separate branch `w69/community-circles-b2`)
+2. Brief reproduced from cycle 69 spawn entry: 4 engine files (circles/membership/feed/governance), 4 spec files, 12+ smoke checks, 7 traditions for circle themes
+3. **Recommended branch name:** `w69/community-circles-b2` (NOT reuse original to avoid conflict if original still in flight in another sandbox)
+4. **Deadline:** 01:55 UTC (25 min from B2 spawn at 01:30 UTC) — if not on origin by then, flag for cycle 71 follow-up
+5. **Fallback:** if B2 retry also fails, treat as cycle 71 normal worker (cycle 66 recovery pattern)
+
+**Cross-cycle lesson (cycle 69):**
+- 30-min cap was hit at 01:30 UTC for the W69 D worker; original session may still be alive in another sandbox and could push silently in next 5-10 min
+- This BLOCKER entry is the conservative reading: absence of branch on origin at 01:30 = "MISSING" pending verification at 01:45 UTC
+- Wave-spawner recovery loop: spawn → verify at :30 → if missing, log + B2 retry in parallel with next cycle → re-verify at next :30 tick
+- Same B2-retry-from-different-sandbox pattern as cycle 64/66 (B2 retry from a fresh Coder session works when original is silent)
+
+**Honest concerns:**
+- If original W69 D worker IS still in flight in its original sandbox, both it and B2 retry could race to push. The `-b2` suffix on the B2 branch mitigates this.
+- 1/4 W69 failures is acceptable variance for 30-min cap pressure (cycle 66 was 1/4 also, recovered via B2 retry).
+- The cycle 69 B2 retry wall-clock target is 25 min (less than full 30 because brief is reproduced from existing docs, not redesigned).
+
+**Status: 🟡 B-W69-CC-MISSING ACTIVE. B2 retry in flight as cycle 70 Worker E. Re-verify at 01:55 UTC. If still missing, flag for cycle 71.**
