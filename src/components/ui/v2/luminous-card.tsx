@@ -154,16 +154,15 @@ const LuminousCardTitle = React.forwardRef<HTMLHeadingElement, React.ComponentPr
 )
 LuminousCardTitle.displayName = "LuminousCardTitle"
 
-const LuminousCardDescription = React.forwardRef<
-  HTMLParagraphElement,
-  React.ComponentProps<"p">
->(({ className, ...props }, ref) => (
-  <p
-    ref={ref}
-    data-slot="luminous-card-description"
-    className={cn("text-sm text-[var(--muted-foreground)] leading-relaxed", className)}
-    {...props}
-  />
+const LuminousCardDescription = React.forwardRef<HTMLParagraphElement, React.ComponentProps<"p">>(
+  ({ className, ...props }, ref) => (
+    <p
+      ref={ref}
+      data-slot="luminous-card-description"
+      className={cn("text-sm text-[var(--muted-foreground)] leading-relaxed", className)}
+      {...props}
+    />
+  )
 )
 LuminousCardDescription.displayName = "LuminousCardDescription"
 
