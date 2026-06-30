@@ -5887,6 +5887,58 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 - ⏳ W79-C, W79-D still in flight. Cycle 79 cap = 07:35 UTC. ~9 min remaining.
 - ✅ **W79-C PUSHED** `w79/akasha-ia-streaming-ui` @ `ed0c3590` — 2390 LOC across 7 files. `akasha-ia-streaming.ts` 724 LOC + `akasha-ia-streaming-ui.tsx` 384 LOC. Smoke 257 LOC. State machine IDLE → CONNECTING → STREAMING → COMPLETE/ERROR/ABORTED with illegal-transition throws.
 - ⏳ W79-D still in flight. Cycle 79 cap = 07:35 UTC. ~7 min remaining.
+
+### Cycle 79 FINAL CLOSE-OUT (07:30 UTC) — 🎉 **4/4 PUSHED! First 4/4 since cycle 75!**
+
+| W | Branch | SHA | Status | LOC | Wall | Spec | Smoke | Sacred |
+|---|---|---|---|---|---|---|---|---|
+| **A** | `w79/biorhythm-calendar` | `122081a6` | ✅ PUSHED | 3028 (9 files) | 9 min ⚡ | 97/97 ✅ | 99/99 ✅ | 7 trad avg 83% vocab |
+| **B** | `w79/auth-pages` | `31b862a0` | ✅ PUSHED | 1889 (11 files) | 20 min | 126/126 ✅ | 34/34 ✅ | N/A (auth) |
+| **C** | `w79/akasha-ia-streaming-ui` | `ed0c3590` | ✅ PUSHED | 2390 (7 files) | 25 min | 209/209 ✅ | 82/82 ✅ | N/A (streaming) |
+| **D** | `w79/voice-mode-tts` | `1add41ca` | ✅ PUSHED | 2613 (8 files) | 25 min | 344/344 ✅ | 76/76 ✅ | 7 trad × 2 voices = 14 presets |
+| **TOTAL** | — | — | **4/4** ✅✅✅✅ | **9920** | **avg 20 min** | **776/776** | **291/291** | — |
+
+**Cycle 79 cumulative stats:**
+- **4/4 branches on origin, all clean working trees**
+- ~9,920 total lines (engine + spec + smoke + DELIVERABLE + tsconfigs)
+- **776+ spec assertions + 291 smoke checks = 1067 total assertions (all PASS)**
+- Sacred coverage: 7 traditions in 2 of 4 engines (W79-A reflection-prompt 83% vocab, W79-D 14 voice presets)
+- **13 NEW durable lessons** in agent memory (5 W79-B + 6 W79-C + 2 W79-A)
+- Wall-clock: 9-25 min per worker (avg 20 min, well under 30-min cap)
+- **B-W78-C → RESOLVED** (W79-A respawn succeeded with reduced-scope pattern)
+- 0 cascade failures (FIRST CYCLE since 75 with zero cascade!)
+
+**Cycle 79 NEW durable lessons (top, cross-cycle reusable):**
+
+**Worker A (biorhythm-calendar):**
+1. **Deep Object.freeze on calendar cell arrays** — outer-only freeze leaves inner Records mutable; TS strict catches downstream mutation. Freeze outer + inner + cycles recursively.
+2. **ICS line folding (RFC 5545)** — naive `line.slice(0,75) + CRLF + line.slice(75)` is invalid (Apple Calendar silently skips). Correct: first chunk 75 octets unindented, subsequent chunks 74 octets prefixed with single space.
+
+**Worker B (auth-pages):**
+1. **TWO isolated tsconfigs for engine+page split** — `tsconfig.w79.json` (engine-only) + `tsconfig.w79.pages.json` (uses react-stubs.d.ts)
+2. **`declare namespace JSX` + `declare namespace React`** inside non-module `.d.ts` files
+3. **Worktree symlink collision under parallel sessions** — use absolute paths
+4. **`AuthAdapter` injectable contract** for client-side auth pages
+5. **Dev-only default adapter** for e2e browser testing without external wiring
+
+**Worker C (akasha-ia-streaming-ui):**
+1. **Async-aware test harness needs explicit drain** — queue `_asyncTests[]`, drain at end via top-level `await drainAsync()`
+2. **`.not` modifier on minimal expect needs Proxy + global flag** — NOT recursive factory (infinite recursion → stack overflow)
+3. **TS narrowing of `let state` is sticky across awaits** — use mutable object reference `const stateRef = { current: 'IDLE' }`
+4. **`abort()` in IDLE state must be a safe no-op** — early-return for terminal states
+5. **`expect(x).toThrow()` without fn arg must infer from subject** — Vitest pattern: fallback `typeof actual === 'function' ? actual : null`
+6. **`parseSSEBlocks` should skip comment-only blocks** — filter lines starting with `:`
+
+**Cycle 79 cross-cycle stats:**
+- 80 cycles run (W1-W80 in flight)
+- 5 partial cycles (74 NULL 0/4, 76 PARTIAL 2/4, 77 PARTIAL 3/4, 78 PARTIAL 3/4, 79 — RECOVERED 4/4!)
+- ~285+ worker-delivered engines
+- 258+ branches on origin (25+ w7X delivered + 3 w78 landed + 4 w79 landed)
+- ~216K+ LOC engine code delivered (cycle 79 added +9,920 LOC)
+- 0 ACTIVE BLOCKERS (all W78/W77 respawns RESOLVED)
+- Cycle 80 candidates: TBD based on next wave priorities
+
+**Status @ 07:30 UTC:** Cycle 79 CLOSED. **4/4 PUSHED ✅✅✅✅** (zero cascade). main @ `ab15ae4` → next tick 07:35 UTC will spawn cycle 80.
 - **NEW lessons from W79-B (worth promoting to memory):**
   1. **TWO isolated tsconfigs for engine+page split** — `tsconfig.w79.json` (engine-only, no React types) + `tsconfig.w79.pages.json` (uses react-stubs.d.ts). Single tsconfig hits React-types wall regardless of strict setting.
   2. **`declare namespace JSX` + `declare namespace React`** (NOT `declare global { namespace JSX {…} }`) inside non-module `.d.ts` files. The `global` form only works if `.d.ts` is treated as a module; bare namespaces work universally.
