@@ -5885,6 +5885,8 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 - ⏳ W79-A, W79-C, W79-D still in flight. Cycle 79 cap = 07:35 UTC. ~10 min remaining.
 - ✅ **W79-A PUSHED** `w79/biorhythm-calendar` @ `122081a6` — 3199 LOC across 9 files. `biorhythm-calendar.ts` 983 LOC + `reflection-prompt.ts` 684 LOC. 196 assertions PASS, TSC=0. **B-W78-C → RESOLVED**. Smoke checks 2× (calendar 14 checks + reflection 11 checks).
 - ⏳ W79-C, W79-D still in flight. Cycle 79 cap = 07:35 UTC. ~9 min remaining.
+- ✅ **W79-C PUSHED** `w79/akasha-ia-streaming-ui` @ `ed0c3590` — 2390 LOC across 7 files. `akasha-ia-streaming.ts` 724 LOC + `akasha-ia-streaming-ui.tsx` 384 LOC. Smoke 257 LOC. State machine IDLE → CONNECTING → STREAMING → COMPLETE/ERROR/ABORTED with illegal-transition throws.
+- ⏳ W79-D still in flight. Cycle 79 cap = 07:35 UTC. ~7 min remaining.
 - **NEW lessons from W79-B (worth promoting to memory):**
   1. **TWO isolated tsconfigs for engine+page split** — `tsconfig.w79.json` (engine-only, no React types) + `tsconfig.w79.pages.json` (uses react-stubs.d.ts). Single tsconfig hits React-types wall regardless of strict setting.
   2. **`declare namespace JSX` + `declare namespace React`** (NOT `declare global { namespace JSX {…} }`) inside non-module `.d.ts` files. The `global` form only works if `.d.ts` is treated as a module; bare namespaces work universally.
