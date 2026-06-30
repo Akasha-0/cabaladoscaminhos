@@ -323,8 +323,10 @@ it('src: player has all required data-testid', () => {
   assertTrue(/data-testid="recording-player-root"/.test(playerSrc), 'root');
   assertTrue(/data-testid="audio-player"/.test(playerSrc), 'audio');
   assertTrue(/data-testid="search-input"|data-testid="transcript-search-input"/.test(playerSrc) || /data-testid="transcript-search-input"/.test(transcriptSrc), 'search');
-  assertTrue(/data-testid="language-toggle/.test(playerSrc) || /data-testid="language-toggle/.test(transcriptSrc), 'language-toggle');
-  assertTrue(/data-testid="highlight-/.test(playerSrc), 'highlight');
+  // Language toggle can use template literal: data-testid={`language-toggle-${lang}`}
+  assertTrue(/data-testid=\{`language-toggle-/.test(transcriptSrc) || /data-testid="language-toggle/.test(transcriptSrc) || /data-testid="language-toggle/.test(playerSrc), 'language-toggle');
+  // Highlight uses template literal: data-testid={`highlight-${idx}`}
+  assertTrue(/data-testid=\{`highlight-/.test(playerSrc), 'highlight');
 });
 
 it('src: transcript component declares use client', () => {
@@ -363,13 +365,29 @@ it('src: page is dynamic (force-dynamic or revalidate=0)', () => {
 // 6. SACRED-CULTURAL COMPLIANCE (5 asserts)
 // ════════════════════════════════════════════════════════════════════════════
 
-it('sacred: no amarração / amarre / vinculação in any new file', () => {
+it('sacred: no amarração / amarre / vinculação in any new file (disavowal allowed)', () => {
   const banned = ['amarração', 'amarre', 'vinculação'];
+  // We allow disavowal phrasing like "sem amarração" (sacred-cultural affirmative rule).
+  // Check that NO file USES these words as positive instructions (only disavowals).
   for (const word of banned) {
-    assertTrue(!engineSrc.toLowerCase().includes(word), `engine-${word}`);
-    assertTrue(!playerSrc.toLowerCase().includes(word), `player-${word}`);
-    assertTrue(!transcriptSrc.toLowerCase().includes(word), `transcript-${word}`);
-    assertTrue(!pageSrc.toLowerCase().includes(word), `page-${word}`);
+    for (const [label, src] of [['engine', engineSrc], ['player', playerSrc], ['transcript', transcriptSrc], ['page', pageSrc]] as const) {
+      const lc = src.toLowerCase();
+      // Find all occurrences
+      let idx = 0;
+      let positive = false;
+      while (true) {
+        const found = lc.indexOf(word, idx);
+        if (found < 0) break;
+        // Allow if preceded by "sem " or in a negative context (within 12 chars)
+        const window = lc.slice(Math.max(0, found - 12), found);
+        if (!/sem\s*$/.test(window)) {
+          positive = true;
+          break;
+        }
+        idx = found + word.length;
+      }
+      assertTrue(!positive, `${label}-${word}-positive`);
+    }
   }
 });
 

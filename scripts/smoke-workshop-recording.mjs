@@ -168,15 +168,20 @@ smoke('Engine: getLanguageBreakdown totals match', () => {
 smoke('Engine: searchTranscript returns at least one hit on common term', () => {
   const r = ALL_FIXTURES[0];
   // Try a term likely present in any recording
-  const hits = searchTranscript(r, 'respire');
-  // Not every recording mentions breathing, but the ORIXAS + TANTRA fixtures do
+  const hits = searchTranscript(r, 'Oxalá');
+  assert.ok(Array.isArray(hits), 'hits-is-array');
+  // Orixas fixture explicitly mentions "respiração iorubá"
   const orixasRec = ALL_FIXTURES.find((f) => f.tradition === 'orixas');
   if (orixasRec) {
-    const orixasHits = searchTranscript(orixasRec, 'respire');
-    assert.ok(orixasHits.length >= 1, 'orixas hits');
+    const orixasHits = searchTranscript(orixasRec, 'respiração');
+    assert.ok(orixasHits.length >= 1, 'orixas respiração hits');
   }
-  // At minimum, the function should not throw
-  assert.ok(Array.isArray(hits), 'hits-is-array');
+  // Tantra-cabala fixture has "pranayama de Tiferet"
+  const tantraRec = ALL_FIXTURES.find((f) => f.tradition === 'tantra-cabala');
+  if (tantraRec) {
+    const tantraHits = searchTranscript(tantraRec, 'pranayama');
+    assert.ok(tantraHits.length >= 1, 'tantra pranayama hits');
+  }
 });
 
 smoke('Engine: extractKeyTerms returns sorted top-N', () => {

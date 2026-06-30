@@ -167,6 +167,7 @@ const numerologiaSegments: TranscriptSegment[] = Object.freeze([
   { startSeconds: 288, endSeconds: 332, speakerName: 'Consulente Ester', text: 'E se eu não conseguir cumprir o que escrevi?', language: 'pt-BR' },
   { startSeconds: 336, endSeconds: 380, speakerName: 'Rabino Meir', text: 'Filha, a carta é o mapa, não o carrasco. Releia no fim do ano e observa o que tu já tinha intuído. Cabala honesta é a que escuta antes de exigir.', language: 'pt-BR' },
   { startSeconds: 386, endSeconds: 432, speakerName: 'Rabino Meir', text: 'Para fechar: o Ano Pessoal 5 convida você a confiar no movimento. Tudo que é fixo nessa vida é provisório. A única coisa permanente é a tua essência.', language: 'pt-BR' },
+  { startSeconds: 438, endSeconds: 478, speakerName: 'Rabino Meir', text: 'Bendita seja a tua caminhada. Que os arcanjos Miguel e Rafael te acompanhem nesse ano de transformação. Vai em paz, e lembra: a numerologia ilumina, mas quem caminha és tu.', language: 'pt-BR' },
 ] as readonly TranscriptSegment[]);
 
 const numerologiaRecording: WorkshopRecording = Object.freeze({
