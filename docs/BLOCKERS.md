@@ -1,7 +1,7 @@
 # Akasha Wave-Spawner — Active Blockers
 
-> **Last updated:** 2026-06-30 05:49 UTC (cycle 76 PARTIAL — 2/4 PUSHED; 2 workers errored on Token Plan cascade)
-> **Status:** ⚠️ ACTIVE BLOCKERS (cycle 76 partial). W76-A mentorship-pairing + W76-C translation-tooling errored with "Unhandled stop reason: error" (parent Token Plan 2056 cascade, same pattern as cycle 74 NULL on 2026-06-30 04:00+04:30). 0 LOC written; /tmp worktrees have only scaffold. Cycle 77 SPAWN at 06:00 UTC will respawn both on new `w77/*` branches. W76-B reputation-universalist ✅ + W76-D comments-threading-mentions ✅ pushed. Prior cycles 60-75 all clean. Owner merge action pending on W76-B + W76-D.
+> **Last updated:** 2026-06-30 06:02 UTC (cycle 77 SPAWN — recovery in flight)
+> **Status:** 🟡 IN PROGRESS — cycle 77 respawn active. Cycle 76 PARTIAL had 2 active BLOCKERS (B-W76-A mentorship-pairing + B-W76-C translation-tooling) that errored on Token Plan 2056 cascade at 05:49 UTC. Cycle 77 SPAWNED at 06:02 UTC with 4 workers: W77-A respawns mentorship-pairing on `w77/mentorship-pairing` branch, W77-C respawns translation-tooling on `w77/translation-tooling` branch, W77-B + W77-D are 2 entirely NEW themes (achievements-badges + reading-history-dashboard). 30-min cap → expected close-out 06:30-06:35 UTC. Prior cycles 60-75 all clean. Owner merge action pending on W76-B + W76-D from cycle 76.
 
 This file tracks every structural blocker that prevents the wave-orchestrator from doing its
 job (spawn workers, run TSC gate, push to remote). Each blocker has: status, root cause,
