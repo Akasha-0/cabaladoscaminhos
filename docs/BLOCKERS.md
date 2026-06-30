@@ -1637,3 +1637,13 @@ git rev-parse --verify <SHA>^{commit}
 - B-W94-002 → ARCHIVAL (audit procedure update, cycle 96)
 
 **Reference:** See `docs/WAVE-LOG.md` cycle 103 interim 1 for full audit + decision context.
+
+## HOLD Status Note — 22:30 UTC (2026-06-30) — Cycle 95 still in HOLD (12th tick)
+
+**Cycle 95 governance HOLD continues (12th tick).** No new blockers created. No blockers resolved. State unchanged from cycle 103 interim 1 (22:00 UTC). Owner (user) merge authorization + cycle 95 theme decision still pending. Owner silence now at **6.0 hours** since last owner action (`4c77551` at 16:30 UTC) — crossed the 5.5h+ threshold (cycle 103 lesson 2) and approaching 6h+ "anti-fragile baseline" (cycle 104 lesson 1). Wave-spawner session 414948328116324. Next tick: 23:00 UTC.
+
+**Active blockers:**
+- B-W94-001 → INVALID (false positive, cycle 96 reversal)
+- B-W94-002 → ARCHIVAL (audit procedure update, cycle 96)
+
+**Reference:** See `docs/WAVE-LOG.md` cycle 104 interim 1 for full audit + decision context.
