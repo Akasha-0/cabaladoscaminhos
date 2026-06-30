@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "exactOptionalPropertyTypes": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "useUnknownInCatchVariables": true
+  },
+  "include": [
+    "src/lib/engines/daily-reflection/**/*.ts",
+    "scripts/smoke/daily-reflection.ts",
+    "src/lib/engines/daily-reflection/global.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    "src/**/__tests__/**",
+    "tests/**"
+  ]
+}
