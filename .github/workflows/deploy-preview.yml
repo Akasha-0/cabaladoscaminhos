@@ -160,7 +160,7 @@ jobs:
 
       - name: Comment PR with preview URL
         if: steps.deploy.outputs.preview-url != 'SKIPPED_NO_TOKEN' && steps.deploy.outputs.preview-url != ''
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v3
         with:
           header: deploy-preview
           message: |
@@ -177,7 +177,7 @@ jobs:
 
       - name: Skip comment (no token)
         if: steps.deploy.outputs.preview-url == 'SKIPPED_NO_TOKEN'
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v3
         with:
           header: deploy-preview
           message: |
@@ -191,7 +191,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Remove stale PR comment
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v3
         with:
           header: deploy-preview
           message: |
