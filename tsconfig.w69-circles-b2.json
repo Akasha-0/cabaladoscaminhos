@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "types": [],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": false,
+    "allowImportingTsExtensions": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/lib/community-circles/circles.ts",
+    "src/lib/community-circles/membership.ts",
+    "src/lib/community-circles/feed.ts",
+    "src/lib/community-circles/governance.ts",
+    "src/lib/community-circles/index.ts",
+    "src/lib/community-circles/__tests__/circles.spec.ts",
+    "src/lib/community-circles/__tests__/membership.spec.ts",
+    "src/lib/community-circles/__tests__/feed.spec.ts",
+    "src/lib/community-circles/__tests__/governance.spec.ts",
+    "src/lib/community-circles/globs.d.ts",
+    "src/lib/community-circles/__tests__/globals.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
