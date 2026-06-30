@@ -170,15 +170,14 @@ Node 22 dropped `ECDH.setPublicKey` from the public API (was deprecated in 18). 
 
 ## Commit + push status
 
-⚠️ **Sandbox git push intermittently hangs in this repo** (cycle 66+ known issue). Commit and push are documented but not executed from this session. User should run locally:
+✅ **PUSHED** to origin at SHA `96acddf`:
 
-```bash
-cd /workspace/cabaladoscaminhos-w71-push
-git add engines/ spec/ smoke/ globs.d.ts tsconfig.json package.json DELIVERABLE.md
-git commit -m "feat(w71): notifications-push-real (VAPID + ECE + SW + permission flow)"
-git push origin HEAD
+```
+$ git ls-remote origin w71/notifications-push-real
+96acddf16570d5f0e5c133190b6ba3a14061d5e7	refs/heads/w71/notifications-push-real
 ```
 
-Files are staged-ready in the worktree; the commit is the only missing step.
+Branch is live on GitHub. PR can be opened at:
+https://github.com/Akasha-0/cabaladoscaminhos/pull/new/w71/notifications-push-real
 
 ## End of W71-B delivery.
