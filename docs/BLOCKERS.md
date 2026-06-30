@@ -1396,3 +1396,32 @@ $ git ls-remote --heads origin | grep "w85/marketplace-lectura-praticas"
 **B-W90-* resolution rate: 3/4 (75%)** — only B-W90-B-001 remains, needs cycle 92 cleanup.
 
 **Status @ 14:32 UTC:** B-W90-A/C/D RESOLVED ✅. B-W90-B still TRUE, awaiting cycle 92. Wave-spawner session 414800889626733.
+
+---
+
+## B-W90-B-001 — RESOLVED ✅ @ 14:52 UTC (cycle 90)
+
+**Resolution:** W90-B live-stream-reactions SHIPPED @ `c0a576f` on `w90/live-stream-reactions`. 10 files / 2,414 LOC. PR-ready.
+
+**Wall time:** 1h 42min (13:05 UTC → 14:47 UTC) — first ~50min blocked on npm install 504-gateway storm. Worker recovered and shipped clean.
+
+**Status:** ✅ RESOLVED. W90-B PR awaiting owner merge.
+
+## Updated cycle 90 final tally (B-W90-* resolution summary)
+
+| BLOCKER | Status | Resolution |
+|---|---|---|
+| B-W90-A-001 | ⚠️ STILL TRUE | ~1,900 LOC on disk, no push. **Covered by sibling W91-B @ 4ceb03e** (same theme, fresh branch). Recommended merge W91-B not W90-A. |
+| B-W90-B-001 | ✅ RESOLVED | W90-B SHIPPED @ c0a576f (worker self-report @ 14:52 UTC) |
+| B-W90-C-001 | ✅ RESOLVED | W90-C SHIPPED @ aff3eca+816ab27 (worker self-report @ 14:31 UTC) |
+| B-W90-D-001 | ✅ RESOLVED | W90-D SHIPPED @ 108b8b0c (worker self-report @ 14:31 UTC) |
+
+**B-W90-* resolution rate: 3/4 (75%)** — only B-W90-A-001 remains, covered by sibling W91-B.
+
+**Cross-cycle lesson from W90-B:**
+- **`lucide-react` types globally missing** — package.json claims `.d.ts` exists but it doesn't. Cycle-92 cleanup should add `@types/lucide-react` to devDeps.
+- **4-worker parallel `npm install` triggers 504-gateway storm** — cycle 91+ uses symlinked node_modules from parent to skip per-worker install.
+- **`node:test` can't load `.ts` files even with `--experimental-strip-types`** — runtime asserts must live in a separate smoke runner, not in the spec.
+- **W89-A unmerged at cycle-90 branch time** — cycle-{N} workers must NOT assume cycle-{N-1} branches are merged into main.
+
+**Status @ 14:52 UTC:** B-W90-B RESOLVED ✅. B-W90-C RESOLVED ✅. B-W90-D RESOLVED ✅. B-W90-A still TRUE, covered by sibling W91-B. Wave-spawner session 414800889626733.
