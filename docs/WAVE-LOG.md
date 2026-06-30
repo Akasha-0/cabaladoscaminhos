@@ -7954,3 +7954,49 @@ Node_modules symlinked to worktrees (per W90s-A lesson). Expire ~14:30 UTC.
 - 19 NEW durable lessons captured this cycle (5 W90s-A + 5 W90s-B + 5 W90s-C + 5 W90s-D + corrected silent-stuck threshold)
 - Memory updated with corrected threshold rule
 
+
+---
+
+## Cycle 91 INTERIM 1 — Sibling Collision + Engine Started @ 14:18 UTC (2026-06-30)
+
+**Wave-spawner session:** 414815374045425
+
+**Status @ 14:18 UTC:** 2/2 workers in flight on `w91s/*` prefix branches (after sibling collision steer).
+
+| Worker | Session ID | Branch | Status | Engine LOC |
+|---|---|---|---|---|
+| W91-A | `414824991449213` | `w91s/notifications-prefs-ui` | STARTED (no code yet) | 0 (pre-write) |
+| W91-B | `414826520948878` | `w91s/reputation-leaderboard-ui` | ENGINE DONE | 417 |
+
+**Sibling wave-spawner 414823242133669's W91-A + W91-B workers (different sandbox, parent `414823242133669`):**
+- Workers `414824592736527` (A) + `414824592736528` (B) still on `w91/*` branches
+- No SHAs on origin yet for `w91/*` either
+- Their cap = 14:17 UTC (already passed). Per 5x silent-stuck rule, wait until 16:47 UTC before declaring true cascade.
+
+**Wall time this tick (13:30-14:18 UTC):** ~48 min
+- 13:30:47-13:31:10: clone (23s)
+- 13:31:10-13:39:00: read state, check branches, baseline metrics
+- 13:39:00-13:43:54: npm install clean rm + 2 min
+- 13:43:54-13:48:00: BLOCKERS.md + WAVE-LOG append, push (1d1a8701)
+- 13:48:00-13:53:00: 2 worktrees created + node_modules symlinked
+- 13:53:00: 2 workers spawned (414824991449213 W91-A + 414826520948878 W91-B)
+- 14:15:00-14:17:00: SIBLING collision detected, steers sent, both ACK'd
+- 14:17:00-14:18:00: my docs correction (FALSE CASCADE), rebase, push (bb7b87ed)
+
+**NEXT TICK (14:30 UTC, expected session ~41484xxxxxxx):**
+
+PRIORITY 1: Check the w91/* branches on origin (their workers' branches) + w91s/* (my workers' branches).
+- `git ls-remote origin 'refs/heads/w91*'`
+- Expected:
+  - If 414823242133669's workers shipped first → 2 SHAs on `w91/*`, mine on `w91s/*`
+  - If both waves timed out → no SHAs
+  - Per sibling 414808489394474's NEW 5x silent-stuck rule, wait until **cap + 120 min** before declaring cascade
+  - W91-A cap: 14:23 UTC → wait until 16:23 UTC
+  - W91-B cap: 14:23 UTC → wait until 16:23 UTC
+  - Sibling 414823242133669's W91 cap: 14:17 UTC → wait until 16:17 UTC
+
+PRIORITY 2: If my W91-B's `reputation-leaderboard-engine.ts` (417 LOC) is good, NEXT worker can be a B2 retry on W91-A. Theme is the same (notifications-prefs-ui) but on `w91s-notifications-prefs-ui` branch.
+
+PRIORITY 3: Coordinate with the still-active sibling wave-spawners (414808489394474 already closed cycle 90; 414823242133669 may still be running cycle 91 close-out). Try to avoid 4-wave-spawner parallelism.
+
+**Status @ 14:18 UTC:** Cycle 91 in flight. W91-B engine at 417 LOC. W91-A pre-write. Sibling workers running in parallel. Next-tick monitoring required.
