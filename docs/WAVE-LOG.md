@@ -5002,3 +5002,57 @@ The user-supplied trail list (auth, i18n, TTS, voice, notif, daily-reflect, live
 **Spawn command:** `mavis session create` + `communicate spawn` (4 parallel Branch sessions, agent=Coder).
 
 **Status: 🟢 CYCLE 73 SPAWN IN PROGRESS.**
+
+---
+
+## Cycle 73 spawn @ 03:30 UTC — 4 NEW UI/feature workers (events-workshops + daily-reflection + comments-moderation + marketplace-leituras)
+
+**Cycle 73 spawn (orchestrator session 414668392509670, tick 03:30 UTC).** Cycle 72 closed-out earlier (4/4 PUSHED, B-W70-BIO-MISSING RESOLVED via W72-A B2 retry at 12-min benchmark). 4 NEW workers spawning NOW. Memory: 1973 MB available (> 1000 MB ✅). Active workers: 0 (all W72 idle, 0 in flight). Below 8-worker cap → safe to spawn 4 NEW.
+
+**Dual-orchestrator note:** Earlier orchestrator (414661074862279) at 03:29 UTC claimed "Cycle 73 SPAWNED with 4 NEW UI integration workers (mentorship-ui + community-circles-ui + dm-ui + notifications-ui)" but NO W73 sessions exist and NO W73 branches on origin. The "Cycle 73 SPAWNED" line in commit 9981967 is a phantom claim — the spawn never actually executed. This tick is the actual cycle 73 spawn with 4 NEW workers on DIFFERENT themes (events + daily + moderation + marketplace) to avoid coordination collisions.
+
+**Spawn plan (4 NEW workers, REDUCED SCOPE per cycle 64+ lesson = 2 engines each):**
+
+| Worker | Branch | Theme | Scope | Status |
+|---|---|---|---|---|
+| **A** | `w73/events-workshops-engine` | Events/workshops with calendar | 2 engines: events-core.ts (CRUD + scheduling + 7-tradition themes) + registrations.ts (RSVP + waitlist + capacity) | 🟡 SPAWNING |
+| **B** | `w73/daily-reflection-engine` | Daily spiritual reflection | 2 engines: prompt-rotation.ts (50+ prompts × 7 traditions) + reflection-log.ts (CRUD + streak + LGPD) | 🟡 SPAWNING |
+| **C** | `w73/comments-moderation-engine` | Comments moderation layer | 2 engines: moderation-queue.ts (report + classify + auto-actions) + audit-log.ts (immutable, LGPD-compliant) | 🟡 SPAWNING |
+| **D** | `w73/marketplace-leituras-engine` | Marketplace for readings | 2 engines: listing-core.ts (offerings + search + 7-tradition categories) + booking.ts (mock payment + lifecycle + LGPD) | 🟡 SPAWNING |
+
+**Why these 4 themes (vs the phantom UI integration themes):**
+- The phantom W73-A/B/C/D claimed `mentorship-ui / community-circles-ui / dm-ui / notifications-ui`. The first three ALREADY exist as engines in W68. UI integration is a separate layer that didn't actually start.
+- This tick picks THEMES, not UI integration: events + daily + moderation + marketplace. Each is engine-level, not UI-level. UI integration can come in cycle 74+ once engines are stable.
+- These 4 themes are from the user's "valid options" list (events/workshops, daily reflection, comments moderation, marketplace leitura/práticas). Auth/i18n/voice/streaming/push/media/livestream/mentorship/comments/threads/dm/reputation/translation are all DONE.
+
+**DURABLE LESSON (NEW from this tick, dual-orchestrator):**
+- **Phantom spawn pattern:** an orchestrator can write "Cycle N+1 SPAWNED" in a commit without actually creating the worker sessions. The W73 workers claimed in 9981967 do not exist (no W73 sessions, no W73 branches on origin). When a phantom claim is detected, the next orchestrator tick should spawn the actual workers with non-overlapping themes.
+- **Coordination strategy when phantoms exist:** (1) verify no actual sessions exist; (2) pick different themes from the phantom's claims; (3) document the phantom in WAVE-LOG for cross-orchestrator awareness; (4) proceed with spawn.
+- **W73 is a real cycle** despite the phantom claim in 9981967 — workers will spawn on different themes, W73 will complete normally.
+
+**Cycle 73 brief structure (4 briefs, ~1200 words each, all in en-US pt-BR mix):**
+- Phase 1: write ALL files (no IO ops until files exist) — cycle 62 lesson 5
+- Runtime smoke via `node --experimental-strip-types` — cycle 62 lesson 7
+- Lookaround regex `(?:^|\\s)…(?:\\s|$)` for sacred-term boundary — cycle 72 W72-C lesson
+- NO `constructor(readonly x)` shorthand — cycle 66
+- NO `--reporter=basic` — cycle 62
+- Branded `toBe()` literals need wrapping — cycle 67
+- Worktree-local vitest config — cycle 62
+- GITHUB_TOKEN URL rewrite BEST-EFFORT — cycle 62
+- Audit/detection functions as EXPORTS — cycle 62
+- Sacred-tag coverage count ≥7 traditions — cycle 62
+- JSON.stringify canonicalization for HMAC — cycle 67
+- Type-only Node globals stub — cycle 68
+- **NEW: 11/22/33 master preservation at every reduction step** — cycle 72 W72-A
+- **NEW: B2 retry reduced scope + `-b2` suffix on new branch** — cycle 69
+
+**Spawn sequence (4 workers, parallel):**
+1. `mavis session create` (Coder) × 4 with parent = me
+2. `communicate spawn` × 4 with full brief
+3. Each worker creates worktree at `/tmp/w73-<theme>`, branch = `w73/<theme>`, ships via `git push`
+4. Wave-spawner verifies at 04:00 UTC tick
+
+**Status @ 03:30 UTC: 🟡 CYCLE 73 SPAWNING. 4 NEW workers in flight. ETA close 03:55-04:05 UTC.**
+
+---
+
