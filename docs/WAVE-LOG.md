@@ -6486,3 +6486,35 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 - Both B2 retries (W85-A + W85-B) succeeded first try → **confirms the LLM-transient-error hypothesis is correct**
 
 **Status @ 10:20 UTC:** 2/4 PUSHED (W85-A + W85-B), 2/4 in flight (W85-C auth, W85-D akasha-streaming). Cycle 85 cap = 10:30 UTC (10 min for W85-C/D). main @ `c3e8351`. Wave-spawner session 414764240031922.
+
+
+### Cycle 85 interim 3 — 10:23 UTC (23 min after spawn)
+
+- ✅ **W85-C PUSHED** `w85/auth-integration-followup` @ `631d1e0` — **3,940 LOC across 14 files**. **80/80 engine-spec + 36/36 page-structure-spec + 12/12 smoke PASS** (128 total), TSC=0 (engine + login + signup, isolated tsconfigs). **BOTH pages shipped** — /login (648 LOC) + /signup (1,134 LOC).
+- ⏳ W85-D akasha-streaming-ui still in flight. Cycle 85 cap = 10:30 UTC. ~7 min remaining.
+
+**W85-C pages delivered:**
+- `/login` — mobile-first bottom-sheet → desktop card, email magic-link + Google/Apple OAuth (visual only), role=form + aria-live=polite, 48px tap targets, autoComplete=email + inputMode=email
+- `/signup` — 3-step wizard (Conta → Tradição → Perfil) with aria-current=step progress, 7 tradição cards (role=radiogroup+radio+aria-checked), LGPD consent checkbox REQUIRED before submit, ESC→back/Enter→advance, desktop side-rail summary
+
+**7-tradição cards (sacred-cultural sensitivity enforced):**
+cigano ✦, candomblé 🪶, umbanda ☩, ifá ◈, cabala ☸, astrologia ☉, tantra ☬ — each description uses the tradition's OWN terminology (orixás, caboclos, Orunmilá, sefirot, signos, consciência), zero exoticizing words. Smoke #12 enforces ≥5/7 own-term keywords hit (currently 7/7).
+
+**10 NEW durable lessons from W85-C (extend cycle-75 markdown, cycle-60 parameter-properties, cycle-84 React-stub lessons):**
+1. **Module-style React stubs** (`declare module 'react' { namespace React {...} export = React }`) with `JSX.IntrinsicElements` declared inside the same module block — keeps JSX namespace scoped
+2. **`noUncheckedIndexedAccess` cascades through `e.target.checked`** — wrap in `Boolean(...)` before setState
+3. **`node:` URL imports + `types: []` break TSC** — use bare-name imports + `declare module 'fs' { ... }` stubs instead
+4. **JSX global namespace MUST be inside same `declare module 'react'` block as `React.HTMLAttributes`** — for cross-references to work
+5. **`createStubAdapter()` lets spec harness run without network** — production swaps in W68 cycle-78 impl
+6. **3-step wizard pattern reusable** (W82-C mentorship + W83-C comments + W85-C auth) — aria-current=step + ESC→back/Enter→advance + side-rail summary
+7. **7 tradição symbol set finalized** (cigano ✦, candomblé 🪶, umbanda ☩, ifá ◈, cabala ☸, astrologia ☉, tantra ☬) — use across all 7-tradição components for visual consistency
+8. **Sacred-cultural sensitivity smoke test pattern** — programmatic enforcement of ≥5/7 own-term keywords per card (prevents future regressions)
+9. **LGPD consent gate at submit, not earlier** — store consent state in form state, validate at submit, show inline error if unchecked
+10. **OAuth buttons stay visual-only until W86+** — documented next-steps list (wire real OAuth, replace stub adapter, rate-limit sendMagicLink, password reset, multi-tradição, sync to cycle-78 user model)
+
+**Cross-cycle cumulative cycle 85:**
+- 3/4 PUSHED = 8,097 LOC + 337 assertions ALL PASS + 3× TSC=0
+- W85-C wall: ~23 min (under 30-min cap by 7 min) — full 2-page delivery
+- Both pages shipped (NOT reduced scope!) — auth pages are single-page-equivalent each
+
+**Status @ 10:23 UTC:** 3/4 PUSHED (W85-A + W85-B + W85-C), 1/4 in flight (W85-D akasha-streaming). Cycle 85 cap = 10:30 UTC (7 min for W85-D). main @ `b6cdeb2`. Wave-spawner session 414764240031922.
