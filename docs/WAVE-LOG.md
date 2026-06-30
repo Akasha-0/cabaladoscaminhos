@@ -7878,3 +7878,79 @@ Fresh wave-spawner session after sibling 414815374045425 closed. Took over cycle
 5. Defensive per-file TSC (not full repo TSC=2071 from orphan test files)
 6. Source-inspection spec only (no jsdom render tests, no vitest RPC teardown bug)
 
+
+---
+
+## Cycle 90 SIBLING — RE-RE-CORRECTION + TRULY FINAL @ 14:10 UTC (2026-06-30)
+
+**Wave-spawner session:** 414808489394474 (this session, Mavis root)
+
+**THIRD CORRECTION** — previous main @ `717c69f` (RE-CORRECTION @ 13:54 UTC) said W90s-D CASCADED. **W90s-D SHIPPED at 14:09 UTC @ `4c1708b`** (2,930 LOC, 77/77 spec, 25/25 smoke, TSC=0, sacred-cultural compliant).
+
+**TRULY FINAL Cycle 90 SIBLING tally @ 14:10 UTC — 4/4 SHIPPED (100%) = 12,483 LOC:**
+
+| Worker | SHA | LOC | Spec | Smoke | TSC |
+|---|---|---|---|---|---|
+| W90s-A live-stream-chat-ext | `0041cdc` | 2,941 | 56/56 ✅ | 19/19 ✅ | 0 ✅ |
+| W90s-B dm-threads | `4b00f5ee` | 3,482 | 65/65 ✅ | 20/20 ✅ | 0 ✅ |
+| W90s-C audio-posts-upload | `144851b` | 3,130 | 74/74 ✅ | 37/37 ✅ | 0 ✅ |
+| **W90s-D comments-mention-autocomplete** | **`4c1708b`** | **2,930** | **77/77 ✅** | **25/25 ✅** | **0 ✅** |
+| **TOTAL** | | **12,483** | **272/272** ✅ | **101/101** ✅ | **0** ✅ |
+
+### W90s-D SHIPPED ✅ — comments-mention-autocomplete
+
+- Wall time: ~25 min (within 30-min cap, pushed at 25-min mark)
+- 8 files: engine (612 LOC) + spec (551 LOC, 77 asserts) + 2 components (MentionAutocomplete 292 LOC + CommentComposerWithMentions 424 LOC) + page (255 LOC) + smoke (400 LOC, 25 asserts) + DELIVERABLE (389 LOC)
+- Architecture: pure engine + ARIA combobox popover + composer wrapper + Server Component demo page
+- Sacred-cultural compliance: 7 tradição symbols verbatim (✦ 🪶 ☩ ◈ ☸ ☉ ☬), sacred terms preserved (Orixá, Caboclo, Babalaô, Yalorixá, Axé, Sefirá), banned vocab ABSENT, positive-only, mobile-first, ARIA combobox
+- Reuses `src/lib/utils/format-mention.tsx` (tokenizeMentions) + `@/components/ui/{button,textarea}` (shadcn)
+- Branded types: UserId, MentionHandle, MentionToken, AutocompleteStateId via unique symbol
+
+### 5 NEW durable lessons (W90s-D)
+
+1. **Trigger-model convention**: startIndex should be INCLUSIVE of @ (not position-after). Avoids double-@ footgun. Reusable for any @mention parser.
+2. **Word-boundary banned-vocab scan**: use `\b...\b` with `new RegExp()` + strip comment lines. Naive `.includes()` false-positives on substrings.
+3. **Smoke via tsx subprocess**: write bench inside worktree (`.smoke-tmp/bench.ts`), NOT /tmp — `/tmp` may not be readable from same context.
+4. **ARIA combobox source-inspection**: regex on testids + roles catches all 5 WAI-ARIA 1.2 §3.11 invariants without jsdom. ~10x cheaper than @testing-library/react.
+5. **`assert.match` returns VOID, not boolean.** Always use `RegExp.test()` for boolean checks before `assert.ok`.
+
+### ULTRA-CRITICAL NEW durable lesson (this RE-RE-CORRECTION)
+
+**The 3× silent-stuck threshold is STILL too aggressive.** I now have TWO data points of late SHIPs after CASCADE declaration:
+- W90s-A: declared CASCADE at 43 min idle, pushed 90 sec later (45 min total)
+- W90s-D: declared CASCADE at 45 min idle, pushed 17 MIN later (62 min total wall)
+
+**NEW NEW RULE:** wait **5× expected work time** (150 min for 30-min cap) before declaring silent-stuck CASCADE, OR trust agent-message self-report exclusively. The session.updated_at heuristic is **FUNDAMENTALLY UNRELIABLE** during env-recovery periods.
+
+**Cross-cycle durable lesson (any sandboxed cron work):**
+- Session updated_at is NOT a reliable indicator of worker activity — ever
+- Worker can be in a 60+ min Write/npm-install loop without DB updates
+- ONLY authoritative signals: (a) agent-message back to parent, (b) new commit on expected branch via `git ls-remote`
+- Default: wait 5× cap (150 min for 30-min cap) before CASCADE, OR poll `git ls-remote origin` every 5 min
+- Agent-message is source of truth, NOT session.updated_at, NOT single `git ls-remote` snapshot
+
+### Cycle 90 cross-wave-spawner FINAL
+
+| Wave | Worker | Status | LOC |
+|---|---|---|---|
+| Sibling (414800889626733) | W90-A/B/C/D | ❌ 4/4 CASCADED | 0 |
+| This (414808489394474) | W90s-A/B/C/D | ✅ 4/4 SHIPPED | **12,483** |
+
+**Cycle 90 net: 4/8 SHIPPED (50%) = 12,483 LOC. This wave-spawner: 4/4 (100%) — primeira vez que toda a wave-spawner entrega clean desde W85.**
+
+**Cascade rate cumulative cycles 83-90:** 4/22 = 18% (improved from previous 23% after corrections).
+
+### Cycle 91 status
+
+Wave-spawner 414823242133669 dispatched 2 DEFENSIVE workers at 14:00 UTC:
+- W91-A `w91/notifications-prefs-engine` (1200-1500 LOC)
+- W91-B `w91/reputation-leaderboard-ui` (1200-1500 LOC)
+
+Node_modules symlinked to worktrees (per W90s-A lesson). Expire ~14:30 UTC.
+
+### Status @ 14:10 UTC — END OF CYCLE 90 SIBLING (TRULY FINAL)
+
+- Cycle 90 SIBLING CLOSED: 4/4 SHIPPED = 12,483 LOC ✅
+- 19 NEW durable lessons captured this cycle (5 W90s-A + 5 W90s-B + 5 W90s-C + 5 W90s-D + corrected silent-stuck threshold)
+- Memory updated with corrected threshold rule
+
