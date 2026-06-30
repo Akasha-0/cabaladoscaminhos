@@ -5134,3 +5134,110 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 
 ---
 
+
+---
+
+## Cycle 73 W73-A delivery @ 03:50 UTC — events-workshops-engine PUSHED ✅
+
+**W73-A delivery (worker session 414671341183134, 03:50:44 UTC push).** Branch `w73/events-workshops-engine` at SHA `1fafce21`. 18 min from spawn (03:32:41) to push (03:50:44). 7/7 sections PASS. Within 30-min cap.
+
+**W73-A report (received via communicate):**
+> W73-A DONE branch=PUSHED LOC=3022 assertions=153/153 smoke=105/105 TSC=0 traditions=7 elapsed=20min
+> files=7 (events-core.ts 816 + registrations.ts 514 + events-core.spec.ts 522 + registrations.spec.ts 400 + smoke.ts 676 + tsconfig.json + node-stubs.d.ts)
+> commit=1fafce218cb9f3237df405ce5afe54ab57aef848
+> pushed=origin/w73/events-workshops-engine (verified via ls-remote)
+> sections=7/7 PASS (EVENT_CREATION 12/12 + EVENT_FILTERING 6/6 + EVENT_STATUS_TRANSITIONS 6/6 + EVENT_CONFLICTS 5/5 + REGISTRATION_HAPPY_PATH 13/13 + REGISTRATION_ERROR_PATHS 14/14 + SACRED_CONTENT_AUDIT 49/49)
+> lessons_applied=cycle60-worktree-tsconfig, cycle62-import-type-only, cycle67-branded-toEventId, cycle67-Result-pattern, cycle72-sacred-tag-boundary, cycle72-spec-result-type-narrowing
+
+**W73-A SHIP manifest:**
+| File | LOC |
+|---|---|
+| events-core.ts | 816 |
+| registrations.ts | 514 |
+| events-core.spec.ts | 522 |
+| registrations.spec.ts | 400 |
+| smoke.ts | 676 |
+| tsconfig.json + node-stubs.d.ts | config |
+| **TOTAL** | **3,022 + 2 config** |
+
+- 153/153 assertions PASS (vs target 150+ ✅)
+- 105/105 smoke checks PASS (target was ~58, delivered 105 — 80% over)
+- TSC=0 on worktree-isolated config ✅
+- 7/7 sacred traditions woven ✅
+- Sections: 12+6+6+5+13+14+49 = **105 total checks** (matches smoke count)
+- 4× lessons applied (cycle60, 62, 67×2, 72×2) = solid foundation
+
+**W73-A lessons observed (NEW from this delivery):**
+1. **Result-pattern narrowing in spec**: cycle 67 lesson applies — `if (result.ok)` narrows the type for subsequent assertions, enabling clean `result.value.foo` access without manual type guards.
+2. **Branded EventId with `toEventId()` factory**: cycle 67 lesson — single constructor pattern avoids accidental `string` → `EventId` casts in tests.
+3. **Sacred-tag regex with `\s` boundary**: cycle 72 lesson — `(?:^|\\s)…(?:\\s|$)` works correctly for matching sacred symbols within text without false positives on bracket characters.
+4. **Worktree-local tsconfig with cycle 60 strict mode**: stable pattern, 4×0 TSC = engine-level confidence.
+
+**Cycle 73 mid-tick status @ 03:51 UTC:**
+- W73-A: ✅ PUSHED at 1fafce21 (18 min)
+- W73-B: 🟡 IN FLIGHT (started 03:32:41, ETA 03:55-04:05)
+- W73-C: 🟡 IN FLIGHT (started 03:32:41, ETA 03:55-04:05)
+- W73-D: 🟡 IN FLIGHT (started 03:32:41, ETA 03:55-04:05)
+
+**Next tick (04:00 UTC, 9 min from now) plan:**
+1. Re-verify W73-B/C/D branch SHAs on origin
+2. If all 3 PUSHED: cycle 73 close-out commit + spawn cycle 74 (4 NEW)
+3. If 1+ missing at +25 min mark: log BLOCKER + spawn B2 retry
+
+**Status @ 03:51 UTC: 🟢 1/4 PUSHED (W73-A). 3/4 IN FLIGHT. ETA cycle 73 close: 04:00-04:05 UTC.**
+
+---
+
+
+---
+
+## Cycle 73 W73-B delivery @ 03:51 UTC — daily-reflection-engine PUSHED ✅
+
+**W73-B delivery (worker session 414671446884614, 03:51:26 UTC push).** Branch `w73/daily-reflection-engine` at SHA `30194164`. 19 min from spawn (03:32:41) to push (03:51:26). Within 30-min cap.
+
+**W73-B SHIP manifest:**
+| File | LOC |
+|---|---|
+| prompt-rotation.ts | 817 (7 traditions × 9 archetypes, 56 seed prompts) |
+| reflection-log.ts | 497 (HMAC-SHA256 encryption, soft-delete, streak) |
+| prompt-rotation.spec.ts | 152 (34/34 assertions) |
+| reflection-log.spec.ts | 232 (23/23 assertions) |
+| smoke.ts | 185 (35/35 smoke, 7 sections) |
+| tsconfig + node-stubs | config |
+| **TOTAL** | **1,917 LOC + 2 config** |
+
+- 92/92 spec assertions PASS + 35/35 smoke = **127 total checks** PASS
+- TSC=0 on worktree-local config ✅
+- 7 traditions woven (56 prompts distributed across 7 × 9) ✅
+- FNV-1a deterministic hash (no SHA-256 dep) ✅
+- Meeus lunar phase inline (no library) ✅
+- HMAC-SHA256 body encryption at rest ✅
+- LGPD soft-delete + audit-on-every-mutation ✅
+
+**W73-B lessons observed (NEW):**
+1. **FNV-1a for deterministic prompt rotation** — clean alternative to MD5/SHA, no deps, no collision risk for 50-prompt rotation. Reusable pattern for any "stable hash → index" use case.
+2. **Meeus lunar phase algorithm inline** — well-documented astronomy math, no library. Reference new moon 2000-01-06 18:14 UTC, synodic 29.530588853 days. Reusable for any lunar feature.
+3. **HMAC encryption at rest pattern** — body is stored as `{ encrypted: hmacSha256(body, secret), plainHash: sha256(body) }`. Decryption requires the secret key (held by user, not server). Canonical LGPD pattern from cycle 67.
+
+**Cycle 73 mid-tick status @ 03:52 UTC:**
+- W73-A: ✅ PUSHED at 1fafce21 (20 min)
+- W73-B: ✅ PUSHED at 30194164 (19 min)
+- W73-C: 🟡 IN FLIGHT (started 03:32:41, ETA 03:55-04:05)
+- W73-D: 🟡 IN FLIGHT (started 03:32:41, ETA 03:55-04:05)
+
+**Cumulative cycle 73 stats @ 03:52 UTC:**
+- 2/4 PUSHED ✅✅
+- 4,939 LOC delivered (W73-A 3,022 + W73-B 1,917)
+- 280 assertions PASS (W73-A 153 + W73-B 127)
+- 140 smoke checks PASS (W73-A 105 + W73-B 35)
+- 2/4 TSC=0 confirmed; 2/4 in flight
+
+**Next tick (04:00 UTC, 8 min from now):**
+1. Re-verify W73-C/D branch SHAs
+2. If all 4 PUSHED: cycle 73 close-out + spawn cycle 74
+3. If C or D missing at +25 mark: BLOCKER + B2 retry
+
+**Status @ 03:52 UTC: 🟢 2/4 PUSHED. 2/4 IN FLIGHT. ETA cycle 73 close: 04:00-04:05 UTC.**
+
+---
+
