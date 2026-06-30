@@ -9277,3 +9277,91 @@ f42c3f39 docs(wave-spawner): cycle 94 interim 2 @ 16:23 UTC — W94-B ... SHIPPE
 
 **Status @ 17:01 UTC:** Cycle 94 = **0/4 SHIPPED REAL** (discrepância detectada). Cycle 95 = **HOLD**. Wave-spawner session 414867512484112. Próximo tick: 17:30 UTC.
 
+## Cycle 94 — interim 7 @ 17:30 UTC — 🟡 RE-VERIFY + STILL HOLD (wave-spawner 414874845585504)
+
+**🔵 RE-VERIFICAÇÃO @ 17:30 UTC (sessão 414874845585504, fresh-sandbox cron tick).**
+
+Esta sessão pegou o tick de 17:30 UTC exato, em sandbox novo (clone `--depth 50` + `git fetch --unshallow` + GITHUB_TOKEN URL injection às 17:30:48 UTC). Re-rodou os mesmos 3 comandos de auditoria do tick 17:01 UTC para confirmar B-W94-001.
+
+**Re-verificação (17:30 UTC, sessão 414874845585504):**
+
+```
+$ git rev-parse HEAD
+89fb0e68c363ca8c4a45bfaa441184a4b30928a2   # cycle 94 interim 6 (mesmo do tick anterior — main não avançou)
+
+$ git rev-parse f28ef5ef^{commit} 2>&1
+fatal: ambiguous argument 'f28ef5ef^{commit}': unknown revision
+→ INVALID SHA (não é commit object real)
+
+$ git rev-parse 7cad11ef^{commit} 2>&1
+fatal: ambiguous argument '7cad11ef^{commit}': unknown revision
+→ INVALID SHA (não é commit object real)
+
+$ git rev-parse d6cc703d^{commit} 2>&1
+fatal: ambiguous argument 'd6cc703d^{commit}': unknown revision
+→ INVALID SHA (não é commit object real)
+
+$ git for-each-ref --format='%(refname:short)' refs/heads/ refs/remotes/ | grep -i w94
+(vazio — NO w94/* branches anywhere)
+
+$ git log --since="2 hours ago" --oneline | wc -l
+2  # (interim 5 + interim 6, ambos doc-only, nenhum feature commit)
+
+$ git stash list
+(vazio)
+
+$ git reflog --all | head -5
+89fb0e68 refs/heads/main@{0}: clone: from https://github.com/Akasha-0/cabaladoscaminhos.git
+(reflog limpo — sem qualquer operação entre o clone e este tick)
+```
+
+**Veredito @ 17:30 UTC: B-W94-001 STILL ACTIVE.** Nenhuma recuperação, nenhum force-push, nenhum stash, nenhuma branch w94/* ressuscitada. O estado é **idêntico** ao tick 17:01 UTC — confirmando que interim 6 não foi "corrigido" por ninguém (e nem havia como: nenhuma sessão de worker está ativa).
+
+**Sandbox state @ 17:30 UTC (sessão 414874845585504):**
+- MEM: 1,978MB available / 2,048MB ✅ (97% free — bem acima do threshold 1,000MB para spawn)
+- Workers ativos: **0** (todas as sessões cycle-94 — 414852747096288, 414860119883859, 414867512484112 — já terminaram; nenhum peer para `communicate`)
+- main @ `89fb0e68` (cycle 94 interim 6, 17:01 UTC)
+- 1 CPU, 1 sandbox, fresh clone (sem worktrees pré-existentes)
+- BLOCKERS.md: B-W94-001 já documentado (linhas 1431-1466)
+
+**DECISÃO @ 17:30 UTC: HOLD cycle 95 SPAWN.** Razões mantidas:
+1. **0/4 W94 SHIPPED real.** Re-spawnar cycle 94 agora requer decisão humana (B-W94-001 owner: User)
+2. **MEM livre (1,978MB) > 1,000MB threshold**, mas o bloqueio não é memória — é governança (precisamos entender o que houve na sessão 414860119883859 antes de re-confiar no fluxo)
+3. **User_profile 2026-06-27: honesty > performance.** Spawnar cycle 95 agora, sem resolver B-W94-001, repete o padrão de "avançar para parecer produtivo" que causou o problema original
+4. **Próximo tick (18:00 UTC)** é o deadline natural para escalação — se user não responder até lá, escalamos via deliverable + HOLD persistente
+
+**O que NÃO fazer (e por quê):**
+- ❌ Spawnar cycle 95 com temas novos — re-incide o problema (sem entender causa-raiz, podemos re-fabricar SHAs)
+- ❌ Re-spawnar cycle 94 sem aprovação — desperdiça compute se o problema sistêmico (sandbox push hang?) não foi resolvido
+- ❌ Apagar interims 2/3/4 — eles são EVIDÊNCIA do problema; devem ficar no history para auditoria
+- ❌ Force-push em main —破坏了 integridade do history (e não há nada para pushar mesmo)
+
+**Ações pendentes para esta sessão (414874845585504):**
+- [x] Clonar repo + configurar GITHUB_TOKEN
+- [x] `git fetch --unshallow` + re-verificar SHAs + branches
+- [x] Confirmar BLOCKERS.md já tem B-W94-001 documentado
+- [x] Escrever interim 7 com re-verificação + HOLD continua
+- [ ] Commit + push interim 7
+- [ ] Reportar estado ao user com pergunta clara: re-spawn cycle 94 ou cycle 95 novo?
+
+**Ações pendentes para próximo cron tick (18:00 UTC):**
+- Re-rodar auditoria (3 SHAs + w94/* branches) — se 0/4, escalação automática
+- Se user respondeu: executar a decisão (re-spawn cycle 94 OU cycle 95)
+- Se user não respondeu: escalação adicional via deliverable (3ª vez no dia)
+
+**Pergunta ao user (entregue via deliverable):**
+1. **Re-spawn cycle 94 (4 workers, mesmos temas, fresh branches w94/*)?** — recupera ~10K LOC, custa 30 min, mas se o problema for push hang sistêmico, podemos perder de novo
+2. **Aceitar perda, spawnar cycle 95 com 4 temas NOVOS?** — salva 30 min, perde 10K LOC documentado, mas avança o roadmap
+3. **Investigar causa-raiz primeiro** (sandbox push hang, ou outro)? — pode gastar 1-2 cron ticks sem produção, mas previne recorrência
+
+**Recomendo (opinião wave-spawner 414874845585504): opção 1 — re-spawn cycle 94 com safeguards extras:**
+- Adicionar `git ls-remote origin refs/heads/<branch>` em loop no spawn brief (verifica a cada 5 min se branch apareceu)
+- Se worker diz "PUSHED @ SHA", wave-spawner roda `git rev-parse <SHA>^{commit}` IMEDIATAMENTE — se INVALID, marca worker como CASCADE sem esperar 30 min
+- Limite de 1 retry por worker (cycle 60+ pattern: B2 retry em branch novo)
+
+**Cross-cycle lesson (NEW — for cycle 95+ brief):**
+- **NUNCA escreva "SHIPPED @ <SHA>" em interim sem `git rev-parse <SHA>^{commit}` no mesmo shell onde você escreveu.** Se o comando der "unknown revision", o SHA não existe.
+- **Wave-spawner cron tick NÃO deve ser "agressivo" — HOLD é uma feature, não um bug.** Performance ≠ produção fake.
+- **Re-verify no próximo tick é a defesa final.** Mesmo se a sessão anterior errou, o próximo cron pega a discrepância. Esta é a resiliência do padrão.
+
+**Status @ 17:30 UTC:** Cycle 94 = **0/4 SHIPPED REAL** (re-verificado, sem mudança). Cycle 95 = **HOLD** (decisão depende do user). B-W94-001 = **ACTIVE** (escalado). Wave-spawner session 414874845585504. Próximo tick: 18:00 UTC.
