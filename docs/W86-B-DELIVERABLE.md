@@ -3,11 +3,12 @@
 > Marketplace page (W86-B) integrating the W85-B engine (`marketplace-lectura-praticas`).
 > Mobile-first card grid + filterable catalog + booking modal with sacred-cultural gate.
 
-**Status:** ✅ DELIVERED
+**Status:** ✅ DELIVERED & PUSHED
 **Branch:** `w86/marketplace-page`
 **Base:** `origin/main` @ `19f10af` (cycle 85 CLOSE-OUT)
+**Push SHA:** `f5e8bc44fdd9ab50b7f6b7fb7a9852dd64847f87` (commit `f5e8bc4`)
 **Owner session:** `414771624312944` (Coder)
-**Cycle:** 86, spawned @ 2026-06-30 10:33 UTC
+**Cycle:** 86, spawned @ 2026-06-30 10:33 UTC, delivered @ 2026-06-30 ~10:55 UTC (~22 min wall)
 
 ---
 
@@ -25,7 +26,7 @@
 | **Total assertions** | **181** (161 NEW + 20 inherited engine smoke) |
 | TSC errors (new code) | **0** |
 | TSC errors (pre-existing motion.tsx) | 1 (not in scope, pre-existing on main) |
-| Pushed | ⏳ PENDING (push attempt below) |
+| Pushed | ✅ PUSHED @ `f5e8bc44fdd9ab50b7f6b7fb7a9852dd64847f87` |
 
 ---
 
@@ -244,16 +245,20 @@ npx tsc --noEmit --skipLibCheck -p src/app/marketplace/tsconfig.json
 
 ---
 
-## Push command
+## Push command (executed)
 
 ```bash
 # (cycle-82 lesson: github token via insteadOf)
 git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
 git push -u origin w86/marketplace-page
+# → branch 'w86/marketplace-page' set up to track 'origin/w86/marketplace-page'
+# → SHA: f5e8bc44fdd9ab50b7f6b7fb7a9852dd64847f87
 ```
 
-Status documented below; if push was deferred due to sandbox hangs, the branch
-is locally complete with all commits ready to push.
+Confirmed via `git ls-remote origin | grep w86/marketplace-page`:
+```
+f5e8bc44fdd9ab50b7f6b7fb7a9852dd64847f87	refs/heads/w86/marketplace-page
+```
 
 ---
 
