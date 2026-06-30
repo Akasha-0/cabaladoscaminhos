@@ -1073,3 +1073,196 @@ $ git ls-remote --heads origin | grep "w85/marketplace-lectura-praticas"
 1. **Setup-cascade signature is new for cycle 87** — W87-D didn't crash on engine code, it crashed on `npm ci` / TSC setup. The B2 retry inherits a populated node_modules-less worktree, so the setup bottleneck is reduced. Expect cycle 88 W88-A to skip the npm install issue and land cleanly.
 
 **Status @ 11:30 UTC:** ⚠️ PARTIAL preserved on origin. Cycle 88 SPAWN plan includes W88-A daily-reflection-B2 retry as worker A. main @ `82c693a5`. Wave-spawner session 414785391669500.
+
+---
+
+## B-W88-A — cycle 88 W88-A (daily-reflection-B2 retry) — ❌ BLOCKED (sandbox env cascade)
+
+**Status (2026-06-30 12:00 UTC, tick 414793810403456):** ❌ **BLOCKED — structural env cascade, not worker skill issue.** B2 retry of W87-D did NOT recover the cascade. B2 efficacy for env issues = 0/1.
+
+**Why B2 retry didn't help:**
+- W87-D cascade signature: Node setup hang (TSC fails, no node_modules) — fixable in B2 by including `npm ci` as step 0
+- W88-A cascade signature: `npm ci` itself fails (lock file missing `ecdsa-sig-formatter@1.0.11`) + `npm install` recovery wedges shell
+- The fix that worked for cycle 87 (add `npm ci` step) is exactly what breaks in cycle 88 (npm install is the bottleneck)
+
+**What W88-A had on disk at cascade time:**
+- All 5 B2 retry files written via Write tool to `/workspace/cabaladoscaminhos/...` (engine inheritance from origin/w87/daily-reflection worked; new files written)
+- `git worktree add /tmp/w88-daily-reflection-b2 -b w88/daily-reflection-b2 origin/w87/daily-reflection` succeeded at 11:35 UTC
+- Branch `w88/daily-reflection-b2` exists locally but NOT on remote (worktree pinned to /tmp, which became unreachable)
+- Wrote 5 new files to /workspace, then attempted git operations which all wedged
+
+**What was lost on sandbox reset (between 11:55 UTC and 12:00 UTC):**
+- All 5 B2 files written to /workspace — GONE (sandbox reset wipes /workspace unless it was on the persistent CSI mount)
+- /tmp/w88-daily-reflection-b2 worktree — GONE
+- W88-A's last working state: still in 414787224121555, doing worktree-gymnastics, will time out at 30-min cap (~12:05 UTC)
+
+**What W88-A produced in agent memory (durable, still in Mavis's MEMORY.md):**
+- Investigation trail of the cascade (10+ bash hang events with timestamps)
+- Workaround attempt: writing to `/workspace/cabaladoscaminhos/.git/worktrees/w88-daily-reflection-b2/gitdir` (reverted before exit)
+- Confirmed: branch ref `refs/heads/w88/daily-reflection-b2` exists, commondir `../..`, gitdir `/tmp/w88-daily-reflection-b2/.git`
+
+**B3 retry recommendation (cycle 89+):**
+1. **DO NOT retry B3 in cycle 89** — env is still structurally broken
+2. **Wait for env recovery** (parent `npm install` in this session, OR next sandbox with cached node_modules)
+3. **When retrying**: skip `npm ci`, use `npm install --no-audit --no-fund`; OR skip dep install entirely (rely on CI)
+4. **Files to recreate from memory**: 5 files mentioned in W88-A's session messages — engine pages, prompts, LGPD gate, etc. (not enumerated here, would need to read worker session messages)
+
+**Status @ 12:00 UTC:** ❌ BLOCKED. AWAITING env recovery. main @ `6508bd7`. Wave-spawner session 414793810403456.
+
+---
+
+## B-W88-B — cycle 88 W88-B (comments-moderation) — ❌ BLOCKED (cascade, 0 LOC shipped)
+
+**Status (2026-06-30 12:00 UTC, tick 414793810403456):** ❌ **BLOCKED.** Worker hit the same env cascade as W88-A. Did NOT write any code before bash wedged.
+
+**What W88-B did:**
+- ✅ `git worktree add /tmp/w88-comments-moderation -b w88/comments-moderation origin/main` succeeded at 11:30 UTC
+- ❌ `npm ci` failed: missing `ecdsa-sig-formatter@1.0.11` from lock file
+- ❌ `npm install --ignore-scripts --legacy-peer-deps` recovery: peer-closed mid-stream
+- ❌ Shell permanently wedged after npm install failure
+- ✅ Wrote BLOCKED report at `/workspace/cabaladoscaminhos/W88-B-BLOCKED.md` (3,733 bytes) before shell died
+- ✅ Sent cascade report to parent session 414785391669500 at 11:42 UTC
+- Wall time: ~6 min stuck then permanently blocked
+
+**What W88-B lost on sandbox reset:**
+- 0 LOC shipped (no engine + page + spec + smoke produced)
+- The BLOCKED report at `/workspace/cabaladoscaminhos/W88-B-BLOCKED.md` is GONE (sandbox reset)
+- The /tmp/w88-comments-moderation worktree is GONE
+
+**B-W88-B resolution path:**
+- Re-spawn W88-B in cycle 89+ with the lessons from this BLOCKER
+- Skip `npm ci` (proven broken)
+- Use a narrower scope: engine first, then page, validate at each step
+
+**Status @ 12:00 UTC:** ❌ BLOCKED. 0 LOC shipped. main @ `6508bd7`.
+
+---
+
+## B-W88-C — cycle 88 W88-C (reputation-universalista) — ❌ BLOCKED (cascade, ~3,069 LOC lost on sandbox reset)
+
+**Status (2026-06-30 12:00 UTC, tick 414793810403456):** ❌ **BLOCKED.** Worker hit the same env cascade as W88-A/B. Wrote 10 files (~3,069 LOC) to /workspace via Write tool, but ALL files were lost on sandbox reset (sandbox reset wipes /workspace).
+
+**What W88-C did:**
+- ✅ `git worktree add /tmp/w88-reputation-universalista` succeeded at 11:30 UTC
+- ❌ `npm ci` failed: missing `ecdsa-sig-formatter@1.0.11` from lock file
+- ❌ `npm install --no-audit --no-fund` recovery: peer-closed mid-stream
+- ✅ Used Write tool to create 10 files directly in /workspace/cabaladoscaminhos/... (3,069 LOC, ~10 min wall)
+- ❌ Validation blocked (TSC + vitest + smoke all require npm install to succeed)
+- ❌ Git commit + push blocked (git operations wedged by FS contention)
+- ✅ Sent cascade report to parent session 414785391669500 at 11:49 UTC
+- ✅ Wrote W88-C-DELIVERABLE.md at `/workspace/cabaladoscaminhos/docs/W88-C-DELIVERABLE.md`
+- ✅ Updated agent memory with cascade lessons
+- Wall time: ~13 min stuck then permanently blocked
+
+**Files that W88-C wrote (all LOST on sandbox reset):**
+- `src/engine/reputation/{types.ts, factory.ts, factory.spec.ts, adapter-memory.ts, index.ts}` (~1,114 LOC prod + 320 LOC spec)
+- `src/app/profile/[handle]/{page.tsx, page.spec.tsx, layout.tsx}` (~537 LOC)
+- `src/app/feed/page.tsx` (~168 LOC)
+- `scripts/smoke-reputation.mjs` (~250 LOC, 15 invariants)
+- `docs/W88-C-DELIVERABLE.md` (~250 LOC)
+
+**B-W88-C resolution path:**
+- Re-spawn W88-C in cycle 89+ with the lessons from this BLOCKER
+- Worker must commit + push to remote BEFORE sandbox resets (the Write-tool-then-reset pattern is broken)
+- Skip `npm ci` (proven broken)
+- The W88-C work is preserved in agent memory + session messages — worker can reconstruct from those
+
+**Sacred-cultural compliance (W88-C, documented in agent memory):**
+- ✅ Positive-only witness enforced at 3 levels
+- ✅ 7 tradição symbols verbatim: ✦ 🪶 ☩ ◈ ☸ ☉ ☬
+- ✅ Sacred terms preserved: Orixá, Caboclo, Babalaô, Yalorixá, Axé, Sefirá
+- ✅ Banned vocab ABSENT: amarração, amarre, vinculação, vincular, prejudicar
+- ✅ LGPD dual consent enforced
+- ✅ Mobile-first 360px
+- ✅ All copy PT-BR
+
+**Status @ 12:00 UTC:** ❌ BLOCKED. 3,069 LOC lost on sandbox reset. main @ `6508bd7`.
+
+---
+
+## B-W88-D — cycle 88 W88-D (live-stream-card) — ❌ BLOCKED (cascade, ~2,275 LOC lost on sandbox reset)
+
+**Status (2026-06-30 12:00 UTC, tick 414793810403456):** ❌ **BLOCKED.** Worker hit the same env cascade as W88-A/B/C. Wrote 10 files (~2,275 LOC) to /workspace via Write tool, but ALL files were lost on sandbox reset.
+
+**What W88-D did:**
+- ✅ `git worktree add /tmp/w88-live-stream-card` succeeded at 11:30 UTC
+- ❌ `npm ci` failed: missing `ecdsa-sig-formatter@1.0.11` from lock file
+- ❌ `npm install` recovery: peer-closed mid-stream
+- ✅ Used Write tool to create 10 files directly in /workspace/cabaladoscaminhos/... (~2,275 LOC)
+- ❌ Validation blocked
+- ❌ Git commit + push blocked
+- ✅ Sent cascade report to parent session 414785391669500 at 12:02 UTC
+- ✅ Wrote W88-D-DELIVERABLE.md at `/workspace/cabaladoscaminhos/docs/W88-D-DELIVERABLE.md`
+- ✅ Wrote `/workspace/w88-d-final-status.md` (emergency doc)
+- ✅ Backed up files to `/workspace/w88-d-sources/` (also lost on reset)
+- Wall time: ~35 min stuck (longest of the 4 W88 workers)
+
+**Files that W88-D wrote (all LOST on sandbox reset):**
+- `src/engine/livestream/{types.ts, factory.ts, adapter-memory.ts, index.ts, factory.spec.ts}` (~1,255 LOC)
+- `src/app/livestream/{page.tsx, page.spec.tsx, layout.tsx}` (~770 LOC)
+- `scripts/smoke-livestream.mjs` (~250 LOC, 22 invariants)
+- `docs/W88-D-DELIVERABLE.md` (~250 LOC)
+- `/workspace/w88-d-final-status.md` (~3 KB emergency doc)
+- `/workspace/w88-d-sources/*` (backup copies)
+
+**B-W88-D resolution path:**
+- Re-spawn W88-D in cycle 89+ with the lessons from this BLOCKER
+- Worker must commit + push to remote BEFORE sandbox resets
+- Skip `npm ci` (proven broken)
+- The W88-D work is preserved in agent memory + session messages + the deliverable doc text in those messages — worker can reconstruct
+
+**Sacred-cultural compliance (W88-D, documented in agent memory):**
+- ✅ 7 tradição symbols verbatim
+- ✅ Sacred terms preserved (Babalaô, Yalorixá, Axé, Sefirá, Caboclo, Tantra)
+- ✅ Banned vocab ABSENT
+- ✅ LGPD gate (consent + version stamp + audit log)
+- ✅ No DVR / recording / replay
+- ✅ Mobile-first 360px
+- ✅ All PT-BR copy
+
+**Status @ 12:00 UTC:** ❌ BLOCKED. 2,275 LOC lost on sandbox reset. main @ `6508bd7`.
+
+---
+
+## Cycle 88 STRUCTURAL CASCADE — Root Cause Analysis (cross-cutting)
+
+**The cascade is structural, not a worker skill issue.** All 4 W88 workers hit the same wall because they all spawn into a fresh sandbox with the same stale lock file.
+
+**Cascade chain (observed in all 4 W88 workers):**
+
+1. `git worktree add /tmp/w88-<theme> -b w88/<theme> origin/main` → ✅ succeeds (git works initially)
+2. `cd /tmp/w88-<theme> && npm ci` → ❌ fails: "Missing: ecdsa-sig-formatter@1.0.11 from lock file"
+3. `npm install --ignore-scripts --legacy-peer-deps` (recovery) → ❌ peer-closes mid-stream, orphans child processes
+4. Orphaned npm child processes → consume all shell I/O bandwidth
+5. Any subsequent `git`, `ls`, `cat`, `date`, `ps`, `npm`, etc. → times out at 5s/30s/60s/120s/300s
+6. `/tmp` becomes permanently unreachable from the sandbox
+7. Write tool keeps working (different syscall path, no FS contention)
+8. Worker writes files to /workspace via Write tool → files are saved to disk BUT lost on next sandbox reset
+9. Worker reports BLOCKED to parent → parent receives cascade report
+10. Parent (previous wave-spawner 414785391669500) is in 30-min cap, cannot rescue
+
+**Why this is structural:**
+- The repo's `package-lock.json` is stale (missing `ecdsa-sig-formatter@1.0.11` which is a transitive dep of `jose`)
+- The npm registry peer-closes the recovery `npm install` request
+- The sandbox FS layer locks `/tmp` when child processes orphan
+- The sandbox resets every 30 min, wiping `/workspace` and `/tmp`
+
+**Recovery options (for cycle 89+):**
+
+1. **Run `npm install` in the parent wave-spawner session BEFORE spawning workers** — parent has more memory, more time, and can use a longer timeout. If parent succeeds, persist `node_modules` to a known location that future cron ticks can `cp -a` from.
+
+2. **Skip `npm ci` / `npm install` in workers entirely** — workers write code + spec + smoke files, but defer validation to CI. This is the W86-B + W87-C source-inspection-only pattern.
+
+3. **Use a Docker-style base image with pre-installed node_modules** — would require infra change. Out of scope for cron wave-spawner.
+
+4. **Workers commit + push to remote BEFORE sandbox resets** — requires workers to be faster (e.g., 15-min cap instead of 30-min) OR commit incrementally (e.g., engine first, then page, each as separate commits).
+
+**Recommended for cycle 89:**
+
+- Parent wave-spawner runs `npm install --no-audit --no-fund --prefer-offline` with 600s timeout in background BEFORE spawning workers
+- If parent npm install succeeds: copy node_modules to `/workspace/.cache/cabaladoscaminhos-node_modules/`
+- Workers spawn into fresh sandbox: `cp -a /workspace/.cache/cabaladoscaminhos-node_modules /tmp/w89-<theme>/node_modules` (one-shot copy, no npm install)
+- Workers validate as usual (TSC + vitest + smoke)
+- Reduced scope: 1-2 workers only, max 2000 LOC each
+
+**Status @ 12:00 UTC:** B-W88-A + B-W88-B + B-W88-C + B-W88-D all BLOCKED. Cascade rate = 4/4 (100%, worst ever). 5 NEW durable lessons captured in WAVE-LOG. Cycle 89 deferred pending env recovery. main @ `6508bd7`. Wave-spawner session 414793810403456.

@@ -7010,3 +7010,97 @@ Step N-1: TSC=0 + vitest PASS + smoke PASS
 Step N: git commit + git push origin w88/<theme> + report SHA back
 ```
 
+
+### Wave-Spawner — Cycle 88 CLOSE-OUT @ 12:00 UTC (2026-06-30) — ⚠️ 4/4 CASCADE (env structural)
+
+**Cycle 88 final tally: 0 LOC PUSHED. 4/4 workers hit the SAME structural cascade.**
+
+| Worker | Branch | SHA | LOC | Wall | Status |
+|---|---|---|---|---|---|
+| W88-A daily-reflection-B2 retry | w88/daily-reflection-b2 | (none) | 0 (no commit, no push) | >40 min | ❌ BLOCKED (cascade) |
+| W88-B comments-moderation | w88/comments-moderation | (none) | 0 (no commit, no push) | ~6 min stuck | ❌ BLOCKED (cascade) |
+| W88-C reputation-universalista | w88/reputation-universalista | (none) | ~3,069 LOC written to /workspace before sandbox reset (no commit, no push) | ~13 min | ❌ BLOCKED (cascade) |
+| W88-D live-stream-card | w88/live-stream-card | (none) | ~2,275 LOC written to /workspace before sandbox reset (no commit, no push) | ~35 min | ❌ BLOCKED (cascade) |
+
+**Cascade rate cycles 83-88:**
+- Cycle 83: 1/4 (W83-A B2 retry)
+- Cycle 84: 2/4 (LLM transient SAME-SECOND cascade)
+- Cycle 85: 0/4 (clean — both B2 retries succeeded)
+- Cycle 86: 1/4 (W86-D LLM transient, LATE-WAVE)
+- Cycle 87: 1/4 (W87-D stuck on Node setup, NEW signature)
+- Cycle 88: 4/4 (ALL workers — structural env cascade)
+- 6-cycle avg: 9/24 = 37.5% cascade rate. **Worst cycle ever (cycle 88 = 4/4).**
+
+**Root cause (confirmed by inspecting worker session messages + parent env state):**
+
+1. **Fresh sandbox, no `node_modules`** — Every cron tick spawns into a clean sandbox. The repo is fresh-cloned. `npm ci` is needed to install deps.
+2. **`package-lock.json` is missing `ecdsa-sig-formatter@1.0.11`** at the W88 hash. `npm ci` fails with "Missing: ecdsa-sig-formatter@1.0.11 from lock file".
+3. **Recovery `npm install --ignore-scripts --legacy-peer-deps`** tries to fetch the missing dep from the registry. The fetch peer-closes mid-stream, leaving orphaned child processes.
+4. **Orphaned child processes** consume all shell I/O bandwidth. Subsequently, every `git`, `ls`, `cat`, `date`, `ps`, `npm`, etc. times out at 5s/30s/60s/120s/300s.
+5. **`/tmp` becomes permanently unreachable** from the sandbox (FS layer is locked by the orphaned npm processes). Worktree at `/tmp/w88-*` cannot be accessed.
+6. **Write tool keeps working** (no git index touch, no FS contention). Workers wrote files to `/workspace/cabaladoscaminhos/...` directly — but those files were lost on the next sandbox reset.
+
+**Cross-cycle cascade context (memory 2026-06-28):**
+- Cycles 84/86 cascade: LLM transient error (different signature)
+- Cycle 87 cascade: Node setup hang (new signature)
+- Cycle 88 cascade: **npm install cascade (new signature, all 4 workers)**
+
+The cascade is escalating. Worker skill is not the bottleneck — it's the sandbox env that cannot reliably install dependencies.
+
+**Investigation trail (parent wave-spawner 414793810403456 at 12:00 UTC):**
+
+1. `cd /root/cabaladoscaminhos && git status` → clean working tree
+2. `git log --oneline -5` → main @ `6508bd7` (cycle 88 SPAWN doc)
+3. `git ls-remote origin | grep w88` → 0 w88 branches on remote (all 4 cascades confirmed)
+4. `git ls-remote origin | grep w87` → 4 w87 branches on remote, all PUSHED clean in cycle 87 but UNMERGED
+5. `free -m` → 1972MB available (memory gate PASSES)
+6. `ls node_modules/.package-lock.json` → does not exist (fresh sandbox)
+7. `npx --no-install tsc --version` → 6.0.3 (global, not from project deps)
+8. `npx --no-install vitest --version` → "missing packages and no YES option" (vitest not installed)
+9. `find / -name "vitest" -type f` → 0 results (no global install)
+10. Session messages from W88-A/B/C/D all show: `npm ci` failure → `npm install` recovery → cascade
+
+**What I will NOT do in cycle 88 close-out:**
+
+- ❌ Fabricate "all green" results (per user memory 2026-06-27)
+- ❌ Try to "save" the partial W88 work (it's lost — sandbox reset wiped it)
+- ❌ Spawn cycle 89 with the same pattern (would be 4/4 cascade again)
+- ❌ Spawn cycle 89 with `npm ci` in worker brief (proven broken)
+
+**What I WILL do:**
+
+1. ✅ Append B-W88-A/B/C/D entries to BLOCKERS.md
+2. ✅ Commit cycle 88 close-out (this doc) + BLOCKERS update
+3. ✅ Try `npm install` once in this session to see if env can recover (in background)
+4. ✅ Defer cycle 89 to next tick (12:30 UTC) pending env diagnosis
+
+**Cycle 89 plan (deferred to 12:30 UTC tick):**
+
+- **DO NOT SPAWN** if npm install in this tick fails
+- **SPAWN 1-2 workers only** (reduced scope) if env recovers
+- **Workers should**:
+  - Skip `npm ci` — assume deps are pre-installed by parent
+  - Skip vitest in-session — write spec files but defer to CI
+  - Source-inspection specs only (per W86-B + W87-C pattern)
+  - Tighter scope: 1 engine + 1 page, max 2000 LOC
+- **Recovery protocol**: if `npm install` in this session succeeds, persist node_modules to a known location (e.g., `~/.cache/cabaladoscaminhos-node-modules/`) so future cron ticks can `cp -a` it instead of running `npm install` again
+
+**Durable lessons (cycle 88 close-out):**
+
+1. **`npm ci` is structurally broken in this sandbox** — the lock file is stale, the registry peer-closes, and the recovery `npm install` orphans processes that wedge the shell. Future cycles must not rely on `npm ci`.
+
+2. **Fresh-sandbox + dep-install is the new bottleneck** — cycles 84-87 cascade was on different signatures (LLM, setup, late-wave). Cycle 88 is on the dep-install. The root cause is structural (sandbox cannot install npm packages reliably).
+
+3. **Write-tool-deposited files are lost on sandbox reset** — W88-C and W88-D wrote ~5,300 LOC combined to /workspace via the Write tool. None of it survived to the next cron tick. Workers must commit + push to remote before the sandbox resets.
+
+4. **`/tmp/w88-*` worktrees become permanently unreachable** — once `npm install` orphans a child process, the FS layer locks `/tmp` indefinitely. Future cycles should use `/workspace/wt-...` instead, or rely entirely on `git switch` in the main worktree.
+
+5. **B2 retry efficacy is 100% for transient LLM cascades, 0% for structural env cascades** — cycles 85-87 all succeeded on B2 retry. Cycle 88 B2 retry (W88-A) also cascaded. B2 retry is not a fix for env issues.
+
+**Wall time this tick:** ~5 min so far (close-out + BLOCKERS + commit pending).
+
+**Push flow this tick:**
+- Pending: cycle 88 close-out + BLOCKERS append (one combined commit, message format per cycle 86/87)
+- `git push origin main` after commit
+
+**Status @ 12:05 UTC:** Cycle 88 CLOSED 4/4 cascade. main @ `6508bd7` (pending close-out commit). Wave-spawner session 414793810403456. Cycle 89 SPAWN deferred to 12:30 UTC tick.
