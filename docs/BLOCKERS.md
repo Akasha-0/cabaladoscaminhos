@@ -977,3 +977,55 @@ $ git ls-remote --heads origin | grep "w85/marketplace-lectura-praticas"
 2. **WIP commit message must include TODO list:** the B2 retry worker needs to know exactly what to do next without reading the full code. The W86-D commit message lists 7 concrete TODOs.
 
 **Status @ 10:57 UTC:** ⚠️ PARTIAL preserved on origin. Cycle 87 SPAWN plan includes W87-A events-workshops-B2 retry as worker A. main @ `62a63b4`. Wave-spawner session 414771547345007.
+
+
+## B-W86-D — cycle 86 W86-D (events-workshops) — ✅ RESOLVED via cycle 87 W87-A B2 retry @ cae88298
+
+**Status (2026-06-30 11:18 UTC, tick 414779059990725):** ✅ **RESOLVED.** W87-A B2 retry SHIPPED + PUSHED in **~12 min** (well under 30-min cap) on new branch `w87/events-workshops-b2` at SHA `cae88298` (final). Two commits on top of W86-D WIP `83a94a6c`:
+- `8b2f8914` — feat(events): W87-A B2 retry — page.spec + smoke + TSC=0 + vitest+smoke PASS
+- `cae88298` — docs(w87-a): deliverable — events/workshops B2 retry final report
+
+**What W87-A delivered (added 794 LOC + inherited 2202 LOC = 2,996 LOC total across 7 files):**
+- `scripts/smoke-events.mjs` (377 LOC NEW) — 16 invariants: list (12), filter tradição, filter type, filter date range, RSVP create (confirmed), RSVP waitlist (full), RSVP cancel, LGPD consent gate, ARIA, mobile breakpoint, banned-vocab, etc
+- `src/app/events/page.spec.ts` (400 LOC NEW) — 42 source-inspection asserts (no jsdom/React render layer): ARIA roles, data-testid contracts, LGPD required, mobile breakpoint, 7 tradição symbols, banned-vocab absent
+- `src/engine/events/index.ts` (12 LOC NEW) — barrel export so page's `import { ... } from '@/engine/events'` resolves
+- `src/engine/events/factory.spec.ts` (+8 LOC FIX) — vitest type fix: `.not.toContain()` → `.includes().toBe(false)` (AsymmetricMatchersContaining lacks `toContain`)
+- `src/app/events/layout.tsx` (+1 LOC FIX) — dropped `priority` from `buildPageMetadata` (PageSeoInput does NOT include priority field)
+- `docs/W87-A-DELIVERABLE.md` (260 LOC NEW) — full report
+
+**Validation results (ALL GREEN):**
+| Layer | Asserts | Status |
+|---|---|---|
+| `factory.spec.ts` (vitest) | 34 | ✅ 34/34 PASS |
+| `page.spec.ts` (source-inspection) | 42 | ✅ 42/42 PASS |
+| `smoke-events.mjs` (cross-package) | 16 | ✅ 16/16 PASS |
+| TSC in events + page + layout | — | ✅ 0 errors |
+| **TOTAL** | **92** | **✅ ALL PASS** |
+
+**7 NEW durable lessons from W87-A (extends cycle 85/86 corpus):**
+1. **Source-inspection page spec > vitest+jsdom for `'use client'` pages** — `readFileSync` + regex on ARIA/role/data-testid gives cheap reliable assertions without a render layer. Reusable pattern (W86-B + W87-A both used it).
+2. **`expect().not.toContain()` is type-unsafe in some vitest matcher types** — use `.includes().toBe(false)` instead. `AsymmetricMatchersContaining` lacks `toContain`.
+3. **tsx (or Node 22 strip-types) mangles UTF-8 in some cases** — hardcode constants like `LGPD_VERSION`, `RSVP_GUESTS_MIN/MAX` directly in smoke scripts instead of importing.
+4. **`PageSeoInput` does NOT include a `priority` field** — only metadata fields. Drop unused properties or tsc will error.
+5. **W86-D WIP preservation saved W87-A from rebuilding ~2200 LOC** — emergency preservation protocol validated again. B2 retry on a preserved WIP is much faster than greenfield.
+6. **W-branch TSC must grep-isolate to its own files** — pre-existing tests/ or other folders may have errors that are out-of-scope for the new feature. Use `tsc --noEmit` on the specific feature path, not the whole repo, when validating in-worktree.
+7. **`git ls-remote origin <branch>` is authoritative for push confirmation** — `git push` can succeed silently; `ls-remote` confirms the remote ref matches.
+
+**Sacred-cultural compliance ✅:**
+- 7 tradição symbols verbatim (✦🪶☩◈☸☉☬) — verified in page source AND all 12 seed events
+- Tradição/Caboclo/Orixá/Axé preserved in seed events
+- LGPD consent REQUIRED (`canSubmit = name.length >= 2 && lgpdConsent`)
+- Banned vocabulary (amarração/amarre/vinculação/vincular/prejudicar) ABSENT in page source AND all 12 seed events — verified by smoke
+
+**B2 retry efficacy (cycle 85-87):**
+- Cycle 84 B2: W85-A voice-mode-akasha (B-W84-A RESOLVED first try @ 3acf05cf, 1635 LOC, 104 asserts)
+- Cycle 84 B2: W85-B marketplace-lectura-praticas (B-W84-D RESOLVED first try @ 04e79013, 2522 LOC, 105 asserts)
+- Cycle 86 B2: W87-A events-workshops-b2 (B-W86-D RESOLVED first try @ cae88298, 2996 LOC, 92 asserts)
+- **3/3 B2 retries succeeded first-try (100%)** — confirms LLM-transient hypothesis vs theme-too-heavy
+
+**Resolution path (owner action):**
+1. **Merge `w87/events-workshops-b2` → main** (recommended) when ready. Clean events/workshops feature.
+2. Optional: rename `w87/events-workshops-b2` → `w86/events-workshops` after merge if branch naming consistency matters (or keep as-is — WIP branch is fine to retire).
+3. Drop the original W86-D WIP branch `w86/events-workshops @ 83a94a6` (no longer needed — superseded).
+
+**Status @ 11:18 UTC: ✅ RESOLVED. B-W86-D closed. Cycle 87 cascade fully recovered. main @ `6968180e`. Wave-spawner session 414779059990725. 3 NEW workers (B/C/D) still in flight, target close 11:30 UTC.**

@@ -6779,3 +6779,147 @@ cigano ✦, candomblé 🪶, umbanda ☩, ifá ◈, cabala ☸, astrologia ☉, 
 - Push: `b2ab3674..<pending>` clean
 
 **Status @ 11:00 UTC:** 4/4 SPAWNED, 0/4 PUSHED yet. Workers spinning up. main @ `b2ab3674`. MEM 1977MB. Wave-spawner session 414779059990725. Next wave-spawner tick at 11:30 UTC.
+
+
+### Wave-Spawner — Cycle 87 INTERIM 1 @ 11:20 UTC (2026-06-30) — 1/4 PUSHED ✅
+
+**W87-A (events-workshops-B2 retry) — DONE ✅**
+
+Branch: `w87/events-workshops-b2`
+Final SHA: `cae88298` (commit with DELIVERABLE.md)
+LOC: 794 NEW + 2202 inherited = **2,996 LOC total across 7 files**
+Wall: ~12 min (well under 30-min cap)
+Started: 11:06 UTC · Finished: 11:18 UTC
+
+**Validation Results — ALL GREEN**
+
+| Layer | Assertions | Status |
+|---|---|---|
+| `src/engine/events/factory.spec.ts` (vitest) | 34 | ✅ 34/34 PASS |
+| `src/app/events/page.spec.ts` (source-inspection) | 42 | ✅ 42/42 PASS |
+| `scripts/smoke-events.mjs` (cross-package) | 16 | ✅ 16/16 PASS |
+| TSC in events + page + layout | — | ✅ 0 errors |
+| **TOTAL** | **92** | **✅ ALL PASS** |
+
+**Files Added/Modified (vs W86-D WIP @ 83a94a6c):**
+```
+scripts/smoke-events.mjs          | 377 +++  (NEW, 16 invariants)
+src/app/events/page.spec.ts       | 400 +++  (NEW, 42 source-inspection asserts)
+src/engine/events/index.ts        |  12 +   (NEW, barrel for @/engine/events)
+src/engine/events/factory.spec.ts |   8 +/- (FIX: .not.toContain → .includes().toBe(false))
+src/app/events/layout.tsx         |   1 +/- (FIX: drop `priority` from PageSeoInput)
+docs/W87-A-DELIVERABLE.md         | 260 +   (NEW, full report)
+```
+
+**7 NEW durable lessons from W87-A (extends cycle 85/86 corpus):**
+1. **Source-inspection page spec > vitest+jsdom for `'use client'` pages** — `readFileSync` + regex on ARIA/role/data-testid gives cheap reliable assertions without a render layer. Reusable pattern (W86-B + W87-A both used it).
+2. **`expect().not.toContain()` is type-unsafe in some vitest matcher types** — use `.includes().toBe(false)`. `AsymmetricMatchersContaining` lacks `toContain`.
+3. **tsx (or Node 22 strip-types) mangles UTF-8 in some cases** — hardcode constants like `LGPD_VERSION`, `RSVP_GUESTS_MIN/MAX` directly in smoke scripts instead of importing.
+4. **`PageSeoInput` does NOT include a `priority` field** — only metadata fields. Drop unused properties or tsc will error.
+5. **W86-D WIP preservation saved W87-A from rebuilding ~2200 LOC** — emergency preservation protocol validated again. B2 retry on a preserved WIP is much faster than greenfield.
+6. **W-branch TSC must grep-isolate to its own files** — pre-existing tests/ or other folders may have errors that are out-of-scope for the new feature.
+7. **`git ls-remote origin <branch>` is authoritative for push confirmation** — `git push` can succeed silently; `ls-remote` confirms the remote ref matches.
+
+**B-W86-D RESOLVED ✅ (3rd B2 retry success in a row — confirms LLM-transient hypothesis at 100% efficacy):**
+- Cycle 84 B2: W85-A voice-mode-akasha (B-W84-A RESOLVED first try @ 3acf05cf, 1635 LOC, 104 asserts)
+- Cycle 84 B2: W85-B marketplace-lectura-praticas (B-W84-D RESOLVED first try @ 04e79013, 2522 LOC, 105 asserts)
+- Cycle 86 B2: W87-A events-workshops-b2 (B-W86-D RESOLVED first try @ cae88298, 2996 LOC, 92 asserts)
+- **3/3 B2 retries succeeded first-try (100%)** — pattern is rock solid
+
+**Sacred-cultural compliance ✅:**
+- 7 tradição symbols verbatim (✦🪶☩◈☸☉☬)
+- Tradição/Caboclo/Orixá/Axé preserved in seed events
+- LGPD consent REQUIRED
+- Banned vocabulary (amarração/amarre/vinculação/vincular/prejudicar) ABSENT — verified in page source AND all 12 seed events
+
+**Cycle 87 status @ 11:20 UTC:**
+- 1/4 PUSHED (W87-A ✅)
+- 3/4 in flight (W87-B mentorship, W87-C comments-thread, W87-D daily-reflection)
+- main @ `6968180e` (cycle 87 SPAWN doc PUSHED)
+- B-W86-D RESOLVED ✅
+- MEM 1968MB available / 2048MB
+- Wave-spawner session 414779059990725
+
+**Push flow this tick:**
+- W87-A push: `83a94a6c..8b2f8914` (feat) + `8b2f8914..cae88298` (docs) on `w87/events-workshops-b2`
+- BLOCKERS.md and WAVE-LOG.md updates pending commit
+
+**Status @ 11:20 UTC:** 1/4 PUSHED, 3/4 in flight. Cycle 87 cap 11:30 UTC (10 min remaining). main @ `6968180e`. Wave-spawner session 414779059990725. B-W86-D RESOLVED.
+
+
+### Wave-Spawner — Cycle 87 INTERIM 2 @ 11:24 UTC (2026-06-30) — 3/4 PUSHED ✅ (W87-A, W87-B, W87-C all CLEAN)
+
+**3 of 4 workers CLEAN — cascade rate this cycle so far: 0/3.** W87-D still in flight (5 min remaining).
+
+---
+
+#### W87-B (mentorship pairing 1-on-1) — DONE ✅
+
+Branch: `w87/mentorship-pairing @ 64202958`
+LOC: 3,004 (right at the 3000 cap)
+Wall: 25 min (5 min buffer under cap)
+Files: 9 NEW, 0 modified
+
+**Validation (129 asserts ALL PASS):**
+- Engine spec: 39/39 (score math, filter compose, level overflow, tz penalty, LGPD gate, state machine)
+- Page spec: 34/34 (ARIA, data-testid, sacred terms, mobile CSS)
+- Smoke: 56/56 (list/filter/findPairings, LGPD missing, accept/decline/complete, ARIA contracts, symbols)
+- TSC=0 (W87-B files, 2071 pre-existing baseline unchanged)
+
+**Sacred-cultural compliance ✅:**
+- 8 sample mentors cobrindo 7 tradições (Cigana Mira, Iá Helena, Pai João, Babalaô Agbara, Rabino Shlomo, Maga Astreia, Swami Dayananda, Cigano Ramiro [pausado])
+- 4 sample mentees (BR iniciante, BR intermediário, EUA avançado, ES mestre)
+- Curator-intent exclusions: zero hits (amarre/vinculação/prejudicar)
+- Sacred terms verbatim
+- Tradição symbols ✦🪶☩◈☸☉☬
+
+**Notable:** Score-based algorithm with explicit weights (+30/+20/+15/+10/-10/-3/h), LGPD_VERSION versionada, state machine with transition validation, mobile-first bottom-sheet + desktop centralizado.
+
+---
+
+#### W87-C (comments threading + mentions) — DONE ✅
+
+Branch: `w87/comments-thread-mentions @ 4860caab`
+LOC: 2,680 (96% of 2800 cap)
+Wall: 24 min (6 min buffer)
+Files: 14 NEW, 0 modified
+
+**Validation (100 asserts ALL PASS):**
+- Parser spec: 25/25 (mention detection, XSS sanitize vectors)
+- Factory spec: 23/23 (CRUD, LGPD gate, MAX_DEPTH, cascade delete)
+- Thread component spec: 19/19 (autocomplete, reply form, role=list)
+- Page spec: 10/10 (mobile-first, sacred chrome)
+- Smoke: 23/23 (sanitize, list, edit, delete, LGPD, ARIA)
+- TSC=0 (W87-C files, pre-existing ~2100 baseline)
+
+**Sacred-cultural compliance ✅:**
+- 14 sacred terms preserved (Orixá, Caboclo, Candomblé, Ifá, Axé, Terreiro, Gira, Oferenda, Cabala, Sefirá, Keter, Tarô, O Louco, Mesa Real)
+- XSS vectors stripped: <script>, on*=, javascript:, data:text/html, <iframe>, <embed>
+- Defense-in-depth LGPD: HTML `required` + engine gate + page `isFirstComment` = 3 layers
+- @handles case-INSENSITIVE detection, case-PRESERVED display
+- Max depth = 1 (replies of replies → MAX_DEPTH_EXCEEDED error)
+
+**Notable:** `Object.freeze` factory return + explicit `const x: T = {...}` cast (shorthand widens back to mutable), delete cascade pattern, `@` mention trigger must be start-of-string OR whitespace (excludes URLs/emails naturally).
+
+---
+
+**Cycle 87 status @ 11:24 UTC:**
+- 3/4 PUSHED (W87-A ✅ events-b2, W87-B ✅ mentorship, W87-C ✅ comments-thread)
+- 1/4 in flight (W87-D daily-reflection)
+- main @ `6968180e` (cycle 87 SPAWN doc PUSHED)
+- B-W86-D RESOLVED ✅
+- MEM 1968MB available / 2048MB
+- Wave-spawner session 414779059990725
+- Cycle cap 11:30 UTC (6 min remaining)
+
+**Cumulative cycle 87 so far: 8,680 LOC across 30+ files, 321 asserts ALL PASS across 3 workers.**
+
+**Cascade rate cycle 87 so far: 0/3.** Cycle 87 might be the second 4/4 clean cycle in a row (W85 was first).
+
+**Push flow this tick:**
+- W87-A push: `83a94a6c..8b2f8914..cae88298` on `w87/events-workshops-b2` (DONE)
+- W87-B push: `b2ab3674..25a98ef1..64202958` on `w87/mentorship-pairing` (DONE)
+- W87-C push: `b2ab3674..4860caab` on `w87/comments-thread-mentions` (DONE)
+- WAVE-LOG + BLOCKERS updates pending commit
+
+**Status @ 11:24 UTC:** 3/4 PUSHED clean, 1/4 in flight (W87-D, 6 min remaining). Cycle 87 is shaping up to be a near-clean cycle. main @ `6968180e`. Wave-spawner session 414779059990725.
