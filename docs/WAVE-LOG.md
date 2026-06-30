@@ -6983,3 +6983,30 @@ Files: 14 NEW, 0 modified
 - BLOCKERS.md and WAVE-LOG.md updates pending commit
 
 **Status @ 11:30 UTC:** Cycle 87 CLOSED 3/4 clean + 1/4 WIP. Cycle 88 SPAWN deferred to 11:30 UTC tick (this tick). main @ `82c693a5`. Wave-spawner session 414779059990725.
+
+---
+
+### Cycle 88 SPAWN @ 11:30 UTC (2026-06-30) — FINAL themes chosen
+
+**Themes confirmed (current wave-spawner session 414785391669500):**
+- **W88-A**: `w88/daily-reflection-b2` — B2 retry from `origin/w87/daily-reflection @ 224b0558` (1020 LOC inherited). Add: page.tsx + page.spec.tsx + layout.tsx + index.ts + smoke + npm ci (step 0!) + TSC=0 + vitest+smoke ALL PASS. Reduced-scope ~1500 LOC.
+- **W88-B**: `w88/comments-moderation` — NEW. Admin moderation queue + curator-intent regex detection + LGPD audit log. Cherry-pick patterns from W87-C threading + W24 moderation queue. ~3000 LOC NEW.
+- **W88-C**: `w88/reputation-universalista` — NEW. Cross-tradição positive-only reputation (no downvote, no shame). 7 dimensões (participação, generosidade, respeito, sabedoria, presença, cuidado, ritual). Engine + page + spec + smoke. ~2800 LOC NEW.
+- **W88-D**: `w88/live-stream-card` — NEW. Preview tile + agora/próximo indicator + tradição symbol. Cherry-pick W24 live-stream-card branch as base. ~2200 LOC NEW.
+
+**Spawn preflight @ 11:30 UTC:**
+- main @ `87a8b8f3` (after rebase, includes cycle 87 CLOSE-OUT)
+- MEM 1978MB available / 2048MB (well above 1000MB threshold)
+- 0 active workers
+- Working tree: cycle 88 SPAWN commit `40ccb1c9` rebasing onto `87a8b8f3`
+
+**Worker brief template (NEW for cycle 88 — incorporates `npm ci` as step 0 lesson):**
+```
+Step 0: cd /tmp/w88-<theme> && npm ci (BLOCKING — do NOT skip)
+Step 1: git fetch origin w87/daily-reflection (or base branch)
+Step 2: git checkout -b w88/<theme> origin/<base>
+Step 3: <deliver code per brief>
+Step N-1: TSC=0 + vitest PASS + smoke PASS
+Step N: git commit + git push origin w88/<theme> + report SHA back
+```
+
