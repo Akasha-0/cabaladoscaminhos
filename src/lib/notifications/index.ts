@@ -15,3 +15,5 @@ export * from './email';
 export * from './push-server';
 export * from './push';
 export * from './triggers';
+// W30 — Smart sacred scheduler (8 rules + LGPD audit + batching)
+export * from './smart-scheduler';

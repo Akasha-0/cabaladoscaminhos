@@ -187,6 +187,13 @@ model User {
   // Histórico de 👍/👎 dados em respostas da Akasha (analytics + retreino).
   akashicFeedback AkashicFeedback[]
 
+  // 2026-06-30 — Wave 30 Stripe Connect marketplace
+  connectAccount       ConnectAccount?
+  paymentsAsReader     Payment[]       @relation("PaymentReader")
+  paymentsAsClient     Payment[]       @relation("PaymentClient")
+  paymentsAsAffiliate  Payment[]       @relation("PaymentAffiliate")
+  payouts              Payout[]
+
   @@index([planoAssinatura])
   @@index([isMentor])
   @@index([createdAt])
@@ -1591,4 +1598,483 @@ model AkashicFeedback {
   @@index([vote, createdAt])
   @@index([tradition, vote])
   @@map("akashic_feedback")
+}
+
+// ============================================================================
+// LIVING CONSCIOUSNESS — Feedback loop (Wave 29, 2026-06-28)
+// ============================================================================
+// Implementa o ciclo de "consciência viva" do Akasha Portal:
+//   1. Cada interação da comunidade (post, reaction, comment, bookmark,
+//      conversa Akasha, leitura, follow) gera um ConsciousnessEvent.
+//   2. Um cron diário agrega os eventos e gera ConsciousnessInsight
+//      via LLM (OpenAI) — identifica tradições ressonantes, perguntas
+//      emergentes, content gaps e padrões de cura.
+//   3. Insights alimentam o system prompt da Akasha (loop de evolução).
+//
+// LGPD:
+//   - Todos os campos são agregados ou anonimizados (sem conteúdo cru)
+//   - userId é opcional (visitante anônimo pode ser contado)
+//   - sentiment é numérico agregado (-1..1), não texto
+//   - metadata nunca deve carregar PII (sanitizado antes de gravar)
+//   - Retenção: 12 meses para eventos, indefinida para insights aplicados
+//
+// Opt-in: o tracking é desligado por padrão e ativado apenas quando
+// o usuário aceita explicitamente (User.consciousnessTrackingOptIn).
+// ============================================================================
+
+/// Tipos de eventos que alimentam a consciência coletiva.
+/// Mantém o enum aberto (string) no banco para permitir evolução
+/// sem migration. O TS define os valores canônicos.
+enum ConsciousnessEventType {
+  POST_CREATED
+  REACTION_ADDED
+  COMMENT_CREATED
+  BOOKMARK_CREATED
+  READING_PROGRESS
+  AKASHIC_CONVERSATION
+  AKASHIC_FEEDBACK
+  USER_ONBOARDED
+  GROUP_JOINED
+}
+
+/// Tipos de insights gerados pela análise periódica (LLM).
+enum ConsciousnessInsightType {
+  TRADITION_RESONANCE  // quais tradições ressoam mais
+  EMERGING_QUESTION    // perguntas que estão surgindo
+  CONTENT_GAP          // tópicos com pouca cobertura
+  HEALING_PATTERN      // padrões de cura observados
+  PROMPT_TWEAK         // sugestão de ajuste no prompt Akasha
+}
+
+model ConsciousnessEvent {
+  id        String   @id @default(cuid())
+
+  // Quem gerou (opcional — visitante anônimo)
+  userId    String?
+
+  // Tipo canônico (PostCreated, ReactionAdded, etc)
+  type      ConsciousnessEventType
+
+  // Contexto espiritual inferido (slugs canônicos)
+  tradition String?
+  topic     String?
+
+  // Sentiment agregado -1..1 (de reaction emoji ou análise de texto curta)
+  sentiment Float?
+
+  // Metadados estruturados (NUNCA PII): { postId?, articleId?, emoji?, wordCount?, etc }
+  metadata  Json?
+
+  // Opt-in: evento só é gravado se o usuário consentiu.
+  // Se false, conta como anônimo agregado (sem userId).
+  optedIn   Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([type, createdAt])
+  @@index([tradition, createdAt])
+  @@index([userId, createdAt])
+  @@index([optedIn, createdAt])
+  @@map("consciousness_events")
+}
+
+model ConsciousnessInsight {
+  id          String   @id @default(cuid())
+
+  // Tipo de insight
+  type        ConsciousnessInsightType
+
+  // Descrição legível (markdown leve)
+  description String   @db.Text
+
+  // Evidências: contagens, exemplos, top-N (sem PII)
+  // Ex: { topTraditions: [{slug, count}], emergingTopics: ['sonhos', 'ayahuasca'], period: '24h' }
+  evidence    Json
+
+  // Ações sugeridas (texto livre)
+  // Ex: ['Curadoria: artigo sobre "Cuidados pós-ritual xamânico"', 'Akasha: mencionar contraindicação na saudação']
+  actionItems Json
+
+  // Janela que o insight cobre (ex: 2026-06-27..2026-06-28)
+  periodStart DateTime
+  periodEnd   DateTime
+
+  // Quando foi aplicado (prompt Akasha atualizado / artigo criado)
+  appliedAt   DateTime?
+
+  // Quem gerou (sempre 'system:llm' para insights automáticos)
+  generatedBy String  @default("system:llm")
+
+  createdAt   DateTime @default(now())
+
+  @@index([type, createdAt])
+  @@index([periodStart, periodEnd])
+  @@index([appliedAt])
+  @@map("consciousness_insights")
+}
+// ============================================================================
+// W30 — NOTIFICAÇÕES SAGRADAS (smart scheduling + LGPD-friendly)
+// ============================================================================
+// Três novos models complementam o sistema de notificações existente:
+//
+// 1. NotificationPreference — REFORÇO do existente com quietHours + sacredDays
+//    + frequency + tone + ethicsAcknowledged. Mantém compat com tabela antiga.
+// 2. NotificationEvent — log de auditoria (LGPD Art. 37) de cada tentativa
+//    de envio, com decision (sent/deferred/skipped) e reason detalhado.
+// 3. SacredCalendar — catálogo curado de datas sagradas (equinoxes, solstices,
+//    luas cheias, dias de Orixá, etc) usado pelo smart-scheduler para detectar
+//    "sacred days" e ajustar o tom/conteúdo.
+// ============================================================================
+
+// --- 1. NotificationPreference (reforço; @@map mantém compat) -------------
+// O model original (id, userId, type, inApp, email, push, weeklyDigest)
+// continua existindo; este é o "perfil geral" do user (one-to-one).
+
+model NotificationProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+
+  // Quiet hours — período em que NADA é entregue (exceto CRITICAL_TYPES).
+  // Time HH:MM (24h). Default: 22:00 → 07:00.
+  quietHoursStart String  @default("22:00")
+  quietHoursEnd   String  @default("07:00")
+
+  // Dia(s) da semana OFF (0=Domingo, 6=Sábado). JSON array de inteiros.
+  // Default: [0] (Domingo). Em tradição Candomblé/Ifá pode-se usar dia
+  // específico da semana (ex: 4ª feira dia de Oxum).
+  sacredDaysOff Json    @default("[]")
+
+  // Frequência máxima — cap diário por canal.
+  // Ex: { "EMAIL": 2, "PUSH": 4, "IN_APP": 10 }
+  frequencyCap   Json    @default("{\"EMAIL\":2,\"PUSH\":4,\"IN_APP\":10}")
+
+  // Tom preferido — afeta geração de copy pela AI personalization.
+  // REVERENT (formal/cerimonioso), WARM (acolhedor/diálogo), NEUTRAL.
+  tone           String  @default("WARM")
+
+  // Timezone IANA do user (ex: "America/Sao_Paulo"). Usado pelo scheduler
+  // para calcular janelas locais mesmo quando o servidor está em UTC.
+  timezone       String  @default("America/Sao_Paulo")
+
+  // LGPD Art. 8 — opt-in explícito para personalização via IA.
+  // False = scheduler usa heurísticas simples; True = usa LLM pra timing/copy.
+  aiPersonalizationEnabled Boolean @default(false)
+
+  // LGPD Art. 9 — consentimento explícito p/ receber comunicações.
+  // False = só transacionais (system alerts críticos).
+  marketingConsent Boolean @default(false)
+
+  // LGPD Art. 18 IX — revogação de consentimento ("apagar meus dados").
+  // Quando true, scheduler NUNCA envia e criador de evento deve purgar logs.
+  dataErasureRequested Boolean @default(false)
+
+  // Ethics audit — user confirmou ter lido os 8 princípios sagrados.
+  ethicsAcknowledgedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("notification_profiles")
+}
+
+// --- 2. NotificationEvent — log de auditoria (LGPD Art. 37) -------------
+
+enum NotificationDecision {
+  SENT          // entregue em pelo menos 1 canal
+  DEFERRED      // adiado (quiet hours / sacred day / batch window)
+  BATCHED       // agrupado com outras notificações
+  SKIPPED_PREF  // user desabilitou este tipo
+  SKIPPED_DND   // do-not-disturb / focus mode
+  SKIPPED_SACRED // sacred day off
+  SKIPPED_FREQ  // cap de frequência atingido
+  SKIPPED_LGPD  // consent revogado / data erasure
+  SKIPPED_ETHICS // ethics audit falhou
+  FAILED        // erro técnico
+}
+
+model NotificationEvent {
+  id     String @id @default(cuid())
+  userId String
+  type   NotificationType
+
+  // Conteúdo (preview) — armazenado p/ auditoria e A/B test.
+  payload Json
+
+  // Decisão do scheduler.
+  decision     NotificationDecision
+  decisionReason String  // explicação human-readable
+
+  // Canal tentado (IN_APP / EMAIL / PUSH / null se skip).
+  channel      String?
+
+  // Quando o scheduler decidiu (pode diferir de scheduledFor se deferred).
+  scheduledFor DateTime
+
+  // Quando foi efetivamente enviado (null se skip ou ainda pendente).
+  sentAt       DateTime?
+
+  // Quando foi lido (null se não lida).
+  readAt       DateTime?
+
+  // Tradição espiritual do user (pode afetar tom). Nullable.
+  tradition    String?
+
+  // Correlation IDs.
+  correlationId String?  // agrupa eventos do mesmo fluxo
+  sourceEvent   String?  // ex: "createNotification", "smart-send"
+
+  // Variação A/B (tone, timing, frequency).
+  experimentVariant String?
+
+  // LGPD — auto-expira após 90 dias (logs de auditoria, não conteúdo).
+  expiresAt    DateTime
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([userId, decision])
+  @@index([type, createdAt])
+  @@index([scheduledFor])
+  @@index([expiresAt])
+  @@map("notification_events")
+}
+
+// --- 3. SacredCalendar — catálogo curado -------------------------------
+
+enum SacredTradition {
+  CANDOMBLE
+  UMBANDA
+  IFA
+  ESOTERICA          // Cabala, Astrologia, Numerologia
+  ECUMENICA          // Cristianismo, Budismo, Hinduísmo
+  WICCA
+  UNIVERSAL          // equinoxes/solstices/luas (todas as tradições)
+}
+
+model SacredCalendar {
+  id        String @id @default(cuid())
+  date      DateTime  // data local 00:00 (sem hora — datas sagradas são full-day)
+  endDate   DateTime? // opcional, p/ períodos (ex: Semana Santa)
+
+  name      String     // "Equinócio de Outono", "Dia de Iemanjá", "Lua Cheia de Junho"
+  tradition SacredTradition
+
+  // Tipo/peso — quanto mais alto, mais "sagrado".
+  // 1 = leve (Lua Cheia comum); 5 = máximo (Equinócio, São Jorge, etc)
+  weight    Int        @default(1)
+
+  // Regiões em que se aplica (null = mundial). Ex: ["BR-SP", "BR-RJ"].
+  regions   Json?
+
+  // Descrição curta (mostrada no calendário do user).
+  description String?
+
+  // Sugestão de tom (REVERENT, WARM, NEUTRAL).
+  suggestedTone String @default("REVERENT")
+
+  // Mensagem-template opcional p/ gerar notif (AI pode reescrever).
+  messageTemplate String?
+
+  // Recorrente anualmente? Se true, gera ocorrência todo ano.
+  recurring Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([date, name, tradition])
+  @@index([date])
+  @@index([tradition, date])
+  @@index([weight])
+  @@map("sacred_calendar")
+}
+
+// ============================================================================
+// PAYMENTS — Wave 30 / Stripe Connect marketplace (2026-06-30)
+// ============================================================================
+// Refs: docs/STRIPE-PAYMENTS-W30.md
+//
+// Decisões:
+//   - 3 modelos: ConnectAccount (1-1 com User), Payment (escrow ledger),
+//     Payout (histórico de transferências da Stripe ao reader).
+//   - ProcessedStripeEvent para idempotência de webhooks (UNIQUE por eventId).
+//   - Reader.transactionsEncrypted: dados sensíveis (nunca PAN, mas PIX/
+//     bank account tokens) cifrados em coluna BYTEA.
+//   - Affiliate ledger via Payment.affiliateId (apenas 1 nível).
+// ============================================================================
+
+enum ConnectAccountStatus {
+  PENDING        // onboarding link enviado, ainda não completou KYC
+  ACTIVE         // charges_enabled && payouts_enabled === true
+  RESTRICTED     // KYC parcial — payouts bloqueados, payments ok
+  DISABLED       // suspenso por Stripe (fraude, dispute, etc)
+}
+
+model ConnectAccount {
+  id                    String              @id @default(cuid())
+  userId                String              @unique
+  user                  User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Stripe Connect Express account ID (acct_...)
+  stripeAccountId       String              @unique
+
+  // Snapshot do status retornado pela Stripe (sincronizado via webhook)
+  status                ConnectAccountStatus @default(PENDING)
+  chargesEnabled        Boolean             @default(false)
+  payoutsEnabled        Boolean             @default(false)
+  detailsSubmitted      Boolean             @default(false)
+
+  // Requirements — informações pendentes (KYC, documentos, etc)
+  requirementsDue       String[]            @default([])
+  requirementsPastDue   String[]            @default([])
+  requirementsPending   String[]            @default([])
+
+  // Default currency da conta (BR=BRL, US=USD, ...)
+  defaultCurrency       String              @default("brl")
+
+  // Auditoria
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+  onboardingCompletedAt DateTime?
+
+  @@index([status])
+  @@index([stripeAccountId])
+  @@map("connect_accounts")
+}
+
+enum PaymentStatus {
+  PENDING        // PaymentIntent criado, aguardando confirmação
+  PROCESSING     // confirmação enviada, aguardando webhook
+  SUCCEEDED      // payment_intent.succeeded → dinheiro em escrow
+  RELEASED       // capturado + transferido ao reader (sessão confirmada)
+  REFUNDED       // charge.refunded → reader não recebe
+  DISPUTED       // charge.dispute.created → freeze até resolução
+  FAILED         // payment_intent.payment_failed
+  CANCELED       // payment_intent.canceled
+}
+
+enum PaymentServiceType {
+  READING
+  MENTORSHIP
+  AFFILIATE
+}
+
+model Payment {
+  id                    String              @id @default(cuid())
+  // IDs internos (relacionamentos lógicos; FKs opcionais p/ flexibilidade)
+  readerId              String
+  reader                User                @relation("PaymentReader", fields: [readerId], references: [id], onDelete: Restrict)
+  clientId              String
+  client                User                @relation("PaymentClient", fields: [clientId], references: [id], onDelete: Restrict)
+
+  // Stripe refs
+  stripePaymentIntentId String              @unique
+  stripeChargeId        String?             @unique
+  stripeRefundId        String?             @unique
+
+  // Valores (em smallest currency unit — centavos / cents)
+  amount                Int
+  currency              String              @default("brl")
+  platformFee           Int                 @default(0)
+  // Valor final líquido que o reader recebe após fees
+  netAmount             Int
+
+  // Affiliate (opcional, 1 nível)
+  affiliateId           String?
+  affiliate             User?               @relation("PaymentAffiliate", fields: [affiliateId], references: [id], onDelete: SetNull)
+  affiliateFee          Int                 @default(0)
+
+  status                PaymentStatus       @default(PENDING)
+  serviceType           PaymentServiceType
+
+  // Idempotency key da criação (debug + auditoria)
+  idempotencyKey        String              @unique
+
+  // Metadata livre (orderId, sessionId, etc) — NUNCA PAN/PII sensível
+  metadata              Json                @default("{}")
+
+  // Error info se status=FAILED
+  failureCode           String?
+  failureMessage        String?
+
+  // Timestamps
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+  succeededAt           DateTime?
+  releasedAt            DateTime?
+  refundedAt            DateTime?
+
+  // Payouts derivados deste pagamento
+  payouts               Payout[]
+
+  @@index([readerId, status])
+  @@index([clientId, status])
+  @@index([status, createdAt])
+  @@index([affiliateId])
+  @@map("payments")
+}
+
+enum PayoutStatus {
+  PENDING
+  IN_TRANSIT
+  PAID
+  FAILED
+  CANCELED
+}
+
+model Payout {
+  id                String        @id @default(cuid())
+  readerId          String
+  reader            User          @relation(fields: [readerId], references: [id], onDelete: Restrict)
+  paymentId         String?
+  payment           Payment?      @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+
+  // Stripe refs
+  stripePayoutId   String        @unique
+
+  amount            Int
+  currency          String        @default("brl")
+  status            PayoutStatus  @default(PENDING)
+  method            String        @default("standard") // standard | instant
+  arrivalDate       DateTime
+  destination       String        // last4 do bank account (LGPD-safe display)
+
+  failureCode       String?
+  failureMessage    String?
+
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  @@index([readerId, status])
+  @@index([arrivalDate])
+  @@map("payouts")
+}
+
+// Idempotência de webhooks Stripe — UNIQUE por event.id garante dedupe
+model ProcessedStripeEvent {
+  id          String   @id @default(cuid())
+  eventId     String   @unique // Stripe event.id (evt_...)
+  eventType   String
+  processedAt DateTime @default(now())
+  livemode    Boolean  @default(false)
+
+  @@index([eventType])
+  @@map("processed_stripe_events")
+}
+
+// Audit log específico de operações financeiras (LGPD Art. 37 — registro de operações)
+model PaymentAuditLog {
+  id          String   @id @default(cuid())
+  actorId     String?  // user que iniciou (null = webhook automático)
+  action      String   // 'create_payment', 'refund', 'dispute_open', etc
+  paymentId   String?
+  metadata    Json     @default("{}")
+  ipHash      String?  // SHA-256 do IP (LGPD-safe; sem PII reversível)
+  userAgent   String?
+  createdAt   DateTime @default(now())
+
+  @@index([actorId, createdAt])
+  @@index([action])
+  @@index([paymentId])
+  @@map("payment_audit_log")
 }
