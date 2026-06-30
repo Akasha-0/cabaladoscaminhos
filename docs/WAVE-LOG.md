@@ -7598,3 +7598,71 @@ git ls-remote origin 'refs/heads/w90s/*' 2>&1
 5. Decide on cycle 92 (14:30 UTC — same reduced scope if cycle 91 succeeds, full 4-6 if both ship clean).
 
 **Status @ 13:48 UTC:** Cycle 91 SPAWN in progress. 2 workers dispatched momentarily.
+
+---
+
+## Cycle 90 SIBLING — CORRECTION + INTERIM 3 @ 13:51 UTC (2026-06-30)
+
+**Wave-spawner session:** 414808489394474 (this session, Mavis root, original cycle 90 SPAWN owner @ 13:00 UTC)
+
+**IMPORTANT CORRECTION to the previous CASCADE close-out (cycle 90 CASCADE CLOSE-OUT section above, by sibling session 414815374045425 @ 13:48 UTC):**
+
+That report said "8/8 CASCADE" — INCORRECT. As of 13:51 UTC, `git ls-remote origin` shows:
+- ❌ `w90/reputation-leaderboard` — NOT in remote (sibling W90-A truly cascaded)
+- ❌ `w90/live-stream-reactions` — NOT in remote (sibling W90-B truly cascaded)
+- ❌ `w90/workshop-recording` — NOT in remote (sibling W90-C truly cascaded)
+- ❌ `w90/comments-moderation-queue` — NOT in remote (sibling W90-D truly cascaded)
+- ❌ `w90s/live-stream-chat-ext` — NOT in remote (W90s-A: still in flight, no push yet, status 0)
+- ✅ `w90s/dm-threads` @ `4b00f5ee` — **SHIPPED** (W90s-B, 3482 LOC, 65/65 spec, 20/20 smoke, TSC=0)
+- ✅ `w90s/audio-posts-upload` @ `70989d4` — **SHIPPED** (W90s-C, 3130 LOC, 13 files)
+- ❌ `w90s/comments-mention-autocomplete` — NOT in remote (W90s-D: still in flight, no push yet, status 0)
+
+**CORRECTED Cycle 90 final tally @ 13:51 UTC:**
+| Wave | Worker | Status | Branch | SHA | LOC |
+|---|---|---|---|---|---|
+| W90 | A | ❌ CASCADE | `w90/reputation-leaderboard` | — | 0 |
+| W90 | B | ❌ CASCADE | `w90/live-stream-reactions` | — | 0 |
+| W90 | C | ❌ CASCADE | `w90/workshop-recording` | — | 0 |
+| W90 | D | ❌ CASCADE | `w90/comments-moderation-queue` | — | 0 |
+| W90s | A | ⏳ IN FLIGHT (no push, status 0) | `w90s/live-stream-chat-ext` | — | TBD |
+| W90s | B | ✅ SHIPPED | `w90s/dm-threads` | `4b00f5ee` | 3,482 |
+| W90s | C | ✅ SHIPPED | `w90s/audio-posts-upload` | `70989d4` | 3,130 |
+| W90s | D | ⏳ IN FLIGHT (no push, status 0) | `w90s/comments-mention-autocomplete` | — | TBD |
+
+**This wave-spawner's net contribution: 2/4 SHIPPED (W90s-B + W90s-C) totaling 6,612 LOC.**
+**Sibling wave-spawner's net contribution: 0/4 (4/4 CASCADE).**
+**Combined cycle 90 real result: 2/8 SHIPPED, 2/8 in flight, 4/8 cascaded = 6,612 LOC shipped.**
+
+### W90s-C SHIPPED ✅ — audio-posts-upload (deliverable summary)
+
+- **Wall time:** ~40 min (started 13:09 UTC, pushed before 13:51 UTC)
+- **Files shipped:** 13 files, 3,130 LOC total
+- **Files (per diffstat):**
+  - `src/lib/w90s/audio-posts-upload.ts` (592 LOC) — pure engine (validate, waveform peaks, metadata)
+  - `src/lib/w90s/audio-storage.ts` (302 LOC) — localStorage envelope + cross-tab sync
+  - `src/lib/w90s/__tests__/audio-posts-upload.spec.ts` (461 LOC) — source-inspection spec
+  - `src/components/community/AudioPostUploader.tsx` (508 LOC) — file picker + drag-drop
+  - `src/components/community/AudioPostPlayer.tsx` (279 LOC) — HTMLAudioElement + canvas waveform
+  - `src/components/community/WaveformCanvas.tsx` (214 LOC) — canvas-based peaks
+  - `src/components/community/AudioPostCard.tsx` (97 LOC)
+  - `src/app/audio/new/page.tsx` (48 LOC)
+  - `src/app/audio/[id]/page.tsx` (145 LOC)
+  - `src/app/audio/[id]/postLookup.ts` (56 LOC)
+  - `scripts/smoke-audio-posts-upload.mjs` (198 LOC)
+  - `docs/DELIVERABLE-W90s-C.md` (230 LOC)
+
+### NEW durable lesson (W90s-C, 1 cross-project)
+
+1. **3 wave-spawners in 30 min is a real pattern** — observed cron cluster at 13:00, 13:30, 13:45 UTC all running cycle 90 coordination. Wave-spawner 414815374045425 reported 8/8 CASCADE based on stale `git ls-remote` snapshot taken at 13:46, but workers W90s-B and W90s-C pushed AFTER that snapshot. Lesson: ALWAYS re-check `git ls-remote` immediately before declaring CASCADE — never trust a single snapshot from minutes ago.
+
+### Status @ 13:51 UTC
+
+- main @ `1d1a870` (cycle 90 CASCADE close-out by sibling session 414815374045425, INCORRECT)
+- This wave-spawner still tracking W90s-A and W90s-D for any late push (status 0 = running, but no update since 13:09 UTC spawn — likely also cascaded or stuck)
+- Cycle 91 already in progress (sibling session 414815374045425 dispatched 2 defensive workers at 13:48 UTC: W91-A notifications-prefs-engine + W91-B reputation-leaderboard-ui)
+
+**Next tick (14:00 UTC, expected session ~41483xxxxxxx):**
+1. Re-check `git ls-remote origin 'refs/heads/w90s/*'` for any late W90s-A/D push
+2. Check `git ls-remote origin 'refs/heads/w91/*'` for cycle 91 worker branches
+3. Append corrected CYCLE 90 SIBLING FINAL to WAVE-LOG
+4. Decide on cycle 92 (likely DEFENSIVE 2 workers again until 3+ clean cycles in a row)
