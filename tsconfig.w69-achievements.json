@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "types": [],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": false,
+    "allowImportingTsExtensions": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/lib/achievements-badges/achievements.ts",
+    "src/lib/achievements-badges/progress.ts",
+    "src/lib/achievements-badges/badges.ts",
+    "src/lib/achievements-badges/notif.ts",
+    "src/lib/achievements-badges/index.ts",
+    "src/lib/achievements-badges/__tests__/achievements.spec.ts",
+    "src/lib/achievements-badges/__tests__/progress.spec.ts",
+    "src/lib/achievements-badges/__tests__/badges.spec.ts",
+    "src/lib/achievements-badges/__tests__/notif.spec.ts",
+    "globs.w69.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
