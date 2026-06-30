@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "types": [],
+    "isolatedModules": true,
+    "verbatimModuleSyntax": false,
+    "lib": ["ES2022", "DOM"],
+    "jsx": "react",
+    "jsxFactory": "React.createElement",
+    "jsxFragmentFactory": "React.Fragment",
+    "paths": {
+      "react": ["./src/lib/w81/react-stubs.d.ts"]
+    }
+  },
+  "include": [
+    "src/lib/w81/**/*.ts",
+    "src/lib/w81/**/*.tsx",
+    "src/lib/w81/**/*.d.ts",
+    "scripts/smoke/w81-*.ts"
+  ]
+}
