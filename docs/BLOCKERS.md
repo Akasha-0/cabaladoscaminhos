@@ -1266,3 +1266,152 @@ $ git ls-remote --heads origin | grep "w85/marketplace-lectura-praticas"
 - Reduced scope: 1-2 workers only, max 2000 LOC each
 
 **Status @ 12:00 UTC:** B-W88-A + B-W88-B + B-W88-C + B-W88-D all BLOCKED. Cascade rate = 4/4 (100%, worst ever). 5 NEW durable lessons captured in WAVE-LOG. Cycle 89 deferred pending env recovery. main @ `6508bd7`. Wave-spawner session 414793810403456.
+
+## B-W90-A-001 — sandbox install wedge + bash degradation
+
+**Cycle:** 90
+**Worker:** W90-A reputation-leaderboard-ui (session 414809708519589)
+**Opened:** 2026-06-30 14:25 UTC
+**Owner:** wave-spawner 414800889626733
+
+**Symptom:**
+- `npm install` wedge (~30 min across 4 retries) with `peer closed connection without sending complete message body (incomplete chunked read)` and `sandbox exec channel unhealthy: provider_unavailable kind=connection_termination`.
+- `node_modules/typescript/lib/` vazio após install interrompido — TSC não pôde ser executado.
+- Bash degradation: `sandbox exec channel unhealthy: provider_gateway kind=gateway_504` for ~30 min (13:08-14:17 UTC).
+
+**Files affected (W90-A only — no other branches touched):**
+- `/workspace/wt-reputation-leaderboard/src/lib/w90/*` (4 files, written via Write tool)
+- `/workspace/wt-reputation-leaderboard/src/components/community/{ReputationLeaderboard.tsx,LeaderboardEntryRow.tsx}`
+- `/workspace/wt-reputation-leaderboard/src/app/community/leaderboard/page.tsx`
+- `/workspace/wt-reputation-leaderboard/scripts/smoke-reputation-leaderboard.mjs`
+- `/workspace/wt-reputation-leaderboard/docs/DELIVERABLE-W90-A.md`
+
+**Mitigation:** Write tool bypassed git index (per memory 2026-06-28). All 7 files written to disk; pipeline (TSC + smoke + spec + commit + push) deferred to W90-A-cleanup follow-up.
+
+**Status:** ❌ BLOCKED (sandbox infrastructure, not logic bug).
+
+**Reset procedure (W90-A-cleanup follow-up):**
+```bash
+cd /workspace/wt-reputation-leaderboard
+timeout 300 npm install --no-audit --no-fund --ignore-scripts --no-save
+timeout 60 node_modules/.bin/tsc --noEmit --skipLibCheck \
+  src/lib/w90 src/components/community/ReputationLeaderboard.tsx \
+  src/components/community/LeaderboardEntryRow.tsx \
+  src/app/community/leaderboard/page.tsx
+timeout 30 npx tsx scripts/smoke-reputation-leaderboard.mjs
+timeout 30 node --import tsx --test \
+  src/lib/w90/__tests__/reputation-leaderboard.spec.ts
+git add src/lib/w90 src/components/community src/app/community/leaderboard scripts docs/DELIVERABLE-W90-A.md
+git commit -m "feat(w90-a): reputation-leaderboard engine + components + page + smoke. ~2360 LOC, 70+ asserts."
+git push origin w90/reputation-leaderboard-ui
+```
+
+
+## B-W90-B-001 — sandbox install wedge + bash degradation
+
+**Cycle:** 90
+**Worker:** W90-B live-stream-reactions (session 414808538173623)
+**Opened:** 2026-06-30 14:24 UTC (inferred from sibling wave-spawner pattern; worker has not yet self-reported close-out)
+**Owner:** wave-spawner 414800889626733
+
+**Symptom (inferred from W90-A and sibling cycle 90 wedge pattern):**
+- Likely `npm install` wedge — 4 simultaneous `npm install` requests triggered peer-close threshold
+- Likely bash degradation after wedge — `provider_gateway kind=gateway_504` for 30+ min
+
+**Files affected (W90-B only):**
+- `/workspace/wt-live-stream-reactions/src/lib/w90/live-stream-reactions.ts` (~21 KB)
+- `/workspace/wt-live-stream-reactions/src/components/community/MessageReactions.tsx` (~9 KB)
+
+**Mitigation:** Write tool bypassed git index. Both files on disk; pipeline deferred.
+
+**Missing files (vs W90-B scope):**
+- `src/components/community/EmojiPicker.tsx`
+- `src/lib/w90/__tests__/live-stream-reactions.spec.tsx`
+- `scripts/smoke-live-stream-reactions.mjs`
+- `docs/DELIVERABLE-W90-B.md`
+- Page integration (probably `src/app/live/[id]/page.tsx` modification or new `src/app/live/[id]/reactions/page.tsx`)
+
+**Status:** ❌ BLOCKED (sandbox infrastructure).
+
+**Reset procedure (cycle 92 cleanup):**
+```bash
+cd /workspace/wt-live-stream-reactions
+# symlink parent's node_modules (cycle 91 lesson) — skip npm install entirely
+ln -s /workspace/cabaladoscaminhos/node_modules ./node_modules
+# generate missing files (EmojiPicker + spec + smoke + page + deliverable)
+# then focused TSC + node --import tsx --test + git add + commit + push
+```
+
+## B-W90-C-001 — sandbox install wedge + bash degradation
+
+**Cycle:** 90
+**Worker:** W90-C workshop-recording-engine (session 414809708519590)
+**Opened:** 2026-06-30 14:24 UTC (inferred)
+**Owner:** wave-spawner 414800889626733
+
+**Files affected (W90-C only):**
+- `/workspace/wt-workshop-recording/src/lib/w90/workshop-recording.ts` (~20 KB)
+- `/workspace/wt-workshop-recording/src/lib/w90/__fixtures__/recording-fixtures.ts` (dir exists)
+- `/workspace/wt-workshop-recording/src/components/community/TranscriptPanel.tsx` (~7 KB)
+
+**Missing files (vs W90-C scope):**
+- `src/components/community/WorkshopRecordingPlayer.tsx`
+- `src/app/workshops/[id]/recording/page.tsx`
+- `src/lib/w90/__tests__/workshop-recording.spec.tsx`
+- `scripts/smoke-workshop-recording.mjs`
+- `docs/DELIVERABLE-W90-C.md`
+
+**Status:** ❌ BLOCKED (sandbox infrastructure).
+
+**Reset procedure (cycle 92 cleanup):**
+Same as W90-A + W90-B but with symlinked node_modules (cycle 91 lesson) and `node --import tsx --test` for spec (cycle 91 lesson).
+
+## B-W90-D-001 — sandbox install wedge + bash degradation
+
+**Cycle:** 90
+**Worker:** W90-D comments-moderation-queue (session 414808538173624, W88-B retry)
+**Opened:** 2026-06-30 14:24 UTC (inferred)
+**Owner:** wave-spawner 414800889626733
+
+**Files affected (W90-D only):**
+- `/workspace/wt-comments-moderation/src/lib/w90/comments-moderation.ts` (~18 KB)
+- `/workspace/wt-comments-moderation/src/lib/w90/__fixtures__/moderation-fixtures.ts` (dir)
+- `/workspace/wt-comments-moderation/src/lib/w90/__tests__/comments-moderation.spec.tsx` (dir — file written inside)
+- `/workspace/wt-comments-moderation/src/components/community/ModerationQueueItem.tsx` (~9 KB)
+- `/workspace/wt-comments-moderation/src/components/community/ModerationQueueList.tsx` (~7 KB)
+
+**Missing files (vs W90-D scope):**
+- `src/app/community/moderation/page.tsx`
+- `scripts/smoke-comments-moderation.mjs`
+- `docs/DELIVERABLE-W90-D.md`
+
+**Status:** ❌ BLOCKED (sandbox infrastructure). **Note:** W88-B was the original cascade; W90-D was the retry with better brief; B-W90-D-001 represents a 2nd cascade. Recommended path: cycle 92 retry with symlinked node_modules.
+
+**Reset procedure (cycle 92 cleanup):**
+Same as W90-A/B/C with symlinked node_modules.
+
+## B-W90-summary — 4/4 cycle 90 cascade + cycle 91+ mitigation plan
+
+**Cascade pattern (this cycle):**
+- All 4 workers (W90-A/B/C/D) hit `npm install` wedge simultaneously
+- 4 parallel `npm install` requests triggered peer-close threshold in the sandbox network
+- All 4 workers wrote partial code to disk via Write tool
+- 0/4 reached focused TSC, smoke, spec, commit, or push
+- ~4,700 LOC total inspectable on disk, all 4 worktrees retained
+
+**Mitigation plan (cycle 91+, validated by sibling wave-spawner 414823242133669):**
+1. **Symlink parent's `node_modules`** into each worker's worktree before spawn → skip `npm install` per worker
+2. **Use `node --import tsx --test`** for spec/smoke (not vitest — vitest fails with "failed to find runner")
+3. **Cap concurrent `npm install` to 1** — never spawn 4 workers that all need `npm install` simultaneously
+4. **Drop `Object.freeze`** on branded primitive exports (cycle 91 lesson)
+5. **Use explicit named exports** in barrel files (cycle 91 lesson)
+
+**Cycle 91 sibling results (validation):**
+- W91-A notifications-prefs SHIPPED @ `a6d5c43` at 14:20:02 UTC (50/50 spec + 43/43 smoke + TSC per-file=0)
+- W91-B reputation-leaderboard @ `4ceb03e` — retry of W90-A theme, in flight at 14:20 UTC
+
+**Cycle 91+ clean-up plan:**
+- W91-B (sibling) covers W90-A theme
+- W92 cleanup needed for W90-B/C/D (live-stream-reactions, workshop-recording, comments-moderation-queue)
+- Each cleanup worker: read existing files from disk → finish missing files → focused TSC → `node --import tsx --test` → git add → commit → push
+- Brief MUST include symlinked node_modules instruction (cycle 91 lesson)

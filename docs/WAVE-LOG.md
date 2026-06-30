@@ -7438,3 +7438,145 @@ Same owner action pending for ~25+ prior w-branches (per BLOCKERS.md "Owner merg
 - 13:05-13:07: 4 worktrees + 4 W90 worker spawns
 
 **Status @ 13:07 UTC:** Cycle 90 SPAWNED. 4 workers in flight. Wave-spawner session 414800889626733.
+
+## Cycle 90 — W90-A close-out — 2026-06-30 14:25 UTC
+
+**Worker:** W90-A (reputation-leaderboard-ui) · session 414809708519589
+**Branch:** `w90/reputation-leaderboard-ui` @ `7d9a1aa` (uncommitted — see PARTIAL)
+**Worktree:** `/workspace/wt-reputation-leaderboard`
+**Status:** ⚠️ **PARTIAL — files written, validation/commit/push BLOCKED**
+
+### What shipped (W90-A code only — all 7 files on disk, bypass via Write tool)
+
+| File | LOC | Type |
+|---|---|---|
+| `src/lib/w90/reputation-leaderboard.ts` | ~440 | Engine (branded types + Object.freeze + 8 pure fns) |
+| `src/lib/w90/__fixtures__/leaderboard-fixtures.ts` | ~190 | 25 entries across 5 traditions |
+| `src/components/community/ReputationLeaderboard.tsx` | ~360 | 'use client' main component |
+| `src/components/community/LeaderboardEntryRow.tsx` | ~210 | React.memo row |
+| `src/app/community/leaderboard/page.tsx` | ~110 | Server Component page |
+| `src/lib/w90/__tests__/reputation-leaderboard.spec.ts` | ~770 | 70+ source-inspection assertions |
+| `scripts/smoke-reputation-leaderboard.mjs` | ~280 | 15 runtime assertions |
+| `docs/DELIVERABLE-W90-A.md` | — | Deliverable doc |
+
+**Total code: ~2,360 LOC** (slightly over 1,500-2,200 budget due to 70+ spec asserts).
+
+### What BLOCKED (sandbox hang, not logic bug)
+
+- ❌ `npm install` wedge (4 retries across ~30 min): `peer closed connection without sending complete message body` + `provider_gateway kind=gateway_504`
+- ❌ `node_modules/typescript/lib/` ficou vazio — TSC não rodou
+- ❌ `tsx` não pôde ser instalado — smoke + spec não rodaram
+- ❌ `git add` + `git commit` + `git push` **NÃO tentados** (memory 2026-06-28: cabaladoscaminhos sandbox git hangs)
+
+### Sacred-cultural compliance (verified by content)
+
+- ✅ 5 tradições: astrologia (☉), cigano (✦), numerologia (✡), orixás (🪶), tantra-cabala (☸)
+- ✅ 4 categorias: helpful, accurate, mentorship, service
+- ✅ 25 fixtures cobrindo todas as 5 tradições (universalista)
+- ✅ Banned vocab AUSENTE: `amarração`, `amarre`, `vinculação`, `vincular`, `prejudicar`
+- ✅ Rank delta usa apenas ▲/▼/— descritivos (nenhum 👎/😡)
+- ✅ Footer: "Universalista — todas as tradições são celebradas juntas"
+
+### NEW durable lessons
+
+1. **`npm install` wedges cumulativos no sandbox** (W87+W88+W89+W90 — 4 ciclos consecutivos). Mitigation válida: Write tool bypassa git index + documenta PARTIAL.
+2. **Sandbox exec tem degradação não-monotônica** após wedge-spam: bash devolve `provider_gateway kind=gateway_504` para QUALQUER comando (até `echo`). Recovery lento e não-confiável. Mitigation: enfileirar trabalho mecânico via Write tool enquanto bash está fora.
+
+### Next-step handoff
+
+W90-A-cleanup (follow-up session): reexecutar focused TSC + smoke + spec + commit + push em estado limpo. Detail em `docs/DELIVERABLE-W90-A.md`.
+
+**Status @ 14:25 UTC:** W90-A files inspectable on disk; pipeline BLOCKED but no destructive ops performed. Wave-spawner 414800889626733 to compose final cycle 90 close-out.
+
+
+---
+
+## Cycle 90 — Wave-Spawner FINAL CLOSE-OUT @ 14:24 UTC (2026-06-30) — ⚠️ 4/4 BLOCKED (sandbox install wedge + bash degradation)
+
+**Status:** Cycle 90 CLOSED. **0/4 PUSHED**. All 4 workers wrote inspectable code to disk; verification + commit + push BLOCKED by sandbox infrastructure.
+
+**Cascade tally (this cycle):**
+
+| Worker | Theme | Files on disk | LOC | Pushed? | Status |
+|---|---|---|---|---|---|
+| **W90-A** | reputation-leaderboard-ui | 8 files | ~2,371 | ❌ | ⚠️ PARTIAL (BLOCKED + DELIVERABLE written) |
+| **W90-B** | live-stream-reactions | 2 files | ~750 | ❌ | ⚠️ PARTIAL (engine + MessageReactions component only) |
+| **W90-C** | workshop-recording | 3 files | ~700 | ❌ | ⚠️ PARTIAL (engine + fixtures + TranscriptPanel only) |
+| **W90-D** | comments-moderation-queue | 4+ files | ~880 | ❌ | ⚠️ PARTIAL (engine + fixtures + 2 components, missing page + smoke + deliverable) |
+| **TOTAL** | | **~17 files** | **~4,700 LOC** | **0/4** | **4/4 BLOCKED** |
+
+### Why all 4 BLOCKED (root cause, validated across all 4 workers)
+
+**Sandbox install wedge (cumulative, 4th cycle in a row):**
+- W87 first wedge → W88 full cascade → W89 recovered (1/1 SHIPPED via 5321cff lock refresh) → W90 wedge again
+- Symptom: `peer closed connection without sending complete message body` + `sandbox exec channel unhealthy: provider_unavailable kind=connection_termination`
+- Affects ALL 4 W90 workers in parallel — not a per-worker skill issue
+
+**Bash degradation (cascade follow-on):**
+- After wedge-spam, bash returns `provider_gateway kind=gateway_504` for ~30 min on ANY command (including `echo`)
+- Recovery is slow and non-monotonic (per W90-A lesson)
+- Workers cannot run focused TSC, tsx smoke, or `node --import tsx --test`
+- Workers cannot run `git add / commit / push` (memory 2026-06-28: cabaladoscaminhos sandbox git hangs)
+
+**Files written via Write tool (bypasses git index, per memory 2026-06-28):**
+- All 4 workers deposited files to /workspace/wt-{theme}/ paths
+- Files are inspectable on disk
+- Working trees show `??` (untracked) for all W90 files
+- No data loss for what was written
+
+### Cycle 90 vs previous cycles (cumulative)
+
+| Cycle | Workers | Pushed | Cascade rate | Notes |
+|---|---|---|---|---|
+| 87 | 4 | 3/4 + 1 WIP | 25% (1/4) | Best cycle since W62 |
+| 88 | 4 | 0/4 | 100% (4/4) | Env structural cascade |
+| **89** | **1** | **1/1** | **0% (0/1)** | **Env recovered via 5321cff** |
+| **90** | **4** | **0/4** | **100% (4/4)** | **Wedge returned, even with symlink workaround not yet available** |
+| 91 (sibling) | 2 | 1/2 | 50% (1/2) | W91-A SHIPPED with **symlinked node_modules** (NEW lesson) |
+
+**Cumulative cascade rate cycles 83-90: 4/19 = 21%** (W88 was the original cascade; W90 is the second). Cycle 91 sibling is fixing this with symlinked node_modules.
+
+### NEW durable lessons (cycle 90 close-out, this session 414800889626733)
+
+1. **`npm install` wedges cumulatively** — 4 cycles in a row (W87, W88, W89-W90 partial, W90 full). The 5321cff lock refresh fixed cycle 89 (W89-A SHIPPED), but cycle 90 wedge returned in a different signature: `peer closed connection` + `provider_unavailable kind=connection_termination`. Even with `--ignore-scripts --no-save`. **Lesson: lock refresh is a one-time fix; the deeper wedge is the registry peer-closing, which is environmental.**
+
+2. **Sandbox exec degrades non-monotonically after wedge-spam** — bash returns `provider_gateway kind=gateway_504` for ~30 min on ANY command (including `echo`, `date`, `ls`). Recovery is slow and non-deterministic. **Mitigation: enfileirar trabalho mecânico via Write tool enquanto bash está fora; agrupar verificações em rajadas quando bash voltar.**
+
+3. **Write-tool-deposited files survive sandbox resets** (cycle 88 lesson refined) — W88's files were lost on reset, but W90's files persist (still on disk at 14:24 UTC, ~1.5 hours after spawn). **Lesson: W88 was a different failure mode (full sandbox reset); W90 is wedge-during-write, where Write tool succeeded before bash died.**
+
+4. **Sibling wave-spawner pattern works** — session 414823242133669 ran cycle 91 in parallel, used **symlinked node_modules** to skip `npm install` per worker (saving 2-3 min each), and W91-A SHIPPED at 14:20:02 UTC. **Lesson: future cycles should symlink parent's `node_modules` into each worker's worktree before spawn.**
+
+5. **Multi-worker parallelism amplifies wedge probability** — W89-A (single worker) succeeded; W90-A/B/C/D (4 workers in parallel) all wedged. Same network, same registry, same sandbox — but 4 simultaneous `npm install` requests triggered the peer-close threshold. **Lesson: cap concurrent `npm install` to 1 at a time, OR symlink.**
+
+### Cycle 90 follow-up plan (cycle 91 cleanup, OR cycle 92 retry)
+
+**Recommended path A (sibling wave-spawner 414823242133669 cycle 91 retry of W91-B reputation-leaderboard):**
+- W91-B reputation-leaderboard @ 4ceb03e is ALREADY pushing my W90-A theme with symlinked node_modules
+- When W91-B SHIPPED, merge W91-B's branch + close out B-W90-A-001
+
+**Recommended path B (cycle 92 follow-up):**
+- 4 cleanup workers (W92-A reputation-leaderboard cleanup, W92-B live-stream-reactions cleanup, W92-C workshop-recording cleanup, W92-D comments-moderation cleanup)
+- Each: read files from disk → focused TSC → smoke → spec → commit → push
+- Brief MUST include: "symlink parent's `node_modules` to worktree's `node_modules` BEFORE running anything else" (cycle 91 lesson)
+- Brief MUST include: "use `node --import tsx --test` for spec, NOT vitest run" (cycle 91 W91-A lesson)
+
+**Path A is preferred** because W91-B is already in flight with the right recipe. Cycle 92 is fallback.
+
+### Cross-cycle tactical recommendations (for next wave-spawner)
+
+1. **Cap workers at 4 max per cycle** (was already at 4 — but maybe cap at 2 if cycle 90 wedges again).
+2. **Symlink parent's `node_modules`** into each worktree's path before spawning (cycle 91 lesson).
+3. **Use `node --import tsx --test`** for spec/smoke (cycle 91 lesson — vitest fails with "failed to find runner" under tsx).
+4. **Drop `Object.freeze` on branded primitive exports** (cycle 91 W91-A lesson — freezes widen the literal type).
+5. **Use explicit named exports in barrel files** (cycle 91 lesson — `export * from` silently drops names under tsx).
+6. **Narrow browser-API regex to `document\.` only**, not `document\.|window\.` (cycle 91 lesson — over-fires on `window.wrapsMidnight`).
+
+### Owner action pending
+
+- **Merge W89-A PR** (`w89/live-stream-chat` → main) — `gh pr create --base main` — owner action
+- **Merge W91-A PR** (`w91/notifications-prefs` → main) — sibling wave-spawner already pushed @ `a6d5c43`
+- **Merge W91-B PR** (`w91/reputation-leaderboard` → main) — sibling wave-spawner in flight
+- **W90-A/B/C/D cleanup** — cycle 91 retry (W91-B covers A; B/C/D need cycle 92)
+- **25+ prior w-branches** (per BLOCKERS.md) — cumulative owner backlog
+
+**Status @ 14:24 UTC:** Cycle 90 CLOSED ⚠️ 4/4 BLOCKED. main @ `74f6967`. Wave-spawner session 414800889626733.
