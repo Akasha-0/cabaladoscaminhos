@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "exactOptionalPropertyTypes": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "useUnknownInCatchVariables": true
+  },
+  "include": [
+    "src/lib/engines/translation-tooling/**/*.ts",
+    "scripts/smoke/translation-tooling.ts",
+    "global.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    "src/**/__tests__/**",
+    "tests/**",
+    "**/*.spec.ts"
+  ]
+}
