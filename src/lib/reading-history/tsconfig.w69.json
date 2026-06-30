@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM"],
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "verbatimModuleSyntax": false,
+    "types": []
+  },
+  "include": [
+    "./history.ts",
+    "./stats.ts",
+    "./insights.ts",
+    "./trends.ts",
+    "./__tests__/history.spec.ts",
+    "./__tests__/stats.spec.ts",
+    "./__tests__/insights.spec.ts",
+    "./__tests__/trends.spec.ts",
+    "./globs.d.ts"
+  ],
+  "exclude": ["node_modules"]
+}
