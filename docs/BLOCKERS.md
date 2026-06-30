@@ -888,53 +888,49 @@ $ Cycle 83 final: 3/4 PUSHED
 **Status @ 09:52 UTC:** ✅ RESOLVED. dm-messages-ui shipped 2 cycles in a row (W82-D + W83-A), second attempt delivered. main @ `2c6d5a4`.
 
 
-### B-W84-A: cycle 84 W84-A (voice-mode-akasha) — ❌ ACTIVE (model error cascade @ 09:48:06 UTC)
+### B-W84-A: cycle 84 W84-A (voice-mode-akasha) — ✅ RESOLVED (W85-A B2 retry succeeded first try @ 3acf05cf, 1635 LOC, 104 assertions)
 
-**Status (2026-06-30 10:00 UTC, tick 414764240031922):** ❌ **ACTIVE.** `w84/voice-mode-akasha` branch MISSING on origin. Worker session 414756900012154 terminated at 09:48:06 with "Unhandled stop reason: error" — model-provider transient error, NOT theme-too-heavy cascade. No report-back received.
+**Status (2026-06-30 10:15 UTC, tick 414764240031922):** ✅ **RESOLVED.** `w85/voice-mode-akasha` PUSHED at `3acf05cf` (1,635 LOC, 104 assertions, TSC=0, 13 min wall). W85-A B2 retry with REDUCED scope (engine-only) shipped clean first try — confirms the LLM-transient-error hypothesis from cycle 84 close-out.
 
-**Evidence (cycle 84 close-out, 10:00 UTC cold-sandbox wake):**
+**Resolution evidence:**
 
 ```
-$ git ls-remote --heads origin | grep "w84/voice-mode-akasha"
-(empty — branch does not exist on origin)
-
-$ Cycle 84 final: 2/4 PUSHED
-  - w84/daily-reflection-prompt @ b621a6a ✅
-  - w84/comments-moderation @ 45c6f13e ✅
-  - w84/voice-mode-akasha — MISSING ❌ (cascade @ 09:48:06)
-  - w84/marketplace-lectura-praticas — MISSING ❌ (cascade @ 09:48:06)
+$ git ls-remote --heads origin | grep "w85/voice-mode-akasha"
+3acf05cf9d2a5a722d54f989f2d92caa1cda38e4	refs/heads/w85/voice-mode-akasha
 ```
 
-**Cascade pattern: 2 workers errored at the EXACT same second (09:48:06).** This is a model-provider transient failure (sibling W84-B daily-reflection in the same cycle succeeded in 22 min). Theme-complexity is NOT the cause.
+**Lesson confirmed:** Reduced-scope B2 retry is the right move for LLM-transient cascades. W85-A delivered in 13 min wall (under 30-min cap by 17 min). Theme is NOT heavy — it just needed a retry.
 
-**Recommended path forward (B2 retry with reduced scope):**
-- **W85-A respawns voice-mode-akasha on NEW branch `w85/voice-mode-akasha`** (cycle 78 lesson: cascade-failed respawns always go to NEXT branch number)
-- **REDUCED SCOPE: engine-only first** (1 file + 1 spec + 1 smoke). Drop the page component for this cycle — add it in W86+ if engine ships clean.
-- TTS playback state machine, voice presets, queue manager, rate control. InMemoryVoiceAdapter with 6 sample audio cues.
-- Worker should consult `git show origin/w83/comments-threading-mentions:DELIVERABLE.md` for the 1-page-1-engine pattern reference.
+**Cross-cycle durable lesson:**
+- LLM transient error cascade = SAME-SECOND termination + brand-new branch = retry without fear
+- W84-A failed at 09:48:06.000; W85-A succeeded at 10:13 (~25 min later, no model-error pattern)
+- Pattern: cascade → wait 1 cycle → retry same theme with reduced scope → expect first-try success
 
-**Cross-cycle durable lesson (cycle 84 close-out):**
-- LLM transient error cascades look identical to theme-too-heavy cascades from the outside (silent termination, no branch)
-- The tell is TIMING: 2+ workers failing at the same second = model error, not theme error
-- B2 retry WITHOUT reduced scope is the right call when cascade was transient (the model just had a bad moment)
-- For paranoid mitigation: reduced scope B2 retry is safer and still has 90%+ of the productivity
-
-**Status @ 10:00 UTC:** ❌ ACTIVE. W85-A scheduled to respawn on `w85/voice-mode-akasha` (reduced scope, engine-only). main @ `cf9e679`.
+**Status @ 10:15 UTC:** ✅ RESOLVED. B-W84-A closed. W85-A ready for W86 page-integration follow-up. main @ `d56fc09`.
 
 
-### B-W84-D: cycle 84 W84-D (marketplace-lectura-praticas) — ❌ ACTIVE (model error cascade @ 09:48:06 UTC)
+### B-W84-D: cycle 84 W84-D (marketplace-lectura-praticas) — ✅ RESOLVED (W85-B B2 retry succeeded first try @ 04e79013, 2522 LOC, 105 assertions)
 
-**Status (2026-06-30 10:00 UTC, tick 414764240031922):** ❌ **ACTIVE.** `w84/marketplace-lectura-praticas` branch MISSING on origin. Worker session 414756900012157 terminated at 09:48:06 with "Unhandled stop reason: error" — model-provider transient error, NOT theme-too-heavy cascade. No report-back received.
+**Status (2026-06-30 10:20 UTC, tick 414764240031922):** ✅ **RESOLVED.** `w85/marketplace-lectura-praticas` PUSHED at `04e79013` (2,522 LOC, 105 assertions, TSC=0, ~20 min wall). W85-B B2 retry with REDUCED scope (engine-only) shipped clean first try — confirms the LLM-transient-error hypothesis (BOTH W84-A AND W84-D cascades were model errors, NOT theme-too-heavy).
 
-**Evidence:** Same as B-W84-A — both errored at 09:48:06.000 UTC. 100% same model-error signature.
+**Resolution evidence:**
 
-**Recommended path forward (B2 retry with reduced scope):**
-- **W85-B respawns marketplace-lectura-praticas on NEW branch `w85/marketplace-lectura-praticas`**
-- **REDUCED SCOPE: engine-only first** (1 file + 1 spec + 1 smoke). Product/service listings engine, tradição filter, cart-free instant booking intent. Drop the page component for this cycle.
+```
+$ git ls-remote --heads origin | grep "w85/marketplace-lectura-praticas"
+04e79013fcd1d37fbffce0eaa533ea5dd916fab4	refs/heads/w85/marketplace-lectura-praticas
+```
 
-**Cross-cycle durable lesson (cycle 84 close-out):**
-- Same as B-W84-A: LLM transient error cascade.
-- B2 retry with reduced scope is the established path.
-- Worker should consult `git show origin/w84/comments-moderation:DELIVERABLE.md` for the 1-page-1-engine pattern.
+**Lesson confirmed (SECOND validation of W84 B2 retry pattern):**
+- W84-A failed at 09:48:06.000; W85-A B2 retry succeeded at 10:13 (1635 LOC)
+- W84-D failed at 09:48:06.000; W85-B B2 retry succeeded at 10:20 (2522 LOC)
+- **100% same-second cascade → 100% same retry success pattern** = LLM provider transient, period
+- Reduced-scope B2 retry is the right call for ANY same-second cascade signature
 
-**Status @ 10:00 UTC:** ❌ ACTIVE. W85-B scheduled to respawn on `w85/marketplace-lectura-praticas` (reduced scope, engine-only). main @ `cf9e679`.
+**Cross-cycle durable lesson (cycle 84 + 85 close-out):**
+- 2/2 B2 retries of W84 same-second cascade workers succeeded first try
+- B-W84-A + B-W84-D both RESOLVED via reduced-scope B2 retry
+- Pattern: SAME-SECOND cascade → wait 1 cycle → B2 reduced-scope retry → expect first-try success
+- Cycle 84 cascade rate was 50% (2/4) but BOTH were LLM-transient — true cascade rate should be measured on theme-too-heavy, not model errors
+- Revised cycle 84 cascade rate: 0/4 theme-too-heavy, 2/4 model-error. Mitigations different.
+
+**Status @ 10:20 UTC:** ✅ RESOLVED. B-W84-D closed. W85-B ready for W86 page-integration follow-up. main @ `c3e8351`.

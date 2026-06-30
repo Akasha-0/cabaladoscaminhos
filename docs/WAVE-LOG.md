@@ -6452,3 +6452,37 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 - B-W84-A RESOLVED ✅ (W85-A B2 retry succeeded first try — confirms LLM transient hypothesis)
 
 **Status @ 10:15 UTC:** 1/4 PUSHED (W85-A), 3/4 in flight. Cycle 85 cap = 10:30 UTC (15 min for W85-B/C/D). main @ `d56fc09`. Wave-spawner session 414764240031922.
+
+
+### Cycle 85 interim 2 — 10:20 UTC (20 min after spawn)
+
+- ✅ **W85-B PUSHED** `w85/marketplace-lectura-praticas` @ `04e79013` — **2,522 LOC across 6 files**. **85/85 spec + 20/20 smoke PASS** (105 total), TSC=0 (strict + noUncheckedIndexedAccess isolated). **Engine-only** (no page this cycle, page deferred to W86+ per reduced-scope brief).
+- ⏳ W85-C auth-integration-followup, W85-D akasha-streaming-ui still in flight. Cycle 85 cap = 10:30 UTC. ~10 min remaining.
+
+**W85-B engine contract delivered:**
+- `createMarketplaceEngine(adapter)` factory → `MarketplaceEngine` interface
+- `listOfferings(filter)` → multi-criteria filter (tradition/type/price-min/price-max/query)
+- `getOffering(id)` / `getPractitioner(id)` / `listPractitioners(filter)`
+- `createBookingIntent(...)` — with `sacred-cultural verification gate` (only verified practitioners can offer sacred services + non-empty notes required)
+- `listBookingIntents(userId)` / `getBookingIntent(id)` / `cancelBookingIntent(id, reason)`
+- `InMemoryMarketplaceAdapter` + typed `MarketplaceException`
+
+**Sample data integrity:**
+- 28 offerings × 7 tradições (cigano 4, candomblé 4, umbanda 5, ifá 4, cabala 3, astrologia 4, tantra 4)
+- 9 practitioners: 8 verified + 1 unverified (negative-test path)
+- 11 sacred offerings enforce verified-practitioner gate + non-empty notes
+- Sacred terminology preserved verbatim: Ori, Orixá, Odu, Sefirá, Caboclo, Preto-Velho, Babalaô, Yalorixá, Babalorixá, Tantra, Pranayama
+
+**Sacred-cultural curation (deliberately excluded):**
+- "amarre de amor", "vinculação amorosa", "trabalho para prejudicar terceiros"
+- Full rationale in DELIVERABLE.md (curator-intent)
+
+**TSC strict isolated config matches W84-C pattern** (`noUncheckedIndexedAccess: true`).
+
+**Cross-cycle cumulative cycle 85:**
+- 2/4 PUSHED = 4,157 LOC + 209 assertions ALL PASS + 2× TSC=0
+- W85-B wall: ~20 min (under 30-min cap by 10 min)
+- B-W84-D should now be RESOLVED ✅ (W85-B B2 retry delivered)
+- Both B2 retries (W85-A + W85-B) succeeded first try → **confirms the LLM-transient-error hypothesis is correct**
+
+**Status @ 10:20 UTC:** 2/4 PUSHED (W85-A + W85-B), 2/4 in flight (W85-C auth, W85-D akasha-streaming). Cycle 85 cap = 10:30 UTC (10 min for W85-C/D). main @ `c3e8351`. Wave-spawner session 414764240031922.
