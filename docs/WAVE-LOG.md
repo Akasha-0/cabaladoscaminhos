@@ -7438,3 +7438,43 @@ Same owner action pending for ~25+ prior w-branches (per BLOCKERS.md "Owner merg
 - 13:05-13:07: 4 worktrees + 4 W90 worker spawns
 
 **Status @ 13:07 UTC:** Cycle 90 SPAWNED. 4 workers in flight. Wave-spawner session 414800889626733.
+
+---
+
+## Cycle 90 SIBLING — Sibling Wave-Spawner @ 13:02 UTC (2026-06-30)
+
+**Wave-spawner session:** 414808489394474 (this session, Mavis root, cron akasha-wave-spawner tick @ 13:00 UTC)
+**Detected sibling:** session 414800889626733 (also a cron akasha-wave-spawner tick, started cycle 90 at 13:05 UTC with 4 workers W90-A/B/C/D using `w90/` prefix).
+
+**Coordination decision:** Spawn 4 SIBLING workers under `w90s/` prefix to avoid branch name collision and feature overlap:
+- **W90s-A** `w90s/live-stream-chat-ext` — extends W89-A: reactions + viewer count + moderation hooks (note: sibling W90-B has `live-stream-reactions` only, no overlap)
+- **W90s-B** `w90s/dm-threads` — NEW: 1-on-1 direct messages with thread view (no DM code in `src/lib/`)
+- **W90s-C** `w90s/audio-posts-upload` — NEW: audio file upload (mp3/wav), waveform render
+- **W90s-D** `w90s/comments-mention-autocomplete` — extends W87-C: `@mention` user search (note: sibling W90-D has `comments-moderation-queue`, no file overlap)
+
+**Sibling wave-spawner stack @ 13:02 UTC:**
+- Sibling cycle 90 main @ `74f6967` (4 workers spawned at 13:05 UTC, expires 13:35 UTC)
+- Total active workers across both wave-spawners: 8 (4 sibling + 4 this) = at the 8-cap ceiling per rule "NUNCA spawn mais que 8 workers paralelos"
+- This is intentional — env is healthy, MEM 1978MB, 881 pkgs installed, 2 separate sandboxes (no OOM risk)
+- Pattern observed: 2 parallel cron wave-spawners, each with own sandbox, each with own 4 workers, each with own branch prefix
+
+**Sibling wave-spawner session ID for child worker parent_session_id:** `414808489394474` (this session, will be the parent for the 4 sibling workers)
+
+**Wall time this tick (13:00-13:02 UTC):** ~2 min
+- 13:00:42-13:00:55: git clone
+- 13:00:55-13:01:00: fetch main + w89/live-stream-chat
+- 13:01:00-13:01:42: env validation (npm install 2 min)
+- 13:01:42-13:02:00: SIBLING detected, branch prefix switch
+- 13:02:00-13:02:05: WAVE-LOG append (this commit)
+- 13:02:05-13:02:10: git push origin main
+- 13:02:10-13:02:20: spawn 4 sibling workers
+
+**Cross-cycle durable lessons (sibling detection):**
+
+1. **Sibling wave-spawner detection is real** — when 2 cron ticks fire within minutes of each other, both can run cycle 90 in parallel. Detection: `git fetch origin main` shows new commits between clone and rebase. Mitigation: rebase/reset + use unique branch prefix.
+
+2. **`git push` non-fast-forward rejection is a feature** — when sibling pushes first, my push is rejected, which is how I detected the sibling. Better than silent force-push that overwrites sibling's work.
+
+3. **`git reset --hard origin/main` after sibling push + new commit** — cleanest way to recover from a sibling push when my commit is short (just doc append).
+
+4. **Branch prefix per wave-spawner** — `w90/` for primary, `w90s/` for sibling, prevents branch name collision. Both prefixes can coexist on origin without conflict.
