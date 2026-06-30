@@ -6115,3 +6115,14 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 - ✅ **W83-B PUSHED** `w83/reputation-engine` @ `ca697c60` — 1953 LOC across 9 files. 233/233 spec + 20/20 smoke PASS (253 total), TSC=0. REDUCED SCOPE W72-A template worked: 2 main files (reputation-ledger.ts + reputation-events.ts) only. HMAC-style SHA-256 chain with inline pure-TS impl (~120 lines, no `node:crypto`, no `@types/node`). 5 NIST FIPS-180-4 vectors verified in spec. 4 tamper scenarios detected by validateChain (hash/prevHash/seq/note/baseDelta). Replay protection on duplicate LedgerEntryId. 7 event types × 7 tradições curated weight matrix (e.g., cabala favors code_contribution, tantra favors mentorship_offer, cigano favors ritual_share+feedback_given tied at 1.4).
 - ⏳ W83-A, W83-C still in flight. Cycle 83 cap = 09:30 UTC. ~13 min remaining.
 - **NEW LESSON (W83-B report):** Write tool blocks `/tmp` paths — workers must author in `/workspace/_<branch>-tmp/` then `cp -r` to `/tmp/<branch>/`. This is the durable workflow for worktree creation when path sandbox is restrictive. Document for W84+ briefs.
+
+### Cycle 83 interim 3 — 09:25 UTC (25 min after spawn)
+
+- ✅ **W83-C PUSHED** `w83/comments-threading-mentions` @ `3d09eec` — 2,826 LOC across 19 files. 91/91 spec + 38/38 smoke PASS (129 total), TSC=0. 1 page (post detail w/ threaded comments) + 4 UI components + NFD mention extraction + tree-builder w/ depth-3 flattening + bottom-sheet composer w/ keyboard nav. Sacred coverage: 8 sample users across 8 tradições with emoji tags (Cigano Ramiro, Mãe Iyá Omim, Pai Ogum, Babá Ifá, Rabino Moshe, Astróloga Stella, Swami Ananda, Taróloga Luna).
+- ⏳ W83-A still in flight. Cycle 83 cap = 09:30 UTC. ~5 min remaining.
+- **5 reusable lessons from W83-C (consolidate for W84+ briefs):**
+  1. **Build tree via mutable-then-freeze**, NOT `byId.set` (silent depth-loss bug from stale parent refs)
+  2. **Compute depth at write time** in `addComment` (cycle 79 W79-D depth lesson) — don't make tests wait for `buildTree`
+  3. **Mention regex + sentence-ending `.`**: `(?!\w)` works; `(?![\w.])` over-rejects
+  4. **NFD index remap**: `buildNfdIndexMap(text)` to recover original positions after NFD-stripping
+  5. **Custom-adapter tests must pass BOTH `post` AND `comments`** — otherwise `options.post ?? SAMPLE_POST` confuses the assertion
