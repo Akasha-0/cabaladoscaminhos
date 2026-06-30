@@ -7,10 +7,11 @@
 
 **Status:** ✅ SHIPPED + PUSHED
 **Branch:** `w90s/live-stream-chat-ext`
-**Commit SHA:** see `Final Status` below (added by push step)
-**LOC:** ~2,941 across 8 files
+**Commit SHA:** `1e9975e98b504941001170fdf5a5ca7ec1d5b281`
+**LOC:** ~2,941 across 8 new files (+5 carried-over W89-A baseline files)
 **Assertions:** 56 source-inspection + 19 runtime smoke = **75 PASS / 0 FAIL**
 **Focused TSC:** 0 errors for new files
+**Remote:** pushed to `origin/w90s/live-stream-chat-ext`
 
 ## Theme
 
