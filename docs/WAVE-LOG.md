@@ -8289,3 +8289,59 @@ From W91-B: Sacred mock-names table, non-competitive framing, vitest split, trad
 **Expected close-out:** ~15:06 UTC (30-min cap) — but applying 5x rule, real close-out @ 16:36 UTC or whenever last agent-message arrives.
 
 Wave-spawner 414830652506374. Cycle 92 IN FLIGHT.
+
+### W92-D SHIPPED ✅ @ 14:55 UTC (2026-06-30)
+
+**Branch:** `w92/comments-moderation` @ `83a5a209db555d451f00ebcce083ef776d49ced6`
+**Worker session:** 414831838122284
+**Wall time:** ~28 min (within 30-min cap)
+
+**Final tally (cycle 92 as of 14:55 UTC):**
+
+| Worker | Session | Theme | Branch | LOC | Status |
+|---|---|---|---|---|---|
+| W92-A | 414831838122282 | daily-reflection-prompt | `w92/daily-reflection` | TBD | 🟡 AWAITING REPORT |
+| W92-B | 414831838122283 | live-stream-reactions | `w92/live-stream-reactions` | TBD | 🟡 AWAITING REPORT |
+| W92-C | 414832274428037 | translation-tooling-en-es | `w92/translation-tooling` | TBD | 🟡 AWAITING REPORT |
+| **W92-D** | **414831838122284** | **comments-moderation-queue** | **`w92/comments-moderation`** | **~3,388 (8 files)** | ✅ **SHIPPED @ 83a5a20** |
+
+**W92-D validation (all green):**
+- Spec: `node --import tsx --test` → 38/38 PASS (engine+RBAC 32, components source-inspection 6)
+- Smoke: `node --experimental-strip-types scripts/smoke-comments-moderation.mjs` → 35/35 PASS
+- TSC: per-file via tsconfig.flag.json → 0 errors
+- Sacred-cultural compliance: zero banned-vocab hits via `assertNoBannedVocab`
+- LGPD Art. 18: `stripReporterIdentities` anonymizes reporter IDs in audit trail
+
+**W92-D files:**
+- `src/lib/w92/comments-moderation.ts` (766 LOC) — engine + MemoryStore + brand types
+- `src/lib/w92/__tests__/comments-moderation.spec.ts` (741 LOC) — node:test spec
+- `src/components/moderation/FlagButton.tsx` (101 LOC) — i18n PT/EN refactored
+- `src/components/moderation/FlagModal.tsx` (361 LOC) — 5 reasons, acolhedor tone
+- `src/components/moderation/ModerationQueue.tsx` (478 LOC) — 3 tabs + filters mobile/desktop
+- `src/components/moderation/TriagePanel.tsx` (388 LOC) — alertdialog + DM textarea 500 chars
+- `src/app/moderation/page.tsx` (264 LOC) — server gate redirect /login + 403
+- `scripts/smoke-comments-moderation.mjs` (289 LOC) — runtime smoke
+- `docs/DELIVERABLE-W92-D.md` (~250 LOC) — full deliverable doc
+
+**6 NEW durable lessons from W92-D:**
+1. **`page: undefined` explicit** quando calcular `total` em list paginada — bug invisível até paginação test rodar (`hasMore devia ser true` falhou)
+2. **Source-inspection banned-vocab scanner precisa stripper** — Tailwind `block`, JSX `<blockquote>`, intent `'muted'`, policy comments `// SEM strike...` causam falso-positivo. Stripper remove `//`, `/* */`, `<JSXTag>`, `className=`, `intent: '...'`, `value: '...'`
+3. **`public readonly code` no constructor quebra `--experimental-strip-types`** — workaround: campo readonly + assignment no body (lesson W91-A confirmada)
+4. **`stripReporterIdentities` no engine preserva LGPD Art. 18** — stewards veem `{reason, count}` agregado mas `reporterId = ''` anonimizado
+5. **`details: null` na store output** — descriptografia do report NÃO é exposta ao steward (layer-2 LGPD protection)
+6. **Smoke order-dependence** — store compartilhado em smoke stateless; cuidado com self-report bloqueado quando autor sinaliza próprio comentário em testes subsequentes
+
+**Cross-cycle durable patterns (reaffirmed):**
+- ✅ `node --import tsx --test` (NOT vitest) — zero RPC teardown bugs
+- ✅ `node --experimental-strip-types` for smoke — sandbox-portable, zero deps
+- ✅ Drop `Object.freeze` on branded primitives (lesson W91-A) — keep simple field readonly + body assignment
+- ✅ Wedge fix: symlinked node_modules (parent npm install once, workers reuse) — sem `npm install` no worktree
+- ✅ `assertNoBannedVocab` em todos os labels + reason helpers + error messages + page metadata (proteção automática contra regressão de tom)
+
+**Next steps (após cycle 92 close-out):**
+- API routes `app/api/moderation/queue/route.ts` + `app/api/moderation/comments/[id]/triage/route.ts` (consomem o engine)
+- Migration Prisma substituindo `createMemoryStore()` (interface `ModerationStore` é estável — DI swap-only)
+- PG row-level security para `PrivateMessage`
+- Dashboard widget acolhedor "temos N itens > 7d, quer cuidar?" (sem gamification)
+
+Wave-spawner 414830652506374.
