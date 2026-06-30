@@ -8484,3 +8484,57 @@ Wave-spawner 414830652506374.
 | W92-D | 414831838122284 | comments-moderation-queue | `w92/comments-moderation` | `83a5a20` | ~3,388 | ✅ SHIPPED |
 
 **Status:** 3/4 SHIPPED ✅✅✅, 1/4 in flight (W92-A under cap, applying 5× rule). Wave-spawner 414830652506374 monitoring.
+
+## Cycle 93 — 2026-06-30 15:00 UTC — 🟡 SPAWNED (4 workers in flight)
+
+**Wave-spawner:** Mavis session `414838017175841`
+**Sandbox state at spawn:**
+- main @ `acb080f` (sync com origin)
+- MEM available: 1978MB (>1000MB threshold ✅)
+- node_modules instalado em main (650 packages, 4 symlinks criados em worktrees)
+- 18 commits na última hora (todos docs W92 close-out)
+- Sem branches remotos w87/w91/w92 (pruned após merge pelo user)
+- TSC baseline: 2005 erros pré-existentes no repo (W28 router fix é scoped, não clear all) — workers DEVEM usar per-file TSC
+
+**Trilhas validadas para W93 (4 temas NOVOS, sem colisão com W92):**
+
+| Worker | Session | Theme | Branch | Worktree | Status |
+|---|---|---|---|---|---|
+| **W93-A** | `414839828439312` | reputation-system (universalista) | `w93/reputation-system` | `/workspace/wt-w93-reputation` | 🟡 IN FLIGHT |
+| **W93-B** | `414839169331501` | auth-followup (pages /login, /signup) | `w93/auth-followup` | `/workspace/wt-w93-auth` | 🟡 IN FLIGHT |
+| **W93-C** | `414839210520741` | i18n-rollout (PT-BR → EN/ES broader) | `w93/i18n-rollout` | `/workspace/wt-w93-i18n` | 🟡 IN FLIGHT |
+| **W93-D** | `414839210520742` | events-workshops (full feature) | `w93/events-workshops` | `/workspace/wt-w93-events` | 🟡 IN FLIGHT |
+
+**Spawned at:** 15:00 UTC. **Cap:** 30 min hard (5× = 150 min silent-stuck detection).
+
+**Brief:** `docs/W93-SPAWN-BRIEF.md` (committado @ `15726d2`, pushed) — 15 lessons MUST-include + sacred-cultural gates + per-file TSC contract + LGPD-first storage.
+
+**Themes rationale:**
+- **W93-A reputation-system:** brand new, 5-axis (acolhimento/conhecimento/presença/contribuição/escuta), LGPD by design, tradição-weighted — sem precedente no projeto
+- **W93-B auth-followup:** `src/hooks/useAuth.ts` + `src/lib/auth-impl.ts` existem mas UI pages são stubs — completa o path de auth
+- **W93-C i18n-rollout:** W92-C criou tooling + 41 strings × 3 locales; W93-C estende para 80+ strings + landing/onboarding/reading pages + plural rules
+- **W93-D events-workshops:** W87-A foi B2 retry mas não completou; completa o feature full (engine + 5 pages + iCal export)
+
+**Avoided themes (já covered em waves anteriores):**
+- daily-reflection-prompt (W92-A in flight)
+- live-stream-reactions (W92-B ✅)
+- translation-tooling (W92-C ✅)
+- comments-moderation (W92-D ✅)
+- comments-threading (W87-C ✅)
+- mentorship-pairing (W87-B ✅)
+- notifications-push (W91-A ✅)
+
+**Infra setup:**
+- `npm install` em main @ 15:03 UTC, completed @ 15:05 UTC (650 packages)
+- 4 worktrees criados com `git worktree add -b w93/<theme> /workspace/wt-w93-<theme> origin/main`
+- 4 symlinks: `ln -sf /workspace/cabaladoscaminhos/node_modules <worktree>/node_modules`
+- `git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"` aplicado (cycle 89 fix)
+- TSC v5.9.3 verified disponível via symlink
+
+**3 NEW durable lessons (W93 setup):**
+
+1. **Worktree path /workspace → /run/csi/mount-root/nas mapping** — sandbox aliasing invisível, `git worktree list` mostra path absoluto real mas `ls` aceita /workspace. Workaround: use `/workspace/wt-<x>` consistentemente em todos comandos.
+2. **Parallel `git worktree add` race condition** — 4 calls em paralelo resultaram em 1 só worktree criado (lock contention no git internals). Fix: sequential worktree add (3-4s cada), ou usar `git worktree add -b <branch> /path existing-branch` quando branch já existe.
+3. **First-cycle npm install precisa rodar no orquestrador, não em workers** — workers com 30min cap não têm budget pra 60-180s install. Padrão: install 1× no main worktree, symlink em cada worktree (~5s cada). Validado @ W93 setup.
+
+**Status @ 15:05 UTC:** 4/4 SPAWNED, awaiting self-reports. Cap 15:30 UTC. Wave-spawner 414838017175841 monitoring. Próximo check-in: 15:15 UTC.
