@@ -5241,3 +5241,56 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 
 ---
 
+
+---
+
+## Cycle 73 W73-C delivery @ 03:51 UTC — comments-moderation-engine PUSHED ✅
+
+**W73-C delivery (worker session 414671446884615, 03:51:52 UTC push).** Branch `w73/comments-moderation-engine` at SHA `b9026ca0`. 19 min from spawn (03:32:41) to push (03:51:52). Within 30-min cap.
+
+**W73-C SHIP manifest:**
+| File | LOC |
+|---|---|
+| moderation-queue.ts | 654 (220+ sacred whitelist, 7 ModerationActions, sacred-penalty guard) |
+| audit-log.ts | 514 (SHA-256 hash chain, canonical JSON, admin-only export) |
+| moderation-queue.spec.ts | 344 (31 specs) |
+| audit-log.spec.ts | 296 (23 specs) |
+| smoke.ts | 321 (124/124 smoke, 8 sections) |
+| tsconfig + node-stubs | config |
+| **TOTAL** | **2,180 LOC + 2 config** |
+
+- 124/124 spec assertions + 124/124 smoke = **248 total checks PASS** 🔥
+- TSC=0 on worktree-isolated tsconfig.w73.json ✅
+- 220+ sacred whitelist terms across 7 traditions ✅
+- SHA-256 + canonical JSON hash chain (cycle 67 lesson) ✅
+- LGPD IP/UA hashing + admin-only export + self-audit ✅
+- 8 smoke sections (7 required + 1 bonus AUDIT_HOOKS) ✅
+
+**W73-C lessons observed (NEW):**
+1. **Sacred-penalty guard in auto-classifier** — when sacred terms appear in flag context, classify as `sacred-recontextualize` (not generic `harassment` or `hate-speech`). Whitelist of 220+ terms prevents false positives.
+2. **Hash chain with self-audit on export** — `exportAuditTrail` triggers `appendAudit('audit-exported')` so the act of exporting itself becomes part of the immutable chain. LGPD-grade.
+3. **Spec-registry runner pattern** — spec files self-register via `register({ name, fn })` module-level calls; smoke runner iterates registry. Cleaner than manual section enumeration. Pattern reusable for any test orchestration.
+4. **Worktree-isolated tsconfig naming `tsconfig.w73.json`** (not `tsconfig.json`) — avoids conflict if multiple cycles run in parallel and have isolated tsconfig files in same root.
+
+**Cycle 73 mid-tick status @ 03:52 UTC:**
+- W73-A: ✅ PUSHED at 1fafce21 (20 min, 3,022 LOC)
+- W73-B: ✅ PUSHED at 30194164 (19 min, 1,917 LOC)
+- W73-C: ✅ PUSHED at b9026ca0 (19 min, 2,180 LOC)
+- W73-D: 🟡 IN FLIGHT (started 03:32:41, ETA 03:55-04:05)
+
+**Cumulative cycle 73 stats @ 03:52 UTC:**
+- 3/4 PUSHED ✅✅✅
+- 7,119 LOC delivered (3,022 + 1,917 + 2,180)
+- 528 assertions PASS (153 + 127 + 248)
+- 264 smoke checks PASS (105 + 35 + 124)
+- 3/4 TSC=0 confirmed
+
+**Next tick (04:00 UTC, 8 min from now):**
+1. Re-verify W73-D branch SHA
+2. If PUSHED: cycle 73 close-out + spawn cycle 74 (4 NEW)
+3. If missing at +25 mark: BLOCKER + B2 retry at 04:00
+
+**Status @ 03:52 UTC: 🟢 3/4 PUSHED. 1/4 IN FLIGHT (W73-D). ETA cycle 73 close: 04:00-04:05 UTC.**
+
+---
+
