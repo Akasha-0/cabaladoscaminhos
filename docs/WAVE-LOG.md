@@ -6406,3 +6406,49 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 5. **Cold-sandbox wake pattern: clone depth 50 + git config + insteadOf** — the first 60s of every wave-spawner tick is environment bootstrap; consider pre-cloning the repo in a worktree outside /workspace to skip the clone step.
 
 **Status @ 10:00 UTC:** Cycle 84 CLOSED 2/4. **4/4 workers SPAWNED for cycle 85** (sessions spawning now). MEM 1977MB available / 2048MB. Next tick @ 10:30 UTC will validate cycle 85 close-out. Wave-spawner session 414764240031922.
+
+
+### Cycle 85 interim 1 — 10:15 UTC (15 min after spawn)
+
+- ✅ **W85-A PUSHED** `w85/voice-mode-akasha` @ `3acf05cf` — **1,635 LOC across 6 files**. **56/56 spec + 48/48 smoke PASS** (104 total), TSC=0 (strict + noUncheckedIndexedAccess isolated). **Engine-only** (no page this cycle, page deferred to W86+ per reduced-scope brief).
+- ⏳ W85-B marketplace-lectura-praticas B2, W85-C auth-integration-followup, W85-D akasha-streaming-ui still in flight. Cycle 85 cap = 10:30 UTC. ~15 min remaining.
+
+**W85-A engine contract delivered:**
+- `play(text, voiceId)` → PlaybackState with deterministic CueId (`cue-NNNN-XXXXXXXX` FNV-1a + Math.imul, cycle-84-B pattern reuse)
+- `pause/resume/cancel(cueId)` → state machine (queued→playing→paused/done/error)
+- `getQueue()` → insertion-order, filters done/error terminals
+- `exportAudit()` → flat list of every state transition (append-only audit log, W84-C pattern)
+- `InMemoryVoiceAdapter` → no real audio, deterministic, peekable for tests
+
+**6 voice presets × 6 tradições (1:1 mapping, Ifá = coming-soon):**
+- cigano → cigano (rate 0.95, pitch 1.0)
+- iya → candomble (rate 0.85, pitch 0.95) — maternal warmth, NEVER austera
+- pai-ogum → umbanda (rate 1.0, pitch 1.0) — decisive, firm-not-gruff
+- swami-ananda → tantra (rate 0.9, pitch 1.05) — joyful, NEVER eroticized
+- rabino-moshe → cabala (rate 0.92, pitch 0.95) — scholarly, NEVER loud
+- astrologa-stella → astrologia (rate 0.95, pitch 1.1) — didactic, celestial
+
+**Ifá (7th tradição):** documented as "coming-soon" with `IFA_STATUS: 'coming-soon'` constant. `getVoicesByTradicao('ifa')` returns `[]` (spec-asserted). `ALL_KNOWN_TRADICOES.length === 7` (completeness claim).
+
+**Sacred-cultural sensitivity:** voiceStyle strings explicitly affirm warmth/maternity/joy/scholarship and reject austerity/eroticization/loudness. Curator-intent rationale in DELIVERABLE.md table.
+
+**Markdown→plain TTS rendering** baked into `play()`: strips code fences/inline code/bold/italic/headings, converts blockquotes to "Citação: ", bullets to "Item: ", drops URLs from links. Stores rendered text in PlaybackState.
+
+**VoiceAdapter interface isolation** — ready for ElevenLabs/Azure/OpenAI TTS swap without touching the engine. Adapter-only changes for production wiring.
+
+**8 NEW durable lessons from W85-A (extend cycle-75 markdown, cycle-60 parameter-properties, cycle-84-B FNV-1a lessons):**
+1. **Parameter properties banned in `--experimental-strip-types`** (cycle-60 lesson re-applied to both InMemoryVoiceAdapter + VoiceEngineError) — use explicit field init in constructor
+2. **`Object.isFrozen()` is runtime** — works as spec assertion (cycle-84-C lesson confirmed: runtime call beats `@ts-expect-error` for type narrowing)
+3. **Brand-typed error codes** (union literal → code field) catches typos at compile time — better than string codes
+4. **State machine as audit log** (append-only, easier to test + debug) — pattern from W84-C moderation-state confirmed
+5. **InMemoryVoiceAdapter determinism via FNV-1a + seq** (Math.imul, cycle-84-B) — same pattern as daily-reflection-prompt
+6. **VoiceAdapter interface isolation** — ready for ElevenLabs/Azure/OpenAI TTS swap (production wiring via adapter injection)
+7. **`!!x` narrowing for `find()` / `Map.get()` returns** — TS strict mode guard pattern (extends cycle-84-B lesson #7)
+8. **Markdown→plain TTS transformations need 7+ distinct patterns** (cycle-75 reuse) — code fences, inline code, bold, italic, blockquote prefix, bullet prefix, link URL drop
+
+**Cross-cycle cumulative cycle 85:**
+- 1/4 PUSHED = 1,635 LOC + 104 assertions ALL PASS + 1× TSC=0
+- 13 min wall for W85-A (under the 30-min cap by 17 min)
+- B-W84-A RESOLVED ✅ (W85-A B2 retry succeeded first try — confirms LLM transient hypothesis)
+
+**Status @ 10:15 UTC:** 1/4 PUSHED (W85-A), 3/4 in flight. Cycle 85 cap = 10:30 UTC (15 min for W85-B/C/D). main @ `d56fc09`. Wave-spawner session 414764240031922.
