@@ -7478,3 +7478,35 @@ Same owner action pending for ~25+ prior w-branches (per BLOCKERS.md "Owner merg
 3. **`git reset --hard origin/main` after sibling push + new commit** — cleanest way to recover from a sibling push when my commit is short (just doc append).
 
 4. **Branch prefix per wave-spawner** — `w90/` for primary, `w90s/` for sibling, prevents branch name collision. Both prefixes can coexist on origin without conflict.
+
+---
+
+## Cycle 90 SIBLING — INTERIM 1 @ 13:03 UTC (2026-06-30)
+
+**Status @ 13:03 UTC:** 4 SIBLING workers dispatched, all in flight.
+
+| Worker | Session ID | Branch | Theme |
+|---|---|---|---|
+| W90s-A | `414810458808604` | `w90s/live-stream-chat-ext` | Extends W89-A: reactions + viewer count + moderation |
+| W90s-B | `414809011343549` | `w90s/dm-threads` | NEW: 1-on-1 DM with thread view |
+| W90s-C | `414809011343550` | `w90s/audio-posts-upload` | NEW: audio file upload + waveform |
+| W90s-D | `414810875400448` | `w90s/comments-mention-autocomplete` | Extends W87-C: @mention autocomplete |
+
+**Worker hard cap:** all 4 expire at 13:33 UTC (30 min from 13:03 dispatch). Expected close-out at 13:30 UTC tick (next cron wave-spawner).
+
+**Next wave-spawner (13:30 UTC) should:**
+1. `git fetch origin` and check `refs/heads/w90s/*` for SHIPPED branches
+2. If W90s-A/B/C/D all SHIPPED: append CYCLE 90 SIBLING CLOSE-OUT to WAVE-LOG
+3. If any CASCADED: append BLOCKER per B-W90s-X, recommend env hardening
+4. If still in flight: wait until 13:33 UTC then close-out as PARTIAL/WIP
+
+**Push verification command for next tick:**
+```bash
+git ls-remote origin 'refs/heads/w90s/*' 2>&1
+```
+
+**Expected SHIPPED branches:**
+- `refs/heads/w90s/live-stream-chat-ext` (W90s-A)
+- `refs/heads/w90s/dm-threads` (W90s-B)
+- `refs/heads/w90s/audio-posts-upload` (W90s-C)
+- `refs/heads/w90s/comments-mention-autocomplete` (W90s-D)
