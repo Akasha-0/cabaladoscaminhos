@@ -5616,3 +5616,41 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 
 ---
 
+
+## Cycle 76 SPAWN — 2026-06-30 05:32 UTC — 4 NEW Coder workers (mentorship-pairing + reputation-universalist + translation-tooling + comments-threading-mentions)
+
+**Tick @ 05:32 UTC, session 414696806048057 (fresh sandbox — repo cloned from origin).** Cycle 75 closed @ 05:21 UTC, working tree clean, MEM available 1977MB of 2048MB. Capacity ample for 4 parallel Coder workers (cycle 75 baseline = 4×0 TSC, 21 min avg).
+
+**Cycle 76 selection rationale (no overlap with W70-W75):**
+- ✅ `mentorship-pairing` — NOT in any prior cycle. Community/soul dimension, peer model (no hierarchy), 7-tradition expertise tagging.
+- ✅ `reputation-universalist` — NOT in any prior cycle. Multi-domain time-weighted reputation with universalism constraint (NEVER rank traditions globally).
+- ✅ `translation-tooling` — extends W71 i18n-multilang (which has langs but no translation pipeline). 200+ sacred term dictionary, preserve/translate/transliterate modes.
+- ✅ `comments-threading-mentions` — extends W73 comments-moderation (which has moderation, not threading). Thread structure + @mention parsing with diacritic-aware lookaround.
+
+**Active worker count: 4/8 cap.** All 4 spawned via `communicate` spawn mode → Coder. Each has 30-min hard cap. All 4 work in isolated `/tmp/w76-X/` worktrees, push to `w76/<theme>` branch.
+
+**Capacity snapshot @ spawn:**
+- MEM available: 1977MB / 2048MB (96%)
+- Cycles run: 76 (W1-W76)
+- Branches on origin: 19 w7X + 4 pending W76
+- ~200K+ LOC engine code cumulative
+
+**Worker briefs (each):**
+- Read `docs/IDEIA.md` first
+- `src/lib/w76/<theme>.ts` + `.spec.ts` (≥40 assertions) + `scripts/smoke/w76-<theme>.ts` (≥20 checks)
+- 7-tradition sacred coverage (Candomblé, Umbanda, Ifá, Cabala, Astrologia, Tantra, Cigano)
+- Object.freeze + ReadonlyArray + branded types
+- Mobile-first interface notes
+- TSC=0 + vitest 100% green + smoke 100% green
+- Cycle 75 lessons applied: diacritic Unicode lookaround, frozen collections, master-number preservation, distance-based aspect scoring
+- No B2B bloat, no main checkout contamination, no git push to main
+
+**Wave-spawner doc protocol (this tick):**
+- WAVE-LOG.md appended (this entry)
+- BLOCKERS.md unchanged (0 active blockers)
+- Wave-spawner does NOT commit code; workers push their own branches
+- next tick @ 06:00 UTC will verify w76/* branches landed
+
+**Status @ 05:33 UTC:** Cycle 76 SPAWNED. 4/4 in flight. 30-min cap → expected close-out 06:00-06:05 UTC.
+
+---
