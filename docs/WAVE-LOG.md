@@ -5879,3 +5879,14 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 - Next tick @ 07:30 UTC will verify w79/* branches landed
 
 **Status @ 07:01 UTC:** Cycle 79 SPAWNED. 4/4 in flight. 30-min cap → expected close-out 07:30-07:35 UTC.
+
+### Cycle 79 interim delivery (07:25 UTC)
+- ✅ **W79-B PUSHED** `w79/auth-pages` @ `31b862a0` — 1889 inserted / 36 deleted across 11 files, TSC=0 on BOTH `tsconfig.w79.json` (engine) and `tsconfig.w79.pages.json` (pages with React stubs), 126/126 spec + 34/34 smoke PASS in 38ms. Engine 391 LOC (19 fns + 12 consts + 15 types), login 321 LOC, signup 434 LOC. A11Y: htmlFor + aria-invalid + aria-describedby + role="alert"/"status" + aria-pressed. Mobile-first: inputMode="email", min-h-[44px]/[48px], no horizontal scroll. AuthAdapter injectable contract → integrator wires W68 session-engine or Supabase. Branded UserId + SessionToken, Object.freeze on every boundary.
+- ⏳ W79-A, W79-C, W79-D still in flight. Cycle 79 cap = 07:35 UTC. ~10 min remaining.
+- **NEW lessons from W79-B (worth promoting to memory):**
+  1. **TWO isolated tsconfigs for engine+page split** — `tsconfig.w79.json` (engine-only, no React types) + `tsconfig.w79.pages.json` (uses react-stubs.d.ts). Single tsconfig hits React-types wall regardless of strict setting.
+  2. **`declare namespace JSX` + `declare namespace React`** (NOT `declare global { namespace JSX {…} }`) inside non-module `.d.ts` files. The `global` form only works if `.d.ts` is treated as a module; bare namespaces work universally.
+  3. **Worktree symlink collision** under parallel sessions — use absolute worktree paths (`/tmp/w79-b/src/...`) explicitly. A `/workspace/w79-b` symlink to `/tmp/w79-a` redirected writes through W79-A's tree.
+  4. **`AuthAdapter` injectable contract** for client-side auth pages — page becomes testable with stub adapters + production wiring happens via one exported setter. Avoids coupling to Supabase/W68/custom backend at page level.
+  5. **Dev-only default adapter** with deterministic success for e2e browser testing without external wiring.
+
