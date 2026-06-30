@@ -8982,3 +8982,62 @@ ln -sf /workspace/cabaladoscaminhos/node_modules /workspace/wt-w94-{streaming,vo
 **State @ 16:05 UTC:** main @ `911d812f` (W94-SPAWN-BRIEF.md committed), 4 workers in flight (W94-A/B/C/D), 4 feature branches on origin pending. MEM 1,976MB available. Wave-spawner 414852747096288 monitoring.
 
 **Next cron tick:** 16:30 UTC — re-check W94 worker state, monitor pushes, expect first ship at ~16:35 UTC (30 min cap). 5× rule silent-stuck threshold: 18:35 UTC (2h 30m after spawn).
+
+## Cycle 94 — interim 2 @ 16:23 UTC — W94-B voice-mode-tts SHIPPED ✅
+
+**Branch:** `w94/voice-mode-tts` @ `7cad11ef` (PUSHED ✓ @ 16:23 UTC, 17 min wall)
+**Worker session:** 414853955768476
+
+**Validation (all green):**
+- TSC: **0 errors** via `tsc --project tsconfig.w94.json` (per-file isolation)
+- Spec: **44/44 PASS** via `node --import tsx --test` (19 describe blocks)
+- Smoke: **51/51 PASS** via `node --experimental-strip-types scripts/smoke-voice-mode.mjs`
+- Sacred-cultural: 0 banned-vocab hits; pt-BR preserved (orixás, axé, Iemanjá, Odu)
+- LGPD: FNV-1a hash determinism + case/whitespace aware verified
+- 95 total asserts ALL PASS (44 spec + 51 smoke) — cleanest W94 deliverable so far
+
+**Files (10 files, 2,849 LOC):**
+- `src/lib/w94/voice-mode.ts` (757 LOC, 27 exports, 10 sections) — engine: VOICE_PRESETS, WebSpeechTTSEngine, FallbackTTSEngine, speakSegment, splitForTTS, PRONUNCIATION_HINTS, FNV-1a hash, sacred pacing
+- `src/lib/w94/index.ts` — barrel export
+- `src/lib/w94/__tests__/voice-mode.spec.ts` — 44 node:test asserts
+- `scripts/smoke-voice-mode.mjs` — 51 strip-types runtime asserts
+- `src/components/akashic/VoiceModeButton.tsx` — header toggle (44px tap target)
+- `src/components/akashic/VoiceModePanel.tsx` — slide-up controls
+- `src/components/consent/VoiceConsentModal.tsx` — LGPD dialog with z.literal(true) consent
+- `src/app/akashic-chat/voice-demo/page.tsx` — demo (pt-BR canonical + en/es stubs)
+- `tsconfig.w94.json` — per-file TSC isolation
+- `docs/DELIVERABLE-W94-B.md` — runbook + lessons
+
+**4 NEW durable lessons (W94-B):**
+
+1. **`tsconfig.w94.json` extends + types override** is the safest per-file TSC isolation (per-file isolation can also RELAX strict `IndexedAccess` for engine code that needs index access to known-shape records). Reusable: any wave-spawner per-cycle per-file TSC pattern.
+
+2. **Discriminated union states + consent-required-by-default** prevents LGPD footgun (engine-level consent gate, not UI-level). VoiceModeState: `idle | consent_pending | loading | playing | paused | error | denied`. Engine refuses to play without consent; UI can't bypass. Reusable: any LGPD-sensitive feature (analytics, location, mic, etc).
+
+3. **TTS sentence splitter needs Unicode-aware boundaries + sacred quote preservation** — regex with `m+u` flags, handles `«...»` group, lookbehind-lookahead boundaries. Reusable: any multilingual sentence tokenizer (especially for pt-BR/pt-PT/es with `¿?`, `«»`, etc).
+
+4. **Cycle 50/53 acceptance pattern** — partial deliverables with documented branches (deliverable is source of truth before push). Reusable: any wave-spawner receiving ship reports where push may be slow but code is verified locally.
+
+**Sacred-cultural + LGPD compliance verified:**
+- 0 hits: orishas, ashé, iemanja (without nasal) via stripComments()
+- pt-BR preserved: orixás, axé, Odu, Cigano Ramiro
+- PRONUNCIATION_HINTS covers: axé → a-chê, Iemanjá → Ie-man-já, Odu → O-dú, Oxalá → O-xa-lá
+- LGPD: FNV-1a hash + consent_required=true (engine-level) + revoke handler
+- Web Speech API + fallback (no external server for audio — privacy by design)
+
+**Cycle 94 cumulative @ 16:23 UTC: 1/4 SHIPPED (2,849 LOC). 3/4 in flight.**
+
+| Worker | Session | Branch | SHA | LOC | Status | Wall |
+|---|---|---|---|---|---|---|
+| W94-A | 414854202277960 | `w94/akasha-streaming-ui` | TBD | TBD | 🟡 IN FLIGHT | ~18 min |
+| **W94-B** | **414853955768476** | **`w94/voice-mode-tts`** | **`7cad11ef`** | **2,849** | ✅ **SHIPPED** | **17 min** |
+| W94-C | 414853955768478 | `w94/audio-video-posts` | TBD | TBD | 🟡 IN FLIGHT | ~18 min |
+| W94-D | 414853955768493 | `w94/marketplace-leituras` | TBD | TBD | 🟡 IN FLIGHT | ~18 min |
+
+**State @ 16:23 UTC:** main @ `f9a14628` (no merge yet — wave-spawner merges after 4/4). W94-B on origin (7cad11ef verified via `git ls-remote`). 3 workers in flight under 30-min cap (deadline 16:35 UTC). MEM 1,971MB available. Wave-spawner 414852747096288 monitoring.
+
+**Next action @ 16:30 UTC (next cron tick):**
+- Re-check W94-A/C/D worker state
+- If 2nd ship lands by 16:30 UTC: document interim 3, continue monitoring
+- If all 4 ship by 16:35 UTC: do FULL close-out — merge all 4 branches to main, push, plan cycle 95
+- If silent-stuck at 18:35 UTC (5× rule): declare CASCADE on stuck workers, do PARTIAL close-out
