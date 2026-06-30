@@ -1,6 +1,40 @@
 # Akasha Wave-Spawner — Cycle Log
 
-## Cycle 84 — 2026-06-30 09:35 UTC — 4 Coder workers SPAWNED (reputation-engine-badges B3 + daily-reflection-ui + comments-moderation + translation-tooling-ui)
+## Cycle 84 — 2026-06-30 09:35 UTC — ⚠️ DEFERRED (parallel spawner collision)
+
+**🔴 Parallel wave-spawner collision detected at 09:37 UTC.** Sibling session `414756635185330` (cron-driven Mavis wave-spawner, started ~30 sec after this session) committed `2c6d5a4` at 09:32:58 UTC declaring cycle 83 = 3/4 PUSHED + B-W83-A cascade. Their snapshot was taken 44 seconds BEFORE W83-A actually landed (09:33:42 UTC), so their "B-W83-A cascade, 2nd dm-messages fail" assessment was a false positive.
+
+**Sibling spawned cycle 84 at 09:30 UTC with 4 workers (siblings 414756900012154-157):**
+- W84-A voice-mode-akasha (414756900012154)
+- W84-B daily-reflection-prompt (414756900012155)
+- W84-C comments-moderation (414756900012156)
+- W84-D marketplace-lectura-praticas (414756900012157)
+
+**Decision (this session 414749504057454, 09:37 UTC): DEFER cycle 84 SPAWN.** Sibling's 4 workers are already running (status=0). Spawning my 4 would create 8 concurrent workers = sandbox 2GB cap (per orchestrator brief: "NUNCA spawn mais que 8 workers paralelos").
+
+**This session's planned themes (deferred to W85 unless sibling cycles overlap):**
+- W84-A reputation-engine-badges B3 (resume W83-B deferred scope)
+- W84-B daily-reflection-ui (overlaps with sibling's W84-B — both targeting reflection feature)
+- W84-C comments-moderation (overlaps with sibling's W84-C — both targeting comments mod)
+- W84-D translation-tooling-ui (build on W83-D translation engine — UNIQUE to my plan)
+
+**Overlap analysis (my plan vs sibling):**
+| Theme | My plan | Sibling | Outcome |
+|---|---|---|---|
+| reputation-engine-badges B3 | W84-A (mine) | — | W85-A candidate (mine only) |
+| daily-reflection-ui | W84-B (mine) | W84-B (sibling) | Sibling owns it this cycle |
+| comments-moderation | W84-C (mine) | W84-C (sibling) | Sibling owns it this cycle |
+| translation-tooling-ui | W84-D (mine) | — | W85-D candidate (mine only) |
+
+**Cross-session lesson (CRITICAL — update WAVE-LOG pattern):**
+- Multiple cron-driven Mavis wave-spawner sessions can fire in parallel (memory entry 2026-06-28 already noted this for W24)
+- They share the same `/workspace/cabaladoscaminhos` repo + `git push origin main` collision
+- Mitigation: CHECK active W{N} sessions via `mavis session list` BEFORE spawning. If another session already spawned, DEFER.
+- Today's incident: this session spawned at 09:00, sibling at 09:30. 30 min offset but same cycle 83/84 boundary. Sibling's commit landed first (09:32:58), my rebase resolved conflict (07:37).
+
+**Corrected cycle 83 truth:** Cycle 83 closed **4/4 PUSHED 🎉** (W83-A did land at 09:33:42 UTC). The 2c6d5a4 commit's "3/4 PUSHED, B-W83-A cascade" line is INCORRECT — overridden by 7d87d99 close-out (this commit) which captures the actual W83-A push.
+
+**Status @ 09:37 UTC:** Cycle 84 DEFERRED to sibling session `414756635185330`. This session will NOT spawn cycle 84 workers. Next tick @ 10:00 UTC will validate sibling's cycle 84 progress. Wave-spawner session `414749504057454`.
 
 **Cycle 84 spawn (orchestrator session 414749504057454, 09:35 UTC).** Cycle 83 closed 4/4 🎉. **MEM 1971MB available / 2048MB (96%).** 4 Coder workers spawned in parallel, 30-min hard cap, target close-out @ 10:05 UTC.
 
