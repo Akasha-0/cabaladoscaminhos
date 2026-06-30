@@ -8345,3 +8345,49 @@ Wave-spawner 414830652506374. Cycle 92 IN FLIGHT.
 - Dashboard widget acolhedor "temos N itens > 7d, quer cuidar?" (sem gamification)
 
 Wave-spawner 414830652506374.
+
+### W92-B SHIPPED ✅ @ 14:53 UTC (2026-06-30)
+
+**Branch:** `w92/live-stream-reactions` @ `0b3a1b6b0281027ad4c6d116df576d692b24c54f`
+**Worker session:** 414831838122283
+**Wall time:** ~22 min (within 30-min cap)
+
+**Validation (all green):**
+- Spec: `node --import tsx --test` → 50/50 PASS (rate limiting + presence + SSE + components source-inspection)
+- Smoke: `node --experimental-strip-types scripts/smoke-live-stream-reactions.mjs` → 29/29 PASS
+- TSC: per-file → 0 errors (`tsc --noEmit --skipLibCheck --ignoreConfig src/lib/w92/live-stream-reactions.ts`)
+- Sacred-cultural: zero banned vocab hits (verified by source-inspection with `stripComments()` filter — JSX `<Tailwind className="block">` no false-positives)
+
+**W92-B files (8, 2,612 LOC):**
+- `src/lib/w92/live-stream-reactions.ts` (702) — engine puro: 8 curated reactions, rate-limit 1/2s/user/type, SSE broadcast, presence tracking
+- `src/components/livestream/ReactionBar.tsx` (240) — 'use client', 8 emoji buttons, 44px touch targets, optimistic UI, pulse keyframe
+- `src/components/livestream/FloatingReactions.tsx` (185) — 'use client', pure CSS float-up (no canvas), 30-bubble cap
+- `src/components/livestream/PresenceDot.tsx` (137) — 'use client', EventSource-driven count-only indicator
+- `src/app/streams/[id]/watch/page.tsx` (187) — server component, embeds all 3 client components
+- `src/lib/w92/__tests__/live-stream-reactions.spec.ts` (741) — node:test spec, 50 assertions
+- `scripts/smoke-live-stream-reactions.mjs` (207) — 29 standalone smoke asserts via `--experimental-strip-types`
+- `docs/DELIVERABLE-W92-B.md` (213) — full deliverable doc
+
+**5 NEW durable lessons from W92-B:**
+1. **`stripComments()` helper is essential for banned-vocab source scans** — naive filters trip on JSX comments (`{/* block */}`) and Tailwind classes (`className="block"`); mandatory pre-scan step
+2. **Fake-clock injection for presence tests** (`{ now: () => fakeNow }`) — without it, real `Date.now()` culls presence data 5 minutes into test execution, breaking `getActivePresence` counts
+3. **History-bounded tests need `stride < TTL/COUNT`** — TTL cull (default 5 min) eats entries outside the sampling window; spec stride must be smaller than TTL/count to keep history non-empty
+4. **Word-boundary regex for source inspection** — `className=` literal matches `name=` if you use bare `=`. Use `\b` (or specific anchors like `\bclassName="|className='`); document each pattern explicitly
+5. **Source-inspection emojis: assert on import + `.map` pattern, NOT on literals** — emojis render as `\uXXXX` in code, hard to grep; assert `emojis.map(e => e.code)` or similar pattern instead
+
+**Out-of-scope follow-ups (documented in DELIVERABLE-W92-B.md):**
+- API routes (`/api/streams/[id]/reactions` POST + SSE, `/api/streams/[id]/presence` SSE) — engine ready, awaiting Prisma + Next.js routing
+- Prisma schema for persistent aggregates (optional for single-instance)
+- Video player integration (HLS.js / Mux)
+- Auth integration (page reads `session-token` cookie, falls back to anonymous for engine testing)
+
+**Cycle 92 partial tally @ 14:53 UTC:**
+
+| Worker | Session | Theme | Branch | LOC | Status |
+|---|---|---|---|---|---|
+| W92-A | 414831838122282 | daily-reflection-prompt | `w92/daily-reflection` | TBD | 🟡 AWAITING REPORT (under cap) |
+| **W92-B** | **414831838122283** | **live-stream-reactions** | **`w92/live-stream-reactions` @ 0b3a1b6** | **2,612 (8 files)** | ✅ **SHIPPED** |
+| W92-C | 414832274428037 | translation-tooling-en-es | `w92/translation-tooling` | TBD | 🟡 AWAITING REPORT (under cap) |
+| W92-D | 414831838122284 | comments-moderation-queue | `w92/comments-moderation` @ 83a5a20 | ~3,388 (8 files) | ✅ SHIPPED |
+
+**Status:** 2/4 SHIPPED ✅✅, 2/4 in flight (under 30-min cap, applying 5× rule). Wave-spawner 414830652506374 monitoring.
