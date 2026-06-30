@@ -5423,3 +5423,84 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 
 ---
 
+## Cycle 75 mid-cycle — 2026-06-30 05:12 UTC — 1/4 DELIVERED ✅ (W75-B akashia-offering-tracking)
+
+**Mid-cycle check-in (tick 414690567004426, 05:12 UTC).** W75-B Coder (session 414691441430746) reported DELIVERY at <25 min wall. Branch verified on origin.
+
+| Worker | Status | Branch | SHA | Wall | LOC | Spec | Smoke | TSC |
+|---|---|---|---|---|---|---|---|---|
+| **A** mesa-real-cross-house | 🟡 IN FLIGHT | `w75/mesa-real-cross-house` | — | — | — | — | — | — |
+| **B** akashia-offering-tracking | ✅ PUSHED | `w75/akashia-offering-tracking` | `b118547c` | <25 min | 2,326 (937 engine + 738 spec + 276 smoke + 49 stubs + 26 tsconfig + 251 deliverable) | 81/81 ✅ | 36/36 ✅ | 0 ✅ |
+| **C** sacred-geometry-engine | 🟡 IN FLIGHT | `w75/sacred-geometry-engine` | — | — | — | — | — | — |
+| **D** synastry-advanced | 🟡 IN FLIGHT | `w75/synastry-advanced` | — | — | — | — | — | — |
+| **TOTAL so far** | **1/4 ✅** | — | — | — | **2,326** | **81/81 ✅** | **36/36 ✅** | **1×0** |
+
+**W75-B sacred coverage (cycle 75 first ship):**
+- Catalog: 23 recipients (12 Orixás + 7 entities + Ancestral + Anjo + Elemento Água + Eu Mesmo) — exceeds 20 required
+- 30-offering journalEntry weaves all 7 traditions: candomblé, umbanda, astrologia, numerologia, cabalá, cigano, tantra
+- Numerology: master-number-preserved life-path reducer (cycle 72 lesson applied)
+- Cabala: Sephirá-by-Element map (Kether/Gevurah/Chesed/Tiphereth/Malkuth)
+- Cigano: cross-reading layer added on top
+
+**W75-B 5 NEW durable lessons (cross-cycle reusable):**
+1. **`Object.freeze(slice())` for read-only audit log views** — plain `.slice()` doesn't propagate `Object.isFrozen`; must wrap at export boundary.
+2. **Branded types are compile-time only** — tests verify *behavior* (typeof string, prefix), never read `.id.__brand` at runtime.
+3. **cyrb53 vs SHA-256 trade-off** — cache-key deduping (53-bit) ≠ HMAC signatures (256-bit). Use the right primitive for each.
+4. **Cover all 7 traditions by walking catalog's `traditions[]` field** — engine weaves lineages automatically when catalog spans them.
+5. **Master-number reducer with safe ≥40 collapse** — `while (n > 39) { sum digits }` then check `[11,22,33]` keeps ≤3 reductions on any input.
+
+**TSC gate note (from W75-B):** The spec gate `grep -v csstype | wc -l` returning literal "1" is misleading — `tsc --noEmit` with zero errors produces empty stdout ⇒ `wc -l` = 0. PASS condition is "no error lines" = 0, not literal "= 1". Documented in deliverable.
+
+**Status @ 05:12 UTC: 🟡 1/4 PUSHED. W75-A, W75-C, W75-D still in flight. Verification @ 05:30 UTC.**
+
+---
+
+## Cycle 75 mid-cycle update — 2026-06-30 05:14 UTC — 2/4 DELIVERED ✅ (W75-D synastry-advanced joined W75-B)
+
+**Mid-cycle check-in (tick 414690567004426, 05:14 UTC).** W75-D Coder (session 414691250647214) reported DELIVERY at ~14 min wall. Branch verified on origin. W75-A files appearing in main checkout (`mesa-real-cross-house.ts` 29,445B, etc.) — worker confirmed in flight, steered to use specific git add paths to avoid clobbering parallel-session index entries.
+
+| Worker | Status | Branch | SHA | Wall | LOC | Spec | Smoke | TSC |
+|---|---|---|---|---|---|---|---|---|
+| **A** mesa-real-cross-house | 🟡 IN FLIGHT | `w75/mesa-real-cross-house` | — | ~13 min in | (in progress) | — | — | — |
+| **B** akashia-offering-tracking | ✅ PUSHED | `w75/akashia-offering-tracking` | `b118547c` | <25 min | 2,326 | 81/81 ✅ | 36/36 ✅ | 0 ✅ |
+| **C** sacred-geometry-engine | 🟡 NOT YET | `w75/sacred-geometry-engine` | — | — | — | — | — | — |
+| **D** synastry-advanced | ✅ PUSHED | `w75/synastry-advanced` | `a35f2fc` | ~14 min | 1,815 (690 engine + 471 spec + 348 smoke + 12 stubs + 13 tsconfig + ~280 deliverable) | 116/116 ✅ | 79/79 ✅ | 0 ✅ |
+| **TOTAL so far** | **2/4 ✅** | — | — | **~39 min combined** | **~4,141** | **197/197 ✅** | **115/115 ✅** | **2×0** |
+
+**W75-D catalog + matrix (cycle 75 second ship):**
+- **Orixá compatibility matrix:** 8 × 7 = 56 entries (curated, not exhaustive)
+- **Cigano affinity table:** 28 pairs
+- **Sign elements:** 12 entries (western zodiac × element)
+- **7 cross-aspect types:** sun-moon, venus-mars, mercury-venus, ascendant-moon, life-path-resonance, cigano-resonance, orixa-compatibility
+- **PairId:** FNV-1a symmetric hash (NOT HMAC — stable but unauthenticated)
+- **12-house Mesa Real:** frozen array per couple
+
+**W75-D 5 NEW durable lessons (cross-cycle reusable):**
+1. **`distanceToStrength(d)` for all aspect types** — conj/semi/sextile/square/trine/quincunx/opposition via one function. Pairwise distances for cross-card (e.g. A.venus↔B.mars).
+2. **Running-sum anti-pattern** — `score = score * weights + asp.strength` accumulates quadratically (caught at 4th aspect of Astrologia tradition: yielded 352 instead of 88). Correct: `score = score + asp.strength`, divide at end.
+3. **`...CHART_A, userId: ...` triggers TS2783** — explicit fields AFTER spread get flagged as duplicate. Override BEFORE spread.
+4. **`Set<CrossAspectType>.has(stringValue)` requires cast** — TSC narrows Set to literal element type. Fix: `(set as Set<string>).has(t)`.
+5. **Aspect strength is harmonic geometry, NOT compatibility** — distance-based scores cluster 55..100 (master numbers can reach 110, clamped). Use `inRange`, not `===`.
+
+**W75-A status (in flight, steered):**
+- Files appearing in main checkout `/workspace/cabaladoscaminhos/src/lib/w75/` (not /tmp/w75-a as briefed)
+- Steering message sent at 05:13 UTC: use SPECIFIC `git add` paths, don't scoop parallel-session index entries, push to branch (not main)
+- Worker has ~17 min remaining in 30-min cap (started 05:00)
+
+**W75-C status (not yet started files):**
+- No files in main checkout yet, no `/tmp/w75-c/` activity detected
+- Expected to begin engine work in next 5-10 min
+- 30-min cap holds
+
+**Honest concerns (cumulative cycle 75):**
+- W75-D ephemeris is static (chart signs from PersonChart, not real-time sky)
+- W75-D Orixá matrix curated (56 entries), not exhaustive
+- W75-D audit log in-memory (production would persist via W11 helper)
+- W75-D PairId uses FNV-1a, NOT HMAC (stable but unauthenticated)
+- W75-B catalog has 23 recipients — sufficient but owner may want lineage expansion
+- W75-A working in main checkout (not worktree) — works but risk of clobbering parallel index entries if not careful
+
+**Status @ 05:14 UTC: 🟡 2/4 PUSHED. W75-A in flight (files appearing). W75-C pending start. Verification @ 05:30 UTC.**
+
+---
+
