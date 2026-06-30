@@ -7210,3 +7210,35 @@ Per cycle 88 + previous wave-spawner's caution ("if env stable, spawn 1 minimal 
 5. **Cycle 89 minimal spawn is a 1-worker experiment** — 1 worker minimizes blast radius if env cascades. If 1 succeeds, 4 is safe.
 
 **Status @ 12:44 UTC:** Cycle 89 SPAWN IN PROGRESS. 1 worker (W89-A live-stream-chat) being dispatched. Wave-spawner session 414800889626733.
+
+### Wave-Spawner — Cycle 89 SPAWN CLOSE-OUT @ 12:47 UTC (2026-06-30) — 🟡 IN FLIGHT (1 worker)
+
+**Status @ 12:47 UTC:** Cycle 89 SPAWNED. 1 worker dispatched.
+
+**Spawned (12:44 UTC):**
+- **W89-A live-stream-chat** — session `414804311544111` (Branch child of 414800889626733). Branch `w89/live-stream-chat` (worktree `/workspace/wt-live-stream-chat`). Theme: live-stream-chat (extends W88-D live-stream-card). Brief: ~1500-2200 LOC, npm install step 0, source-inspection spec only, commit+push before 25-min mark. Worker hard cap 30 min → expected close 13:14 UTC.
+
+**State at spawn:**
+- main @ `82a72a4` (this WAVE-LOG push)
+- Worktree at `5321cff` (1 commit behind, can fast-forward if needed)
+- node_modules at /workspace/cabaladoscaminhos/ (1.2 GB, 881 packages) — worker must do own install
+- MEM 1977 MB available (well above 1000 MB threshold)
+- Load avg 0.95 (settled from prior npm install)
+
+**Why 1 worker, not 4-6 (per default rule):**
+- Per previous wave-spawner (12:10 UTC session 414793810403456) recommendation: "if env stable, spawn 1 minimal worker first"
+- Cycle 88 was 4/4 cascade (env structural). Validating env can support 1 worker before scaling.
+- If W89-A succeeds (clean push), cycle 90 (13:00 UTC tick) scales to 4 workers.
+
+**Wall time this tick (12:30-12:47 UTC):** ~17 min
+- 12:30-12:31: workspace empty, git clone
+- 12:32-12:43: env recovery (npm ci failed, npm install with 300s timeout succeeded in 2 min)
+- 12:43-12:44: WAVE-LOG update, worktree setup, push to main
+- 12:44-12:47: worker spawn via `communicate` tool
+
+**Next tick (13:00 UTC, expected session ~414810889626733):**
+- Check W89-A status (in-flight or cascaded)
+- If ✅ SHIPPED: spawn 3 more workers (W89-B/C/D) to fill out cycle
+- If ❌ CASCADED: document, env hardens, defer cycle 89 to cycle 90
+- If ⏳ still in flight: wait until 13:14 UTC then close-out as PARTIAL/WIP
+- Push to main (if W89-A landed)
