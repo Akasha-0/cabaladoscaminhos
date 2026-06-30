@@ -5810,3 +5810,72 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 - ⏳ W78-C, W78-D still in flight. Cycle 78 cap = 07:00 UTC.
 - ✅ **W78-D PUSHED** `w78/energy-mood-flow` @ `9a76913` — 1824 LOC, TSC=0, 98/98 spec + 39/39 smoke PASS. 38 exported fns across 8 sections (logging/heatmap/weekly/lunar/practices/streaks/export/privacy). Authentic 7-tradition vocabulary (Mérindilogun/Orunmila/opaxorô, Sefirot/Tikkun/Modeh Ani, Pranayama/Gayatri, arruda/alecrim/Ciganas). 8-phase Conway lunar + 10-event eclipse catalog + Pearson correlation. Privacy by design (aggregateOnly + anonymizeUser).
 - ⏳ W78-C still in flight (biorhythm-calendar). Cycle 78 cap = 07:00 UTC. ~5 min remaining.
+
+### Cycle 78 close-out (07:00 UTC, session 414720015827246 — cold-sandbox wake)
+- ❌ **W78-C NOT PUSHED** — `w78/biorhythm-calendar` branch MISSING on origin. No worker report-back received. Cascade signature: scaffold-only /tmp worktree, no commits beyond initial tsconfig.json + node-stubs.d.ts. **B-W78-C ACTIVE.**
+- ✅ **W78-A** PUSHED `w78/achievements-badges` @ `8c61354` (3108 LOC, 135 assertions, TSC=0) — RESPAWN of B-W77-B → **B-W77-B RESOLVED**
+- ✅ **W78-B** PUSHED `w78/sacred-sound-ui` @ `9bfdcc5` (1657 LOC, 364 assertions, TSC=0)
+- ✅ **W78-D** PUSHED `w78/energy-mood-flow` @ `9a76913` (1824 LOC, 137 assertions, TSC=0)
+
+**Cycle 78 final: 3/4 PUSHED + 1 BLOCKER (B-W78-C).** Cumulative w78 branches: 3 on origin.
+
+---
+
+## Cycle 79 — SPAWN (2026-06-30 07:00 UTC, session 414720015827246)
+
+**Tick @ 07:00 UTC.** Cycle 78 PARTIAL closed (3/4 PUSHED, 1/4 cascade-failed at W78-C biorhythm-calendar). Cold-sandbox wake — workspace was empty, ran clone + GITHUB_TOKEN config + git identity setup (cycle 77/78 lessons applied). Working tree clean, MEM available **1978MB** of 2048MB. Capacity ample for 4 parallel Coder workers (cycle 75-78 baseline = 22 min avg, 3-4×0 TSC on survivors).
+
+### Cycle 78 close-out (verified via `git ls-remote --heads origin`)
+
+| W | Branch | SHA | Status | Notes |
+|---|---|---|---|---|
+| A | `w78/achievements-badges` | `8c61354` | ✅ PUSHED | RESPAWN of W77-B (B-W77-B → RESOLVED) |
+| B | `w78/sacred-sound-ui` | `9bfdcc5` | ✅ PUSHED | NEW theme succeeded |
+| C | `w78/biorhythm-calendar` | — | ❌ ERRORED | Cascade signature, branch missing on origin |
+| D | `w78/energy-mood-flow` | `9a76913` | ✅ PUSHED | NEW theme succeeded |
+
+**Cycle 78: 3/4 PUSHED, 1/4 ERRORED.** Cumulative w7X branches on origin: 25+ (20 prior + 5 new w77/w78 landed across W77-W78).
+
+### Cycle 79 selection (recovery + flagship UI surface, no overlap with W70-W78)
+
+- ✅ `biorhythm-calendar` — **RESPAWN of W78-C** on NEW BRANCH `w79/biorhythm-calendar`. Calendar UI for W72 `biorhythm-cycles-b2`. Mobile-first calendar view showing physical/emotional/intellectual cycles. 7-tradition overlay (each day gets a tradition-specific reflection prompt based on cycle phase). Streak tracking, ICS export, dark mode. Reduced scope from W78-C to 2 engines (biorhythm-calendar + reflection-prompt) for fast retry.
+- ✅ `auth-pages` — NEW. Login/signup page components under `app/(auth)/login` and `app/(auth)/signup`. Use W68 `auth-session-engine` primitives. Form validation (email regex, password strength ≥8 chars + 1 number + 1 special). LGPD consent checkbox, redirect-after-auth, error toast, loading state. No full OAuth (already covered by W68). Mobile-first responsive. ≥30 spec assertions covering all validation paths.
+- ✅ `akasha-ia-streaming-ui` — NEW. UI conversion for streaming Akasha IA responses. React component that consumes Server-Sent Events / fetch-stream. Typewriter effect, abort-on-unmount, token-by-token rendering, error boundary, "stop generating" button. Mobile-first, accessible. ≥30 spec assertions on mock EventSource.
+- ✅ `voice-mode-tts` — NEW. TTS integration layer for "Akasha fala". Synthesize speech from Akasha IA responses. Voice preset per tradition (e.g., Cigana voz suave, Orixá voz grave, etc.). Play/pause/stop controls, audio download, voice selection. ≥30 spec assertions. Mobile-first, accessible, no auto-play.
+
+**Active worker count: 0/8 cap (no workers in flight at tick start).** All 4 will be spawned via `communicate` spawn mode → Coder. Each has 30-min hard cap. All 4 work in isolated `/tmp/w79-X/` worktrees, push to `w79/<theme>` branch.
+
+**Worker count rationale:** 4 is the sweet spot in current cascade regime — 6 risks 2-3 cascade failures, 2 under-delivers. Cycle 75 (4/4), 76 (2/4), 77 (3/4), 78 (3/4) confirm 4 is the right cap.
+
+### Capacity snapshot @ spawn
+- MEM available: 1978MB / 2048MB (96%)
+- Cycles run: 79 (W1-W79)
+- Branches on origin: 25+ w7X (20 prior + 5 new) + 4 pending W79
+- ~206K+ LOC engine code cumulative (cycle 78 added +6,589 LOC)
+- 1 ACTIVE BLOCKER (B-W78-C biorhythm-calendar) → being resolved by W79-A respawn
+
+### Worker briefs (each)
+- Read existing pattern from `git show origin/w78/energy-mood-flow:src/lib/w78/energy-mood-flow.ts` (or any w78 branch) — file structure is identical
+- `src/lib/w79/<theme>.ts` + `.spec.ts` (≥40 assertions) + `scripts/smoke/w79-<theme>.ts` (≥20 checks)
+- 7-tradition sacred coverage (Candomblé, Umbanda, Ifá, Cabala, Astrologia, Tantra, Cigano) for tradition-related themes
+- Object.freeze + ReadonlyArray + branded types
+- Mobile-first interface notes
+- TSC=0 + spec 100% green + smoke 100% green
+- Cycle 60-78 lessons applied: diacritic Unicode lookaround, frozen collections, master-number preservation, distance-based aspect scoring, self-running test harness, worktree-isolated tsconfig + node-stubs.d.ts, parameter-property ban
+- No B2B bloat, no main checkout contamination, no git push to main
+
+### Token cascade mitigation (cycle 79)
+- Briefs are concise but complete (target <2.5K tokens per brief, cycle 77 lesson)
+- Workers explicitly told to NOT fabricate success — if error, report exact error
+- Workers have GITHUB_TOKEN URL injection pre-configured (parent did `git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"` before spawn)
+- All 4 spawn in parallel (single tool batch) — maximizes chance of all 4 landing before any cascade
+- W79-A is reduced-scope respawn (2 engines instead of original 4) to minimize cascade risk
+- If 2+ workers fail within 5 min of spawn, cascade is back → next tick (07:30 UTC) will abort and wait for budget refresh
+
+### Wave-spawner doc protocol (this tick)
+- WAVE-LOG.md appended (this entry)
+- BLOCKERS.md updated (cycle 78 close + cycle 79 plan + 1 active blocker)
+- Wave-spawner does NOT commit code; workers push their own branches
+- Next tick @ 07:30 UTC will verify w79/* branches landed
+
+**Status @ 07:01 UTC:** Cycle 79 SPAWNED. 4/4 in flight. 30-min cap → expected close-out 07:30-07:35 UTC.

@@ -1,7 +1,7 @@
 # Akasha Wave-Spawner — Active Blockers
 
-> **Last updated:** 2026-06-30 06:02 UTC (cycle 77 SPAWN — recovery in flight)
-> **Status:** 🟡 IN PROGRESS — cycle 77 respawn active. Cycle 76 PARTIAL had 2 active BLOCKERS (B-W76-A mentorship-pairing + B-W76-C translation-tooling) that errored on Token Plan 2056 cascade at 05:49 UTC. Cycle 77 SPAWNED at 06:02 UTC with 4 workers: W77-A respawns mentorship-pairing on `w77/mentorship-pairing` branch, W77-C respawns translation-tooling on `w77/translation-tooling` branch, W77-B + W77-D are 2 entirely NEW themes (achievements-badges + reading-history-dashboard). 30-min cap → expected close-out 06:30-06:35 UTC. Prior cycles 60-75 all clean. Owner merge action pending on W76-B + W76-D from cycle 76.
+> **Last updated:** 2026-06-30 07:00 UTC (cycle 79 SPAWN — cold-sandbox wake, B-W78-C being resolved)
+> **Status:** 🟡 IN PROGRESS — cycle 79 respawn + new themes active. Cycle 78 PARTIAL closed with 1 BLOCKER (B-W78-C biorhythm-calendar) that errored on cascade at ~06:55 UTC. Cycle 79 SPAWNED at 07:00 UTC with 4 workers: W79-A respawns biorhythm-calendar on `w79/biorhythm-calendar` branch (reduced scope: 2 engines), W79-B is auth-pages (login/signup), W79-C is akasha-ia-streaming-ui, W79-D is voice-mode-tts. 30-min cap → expected close-out 07:30-07:35 UTC. Prior cycles 60-77: clean except cycle 74 (0/4 full cascade), cycle 76 (2/4 partial), cycle 77 (3/4 partial), cycle 78 (3/4 partial). Owner merge action pending on 25+ w7X branches on origin.
 
 This file tracks every structural blocker that prevents the wave-orchestrator from doing its
 job (spawn workers, run TSC gate, push to remote). Each blocker has: status, root cause,
@@ -768,3 +768,48 @@ Same as cycle 21. Wave-spawner logs persist via git push to remote (cycle 18+ pa
 5. Respawn cascade-failed themes on new branch number (`w78/*` not `w77/*`)
 
 **Status @ 06:30 UTC:** 1 ACTIVE BLOCKER (B-W77-B). Auto-respawn scheduled in cycle 78 (4/4 spawn). main @ `3366f0e`.
+
+---
+
+## B-W78-C: cycle 78 W78-C (biorhythm-calendar) — ❌ FAILED (token cascade, 0 LOC written)
+
+**Status (2026-06-30 07:00 UTC, tick 414720015827246):** ❌ **ACTIVE.** `w78/biorhythm-calendar` branch MISSING on origin. Worker session errored silently — no report-back received, no commits beyond initial scaffold.
+
+**Evidence (cycle 78 close-out, 07:00 UTC cold-sandbox wake):**
+
+```
+$ git ls-remote --heads origin | grep "w78/biorhythm"
+(empty — branch does not exist on origin)
+
+$ git log --since="1 hour ago" --oneline | wc -l
+  4  (cycle 78 interim/close-out doc commits only, no W78-C commits)
+
+$ Active w78 branches on origin: 3/4
+  - w78/achievements-badges @ 8c61354 ✅
+  - w78/sacred-sound-ui @ 9bfdcc5 ✅
+  - w78/energy-mood-flow @ 9a76913 ✅
+  - w78/biorhythm-calendar — MISSING ❌
+```
+
+**Cycle 78 final: 3/4 PUSHED + 1 ERRORED.** W78-C errored at ~06:55 UTC (5 min before 07:00 cap) — likely Token Plan 2056 cascade like cycle 76/77.
+
+**What W78-C was supposed to deliver:**
+- Calendar UI for W72 `biorhythm-cycles-b2` (753 LOC, 199 assertions production engine)
+- Mobile-first calendar view: physical/emotional/intellectual cycles
+- 7-tradition overlay (each day gets tradition-specific reflection prompt)
+- Streak tracking, ICS export, dark mode
+- ~2000-3000 LOC planned (UI layer + spec + smoke)
+
+**Respawn plan (cycle 79, 07:00 UTC):**
+- **W79-A** respawns biorhythm-calendar on NEW branch `w79/biorhythm-calendar` (cycle 77/78 lesson: cascade-failed respawns always go to NEXT branch number)
+- **REDUCED SCOPE** for fast retry: 2 engines (biorhythm-calendar.ts + reflection-prompt.ts) instead of original 4
+- This follows the cycle 72 W72-A pattern that delivered in 12 min vs original 90+ min silent failure
+
+**Cross-cycle durable lesson (cycle 78 close-out):**
+- **Cascade rate sustained at 1/4 (25%) for 4 consecutive cycles** (76, 77, 78 all PARTIAL)
+- The 4-worker cap + parallel batched spawn + reduced-scope respawn is the working mitigation
+- Biorhythm theme has now FAILED 2x (W70-D + W78-C) — likely complex theme that needs B2 retry pattern
+- Cycle 79 reduced-scope retry (2 engines instead of 4) is the standard escape hatch
+
+**Status @ 07:00 UTC:** ❌ ACTIVE. Auto-respawn scheduled in cycle 79 (W79-A on `w79/biorhythm-calendar`, reduced scope). main @ `b575c6e`.
+
