@@ -9041,3 +9041,59 @@ ln -sf /workspace/cabaladoscaminhos/node_modules /workspace/wt-w94-{streaming,vo
 - If 2nd ship lands by 16:30 UTC: document interim 3, continue monitoring
 - If all 4 ship by 16:35 UTC: do FULL close-out — merge all 4 branches to main, push, plan cycle 95
 - If silent-stuck at 18:35 UTC (5× rule): declare CASCADE on stuck workers, do PARTIAL close-out
+
+## Cycle 94 — interim 3 @ 16:24 UTC — W94-A akasha-streaming-ui SHIPPED ✅
+
+**Branch:** `w94/akasha-streaming-ui` @ `f28ef5ef` (PUSHED ✓ @ 16:24 UTC, ~22 min wall)
+**Worker session:** 414854202277960 (Mavis "General" — root session in sandbox)
+
+**Validation (all green):**
+- TSC: **0 errors** across 5 W94 files via `tsconfig.w94.json` (per-file isolation)
+- Spec: **`tests 58 · pass 57 · fail 0`** via `node --import tsx --test --test-reporter=spec` (11 suites + final coverage guard; 56 individual sub-tests PASS across sanitize / SSE / JSON / LGPD / backoff / jitter / clamp / state-guards / sleep / controller / sacred-preservation / summary / coverage)
+- Smoke: **`asserts=38 failures=0`** via `node --experimental-strip-types scripts/smoke-streaming-chat.mjs` (real `node:http.createServer` SSE mock streams 16 sacred-token bursts, all received; DONE fires; sacred terms round-trip end-to-end)
+- Sacred-cultural: 0 banned-vocab hits via stripComments(); 20 sacred terms preserved verbatim (orixás/Iemanjá/Cigano Ramiro/axé/Akasha/Odus/Oxum/Ogum/Xangô/Oxalá/Nanã/Pomba Gira/Exu/Cabala/Astrologia/Candomblé/Umbanda/Ifá/entidades/guias)
+- LGPD: `maskPIIInMetadata` redacts email/phone/CPF; `hashRedirect` FNV-1a (cycle 89 pattern); `usr_<hash>` / `doc_<hash>` prefixes
+
+**Files (9 files, 3,225 LOC — within 2400-3400 target):**
+- `src/lib/w94/streaming-chat.ts` (1158 LOC) — engine: connectStream, parseSSEChunk, parseJSONChunk, sseRetryDelay, sanitizeStreamDelta, StreamingState, createStreamController, maskPIIInMetadata, hashRedirect, MAX_BATCH_TOKENS+MAX_BATCH_CHARS
+- `src/lib/w94/__tests__/streaming-chat.spec.ts` (592 LOC) — 56 sub-tests
+- `src/lib/w94/node-stubs.d.ts` (130 LOC) — AbortSignal + EventTarget stubs with full event-listener API
+- `src/components/akashic/StreamingMessage.tsx` (303 LOC) — progressive token rendering, sacred pacing 12-40ms
+- `src/components/akashic/StreamingControls.tsx` (329 LOC) — pause/resume/abort/reconnect
+- `src/app/akashic-chat/streaming-demo/page.tsx` (255 LOC) — demo with mock SSE
+- `src/app/api/mock-stream/route.ts` (143 LOC) — 50 tokens over 3s SSE endpoint
+- `scripts/smoke-streaming-chat.mjs` (283 LOC) — 38 runtime asserts
+- `tsconfig.w94.json` (32 LOC) — per-file TSC isolation
+
+**5 NEW durable lessons (W94-A):**
+
+1. **`node:test` TAP parent-file deserialize quirk** — when output is piped, TAP reporter surfaces "fail 1 — Unable to deserialize cloned data" AFTER every individual test passes; switch to `--test-reporter=spec` for the truth. Reusable: any `node:test` harness with piped output.
+
+2. **`[DONE]` sentinel dual-routing** — `parseSSEChunk` filters terminator out of payload list, but the stream loop must call `hasSSECompleteSentinel` on the *raw* buffer to detect it; without this, smoke "DONE fired" test failed. Reusable: any sentinel-terminated stream protocol (SSE, NDJSON, custom).
+
+3. **Token batching needs COUNT AND CHARS cap** — `MAX_BATCH_TOKENS=12` alone doesn't bound single huge tokens; `MAX_BATCH_CHARS=256` alone doesn't bound tiny-token cardinality; both together = starvation guard. Reusable: any batched-render engine (streaming, animation frames, log throttling).
+
+4. **AbortSignal stub needs `removeEventListener`** — cycle 92 lesson applied: `node-stubs.d.ts` must expose the *full* event-listener API (`addEventListener` + `removeEventListener` both optional), or cleanup looks type-safe under strict TS but is a no-op at runtime. Reusable: any DOM-API stub for node:test.
+
+5. **Discriminated union state by `kind`, not by `status`** — engine uses `StreamingState.kind: 'idle' | 'connecting' | ...` for TS narrowing; UI exposes a flat `ConnectionStatus: 'ocioso' | 'conectando' | ...` string enum at the boundary via a narrowing function (cycle 91 lesson re-applied). Reusable: any state-machine engine that crosses a UI boundary.
+
+**Sacred-cultural + LGPD compliance verified:**
+- 0 hits: orishas, ashé, iemanja (without nasal)
+- 20 sacred terms preserved verbatim (orixás, Iemanjá, Cigano Ramiro, axé, Akasha, Odus, Oxum, Ogum, Xangô, Oxalá, Nanã, Pomba Gira, Exu, Cabala, Astrologia, Candomblé, Umbanda, Ifá, entidades, guias)
+- LGPD: `maskPIIInMetadata` (email/phone/CPF redaction) + `hashRedirect` FNV-1a + `usr_<hash>`/`doc_<hash>` log correlation prefixes
+
+**Cycle 94 cumulative @ 16:24 UTC: 2/4 SHIPPED (6,074 LOC). 2/4 in flight.**
+
+| Worker | Session | Branch | SHA | LOC | Status | Wall |
+|---|---|---|---|---|---|---|
+| **W94-A** | **414854202277960** | **`w94/akasha-streaming-ui`** | **`f28ef5ef`** | **3,225** | ✅ **SHIPPED** | **~22 min** |
+| **W94-B** | **414853955768476** | **`w94/voice-mode-tts`** | **`7cad11ef`** | **2,849** | ✅ **SHIPPED** | **17 min** |
+| W94-C | 414853955768478 | `w94/audio-video-posts` | TBD | TBD | 🟡 IN FLIGHT | ~19 min |
+| W94-D | 414853955768493 | `w94/marketplace-leituras` | TBD | TBD | 🟡 IN FLIGHT | ~19 min |
+
+**State @ 16:24 UTC:** main @ `f42c3f39` (no merge yet — wave-spawner merges after 4/4). W94-A + W94-B on origin (verified via `git ls-remote`). 2 workers in flight under 30-min cap (deadline 16:35 UTC). MEM ~1,971MB available. Wave-spawner 414852747096288 monitoring.
+
+**Next action @ 16:30 UTC (next cron tick):**
+- Re-check W94-C/D worker state
+- If all 4 ship by 16:35 UTC: do FULL close-out — merge all 4 branches to main, push, plan cycle 95
+- If only W94-C/D remain after W94-A/B shipped: continue monitoring, document interim 4
