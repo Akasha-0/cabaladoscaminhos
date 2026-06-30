@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "types": [],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": false,
+    "allowImportingTsExtensions": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/lib/community/mentorship-engine.ts",
+    "src/lib/community/mentorship-scoring.ts",
+    "src/lib/community/mentorship-matching.ts",
+    "src/lib/community/mentorship-availability.ts",
+    "src/lib/community/__tests__/mentorship-engine.spec.ts",
+    "src/lib/community/__tests__/mentorship-scoring.spec.ts",
+    "src/lib/community/__tests__/mentorship-matching.spec.ts",
+    "src/lib/community/__tests__/mentorship-availability.spec.ts",
+    "globs.w68.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
