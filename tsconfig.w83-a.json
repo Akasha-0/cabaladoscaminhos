@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "skipLibCheck": true,
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "jsx": "preserve",
+    "types": [],
+    "strict": true,
+    "allowImportingTsExtensions": true,
+    "noUncheckedIndexedAccess": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "ignoreDeprecations": "6.0",
+    "resolveJsonModule": false
+  },
+  "include": [
+    "src/components/dm/**/*",
+    "src/components/react-stubs.d.ts",
+    "src/components/react-stubs.js",
+    "src/lib/engines/dm-ui/**/*",
+    "src/test/dm-messages-ui.spec.ts",
+    "src/test/node-stubs.d.ts",
+    "react-stubs.d.ts",
+    "scripts/smoke/dm-messages-ui.ts"
+  ]
+}
