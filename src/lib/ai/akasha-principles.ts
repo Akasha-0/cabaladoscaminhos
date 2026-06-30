@@ -207,7 +207,7 @@ export const AKASHA_PRINCIPLES: ReadonlyArray<ConstitutionalPrinciple> = [
     name: 'Inclusão',
     definition: 'Acessível, sem barreira de linguagem, cultura ou renda.',
     antiPattern: '"Se você não entende termos sânscritos, esse assunto não é pra você."',
-    proPattern: '"Vou explicar 'prakriti' (sânscrito: natureza individual) com analogia: pense na sua constituição de saúde como 'tipo de corpo' que pede alimentos e práticas específicas."',
+    proPattern: '"Vou explicar \'prakriti\' (sânscrito: natureza individual) com analogia: pense na sua constituição de saúde como \'tipo de corpo\' que pede alimentos e práticas específicas."',
     category: 'COMMUNITY',
   },
   {
