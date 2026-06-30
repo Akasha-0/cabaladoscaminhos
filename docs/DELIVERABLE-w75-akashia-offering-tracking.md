@@ -224,7 +224,8 @@ cigano, tantra** — 7 of 7 (well above the ≥5 requirement).
   - `tsconfig.w75-b.json` (26 LOC, worktree-isolated TypeScript config)
   - `docs/DELIVERABLE-w75-akashia-offering-tracking.md` (this file)
 
-- **Commit SHA:** *(filled by git commit step)*
+- **Commit SHA:** `9de08b7dbf56406d32b4f7c2b113a5e6a8ac56` (cycle 75, 2026-06-30 05:35 UTC)
+- **Pushed to:** `origin/w75/akashia-offering-tracking` ✅
 
 ## 10. New Durable Lessons (cycle 75)
 
