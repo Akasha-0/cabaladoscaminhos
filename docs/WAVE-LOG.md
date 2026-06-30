@@ -1,5 +1,55 @@
 # Akasha Wave-Spawner — Cycle Log
 
+## Cycle 82 — 2026-06-30 08:30 UTC — 4 Coder workers SPAWNED (cruzamento-por-casa-engine + akasha-prompt-context-builder + mentorship-ui + dm-messages-ui)
+
+**Cycle 82 spawn (orchestrator session 414742163804357, 08:30 UTC).** Fresh sandbox detected — `/workspace/cabaladoscaminhos` was missing, re-cloned from origin (depth 50). main @ `218079f5` (cycle 80 close-out). **MEM 1977MB available / 2048MB total.** 4 Coder workers spawned in parallel, 30-min hard cap, target close-out @ 09:00 UTC.
+
+**SPAWN manifest:**
+
+| Worker | Session | Title | Branch | Engine/UI | TSC | Sacred | Cap |
+|---|---|---|---|---|---|---|---|
+| **A** | `414743105200419` | W82-A cruzamento-por-casa-engine | `w82/cruzamento-por-casa-engine` | NEW: 36 casas × 4 maps (Astrologia + Numerologia + Odu + Cigano) → CruzamentoCasa[36] with surgical sintese | isolated `tsconfig.w82-a.json` | 4 trad involved (astrologia, numerologia, odu, cigano) | 30 min |
+| **B** | `414743267553428` | W82-B akasha-prompt-context-builder | `w82/akasha-prompt-context-builder` | NEW: buildContext(leitura, pergunta, historico) → PromptContext for Akasha IA chat (surgical specificity, NFD-normalized sacred term detection) | isolated `tsconfig.w82-b.json` | 7 trad catalog | 30 min |
+| **C** | `414743105200420` | W82-C mentorship-ui | `w82/mentorship-ui` | NEW: 3 pages (browse + detail + my-sessions) for W68 mentorship-pairing engine. InMemoryMentorshipAdapter, 12 sample mentors, h()-only (no JSX literals) | isolated `tsconfig.w82-c.json` + react-stubs | 7 trad labels | 30 min |
+| **D** | `414743267553429` | W82-D dm-messages-ui | `w82/dm-messages-ui` | NEW: 2 pages (conversation list + chat thread) for W68 dm-engine. InMemoryDmAdapter, 8 conversas, chatReducer (idle/composing/awaiting-consent/error), @mention + quote-reply + LGPD consent | isolated `tsconfig.w82-d.json` + react-stubs | 7 trad labels | 30 min |
+
+**Cycle 82 theme: VISION items from 2026-06-04 roadmap + W68 engine UI surfaces.**
+
+1. **W82-A cruzamento-por-casa-engine (CORE vision item)** — User's personal method. Mesa Real × 4 maps cross-reference. The "core" of the consulting experience.
+2. **W82-B akasha-prompt-context-builder (CORE vision item)** — Post-game AI chat. Builds structured prompt so the AI answers with surgical precision (cites specific cards, Orixás, Odu).
+3. **W82-C mentorship-ui (W68 engine UI surface)** — W68 delivered mentorship-pairing engine; this is the user-facing browse+book+manage surface.
+4. **W82-D dm-messages-ui (W68 engine UI surface)** — W68 delivered dm-engine; this is the chat surface with LGPD consent + @mentions + quote-reply.
+
+**Capacity check @ 08:30 UTC:**
+- MEM: 1977MB available / 2048MB (96% free) ✅
+- Workers active: 4 spawned, all status=0 (running) ✅
+- Sandbox fresh: re-cloned, depth 50, GITHUB_TOKEN configured via insteadOf
+- W81 status: 2/4 PUSHED (C+D on origin). W81-A reputation-engine and W81-B events-rsvp-ui stalled (no recent activity in 22+ min)
+
+**Cycle 82 constraints (carried from cycle 78-81 lessons):**
+- TSC=0 on isolated config (worktree-scoped)
+- Self-running spec harness (no vitest, no node:crypto) — embed SHA-256 inline
+- **NO JSX literals** in W82-C and W82-D — use `h()` helper (cycle 78 W79-B TS7026 lesson)
+- `react-stubs.d.ts` declares `JSX.IntrinsicElements` + `JSX.Element` mirroring ReactElement (cycle 81 W81-D lesson)
+- Object.freeze on all constants
+- Branded types (CasaId, ConversaId, etc.)
+- Discriminated unions for state machines (W82-D chatReducer)
+- 7-tradição sacred coverage in all engines/UIs
+- NFD-normalized sacred term matching (cycle 79 W79-D lesson)
+- No external deps (sandbox-friendly)
+- Worktree path = `/tmp/w82-{a,b,c,d}` with absolute paths
+- Push timeout = 60s; if hangs, document command and skip
+
+**Cycle 82 NEW track selection rationale:**
+1. **W82-A cruzamento-por-casa-engine** — User's personal method from 2026-06-04 vision. Was NOT in any prior cycle. Core to the consulting experience.
+2. **W82-B akasha-prompt-context-builder** — Post-game AI chat prompt builder from 2026-06-04 vision. W79-C delivered the streaming UI; this is the engine that feeds it. NEW engine, complements W79-C.
+3. **W82-C mentorship-ui** — W68 mentorship-pairing engine has no UI yet. Surfacing it is a 1-cycle win.
+4. **W82-D dm-messages-ui** — W68 dm-engine has no UI yet. Surfacing it is a 1-cycle win.
+
+**Status @ 08:30 UTC:** Cycle 82 SPAWNED 4/4. All workers running. Next check @ 09:00 UTC for delivery + push. Wave-spawner session 414742163804357.
+
+---
+
 ## Cycle 80 — 2026-06-30 07:30 UTC — 4 Coder workers SPAWNED (reputation-engine + events-rsvp-ui + marketplace-booking-ui + livestream-watch-ui)
 
 **Cycle 80 spawn (orchestrator session 414727404351704, 07:30 UTC).** Fresh sandbox detected — `/workspace/cabaladoscaminhos` was missing, re-cloned from origin (depth 50 + w77/w78/w79 branch fetch). main @ `5399587` (cycle 79 close-out). **MEM 1977MB available / 2048MB total.** 4 Coder workers spawned in parallel, 30-min hard cap, target close-out @ 07:35 UTC.
