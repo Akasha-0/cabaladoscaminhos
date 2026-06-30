@@ -5294,3 +5294,86 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 
 ---
 
+
+---
+
+## Cycle 73 W73-D delivery @ 03:56 UTC — marketplace-leituras-engine PUSHED ✅
+
+**W73-D delivery (worker session 414671446884616, 03:56:08 UTC push).** Branch `w73/marketplace-leituras-engine` at SHA `51b6d6f`. 24 min from spawn (03:32:41) to push (03:56:08). Within 30-min cap.
+
+**W73-D SHIP manifest:**
+| File | LOC |
+|---|---|
+| listing-core.ts | 602 (31 sacred templates × 7 traditions, 14 OfferingKinds) |
+| booking.ts | 549 (LGPD consent, HMAC-encrypted sacredContext, 9 statuses) |
+| listing-core.spec.ts | 294 (27 vitest assertions) |
+| booking.spec.ts | 465 (30 vitest assertions) |
+| smoke.ts | 322 (58 self-running assertions, 7 sections) |
+| tsconfig + node-stubs | config |
+| **TOTAL** | **2,332 LOC + 2 config** |
+
+- 58/58 spec + 58/58 smoke = **116 total checks PASS**
+- TSC=0 with `lib: ["ES2022", "DOM"]` on worktree-isolated tsconfig.w73.json ✅
+- 31 sacred listing templates (target was 30+) ✅
+- 14 OfferingKinds + 9 BookingStatuses + 24h graduated refund (100/50/0%) ✅
+- Mock payment `pay_${crypto.randomUUID()}` — no Stripe ✅
+- LGPD per-field consent (frozen shareContact/Email/Phone/SacredContext + ipHash 64-hex) ✅
+- HMAC-encrypted sacredContext with FNV-64 hex + opad/ipad ✅
+
+**W73-D NEW lessons (cycle 73 unlock):**
+1. **`node-stubs.d.ts` MUST be a script file** (no top-level imports/exports) for `declare global {}` to work. Use bare `declare const Buffer: any;` instead.
+2. **Add `lib: ["ES2022", "DOM"]` to tsconfig** for `console.log` access in worktree-isolated config (DOM types aren't pulled in by default).
+3. **`declare global { var process: ProcessLike }` does NOT get picked up by worktree-isolated tsconfig** — declare inline in source files as `declare const process: { env: ... };`.
+4. **`if (!r.ok) expect(r.value.x)` does NOT narrow `Result<T,E>` type** — use positive `if (r.ok) expect(r.value.x)` for proper narrowing.
+5. **Branded types in Map**: use `Map<string, ListingId>` directly, NOT `Map<string, ReturnType<typeof asUserId>>` (brand lost through ReturnType).
+
+---
+
+## Cycle 73 COMPLETE @ 03:56 UTC — 4/4 w73 workers DELIVERED + PUSHED ✅✅✅✅
+
+**Cycle 73 close-out (orchestrator session 414668392509670, 03:56 UTC).** 4/4 PUSHED in 18-24 min avg. Wall-clock cycle: 03:32:41 spawn → 03:56:08 last push = **23.5 min cycle close**. **B-W73-NONE** (no BLOCKERS).
+
+**SHIP manifest (cycle 73):**
+
+| Worker | Branch | SHA | Wall | LOC | Specs | Smoke | TSC | Traditions |
+|---|---|---|---|---|---|---|---|---|
+| **A** | `w73/events-workshops-engine` | `1fafce21` | 18 min | 3,022 | 153/153 ✅ | 105/105 ✅ | 0 ✅ | 7 events/themes |
+| **B** | `w73/daily-reflection-engine` | `30194164` | 19 min | 1,917 | 92/92 ✅ | 35/35 ✅ | 0 ✅ | 7 × 9 archetypes = 56 prompts |
+| **C** | `w73/comments-moderation-engine` | `b9026ca0` | 19 min | 2,180 | 124/124 ✅ | 124/124 ✅ | 0 ✅ | 7 (whitelist 220+ terms) |
+| **D** | `w73/marketplace-leituras-engine` | `51b6d6f` | 24 min | 2,332 | 58/58 ✅ | 58/58 ✅ | 0 ✅ | 7 × 31 templates |
+| **TOTAL** | — | — | **20 min avg** | **9,451** | **427/427 ✅** | **322/322 ✅** | **4×0** | **7/7 ✅** |
+
+**Cycle 73 cumulative stats:**
+- 4/4 branches on origin, all clean working trees
+- ~9,451 LOC production (engine + spec + smoke)
+- ~749 total assertions + smoke = 100% PASS
+- Sacred coverage: ALL 4 engines have 7-tradition woven (3 spiritual engines + 1 meta engine with whitelist)
+- 5 NEW durable lessons in agent memory (W73-D type narrowing + tsconfig + branded-type Map)
+- Wall-clock: 18-24 min per worker (avg 20 min, well under 30-min cap)
+- 0 external deps added across all 4 workers
+- 0 BLOCKERS (B-W73-NONE)
+
+**Cycle 73 NEW durable lessons (top, cross-cycle reusable):**
+1. **`node-stubs.d.ts` is a SCRIPT file** — no imports/exports at top level (W73-D). Use bare `declare const` declarations.
+2. **`lib: ["ES2022", "DOM"]` required** in worktree-isolated tsconfig for `console.log` access (W73-D).
+3. **`declare global { var process }` does NOT work** in worktree-isolated tsconfig — inline declarations in source files (W73-D).
+4. **Result type narrowing requires positive `if (r.ok)`**, not negative `if (!r.ok)` (W73-D).
+5. **Branded types in Map**: use the brand directly, NOT `ReturnType<typeof asId>` (W73-D).
+6. **Cycle 73 lessons reaffirm cycle 60-72 patterns**: worktree tsconfig, .ts imports, FNV-1a hash, Meeus lunar, HMAC encryption, sacred-penalty guard, spec-registry runner.
+
+**Cross-cycle durable lesson (cycle 73):**
+- **No BLOCKER cycle for the first time since cycle 70** — cycle 73 shipped 4/4 within cap with 0 spawn failures, 0 missing branches, 0 TSC errors. Healthy baseline restored.
+- **Avg cycle close time is now ~20 min** (down from cycle 70's 28 min). Workers are faster as lessons compound.
+- **Sacred coverage is baseline** — every worker delivers 7-tradition woven without explicit reminder. Cultural pattern internalized.
+- **Dual-orchestrator pattern is healthy** — phantom W73 claim detected, recovered, and the real cycle 73 shipped on different themes. No conflict.
+
+**Tick close-out doc state (this tick, 03:56 UTC, session 414668392509670):**
+- `docs/WAVE-LOG.md` — cycle 73 close-out entry appended
+- `docs/BLOCKERS.md` — header will update in next tick (cycle 74 spawn)
+- Wave-spawner does NOT commit code (only doc updates) — workers push their own branches
+- Doc push: `56c8bae` → `1a163dd` (W73-A ack) → next: cycle 73 close-out commit
+
+**Status @ 03:56 UTC: ✅ CYCLE 73 COMPLETE — 4/4 PUSHED. 0 BLOCKERS. Ready for cycle 74 spawn @ 04:00 UTC.**
+
+---
+
