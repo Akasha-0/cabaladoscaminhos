@@ -66,7 +66,7 @@ scripts/smoke/
 react-stubs.d.ts                          19 LOC — JSX global namespace
 tsconfig.w82-c.json                       26 LOC — isolated config (allowImportingTsExtensions, strict)
 
-TOTAL: 2,116 LOC across 19 files
+TOTAL: 2,291 LOC across 21 files (incl. scripts/loader.mjs and DELIVERABLE.md)
 ```
 
 ## Sacred coverage (7 tradições)
