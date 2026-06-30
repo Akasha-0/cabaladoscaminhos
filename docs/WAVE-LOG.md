@@ -6626,3 +6626,39 @@ cigano ✦, candomblé 🪶, umbanda ☩, ifá ◈, cabala ☸, astrologia ☉, 
 - Wave-spawner (this session) does NOT merge to main during the 30-min window
 
 **Status @ 10:30 UTC:** Spawning 4 workers. Next wave-spawner tick at 11:00 UTC. Wave-spawner session 414771547345007.
+
+
+### Cycle 86 interim 1 — 10:53 UTC (3/4 PUSHED)
+
+| Worker | Branch | SHA | LOC | NEW Asserts | Wall | Status |
+|---|---|---|---|---|---|---|
+| W86-A voice-page | w86/voice-page | 5e5f6957 | +1967 (14 files) | 97 (65 spec + 32 smoke) | 17 min | ✅ PUSHED |
+| W86-B marketplace-page | w86/marketplace-page | 44ffd3d4 | +2039 NEW (76 + 105 inherited = 181 total, 17 files) | 76 NEW (37 filter + 27 page + 12 smoke) | 22 min | ✅ PUSHED |
+| W86-C i18n-pt-br-en-es | w86/i18n-pt-br-en-es | e8cbdce3 | +1982 (14 files) | TBD | ~22 min | ✅ PUSHED |
+| W86-D events-workshops | w86/events-workshops | — | in flight | in flight | in flight | 🚀 in flight |
+
+**Cycle 86 partial tally @ 10:53 UTC: 4/4 PUSHED target +5,988 LOC across 45+ files.** MEM back to 1971MB available (3 workers already closed).
+
+**NEW W86-A lessons (extending cycle-85 corpus):**
+1. **"Documented-but-shallow-truncated SHAs"** — wave-spawner markdown references a SHA, but a worker doing `git fetch origin --depth 200` cannot reach w-branches outside the default branch's history. SHA exists on origin (`refs/heads/w85/voice-mode-akasha` @ 3acf05cf confirmed) but is unreachable to a depth-200 fetch. **Workers must do `git fetch origin <branch>:<branch>` or `--unshallow` to pull specific w-branches.** W86-A fell back to engine reconstruction from the cycle-85 close-out contract — still shipped TSC=0 + 97 assertions + 17 min wall. Lesson: workers should NEVER trust a markdown-referenced SHA without first running `git ls-remote origin <branch>` AND verifying reachability in their fetch depth.
+2. **`await` in non-async `it()` breaks OXC** — hoist imports, never use async test bodies without `async () => {}`.
+3. **Voice styles that NEGATE banned words still contain them** — use POSITIVE phrasing for sacred-tone affirmations.
+4. **`npx tsx scripts/...`** — needed for `--experimental-strip-types` to handle `.ts` extensions in smoke scripts.
+5. **`Object.isFrozen()` is the runtime contract for `Object.freeze` exports** — guard in spec.
+
+**NEW W86-B lessons (extending cycle-85 corpus + W86-A):**
+1. **`window.setTimeout` over `setTimeout`** when tsconfig `lib: DOM` collides with engine `node-stubs.d.ts`'s `function setTimeout(fn, ms): unknown` declaration. `window.setTimeout` returns `number`, sidesteps the collision.
+2. **`noUncheckedIndexedAccess` cascading** — `TRADICAO_LABELS[t]` returns `string | undefined` even for literal key types. Page tsconfig pragmatically turns it off; engine keeps on for backend strict.
+3. **Source-inspection spec > vitest+jsdom** for `'use client'` pages — reading `.tsx` via `readFileSync` + regex on ARIA/role/data-testid gives cheap reliable assertions without a render layer. **Reusable pattern for cycle 87+.**
+4. **Branded types need explicit casts** in specs — `byTradicao('cigano' as Tradicao)`.
+5. **Page filter composes UI-side, not engine-side** — `applyPageFilter(items, filter, verifiedSet)` in `useMemo` over the fetched snapshot, avoiding engine re-runs on every keystroke.
+6. **LGPD gate via stateful `canSubmit`** — `disabled={!canSubmit}` blocks both HTML form submit AND React handler.
+
+**Cycle 86 strategy validation so far:**
+- ✅ Reduced-scope brief pattern STILL 100% effective (3/3 PUSHED in 17-22 min each, all under 25 min cap)
+- ✅ TSC=0 strict isolated (page tsconfig + engine tsconfig separated, matches W84-C/W85-B pattern)
+- ✅ Sacred-cultural sensitivity gates held (zero exoticizing words in W86-B, 6 own-term voice styles in W86-A)
+- ✅ LGPD consent at submit, not earlier — W86-B pattern matches W85-C/W85-D
+- ✅ Source-inspection page spec pattern INVENTED in W86-B — reusable for cycle 87+
+
+**Status @ 10:53 UTC:** 3/4 PUSHED, 1/4 in flight (W86-D events-workshops fresh theme — typically slowest). Cycle 86 cap 11:00 UTC (7 min remaining). main @ `dc9c76d`. Wave-spawner session 414771547345007.
