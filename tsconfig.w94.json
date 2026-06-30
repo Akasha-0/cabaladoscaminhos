@@ -1,0 +1,26 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "noEmit": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "bundler",
+    "module": "esnext",
+    "target": "es2022",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "src/lib/w94/**/*",
+    "src/components/community/AudioPost.tsx",
+    "src/components/community/VideoPost.tsx",
+    "src/components/community/CarrosselAyan.tsx",
+    "src/components/community/CreateMediaPost.tsx",
+    "src/app/community/feed/media-demo/page.tsx",
+    "next-env.d.ts"
+  ]
+}
