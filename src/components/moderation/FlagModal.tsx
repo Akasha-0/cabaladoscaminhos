@@ -19,7 +19,8 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 
-type FlagReason = 'SPAM' | 'HARASSMENT' | 'MISINFO' | 'OTHER';
+// W92 soft-touch: 5 reasons (added OFF_TOPIC). Tom acolhedor, sem "denúncia".
+type FlagReason = 'SPAM' | 'HARASSMENT' | 'MISINFO' | 'OFF_TOPIC' | 'OTHER';
 type FlagTargetType = 'POST' | 'COMMENT' | 'USER' | 'GROUP';
 
 const REASONS: { value: FlagReason; label: string; helper: string }[] = [
@@ -30,20 +31,48 @@ const REASONS: { value: FlagReason; label: string; helper: string }[] = [
   },
   {
     value: 'HARASSMENT',
-    label: 'Assédio ou desrespeito',
-    helper: 'Ataques pessoais, discurso de ódio, intimidação.',
+    label: 'Acolhimento comprometido',
+    helper: 'Conteúdo que afasta pessoas, ataca ou intimida.',
   },
   {
     value: 'MISINFO',
-    label: 'Informação enganosa',
-    helper: 'Fatos falsos apresentados como verdade.',
+    label: 'Informação que precisa de cuidado',
+    helper: 'Fato que pode confundir a conversa.',
+  },
+  {
+    value: 'OFF_TOPIC',
+    label: 'Fora do tom da conversa',
+    helper: 'Não combina com o espaço onde estamos.',
   },
   {
     value: 'OTHER',
     label: 'Outro motivo',
-    helper: 'Descreva abaixo para nossa equipe entender.',
+    helper: 'Conte com suas palavras para nossa equipe.',
   },
 ];
+
+const COPY = {
+  pt: {
+    title: (label: string) => `Reportar ${label}`,
+    desc: 'Conte pra gente o que você sente. Sua identidade não é revelada ao autor.',
+    successNew: 'Sinalização registrada com cuidado',
+    successDup: 'Você já sinalizou — cuidadores estão revisando',
+    successNote: 'Nossa equipe vai revisar com presença. Você não será exposto publicamente.',
+    privacyTitle: 'Privacidade',
+    privacyBody:
+      'Sua sinalização é privada. Apenas cuidadores veem que houve sinalização. O autor não saberá que foi você.',
+  },
+  en: {
+    title: (label: string) => `Report ${label}`,
+    desc: 'Tell us what you noticed. Your identity stays private.',
+    successNew: 'Report sent with care',
+    successDup: 'Already reported — stewards are reviewing',
+    successNote: 'Our team will review with presence. You stay anonymous.',
+    privacyTitle: 'Privacy',
+    privacyBody:
+      'Your report is private. Only stewards see that a report exists. The author won’t know it was you.',
+  },
+};
 
 const TARGET_LABELS: Record<FlagTargetType, string> = {
   POST: 'este post',
@@ -58,6 +87,8 @@ export interface FlagModalProps {
   targetType: FlagTargetType;
   targetId: string;
   onReported?: (info: { id: string; alreadyReported: boolean }) => void;
+  /** Idioma (PT por padrão). */
+  locale?: 'pt' | 'en';
 }
 
 export function FlagModal({
@@ -66,6 +97,7 @@ export function FlagModal({
   targetType,
   targetId,
   onReported,
+  locale = 'pt',
 }: FlagModalProps) {
   const [reason, setReason] = useState<FlagReason | null>(null);
   const [description, setDescription] = useState('');
@@ -188,14 +220,10 @@ export function FlagModal({
               className="text-lg font-semibold text-slate-100"
             >
               {success.alreadyReported
-                ? 'Você já denunciou isso'
-                : 'Denúncia registrada'}
+                ? COPY[locale].successDup
+                : COPY[locale].successNew}
             </h2>
-            <p className="text-sm text-slate-400">
-              {success.alreadyReported
-                ? 'Nossa equipe já está revisando. Obrigado pela paciência.'
-                : 'Nossa equipe de moderação vai revisar em breve. Você não será exposto publicamente.'}
-            </p>
+            <p className="text-sm text-slate-400">{COPY[locale].successNote}</p>
             <Button
               type="button"
               onClick={() => onOpenChange(false)}
@@ -215,14 +243,13 @@ export function FlagModal({
                   id="flag-modal-title"
                   className="text-lg font-semibold text-slate-100"
                 >
-                  Denunciar {TARGET_LABELS[targetType]}
+                  {COPY[locale].title(TARGET_LABELS[targetType])}
                 </h2>
                 <p
                   id="flag-modal-desc"
                   className="text-sm text-slate-400 mt-0.5"
                 >
-                  Conte pra gente o que está acontecendo. Sua identidade não
-                  será revelada.
+                  {COPY[locale].desc}
                 </p>
               </div>
             </div>
@@ -285,9 +312,8 @@ export function FlagModal({
             <div className="mt-4 p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/20 flex gap-2">
               <Shield className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
               <p className="text-xs text-emerald-300/90">
-                Sua denúncia é <strong>privada</strong>. Apenas a equipe de
-                moderação vê quem denunciou. O autor do conteúdo não saberá
-                que foi você.
+                <strong>{COPY[locale].privacyTitle}.</strong>{' '}
+                {COPY[locale].privacyBody}
               </p>
             </div>
 
@@ -317,12 +343,12 @@ export function FlagModal({
                 {submitting ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
-                    Enviando…
+                    {locale === 'en' ? 'Sending…' : 'Enviando…'}
                   </>
                 ) : (
                   <>
                     <Flag className="w-4 h-4 mr-1.5" />
-                    Enviar denúncia
+                    {locale === 'en' ? 'Send report' : 'Enviar'}
                   </>
                 )}
               </Button>
