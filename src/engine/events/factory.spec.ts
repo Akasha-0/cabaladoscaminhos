@@ -431,10 +431,10 @@ describe('Events engine · sacred-cultural sensitivity', () => {
     const events = await engine.listEvents();
     for (const evt of events) {
       const text = `${evt.title} ${evt.descrição} ${evt.tags.join(' ')}`.toLowerCase();
-      expect(text).not.toContain('amarração');
-      expect(text).not.toContain('amarre');
-      expect(text).not.toContain('vinculação');
-      expect(text).not.toContain('vincular');
+      expect(text.includes("amarração")).toBe(false);
+      expect(text.includes("amarre")).toBe(false);
+      expect(text.includes("vinculação")).toBe(false);
+      expect(text.includes("vincular")).toBe(false);
     }
   });
 

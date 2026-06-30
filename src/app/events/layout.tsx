@@ -19,7 +19,7 @@ export const metadata: Metadata = buildPageMetadata({
     'Workshops, meditações guiadas, rodas de conversa e círculos de partilha online. Tradições: Cabala, Ifá, Tantra, Meditação, Xamanismo, Astrologia e mais. RSVP aberto.',
   path: '/events',
   category: 'events',
-  priority: 0.8,
+
 });
 
 export default function EventsLayout({
