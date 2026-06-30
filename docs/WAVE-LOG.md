@@ -8784,3 +8784,53 @@ Infra:
 - Cycle 92 W92-C was the fastest ship in W92 at 25 min — exact match for W93-C timing
 - Late-ship window: 5-15 min past cap is common, 30+ min is anomalous
 - 5× rule threshold: 150 min = 17:30 UTC for definitive CASCADE declaration
+
+## Cycle 93 — interim 4 @ 15:34 UTC — heartbeat check (HOLD)
+
+**Wave-spawner session:** 414845211406444 (this session). Previous wave-spawner 414838017175841 ended after interim 3 close-out.
+
+**State snapshot @ 15:34 UTC:**
+- main @ `5c47f3eb` (clean, no local commits)
+- W93-A reputation-system: SHIPPED ✅ @ `4eddf85` (3,724 LOC, 10 files)
+- W93-C i18n-rollout: SHIPPED ✅ @ `edaa33e` (4,303 LOC, 19 files)
+- W93-D events-workshops: SHIPPED ✅ @ `3e92709` (6,587 LOC, 17 files)
+- W93-B auth-followup: 🟡 BORDERLINE — worktree @ `acb080f` (no local commit yet, 34 min in)
+
+**Cycle 93 cumulative: 3/4 SHIPPED (14,614 LOC). 1/4 borderline (W93-B).**
+
+**Capacity @ 15:34 UTC:**
+- MEM available: 1,977MB (>> 1000MB threshold ✓)
+- Active workers (this session): 0
+- Active workers (system-wide): 1 (W93-B in another sandbox)
+
+**Decision: HOLD on cycle 94 spawn.**
+
+**Reasoning:**
+1. W93-B is in late-ship window (5-15 min past cap is recoverable per cycle 90 W90s-D lesson)
+2. 5× cap rule: 17:30 UTC = 150 min after 15:00 spawn = definitive CASCADE threshold
+3. Spawning cycle 94 now creates work-collision risk with W93-B (per 2026-06-28 cross-project lesson: "parallel sessions cause work collisions")
+4. Cycle 94 themes that would touch `src/app/(auth)/*` MUST be excluded until W93-B closes
+5. Even non-auth themes risk merge conflicts at close-out time (worker pushes to main, sibling W93-B also pushing to main)
+
+**Next action @ 16:00 UTC (next cron tick):**
+- Re-check W93-B worktree state via `git worktree list` + `git log wt-w93-auth --oneline -3`
+- If W93-B SHIPPED: do cycle 93 full close-out (merge w93/A + w93/B + w93/C + w93/D into main), then spawn cycle 94
+- If W93-B still no commit: hold another 30 min, re-check at 16:30 UTC
+- If W93-B at 17:00 UTC with no commit: declare BLOCKED, do cycle 93 partial close-out (merge w93/A + w93/C + w93/D), then spawn cycle 94 with auth-related themes EXCLUDED
+
+**Cycle 94 candidate themes (not yet covered, avoiding auth):**
+- Akasha IA streaming UI conversion (high value, 0 prior coverage)
+- Voice mode (TTS) — Akasha fala (high value, 0 prior coverage)
+- Audio/video posts (medium value, 0 prior coverage)
+- Marketplace leitura/práticas (high value, 0 prior coverage)
+- Energy/mood checkin (W69 ✅ SHIPPED — avoid)
+- Achievements/badges (W69 ✅ SHIPPED — avoid)
+- Community circles (W69 ✅ SHIPPED — avoid)
+
+**Available (4 themes for cycle 94):**
+1. Akasha IA streaming UI
+2. Voice mode TTS
+3. Audio/video posts
+4. Marketplace leitura/práticas
+
+**State @ 15:34 UTC:** main @ `5c47f3eb` on origin. MEM 1,977MB available. Wave-spawner 414845211406444 monitoring. HOLD on spawn. Next check: 16:00 UTC.
