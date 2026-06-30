@@ -16,11 +16,13 @@
 import type { Metadata } from 'next';
 import { Sparkles, Mail, PlayCircle, ShieldCheck } from 'lucide-react';
 import { WaitlistForm } from '@/components/validation/WaitlistForm';
-import { ExitIntentModal } from '@/components/conversion/ExitIntentModal';
-import { MobileCaptureBar } from '@/components/conversion/MobileCaptureBar';
+import {
+  LazyMountExitIntentModal,
+  LazyMountMobileCaptureBar,
+} from '@/lib/perf/lazy-mounts';
 import { LandingTracker } from '@/components/conversion/LandingTracker';
 import { SocialShareButtons } from '@/components/conversion/SocialShareButtons';
-import { VideoHero } from '@/components/conversion/VideoHero';
+import { LazyVideoHero } from '@/lib/perf/lazy-components';
 
 interface Props {
   searchParams?: Promise<{ ref?: string; utm_source?: string }>;
@@ -74,7 +76,7 @@ export default async function VariantBPage({ searchParams }: Props) {
 
           {/* Vídeo hero — placeholder */}
           <div className="mb-10 max-w-3xl mx-auto">
-            <VideoHero
+            <LazyVideoHero
               posterSrc="/og/validacao-hero.png"
               videoSrc="/videos/akasha-60s.mp4"
               title="Akasha Portal — 60 segundos"
@@ -140,8 +142,8 @@ export default async function VariantBPage({ searchParams }: Props) {
         </p>
       </footer>
 
-      <ExitIntentModal variant="B" />
-      <MobileCaptureBar variant="B" />
+      <LazyMountExitIntentModal variant="B" />
+      <LazyMountMobileCaptureBar variant="B" />
     </main>
   );
 }

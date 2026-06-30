@@ -134,12 +134,21 @@ export async function GET(request: NextRequest) {
     // Ordena por proximidade + peso
     expanded.sort((a, b) => a.daysFromNow - b.daysFromNow || b.weight - a.weight);
 
-    return NextResponse.json({
-      rangeStart: now.toISOString().slice(0, 10),
-      rangeEnd: end.toISOString().slice(0, 10),
-      count: expanded.length,
-      events: expanded,
-    });
+    // Wave 32 perf — calendar é quase-estático. Cache 1h client + 6h CDN + 24h SWR.
+    return NextResponse.json(
+      {
+        rangeStart: now.toISOString().slice(0, 10),
+        rangeEnd: end.toISOString().slice(0, 10),
+        count: expanded.length,
+        events: expanded,
+      },
+      {
+        headers: {
+          "Cache-Control": "public, max-age=3600, s-maxage=21600, stale-while-revalidate=86400",
+          "Cache-Tag": "sacred-calendar",
+        },
+      }
+    );
   } catch (err) {
     console.error('[api/notifications/sacred-calendar][GET] error', err);
     return NextResponse.json(

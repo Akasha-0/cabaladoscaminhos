@@ -17,11 +17,13 @@
 
 import type { Metadata } from 'next';
 import { Sparkles } from 'lucide-react';
-import { ExitIntentModal } from '@/components/conversion/ExitIntentModal';
-import { MobileCaptureBar } from '@/components/conversion/MobileCaptureBar';
+import {
+  LazyMountExitIntentModal,
+  LazyMountMobileCaptureBar,
+} from '@/lib/perf/lazy-mounts';
 import { LandingTracker } from '@/components/conversion/LandingTracker';
 import { SocialShareButtons } from '@/components/conversion/SocialShareButtons';
-import { TraditionQuiz } from '@/components/conversion/TraditionQuiz';
+import { LazyTraditionQuiz } from '@/lib/perf/lazy-components';
 
 interface Props {
   searchParams?: Promise<{ ref?: string; utm_source?: string }>;
@@ -72,7 +74,7 @@ export default async function VariantDPage({ searchParams }: Props) {
             de qual caminho iniciar — com curadoria científica.
           </p>
 
-          <TraditionQuiz utmSource={utm_source} referralCode={ref} />
+          <LazyTraditionQuiz utmSource={utm_source} referralCode={ref} />
         </div>
       </section>
 
@@ -92,8 +94,8 @@ export default async function VariantDPage({ searchParams }: Props) {
         </div>
       </section>
 
-      <ExitIntentModal variant="D" />
-      <MobileCaptureBar variant="D" />
+      <LazyMountExitIntentModal variant="D" />
+      <LazyMountMobileCaptureBar variant="D" />
     </main>
   );
 }

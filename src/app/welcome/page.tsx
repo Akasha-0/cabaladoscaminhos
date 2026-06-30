@@ -4,10 +4,14 @@
 // Renderizado após signup bem-sucedido (magic link confirmado OU password
 // signup). Mostra 3 posts recomendados + 3 tradições pré-selecionadas.
 // Métrica objetivo: time-to-first-value < 30s.
+//
+// Wave 32 perf — FirstValueExperience é lazy-loaded via WelcomeClient
+// (client component) para que o page shell + skeleton apareça rápido
+// e o heavy FirstValueExperience hidrate sob demanda.
 // ============================================================================
 
 import { Suspense } from 'react';
-import { FirstValueExperience } from '@/components/conversion/FirstValueExperience';
+import WelcomeClient from './WelcomeClient';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
 
 export const metadata = {
@@ -24,7 +28,7 @@ export default function WelcomePage() {
         </div>
       }
     >
-      <FirstValueExperience />
+      <WelcomeClient />
     </Suspense>
   );
 }

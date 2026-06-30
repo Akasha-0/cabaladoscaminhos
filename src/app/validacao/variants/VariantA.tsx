@@ -10,8 +10,10 @@
 
 import { Sparkles, Users, Brain, BookOpen, Mail, ShieldCheck } from 'lucide-react';
 import { WaitlistForm } from '@/components/validation/WaitlistForm';
-import { ExitIntentModal } from '@/components/conversion/ExitIntentModal';
-import { MobileCaptureBar } from '@/components/conversion/MobileCaptureBar';
+import {
+  LazyMountExitIntentModal,
+  LazyMountMobileCaptureBar,
+} from '@/lib/perf/lazy-mounts';
 import { LandingTracker } from '@/components/conversion/LandingTracker';
 import { SocialShareButtons } from '@/components/conversion/SocialShareButtons';
 
@@ -206,8 +208,8 @@ export function VariantAPage({ userId, source, referralCode }: Props) {
         </p>
       </footer>
 
-      <ExitIntentModal variant="A" />
-      <MobileCaptureBar variant="A" />
+      <LazyMountExitIntentModal variant="A" />
+      <LazyMountMobileCaptureBar variant="A" />
     </main>
   );
 }

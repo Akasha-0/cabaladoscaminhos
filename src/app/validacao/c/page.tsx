@@ -15,8 +15,10 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { Sparkles, ShieldCheck, Quote, Star } from 'lucide-react';
 import { WaitlistForm } from '@/components/validation/WaitlistForm';
-import { ExitIntentModal } from '@/components/conversion/ExitIntentModal';
-import { MobileCaptureBar } from '@/components/conversion/MobileCaptureBar';
+import {
+  LazyMountExitIntentModal,
+  LazyMountMobileCaptureBar,
+} from '@/lib/perf/lazy-mounts';
 import { LandingTracker } from '@/components/conversion/LandingTracker';
 import { SocialShareButtons } from '@/components/conversion/SocialShareButtons';
 
@@ -225,8 +227,8 @@ export default async function VariantCPage({ searchParams }: Props) {
         </div>
       </section>
 
-      <ExitIntentModal variant="C" />
-      <MobileCaptureBar variant="C" />
+      <LazyMountExitIntentModal variant="C" />
+      <LazyMountMobileCaptureBar variant="C" />
     </main>
   );
 }

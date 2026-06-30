@@ -125,7 +125,11 @@ export async function GET(request: NextRequest) {
       isPrivate: false,
     };
 
-    return ok(dto);
+    // Wave 32 perf — perfil público cacheável (dados mudam raramente).
+    return ok(dto, {
+      cache: { sMaxage: 300, staleWhileRevalidate: 3600 },
+      meta: { handle: dto.handle },
+    });
   } catch (err) {
     return handleError(err);
   }
