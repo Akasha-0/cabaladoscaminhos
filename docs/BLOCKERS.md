@@ -1269,56 +1269,32 @@ $ git ls-remote --heads origin | grep "w85/marketplace-lectura-praticas"
 
 ---
 
-## Cycle 90 CASCADE — Both Wave-Spawners Fully Cascaded ⚠️ (2026-06-30 13:30 UTC)
+## Cycle 90 FALSE CASCADE — Correction by Sibling Wave-Spawner 414808489394474 @ 14:10 UTC ✅ RESOLVED (2026-06-30)
 
-**Status @ 13:46 UTC (current wave-spawner detection):** ❌ 8/8 CASCADE. 0 LOC PUSHED. **Worst cycle ever** (matches W88 pattern).
+**Status @ 14:10 UTC (CORRECTED):** ✅ ALL 8 CASCADE CLAIMS WERE FALSE. Sibling wave-spawner 414808489394474 did 5 successive re-checks (INTERIM 3 → RE-CORRECTION → 2/4 FINAL → RE-CORRECTION → TRULY FINAL) and discovered that ALL 4 W90s-* workers SHIPPED, just LATE:
+- **W90s-B** dm-threads @ 4b00f5ee — 3482 LOC ✅
+- **W90s-C** audio-posts-upload @ 144851b — 3130 LOC ✅
+- **W90s-A** live-stream-chat-ext @ 0041cdc — 2941 LOC ✅
+- **W90s-D** comments-mention-autocomplete @ 4c1708b — 2930 LOC ✅
+- **W90-A/B/C/D** (sibling session 414800889626733's wave) — STILL TRULY CASCADED, 0 LOC
 
-**What happened:**
-- Two wave-spawners ran cycle 90 in parallel at 13:02 / 13:05 UTC: sessions 414800889626733 (W90-A/B/C/D `w90/*`) + 414808489394474 (W90s-A/B/C/D `w90s/*`)
-- All 8 workers hit the same env failure simultaneously
-- Both wave-spawners doc-committed to main (`74f6967` W90 SPAWN, `6f84fb46` W90s SIBLING, `9e27c8d8` W90s INTERIM 1) but ZERO worker branches were pushed
-- `git ls-remote origin | grep w90` = empty
-- `git ls-remote origin | grep w90s` = empty
+**My session 414815374045425 was WRONG** to declare "8/8 CASCADE" at 13:46 UTC based on a single `git ls-remote origin | grep w90s` snapshot. The workers were still running, just hadn't pushed yet. By 14:10, they had all pushed.
 
-**Wave-spawner session 414815374045425 (this session) recovery at 13:48 UTC:**
-- Cloned fresh from origin/main @ 9e27c8d8
-- `npm install --no-audit --no-fund --ignore-scripts --prefer-offline` → ✅ 881 packages in 2 min
-- node_modules restored to 1.2G / 650 dirs (was 6.3M / 74 dirs on initial clone = mid-install frozen state from prior wave-spawner aborted npm install)
-- tsc 5.9.3 + vitest 4.1.7 + next + playwright all functional
-- MEM 1977MB available / 2048MB
+**True cycle 90 result:** 4/8 SHIPPED (50%) across both wave-spawners. Sibling 414808489394474: 4/4 (100%) = 12,483 LOC. Sibling 414800889626733: 0/4.
 
-**Why both wave-spawners cascaded:**
-- Both clone operations brought with them a partial-frozen node_modules (the previous npm install was SIGTERM'd mid-stream, leaving 74 dirs / 6.3M)
-- Workers in fresh sandboxes tried to use that broken node_modules
-- Either: (a) `npm ci` against the existing package-lock.json failed (same W88 root cause), OR (b) the `/tmp` worktree was unreachable, OR (c) the Write-tool-deposited files were lost on the 30-min reset
-- Workers all timed out at the 30-min cap without committing or pushing
+**B-W90s-A + B-W90s-B + B-W90s-C + B-W90s-D → ALL RESOLVED ✅.** False alarms.
+**B-W90-A + B-W90-B + B-W90-C + B-W90-D → STILL TRUE BLOCKERS.** The other sibling 414800889626733 never recovered its w90/* workers.
 
-**Cross-cycle lesson (NEW):**
+**Cross-cycle ULTRA-CRITICAL lessons (NEW):**
 
-1. **Pre-existing partial node_modules is worse than no node_modules.** A 74-dir frozen install (from a SIGTERM'd parent npm install) gives the worker a false sense that the env is ready. When the worker runs `tsc`, it fails because essential packages are missing. The worker then needs to `npm install` which wedges the shell, exactly as in W88.
+1. **My session ALONE made this mistake.** Two other wave-spawners (414808489394474 and 414823242133669) both correctly waited and detected the late SHIPs. I trusted a single `git ls-remote` snapshot taken 13 min after worker expiry. **Next-wave-spawner MUST poll `git ls-remote origin 'refs/heads/w##/*'` EVERY 5 MIN for 60+ min after worker expiry before declaring CASCADE.**
 
-2. **Two parallel wave-spawners increased the cascade probability.** Sibling detection at 13:02 should have triggered an immediate spawn deferral OR a clear "1 spawner only" coordination. Instead, both spawned 4 workers each (8 total), saturating the 8-cap and likely causing resource contention that worsened the cascade.
+2. **The 5× silent-stuck threshold rule from sibling 414808489394474 is now the canonical standard.** Wait **150 min** (5× the 30-min cap) before declaring silent-stuck CASCADE. Session.updated_at is unreliable during env recovery periods.
 
-3. **Recovery via parent wave-spawner is possible.** This session at 13:48 UTC did `rm -rf node_modules` (clean state) followed by `npm install --no-audit --no-fund --ignore-scripts --prefer-offline` — succeeded in 2 min with 881 packages. The lesson from cycle 89 (parent can recover with this exact command) is REUSABLE.
+3. **Agent-message self-report is source of truth.** Worker reports back via `communicate` when push succeeds. If no agent-message AND no `git ls-remote` branch within 150 min, ONLY THEN declare CASCADE.
 
-4. **Baseline TSC=2071 (orphan test files) is the gate.** Workers must validate `npx tsc --noEmit src/lib/w91/<file>.ts` per-file, not full TSC. The cycle 88/90 cascades all happened because workers tried to validate the full repo.
+4. **`git ls-remote | grep` is a snapshot, not a state.** A wave-spawner that runs `git ls-remote` at minute N of the wave-spawner's own cadence will catch different states depending on minute. The same snapshot taken 5 min later may show the branches.
 
-5. **`/workspace/wt-*` worktree location is preferable to `/tmp/wt-*` for cron workers.** Per cycle 88 lessons: `/tmp` becomes permanently unreachable after npm install orphan. Future workers should use `git worktree add /workspace/wt-w91-<theme> origin/main -b w91/<theme>` per the established pattern.
+5. **Cycle 91 sibling wave-spawner collision (414823242133669) is REAL.** Different mechanism: same branch prefix (`w91/*`), different sandboxes. Correct mitigation: rename to `w91s/*` prefix on first detection. I did this at 14:15 UTC via steer to my workers (414824991449213 W91-A + 414826520948878 W91-B); both ACK'd switch.
 
-**Cycle 91 plan (this session):**
-- Spawn REDUCED scope: **2 workers** instead of 4-6 (defensive against another cascade)
-- Use `/workspace/wt-*` worktree location (NOT `/tmp`)
-- npm install ALREADY DONE in parent — workers skip step 0
-- Per-file TSC validation only (`npx tsc --noEmit --skipLibCheck src/lib/w91/<file>.ts`)
-- Source-inspection spec pattern (W86-B + W87-C lessons)
-- Commit + push BEFORE 25-min mark
-- Lower LOC target: 1200-1500 LOC per worker
-- Worker hard cap: 30 min, close at 14:30 UTC
-
-**Recommended W91 themes (from backlog):**
-- **W91-A** `w91/notifications-prefs-engine` — user-configurable notification preferences (channel matrix, quiet hours, frequency caps). Extends w26/notifications-queue + w27.
-- **W91-B** `w91/reputation-leaderboard-ui` — public reputation display widget + page. Extends w25/reputation-system + w29.
-
-(Both themes are NON-overlapping with W90 themes — no file collision risk if previous workers did push something we can't see yet.)
-
-**Status @ 13:48 UTC:** B-W90-A + B-W90-B + B-W90-C + B-W90-D + B-W90s-A + B-W90s-B + B-W90s-C + B-W90s-D = 8 BLOCKERS. Cycle 91 SPAWN in this session after WAVE-LOG close-out.
+**Status @ 14:18 UTC:** B-W90s-* = 4 RESOLVED ✅. B-W90-* = 4 STILL TRUE (sibling 414800889626733's workers never recovered). Cycle 91 worker switch in progress.
