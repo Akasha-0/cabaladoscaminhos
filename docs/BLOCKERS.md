@@ -1,7 +1,7 @@
 # Akasha Wave-Spawner — Active Blockers
 
-> **Last updated:** 2026-06-30 01:30 UTC (cycle 69 close-out, cycle 70 spawn)
-> **Status:** 🟡 One blocker active (B-W69-CC-MISSING). B2 retry in flight as cycle 70 Worker E.
+> **Last updated:** 2026-06-30 01:39 UTC (cycle 70 spawn + B-W69-CC-MISSING RESOLVED as false-positive)
+> **Status:** ✅ All blockers resolved. Cycle 69 ACTUAL FINAL = 4/4 PUSHED ✅✅✅✅. Cycle 70 SPAWNED with 4 NEW + 1 safety-net duplicate (B2 retry of W69-D is now an alternative implementation, not a recovery).
 
 This file tracks every structural blocker that prevents the wave-orchestrator from doing its
 job (spawn workers, run TSC gate, push to remote). Each blocker has: status, root cause,
@@ -577,39 +577,53 @@ Same as cycle 21. Wave-spawner logs persist via git push to remote (cycle 18+ pa
 
 ---
 
-## B-W69-CC-MISSING — w69/community-circles worker did not push (cycle 69 PARTIAL close-out)
+## B-W69-CC-MISSING — ✅ RESOLVED (false-positive BLOCKER, original W69-D worker delivered late)
 
-**Status:** 🟡 ACTIVE — B2 retry spawned in cycle 70 (2026-06-30 01:30 UTC, orchestrator session 414638574882927).
-**Detected:** 2026-06-30 01:30 UTC (this orchestrator session)
-**Original spawn:** 2026-06-30 01:00 UTC (cycle 69 orchestrator session 414631572730069)
-**Trail:** w69/community-circles — Group-based spiritual community circles (4 engine files: circles/membership/feed/governance)
+**Status:** ✅ RESOLVED (2026-06-30 01:39 UTC, 9 min after false-positive BLOCKER at 01:30 UTC)
+**Resolver:** Original W69-D worker (spawned 01:00 UTC, session <unknown, in original cycle 69 orchestrator session 414631572730069's sandbox) — pushed to origin at ~01:35-01:39 UTC, 5-9 min after the 30-min cap hit at 01:30 UTC.
+**Verification:** 2026-06-30 01:39 UTC by cycle 70 orchestrator session 414638574882927.
+**Branch:** `w69/community-circles` is on origin at SHA `0c6af98d074a8502f7200722f64bb20676fc5735`.
 
-**Verification trail:**
+**Resolution trail:**
 
-| Step | Expected | Reality |
-|------|----------|---------|
-| Worker spawned with brief | ✅ | ✅ |
-| Worker creates worktree `/workspace/wt-w69-circles` | ✅ | ❓ unknown (worktree in original sandbox, not in this fresh clone) |
-| Worker writes 4 engine + 4 spec + 1 smoke | ✅ | ❓ unknown |
-| Worker runs TSC + smoke | ✅ | ❓ unknown |
-| Worker commits + pushes branch | ✅ | ❌ branch `w69/community-circles` NOT on `origin` |
+| Time | Event |
+|------|-------|
+| 01:00 UTC | W69-D worker spawned by cycle 69 orchestrator session 414631572730069 |
+| 01:30 UTC | 30-min cap hit; cycle 69 close-out at 01:30 UTC by this orchestrator: branch NOT on origin → BLOCKER logged + B2 retry (Worker E) spawned in cycle 70 |
+| 01:35-01:39 UTC | Original W69-D worker pushed to `origin/w69/community-circles` at SHA `0c6af98d` (slightly over 30-min cap, ~35-39 min from spawn) |
+| 01:39 UTC | Cycle 70 orchestrator re-verified branches; W69-D is now on origin; BLOCKER resolved; B2 retry (Worker E) becomes a SAFETY-NET DUPLICATE on `-b2` branch |
 
-**Recovery plan (B2 retry in cycle 70):**
-1. **B2 retry spawned as cycle 70 Worker E** (separate branch `w69/community-circles-b2`)
-2. Brief reproduced from cycle 69 spawn entry: 4 engine files (circles/membership/feed/governance), 4 spec files, 12+ smoke checks, 7 traditions for circle themes
-3. **Recommended branch name:** `w69/community-circles-b2` (NOT reuse original to avoid conflict if original still in flight in another sandbox)
-4. **Deadline:** 01:55 UTC (25 min from B2 spawn at 01:30 UTC) — if not on origin by then, flag for cycle 71 follow-up
-5. **Fallback:** if B2 retry also fails, treat as cycle 71 normal worker (cycle 66 recovery pattern)
+**W69-D deliverable (per `origin/w69/community-circles`):**
+- 4 engine files: `src/lib/community-circles/{circles,membership,feed,governance}.ts`
+- 4 spec files: `src/lib/community-circles/__tests__/{circles,membership,feed,governance}.spec.ts`
+- Smoke: `src/lib/community-circles/__tests__/smoke-runtime.mjs` + `run-all-specs.mjs`
+- tsconfig: `tsconfig.w69-circles.json`
+- DELIVERABLE: `docs/DELIVERABLE-w69-community-circles.md`
+
+**Lessons learned (cycle 69 PARTIAL → RESOLVED):**
+
+1. **30-min cap is a TARGET, not a hard deadline** — workers can exceed the cap by 5-10 min and still deliver successfully. Cycle 66 B2 retry (7 min over), cycle 51 (longer over). The cap is a "expected to be done by" guideline, not a "kill at" deadline.
+
+2. **False-positive BLOCKER pattern is real** — verification at :30 tick can catch workers that are STILL in flight (5-9 min from delivery). The cycle 66 lesson applied: "when BLOCKER is flagged at :30 and the originating session is still active, give the originating session ~15-20 min to recover before treating the BLOCKER as final."
+
+3. **Re-verify at the next tick** — the cycle 70 orchestrator (this session) re-verified at 01:39 UTC (9 min after the false-positive) and found the branch on origin. This 9-min re-verify window is the right pattern.
+
+4. **B2 retry is now a SAFETY-NET DUPLICATE, not a recovery** — Worker E (B2 retry) is in flight on `w69/community-circles-b2` branch. If it delivers, the result is an INDEPENDENT implementation of the same feature, which provides:
+   - Cross-validation (both implementations should pass the same spec contract)
+   - Alternative reference for the owner to pick from
+   - Insurance if the original W69-D has a hidden bug (the B2 retry would be a clean alternative)
+   No conflict: branch names differ (`w69/community-circles` vs `w69/community-circles-b2`).
+
+5. **Wave-spawner recovery loop is now: spawn → verify at :30 → if missing, log BLOCKER + B2 retry in parallel → RE-VERIFY at next tick (:45 or :00) → resolve BLOCKER if branch appeared.** Update from cycle 66 rule: re-verify at next tick is MANDATORY, not optional.
 
 **Cross-cycle lesson (cycle 69):**
-- 30-min cap was hit at 01:30 UTC for the W69 D worker; original session may still be alive in another sandbox and could push silently in next 5-10 min
-- This BLOCKER entry is the conservative reading: absence of branch on origin at 01:30 = "MISSING" pending verification at 01:45 UTC
-- Wave-spawner recovery loop: spawn → verify at :30 → if missing, log + B2 retry in parallel with next cycle → re-verify at next :30 tick
-- Same B2-retry-from-different-sandbox pattern as cycle 64/66 (B2 retry from a fresh Coder session works when original is silent)
+- The 30-min cap hit at 01:30 caught the worker still in flight (5-9 min from delivery).
+- The B2 retry pattern from cycle 64/66 still applies, but it's now better characterized as "safety-net + parallel implementation" rather than "recovery from failure".
+- Original W69-D worker delivered successfully even with a 35-39 min wall-clock (vs 30-min cap target). The cap is soft.
 
 **Honest concerns:**
-- If original W69 D worker IS still in flight in its original sandbox, both it and B2 retry could race to push. The `-b2` suffix on the B2 branch mitigates this.
-- 1/4 W69 failures is acceptable variance for 30-min cap pressure (cycle 66 was 1/4 also, recovered via B2 retry).
-- The cycle 69 B2 retry wall-clock target is 25 min (less than full 30 because brief is reproduced from existing docs, not redesigned).
+- B2 retry Worker E (414640138182864) is still in flight at 01:39 UTC. If it also delivers (likely), the cabaladoscaminhos repo will have TWO independent implementations of community-circles. Owner should pick one to merge. Both are valid.
+- The cycle 69 close-out commit at SHA `59c91146` (this session) reported "3/4 PUSHED" which is INACCURATE by the time of the next read (01:39 UTC = 4/4 PUSHED). The close-out text is a SNAPSHOT at 01:30, not a final state. Future close-outs should include a "verify at +N min" note.
+- The W69-D worker's exact session ID is not visible from this orchestrator (it was in the previous sandbox). The session_id is logged in the W69-D commit metadata if needed.
 
-**Status: 🟡 B-W69-CC-MISSING ACTIVE. B2 retry in flight as cycle 70 Worker E. Re-verify at 01:55 UTC. If still missing, flag for cycle 71.**
+**Status: ✅ B-W69-CC-MISSING RESOLVED. W69-D branch on origin at SHA `0c6af98d`. B2 retry (Worker E) in flight as safety-net duplicate on `w69/community-circles-b2` branch.**
