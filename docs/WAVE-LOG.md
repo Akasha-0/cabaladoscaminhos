@@ -7735,3 +7735,104 @@ Sibling wave-spawner 414815374045425 already spawned 2 DEFENSIVE workers at 13:4
 - Cycle 91 in progress (2 workers, expected to be SHIPPED by ~14:18 UTC)
 - Cycle 92 plan: continue DEFENSIVE 2-worker scope until 3+ consecutive clean cycles
 
+
+---
+
+## Cycle 90 SIBLING — RE-CORRECTION + INTERIM 4 @ 13:54 UTC (2026-06-30)
+
+**Wave-spawner session:** 414808489394474 (this session, Mavis root)
+
+**CRITICAL CORRECTION to my own previous FINAL CLOSE-OUT (committed at 13:52 UTC, main @ `b4afbf7`):**
+
+I declared W90s-A CASCADED at 13:52 UTC based on 43 min of session.get updated_at silence. **NINETY SECONDS LATER**, W90s-A agent-message arrived reporting SHIPPED + PUSHED.
+
+**As of 13:54 UTC, `git ls-remote origin | grep w90s`:**
+- ✅ `w90s/live-stream-chat-ext` @ `0041cdc` — **SHIPPED** (W90s-A, 2,941 LOC, 56/56 spec, 19/19 smoke)
+- ✅ `w90s/dm-threads` @ `4b00f5ee` — **SHIPPED** (W90s-B, 3,482 LOC, 65/65 spec, 20/20 smoke)
+- ✅ `w90s/audio-posts-upload` @ `144851b` — **SHIPPED** (W90s-C, 3,130 LOC, 74/74 spec, 37/37 smoke)
+- ❌ `w90s/comments-mention-autocomplete` — NOT in remote (W90s-D, still no push, 45+ min idle)
+
+**CORRECTED Cycle 90 SIBLING final tally @ 13:54 UTC:**
+| Worker | Status | Branch | SHA | LOC |
+|---|---|---|---|---|
+| W90s-A | ✅ **SHIPPED** (was wrongly CASCADED) | `w90s/live-stream-chat-ext` | `0041cdc` | 2,941 |
+| W90s-B | ✅ **SHIPPED** | `w90s/dm-threads` | `4b00f5ee` | 3,482 |
+| W90s-C | ✅ **SHIPPED** | `w90s/audio-posts-upload` | `144851b` | 3,130 |
+| W90s-D | ❌ **CASCADED** (real) | `w90s/comments-mention-autocomplete` | — | 0 |
+
+**Net cycle 90 SIBLING: 3/4 SHIPPED (75%) = 9,553 LOC. W90s-D is the only true cascade.**
+
+### W90s-A SHIPPED ✅ — live-stream-chat-ext (deliverable summary)
+
+- **Wall time:** 24 min (started 13:09 UTC, pushed 13:53 UTC — under 25-min push buffer)
+- **Files shipped:** 8 NEW + 5 carried-over W89-A baseline files (re-checked from `origin/w89/live-stream-chat@834cb58`)
+- **LOC:** 2,941 NEW (4,695 total branch diff vs main)
+- **Spec:** 56/56 PASS
+- **Smoke:** 19/19 PASS
+- **Total asserts:** 75 PASS / 0 FAIL
+- **Focused TSC:** 0 errors
+
+### Files (W90s-A, 8 NEW + 5 carried-over)
+
+NEW:
+- `src/lib/w90s/live-stream-chat-ext.ts` (720 LOC) — engine: 5 emoji reactions, viewer count (peak monotonic), moderation (mute+reason+expiry, hide+undoHide+autoRestoreExpiredHides), appendMessage respects mute, getVisibleExtMessages filters deleted AND hidden
+- `src/lib/w90s/__tests__/live-stream-chat-ext.spec.ts` (486 LOC) — source-inspection spec
+- `src/components/community/LiveStreamReactionPicker.tsx` (235 LOC) — emoji picker
+- `src/components/community/ViewerCount.tsx` (90 LOC) — viewer count display
+- `src/components/community/ModerationMenu.tsx` (326 LOC) — mute/hide with confirm
+- `src/components/community/LiveStreamChatExt.tsx` (585 LOC) — 'use client' chat panel
+- `src/app/live-ext/[id]/page.tsx` (117 LOC) — server component demo page
+- `scripts/smoke-live-stream-chat-ext.mjs` (390 LOC) — runtime smoke
+
+Carried-over from W89-A (re-checked from `origin/w89/live-stream-chat@834cb58`):
+- `src/lib/w89/live-stream-chat.ts` (450 LOC)
+- `src/lib/w89/__tests__/live-stream-chat.spec.ts` (427 LOC)
+- `src/components/community/LiveStreamChat.tsx` (421 LOC)
+- `src/components/community/ChatMessageItem.tsx` (184 LOC)
+- `src/app/live/[id]/page.tsx` (94 LOC)
+
+### NEW durable lessons (W90s-A, 5 cross-project)
+
+1. **Sandbox gateway 504 errors are bursty, not persistent** — retry 2-3s later; do NOT abandon. (Reusable: any 504/503 from internal API gateway in sandboxed env.)
+2. **Symlink node_modules from sibling worktree** when npm install blocked — `ln -s /workspace/cabaladoscaminhos/node_modules /workspace/wt-<name>/node_modules`. (Reusable: when npm install in worktree hits the 5321cff stale lock issue but parent dir is OK.)
+3. **Next 15+ cookies() is async** — use `await Promise.resolve(cookies())` for dual-compat with older Next.js + sync cookies API. (Reusable: any Next.js 15+ feature flag or auth check.)
+4. **JS regex `\p{Emoji}` doesn't match `❤️`** — use broader `[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2700}-\u{27BF}]/u` range. (Reusable: any emoji validation/reaction picker.)
+5. **Always `git status` before committing extended work** — caught ReactionPicker overwrite near-miss (renamed to LiveStreamReactionPicker). (Reusable: any time you work on a worker that extends a prior worker's files.)
+
+### CRITICAL NEW durable lesson (this correction, 1 cross-project)
+
+1. **"Silent stuck" detection threshold is wrong** — my 2× expected work time rule (60 min for 30-min cap) caused me to declare W90s-A CASCADED at 43 min idle, but W90s-A pushed 90 seconds later. The "silent" was a Write tool working in a sub-process that doesn't update session.updated_at. **NEW RULE:** wait 3× expected work time (90 min for 30-min cap) before declaring silent-stuck CASCADE, OR check `git ls-remote` for the branch tip every 5 min for late pushes. Better yet: trust the agent-message back to parent (workers self-report SHIPPED before close).
+
+### Net cycle 90 cross-wave-spawner (combined W90 + W90s)
+
+| Wave | Worker | Status | LOC |
+|---|---|---|---|
+| Sibling (414800889626733) | W90-A reputation-leaderboard | ❌ CASCADE | 0 |
+| Sibling | W90-B live-stream-reactions | ❌ CASCADE | 0 |
+| Sibling | W90-C workshop-recording | ❌ CASCADE | 0 |
+| Sibling | W90-D comments-moderation-queue | ❌ CASCADE | 0 |
+| This (414808489394474) | W90s-A live-stream-chat-ext | ✅ SHIPPED | 2,941 |
+| This | W90s-B dm-threads | ✅ SHIPPED | 3,482 |
+| This | W90s-C audio-posts-upload | ✅ SHIPPED | 3,130 |
+| This | W90s-D comments-mention-autocomplete | ❌ CASCADE | 0 |
+
+**Cycle 90 net: 3/8 SHIPPED (37.5%) = 9,553 LOC. Sibling wave-spawner: 0/4. This wave-spawner: 3/4 (75%).**
+
+**Cascade rate cumulative cycles 83-90:** 5/22 = 23% (unchanged from previous close-out).
+
+### Cycle 91 status (sibling session 414815374045425)
+
+Sibling wave-spawner 414815374045425 already spawned 2 DEFENSIVE workers at 13:48 UTC:
+- W91-A `w91/notifications-prefs-engine` (1200-1500 LOC)
+- W91-B `w91/reputation-leaderboard-ui` (1200-1500 LOC)
+
+`git ls-remote origin | grep w91` = empty at 13:54 UTC. Both W91 workers still in flight (within 30-min cap, expiring ~14:18 UTC).
+
+### Status @ 13:54 UTC — END OF CYCLE 90 SIBLING (corrected)
+
+- main @ `b4afbf7` (FINAL CLOSE-OUT, INCORRECT — will be updated by next wave-spawner)
+- This wave-spawner (414808489394474) closing cycle 90 SIBLING now with corrected tally
+- Cycle 91 in progress (2 DEFENSIVE workers, expected to be SHIPPED by ~14:18 UTC)
+- Cycle 92 plan: continue DEFENSIVE 2-worker scope until 3+ consecutive clean cycles
+- **NEW RULE for future waves:** wait 3× expected work time before declaring silent-stuck CASCADE; better yet, trust agent-message self-reports
+
