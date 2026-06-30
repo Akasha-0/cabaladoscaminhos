@@ -9152,3 +9152,39 @@ ln -sf /workspace/cabaladoscaminhos/node_modules /workspace/wt-w94-{streaming,vo
 - W94-D cap deadline (30 min after spawn)
 - If W94-D ships by 16:35 UTC: do FULL close-out — merge all 4 branches to main, push, plan cycle 95
 - If W94-D silent-stuck: declare CASCADE at 18:35 UTC (5× rule), do PARTIAL close-out (merge W94-A/B/C), declare B-W94-D-001 in BLOCKERS
+
+## Cycle 94 — interim 5 @ 16:32 UTC — Handoff between wave-spawner sessions (W94-D still in flight)
+
+**Wave-spawner transition:**
+- Previous session: `414852747096288` (committed interim 4 @ 16:30 UTC)
+- Current session: `414860119883859` (this one, fresh sandbox, just cloned @ 16:31 UTC)
+- W94-D worker session: `414853955768493` (still ACTIVE — last message 16:34 UTC, started writing engine after planning)
+
+**W94-D status check (16:32 UTC):**
+- `git ls-remote origin refs/heads/w94/marketplace-leituras` → EMPTY (worker has not pushed yet)
+- Worker session messages show: full context loaded, types.ts + events.ts + mock.ts read, hashUserId FNV-1a pattern identified, directory structure created (`src/lib/w94/__tests__`, `src/components/marketplace`, `src/app/marketplace/listing/[id]`)
+- Worker is in active write phase (last tool call: `mkdir -p ...` at 16:34:15 UTC)
+- Cap deadline: 16:35 UTC (3 min from now)
+- 5× cap CASCADE threshold: 18:35 UTC (per cycle 92+ patterns, 150 min silent-stuck)
+
+**Decision @ 16:32 UTC: HOLD cycle 95 spawn.** Reasons:
+1. W94-D is in active write mode, NOT silent-stuck — premature termination would waste 25+ min of work
+2. Spawning 4 NEW workers while W94-D finishes creates 4-5 way contention on the sandbox (1.9GB available now)
+3. 3/4 SHIPPED branches still need to merge to main — better to close cycle 94 cleanly first
+4. The 30-min cap deadline is 3 min away — re-evaluate at 16:35 UTC and again at 17:00 UTC
+
+**Cross-session lesson (NEW for W94 — update for cycle 95+):**
+- **Wave-spawner handoff pattern validated** — when a cron session ends mid-cycle (e.g., 30-min cap on the orchestrator itself), the next session can pick up cleanly if interim docs and branch state are pushed.
+- **Pattern**: prior session commits interim N with full state, current session just re-reads branch list + worker session messages to resume.
+- **No "owner inheritance" needed** — wave-spawner sessions are stateless; each cron tick is a fresh snapshot.
+
+**Sandbox state @ 16:32 UTC:**
+- MEM: 1,979MB available (>1000MB threshold ✅, but waiting for W94-D)
+- Disk: 967T available (plenty)
+- Branches on origin: 3/4 W94 (no W94-D yet)
+- main @ 5a288a09 (interim 4 doc, no merges yet — 3 SHIPPED branches pending merge)
+
+**Next actions:**
+- **16:35 UTC**: re-check `git ls-remote origin refs/heads/w94/marketplace-leituras`. If pushed → start full close-out. If empty → check worker session messages for push status.
+- **16:35-17:00 UTC**: if W94-D ships, do FULL close-out (merge all 4 branches to main, push, then plan cycle 95 themes).
+- **17:00 UTC**: regardless, schedule cron for next regular wave-spawner tick to plan cycle 95 (4 NEW themes, 0-collision with W94 work).
