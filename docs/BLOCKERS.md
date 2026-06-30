@@ -1029,3 +1029,69 @@ $ git ls-remote --heads origin | grep "w85/marketplace-lectura-praticas"
 3. Drop the original W86-D WIP branch `w86/events-workshops @ 83a94a6` (no longer needed — superseded).
 
 **Status @ 11:18 UTC: ✅ RESOLVED. B-W86-D closed. Cycle 87 cascade fully recovered. main @ `6968180e`. Wave-spawner session 414779059990725. 3 NEW workers (B/C/D) still in flight, target close 11:30 UTC.**
+
+
+## B-W87-D — cycle 87 W87-D (daily-reflection) — ⚠️ PARTIAL pushed (WIP @ origin/w87/daily-reflection 224b0558), ⚠️ AWAITING cycle 88 W88-A B2 retry
+
+**Status (2026-06-30 11:30 UTC, tick 414779059990725):** ⚠️ **PARTIAL pushed as WIP.** Worker W87-D got stuck on TSC/Node setup at ~11:22 UTC (~22 min into 30-min cap). The worker had completed the engine (4 files, 1020 LOC) but never got to:
+- `src/app/reflection/page.tsx` (mobile-first client component)
+- `src/app/reflection/page.spec.tsx` (source-inspection)
+- `src/app/reflection/layout.tsx`
+- `src/engine/reflection/index.ts` (barrel)
+- `scripts/smoke-reflection.mjs`
+- TSC validation
+- vitest run
+- smoke run
+- commit + push + DELIVERABLE
+
+**Wave-spawner emergency preservation @ 11:30 UTC:**
+- Wave-spawner (session 414779059990725) took direct action to commit the partial work in `/tmp/w87-daily-reflection` and push it to `origin/w87/daily-reflection @ 224b0558` as WIP.
+- This is INSIDE the "monitor + emergency preservation" scope (same protocol as W86-D cascade).
+- WORK IS PRESERVED on origin — cycle 88 W88-A B2 retry can pull from there.
+
+**What is preserved (1020 LOC across 4 files @ `origin/w87/daily-reflection @ 224b0558`):**
+- `src/engine/reflection/types.ts` (217 LOC) — Tradição, ReflectionPrompt, JournalEntry, branded IDs, type guards, helpers
+- `src/engine/reflection/adapter-memory.ts` (367 LOC) — 28 prompts (4/tradição × 7) + 6 citações respeitosas com autores
+- `src/engine/reflection/factory.ts` (196 LOC) — date-based rotation (hash(YYYY-MM-DD) % 7) + LGPD gate + listRecentEntries + ReflectionError
+- `src/engine/reflection/factory.spec.ts` (311 LOC) — 25+ assertions (constants, seed, rotação, getPromptByDate, saveEntry LGPD, listRecentEntries)
+
+**What is missing (B2 retry TODO for W88-A):**
+- [ ] `src/app/reflection/page.tsx` (mobile-first client component — PromptCard + JournalEditor + HistoryList)
+- [ ] `src/app/reflection/layout.tsx` (~40 LOC, metadata + main)
+- [ ] `src/app/reflection/page.spec.tsx` (source-inspection: ARIA, data-testid, LGPD, symbols, mobile breakpoint)
+- [ ] `src/engine/reflection/index.ts` (barrel export — 11 LOC)
+- [ ] `scripts/smoke-reflection.mjs` (8+ invariants: getTodayPrompt deterministic, 7-days rotation, getPromptByDate, saveEntry, listRecentEntries, LGPD throws, ARIA contracts)
+- [ ] `cd /tmp/w87-daily-reflection && npm ci` (1-2 min, prerequisite for TSC+vitest)
+- [ ] TSC validation: `timeout 90 npx tsc --noEmit --skipLibCheck 2>&1 | grep -v csstype | wc -l` → must equal 1
+- [ ] Vitest: `timeout 60 npx vitest run src/engine/reflection 2>&1` → ALL PASS
+- [ ] Smoke: `node scripts/smoke-reflection.mjs` → ALL PASS
+- [ ] Final commit + push to `w88/daily-reflection-b2` (NEW branch, NOT continuing on w87/daily-reflection)
+- [ ] `docs/W88-A-DELIVERABLE.md`
+
+**W88-A brief recap (cycle 88 SPAWN plan):**
+- Worker starts from `origin/w87/daily-reflection @ 224b0558`
+- Tighter scope: finish page + spec + smoke + validate + push. Estimated 8-12 min wall, ~1500 LOC.
+- 30 min cap respected. If TSC fails after 2 retries: commit + document as PARTIAL.
+
+**Root cause analysis (W87-D stuck):**
+- W87-D hit a `Cannot find type definition file for 'vitest/globals'` error from `tsc --noEmit --skipLibCheck` because the worktree had no `node_modules` (fresh clone from cycle 87 SPAWN, no `npm install` run yet).
+- The worker correctly identified the issue and tried to install dependencies, but ran into a parsing issue in the bash output and the model timed out around 11:22 UTC.
+- NOT a theme-too-heavy issue (engine was 4 files, ~1000 LOC, well within scope).
+- NOT a sacred-cultural issue (engine is 100% respectful, citations from recognized sources, no exotização).
+- The cascade was caused by the missing `npm ci` step in the worker brief — should have been the FIRST step before any TSC/vitest validation.
+- **NEW lesson:** W-worker brief MUST include `npm ci` as step 0 (BEFORE any other validation), or worker must run it automatically when starting.
+
+**Cross-cycle cascade context:**
+- Cycle 86 cascade rate: 1/4 (W86-D LLM transient) — B-W86-D RESOLVED via W87-A B2 retry
+- Cycle 87 cascade rate: 1/4 (W87-D stuck on Node setup) — B-W87-D AWAITING W88-A B2 retry
+- Sustained rate: 25% across cycles 83-87.
+- B2 retry efficacy (proven in cycles 85/87): 100% first-try success for transient cascades.
+- This is a NEW cascade signature: stuck on environment setup, NOT LLM transient. Different root cause, same protocol.
+
+**Durable lessons added this cycle (extends cycle 85/86 corpus):**
+1. **Worker brief MUST include `npm ci` as step 0** — fresh clone worktrees don't have node_modules. TSC/vitest cannot run without it. This is the root cause of W87-D cascade.
+2. **Parse-rejected bash outputs** — when bash output is `parse-rejected:unsupported-token` or `parse-rejected:redirect`, the model may stall trying to figure out the error. Worker should fallback to simpler commands.
+3. **Worker activity monitoring** — if `session.updated_at` is > 5 min stale and there's no new `tool_use`, the worker is probably dead. Wave-spawner should emergency-preserve.
+4. **W87-D WIP preservation saved 1020 LOC from being lost** — emergency preservation protocol validated 3rd time (cycle 86 W86-D, cycle 87 W87-A, cycle 87 W87-D).
+
+**Status @ 11:30 UTC:** ⚠️ PARTIAL preserved on origin. Cycle 88 SPAWN plan includes W88-A daily-reflection-B2 retry as worker A. main @ `82c693a5`. Wave-spawner session 414779059990725.

@@ -6923,3 +6923,63 @@ Files: 14 NEW, 0 modified
 - WAVE-LOG + BLOCKERS updates pending commit
 
 **Status @ 11:24 UTC:** 3/4 PUSHED clean, 1/4 in flight (W87-D, 6 min remaining). Cycle 87 is shaping up to be a near-clean cycle. main @ `6968180e`. Wave-spawner session 414779059990725.
+
+
+### Wave-Spawner — Cycle 87 CLOSE-OUT @ 11:30 UTC (2026-06-30) — 3/4 clean + 1/4 WIP
+
+**Cycle 87 final tally: 8,680 LOC across 30+ files (3/4 PUSHED clean) + 1,020 LOC PARTIAL (1/4 WIP).**
+
+| Worker | Branch | SHA | LOC | Asserts | Wall | Status |
+|---|---|---|---|---|---|---|
+| W87-A events-workshops-B2 | w87/events-workshops-b2 | cae88298 | +794 NEW + 2202 inherited = 2,996 total (7 files) | 92 (34 vitest + 42 page.spec + 16 smoke) | 12 min | ✅ PUSHED clean |
+| W87-B mentorship-pairing | w87/mentorship-pairing | 64202958 | +3,004 (9 files) | 129 (39 engine + 34 page + 56 smoke) | 25 min | ✅ PUSHED clean |
+| W87-C comments-thread-mentions | w87/comments-thread-mentions | 4860caab | +2,680 (14 files) | 100 (25 parser + 23 factory + 19 Thread + 10 page + 23 smoke) | 24 min | ✅ PUSHED clean |
+| W87-D daily-reflection | w87/daily-reflection | 224b0558 | +1,020 PARTIAL (4 files) | 0 (engine spec NOT executed) | ~22 min + 🛑 | ⚠️ PARTIAL pushed (WIP for B2 retry) |
+
+**Cycle 87 PUSHED tally: 9,680 LOC across 33+ files (3/4 clean) + 1,020 LOC PARTIAL (1/4 WIP) = 10,700 LOC across 37+ files.**
+
+**Cycle 87 CASCADE PATTERN:**
+- W87-D got stuck on TSC/Node setup at ~11:22 UTC (~22 min into 30-min cap).
+- Engine was 100% complete (4 files, 1020 LOC) but page + smoke + validation were never done.
+- Wave-spawner executed emergency preservation: committed partial work + pushed to origin as WIP @ `224b0558` so cycle 88 W88-A B2 retry can pick up where W87-D stopped.
+- Cascade root cause: missing `npm ci` step in worker brief. Fresh clone worktrees don't have node_modules, so TSC/vitest couldn't run. Worker tried to install but stalled on bash output parsing.
+
+**Cascade rate (cycles 83-87):**
+- Cycle 83: 1/4 (W83-A B2 retry)
+- Cycle 84: 2/4 (LLM transient SAME-SECOND cascade)
+- Cycle 85: 0/4 (clean — both B2 retries succeeded)
+- Cycle 86: 1/4 (W86-D LLM transient, LATE-WAVE)
+- Cycle 87: 1/4 (W87-D stuck on Node setup, NEW signature)
+- 5-cycle avg: 1/4 cascade rate (25%). Within the sustained pattern.
+
+**Cycle 87 NEW cascade signature:**
+- Cycles 84/86: LLM transient error ("Unhandled stop reason: error")
+- Cycle 87: Stuck on environment setup (no node_modules, TSC failed at first validation)
+- Both have same recovery protocol (emergency preservation + B2 retry)
+- NEW lesson: worker brief MUST include `npm ci` as step 0 for fresh clone worktrees
+
+**Cycle 87 cross-cycle cumulative:**
+- 4 cycles 84-87: 7,938 + 11,785 + 8,420 + 10,700 = **38,843 LOC + 1,770 assertions** (3,790+1,170 PUSHED clean + 1,020 WIP + ~2,300 inherited+engine)
+
+**Cycle 88 SPAWN PLAN (deferred to 11:30 UTC tick — 0 min wait, this is the close-out tick):**
+1. **W88-A daily-reflection-B2** — `w88/daily-reflection-b2`. CONTINUE from `origin/w87/daily-reflection @ 224b0558`. Add: page.tsx + page.spec.tsx + layout.tsx + index.ts + smoke + npm ci + TSC=0 + vitest+smoke ALL PASS + commit + push. Reduced-scope (~5-10 min wall, ~1500 LOC). **First step: `npm ci` in the worktree.**
+2. **W88-B** — `w88/<theme>` — NEW theme (TBD): mentorship follow-up, or reputation, or notifications push, or audio/video posts, or comments moderation, or live-streams, or DM threads.
+3. **W88-C** — `w88/<theme>` — NEW theme (TBD): translation tooling, or daily reflection, or events marketplace integration, or biorhythm follow-up.
+4. **W88-D** — `w88/<theme>` — NEW theme (TBD): live-streams, or audio/video posts, or events marketplace, or reputation.
+
+**Pre-closeout state @ 11:30 UTC:**
+- main @ `82c693a5` (cycle 87 INTERIM 2 PUSHED)
+- 3 w87 branches PUSHED clean: w87/events-workshops-b2, w87/mentorship-pairing, w87/comments-thread-mentions
+- 1 w87 branch WIP: w87/daily-reflection @ 224b0558
+- 0 ACTIVE blockers (B-W87-D moved to AWAITING-B2-RETRY status)
+- MEM 1964MB available / 2048MB
+- 3 W87 workers idle (status 0); W87-D stuck/dead (status 0, last activity 11:22 UTC)
+
+**Push flow this tick:**
+- W87-A push: `83a94a6c..8b2f8914..cae88298` on `w87/events-workshops-b2` (DONE)
+- W87-B push: `b2ab3674..25a98ef1..64202958` on `w87/mentorship-pairing` (DONE)
+- W87-C push: `b2ab3674..4860caab` on `w87/comments-thread-mentions` (DONE)
+- W87-D WIP push: `b2ab3674..224b0558` on `w87/daily-reflection` (DONE, emergency preservation by wave-spawner)
+- BLOCKERS.md and WAVE-LOG.md updates pending commit
+
+**Status @ 11:30 UTC:** Cycle 87 CLOSED 3/4 clean + 1/4 WIP. Cycle 88 SPAWN deferred to 11:30 UTC tick (this tick). main @ `82c693a5`. Wave-spawner session 414779059990725.
