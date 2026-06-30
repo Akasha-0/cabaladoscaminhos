@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "src/types/lucide-react.d.ts",
+    "src/lib/w90/live-stream-reactions.ts",
+    "src/lib/w90/__tests__/live-stream-reactions.spec.ts",
+    "src/components/community/MessageReactions.tsx",
+    "src/components/community/EmojiPicker.tsx",
+    "src/app/live/[id]/with-reactions/page.tsx",
+    "src/app/live/[id]/with-reactions/LiveStreamReactionsDemo.tsx"
+  ]
+}
