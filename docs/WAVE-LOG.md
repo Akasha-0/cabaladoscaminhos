@@ -7385,3 +7385,54 @@ Same owner action pending for ~25+ prior w-branches (per BLOCKERS.md "Owner merg
 4. Continue cycle plan: W90-D if 13:00 UTC spawned it, or save for cycle 91
 
 **Status @ 13:04 UTC:** Cycle 89 CLOSED ✅ 1/1 SHIPPED + PUSHED. Env fully recovered. main @ `087da3b`. Wave-spawner session 414800889626733.
+
+## Cycle 90 — W90-B close-out ✅ SHIPPED + PUSHED (session 414808538173623)
+
+**Branch:** `w90/live-stream-reactions` @ `eba41cc`
+**Wall time:** ~1h 42min (13:05 UTC → 14:47 UTC)
+**Status:** ✅ **SHIPPED + PUSHED** to `origin/w90/live-stream-reactions`.
+
+### Files delivered (10 files, ~2,414 LOC)
+
+| File | LOC | Role |
+|---|---|---|
+| `src/lib/w90/live-stream-reactions.ts` | 671 | Pure reactions engine (per-user emoji tracking, 10 emojis, branded types, frozen exports, serialize/deserialize, top-N, dedupe) |
+| `src/components/community/MessageReactions.tsx` | 274 | `'use client'` row of reaction chips + "+" picker trigger |
+| `src/components/community/EmojiPicker.tsx` | 147 | `'use client'` 10-emoji grid dialog with click-outside / Escape dismiss |
+| `src/app/live/[id]/with-reactions/page.tsx` | 102 | Server Component demo page (cookies → userId, noindex) |
+| `src/app/live/[id]/with-reactions/LiveStreamReactionsDemo.tsx` | 352 | `'use client'` standalone demo (no W89-A dep — integration deferred) |
+| `src/lib/w90/__tests__/live-stream-reactions.spec.ts` | 431 | Source-inspection spec (66 asserts, all PASS) |
+| `scripts/smoke-live-stream-reactions.mjs` | 222 | Runtime smoke via tsx (35 asserts, all PASS) |
+| `src/types/lucide-react.d.ts` | 15 | Ambient shim — unblocks focused TSC for missing `lucide-react` types (pre-existing global issue) |
+| `tsconfig.w90-b.json` | 17 | Focused TSC config (extends tsconfig.json with W90-B file list) |
+| `docs/DELIVERABLE-W90-B.md` | 183 | Deliverable doc |
+
+### Verification
+
+- **Focused TSC:** 0 errors via `tsc -p tsconfig.w90-b.json` ✅
+- **Source-inspection spec:** 66 / 66 PASS via `npx tsx --test` ✅
+- **Runtime smoke:** 35 / 35 PASS via `node scripts/smoke-live-stream-reactions.mjs` ✅ (prints `SMOKE OK`)
+- **Global TSC:** 2163 errors (pre-existing, unrelated to W90-B)
+
+### NEW durable lessons (cycle 90 W90-B)
+
+1. **`lucide-react` types globally missing on disk** — `package.json` claims `dist/lucide-react.d.ts` exists but it doesn't (cycle-90 `npm install` peer-close / 504-storm left the package incomplete). Ambient shim `src/types/lucide-react.d.ts` unblocks focused TSC. Reusable: any future cycle that hits the same import error. Cross-project: cycle-92 cleanup should add `@types/lucide-react` to devDependencies or generate the .d.ts files globally.
+
+2. **Cycle-90 npm install 504-gateway storm lasted ~1 hour** — first ~50min of the 1h42min wall was blocked on 4 simultaneous npm install requests hitting the npm registry's peer-close threshold. Mitigation works: `npm install --no-audit --no-fund --ignore-scripts --no-save typescript@5.9.3 tsx` (881 pkgs in 2 min when registry recovered). Reusable: any cycle that co-spawns workers should use a single sequential install in the worktree, NOT a parallel burst.
+
+3. **Sibling W89-A files are NOT on main at cycle-90 branch time** — `w89/live-stream-chat` exists on origin but is unmerged. Cycle-90 demo pages that import `@/lib/w89/live-stream-chat` or `@/components/community/ChatMessageItem` will fail TSC. Mitigation: standalone demo (synthetic message stream) + follow-up cycle for integration. Reusable: any future worker that depends on a sibling-cycle's WIP must either (a) cherry-pick the sibling's SHA into its branch, or (b) make the integration boundary a stub.
+
+4. **`node:test` source-inspection spec + `node scripts/smoke-*.mjs` runtime smoke is the durable pattern** — `node:test` has no TS loader (fails on `.ts` files even with `--experimental-strip-types` because of `__dirname` ESM issue), so all runtime engine asserts must live in a separate `scripts/smoke-*.mjs` invoked via `npx tsx` or `node` with the TS-file-as-string trick. Reusable: any future cycle spec file should reference the smoke runner's existence rather than dynamically import the engine.
+
+### Cycle 90 final tally (this worker perspective)
+
+| Worker | Status | SHA | LOC | Notes |
+|---|---|---|---|---|
+| W90-A reputation-leaderboard-ui | BLOCKED | — | ~1900 | Per wave-spawner close-out @ 14:24 UTC |
+| **W90-B live-stream-reactions** | ✅ **SHIPPED** | `eba41cc` | 2414 | This session. Standalone demo + clean engine. |
+| W90-C workshop-recording-engine | SHIPPED | `aff3eca` | 2201 | Per cycle-90 close-out addendum |
+| W90-D comments-moderation-queue | SHIPPED | `108b8b0c` | 2427 | W88-B retry; 75min wall time |
+
+**Combined:** 2/4 SHIPPED in this worker's perception (W90-B + W90-C). W90-A and W90-D were spawned by the same wave-spawner but the wave-spawner's own close-out at 14:24 UTC initially said 4/4 BLOCKED, then corrected to 2/4 (W90-C + W90-D) per the later addendum. **W90-B (this session) is the 3rd SHIPPED worker** — bringing the cycle 90 total to 3/4.
+
+**Status @ 14:47 UTC:** W90-B SHIPPED + PUSHED at SHA `eba41cc`. Wave-spawner session 414800889626733. Worker session 414808538173623 (this session).
