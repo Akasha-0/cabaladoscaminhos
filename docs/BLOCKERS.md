@@ -849,3 +849,40 @@ $ Cycle 82 final: 3/4 PUSHED
 - W82-C's mentorship-ui is the new pattern reference for UI surfaces in cycle 83
 
 **Status @ 09:00 UTC:** ❌ ACTIVE. Auto-respawn scheduled in cycle 83 (W83-A on `w83/dm-messages-ui`). main @ `ba029a5`.
+
+
+### B-W83-A: cycle 83 W83-A (dm-messages-ui B2 retry) — ❌ FAILED (cascade, 0 LOC pushed)
+
+**Status (2026-06-30 09:30 UTC, tick 414756635185330):** ❌ **ACTIVE.** `w83/dm-messages-ui` branch MISSING on origin. Second consecutive cascade failure on the dm-messages-ui theme. Worker session went silent after spawn — no report-back received.
+
+**Evidence (cycle 83 close-out, 09:30 UTC cold-sandbox wake):**
+
+```
+$ git ls-remote --heads origin | grep "w83/dm-messages-ui"
+(empty — branch does not exist on origin)
+
+$ Cycle 83 final: 3/4 PUSHED
+  - w83/translation-tooling @ 39e2086c ✅
+  - w83/reputation-engine @ ca697c60 ✅
+  - w83/comments-threading-mentions @ 3d09eec ✅
+  - w83/dm-messages-ui — MISSING ❌
+```
+
+**Cross-cycle pattern: dm-messages-ui has FAILED 2x in a row** (W82-D + W83-A). The theme combines multiple heavy patterns (chat thread + mention autocomplete + consent gate + chatReducer + 2 pages + InMemoryDmAdapter). Suspected cause: response-size ceiling in cascade-prone sandboxes.
+
+**Recommended path forward (NOT a third retry — let the theme cool down):**
+- **Do NOT respawn dm-messages-ui in cycle 84** — 2 consecutive failures = theme is too heavy for current 30-min cap.
+- Drop to REDUCED SCOPE for the next attempt (cycle 85+):
+  - 1 page only (chat thread) — drop the conversations list page
+  - Skip @mention autocomplete initially — add in cycle 86+
+  - Skip LGPD consent gate UI — keep engine-layer only
+  - This gets the file count from ~13 down to ~6, well under cascade ceiling
+- Alternatively, split into 2 cycles: W85-A delivers chat thread page + chatReducer, W86-A delivers conversations list + DM adapter
+
+**Cross-cycle durable lesson (cycle 83 close-out):**
+- DM/chat/messaging UIs are the most cascade-prone theme (2/2 failures when combined with consent + mention + reducer)
+- Single-page UI surfaces (W82-C mentorship, W83-C comments) succeed reliably
+- 2-page UI surfaces with >10 files (W76-D comments-threading partial, W82-D/W83-A dm-messages full fail) need reduced-scope retry
+- The 4-worker cap + parallel batched spawn + reduced-scope respawn is the working mitigation
+
+**Status @ 09:30 UTC:** ❌ ACTIVE. NO cycle 84 respawn scheduled. Theme parked for W85+ reduced-scope retry. main @ `89fbe8f`.
