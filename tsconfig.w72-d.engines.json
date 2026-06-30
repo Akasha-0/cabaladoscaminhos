@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "types": ["node"],
+    "lib": ["es2022", "dom"],
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "baseUrl": "."
+  },
+  "files": [
+    "src/lib/tts/types.ts",
+    "src/lib/tts/voice-presets.ts",
+    "src/lib/tts/text-normalizer.ts",
+    "src/lib/tts/platform-tts-adapter.ts",
+    "src/lib/tts/audio-cache.ts",
+    "src/hooks/use-tts-stream.ts"
+  ]
+}
