@@ -6340,3 +6340,27 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 - 7-tradição coverage mandated in brief → sample distribution verified in DELIVERABLE
 
 **Status @ 09:52 UTC:** Cycle 84 = 1/4 PUSHED, 3/4 in flight with 8 min to cap. B-W83-A false positive (actually RESOLVED). main @ `2c6d5a4`. Wave-spawner session 414756635185330.
+
+
+### Cycle 84 interim 2 — 09:56 UTC (26 min after spawn)
+
+- ✅ **W84-C PUSHED** `w84/comments-moderation` @ `45c6f13e` — **4,699 LOC across 15 files**. **84/84 spec + 38/38 smoke PASS** (122 total), TSC=0 (engine + page, both strict isolated). 9-file engine + 4-file page (mobile-first admin surface with queue/audit/stats tabs, detail drawer, batch ops, j/k/a/d/e keyboard nav). 5/5 NIST FIPS-180-4 vectors verified. 8 report reasons × 7 tradições × 12 sample reports.
+- ⏳ W84-A voice-mode-akasha, W84-D marketplace-lectura-praticas still in flight. Cycle 84 cap = 10:00 UTC. ~4 min remaining.
+- **HMAC chain reuse from W83-B confirmed working** — W84-C copied the inline pure-TS SHA-256 implementation directly. No new crypto primitives needed. Validates after every op.
+- **Sacred-cultural heuristic delivered:** `shouldAutoFlag()` recognizes that sacred terms (axé, orixá, caboclo) without harassment markers should NOT auto-flag. ALL-CAPS shouting + sacred terms OR harassment co-occurrence (idiota, burra, lixo) → auto-flag. Sample #6 "axé aos que honram a leitura" correctly DENIED with note "Não é deturpação, é saudação ritual."
+- **Worktree path /tmp/w84-comments-moderation/ worked directly** — no /workspace tmp workaround needed (sandbox variance).
+
+**7 NEW durable lessons from W84-C (extend W83-B + W84-B lessons):**
+1. **`Object.freeze([...])` → `number[]` edit leaves stale `]);` closing → silent TSC cascade** — search for unbalanced brackets after Object.freeze edits
+2. **`Object.isFrozen()` requires runtime call; `@ts-expect-error` over type-only cast produces TS2578** — use real `as const` assertions, not @ts-expect-error for type narrowing
+3. **`noUncheckedIndexedAccess` requires `!` on `K[i]` / `W[i-N]` in bit-twiddling crypto** — TS strict doesn't trust array index safety even for static literals
+4. **TS path mapping `@/*` works in nested tsconfig with `baseUrl` + `ignoreDeprecations`** — `paths: { "@/*": ["./src/*"] }` resolves correctly across nested tsconfigs
+5. **React+JSX stubs in isolated tsconfig need `node_modules/@types/react/{index,jsx-runtime}.d.ts`** — sandbox without npm install needs physical stub files, not just `typeRoots` config
+6. **Brand-typed IDs need `as unknown as ReadonlyArray<Brand>` (two-step cast)** — direct cast fails because TS doesn't trust the narrowing
+7. **`seq.toString(36).padStart(4, '0')` produces hex IDs (rep-000b ≠ rep-0011)** — compute via same generator in tests to avoid ID collisions
+
+**Cross-cycle cumulative cycle 84:**
+- 2/4 PUSHED = 7,938 LOC + 296 assertions ALL PASS + 2× TSC=0
+- Cycle 84 cap = 10:00 UTC (4 min for W84-A + W84-D)
+
+**Status @ 09:56 UTC:** 2/4 PUSHED, 2/4 in flight (W84-A + W84-D, ~4 min to cap). main @ `c09e354`. Wave-spawner session 414756635185330.
