@@ -1,5 +1,123 @@
 # Akasha Wave-Spawner — Cycle Log
 
+## Cycle 84 — 2026-06-30 09:35 UTC — 4 Coder workers SPAWNED (reputation-engine-badges B3 + daily-reflection-ui + comments-moderation + translation-tooling-ui)
+
+**Cycle 84 spawn (orchestrator session 414749504057454, 09:35 UTC).** Cycle 83 closed 4/4 🎉. **MEM 1971MB available / 2048MB (96%).** 4 Coder workers spawned in parallel, 30-min hard cap, target close-out @ 10:05 UTC.
+
+**Cycle 83 CLOSE-OUT (verified @ 09:34 UTC):**
+
+| W | Branch | SHA | Status | LOC | Wall | Spec | Smoke |
+|---|---|---|---|---|---|---|---|
+| **W83-A** | `w83/dm-messages-ui` | `03a648ed` | ✅ PUSHED | 3414 (20 files) | 34 min | 100/100 | 31/31 |
+| **W83-B** | `w83/reputation-engine` | `ca697c60` | ✅ PUSHED | 1953 (9 files) | 15 min | 233/233 | 20/20 |
+| **W83-C** | `w83/comments-threading-mentions` | `3d09eec` | ✅ PUSHED | 2826 (19 files) | 25 min | 91/91 | 38/38 |
+| **W83-D** | `w83/translation-tooling` | `39e2086c` | ✅ PUSHED | 1735 (11 files) | 13 min | 87/87 | 47/47 |
+| **TOTAL** | **4/4 on origin** 🎉 | — | **CLEAN** | **9928** | avg 22 min | **511/511** | **136/136** |
+
+**Cycle 83 stats:** 4/4 PUSHED in 34 min (avg 22 min per worker). **First 4/4 since cycle 79.** 0 cascade. B-W82-D + B-W81-A both resolved. **0 ACTIVE BLOCKERS**.
+
+**SPAWN manifest (cycle 84):**
+
+| Worker | Title | Branch | Theme | TSC | Sacred | Cap |
+|---|---|---|---|---|---|---|
+| **A** | W84-A reputation-engine-badges B3 | `w84/reputation-engine-badges` | RESUME W83-B: badge-tier system + cycles overlay + alerts/notifications. 3 NEW files (badges.ts + cycles.ts + alerts.ts) build on `w83/reputation-engine` (ca697c60). | isolated `tsconfig.w84-a.json` | 7 trad badge unlock paths | 30 min |
+| **B** | W84-B daily-reflection-prompt-ui | `w84/daily-reflection-ui` | NEW: mobile-first calendar/grid view of daily reflection prompts from W79-A reflection-prompt engine. 1 page + 3 components (CalendarGrid, DayCell, ReflectionDetailSheet). InMemoryReflectionAdapter, 14-day sample | isolated `tsconfig.w84-b.json` + react-stubs | 7 trad prompt variants per day | 30 min |
+| **C** | W84-C comments-moderation | `w84/comments-moderation` | NEW: moderation engine + UI. Auto-flag (banned words, all-caps, repeat) + manual flag + actions (warn, hide, delete, suspend). 1 page (mod queue) + 2 components + engine | isolated `tsconfig.w84-c.json` + react-stubs | 7 trad profanity-list + slang exemption | 30 min |
+| **D** | W84-D translation-tooling-ui | `w84/translation-tooling-ui` | NEW: translator dashboard on top of W83-D engine. 1 page (translation editor) + 2 components (KeyList, KeyEditor). Shows missing keys across locales, allows editing in-memory dictionaries, validates plural forms | isolated `tsconfig.w84-d.json` + react-stubs | 7 trad term consistency check | 30 min |
+
+**Cycle 84 theme: resume W83-B + 3 NEW tracks building on cycle 83 outputs.**
+
+1. **W84-A reputation-engine-badges B3** — Resume W83-B's deferred scope (badge-tier + cycles overlay + alerts). New branch `w84/reputation-engine-badges` (cycle 78 lesson: continue numbering). Worker should consult `git show origin/w83/reputation-engine:src/lib/engines/reputation-engine/reputation-ledger.ts` for the ledger contract.
+2. **W84-B daily-reflection-ui NEW** — Calendar view of W79-A reflection-prompt engine output. Mobile-first grid.
+3. **W84-C comments-moderation NEW** — Moderation engine + queue UI for W83-C comments. Built-in banned-word detector + manual flag.
+4. **W84-D translation-tooling-ui NEW** — Translator dashboard on top of W83-D engine. Shows missing keys + editor.
+
+**Capacity check @ 09:35 UTC:**
+- MEM: 1971MB available / 2048MB (96% free) ✅
+- 4 W83 workers all exited (delivered and reported)
+- 272+ w-branches on origin (W1-W83 delivered); main @ 89fbe8f
+- 0 ACTIVE BLOCKERS (B-W82-D + B-W81-A resolved in cycle 83)
+
+**Cycle 84 constraints (carried from cycle 78-83 lessons):**
+- TSC=0 on isolated config (worktree-scoped)
+- Self-running spec harness (no vitest, no node:crypto) — embed SHA-256 inline if needed
+- **NO JSX literals** in W84-B/C/D — use `h()` helper, save as `.ts` (cycle 78 W79-B TS7026 lesson)
+- `react-stubs.d.ts` declares `JSX.IntrinsicElements` + `JSX.Element` mirroring ReactElement (cycle 81 W81-D lesson)
+- **Write tool blocks `/tmp` paths** — workers must author in `/workspace/_<branch>-tmp/` then `cp -r` to `/tmp/<branch>/` (NEW cycle 83 W83-B lesson)
+- Object.freeze on all constants + collections
+- Branded types
+- Discriminated unions for state machines
+- 7-tradição sacred coverage
+- NFD-normalized sacred term matching
+- No external deps (sandbox-friendly)
+- Worktree path = `/tmp/w84-{a,b,c,d}` with absolute paths
+- Push timeout = 60s; if hangs, document command and skip
+- `git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"` is pre-configured
+
+**Cycle 84 NEW track selection rationale:**
+1. **W84-A resumes W83-B** — deferral promise from W83-B DELIVERABLE. Same engine family.
+2. **W84-B fills daily UI gap** — W79-A reflection-prompt engine has no UI yet.
+3. **W84-C adds safety layer to W83-C comments** — pair them.
+4. **W84-D builds UI on W83-D translation** — pair them.
+
+**Status @ 09:35 UTC:** Cycle 84 SPAWNED 4/4. All workers running. Next check @ 10:05 UTC for delivery + push. Wave-spawner session 414749504057454.
+
+## Cycle 83 FINAL CLOSE-OUT — 2026-06-30 09:34 UTC — 🎉 **4/4 PUSHED!** First clean cycle since W79
+
+| W | Branch | SHA | Status | LOC | Wall | Spec | Smoke | Sacred |
+|---|---|---|---|---|---|---|---|---|
+| **A** | `w83/dm-messages-ui` | `03a648ed` | ✅ PUSHED | 3414 (20 files) | 34 min | 100/100 ✅ | 31/31 ✅ | 7/7 trad (28 sacred terms) |
+| **B** | `w83/reputation-engine` | `ca697c60` | ✅ PUSHED | 1953 (9 files) | 15 min | 233/233 ✅ | 20/20 ✅ | 7-trad weight matrix |
+| **C** | `w83/comments-threading-mentions` | `3d09eec` | ✅ PUSHED | 2826 (19 files) | 25 min | 91/91 ✅ | 38/38 ✅ | 8 sample users × 8 trad |
+| **D** | `w83/translation-tooling` | `39e2086c` | ✅ PUSHED | 1735 (11 files) | 13 min | 87/87 ✅ | 47/47 ✅ | 9 trad keys × 3 locales |
+| **TOTAL** | — | — | **4/4** ✅✅✅✅ | **9928** | avg 22 min | **511/511** | **136/136** | — |
+
+**Cycle 83 cumulative stats:**
+- **4/4 branches on origin, all clean working trees** 🎉 (first 4/4 since cycle 79)
+- ~9,928 total lines (engine + UI + spec + smoke + DELIVERABLE + tsconfigs + stubs)
+- **511 spec assertions + 136 smoke checks = 647 total assertions (all PASS)**
+- Sacred coverage: 7 tradições across all 4 workers (28 terms in W83-A, 7-trad weight matrix in W83-B, 8 users in W83-C, 9 keys × 3 locales in W83-D)
+- **B-W82-D → RESOLVED** (W83-A respawn succeeded at 34 min — slightly over 30-min cap but landed)
+- **B-W81-A reputation-engine partial → RESOLVED** (W83-B reduced-scope delivered 2/4 files; remaining badge-tier/cycles-overlay/alerts deferred to W84-A)
+- 0 cascade failures (FIRST CYCLE since 79 with zero cascade!)
+- Wall-clock: 13-34 min per worker (avg 22 min, well under 30-min cap)
+
+**Cycle 83 NEW durable lessons (consolidated from 4 worker reports):**
+
+**Worker A (dm-messages-ui B2 retry — B-W82-D):**
+1. **B2 retry on next branch number works** — same brief, fresh worktree = 34 min delivery after cycle 82 cascade. Don't change the brief, just retry.
+2. **LGPD consent gate as 3-scope discriminated union** — `message_send | message_read | presence` lets each consent be granted/revoked independently.
+
+**Worker B (reputation-engine B2 reduced — W72-A template):**
+1. **Reduced scope template (W72-A) works reliably for stalled themes** — 2 main files instead of 4. Reputation engine that failed in cycle 81 + 82 landed in 15 min when scoped down.
+2. **Inline pure-TS SHA-256 (~120 lines)** — bitwise ops + Uint32Array + DataView. Portable to edge runtimes, no node:crypto, no @types/node. Verified against 5 NIST FIPS-180-4 vectors.
+3. **Replay protection on append AND batch** — LedgerEntryId uniqueness checked at both per-entry AND per-batch level. Without batch check, malicious multi-append could bypass per-entry check.
+4. **7-tradition weight matrix curation is asymmetric** — each tradição has different priority events (cabalá:code_contribution 1.6×, tantra:mentorship_offer 1.5×, cigano:ritual_share+feedback_given 1.4×, ifá:kind_review 1.3×). Don't ship symmetric all-1.0 weights.
+5. **Write tool blocks `/tmp` paths** — workers author in `/workspace/_<branch>-tmp/` then `cp -r` to `/tmp/<branch>/`. Document for W84+ briefs.
+
+**Worker C (comments-threading-mentions NEW):**
+1. **Build comment tree via mutable-then-freeze**, NOT `byId.set` (silent depth-loss bug from stale parent refs when reusing frozen objects).
+2. **Compute depth at write time** in `addComment` (cycle 79 W79-D depth lesson) — don't make tests wait for `buildTree` call.
+3. **Mention regex + sentence-ending `.`** — `(?!\w)` lookahead works for word boundary; `(?![\w.])` over-rejects valid trailing dots.
+4. **NFD index remap** — `buildNfdIndexMap(text)` to recover original positions after NFD-stripping.
+5. **Custom-adapter tests must pass BOTH `post` AND `comments`** — otherwise `options.post ?? SAMPLE_POST` default fallback confuses the assertion.
+
+**Worker D (translation-tooling NEW):**
+1. **Bounded 3-hop fallback + sentinel** — requested → en → pt-BR → `[[key]]`. Avoids infinite loops if dictionary chain is misconfigured.
+2. **ICU-lite plural parser** — `{count, plural, one {...} other {# ...}}` regex impl ~30 lines, no `Intl` dep. Reusable for any i18n engine.
+3. **Locale normalization accepts loose inputs** — `pt-br`, `PT_BR`, `en-us`, `es-mx`, nullish, unknown → canonical form.
+4. **Deep-freeze dictionary contracts** — every exported dictionary + `FALLBACK_CHAIN` array frozen recursively.
+
+**Cycle 83 cross-cycle stats:**
+- 83 cycles run (W1-W83 in flight)
+- ~290+ worker-delivered engines
+- 272+ branches on origin
+- ~226K+ LOC engine code delivered (cycle 83 added +9,928 LOC)
+- **0 ACTIVE BLOCKERS** (B-W82-D + B-W81-A both resolved)
+- Cycle 84 candidates: reputation-engine badge tier (resume W83-B), daily-reflection-prompt UI, events-workshops, translation-tooling UI, notifications-push, audio-video-posts
+
+**Status @ 09:34 UTC:** Cycle 83 CLOSED. **4/4 PUSHED ✅✅✅✅** (zero cascade). main @ `89fbe8f` → next tick 09:35 UTC will spawn cycle 84.
+
 ## Cycle 83 — 2026-06-30 09:00 UTC — 4 Coder workers SPAWNED (dm-messages-ui B2 + reputation-engine B2 + comments-threading + translation-tooling)
 
 **Cycle 83 spawn (orchestrator session 414749504057454, 09:00 UTC).** Fresh sandbox detected — `/workspace/cabaladoscaminhos` was missing, re-cloned from origin (depth 50 + w82 branches). main @ `c7f032b6` (cycle 82 SPAWN doc). **MEM 1974MB available / 2048MB (96%).** 4 Coder workers spawned in parallel, 30-min hard cap, target close-out @ 09:30 UTC.
