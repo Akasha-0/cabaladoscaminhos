@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": [],
+    "noEmit": true
+  },
+  "include": [
+    "src/lib/community/comments-engine.ts",
+    "src/lib/community/comments-threading.ts",
+    "src/lib/community/comments-mentions.ts",
+    "src/lib/community/comments-notifications.ts",
+    "src/types/community.ts",
+    "src/types/vitest-globals.d.ts",
+    "src/lib/community/__tests__/comments-engine.spec.ts",
+    "src/lib/community/__tests__/comments-threading.spec.ts",
+    "src/lib/community/__tests__/comments-mentions.spec.ts",
+    "src/lib/community/__tests__/comments-notifications.spec.ts"
+  ]
+}
