@@ -1,5 +1,45 @@
 # Akasha Wave-Spawner — Cycle Log
 
+## Cycle 68 — 2026-06-30 00:30 UTC — 4 w68 workers SPAWNED 🟡 (auth-session-engine + mentorship-pairing-engine + comments-threading-mentions + dm-engine)
+
+**Cycle 68 spawn (orchestrator session 414624191201425, 00:30 UTC).** 4 Coder workers spawned via `communicate spawn`. New sandbox (clone of cabaladoscaminhos) — repo was empty when cron fired, cloned at 00:31 UTC. State at spawn: main clean @ 6aa87d7, MEM available 1972MB, 0 active workers.
+
+**Worker briefs (4 trails, all aligned with cycle 60-67 engine pattern + 7-tradition sacred coverage where applicable):**
+
+| Worker | Branch | Trail | Engine files | Spec files | Smoke | Sacred | TSC target |
+|---|---|---|---|---|---|---|---|
+| **A** | `w68/auth-session-engine` | auth session lifecycle | 5 (session/oauth/password/2fa/audit) | 5 spec | 15+ checks | N/A (auth) | 0 |
+| **B** | `w68/mentorship-pairing-engine` | 1-on-1 mentor/mentee matching | 4 (engine/scoring/matching/availability) | 4 spec | 12+ checks | 7 traditions | 0 |
+| **C** | `w68/comments-threading-mentions` | nested comments + @mentions + notif | 4 (engine/threading/mentions/notifications) | 4 spec | 12+ checks | 7 traditions (safety) | 0 |
+| **D** | `w68/dm-engine` | direct messages | 5 (engine/conversations/messages/presence/typing) | 5 spec | 15+ checks | 7 traditions | 0 |
+| **TOTAL** | — | — | **18 engine** | **18 spec** | **54+ smoke** | — | **4×0** |
+
+**Wall-clock targets (per worker):**
+- 0:00-0:01 — worktree setup
+- 0:01-0:16 — Phase 1: write all files (engine + spec + smoke + DELIVERABLE)
+- 0:16-0:21 — Phase 2: TSC + smoke validation
+- 0:21-0:24 — Phase 3: git add + commit + push
+- 0:24-0:30 — Phase 4: report back to parent session 414624191201425
+
+**Cycle 68 inheritance from cycle 60-67 lessons:**
+- Phase 1 = write ALL files first (no `npm install`/`npx tsc`/`git` until files exist) — unblocks wedged IO (cycle 62 lesson 5)
+- Runtime smoke via `node --experimental-strip-types` — bypass npm wedge (cycle 62 lesson 7)
+- Lookaround regex `(?:^|\\W)…(?:$|\\W)` for sacred-term boundary detection (cycle 60/65/67 verified robust)
+- NO `constructor(readonly x)` shorthand — use explicit field declarations (cycle 66 lesson)
+- NO `--reporter=basic` — use default reporter (cycle 62 lesson)
+- Branded `toBe()` literals need wrapping (cycle 67 lesson)
+- Worktree-local vitest config + cached binary at `/root/.npm/_npx/69c381f8ad94b576/node_modules/.bin/vitest` if needed (cycle 62 lessons 9-10)
+- GITHUB_TOKEN URL rewrite is BEST-EFFORT (cycle 62 lesson 4)
+- Per-file TSC=0; project-wide TSC=1 carryover (vitest/globals, since cycle 42) is pre-existing and accepted
+
+**Pre-cycle TSC state (00:32 UTC):** `npx tsc --noEmit --skipLibCheck | grep -v csstype | wc -l` = 3 (1 actual error TS2688 + 2 follow-up lines; carryover TS2688 = pre-existing, accepted per cycle 42+ precedent).
+
+**MEM state:** 1972MB available @ spawn (sandbox 2GB cap). Workers: 4 active. Within 8-worker cap.
+
+**Status: 🟡 SPAWNED. Workers in-flight. Next cron tick (01:00 UTC) will verify branches on origin via `git ls-remote origin | grep w68/` and write close-out.**
+
+---
+
 ## Cycle 67 — 2026-06-29 23:47 UTC — 4/4 w67 workers DELIVERED + PUSHED ✅✅✅✅ (cigano-spread-visualizer + dream-journal + orixa-calendar + sacred-symbol-autolinker)
 
 **Cycle 67 close-out (orchestrator session 414609436238102, 23:47 UTC).** 4/4 PUSHED. Cleanest cycle since W62 — 4 branches on origin in 17 min wall-clock, 6524L ship, 18 NEW durable lessons.
