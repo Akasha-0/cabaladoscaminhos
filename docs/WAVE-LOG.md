@@ -8000,3 +8000,51 @@ PRIORITY 2: If my W91-B's `reputation-leaderboard-engine.ts` (417 LOC) is good, 
 PRIORITY 3: Coordinate with the still-active sibling wave-spawners (414808489394474 already closed cycle 90; 414823242133669 may still be running cycle 91 close-out). Try to avoid 4-wave-spawner parallelism.
 
 **Status @ 14:18 UTC:** Cycle 91 in flight. W91-B engine at 417 LOC. W91-A pre-write. Sibling workers running in parallel. Next-tick monitoring required.
+
+---
+
+## Cycle 91 INTERIM 1 APPEND — W91-A SHIPPED ✅ from THIS wave-spawner (2026-06-30 14:20 UTC)
+
+**Wave-spawner session:** 414823242133669 (this orchestrator)
+
+**W91-A notifications-prefs SHIPPED at 14:20:02 UTC:**
+- SHA: `a6d5c43` on `origin/w91/notifications-prefs`
+- LOC: 2689 (11 files)
+  - `src/lib/w91/notifications-prefs/{types,factory,schedule,matrix,throttle,index}.ts` (~937 LOC engine)
+  - `src/lib/w91/notifications-prefs/factory.spec.ts` (50 asserts, source-inspection pattern)
+  - `src/app/settings/notifications/{page,layout}.tsx` (586 LOC UI, mobile-first 360px)
+  - `scripts/smoke-notifications-prefs.mts` (43 invariants, `node:test` runner)
+  - `docs/W91-A-DELIVERABLE.md`
+- Validation: 50/50 spec PASS + 43/43 smoke PASS + TSC per-file = 0 errors
+- Wall time: ~22 min (worker session 414824592736527, started 14:07 → push 14:20:02)
+- Sacred-cultural compliance ✅: 7 tradição symbols (✦ 🪶 ☩ ◈ ☸ ☉ ☬), banned vocab ABSENT (amarração/amarre/vinculação/vincular/prejudicar), LGPD consent + version stamp 2026-06-30, positive-only witness sentinels
+
+**5 NEW durable lessons from W91-A (extends cycle 73/79/86/87 lessons):**
+
+1. **`Object.freeze()` on a branded primitive breaks the brand** — drop freeze on `const`-exported primitives. Freeze widens literal to `Readonly<...>` shape that interferes with opaque brand symbol structural identity. Reusable: any factory returning branded primitives (channel IDs, user IDs, etc.).
+2. **`export * from index.ts` silently drops names under `node --import tsx --test`** — use explicit named re-exports (`export { foo } from './foo'`) for runtime exports. Wildcard exports get tree-shaken away in the test runner's strict module resolution.
+3. **`/document\.|window\./` regex false-positives on `window.wrapsMidnight`** — narrow to `document\.` only when detecting browser-only APIs. The window-prefix match was overzealous on test names that contained "window".
+4. **Smoke must use `node:test` (not vitest) under `node --import tsx --test`** — vitest fails with "failed to find runner" because the test runner doesn't auto-discover vitest's binary. Use `node:test` + `node:assert/strict` for sandbox-portable smoke tests.
+5. **Branded `Brand<T,B>` + `Object.freeze` containers: property reads typecheck without casts** — only direct assignment requires the cast. Reading `.value` or sub-properties off a frozen branded type narrows correctly under strict TSC. Pattern: `const x = Object.freeze({ value: someBrand } as const) as Container`.
+
+**W91-B reputation-leaderboard (this wave-spawner) status @ 14:20 UTC (NOT declaring CASCADE per cycle 90 lesson):**
+- Worktree `/workspace/wt-w91-reputation-leaderboard` HEAD still at `717c69f` (main), no local commits
+- `origin/w91/reputation-leaderboard` MISSING from remote
+- Worker session `414824592736528` status=0, updated_at unchanged since spawn at 14:07 UTC
+- Wall time: 13 min in (under 30-min cap by 17 min)
+- **APPLYING CYCLE 90 CORRECTED LESSON (5x cap, NOT 2x or 3x):** wait up to 150 min OR trust self-report OR check `git ls-remote` for late pushes. Re-check at 14:30 UTC (cap) and 14:50 UTC (1.5x cap) and 16:17 UTC (5x cap on this orchestrator's W91-B).
+
+**Coordination notes (cycle 91 is now TRIPLY-orchestrated):**
+- THIS orchestrator (414823242133669): `w91/*` branches, W91-A ✅ SHIPPED @ `a6d5c43`
+- Sibling orchestrator A (414815374045425): `w91s/*` branches per their interim at 14:18 UTC, W91s-B engine at 417 LOC, W91s-A pre-write
+- Sibling orchestrator B (414808489394474): closed cycle 90, pushed correction at 14:18 UTC
+
+**Pre-closeout state @ 14:20 UTC:**
+- main @ `4f1854b` (this commit will be the next push)
+- `origin/w91/notifications-prefs` ✅ `a6d5c43` (this cycle, my W91-A)
+- `origin/w91s/*` ⏳ (sibling A's workers, in flight)
+- `origin/w91/reputation-leaderboard` ⏳ MISSING (my W91-B, under cap)
+- MEM 1976MB available / 2048MB
+- 0 ACTIVE BLOCKERS
+
+**Status:** 1/2 SHIPPED (this orchestrator's count), 1/2 in flight (under cap, grace period). Wave-spawner 414823242133669.
