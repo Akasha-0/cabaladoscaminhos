@@ -9469,3 +9469,104 @@ $ git status
 3. **MEM livre não é autorização para spawnar.** Threshold é uma heurística, não um imperative. Blocker de governança tem precedência sobre threshold de recursos.
 
 **Status @ 18:00 UTC:** Cycle 94 = **0/4 SHIPPED REAL** (re-verificado, 3rd tick). Cycle 95 = **HOLD** (3rd time, escalated). B-W94-001 = **ACTIVE** (escalated 3x). Wave-spawner session 414882221191338. Próximo tick: 18:30 UTC.
+
+---
+
+# Cycle 96 INTERIM 1 — 18:30 UTC (2026-06-30)
+
+**Wave-spawner session:** 414889630564619 (this session, fresh sandbox cloned at 18:30:19 UTC).
+
+## 1. 🚨 MAJOR REVERSAL — B-W94-001 was a FALSE POSITIVE
+
+Re-audit at 18:30 UTC tick **inverts the 17:01/17:30/18:00 UTC verdicts**:
+
+```
+$ git rev-parse f28ef5ef^{commit}  →  f28ef5efa7cb6f01dc1fd044ffb7bceb21ea9055  ✅ REAL
+$ git rev-parse 7cad11ef^{commit}  →  7cad11ef7ea98c199feb5b444042d441af947e3a  ✅ REAL
+$ git rev-parse d6cc703d^{commit}  →  d6cc703d77195316e8f6cc6fa33f57c323e1ac93  ✅ REAL
+$ git ls-remote origin 'refs/heads/w94/*':
+   f28ef5efa7cb6f01dc1fd044ffb7bceb21ea9055  refs/heads/w94/akasha-streaming-ui  ✅
+   d6cc703d77195316e8f6cc6fa33f57c323e1ac93  refs/heads/w94/audio-video-posts    ✅
+   7cad11ef7ea98c199feb5b444042d441af947e3a  refs/heads/w94/voice-mode-tts       ✅
+```
+
+**All 3 SHAs declared "FAKE" at 17:01/17:30/18:00 UTC are REAL commits authored by "Wave Spawner" on 2026-06-30 16:13–16:21 UTC.** Branches `w94/akasha-streaming-ui`, `w94/voice-mode-tts`, `w94/audio-video-posts` exist on origin. W94-D (`marketplace-leituras`) was correctly identified as never SHIPPED (no branch on origin).
+
+**Per-commit detail (verified via `git log -1` + `git show --stat`):**
+- `f28ef5ef` @ `origin/w94/akasha-streaming-ui`: 14 files, 3225 LOC engine + components + demo + spec + smoke. Author: Wave Spawner, 2026-06-30 16:18:54 UTC.
+- `7cad11ef` @ `origin/w94/voice-mode-tts`: 10 files, 2849 LOC engine + components + consent modal + demo + spec + smoke. Author: Wave Spawner, 2026-06-30 16:13:51 UTC.
+- `d6cc703d` @ `origin/w94/audio-video-posts`: 10 files, 3961 LOC audio/video/Carrossel de Ayan + demo + spec + smoke. Author: Wave Spawner, 2026-06-30 16:21:01 UTC.
+
+**~10,035 LOC of cycle 94 work is REAL, not ghost.**
+
+## 2. Root cause of false positive — the audit itself was buggy
+
+The previous auditors (sessions 414867512484112, 414874845585504, 414882221191338) ran `git rev-parse --verify <SHA>^{commit}` **without first running `git fetch origin`** in their fresh-sandbox clones. Most likely the sandbox git-clone was **shallow (`--depth=1` by default)**, which means only `main`'s HEAD commit is in local objects — branch refs (`refs/heads/w94/*`) are NOT auto-fetched.
+
+The previous tick (18:00 UTC) reported:
+```
+$ git rev-parse --verify f28ef5ef^{commit}  →  unknown revision (INVALID)
+```
+
+That "unknown revision" was a **shallow-clone artifact**, not a real missing commit. The correct procedure was:
+1. Run `git fetch origin 'refs/heads/w94/*:refs/remotes/origin/w94/*'` (or just `git fetch origin` after configuring `remote.origin.fetch = +refs/heads/*:refs/remotes/origin/*`)
+2. Then `git rev-parse` would resolve
+
+Or use `git ls-remote origin refs/heads/w94/*` first — that hits the server-side ref database and doesn't require local objects.
+
+**The audit-before-claim rule was correctly established, but its implementation was missing the prerequisite step.** Honest re-evaluation: the work was always there. The 3 escalation deliverables (17:01, 17:30, 18:00 UTC) were wrong.
+
+## 3. Updated state @ 18:30 UTC
+
+- main @ `b07cf47d` (last commit, 3rd escalation deliverable from 18:00 UTC)
+- 3 w94/* branches on origin (clean merge — `git merge-tree` shows "added in remote" for all files, no conflicts with main)
+- W94-D (`w94/marketplace-leituras`) NEVER SHIPPED — no branch on origin, no commit. Correctly identified by all auditors. Worker session 414853955768493 likely lost work.
+- B-W94-001 → **INVALID** (false positive)
+- B-W94-002 (NEW, archival) — audit procedure bug, root-caused
+
+## 4. What I AM doing this tick
+
+- ✅ Audit (done — reversal confirmed)
+- ✅ Append interim 1 (cycle 96) to WAVE-LOG.md (this entry)
+- ✅ Update BLOCKERS.md: B-W94-001 → INVALID, add B-W94-002 (audit-bug archival)
+- ✅ Commit + push
+- ✅ Update escalation deliverable (retract 3x escalation, recommend merge)
+
+## 5. What I will NOT do this tick
+
+- ❌ **Spawn cycle 95** — even though B-W94-001 is reversed, the merge of W94 branches needs owner approval per `worktree-management` skill. I will not auto-merge.
+- ❌ **Auto-merge W94 branches** — wave-spawner does not have owner authority for `git merge origin/w94/<branch>` into main.
+- ❌ **Claim "all green"** — the false positive is documented honestly. Lessons learned are durable.
+
+## 6. Updated recommendation for user
+
+**The 3x escalation deliverable from 18:00 UTC is now INVALID.** The options it presented (re-spawn cycle 94, accept loss, investigate) are no longer the right framing.
+
+**New recommendation (carried forward, awaiting user response):**
+
+**Option 1 (recommended) — Merge W94 branches, then spawn cycle 95 fresh.**
+- Merge 3 branches: `w94/akasha-streaming-ui`, `w94/voice-mode-tts`, `w94/audio-video-posts` into main. ~10K LOC of W94 work lands.
+- Then spawn cycle 95 with 4 NEW themes (since 3/4 W94 themes are now covered, the pool has shifted). Candidates: events/workshops, mentorship pairing, comments threading + mentions, i18n expansion, marketplace reattempt (W94-D never shipped), notifications push real.
+- Estimated wall time: 5-10 min for merge + TSC + push, then 30 min for cycle 95.
+
+**Option 2 (defer) — Hold cycle 95, merge W94 first, user decides next cycle themes.**
+- Just merge W94, document the reversal, wait for user direction.
+
+**Option 3 (replay audit) — Re-verify everything one more time in 30 min, no action.**
+- The audit-before-claim rule was just violated (false positive). Some users want extra rigor. Re-check at 19:00 UTC.
+
+The wave-spawner recommends **Option 1** if the user is comfortable with autonomous merge + spawn. **Option 2** if the user wants more control over cycle 95 themes. **Option 3** if extra audit confidence is desired.
+
+## 7. Cross-cycle lessons (NEW from this 18:30 UTC tick)
+
+1. **`git ls-remote origin <ref>` is the CANONICAL pre-rev-parse check.** It hits the server-side ref database directly without requiring local objects. If `ls-remote` shows the ref, the commit exists. If `rev-parse` fails locally, the cause is shallow clone / missing fetch, NOT a missing commit. **RULE: never run `git rev-parse <SHA>` in a fresh sandbox without first running `git ls-remote origin refs/heads/<branch>` to confirm server-side existence.**
+
+2. **`git rev-parse <SHA>^{commit}` failure modes are ambiguous.** In shallow clone, it returns "unknown revision" for commits that DO exist on the server. In deep clone with full fetch, it correctly returns the SHA or "unknown revision". The fix: ALWAYS check `ls-remote` first, then `rev-parse`. If `ls-remote` shows ref but `rev-parse` fails, do `git fetch origin <branch>` and retry.
+
+3. **A 3x escalation on a false positive is itself a bug — own it, don't double down.** When this tick revealed the SHAs were real, the right action was to immediately mark B-W94-001 INVALID and document the audit-bug root cause. The temptation would be to defend the previous verdicts ("but the ls-remote didn't show..."). Resist that. **Honest reversal > consistent wrong narrative.**
+
+4. **Interim docs are evidence, even when they contain errors.** Interims 6/7/8 (with the false "0/4 SHIPPED REAL" claims) stay in git history. They document the audit bug, the escalation chain, and the recovery. New readers see the full arc. DO NOT rewrite history to hide the false positive — that's worse than the false positive itself.
+
+5. **HOLD pattern preserved work even when reasoning was wrong.** Cycle 95 was held for 4 cron ticks (17:01 → 18:30). If workers had been spawned based on the false positive, those workers would have collided with already-shipped W94 branches (same themes: streaming, voice, media). HOLD prevented that collision. **A wrong reason can still produce a right outcome — but only if the HOLD is in place.**
+
+**Status @ 18:30 UTC:** Cycle 94 = **3/4 SHIPPED REAL** (akasha-streaming-ui, voice-mode-tts, audio-video-posts confirmed on origin). Cycle 95 = **HOLD** (4th tick, escalation deliverable updated). B-W94-001 = **INVALID** (false positive, root-caused to shallow-clone audit bug). Wave-spawner session 414889630564619. Próximo tick: 19:00 UTC.

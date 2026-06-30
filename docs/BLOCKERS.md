@@ -1486,3 +1486,87 @@ $ git log --since="1 hour ago" --oneline     →  2 commits (interim 6 + interim
 **Wave-spawner session holding this BLOCKER:** 414882221191338 (will pass to next at 18:30 UTC if unresolved).
 **Documented at:** `docs/WAVE-LOG.md` interim 6 (414867512484112), interim 7 (414874845585504), interim 8 (414882221191338).
 **Next checkpoint:** 18:30 UTC cron tick.
+
+---
+
+## B-W94-001 — INVALID ✅ (false positive reversed @ 18:30 UTC, cycle 96 interim 1)
+
+**Status @ 18:30 UTC (wave-spawner 414889630564619, fresh-sandbox cron tick, 2026-06-30):** ❌ **INVALID** — the 17:01/17:30/18:00 UTC escalations were based on a buggy audit.
+
+**Reversal evidence:**
+```
+$ git rev-parse f28ef5ef^{commit}  →  f28ef5efa7cb6f01dc1fd044ffb7bceb21ea9055  ✅
+$ git rev-parse 7cad11ef^{commit}  →  7cad11ef7ea98c199feb5b444042d441af947e3a  ✅
+$ git rev-parse d6cc703d^{commit}  →  d6cc703d77195316e8f6cc6fa33f57c323e1ac93  ✅
+$ git ls-remote origin 'refs/heads/w94/*':
+   f28ef5efa7cb6f01dc1fd044ffb7bceb21ea9055  refs/heads/w94/akasha-streaming-ui  ✅
+   d6cc703d77195316e8f6cc6fa33f57c323e1ac93  refs/heads/w94/audio-video-posts    ✅
+   7cad11ef7ea98c199feb5b444042d441af947e3a  refs/heads/w94/voice-mode-tts       ✅
+```
+
+**Per-commit reality (verified via `git show --stat`):**
+- `f28ef5ef` @ `origin/w94/akasha-streaming-ui`: 14 files, 3225 LOC. Author Wave Spawner, 2026-06-30 16:18:54 UTC.
+- `7cad11ef` @ `origin/w94/voice-mode-tts`: 10 files, 2849 LOC. Author Wave Spawner, 2026-06-30 16:13:51 UTC.
+- `d6cc703d` @ `origin/w94/audio-video-posts`: 10 files, 3961 LOC. Author Wave Spawner, 2026-06-30 16:21:01 UTC.
+
+**~10,035 LOC of cycle 94 work is REAL.** All 3 escalation deliverables (17:01/17:30/18:00 UTC) were wrong.
+
+**Root cause:** Previous auditors ran `git rev-parse --verify <SHA>^{commit}` in fresh-sandbox shallow clones without `git fetch origin` first. Shallow clone + missing fetch → `rev-parse` returns "unknown revision" for commits that DO exist on the server. The "0/4 SHIPPED REAL" verdicts were an artifact of the audit procedure, not reality.
+
+**W94-D (`marketplace-leituras`) was correctly identified as never SHIPPED** — no branch on origin, no commit. Worker session 414853955768493 likely lost work. Re-attempt in cycle 95+ as a fresh theme.
+
+**Updated recommendation for user (replaces 18:00 UTC deliverable):**
+- **Option 1 (recommended):** Merge 3 W94 branches → main, then spawn cycle 95 with 4 NEW themes (3/4 W94 themes now covered, pool shifted: events/workshops, mentorship, comments-threading, i18n-expansion, marketplace-retry, notifications-push).
+- **Option 2:** Hold cycle 95, merge W94, wait for user direction.
+- **Option 3:** Re-verify everything at 19:00 UTC, no action.
+
+**Wave-spawner does NOT auto-merge.** Owner (user) must approve merge per `worktree-management` skill.
+
+**Cross-cycle durable lessons (B-W94-001 reversal → cycle 95+ brief):**
+- `git ls-remote origin refs/heads/<branch>` is the CANONICAL pre-rev-parse check. It hits server-side ref DB, doesn't require local objects.
+- `git rev-parse <SHA>^{commit}` failure in shallow clone ≠ commit missing. Always `ls-remote` first.
+- If `ls-remote` shows ref but `rev-parse` fails → `git fetch origin <branch>` then retry.
+- 3x escalation on false positive = bug in audit, NOT in workers. Own it, don't defend.
+- HOLD pattern preserves work even with wrong reasoning. Cycle 95 held for 4 ticks, prevented collision with already-shipped W94 themes.
+
+**Status:** ✅ INVALID. Cycle 94 effectively 3/4 SHIPPED. Cycle 95 still HOLD pending owner merge authorization.
+
+---
+
+## B-W94-002 — ARCHIVAL @ 18:30 UTC — Shallow-clone audit-bug lesson (preventive)
+
+**Severity:** 🟡 PREVENTIVE — affects audit procedure, not worker output.
+
+**Discovery (wave-spawner 414889630564619, 18:30 UTC tick):**
+The `audit-before-claim` rule (introduced 2026-06-30 17:01 UTC after B-W94-001 detection) was correctly established as policy but its implementation in fresh-sandbox audits was missing the `git fetch origin` prerequisite step. This caused a false positive at 17:01/17/30/18:00 UTC that was only detected at 18:30 UTC when the canonical `ls-remote` check ran before `rev-parse`.
+
+**Updated audit procedure (canonical, replaces the 17:01 rule):**
+
+```bash
+# STEP 1 — server-side ref check (no local objects needed)
+git ls-remote origin 'refs/heads/w##/*'
+
+# STEP 2 — if ls-remote shows refs, fetch them
+git fetch origin 'refs/heads/w##/*:refs/remotes/origin/w##/*'
+
+# STEP 3 — local object check (now valid)
+git rev-parse --verify <SHA>^{commit}
+
+# STEP 4 — if rev-parse still fails despite fetch, run with full history
+git fetch --unshallow origin  # only if clone was shallow
+git rev-parse --verify <SHA>^{commit}
+```
+
+**Why this matters:**
+- Fresh-sandbox cron ticks default to shallow clones for speed (~30s vs 2 min for full).
+- Shallow clone + missing fetch = `rev-parse` returns "unknown revision" for ANY commit not on main's HEAD lineage.
+- Without `ls-remote` first, you can't distinguish "commit missing" from "shallow clone artifact".
+
+**Cross-cycle durable lessons (cycle 96+):**
+- **ALWAYS run `git ls-remote origin <ref>` BEFORE `git rev-parse <SHA>` in fresh-sandbox audits.** This is now rule #1 in the audit-before-claim checklist.
+- **Shallow clone + missing fetch = silent failure mode for audit tools.** The fix is one extra command (`ls-remote`) that takes <1s.
+- **A 3x escalation on a false positive should be owned, not defended.** When the 18:30 UTC tick revealed the SHAs were real, the correct action was to immediately mark the blocker INVALID and document the audit-bug root cause. Defending the false positive would have been worse.
+
+**Status:** ✅ ARCHIVED. Procedure updated. Cycle 96+ audits use the new canonical flow.
+
+**Wave-spawner session:** 414889630564619 (cycle 96 interim 1).
