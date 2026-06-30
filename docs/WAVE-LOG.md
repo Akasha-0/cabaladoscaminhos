@@ -9097,3 +9097,58 @@ ln -sf /workspace/cabaladoscaminhos/node_modules /workspace/wt-w94-{streaming,vo
 - Re-check W94-C/D worker state
 - If all 4 ship by 16:35 UTC: do FULL close-out — merge all 4 branches to main, push, plan cycle 95
 - If only W94-C/D remain after W94-A/B shipped: continue monitoring, document interim 4
+
+## Cycle 94 — interim 4 @ 16:30 UTC — W94-C audio-video-posts SHIPPED ✅
+
+**Branch:** `w94/audio-video-posts` @ `d6cc703d` (PUSHED ✓ @ 16:30 UTC, ~24 min wall)
+**Worker session:** 414853955768478
+
+**Validation (all green):**
+- TSC: **0 errors** via `tsc -p tsconfig.w94.json` (per-file sub-tsconfig; per-file glob doesn't work because main tsconfig has `"types": ["vitest/globals"]` hiding node + esModuleInterop, lesson #16)
+- Spec: **55/55 PASS** via `node --import tsx --test src/lib/w94/__tests__/media-posts.spec.ts` (14 suites, `let count=0; tick(name)` pattern)
+- Smoke: **50/50 PASS** via `node --experimental-strip-types scripts/smoke-media-posts.mjs` (10 sections including stripComments() banned-vocab source scan)
+- Sacred-cultural: 0 banned-vocab hits OUTSIDE the BLACKLIST array (Iemanjá/Odu preserved verbatim, orishas/iemanja rejected)
+- LGPD: PII redaction verified (email/phone BR/CPF); consent OBRIGATÓRIO gate in CreateMediaPost
+
+**Files (10 files, 3,961 LOC):**
+- `src/lib/w94/media-posts.ts` (engine, 794 LOC) — discriminated union MediaPost, Result<T,E>, 10-variant ValidationError, getWaveformPeaks (deterministic), extractChapterTimestamps (regex m-flag), redactTranscriptionPII, containsBannedTerm (Unicode word-boundary case-sensitive)
+- `src/lib/w94/__tests__/media-posts.spec.ts` (55 asserts, 628 LOC)
+- `scripts/smoke-media-posts.mjs` (50 asserts, 337 LOC)
+- `src/components/community/AudioPost.tsx` (414 LOC) — canvas waveform, 44px tap, prefers-reduced-motion, LGPD indicator
+- `src/components/community/VideoPost.tsx` (436 LOC) — custom HTML5 controls, chapters nav, muted-by-default
+- `src/components/community/CarrosselAyan.tsx` (398 LOC) — snap-x snap-mandatory, IntersectionObserver, arrow keys + touch swipe, autoplay opt-in (off by default)
+- `src/components/community/CreateMediaPost.tsx` (742 LOC) — type picker, FilePicker with duration probe, sacred metadata picker, LGPD consent checkbox, preview before submit
+- `src/app/community/feed/media-demo/page.tsx` (180 LOC) — 3 example posts + form
+- `tsconfig.w94.json` (32 LOC) — per-file TSC isolation (lesson #16/#17)
+- `docs/DELIVERABLE-W94-C.md` (550+ LOC) — runbook + 4 NEW durable lessons
+
+**4 NEW durable lessons (W94-C):**
+
+1. **`if (!r.ok)` does NOT narrow TS discriminated unions** — must use `r.ok === false` or invert with `if (r.ok) {...} else {...}`. Symptom: `TS2339: Property 'error' does not exist on type 'Result<string, ValidationError>'`. Applies to any Result/Either pattern in cycle 95+ auth FSM, LGPD, audit. Reusable: any Result/Either discriminated union in cycle 95+.
+
+2. **Sacred-term blacklist must be CASE-SENSITIVE** — `Iemanjá` (capital + á) is canonical, `iemanja` (lowercase, no accent) is the typo. Case-insensitive matching conflates them and rejects the canonical form. Drop the `/i` flag from the regex. Reusable: any sacred-term validation.
+
+3. **`err<T = never, E = unknown>` double-default widens E to top type** — breaks variance when assigning to `Result<X, ValidationError>`. Use single generic: `err<E>(error: E): Result<never, E>`. Reusable: any factory function with multiple type params.
+
+4. **stripComments() + exclude-declaration for source-inspection scans** — naive scan finds the BLACKLIST array itself (where banned terms live by definition). Remove the array declaration via regex before scanning. Reusable: any banned-vocab source scan that includes the blacklist declaration.
+
+**Sacred-cultural + LGPD compliance verified:**
+- 0 hits OUTSIDE the BLACKLIST array (case-sensitive match: `Iemanjá` ✓, `iemanja` ✗)
+- 20+ sacred terms preserved verbatim (orixás, Iemanjá, Cigano Ramiro, axé, Akasha, Odus, Oxum, Ogum, Xangô, Oxalá, Nanã, Pomba Gira, Exu, Cabala, Astrologia, Candomblé, Umbanda, Ifá, entidades, guias)
+- LGPD: PII redaction (email/phone BR/CPF) + consent OBRIGATÓRIO + dedup hash for log correlation
+
+**Cycle 94 cumulative @ 16:30 UTC: 3/4 SHIPPED (10,035 LOC). 1/4 in flight.**
+
+| Worker | Session | Branch | SHA | LOC | Status | Wall |
+|---|---|---|---|---|---|---|
+| **W94-A** | **414854202277960** | **`w94/akasha-streaming-ui`** | **`f28ef5ef`** | **3,225** | ✅ **SHIPPED** | **~22 min** |
+| **W94-B** | **414853955768476** | **`w94/voice-mode-tts`** | **`7cad11ef`** | **2,849** | ✅ **SHIPPED** | **17 min** |
+| **W94-C** | **414853955768478** | **`w94/audio-video-posts`** | **`d6cc703d`** | **3,961** | ✅ **SHIPPED** | **~24 min** |
+| W94-D | 414853955768493 | `w94/marketplace-leituras` | TBD | TBD | 🟡 IN FLIGHT | ~25 min |
+
+**State @ 16:30 UTC:** main @ `f38799cc` (no merge yet — wave-spawner merges after 4/4). W94-A + W94-B + W94-C on origin (verified via `git ls-remote`). 1 worker in flight (W94-D marketplace-leituras) under 30-min cap (deadline 16:35 UTC). MEM ~1,971MB available. Wave-spawner 414852747096288 monitoring.
+
+**Next action @ 16:35 UTC:**
+- W94-D cap deadline (30 min after spawn)
+- If W94-D ships by 16:35 UTC: do FULL close-out — merge all 4 branches to main, push, plan cycle 95
+- If W94-D silent-stuck: declare CASCADE at 18:35 UTC (5× rule), do PARTIAL close-out (merge W94-A/B/C), declare B-W94-D-001 in BLOCKERS
