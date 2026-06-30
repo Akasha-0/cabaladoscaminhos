@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["node"],
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": false
+  },
+  "include": [
+    "src/lib/w94/**/*.ts",
+    "src/components/akashic/VoiceModeButton.tsx",
+    "src/components/akashic/VoiceModePanel.tsx",
+    "src/components/consent/VoiceConsentModal.tsx",
+    "src/app/akashic-chat/voice-demo/page.tsx"
+  ],
+  "exclude": ["node_modules", "scripts", ".next", ".mavis"]
+}
