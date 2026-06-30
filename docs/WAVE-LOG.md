@@ -5701,3 +5701,45 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 **Status @ 05:49 UTC:** Cycle 76 PARTIAL — 2/4 PUSHED. 2 workers errored (token cascade). Owner merge action pending on W76-B + W76-D. Cycle 77 SPAWN at 06:00 UTC will respawn failed themes.
 
 ---
+
+## Cycle 77 SPAWN — 2026-06-30 06:02 UTC — 4 NEW Coder workers (mentorship-pairing + achievements-badges + translation-tooling + reading-history-dashboard)
+
+**Tick @ 06:02 UTC, session 414705279430825 (fresh sandbox — repo cloned from origin).** Cycle 76 PARTIAL closed @ 05:49 UTC (2/4 PUSHED, 2/4 errored on Token Plan 2056 cascade). Working tree clean, MEM available 1973MB of 2048MB. Capacity ample for 4 parallel Coder workers (cycle 75/76 baseline = 21 min avg, 4×0 TSC on survivors).
+
+**Cycle 77 selection rationale (recovery + surface expansion, no overlap with W70-W76):**
+- ✅ `mentorship-pairing` — RESPAWN of W76-A (which errored on cascade). NEW BRANCH `w77/mentorship-pairing` to avoid stale state. Peer-to-peer model (no hierarchy), 7-tradition expertise tagging, distance-based affinity scoring.
+- ✅ `achievements-badges` — NEW. Sacred-aware gamification tied to specific traditions + meaningful actions. Hierarchy Cigano < Orixás < Ifá < Mestres respected. ≥25 badges catalog, ≥3 per tradition.
+- ✅ `translation-tooling` — RESPAWN of W76-C (which errored on cascade). NEW BRANCH `w77/translation-tooling`. Sacred term dictionary (≥200 terms × 7 traditions × 3 langs: PT-BR/EN/ES). 3 modes: preserve/translate/transliterate. Idempotent.
+- ✅ `reading-history-dashboard` — NEW. Mesa Real consultation log + cross-tradition pattern insights. Consumes W75 cross-house output but is INDEPENDENT. Streaks (7-day Orixá cycle), tradition distribution, time-of-day analysis.
+
+**Active worker count: 4/8 cap.** All 4 spawned via `communicate` spawn mode → Coder. Each has 30-min hard cap. All 4 work in isolated `/tmp/w77-X/` worktrees, push to `w77/<theme>` branch.
+
+**Capacity snapshot @ spawn:**
+- MEM available: 1973MB / 2048MB (96%)
+- Cycles run: 77 (W1-W77)
+- Branches on origin: 21 w7X + 2 pending W76-B/D (not merged) + 4 pending W77
+- ~203K+ LOC engine code cumulative
+
+**Worker briefs (each):**
+- Read `.swarm/knowledge/knowledge-base.json` for sacred tradition data (no IDEIA.md exists)
+- `src/lib/w77/<theme>.ts` + `.spec.ts` (≥40 assertions) + `scripts/smoke/w77-<theme>.ts` (≥20 checks)
+- 7-tradition sacred coverage (Candomblé, Umbanda, Ifá, Cabala, Astrologia, Tantra, Cigano)
+- Object.freeze + ReadonlyArray + branded types
+- Mobile-first interface notes
+- TSC=0 + spec 100% green + smoke 100% green
+- Cycle 60-76 lessons applied: diacritic Unicode lookaround, frozen collections, master-number preservation, distance-based aspect scoring, self-running test harness, worktree-isolated tsconfig + node-stubs.d.ts
+- No B2B bloat, no main checkout contamination, no git push to main
+
+**Token cascade mitigation (NEW for cycle 77, per cycle 76 lessons):**
+- Briefs are concise but complete (target <2.5K tokens per brief)
+- Workers explicitly told to NOT fabricate success — if error, report exact error
+- Workers have GITHUB_TOKEN URL injection pre-configured (parent did `git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"` before spawn)
+- If 2+ workers fail within 5 min of spawn, cascade is back → next tick will abort and wait for budget refresh
+
+**Wave-spawner doc protocol (this tick):**
+- WAVE-LOG.md appended (this entry)
+- BLOCKERS.md unchanged (2 active blockers from cycle 76 — B-W76-A, B-W76-C — both being resolved by W77-A + W77-C respawn)
+- Wave-spawner does NOT commit code; workers push their own branches
+- Next tick @ 06:30 UTC will verify w77/* branches landed
+
+**Status @ 06:02 UTC:** Cycle 77 SPAWNED. 4/4 in flight. 30-min cap → expected close-out 06:30-06:35 UTC.
