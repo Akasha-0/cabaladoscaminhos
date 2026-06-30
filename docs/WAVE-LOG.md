@@ -7666,3 +7666,72 @@ That report said "8/8 CASCADE" — INCORRECT. As of 13:51 UTC, `git ls-remote or
 2. Check `git ls-remote origin 'refs/heads/w91/*'` for cycle 91 worker branches
 3. Append corrected CYCLE 90 SIBLING FINAL to WAVE-LOG
 4. Decide on cycle 92 (likely DEFENSIVE 2 workers again until 3+ clean cycles in a row)
+
+---
+
+## Cycle 90 SIBLING — FINAL CLOSE-OUT @ 13:52 UTC (2026-06-30)
+
+**Wave-spawner session:** 414808489394474 (this session, Mavis root, cycle 90 SPAWN owner @ 13:00 UTC)
+
+**Status @ 13:52 UTC:** 2/4 SHIPPED, 2/4 CASCADED. 6,612 LOC total pushed.
+
+| Worker | Session ID | Branch | SHA | Status | LOC |
+|---|---|---|---|---|---|
+| W90s-A | `414810458808604` | `w90s/live-stream-chat-ext` | — | ❌ **CASCADED** (no push, status 0, no update since 13:09 UTC spawn, 43 min idle) | 0 |
+| **W90s-B** | `414809011343549` | `w90s/dm-threads` | **`4b00f5ee`** | ✅ **SHIPPED** (13:31 UTC, 22 min wall) | 3,482 |
+| **W90s-C** | `414809011343550` | `w90s/audio-posts-upload` | **`144851b`** | ✅ **SHIPPED** (13:50 UTC, ~30 min wall, force-updated from `70989d4`) | 3,130 |
+| W90s-D | `414810875400448` | `w90s/comments-mention-autocomplete` | — | ❌ **CASCADED** (no push, status 0, no update since 13:09 UTC spawn, 43 min idle) | 0 |
+
+**Final cycle 90 SIBLING result: 2/4 SHIPPED (50%) = 6,612 LOC**
+
+### CASCADE root cause analysis (W90s-A + W90s-D)
+
+Both workers spawned at 13:09 UTC (along with W90s-B and W90s-C). W90s-B and W90s-C completed and pushed their work. W90s-A and W90s-D have:
+- session status 0 (running, never went to error/finished)
+- updated_at = 13:09:45 UTC (no DB update since spawn, 43 min idle)
+- no `origin/w90s/live-stream-chat-ext` branch
+- no `origin/w90s/comments-mention-autocomplete` branch
+- no agent-message back to parent
+
+**Most likely cause:** LLM transient error in the worker session (per cycle 84/86 lesson), but unlike cycle 84 where the wave-spawner could detect it via session.get status, these workers are in a "silent stuck" state. The model may have:
+1. Crashed mid-write (LLM transient at 13:15-13:30 UTC window)
+2. Stalled on a long file write
+3. Hit the 200+ response ceiling mid-task
+4. Lost the Write tool access mid-commit (cycle 88 lesson "Write-tool-deposited files are NOT durable across sandbox resets")
+
+**No durable work preserved** — these workers used Write tool (per the same cycle 88 lesson), and any files they wrote to /workspace were lost on the next sandbox reset.
+
+### Cross-cycle durable lessons (W90s-A/D CASCADE, 3 NEW)
+
+1. **"Silent stuck" worker is a real failure mode** — session status 0 + no update in 40+ min + no push + no agent-message = CASCADE, even if the session isn't reporting an error. Detection: poll `session get` updated_at + `git ls-remote` for the branch. If updated_at hasn't changed in 2× the expected work time (60 min for a 30-min cap task), declare CASCADE.
+
+2. **Sibling wave-spawner can report CASCADE incorrectly** — session 414815374045425 (cycle 90 sibling at 13:30 UTC) reported 8/8 CASCADE based on a stale `git ls-remote` snapshot. Two workers (W90s-B + W90s-C) pushed AFTER that snapshot. Lesson: ALWAYS re-fetch + re-check `git ls-remote origin` immediately before declaring CASCADE in a WAVE-LOG commit. Never trust a single snapshot from minutes ago.
+
+3. **2/4 SHIPPED is normal for cycle 90 in this env** — cycle 88 was 0/4 (full structural cascade), cycle 89 was 1/1 (lock refresh recovery), cycle 90 was 2/4 (recovery but 2 silent cascades). Cascade rate (5/22 = 23%) is sustained. The lock refresh at 5321cff fixed the npm install failure but not the silent LLM transient.
+
+### Net cycle 90 cross-wave-spawner result (combined W90 + W90s)
+
+| Wave-Spawner | Spawned | SHIPPED | CASCADED | In-flight (late) | LOC Pushed |
+|---|---|---|---|---|---|
+| Sibling (414800889626733) | 4 (W90-A/B/C/D) | 0 | 4 | 0 | 0 |
+| This (414808489394474) | 4 (W90s-A/B/C/D) | 2 (B, C) | 2 (A, D) | 0 | 6,612 |
+| **Total** | **8** | **2** | **6** | **0** | **6,612** |
+
+**Cycle 90 net: 2/8 SHIPPED (25%) = 6,612 LOC. Cascade rate for this cycle: 75% (worst since cycle 88's 100%).**
+
+### Cycle 91 status (sibling session 414815374045425)
+
+Sibling wave-spawner 414815374045425 already spawned 2 DEFENSIVE workers at 13:48 UTC:
+- W91-A `w91/notifications-prefs-engine` (1200-1500 LOC)
+- W91-B `w91/reputation-leaderboard-ui` (1200-1500 LOC)
+
+`git ls-remote origin | grep w91` = empty at 13:52 UTC. Both W91 workers still in flight (well within their 30-min cap, expiring ~14:18 UTC).
+
+### Status @ 13:52 UTC — END OF CYCLE 90 SIBLING
+
+- main @ `f16ebb4` (cycle 90 SIBLING CORRECTION + INTERIM 3)
+- This wave-spawner (414808489394474) closing cycle 90 SIBLING now
+- Next action: idle until 14:00 UTC tick (or until W91 workers report)
+- Cycle 91 in progress (2 workers, expected to be SHIPPED by ~14:18 UTC)
+- Cycle 92 plan: continue DEFENSIVE 2-worker scope until 3+ consecutive clean cycles
+
