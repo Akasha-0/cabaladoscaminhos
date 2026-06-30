@@ -6316,3 +6316,27 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 7. **Tree depth at write time, not at build time** — compute depth in `addComment` so tests don't need to call `buildTree` to see it.
 
 **Status @ 09:30 UTC:** Cycle 83 CLOSED 3/4. **4/4 workers SPAWNED for cycle 84** (sessions spawning now). MEM 1978MB available / 2048MB. Next tick @ 10:00 UTC will validate cycle 84 close-out. Wave-spawner session 414756635185330.
+
+
+### Cycle 84 interim 1 — 09:52 UTC (22 min after spawn)
+
+- ✅ **W84-B PUSHED** `w84/daily-reflection-prompt` @ `b621a6a` — **3,239 LOC across 19 files**. **148/148 spec + 26/26 smoke PASS** (174 total), TSC=0 (engine + page, both strict isolated). Single engine + 1 page (`/daily`). 210 prompts (30 × 7 tradições) organized by 7 tags in per-tradição files. Hash-based deterministic daily rotation via FNV-1a (Math.imul). InMemoryHistoryAdapter with same-day replace + 365-entry cap + streak calculation. Mobile-first bottom-sheet composer w/ keyboard nav.
+- ⏳ W84-A voice-mode-akasha, W84-C comments-moderation, W84-D marketplace-lectura-praticas still in flight. Cycle 84 cap = 10:00 UTC. ~8 min remaining.
+- **NEW: cycle 83 was actually 4/4 PUSHED** (not 3/4 as my close-out said at 09:30). Sibling session 414749504057454 reported W83-A landed at 09:33:42 (03a648ed) AFTER my cycle 83 close-out commit (2c6d5a4 @ 09:32:58). The 44-second race means B-W83-A was a FALSE POSITIVE. W83-A actually delivered 3,414 LOC + 131 assertions + TSC=0. B-W82-D/B-W83-A are RESOLVED. Updating BLOCKERS next.
+
+**8 NEW durable lessons from W84-B:**
+1. **`getRecent` MUST sort by date desc, not insertion order** — engine API contract
+2. **Locale-function table typing needs explicit `TEntry = string | ((n: number) => string)`** — TS strict mode
+3. **`typeRoots` workaround for sandbox without node_modules** — `compilerOptions.typeRoots: ["./types", "./node_modules/@types"]` lets sandbox work without npm install
+4. **`Math.imul` for FNV-1a 32-bit hash determinism** — gives integer hash same on 32-bit and 64-bit runtimes
+5. **Big tables → per-tradição files** (cycle 80/81/82/83 same pattern) — 7 separate prompt files easier to test + maintain than 1 monolithic
+6. **`??` over `||` for default values** — `??` only replaces null/undefined, not 0/""/false
+7. **`noUncheckedIndexedAccess` + destructure requires explicit undefined checks** — TS strict mode guard pattern
+8. **Branded primitives pattern + `declare const __brand: unique symbol`** — works without ESM private exports
+
+**Cross-cycle pattern holding:**
+- 30-min cap holds for 1+1 themes (W84-B delivered 3,239 LOC in 22 min, matching W82-C 25-min + W83-C 25-min)
+- Worktree `/tmp/w84-daily-reflection/` worked (write-tool-blocks-/tmp workaround applied)
+- 7-tradição coverage mandated in brief → sample distribution verified in DELIVERABLE
+
+**Status @ 09:52 UTC:** Cycle 84 = 1/4 PUSHED, 3/4 in flight with 8 min to cap. B-W83-A false positive (actually RESOLVED). main @ `2c6d5a4`. Wave-spawner session 414756635185330.
