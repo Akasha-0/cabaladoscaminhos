@@ -8601,3 +8601,92 @@ Wave-spawner 414830652506374.
 | W93-D | 414839210520742 | `w93/events-workshops` | TBD | TBD | 🟡 in flight (21 min in) |
 
 **Cycle 93 cumulative: 1/4 SHIPPED (3,724 LOC), 3/4 in flight (under 30-min cap). Applying 5× cap rule (150 min, so cap+120 = ~17:30 UTC) for silent-stuck CASCADE declaration.**
+
+## Cycle 93 — interim 2 @ 15:31 UTC — W93-C i18n-rollout SHIPPED ✅
+
+**Branch:** `w93/i18n-rollout` @ `edaa33ee174174bea093013853183c6e33fd1154` (PUSHED @ 15:31 UTC, ~25 min wall — exactly at cap)
+
+**Validation (all green):**
+- TSC: 0 errors in W93 files (3 pre-existing errors in CosmicBackground/useAuth/prisma.ts — out of scope per cycle 73 lesson)
+- Spec: **59/59 PASS** via `node --import tsx --test src/lib/w93/__tests__/i18n-rollout.spec.ts`
+- Smoke: **67/67 PASS** via `node --experimental-strip-types scripts/smoke-i18n-rollout.mjs`
+- CLI Validator: `validate-i18n-rollout.mjs` exit 0 — **81 keys × 3 locales = 243 traduções curadas**
+- Sacred-cultural: 0 banned-vocab hits (`orishas`/`orishás`/`ashé`/`chalk` all 0) via source scan
+
+**W93-C files (12 W93 + 7 seeded W92-C = 19 total, 4,303 LOC total; W93-only = 3,205 LOC):**
+
+W93-only:
+- `src/lib/w93/i18n-rollout-strings.ts` (539) — 81 strings × 3 locales
+- `src/lib/w93/i18n-rollout-engine.ts` (527) — branded keys, Intl.PluralRules CLDR, formatOrdinal
+- `src/lib/w93/i18n-rollout-routing.ts` (186) — server-component `resolveServerLocale`
+- `src/components/i18n/LocaleAwareImage.tsx` (108) — alt em 3 idiomas
+- `src/components/i18n/PluralText.tsx` (102) — CLDR plural via Intl.PluralRules
+- `src/app/page.tsx` (236) — landing i18n
+- `src/app/leitura/[id]/page.tsx` (327) — NEW reading detail (server)
+- `src/app/onboarding/page.tsx` (47) + `OnboardingPageClient.tsx` (37) — onboarding wrapper + i18n header
+- `src/lib/w93/__tests__/i18n-rollout.spec.ts` (615) — 59 asserts
+- `scripts/smoke-i18n-rollout.mjs` (327) — 67 asserts
+- `scripts/validate-i18n-rollout.mjs` (154) — CI CLI
+- `docs/DELIVERABLE-W93-C.md` — runbook + lessons
+
+Seeded from `w92/translation-tooling` @ `03d978c` (since W92-C wasn't merged to main):
+- `src/lib/w92/{translation-strings,translation-tooling}.ts` + spec
+- `src/hooks/useT.ts`
+- `src/components/i18n/LocaleSwitcher.tsx`
+- `src/app/i18n-demo/page.tsx`
+- `scripts/{validate-translations,smoke-translation-tooling}.mjs`
+
+**10 NEW durable lessons (W93-C):**
+
+1. **String templates with placeholders need interpolation-test, not literal-test** — `strings[key].includes('orixás')` fails when string is `"Greetings to {name}"`. Test rendered output via `t(key, dict, { name: 'orixás' })`.
+
+2. **CLDR plural via "Plural" suffix > heuristic `n === 1`** — `Intl.PluralRules` gives correct edge cases (Arabic has 6 categories); pair with auto-detect suffix convention.
+
+3. **Ordinal rules need explicit suffix map** — `Intl.NumberFormat` has no `formatOrdinal`; built manually with category→suffix map (en: 1st/2nd/3rd/4th, pt-BR/es: 1.º).
+
+4. **Server components can't use hooks** — use `resolveServerLocale()` for RSC, `useT()` for client; OnboardingPageClient pattern separates them.
+
+5. **`@ts-expect-error` + ternary type-narrowing is a footgun** — TS2578 catches unused directives when TS narrows the type unexpectedly.
+
+6. **`PluralRules` instance is reusable across calls — memoize** — `new Intl.PluralRules(locale)` is expensive; cache in module scope.
+
+7. **Migration from non-merged foundation: seed via `git show`** — don't ask user to merge first; extract needed files into your branch.
+
+8. **`extractVars` regex vs `match` consistency** — pick ONE pattern across the codebase to avoid drift.
+
+9. **`'use client'`-only-once rule per file** — wrapper pattern (OnboardingPageClient) is the cleanest way to mix server + client in same route.
+
+10. **Intl 4-digit es rule reconfirmed** — `formatNumber(1234.5, 'es')` = `"1234,5"` (no thousands sep), but `12345.6` = `"12.345,6"`. Respect CLDR, not flat assumption.
+
+**Sacred-cultural compliance verified:**
+- ✅ orixás preservado em pt-BR/en/es (não vira orishas/orishás)
+- ✅ axé preservado (não vira ashé/axe)
+- ✅ Odu preservado como proper noun
+- ✅ Cigano Ramiro preservado
+- ✅ Akasha preservado
+- ✅ pemba preservado (não vira chalk)
+
+**Cross-cycle pattern (W93-C reaffirmation):**
+- 81 keys × 3 locales = 243 curadas (vs 41 × 3 = 123 do W92-C) — 2× growth in single cycle
+- Per-file TSC strict isolated (cycle 73+84+85+92 pattern) — out-of-scope errors não bloqueiam
+- `git show <branch>:<file>` para seed foundation não-merged (lesson W93-C #7)
+- `node --experimental-strip-types` smoke + `node --import tsx --test` spec (lesson W62 #1 reaffirmed)
+
+**W93 status @ 15:31 UTC:**
+
+| Worker | Session | Branch | SHA | LOC | Status |
+|---|---|---|---|---|---|
+| **W93-A** | 414839828439312 | `w93/reputation-system` | `4eddf85` | 3,724 (10 files) | ✅ **SHIPPED** @ 15:25 UTC (17 min) |
+| **W93-C** | 414839210520741 | `w93/i18n-rollout` | `edaa33e` | 3,205 W93 + 1,098 seeded = 4,303 (12 W93 + 7 W92-C files) | ✅ **SHIPPED** @ 15:31 UTC (25 min, AT CAP) |
+| W93-B | 414839169331501 | `w93/auth-followup` | TBD | TBD | 🟡 in flight (31 min in, AT CAP) |
+| W93-D | 414839210520742 | `w93/events-workshops` | TBD | TBD | 🟡 in flight (31 min in, AT CAP) |
+
+**Cycle 93 cumulative: 2/4 SHIPPED (8,027 LOC shipped across both) at 30-min cap mark. 2/4 borderline (W93-B + W93-D at cap, applying 5× rule for late pushes per cycle 90 W90s-D lesson — late ship window 15-30 min past cap).**
+
+**Cross-cycle pattern (W93 dual-shipment at cap):**
+- Cycle 90 W90s-D pushed at +17 min past cap (late ship pattern)
+- Cycle 86 W86-D crashed late-wave (~23 min in, did NOT recover)
+- Cycle 84 cascades were SAME-SECOND (LLM transient, model error not late)
+- Cycle 92 W92-C was the fastest ship in W92 at 25 min — exact match for W93-C timing
+- Late-ship window: 5-15 min past cap is common, 30+ min is anomalous
+- 5× rule threshold: 150 min = 17:30 UTC for definitive CASCADE declaration
