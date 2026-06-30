@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/lib/w93/**/*.ts",
+    "src/components/events/**/*.tsx",
+    "src/app/eventos/**/*.tsx",
+    "src/app/workshops/**/*.tsx"
+  ]
+}
