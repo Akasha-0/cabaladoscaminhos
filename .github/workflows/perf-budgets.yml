@@ -93,7 +93,7 @@ jobs:
       # nao spammar o PR com comentarios a cada push.
       - name: Comment PR with bundle report
         if: github.event_name == 'pull_request' && always()
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v3
         with:
           header: perf-budgets
           message: |
