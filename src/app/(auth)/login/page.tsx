@@ -1,29 +1,33 @@
+// ============================================================================
+// /login — entry point
+// ----------------------------------------------------------------------------
+// Server component shell + Suspense boundary (for useSearchParams in
+// LoginForm). Uses the w68-backed auth pages (login-form.tsx + /api/auth/login).
+// ============================================================================
+
 import { Suspense } from 'react';
-import { LoginForm } from '@/components/auth/LoginForm';
-import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
+import { AuthShell } from '@/components/auth/auth-shell';
+import { LoginForm } from './login-form';
 
 export const metadata = {
   title: 'Entrar · Akasha Portal',
   description: 'Entre na sua conta do Akasha Portal e conecte-se ao seu caminho espiritual.',
 };
 
-// ----------------------------------------------------------------------------
-// Componente interno (client) — usa useSearchParams, precisa estar dentro
-// de um <Suspense> boundary para satisfazer o CSR bailout do Next 16.
-// ----------------------------------------------------------------------------
-
 function LoginFormFallback() {
   return (
-    <div className="card-spiritual p-8 rounded-2xl max-w-md w-full flex items-center justify-center min-h-[420px]">
-      <LoadingSpinner variant="gold" size="md" />
+    <div className="min-h-[200px] flex items-center justify-center text-muted-foreground text-sm">
+      <span className="animate-pulse">Carregando…</span>
     </div>
   );
 }
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<LoginFormFallback />}>
-      <LoginForm />
-    </Suspense>
+    <AuthShell title="Portal Espiritual" subtitle="Conecte-se ao seu caminho">
+      <Suspense fallback={<LoginFormFallback />}>
+        <LoginForm />
+      </Suspense>
+    </AuthShell>
   );
 }

@@ -1,8 +1,8 @@
 // ============================================================================
-// /api/auth/login — thin HTTP adapter around handleLogin (api-handlers.ts)
+// /api/auth/signup — thin HTTP adapter around handleSignup
 // ============================================================================
 
-import { handleLogin } from '@/lib/auth-pages/api-handlers';
+import { handleSignup } from '@/lib/auth-pages/api-handlers';
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -11,6 +11,6 @@ export async function POST(request: Request) {
   } catch {
     return Response.json({ ok: false, code: 'UNKNOWN', error: 'JSON inválido' }, { status: 400 });
   }
-  const result = await handleLogin(body);
+  const result = await handleSignup(body);
   return Response.json(result.body, { status: result.status, headers: result.headers });
 }
