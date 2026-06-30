@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "types": [],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "allowImportingTsExtensions": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "src/lib/auth/__tests__/session-engine.spec.ts",
+    "src/lib/auth/__tests__/oauth-callback.spec.ts",
+    "src/lib/auth/__tests__/password-recovery.spec.ts",
+    "src/lib/auth/__tests__/two-factor.spec.ts",
+    "src/lib/auth/__tests__/audit.spec.ts",
+    "src/lib/auth/node-stubs.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next"
+  ]
+}
