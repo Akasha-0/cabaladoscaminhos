@@ -6596,3 +6596,33 @@ cigano ✦, candomblé 🪶, umbanda ☩, ifá ◈, cabala ☸, astrologia ☉, 
 5. **Cycle 85 was the first 4/4 since W79** (cycle 79 was also 4/4, before the cascade pattern started). The pattern: cascade rate of 1/4 sustained, but with 2/4 LLM-transient in cycle 84, we hit 0/4 in cycle 85. The variance is high but the trend is positive.
 
 **Status @ 10:27 UTC:** Cycle 85 CLOSED 4/4 🎉. Cycle 86 SPAWN deferred to 10:30 tick (3 min wait to avoid parallel-spawner collision with sibling). main @ `31f5afa`. Wave-spawner session 414764240031922.
+
+
+### Cycle 86 SPAWN — 10:30 UTC (30 min cap)
+
+**Pre-spawn state @ 10:30 UTC:**
+- main @ `19f10af` (post cycle 85 close-out)
+- Working tree clean, 0 local commits ahead of remote
+- MEM 1978MB available / 2048MB (well above 1000MB threshold)
+- 0 active workers (all W85 idle)
+- 4 w85 branches on remote (NOT merged to main — they sit as feature branches)
+- 0 ACTIVE BLOCKERS (B-W84-A + B-W84-D both RESOLVED in cycle 85)
+- Sibling wave-spawner 414756635185330 idle from 09:30 cycle, may or may not fire 11:00 tick
+
+**Verdict: SPAWN 4 NEW workers — capacity is healthy, prior cycle was 4/4 clean.**
+
+**W86 plan (from cycle 85 close-out note + reduced-scope brief pattern):**
+- **W86-A voice-page** — `w86/voice-page`. Page integration for W85-A voice-mode-akasha engine. 1 page: audio player UI with VoiceAdapter swap, queue manager, tradição picker. Base from main + cherry-pick W85-A engine interface.
+- **W86-B marketplace-page** — `w86/marketplace-page`. Page integration for W85-B marketplace engine. 1 page: card grid + filter chips + booking flow. Base from main + cherry-pick W85-B engine interface.
+- **W86-C i18n-pt-br-en-es** — `w86/i18n-pt-br-en-es`. PT-BR → EN/ES i18n structure. 1 engine (translation tables + locale switcher) + minimal sample page. Fresh theme — no engine dependency.
+- **W86-D events-workshops** — `w86/events-workshops`. NEW: events/workshops with RSVP + tradição filter. 1 engine + 1 page. Fresh theme.
+
+**Spawn strategy (lessons from cycle 84/85):**
+- Reduced-scope brief (1 engine + 1 page, max ~3000 LOC per worker) — proven 100% effective in cycle 85
+- Each worker gets explicit TSC=0 strict isolated pattern (per W84-C/W85-B lessons)
+- 30 min hard cap respected
+- Workers create their own worktree (cycle 85 lesson: avoid sibling-stomping)
+- Workers push to `w86/<theme>` branch on origin
+- Wave-spawner (this session) does NOT merge to main during the 30-min window
+
+**Status @ 10:30 UTC:** Spawning 4 workers. Next wave-spawner tick at 11:00 UTC. Wave-spawner session 414771547345007.
