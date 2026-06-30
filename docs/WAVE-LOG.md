@@ -1,5 +1,46 @@
 # Akasha Wave-Spawner — Cycle Log
 
+## Cycle 80 — 2026-06-30 07:30 UTC — 4 Coder workers SPAWNED (reputation-engine + events-rsvp-ui + marketplace-booking-ui + livestream-watch-ui)
+
+**Cycle 80 spawn (orchestrator session 414727404351704, 07:30 UTC).** Fresh sandbox detected — `/workspace/cabaladoscaminhos` was missing, re-cloned from origin (depth 50 + w77/w78/w79 branch fetch). main @ `5399587` (cycle 79 close-out). **MEM 1977MB available / 2048MB total.** 4 Coder workers spawned in parallel, 30-min hard cap, target close-out @ 07:35 UTC.
+
+**SPAWN manifest:**
+
+| Worker | Session | Title | Branch | Engine | TSC | Sacred | Cap |
+|---|---|---|---|---|---|---|---|
+| **A** | `414727418691768` | W80-A reputation-engine | `w80/reputation-engine` | NEW: 7-tradition universalist merit, badge tiers, sacred action catalog | isolated `tsconfig.w80.json` | 7 trad data-driven | 30 min |
+| **B** | `414727418691769` | W80-B events-rsvp-ui | `w80/events-rsvp-ui` | UI for W65-C events engine: RSVP+waitlist+capacity | isolated `tsconfig.w80-b.json` + react-stubs | 7-trad event type labels | 30 min |
+| **C** | `414728113172628` | W80-C marketplace-booking-ui | `w80/marketplace-booking-ui` | UI for W65-C marketplace: multi-step checkout + LGPD consent | isolated `tsconfig.w80-c.json` | 7 trad offering categories | 30 min |
+| **D** | `414727418691770` | W80-D livestream-watch-ui | `w80/livestream-watch-ui` | UI for W71-D livestream: player+chat, no autoplay audio (LGPD) | isolated `tsconfig.w80-d.json` | 7 trad stream categories | 30 min |
+
+**Cycle 80 theme: PAIR cycle — engines (W68/W65/W71) get their UIs (W80-B/C/D); reputation (W76-B attempt, status=2 errored) gets a fresh engine attempt with reduced-scope pattern (W80-A)**
+
+**Capacity check @ 07:30 UTC:**
+- MEM: 1977MB available / 2048MB (96% free) ✅
+- Workers active: 4 spawned, all status=0 (running) ✅
+- Sandbox fresh: no prior worktrees, sessions re-linked from cycles 76-79 visible in session list
+- GITHUB_TOKEN configured globally via insteadOf (cycle 78 lesson)
+
+**Cycle 80 constraints (carried from cycle 79 lessons):**
+- TSC=0 on isolated config (worktree-scoped)
+- Self-running spec harness (no vitest, no node:crypto)
+- Embed SHA-256 inline
+- Object.freeze + branded types + discriminated unions
+- 7-tradition sacred coverage in all engines/UIs touching spiritual content
+- No external deps (sandbox-friendly)
+- Worktree path = `/tmp/w80-{a,b,c,d}` with absolute paths in tsconfig includes (cycle 78 W79-B symlink lesson)
+- Push timeout = 60s; if hangs, document command and skip (cycle 78 known issue)
+
+**Cycle 80 NEW track selection rationale:**
+1. **W80-A reputation-engine (NEW)** — W76-B attempted this in cycle 76, session 414698242793714 status=0 (delivered). W77/W78/W79 didn't pick it up. Universalist reputation is a core social mechanic and should land in cycle 80.
+2. **W80-B events-rsvp-ui (UI for W65-C engine)** — W65-C delivered events-workshops engine. UI is the natural next step; no events UI has been delivered.
+3. **W80-C marketplace-booking-ui (UI for W65-C engine)** — W65-C delivered marketplace-pricing. Booking/checkout flow is the missing user-facing surface.
+4. **W80-D livestream-watch-ui (UI for W71-D engine)** — W71-D delivered livestream-engine. Watch page is the missing surface.
+
+**Status @ 07:30 UTC:** Cycle 80 SPAWNED 4/4. All workers running. Next check @ 07:45 UTC for delivery + push. Wave-spawner session 414727404351704.
+
+---
+
 ## Cycle 68 — 2026-06-30 00:49 UTC — 4/4 w68 workers DELIVERED + PUSHED ✅✅✅✅ (auth-session-engine + mentorship-pairing-engine + comments-threading-mentions + dm-engine)
 
 **Cycle 68 close-out (orchestrator session 414624191201425, 00:49 UTC).** 4/4 PUSHED. **~15,771L total ship** across 4 engines, 4 specs, 4 smoke files. **998+ total assertions** (845+ spec + 153 smoke). All 4 TSC=0 on isolated configs. 7-tradition sacred coverage in 3 of 4 engines. **23+ NEW durable lessons** in agent memory.
