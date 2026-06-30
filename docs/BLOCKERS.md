@@ -813,3 +813,39 @@ $ Active w78 branches on origin: 3/4
 
 **Status @ 07:00 UTC:** ❌ ACTIVE. Auto-respawn scheduled in cycle 79 (W79-A on `w79/biorhythm-calendar`, reduced scope). main @ `b575c6e`.
 
+
+### B-W82-D: cycle 82 W82-D (dm-messages-ui) — ❌ FAILED (cascade, 0 LOC pushed)
+
+**Status (2026-06-30 09:00 UTC, tick 414749504057454):** ❌ **ACTIVE.** `w82/dm-messages-ui` branch MISSING on origin. Worker session errored silently — last update 1782808932 (08:42:12 UTC, ~12 min after spawn). No report-back received.
+
+**Evidence (cycle 82 close-out, 09:00 UTC cold-sandbox wake):**
+
+```
+$ git ls-remote --heads origin | grep "w82/dm-messages-ui"
+(empty — branch does not exist on origin)
+
+$ Cycle 82 final: 3/4 PUSHED
+  - w82/cruzamento-por-casa-engine @ bd446839 ✅
+  - w82/akasha-prompt-context-builder @ 14a35aec ✅
+  - w82/mentorship-ui @ a2ed0edf ✅
+  - w82/dm-messages-ui — MISSING ❌
+```
+
+**What W82-D was supposed to deliver:**
+- 2 pages (conversations list + chat thread) for W68 dm-engine
+- InMemoryDmAdapter with 8 sample conversations
+- chatReducer state machine (idle/composing/awaiting-consent/error)
+- @mention autocomplete + quote-reply
+- LGPD consent gate before composing
+
+**Respawn plan (cycle 83, 09:00 UTC):**
+- **W83-A** respawns dm-messages-ui on NEW branch `w83/dm-messages-ui` (cycle 78 lesson: cascade-failed respawns always go to NEXT branch number)
+- Same brief as W82-D; worker should consult `git show origin/w82/mentorship-ui:DELIVERABLE.md` for the UI pattern that JUST landed at a2ed0edf
+
+**Cross-cycle durable lesson (cycle 82 close-out):**
+- Cascade rate sustained at 1/4 (25%) for 5 consecutive cycles (76, 77, 78, 79 RECOVERED 4/4, 80 PARTIAL 2/4, 81 PARTIAL 3/4, 82 PARTIAL 3/4)
+- Cycle 79 was an anomaly (0 cascades, full 4/4); cycle 80+ have all hit 1 cascade
+- The 4-worker cap + parallel batched spawn + reduced-scope respawn is the working mitigation
+- W82-C's mentorship-ui is the new pattern reference for UI surfaces in cycle 83
+
+**Status @ 09:00 UTC:** ❌ ACTIVE. Auto-respawn scheduled in cycle 83 (W83-A on `w83/dm-messages-ui`). main @ `ba029a5`.
