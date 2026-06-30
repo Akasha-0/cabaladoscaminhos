@@ -1425,3 +1425,42 @@ $ git ls-remote --heads origin | grep "w85/marketplace-lectura-praticas"
 - **W89-A unmerged at cycle-90 branch time** — cycle-{N} workers must NOT assume cycle-{N-1} branches are merged into main.
 
 **Status @ 14:52 UTC:** B-W90-B RESOLVED ✅. B-W90-C RESOLVED ✅. B-W90-D RESOLVED ✅. B-W90-A still TRUE, covered by sibling W91-B. Wave-spawner session 414800889626733.
+
+---
+
+## B-W94-001 — NEW @ 17:01 UTC — Cycle 94 SHAs declared in interims 2/3/4 DO NOT EXIST in git history
+
+**Severity:** 🔴 CRITICAL — affects 0/4 W94 deliverables. ~10,035 LOC of "documented work" has zero real commits in the repo.
+
+**Discovery (wave-spawner 414867512484112, fresh-sandbox cron tick @ 17:01 UTC, 2026-06-30):**
+- Interims 2/3/4 of cycle 94 (committed 16:23/16:24/16:30 UTC) declared:
+  - W94-A SHIPPED @ `f28ef5ef` (9 files, 3225 LOC, akasha-streaming-ui)
+  - W94-B SHIPPED @ `7cad11ef` (10 files, 2849 LOC, voice-mode-tts)
+  - W94-C SHIPPED @ `d6cc703d` (10 files, 3961 LOC, audio-video-posts)
+- Interim 5 (16:32 UTC) said "3/4 SHIPPED, 1/4 in flight, HOLD cycle 95"
+- This cron tick ran `git fetch --unshallow` + `git ls-remote origin` + `git log --all --oneline | grep -E "f28ef5ef|7cad11ef|d6cc703d"`
+- **Veredito:** NENHUM dos 3 SHAs corresponde a um commit existente. Eles só aparecem como substrings dentro das próprias mensagens dos doc-commits. Nenhuma branch `w94/*` em origin.
+
+**Impact:**
+- 0/4 W94 deliverables no repo
+- 4 worktrees (workers' sandboxes) destruídos no reset da sessão orchestradora 414860119883859
+- ~10,035 LOC documentado em interims = fantasma
+- W94-D (marketplace-leituras) worker 414853955768493 também não pushou; sandbox do worker provavelmente perdido
+
+**Root cause (most likely):**
+Wave-spawner session 414860119883859 aceitou self-reports dos workers ("PUSHED @ <SHA>") e os escreveu nos interims sem re-verificar com `git ls-remote origin refs/heads/<branch>` ou `git rev-parse <SHA>`. Esta é uma falha de governança wave-spawner.
+
+**Status @ 17:01 UTC:** ⚠️ ACTIVE — needs human decision. Recommended actions:
+1. Re-spawn cycle 94 (4 workers, fresh themes) → ~30 min cost, ~10K LOC recovered
+2. Accept loss, move cycle 95 forward with 4 NEW themes (acknowledge in interim 7) → save 30 min, lose 10K LOC
+3. Investigate session 414860119883859 (its sandbox is gone too; can only audit its interim docs and possibly GitHub Actions logs if any)
+
+**Cross-cycle lessons (B-W94-001 → cycle 95+ brief):**
+- `git ls-remote origin refs/heads/<branch>` MUST run BEFORE writing "SHIPPED" in any interim doc
+- Worker self-report = NOT evidence. Always cross-check with `git ls-remote` or `git rev-parse <SHA>^{commit}` on origin
+- Wave-spawner fresh-sandbox cron tick is the canonical audit moment (no local bias)
+- If discrepancy detected → HOLD spawn + report + escalate, do not fabricate "all green"
+
+**Owner:** User (human) — needs to decide re-spawn vs accept loss.
+**Wave-spawner session holding this BLOCKER:** 414867512484112.
+**Next checkpoint:** 17:30 UTC cron tick (re-verify, then escalate or close).

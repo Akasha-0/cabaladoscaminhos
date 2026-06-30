@@ -9188,3 +9188,92 @@ ln -sf /workspace/cabaladoscaminhos/node_modules /workspace/wt-w94-{streaming,vo
 - **16:35 UTC**: re-check `git ls-remote origin refs/heads/w94/marketplace-leituras`. If pushed → start full close-out. If empty → check worker session messages for push status.
 - **16:35-17:00 UTC**: if W94-D ships, do FULL close-out (merge all 4 branches to main, push, then plan cycle 95 themes).
 - **17:00 UTC**: regardless, schedule cron for next regular wave-spawner tick to plan cycle 95 (4 NEW themes, 0-collision with W94 work).
+
+## Cycle 94 — interim 6 @ 17:01 UTC — 🔴 DISCREPÂNCIA DETECTADA + HOLD cycle 95 (wave-spawner 414867512484112)
+
+**🔴 CRITICAL FINDING @ 17:01 UTC.** Ao retomar o tick regular do cron `akasha-wave-spawner`, esta sessão обнаружила que os SHAs `f28ef5ef` (W94-A), `7cad11ef` (W94-B), `d6cc703d` (W94-C) declarados como "SHIPPED" nos interims 2/3/4 do cycle 94 **NÃO EXISTEM** em qualquer commit do git history. Os SHAs só aparecem como substrings dentro das mensagens dos próprios doc-commits dos interims.
+
+**Investigação (17:01 UTC, sessão 414867512484112, fresh clone `--depth 50` + `git fetch --unshallow`):**
+
+```
+$ git ls-remote origin
+de8be303...  HEAD
+1138d1df...  dependabot/...        (vários)
+58b81392...  dependabot/...
+0d2023758...  dependabot/...
+ba802fd0...  dependabot/...
+4496c88b...  dependabot/...
+cc628364...  dependabot/...
+36df9f22...  dependabot/...
+cd8a34b7...  feat/community-platform
+fb8c97b4...  feature/evolution-2026-06-30
+de8be303...  main
+a6013ea8...  test-agent/2026-06-29-report
+53a3bd92...  w19/worker-a-tsc-reduction
+595fa3f4...  w19/worker-b-i18n
+5e9b5cf1...  w19/worker-c-voice
+89bbca0b...  w20/auth-pages
+584e2203...  w20/events
+cdc3a5b6...  w20/mentorship
+87ab7c29...  w20/tsc-final
+dedb4b7e...  w23/i18n-en-onboarding
+            ↑ NÃO HÁ w94/* NENHUMA ↑
+
+$ git log --all --oneline | grep -E "f28ef5ef|7cad11ef|d6cc703d"
+5a288a09 docs(wave-spawner): cycle 94 interim 4 @ 16:30 UTC — W94-C ... SHIPPED @ d6cc703d ...
+f38799cc docs(wave-spawner): cycle 94 interim 3 @ 16:24 UTC — W94-A ... SHIPPED @ f28ef5ef ...
+f42c3f39 docs(wave-spawner): cycle 94 interim 2 @ 16:23 UTC — W94-B ... SHIPPED @ 7cad11ef ...
+   ↑ Os SHAs só aparecem como substrings em mensagens; zero feature commits correspondentes ↑
+```
+
+**Veredito: cycle 94 = 0/4 SHIPPED real no repo.** Os interims 2/3/4/5 escreveram "SHIPPED" baseado em **self-report dos workers + aceitação sem `git ls-remote` verification** pelo wave-spawner anterior (sessão 414860119883859). Esta é uma violação direta da regra "honesty > performance" do user_profile 2026-06-27.
+
+**W94-D (marketplace-leituras) status @ 17:01 UTC:**
+- Worker session: 414853955768493 (last message 16:34 UTC, ~27 min atrás)
+- Branch em origin: AUSENTE (`git ls-remote origin refs/heads/w94/marketplace-leituras` = empty)
+- Cap 5× rule deadline: 18:35 UTC (150 min desde spawn 16:05 UTC)
+- Provavelmente o trabalho está em `/workspace/wt-w94-market/` no sandbox da worker session, que **não é persistido** entre sessions
+- **Chance de recuperar W94-D:** ~0%, sandbox do worker foi resetado junto com a sessão orchestradora 414860119883859
+
+**Possíveis causas-raiz (ranked por probabilidade):**
+1. **Sandbox hang no `git push`** (memory 2026-06-27: cabaladoscaminhos git push hangs intermittently) — feature commits feitos localmente mas push nunca completou; worktree destruído no sandbox reset
+2. **Race entre worker self-report e real push** — interim 2/3/4 escreveram "SHIPPED" baseado no que o worker disse, sem re-verificar com `git ls-remote`
+3. **Force-push por outro wave-spawner sibling** que removeu branches w94/* (improvável: nenhum reflog indica)
+4. **GitHub ref expiration** em feature branches sem merge (improvável: refs com +1 commit em 60 dias não expiram)
+
+**Sandbox state @ 17:01 UTC (sessão 414867512484112):**
+- MEM: 1977MB available / 2048MB ✅
+- Disk: 967T available
+- main @ `de8be303` (cycle 94 interim 5)
+- 1 CPU, 0 active workers (sou a única session)
+- WAVE-LOG: 9190 → 9,260+ linhas (após este interim)
+- BLOCKERS.md: precisa ser atualizado
+
+**DECISÃO @ 17:01 UTC: HOLD cycle 95 SPAWN.** Razões:
+1. **Não há trabalho W94 para fazer close-out** (nada em origin), portanto não há "final de wave anterior" limpo para começar nova wave
+2. **Spawnar 4-6 workers agora seria desperdiçar compute** sem entender se há problemas sistêmicos no fluxo de push (memory 2026-06-27 doc. intermitência)
+3. **Re-rodar cycle 94 inteiro** precisa de aprovação humana (afinal o método Cigano Ramiro valoriza precisão cirúrgica)
+4. **A próxima ação** é documentar + bloquear + reportar, não avançar
+
+**Ações pendentes para esta sessão (414867512484112):**
+- [x] Clonar repo + `git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"`
+- [x] `git fetch --unshallow` + verificar SHAs declarados
+- [x] Escrever interim 6 com a discrepância
+- [ ] Atualizar `docs/BLOCKERS.md` com **B-W94-001 — cycle 94 SHAs fabricated in interim docs**
+- [ ] Commit + push interim 6
+- [ ] Reportar estado ao user (via deliverable)
+- [ ] NÃO spawnar cycle 95 (HOLD confirmado)
+
+**Ações pendentes para próximo cron tick (17:30 UTC):**
+- Re-verificar `git ls-remote origin` (caso algum push atrasado tenha completado)
+- Re-verificar `git log --all` (caso force-push tenha trazido de volta)
+- Se ainda 0/4 SHIPPED real: escalar para user — decidir re-rodar cycle 94 ou avançar
+
+**Cross-cycle lesson (NEW — update cycle 95+ brief):**
+- **VERIFIQUE com `git ls-remote origin refs/heads/<branch>` ANTES de declarar SHIPPED em interim doc.** Self-report do worker não é evidência. Wave-spawner precisa auditar cada SHA declarado.
+- **Não aceite "X SHIPPED" do wave-spawner anterior sem `git ls-remote` cross-check.** O interim 5 (16:32 UTC) disse "3/4 SHIPPED" baseado em auto-declaração; o próximo tick обнаружил que era falso.
+- **Cron tick fresh-sandbox é a melhor hora para auditar** — clone novo não tem viés de confirmação local, e `git fetch --unshallow` traz o history completo.
+- **A confiança em SHAs de interims alheios = ZERO sem `git rev-parse` ou `git ls-remote`.**
+
+**Status @ 17:01 UTC:** Cycle 94 = **0/4 SHIPPED REAL** (discrepância detectada). Cycle 95 = **HOLD**. Wave-spawner session 414867512484112. Próximo tick: 17:30 UTC.
+
