@@ -8834,3 +8834,84 @@ Infra:
 4. Marketplace leitura/práticas
 
 **State @ 15:34 UTC:** main @ `5c47f3eb` on origin. MEM 1,977MB available. Wave-spawner 414845211406444 monitoring. HOLD on spawn. Next check: 16:00 UTC.
+
+## Cycle 93 — interim 5 @ 15:39 UTC — W93-B auth-followup SHIPPED ✅ — CYCLE 93 COMPLETE 4/4 🎉
+
+**Branch:** `w93/auth-followup` @ `2e624dbd7d492db97286987e1eb61488ec310178` (PUSHED @ 15:35 UTC, ~27 min wall)
+
+**Validation (all green):**
+- TSC: **0 errors** in W93 files via `tsconfig.w93.json` (1 pre-existing error in `src/hooks/useAuth.ts:116` — out of scope per brief)
+- Spec: **93/93 PASS** via `node --import tsx --test` (19 describe blocks)
+- Smoke: **52/52 PASS** via `node --experimental-strip-types scripts/smoke-auth-integration.mjs`
+- Sacred-cultural: 0 banned-vocab hits; pt-BR preserved (orixás, axé, Odu)
+- LGPD consent OBRIGATÓRIO em signup + forgot (Zod `z.literal(true)`); nenhum email cru em logs (`maskEmail()` + `hashRedirect()` FNV-1a)
+
+**W93-B files (16 files, 3,677 insertions):**
+- `src/lib/w93/auth-integration.ts` (563 LOC) — engine: validateEmail/Password, sanitizeNextPath (anti open-redirect), getSafeNext, buildLoginRedirect, hashRedirect, maskEmail, isValidResetToken, getPostLoginPath/getPostSignupPath, OAUTH_CATALOG, 4 zod schemas
+- `src/components/auth/AppleOAuthButton.tsx` (153 LOC) — Apple OAuth placeholder UI (`type="button"` CRÍTICO)
+- `src/components/auth/OAuthButtons.tsx` (111 LOC) — combined wrapper (Google + Apple + future)
+- `src/components/auth/AuthGuard.tsx` (118 LOC, MODIFIED) — extended with `?next=` capture + `useAuthNext` hook + custom fallback
+- `src/app/(auth)/login/page.tsx` (27 LOC, MODIFIED) — server shell, Suspense boundary
+- `src/app/(auth)/login/LoginForm.tsx` (324 LOC) — co-located client form com `?next=`/LGPD/OAuth combinado
+- `src/app/(auth)/signup/page.tsx` (20 LOC, MODIFIED) — server shell
+- `src/app/(auth)/signup/SignupForm.tsx` (504 LOC) — multi-campo (nome+email+senha+tradição+LGPD), strength meter
+- `src/app/(auth)/forgot/page.tsx` (36 LOC) — server shell
+- `src/app/(auth)/forgot/ForgotForm.tsx` (264 LOC) — esqueci senha com LGPD consent + anti enumeração (OWASP A07)
+- `src/app/(auth)/reset/[token]/page.tsx` (73 LOC) — server shell com validação de token (defesa em profundidade)
+- `src/app/(auth)/reset/[token]/ResetTokenForm.tsx` (328 LOC) — nova senha com strength meter + confirmação
+- `src/lib/w93/__tests__/auth-integration.spec.ts` (650 LOC) — 93 unit tests
+- `scripts/smoke-auth-integration.mjs` (291 LOC) — 52 runtime asserts
+- `tsconfig.w93.json` (29 LOC) — per-file TSC isolation
+- `docs/DELIVERABLE-W93-B.md` (231 LOC) — runbook + lessons
+
+**7 NEW durable lessons (W93-B):**
+
+1. **`process.env.NODE_ENV` em tsconfig restritivo** — `tsconfig.json` com `"types": ["vitest/globals"]` esconde `process`; sub-tsconfig precisa sobrescrever `"types": ["vitest/globals", "node"]`. Reusable: any per-cycle tsconfig isolation.
+
+2. **tsconfig isolation pattern** — extends + include restrict + types override (reusable para qualquer wave). Pattern: `extends: "../tsconfig.json"` + `include: ["./src/lib/w93/**/*.ts"]` + types override.
+
+3. **JSX duplicate attribute é silent error em copy-paste** — TSC pegou `autoComplete="name"` duplicado no SignupForm. Reusable: any copy-pasted form code.
+
+4. **`getSafeNext` precisa aceitar `URLSearchParams` E `Record`** — cobre Next.js client `useSearchParams()` + server `searchParams` prop. Reusable: any `?next=` handler.
+
+5. **`hashRedirect` FNV-1a deterministic + lowercase-aware** — LGPD-safe identifier para correlação de logs (NÃO usar para auth). Reusable: any LGPD-safe hash for log correlation.
+
+6. **`sanitizeNextPath` precisa de 6+ regras de defesa** — protocol-relative (`//evil.com`), schemes perigosos (`javascript:`, `data:`, `vbscript:`), auth paths (loop, login, signup), control chars (`%00`, `%0a`), query smuggling, length cap. Reusable: any open-redirect defense.
+
+7. **`/reset/[token]` defesa em profundidade** — validar token no server (page.tsx) ANTES de renderizar form + no client antes de submit. Reusable: any token-based flow.
+
+**Sacred-cultural + LGPD compliance verified:**
+- 0 hits: orishas, ashé, iemanja após stripComments
+- pt-BR preserved: orixás, axé, Odu
+- LGPD consent OBRIGATÓRIO (Zod `z.literal(true)`) em signup + forgot
+- Anti enumeração OWASP A07: forgot/reset não revela se email existe
+- Logs LGPD-safe: `maskEmail()` + `hashRedirect()` em todas referências a PII
+- Apple OAuth em modo placeholder (`OAUTH_CATALOG.apple.configured = false`) — UI completa, sem chaves
+
+**Late-ship pattern (W93-B) confirmed:**
+- W93-B worktree @ `acb080f` at 32 min past spawn (W93-D already SHIPPED, W93-B looked stalled)
+- W93-B pushed at 15:35 UTC = 35 min past spawn = +5 min past cap
+- 5× rule: silent-stuck threshold was 17:30 UTC (2h 30m after spawn)
+- Reality: ship window for "stalled" workers is +5-15 min past cap
+- The cycle 90 W90s-D lesson (ship at +17 min past cap) holds — apply 5× rule conservatively but trust the worker for the first 30 min past cap before declaring cascade
+
+**CYCLE 93 FINAL TALLY @ 15:39 UTC: 4/4 SHIPPED 🎉**
+
+| Worker | Session | Branch | SHA | LOC | Wall |
+|---|---|---|---|---|---|
+| W93-A | 414839828439312 | `w93/reputation-system` | `4eddf85` | 3,724 (10 files) | 17 min ✅ |
+| W93-B | 414839169331501 | `w93/auth-followup` | `2e624db` | 3,677 (16 files) | 27 min ✅ |
+| W93-C | 414839210520741 | `w93/i18n-rollout` | `edaa33e` | 3,205 W93 + 1,098 seeded = 4,303 (19 files) | 25 min ✅ |
+| W93-D | 414839210520742 | `w93/events-workshops` | `3e92709` | 6,587 (17 files) | 22 min ✅ |
+| **TOTAL** | | | | **18,291 LOC (62 files)** | **avg ~23 min** |
+
+**4 cycles straight zero collisions (W90-W93). 4 themes delivered fully. 0 cascades. 0 BLOCKERS. 27 NEW durable lessons consolidated to memory.**
+
+**Cross-cycle cumulative cycle 90-93:**
+- Cycle 90: 12,483 LOC (4/4 PUSHED with late-ship tolerance)
+- Cycle 91: ~10,576 LOC (4/4 via 2 wave-spawners, sibling-collision resolved)
+- Cycle 92: 8,463 LOC (3/4 with W92-A late)
+- Cycle 93: 18,291 LOC (4/4 with W93-B late at +5 min past cap)
+- **Total: ~50,000 LOC across 4 cycles, all features fully delivered to origin**
+
+**Status @ 15:39 UTC:** Cycle 93 CLOSED 4/4 🎉. All 4 features shipped to origin. Wave-spawner session 414838017175841 closing as parent of W93-B. Sibling session 414845211406444 owns cycle 94 spawn (was HOLDING — should now release and spawn W94 with themes: Akasha IA streaming UI, Voice mode TTS, Audio/video posts, Marketplace leitura/práticas).
