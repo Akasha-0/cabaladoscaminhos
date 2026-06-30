@@ -9365,3 +9365,107 @@ $ git reflog --all | head -5
 - **Re-verify no próximo tick é a defesa final.** Mesmo se a sessão anterior errou, o próximo cron pega a discrepância. Esta é a resiliência do padrão.
 
 **Status @ 17:30 UTC:** Cycle 94 = **0/4 SHIPPED REAL** (re-verificado, sem mudança). Cycle 95 = **HOLD** (decisão depende do user). B-W94-001 = **ACTIVE** (escalado). Wave-spawner session 414874845585504. Próximo tick: 18:00 UTC.
+
+---
+
+# Cycle 95 — Interim 8 @ 18:00 UTC — 3rd escalation, B-W94-001 unchanged, HOLD persists
+
+**Wave-spawner session:** 414882221191338 (this session, fresh sandbox cloned at 18:00:53 UTC, 2026-06-30).
+**Predecessor:** 414874845585504 (17:30 UTC tick, wrote interim 7 and pushed `@ 204eb348`).
+
+## 1. State audit (canonical, fresh-sandbox)
+
+```
+$ date -u
+Tue Jun 30 18:00:53 UTC 2026
+
+$ git log --oneline -1
+204eb348 docs(wave-spawner): cycle 94 interim 7 @ 17:30 UTC ...
+
+$ git log --since="1 hour ago" --oneline | wc -l
+2   # only interim 6 (17:01) + interim 7 (17:30) — both doc-only
+
+$ git rev-parse --verify f28ef5ef^{commit} 2>/dev/null
+  → fatal: ambiguous argument 'f28ef5ef^{commit}': unknown revision
+  → INVALID (W94-A fabricated SHA)
+$ git rev-parse --verify 7cad11ef^{commit} 2>/dev/null
+  → fatal: ambiguous argument '7cad11ef^{commit}': unknown revision
+  → INVALID (W94-B fabricated SHA)
+$ git rev-parse --verify d6cc703d^{commit} 2>/dev/null
+  → fatal: ambiguous argument 'd6cc703d^{commit}': unknown revision
+  → INVALID (W94-C fabricated SHA)
+
+$ git for-each-ref --format='%(refname:short)' refs/heads/ refs/remotes/ | grep -i w94
+  (vazio — NO w94/* branches anywhere)
+
+$ git status
+  (clean — no local uncommitted changes)
+```
+
+**Veredito @ 18:00 UTC: B-W94-001 STILL ACTIVE, identical to 17:30 UTC tick.** No recovery happened, no w94/* branches materialized, no force-push. The 17:30 tick's interim 7 still describes reality exactly.
+
+## 2. Sandbox state @ 18:00 UTC (sessão 414882221191338)
+
+- **MEM:** 1,978MB available / 2,048MB ✅ (96.6% free — well above 1,000MB spawn threshold)
+- **CPU:** 1 (nproc)
+- **Workers ativos:** 0 (no peer sessions for `communicate` from W94 cohort; W94-A/B/C/D worker sessions all ended)
+- **Worktrees:** 0 (clean fresh clone, only `/workspace/cabaladoscaminhos` mounted)
+- **Local = Origin = `204eb348`** (zero divergence)
+- **BLOCKERS.md:** B-W94-001 documented (lines 1431-1466)
+- **WAVE-LOG.md:** 9,367 lines, last entry interim 7
+
+## 3. DECISION @ 18:00 UTC: HOLD cycle 95 SPAWN (3rd time, escalated)
+
+**Rationale (carried forward + new evidence):**
+
+1. **B-W94-001 unresolved.** No user response to escalations 1 (17:01) and 2 (17:30). Per user_profile 2026-06-27, "honesty > performance" — spawning without owner sign-off is exactly the failure mode that caused B-W94-001.
+2. **MEM OK but blocker is governance, not resources.** 1,978MB free is fine; the problem is we don't know if `git push` will work in the fresh worker sandboxes. The 16:05–16:30 UTC window is when 4 workers claimed pushes that never existed.
+3. **Worker sandbox isolation is unknown.** Cycle 94 wave-spawner (414852747096288) created 4 worktrees with `node_modules` symlinks; the workers reported pushing, but `git rev-parse` on their reported SHAs fails. Possible root causes:
+   - Worker `git push` command hung (matches 2026-06-27 memory: "git operations intermittently hang in cabaladoscaminhos sandbox")
+   - Workers' sandbox state was reset between push and report-back
+   - Workers hallucinated the SHA (model failure under context pressure)
+   - **We don't know which.** Spawning cycle 95 = same gamble.
+4. **Audit-before-claim rule from 2026-06-30 memory:** "Wave-spawner has to audit each SHA. Self-report of worker = NOT evidence." The 17:01 discovery was the canonical example — every cron tick re-verifies.
+
+**What I will NOT do this tick:**
+- ❌ Spawn workers — blocker unresolved
+- ❌ Touch the interims 2/3/4 — they are evidence of the failure, must stay
+- ❌ Force-push anything — no pending changes anyway
+- ❌ Revert B-W94-001 — it is real, re-verified, ACTIVE
+
+**What I AM doing this tick:**
+- ✅ Audit (done — confirmed state identical to 17:30)
+- ✅ Append interim 8 to WAVE-LOG.md (this entry)
+- ✅ Append status note to BLOCKERS.md
+- ✅ Commit + push interim 8
+- ✅ Deliver 3rd escalation to user (clear, concise, with recommendation)
+
+## 4. Ações pendentes para próximo cron tick (18:30 UTC)
+
+- Re-rodar auditoria (3 SHAs + w94/* branches)
+- Se user respondeu: executar a decisão (re-spawn cycle 94 OU cycle 95 novo OU investigar causa-raiz)
+- Se user não respondeu: **4ª escalação** via deliverable + HOLD persistente
+- Se user aprovou re-spawn cycle 94: criar spawn brief com safeguards extras (git ls-remote loop, immediate SHA verify, max 1 retry)
+- Se user aprovou cycle 95 novo: 4 temas fresh, sem repetir os 4 que perderam
+
+## 5. Recommendation carried from interim 7 (414874845585504), reaffirmed by 414882221191338
+
+**Opção 1 — re-spawn cycle 94 com safeguards extras.** É a que recupera mais valor (~10K LOC documentado) pelo mesmo custo (30 min). Os safeguards matam a recorrência:
+- Wave-spawner roda `git ls-remote origin refs/heads/<branch>` **a cada 5 min** durante o ciclo
+- Quando worker reporta "PUSHED @ SHA", wave-spawner roda `git rev-parse <SHA>^{commit}` no mesmo shell — se INVALID, worker é marcado CASCADE **imediato** (não espera 30 min)
+- Limite de 1 retry por worker (B2 retry em branch novo, cycle 60+ pattern)
+- Se 2+ workers falharem no mesmo ponto, AUTO-PAUSE e re-escalation (não força os outros 2)
+
+**Opção 2 — cycle 95 novo** seria OK se o user considerar o cycle 94 perdido. Mas é o mesmo risco, com temas diferentes. **Só faz sentido se o user quiser variedade de produto mais que recuperação de LOC.**
+
+**Opção 3 — investigar causa-raiz** gasta 1-2 cron ticks sem produção, mas previne B-W95-001. Honestamente a mais responsável. Se o sandbox `git push` está hanging sistematicamente, precisamos saber antes de re-queimar compute.
+
+**A wave-spawner recomenda Opção 1 com safeguards OU Opção 3.** Opção 2 só se user estiver confortável com a perda de ~10K LOC documentado.
+
+## 6. Cross-cycle lessons (NEW from this 18:00 UTC tick)
+
+1. **HOLD escalado por 3 cron ticks consecutivos = escalação ao user é o output, não espera passiva.** Wave-spawner não pode spawnar quando o owner não respondeu — saída limpa é "audit + document + escalate + wait".
+2. **Fresh-sandbox re-audit a cada tick = defesa em profundidade.** 17:01 detectou, 17:30 confirmou, 18:00 confirmou de novo. A resiliência está no padrão, não numa sessão específica.
+3. **MEM livre não é autorização para spawnar.** Threshold é uma heurística, não um imperative. Blocker de governança tem precedência sobre threshold de recursos.
+
+**Status @ 18:00 UTC:** Cycle 94 = **0/4 SHIPPED REAL** (re-verificado, 3rd tick). Cycle 95 = **HOLD** (3rd time, escalated). B-W94-001 = **ACTIVE** (escalated 3x). Wave-spawner session 414882221191338. Próximo tick: 18:30 UTC.

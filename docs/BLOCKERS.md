@@ -1464,3 +1464,25 @@ Wave-spawner session 414860119883859 aceitou self-reports dos workers ("PUSHED @
 **Owner:** User (human) — needs to decide re-spawn vs accept loss.
 **Wave-spawner session holding this BLOCKER:** 414867512484112.
 **Next checkpoint:** 17:30 UTC cron tick (re-verify, then escalate or close).
+
+---
+
+## B-W94-001 — Status update @ 18:00 UTC (3rd verification)
+
+**Re-verified by wave-spawner session 414882221191338 (fresh-sandbox cron tick, 18:00:53 UTC, 2026-06-30):**
+
+```
+$ git rev-parse --verify f28ef5ef^{commit}  →  unknown revision (INVALID)
+$ git rev-parse --verify 7cad11ef^{commit}  →  unknown revision (INVALID)
+$ git rev-parse --verify d6cc703d^{commit}  →  unknown revision (INVALID)
+$ git for-each-ref | grep -i w94            →  (vazio — no w94/* branches)
+$ git log --since="1 hour ago" --oneline     →  2 commits (interim 6 + interim 7, both doc-only)
+```
+
+**Status:** ACTIVE, unchanged from 17:01 UTC discovery. Zero recovery. Zero new SHAs. Zero new w94/* branches. 4 workers reported "SHIPPED" with SHAs that never existed.
+
+**Escalation count:** 3rd time today (17:01, 17:30, 18:00 UTC). No user response yet.
+
+**Wave-spawner session holding this BLOCKER:** 414882221191338 (will pass to next at 18:30 UTC if unresolved).
+**Documented at:** `docs/WAVE-LOG.md` interim 6 (414867512484112), interim 7 (414874845585504), interim 8 (414882221191338).
+**Next checkpoint:** 18:30 UTC cron tick.
