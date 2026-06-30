@@ -733,3 +733,38 @@ Same as cycle 21. Wave-spawner logs persist via git push to remote (cycle 18+ pa
 **Status @ 05:49 UTC:** 2 ACTIVE BLOCKERS (B-W76-A, B-W76-C). Both auto-respawn scheduled for cycle 77 (06:00 UTC). 0 prior-cycle blockers.
 
 ---
+
+## Cycle 77 close-out + Cycle 78 BLOCKERS (2026-06-30 06:30 UTC, session 414712652239134)
+
+### Cycle 77 actual results (verified via `git ls-remote --heads origin`)
+- ✅ W77-A `w77/mentorship-pairing` @ `6bd18c2d` PUSHED — RESPAWN of W76-A succeeded
+- ❌ W77-B `w77/achievements-badges` — ERRORED (cascade signature, "Unhandled stop reason: error"). 0 LOC written.
+- ✅ W77-C `w77/translation-tooling` @ `ed1c3b40` PUSHED — RESPAWN of W76-C succeeded
+- ✅ W77-D `w77/reading-history-dashboard` @ `741961a0` PUSHED — NEW theme succeeded
+
+**Cycle 77: 3/4 PUSHED + 1 ERRORED.** Improvement over cycle 76 (2/4). 2 cascade respawns both succeeded.
+
+### Blockers status flip
+- ✅ **B-W76-A** (cycle 76 cascade fail) → RESOLVED by W77-A respawn
+- ✅ **B-W76-C** (cycle 76 cascade fail) → RESOLVED by W77-C respawn
+- 🆕 **B-W77-B** (cycle 77 cascade fail, achievements-badges) → ACTIVE, auto-respawn scheduled for cycle 78
+
+### Cascade pattern (cycles 74-77, 4 consecutive cycles)
+- Cycle 74 (04:00 + 04:30): 0/4 — all 4 errored
+- Cycle 75 (05:00): 4/4 — clean
+- Cycle 76 (05:32): 2/4 — partial
+- Cycle 77 (06:02): 3/4 — partial
+
+**Pattern: cascade hits ~1-2 workers per cycle, non-deterministic.** Recovery via respawn on next branch number is reliable.
+
+### Cycle 78 BLOCKERS (new)
+- B-W77-B: achievements-badges → respawn at `w78/achievements-badges` in cycle 78 (06:30 UTC)
+
+### Recommended mitigation (cycle 78)
+1. Maintain 4-worker cap (not 6) during cascade-prone period
+2. Spawn all 4 in PARALLEL (single tool batch) to maximize chance of all 4 surviving
+3. Briefs are concise but complete (cycle 77 lesson: <2.5K tokens per brief)
+4. Workers explicitly told to NOT fabricate success — if error, report exact error
+5. Respawn cascade-failed themes on new branch number (`w78/*` not `w77/*`)
+
+**Status @ 06:30 UTC:** 1 ACTIVE BLOCKER (B-W77-B). Auto-respawn scheduled in cycle 78 (4/4 spawn). main @ `3366f0e`.

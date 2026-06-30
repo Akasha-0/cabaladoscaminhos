@@ -5743,3 +5743,62 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 - Next tick @ 06:30 UTC will verify w77/* branches landed
 
 **Status @ 06:02 UTC:** Cycle 77 SPAWNED. 4/4 in flight. 30-min cap → expected close-out 06:30-06:35 UTC.
+
+---
+
+## Cycle 78 — SPAWN (2026-06-30 06:30 UTC, session 414712652239134)
+
+**Tick @ 06:30 UTC.** Cycle 77 PARTIAL closed (3/4 PUSHED, 1/4 cascade-failed). Working tree clean, MEM available 1975MB of 2048MB. Capacity ample for 4 parallel Coder workers (cycle 75-77 baseline = 21 min avg, 3-4×0 TSC on survivors).
+
+### Cycle 77 close-out (verified via `git ls-remote --heads origin`)
+
+| W | Branch | SHA | Status | Notes |
+|---|---|---|---|---|
+| A | `w77/mentorship-pairing` | `6bd18c2d` | ✅ PUSHED | RESPAWN of W76-A succeeded |
+| B | `w77/achievements-badges` | — | ❌ ERRORED | Cascade signature (cycle 77 budget hit) |
+| C | `w77/translation-tooling` | `ed1c3b40` | ✅ PUSHED | RESPAWN of W76-C succeeded |
+| D | `w77/reading-history-dashboard` | `741961a0` | ✅ PUSHED | NEW theme succeeded |
+
+**Cycle 77: 3/4 PUSHED, 1/4 ERRORED.** Cumulative w7X branches on origin: 25+ (20 prior + 5 new w7X landed across W75-W77).
+
+### Cycle 78 selection (recovery + UI surface expansion, no overlap with W70-W77)
+
+- ✅ `achievements-badges` — RESPAWN of W77-B (cycle 77 cascade-failed). NEW BRANCH `w78/achievements-badges`. Sacred-aware gamification. ≥25 badges catalog, hierarchy Cigano < Orixás < Ifá < Mestres. ≥3 per tradition. Earned via meaningful actions (consultas, leitura, mentoria recebida, oferenda, cigano puxado). No vanity metrics, no public leaderboards.
+- ✅ `sacred-sound-ui` — NEW. UI layer for W70 `sacred-sound-engine`. React component for sound playback: track list, progress, intention-setting. Mobile-first, accessible. 7-tradition intention categories. 432Hz / 528Hz / 528Hz frequency display. Auth-gated for "save my intention".
+- ✅ `biorhythm-calendar` — NEW. UI layer for W72 `biorhythm-cycles-b2`. Calendar view showing physical/emotional/intellectual cycles. 7-tradition overlay: each day gets a tradition-specific reflection prompt based on cycle phase. Streak tracking, ICS export. Mobile-first, dark mode.
+- ✅ `energy-mood-flow` — NEW. Visualize user mood + energy over time. Calendar heatmap, weekly patterns, lunar phase overlay (full/new moon, eclipses correlate with intensity). 7-tradition micro-practices per state. Mobile-first.
+
+**Active worker count: 0/8 cap (no workers in flight at tick start).** All 4 will be spawned via `communicate` spawn mode → Coder. Each has 30-min hard cap. All 4 work in isolated `/tmp/w78-X/` worktrees, push to `w78/<theme>` branch.
+
+**Worker count rationale:** 4 is the sweet spot in current cascade regime — 6 risks 2-3 cascade failures, 2 under-delivers. Cycle 75 (4/4) and 77 (3/4) both confirm 4 is the right cap.
+
+### Capacity snapshot @ spawn
+- MEM available: 1975MB / 2048MB (96%)
+- Cycles run: 78 (W1-W78)
+- Branches on origin: 25+ w7X (20 prior + 5 new) + 4 pending W78
+- ~203K+ LOC engine code cumulative
+
+### Worker briefs (each)
+- Read existing pattern from `git show origin/w77/mentorship-pairing:src/lib/w77/mentorship-pairing.ts` (or any w77 branch) — file structure is identical
+- `src/lib/w78/<theme>.ts` + `.spec.ts` (≥40 assertions) + `.smoke.ts` (≥20 checks) + `.hash.ts` (deterministic hash)
+- 7-tradition sacred coverage (Candomblé, Umbanda, Ifá, Cabala, Astrologia, Tantra, Cigano)
+- Object.freeze + ReadonlyArray + branded types
+- Mobile-first interface notes
+- TSC=0 + spec 100% green + smoke 100% green
+- Cycle 60-77 lessons applied: diacritic Unicode lookaround, frozen collections, master-number preservation, distance-based aspect scoring, self-running test harness, worktree-isolated tsconfig + node-stubs.d.ts
+- No B2B bloat, no main checkout contamination, no git push to main
+
+### Token cascade mitigation (cycle 78)
+- Briefs are concise but complete (target <2.5K tokens per brief, cycle 77 lesson)
+- Workers explicitly told to NOT fabricate success — if error, report exact error
+- Workers have GITHUB_TOKEN URL injection pre-configured (parent did `git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"` before spawn)
+- All 4 spawn in parallel (single tool batch) — maximizes chance of all 4 landing before any cascade
+- If 2+ workers fail within 5 min of spawn, cascade is back → next tick (07:00 UTC) will abort and wait for budget refresh
+
+### Wave-spawner doc protocol (this tick)
+- WAVE-LOG.md appended (this entry)
+- BLOCKERS.md updated (cycle 77 close + cycle 78 plan + 1 active blocker)
+- Wave-spawner does NOT commit code; workers push their own branches
+- Next tick @ 07:00 UTC will verify w78/* branches landed
+
+**Status @ 06:30 UTC:** Cycle 78 SPAWNED. 4/4 in flight. 30-min cap → expected close-out 07:00-07:05 UTC.
