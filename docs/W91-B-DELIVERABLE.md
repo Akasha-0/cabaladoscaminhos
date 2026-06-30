@@ -6,7 +6,7 @@
 **Session:** 414824592736528
 **Wave-spawner:** 414823242133669
 **Branch:** `w91/reputation-leaderboard`
-**Commit:** (see git log below — finalized at push time)
+**Commit:** `f7b650d11cb36a4ef635bd2c5c621ed73f82e61f`
 
 ---
 
@@ -189,4 +189,19 @@ timeout 60 git push origin w91/reputation-leaderboard
 
 ## Final git output
 
-(Appended after running the actual commit + push commands.)
+```
+$ git log --oneline -2
+f7b650d feat(w91-b): reputation-leaderboard UI + mock + spec + smoke
+4f1854b docs(wave-spawner): cycle 91 INTERIM 1 @ 14:18 UTC — sibling collision + engine in flight
+
+$ timeout 90 git push origin w91/reputation-leaderboard
+remote: Create a pull request for 'w91/reputation-leaderboard' on GitHub by visiting:
+remote:      https://github.com/Akasha-0/cabaladoscaminhos/pull/new/w91/reputation-leaderboard
+To https://github.com/Akasha-0/cabaladoscaminhos.git
+ * [new branch]      w91/reputation-leaderboard -> w91/reputation-leaderboard
+
+$ git ls-remote origin w91/reputation-leaderboard
+f7b650d11cb36a4ef635bd2c5c621ed73f82e61f	refs/heads/w91/reputation-leaderboard
+```
+
+**Push: ✅ confirmed at remote at SHA `f7b650d`**
