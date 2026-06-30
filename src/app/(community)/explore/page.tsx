@@ -307,7 +307,7 @@ function ExplorePageInner() {
             initialQuery={query}
             placeholder="Buscar posts, artigos, pessoas, grupos, tags..."
             size="md"
-            onSubmit={(q) => {
+            onSubmit={(q: any) => {
               setQuery(q);
               updateUrl({ q });
             }}

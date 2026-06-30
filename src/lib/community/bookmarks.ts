@@ -163,7 +163,7 @@ export async function listPostBookmarks(input: {
   });
 
   // 2. Carrega os posts correspondentes
-  const postIds = bookmarks.map((b) => b.postId);
+  const postIds = bookmarks.map((b: any) => b.postId);
   const posts = await prisma.post.findMany({
     where: { id: { in: postIds }, deletedAt: null },
     include: {
@@ -181,13 +181,13 @@ export async function listPostBookmarks(input: {
     _count: { _all: true },
   });
   const collections = grouped
-    .map((g) => ({ name: g.collectionName, count: g._count._all }))
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .map((g: any) => ({ name: g.collectionName, count: g._count._all }))
+    .sort((a: any, b: any) => a.name.localeCompare(b.name));
 
   // 4. Mapeia para DTO
   const items = (
     await Promise.all(
-      bookmarks.map(async (b) => {
+      bookmarks.map(async (b: any) => {
         const p = postMap.get(b.postId);
         if (!p) return null; // post foi deletado
         return {
@@ -198,7 +198,7 @@ export async function listPostBookmarks(input: {
         };
       })
     )
-  ).filter((x): x is NonNullable<typeof x> => x !== null);
+  ).filter((x: any): x is NonNullable<typeof x> => x !== null);
 
   return {
     items,
@@ -289,7 +289,7 @@ export async function listReadingHistory(input: {
     take: limit,
   });
 
-  const postIds = rows.map((r) => r.postId);
+  const postIds = rows.map((r: any) => r.postId);
   const posts = await prisma.post.findMany({
     where: { id: { in: postIds }, deletedAt: null },
     include: {
@@ -302,7 +302,7 @@ export async function listReadingHistory(input: {
 
   const items = (
     await Promise.all(
-      rows.map(async (r) => {
+      rows.map(async (r: any) => {
         const p = postMap.get(r.postId);
         if (!p) return null;
         return {
@@ -312,7 +312,7 @@ export async function listReadingHistory(input: {
         };
       })
     )
-  ).filter((x): x is NonNullable<typeof x> => x !== null);
+  ).filter((x: any): x is NonNullable<typeof x> => x !== null);
 
   return { items, total: items.length };
 }

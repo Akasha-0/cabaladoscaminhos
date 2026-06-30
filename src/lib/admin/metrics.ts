@@ -160,8 +160,8 @@ export async function getNps30d(): Promise<KpiCards['nps_sample']> {
     _count: { _all: true },
   });
 
-  const up = grouped.find((g) => g.vote === 'UP')?._count?._all ?? 0;
-  const down = grouped.find((g) => g.vote === 'DOWN')?._count?._all ?? 0;
+  const up = grouped.find((g: any) => g.vote === 'UP')?._count?._all ?? 0;
+  const down = grouped.find((g: any) => g.vote === 'DOWN')?._count?._all ?? 0;
   return { promoters: up, detractors: down, total: up + down };
 }
 
@@ -626,7 +626,7 @@ export async function getAdminUsers(filters: AdminUserFilters): Promise<AdminUse
     select: { targetId: true, createdAt: true },
     orderBy: { createdAt: 'desc' },
   });
-  const bannedSet = new Set(banActions.map((b) => b.targetId));
+  const bannedSet = new Set(banActions.map((b: any) => b.targetId));
 
   const data = users
     .map((u) => ({
@@ -770,8 +770,8 @@ export async function getModerationQueue(opts: {
   if (flags.length === 0) return [];
 
   // Coletar targetIds por tipo para fetch em batch
-  const postIds = flags.filter((f) => f.targetType === 'POST').map((f) => f.targetId);
-  const commentIds = flags.filter((f) => f.targetType === 'COMMENT').map((f) => f.targetId);
+  const postIds = flags.filter((f: any) => f.targetType === 'POST').map((f: any) => f.targetId);
+  const commentIds = flags.filter((f: any) => f.targetType === 'COMMENT').map((f: any) => f.targetId);
 
   const [posts, comments] = await Promise.all([
     postIds.length > 0
@@ -792,7 +792,7 @@ export async function getModerationQueue(opts: {
   posts.forEach((p) => previewMap.set(`POST:${p.id}`, p.content.slice(0, 200)));
   comments.forEach((c) => previewMap.set(`COMMENT:${c.id}`, c.content.slice(0, 200)));
 
-  return flags.map((f) => ({
+  return flags.map((f: any) => ({
     id: f.id,
     targetType: f.targetType,
     targetId: f.targetId,

@@ -76,14 +76,14 @@ export async function GET(request: NextRequest) {
     // LGPD Art. 18 V — exportação inclui também eventos SENT para auditoria
     const summary = {
       total: rows.length,
-      byDecision: rows.reduce<Record<string, number>>((acc, r) => {
+      byDecision: rows.reduce<Record<string, number>>((acc: any, r: any) => {
         acc[r.decision] = (acc[r.decision] ?? 0) + 1;
         return acc;
       }, {}),
     };
 
     return NextResponse.json({
-      items: rows.map((r) => ({
+      items: rows.map((r: any) => ({
         id: r.id,
         type: r.type,
         decision: r.decision,

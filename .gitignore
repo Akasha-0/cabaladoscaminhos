@@ -98,3 +98,7 @@ next-env.d.ts
 
 # Screenshots antigos (legacy e2e/screenshots.spec.ts)
 /.screenshots/
+
+# Wave utility scripts (transient cleanup helpers)
+/.wave*.cjs
+/.wave*.sh

@@ -123,9 +123,9 @@ export function WaitlistAdminDashboard({
     }
   };
 
-  useMemo(() => {
+  useEffect(() => {
     void fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [searchParams]);
 
   // Apply filters client-side

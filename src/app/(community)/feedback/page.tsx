@@ -138,7 +138,7 @@ async function loadFeatureRequests(filters: {
       },
     })
 
-    const requests: FeatureRequestRow[] = rows.map((r) => ({
+    const requests: FeatureRequestRow[] = rows.map((r: any) => ({
       id: r.id,
       title: r.title,
       description: r.description,
@@ -156,7 +156,7 @@ async function loadFeatureRequests(filters: {
         where: { user_id: currentUserId },
         select: { request_id: true },
       })
-      myUpvotes = new Set(ups.map((u) => u.request_id))
+      myUpvotes = new Set(ups.map((u: any) => u.request_id))
     }
 
     return { requests, currentUserId, myUpvotes }

@@ -74,14 +74,14 @@ export async function GET(request: NextRequest) {
       _count: { _all: true },
     });
 
-    const countByStatus = counts.reduce<Record<string, number>>((acc, c) => {
+    const countByStatus = counts.reduce<Record<string, number>>((acc: any, c: any) => {
       acc[c.status] = c._count._all;
       return acc;
     }, {});
 
     return ok(
       {
-        flags: items.map((f) => ({
+        flags: items.map((f: any) => ({
           id: f.id,
           targetType: f.targetType,
           targetId: f.targetId,

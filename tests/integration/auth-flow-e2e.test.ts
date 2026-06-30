@@ -38,8 +38,8 @@ type UserRecord = {
 };
 
 const userStore: Map<string, UserRecord> = new Map();
-let sessionStore: Map<string, { user_id: string; token: string; expires_at: number }> = new Map();
-let verificationTokens: Map<string, { user_id: string; expires_at: number }> = new Map();
+const sessionStore: Map<string, { user_id: string; token: string; expires_at: number }> = new Map();
+const verificationTokens: Map<string, { user_id: string; expires_at: number }> = new Map();
 
 let nextUserId = 1;
 const newId = (prefix: string) => `${prefix}_${(nextUserId++).toString(36)}_${Date.now().toString(36)}`;

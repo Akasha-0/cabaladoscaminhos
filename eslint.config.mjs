@@ -7,7 +7,7 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   prettier,
-  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
+  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts", ".wave*.cjs", ".wave*.sh", "**/__evals_DISABLED__/**"]),
   {
     rules: {
       "react-hooks/set-state-in-effect": "off",

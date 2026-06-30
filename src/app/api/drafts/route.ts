@@ -35,7 +35,7 @@ export async function GET(_request: NextRequest) {
     });
 
     return ok(
-      drafts.map((d) => draftToDto(d)),
+      drafts.map((d: any) => draftToDto(d)),
       { meta: { count: drafts.length } }
     );
   } catch (err) {

@@ -116,7 +116,7 @@ export async function GET(
     });
 
     return ok(
-      invites.map((i) => ({
+      invites.map((i: any) => ({
         id: i.id,
         token: i.token,
         inviteeUserId: i.inviteeUserId,

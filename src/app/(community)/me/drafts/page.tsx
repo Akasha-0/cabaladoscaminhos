@@ -137,7 +137,7 @@ export default async function MeDraftsPage() {
             Nenhum rascunho ainda. Toque em <strong>+ Novo</strong> para começar.
           </div>
         ) : (
-          drafts.map((d) => (
+          drafts.map((d: any) => (
             <details
               key={d.id}
               className="group rounded-lg border border-zinc-200 bg-white open:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900"

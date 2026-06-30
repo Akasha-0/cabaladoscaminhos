@@ -88,7 +88,7 @@ export default async function AdminNewsletterPage() {
           </p>
         ) : (
           <ul className="divide-y divide-border rounded-2xl border border-border bg-card">
-            {newsletters.map((n) => (
+            {newsletters.map((n: any) => (
               <li key={n.id} className="p-4 sm:p-6">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
                   <h3 className="font-serif text-lg text-foreground">

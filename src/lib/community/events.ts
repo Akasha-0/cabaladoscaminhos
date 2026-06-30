@@ -165,14 +165,14 @@ export async function listEvents(
     const parts = await prisma.eventParticipant.findMany({
       where: {
         userId: opts.viewerId,
-        eventId: { in: rows.map((r) => r.id) },
+        eventId: { in: rows.map((r: any) => r.id) },
       },
       select: { eventId: true, status: true },
     });
     for (const p of parts) viewerStatuses.set(p.eventId, p.status);
   }
 
-  return rows.map((r) =>
+  return rows.map((r: any) =>
     eventToDto(r, opts.viewerId ?? null, viewerStatuses.get(r.id) ?? null)
   );
 }

@@ -162,7 +162,7 @@ export async function GET(request: NextRequest) {
       prisma.auditLog.count({ where }),
     ]);
 
-    const items: AuditLogEntry[] = rows.map((r) => ({
+    const items: AuditLogEntry[] = rows.map((r: any) => ({
       id: r.id,
       actorId: r.actorId,
       targetId: r.targetId,

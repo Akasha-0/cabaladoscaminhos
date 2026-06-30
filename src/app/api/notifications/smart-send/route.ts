@@ -111,8 +111,8 @@ async function loadRecentLog(userId: string): Promise<RecentDeliveryLog[]> {
     select: { channel: true, createdAt: true },
   });
   return rows
-    .filter((r): r is { channel: string; createdAt: Date } => r.channel !== null)
-    .map((r) => ({
+    .filter((r: any): r is { channel: string; createdAt: Date } => r.channel !== null)
+    .map((r: any) => ({
       channel: r.channel as Channel,
       timestamp: r.createdAt,
     }));

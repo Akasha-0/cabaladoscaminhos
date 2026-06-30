@@ -91,7 +91,7 @@ export async function listAvailableMentors(
       },
       select: { mentorId: true },
     });
-    blockedMentorIds = new Set(active.map((m) => m.mentorId));
+    blockedMentorIds = new Set(active.map((m: any) => m.mentorId));
   }
 
   return rows.map((u) => ({
@@ -339,7 +339,7 @@ export async function getMentorship(input: {
   if (!dto) return null;
 
   const messages: MentorshipMessageDto[] = (mentorship.messages ?? []).map(
-    (msg) => ({
+    (msg: any) => ({
       id: msg.id,
       mentorshipId: msg.mentorshipId,
       authorId: msg.authorId,

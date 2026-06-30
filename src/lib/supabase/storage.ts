@@ -338,7 +338,7 @@ export async function deleteFile(
 
   return {
     ok: true,
-    data: { removed: data?.map((r) => r.name) ?? pathArray },
+    data: { removed: data?.map((r: any) => r.name) ?? pathArray },
   };
 }
 

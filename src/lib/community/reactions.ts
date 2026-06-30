@@ -209,12 +209,12 @@ export async function getReactions(input: {
       where: { userId: viewerId, targetType, targetId },
       select: { emoji: true },
     });
-    viewerEmojis = new Set(viewerRows.map((r) => r.emoji));
+    viewerEmojis = new Set(viewerRows.map((r: any) => r.emoji));
   }
 
   return grouped
-    .filter((g): g is typeof g & { emoji: AllowedEmoji } => isAllowedEmoji(g.emoji))
-    .map((g) => ({
+    .filter((g: any): g is typeof g & { emoji: AllowedEmoji } => isAllowedEmoji(g.emoji))
+    .map((g: any) => ({
       emoji: g.emoji,
       count: g._count._all,
       userHasReacted: viewerEmojis.has(g.emoji),

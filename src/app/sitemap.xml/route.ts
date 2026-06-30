@@ -168,7 +168,7 @@ async function fetchUpcomingEvents(): Promise<DynamicEntry[]> {
         take: 50,
         select: { id: true, updatedAt: true, startsAt: true },
       });
-      return upcoming.map((e) => ({
+      return upcoming.map((e: any) => ({
         path: `/events/${e.id}`,
         lastmod: e.updatedAt,
         changefreq: "daily" as ChangeFreq,
