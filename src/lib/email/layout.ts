@@ -190,19 +190,21 @@ function renderFooter(opts: {
 // ============================================================================
 
 /** Renderiza um botão CTA (table-based para compat Outlook). */
-export function renderCta(opts: { label: string; href: string; color?: string }): string {
+export function renderCta(opts: { label: string; href: string; color?: string; secondary?: boolean }): string {
   const escape = (s: string): string =>
     s
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
-  const bg = opts.color ?? '#5b3a8a';
+  const bg = opts.secondary ? '#ffffff' : (opts.color ?? '#5b3a8a');
+  const fg = opts.secondary ? '#5b3a8a' : '#ffffff';
+  const border = opts.secondary ? '#5b3a8a' : 'none';
   return `
     <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:24px auto;">
       <tr>
-        <td align="center" style="border-radius:6px;background:${bg};">
-          <a href="${escape(opts.href)}" class="cta" target="_blank" rel="noopener" style="display:inline-block;padding:14px 32px;font-family:Georgia,serif;font-size:16px;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:bold;">
+        <td align="center" style="border-radius:6px;background:${bg};border:1px solid ${border};">
+          <a href="${escape(opts.href)}" class="cta" target="_blank" rel="noopener" style="display:inline-block;padding:14px 32px;font-family:Georgia,serif;font-size:16px;color:${fg};text-decoration:none;border-radius:6px;font-weight:bold;">
             ${escape(opts.label)}
           </a>
         </td>

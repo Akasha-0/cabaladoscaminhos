@@ -23,6 +23,12 @@ import { renderMentionNotification, type MentionNotificationData } from '@/lib/e
 import { renderFollowNotification, type FollowNotificationData } from '@/lib/email/templates/follow-notification';
 import { renderMentorshipRequest, type MentorshipRequestData } from '@/lib/email/templates/mentorship-request';
 import { renderEventReminder, type EventReminderData } from '@/lib/email/templates/event-reminder';
+import { renderWaitlistWelcome, type WaitlistWelcomeData } from '@/lib/email/templates/waitlist-welcome';
+import { renderWaitlistConfirmation, type WaitlistConfirmationData } from '@/lib/email/templates/waitlist-confirmation';
+import { renderWaitlistReminder, type WaitlistReminderData } from '@/lib/email/templates/waitlist-reminder';
+import { renderWaitlistWaveInvite, type WaitlistWaveInviteData } from '@/lib/email/templates/waitlist-wave-invite';
+import { renderWaitlistWaveClosed, type WaitlistWaveClosedData } from '@/lib/email/templates/waitlist-wave-closed';
+import { renderBetaInvite, type BetaInviteData } from '@/lib/email/templates/beta-invite';
 
 export type TemplateId =
   | 'welcome'
@@ -35,7 +41,13 @@ export type TemplateId =
   | 'mention-notification'
   | 'follow-notification'
   | 'mentorship-request'
-  | 'event-reminder';
+  | 'event-reminder'
+  | 'waitlist-welcome'
+  | 'waitlist-confirmation'
+  | 'waitlist-reminder'
+  | 'waitlist-wave-invite'
+  | 'waitlist-wave-closed'
+  | 'beta-invite';
 
 export type TemplateDataMap = {
   welcome: WelcomeData;
@@ -49,6 +61,12 @@ export type TemplateDataMap = {
   'follow-notification': FollowNotificationData;
   'mentorship-request': MentorshipRequestData;
   'event-reminder': EventReminderData;
+  'waitlist-welcome': WaitlistWelcomeData;
+  'waitlist-confirmation': WaitlistConfirmationData;
+  'waitlist-reminder': WaitlistReminderData;
+  'waitlist-wave-invite': WaitlistWaveInviteData;
+  'waitlist-wave-closed': WaitlistWaveClosedData;
+  'beta-invite': BetaInviteData;
 };
 
 export interface RenderOptions {
@@ -97,6 +115,18 @@ export function renderTemplate<K extends TemplateId>(
       return renderMentorshipRequest(data as MentorshipRequestData, opts);
     case 'event-reminder':
       return renderEventReminder(data as EventReminderData, opts);
+    case 'waitlist-welcome':
+      return renderWaitlistWelcome(data as WaitlistWelcomeData, opts);
+    case 'waitlist-confirmation':
+      return renderWaitlistConfirmation(data as WaitlistConfirmationData, opts);
+    case 'waitlist-reminder':
+      return renderWaitlistReminder(data as WaitlistReminderData, opts);
+    case 'waitlist-wave-invite':
+      return renderWaitlistWaveInvite(data as WaitlistWaveInviteData, opts);
+    case 'waitlist-wave-closed':
+      return renderWaitlistWaveClosed(data as WaitlistWaveClosedData, opts);
+    case 'beta-invite':
+      return renderBetaInvite(data as BetaInviteData, opts);
     default: {
       // Exhaustiveness check — TS error se algum case faltar
       const _exhaustive: never = templateId;

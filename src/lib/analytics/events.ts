@@ -83,4 +83,39 @@ export const events = {
   /** Email capturado para waitlist. */
   waitlistJoined: (email: string, source?: string) =>
     trackEvent({ name: 'waitlist_joined', properties: { source } }),
+
+  // ============================================================================
+  // W32 — Waitlist multi-step funnel
+  // ============================================================================
+
+  /** Usuario abriu o form multi-step (step 1 visível). */
+  waitlistFormStarted: (source?: string) =>
+    trackEvent({ name: 'waitlist_form_started', properties: { source } }),
+
+  /** Usuario completou um step do form multi-step (1..5). */
+  waitlistStepCompleted: (step: number, source?: string) =>
+    trackEvent({
+      name: 'waitlist_step_completed',
+      properties: { step, source },
+    }),
+
+  /** Email de confirmação clicado (vinda do email). */
+  waitlistConfirmationClicked: () =>
+    trackEvent({ name: 'waitlist_confirmation_clicked' }),
+
+  /** Lead confirmou email via link de confirmação. */
+  waitlistConfirmed: () =>
+    trackEvent({ name: 'waitlist_confirmed' }),
+
+  /** Admin enviou invite para um lead. */
+  waitlistInviteSent: (wave: number, email: string) =>
+    trackEvent({ name: 'waitlist_invite_sent', properties: { wave, email } }),
+
+  /** Lead aceitou invite e entrou no beta. */
+  waitlistInviteAccepted: () =>
+    trackEvent({ name: 'waitlist_invite_accepted' }),
+
+  /** Usuario saiu da fila (unsubscribe). */
+  waitlistUnsubscribed: () =>
+    trackEvent({ name: 'waitlist_unsubscribed' }),
 };

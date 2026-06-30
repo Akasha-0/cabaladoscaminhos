@@ -6,13 +6,18 @@
 // ============================================================================
 
 import Link from 'next/link';
-import { LayoutDashboard, Users, ShieldAlert, ScrollText } from 'lucide-react';
+import { LayoutDashboard, Users, ShieldAlert, ScrollText, UserPlus } from 'lucide-react';
 
 const ITEMS = [
   {
     href: '/admin/dashboard',
     label: 'Dashboard',
     icon: LayoutDashboard,
+  },
+  {
+    href: '/admin/waitlist',
+    label: 'Waitlist',
+    icon: UserPlus,
   },
   {
     href: '/admin/users',
