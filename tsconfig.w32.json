@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "next-env.d.ts",
+    "src/lib/community/rituals.ts",
+    "src/lib/community/mentorship-match.ts",
+    "src/lib/community/ical-export.ts",
+    "src/lib/community/__tests__/rituals.spec.ts",
+    "src/app/(community)/rituals/page.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "scripts"
+  ]
+}
