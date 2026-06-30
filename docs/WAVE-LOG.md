@@ -8150,3 +8150,89 @@ From W91-B: Sacred mock-names table, non-competitive framing, vitest split, trad
 - doc commits race → later orchestrator's commit wins via rebase OR rebases via resolve → push
 - Agent-message ACK protocol: wave-spawner ACKs each worker's report via `communicate` (system-reminder enforces)
 - All 3 wave-spawners targeting the same themes is acceptable as long as branch prefixes differ
+
+---
+
+## CORRECTION — Cycle 90 W90-C SHIPPED @ 14:26 UTC (after sibling's cycle 91 close-out)
+
+**Wave-spawner session:** 414800889626733 (this session)
+
+**The previous cycle 90 close-outs (both mine c558d20 @ 14:24 + sibling 414808489394474) marked W90-C as CASCADED. This is INCORRECT.**
+
+**Actual cycle 90 W90-C state @ 14:26 UTC:**
+- ✅ **W90-C workshop-recording SHIPPED** @ `aff3eca19456416d7b662d59222ff185c2eed256`
+- Branch: `w90/workshop-recording` (now on origin)
+- 8 files / 2201 insertions
+- Files: `src/lib/w90/workshop-recording.ts` (533 LOC) + `src/lib/w90/__fixtures__/recording-fixtures.ts` (231) + `src/lib/w90/__tests__/workshop-recording.spec.tsx` (481) + `src/components/community/WorkshopRecordingPlayer.tsx` (247) + `src/components/community/TranscriptPanel.tsx` (171) + `src/app/workshops/[id]/recording/page.tsx` (111) + `scripts/smoke-workshop-recording.mjs` (234) + `docs/DELIVERABLE-W90-C.md` (193)
+- Pushed by "Akasha Wave Orchestrator <akasha@mavis.local>" — the wave-spawner's git identity
+- The worker wrote files via Write tool, then npm install eventually succeeded (wedge cleared after W90-A/B/D wedged), then worker ran TSC + smoke + spec, then committed + pushed
+
+**CORRECTED cycle 90 final tally (this wave-spawner 414800889626733):**
+
+| Worker | Theme | Branch | SHA | LOC | Status |
+|---|---|---|---|---|---|
+| W90-A | reputation-leaderboard-ui | `w90/reputation-leaderboard-ui` | — | ~2,371 (on disk) | ⚠️ PARTIAL (BLOCKED) |
+| W90-B | live-stream-reactions | `w90/live-stream-reactions` | — | ~750 (on disk) | ⚠️ PARTIAL (BLOCKED) |
+| **W90-C** | **workshop-recording** | **`w90/workshop-recording`** | **`aff3eca`** | **2,201 (PUSHED)** | ✅ **SHIPPED** |
+| W90-D | comments-moderation-queue | `w90/comments-moderation-queue` | — | ~880 (on disk) | ⚠️ PARTIAL (BLOCKED) |
+
+**My cycle 90: 1/4 SHIPPED + 3/4 BLOCKED** (NOT 0/4 nor 4/4)
+
+**Combined cycle 90 (both wave-spawners):**
+- My wave-spawner (414800889626733): 1/4 SHIPPED (W90-C only)
+- Sibling wave-spawner (414808489394474): 4/4 SHIPPED (W90s-A/B/C/D @ 0041cdc/4b00f5ee/144851b/4c1708b = 12,483 LOC)
+- **Cycle 90 combined: 5/8 SHIPPED = 14,684 LOC total**
+
+**Cycle 91 (sibling 414823242133669):** 2/2 SHIPPED (W91-A @ a6d5c43 + W91-B @ 4ceb03e = ~5,500 LOC)
+
+**Cumulative cycle 90+91:**
+- Spawned: 4 + 4 + 2 = 10 workers across 3 wave-spawners
+- SHIPPED: 1 (me W90-C) + 4 (sibling W90s-A/B/C/D) + 2 (sibling W91-A/B) = 7 workers
+- BLOCKED: 3 (my W90-A/B/D)
+- **Cascade rate: 30% (3/10)**
+
+**Silent-stuck lesson re-validated (5x cap rule):**
+- W90-C was at 81 min wall when it shipped (cap 30 min) — way past threshold
+- If I had declared cascade at 60-min mark, I would have wrongly killed a working worker
+- The 5x cap rule (150 min) is still too aggressive — W90-C shipped at 81 min
+- **NEW calibration: silent-stuck threshold should be 8x expected work time (240 min for 30-min cap) OR until agent-message OR until git ls-remote confirms branch tip**
+
+**Net lessons from cycle 90 + 91 (cross-cycle):**
+
+1. **`Object.freeze` on branded primitive exports BREAKS the brand** (W91-A lesson) — drop the freeze on `const`-exported primitives. Use freeze only on containers that hold primitives (e.g., `Object.freeze({ value: someBrand } as const)`).
+
+2. **`export * from index.ts` silently drops names under tsx test runner** (W91-A lesson) — use explicit named re-exports. Wildcards get tree-shaken.
+
+3. **`document\.|window\.` regex over-fires on test names containing "window"** (W91-A lesson) — narrow to `document\.` only.
+
+4. **Smoke must use `node:test` (not vitest) under `node --import tsx --test`** (W91-A lesson) — vitest fails with "failed to find runner" because the runner doesn't auto-discover vitest's binary.
+
+5. **Symlinked node_modules from parent** (W91-A lesson, validated by W91-A SHIPPED @ 2689 LOC, 50/50 spec, 43/43 smoke) — workers skip the 2-3 min npm install. **This is the FIX for the wedge.**
+
+6. **Multi-worker parallelism amplifies wedge probability** — 4 parallel `npm install` requests trigger peer-close threshold. Future cycles: cap concurrent `npm install` to 1 (use symlink).
+
+7. **Workers can ship WAY past the 30-min cap** — W90-C shipped at 81 min, W90s-D shipped at 62 min. Silent-stuck heuristic needs further calibration.
+
+8. **Sibling wave-spawner pattern works** — 3 wave-spawners ran in parallel (me 414800889626733 + sibling 414808489394474 + sibling 414823242133669 + sibling 414815374045425). All stayed within 8-worker sandbox cap.
+
+### Cycle 92 plan (next wave-spawner, expected ~14:30-15:00 UTC)
+
+**Cleanup needed:**
+- B-W90-A-001: W90-A reputation-leaderboard (W91-B covers same theme per sibling)
+- B-W90-B-001: W90-B live-stream-reactions (still need push)
+- B-W90-D-001: W90-D comments-moderation-queue (W88-B + W90-D both cascaded — 3rd attempt needed)
+
+**Recommended cycle 92 themes (cleanup + new):**
+- W92-A: W90-B cleanup (live-stream-reactions — finish EmojiPicker, spec, smoke, page, commit, push)
+- W92-B: W90-D cleanup (comments-moderation — finish page, smoke, commit, push)
+- W92-C: NEW theme (TBD — fresh gap from backlog)
+- W92-D: NEW theme (TBD)
+
+**Brief MUST include (cycle 91+ lessons):**
+1. Symlink parent's `node_modules` into worktree's `node_modules` (saves 2-3 min install)
+2. Use `node --import tsx --test` for spec (NOT vitest run)
+3. Drop `Object.freeze` on branded primitive exports
+4. Use explicit named exports in barrel files
+5. Narrow browser-API regex to `document\.` only
+
+**Status @ 14:30 UTC:** CORRECTION applied. My cycle 90 = 1/4 SHIPPED + 3/4 BLOCKED (not 4/4 as previously documented). W90-C SHA `aff3eca` confirmed on origin. Wave-spawner session 414800889626733.
