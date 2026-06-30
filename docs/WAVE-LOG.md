@@ -7385,3 +7385,56 @@ Same owner action pending for ~25+ prior w-branches (per BLOCKERS.md "Owner merg
 4. Continue cycle plan: W90-D if 13:00 UTC spawned it, or save for cycle 91
 
 **Status @ 13:04 UTC:** Cycle 89 CLOSED ✅ 1/1 SHIPPED + PUSHED. Env fully recovered. main @ `087da3b`. Wave-spawner session 414800889626733.
+
+---
+
+## Cycle 90 — Wave-Spawner SPAWN @ 13:05 UTC (2026-06-30) — 🟢 4/4 DISPATCHED
+
+**Status @ 13:07 UTC:** Cycle 90 SPAWNED. 4 workers dispatched in parallel.
+
+**Spawned:**
+
+| Worker | Session | Branch | Theme | Scope | Risk |
+|---|---|---|---|---|---|
+| **W90-A** | `414809708519589` | `w90/reputation-leaderboard-ui` | reputation-leaderboard-ui (extends W88-C) | ~1800 LOC | LOW |
+| **W90-B** | `414808538173623` | `w90/live-stream-reactions` | live-stream-reactions (extends W89-A) | ~1200 LOC | LOW |
+| **W90-C** | `414809708519590` | `w90/workshop-recording` | workshop-recording-engine (events + audio/video) | ~2200 LOC | MED |
+| **W90-D** | `414808538173624` | `w90/comments-moderation-queue` | comments-moderation-queue (W88-B retry) | ~1500 LOC | MED |
+
+**Worktrees:** 4 new at `/workspace/wt-{theme}/`, all branched from origin/main @ `7d9a1aa`. W89-A worktree retained at `wt-live-stream-chat` (cycle 89 work).
+
+**State at spawn:**
+- main @ `7d9a1aa` (cycle 89 close-out landed)
+- 5 worktrees active (W89-A still listed, will exit on next cron tick)
+- MEM 1975 MB available
+- Load avg 0.15 (idle)
+- 5 active workers (W89-A finishing + 4 W90 starting) — under 8 cap
+
+**Worker briefs (all 4):**
+- STEP 0: `npm install --no-audit --no-fund --ignore-scripts --no-save` (NOT `npm ci`)
+- STEP 1-2: explore existing code
+- STEP 3-4: implement + verify (focused TSC, source-inspection spec, tsx smoke)
+- STEP 5: commit + push BEFORE 25-min mark
+- Sacred-cultural compliance: no `amarração`/`amarre`/`vinculação`, positive-only reactions, 5 traditions
+- ARIA + mobile-first + 44px touch targets
+- 5 anti-pattern reminders from W86-W89 lessons
+
+**Time budget per worker:** 30 min hard cap (close ~13:35 UTC).
+
+**Watch items for next tick (13:30 UTC, expected session ~414820889626733):**
+1. Check 4 branches on origin: `git ls-remote origin w90/{branch}`. Verify SHAs.
+2. Pull W90-A/B/C/D WAVE-LOG close-out sections from main worktree.
+3. Validate focused TSC=0 in each (worker should have self-verified).
+4. Validate smoke + source-inspection asserts PASS.
+5. Decide on cycle 91 (13:30 UTC or wait until 14:00 UTC if all 4 ship).
+
+**Cascade rate (cumulative cycles 83-90): 4/19 = 21%** (W88 was the only fully-cascaded cycle).
+
+**Wall time this tick (12:30-13:07 UTC):** ~37 min
+- 12:30-12:43: env recovery (npm install worked after 5321cff lock refresh)
+- 12:43-12:47: W89-A spawn + WAVE-LOG push
+- 12:47-13:04: W89-A in-flight (shipped at 13:02:21 UTC, SHA `834cb58d`)
+- 13:04-13:05: W89-A close-out WAVE-LOG push
+- 13:05-13:07: 4 worktrees + 4 W90 worker spawns
+
+**Status @ 13:07 UTC:** Cycle 90 SPAWNED. 4 workers in flight. Wave-spawner session 414800889626733.
