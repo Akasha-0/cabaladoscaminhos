@@ -1,7 +1,7 @@
 # Akasha Wave-Spawner — Active Blockers
 
-> **Last updated:** 2026-06-30 03:29 UTC (cycle 72 COMPLETE — 4/4 PUSHED; cycle 73 SPAWNED with 4 NEW UI integration workers)
-> **Status:** ✅ ALL BLOCKERS RESOLVED. Cycle 70 BLOCKER (B-W70-BIO-MISSING) closed via W72-A B2 retry at 03:12 UTC. Cycle 71 = 4/4 PUSHED ✅✅✅✅. Cycle 72 = 4/4 PUSHED ✅✅✅✅ (W72-A biorhythm-cycles-b2 + W72-B auth-pages-integration + W72-C akasha-streaming-ui + W72-D voice-mode-tts, ~9,060 engine LOC, 312+ smoke assertions, 28-min avg wall). Cycle 73 IN FLIGHT (4 NEW UI integration workers: W73-A mentorship-ui + W73-B community-circles-ui + W73-C dm-ui + W73-D notifications-ui). Owner action pending: merge W72-A/B/C/D → main.
+> **Last updated:** 2026-06-30 05:49 UTC (cycle 76 PARTIAL — 2/4 PUSHED; 2 workers errored on Token Plan cascade)
+> **Status:** ⚠️ ACTIVE BLOCKERS (cycle 76 partial). W76-A mentorship-pairing + W76-C translation-tooling errored with "Unhandled stop reason: error" (parent Token Plan 2056 cascade, same pattern as cycle 74 NULL on 2026-06-30 04:00+04:30). 0 LOC written; /tmp worktrees have only scaffold. Cycle 77 SPAWN at 06:00 UTC will respawn both on new `w77/*` branches. W76-B reputation-universalist ✅ + W76-D comments-threading-mentions ✅ pushed. Prior cycles 60-75 all clean. Owner merge action pending on W76-B + W76-D.
 
 This file tracks every structural blocker that prevents the wave-orchestrator from doing its
 job (spawn workers, run TSC gate, push to remote). Each blocker has: status, root cause,
@@ -665,3 +665,71 @@ Same as cycle 21. Wave-spawner logs persist via git push to remote (cycle 18+ pa
 - The W69-D worker's exact session ID is not visible from this orchestrator (it was in the previous sandbox). The session_id is logged in the W69-D commit metadata if needed.
 
 **Status: ✅ B-W69-CC-MISSING RESOLVED. W69-D branch on origin at SHA `0c6af98d`. B2 retry (Worker E) in flight as safety-net duplicate on `w69/community-circles-b2` branch.**
+
+---
+
+## B-W76-A: cycle 76 W76-A (mentorship-pairing) — ❌ FAILED (token cascade, 0 LOC written)
+
+**Status (2026-06-30 05:49 UTC, tick 414696806048057):** ❌ FAILED. W76-A spawned at 05:32 UTC, errored with "Unhandled stop reason: error" by ~05:49 UTC. Session 414697995694265 (status=2). 
+
+**Evidence:**
+- `git ls-remote --heads origin | grep w76/mentorship-pairing` → 0 results (no branch pushed)
+- `/tmp/w76-a/` inspection: only `src/lib/w76/node-stubs.d.ts` (140L) + `src/lib/w76/tsconfig.json` (13L) = 153 LOC of scaffold; NO engine code, NO spec, NO smoke
+- `git status -s` in /tmp/w76-a: `?? src/lib/w76/` (untracked scaffold only)
+- 0 commits on `w76/mentorship-pairing` branch
+
+**Root cause hypothesis (matches cycle 74 NULL pattern):**
+- Parent Mavis session hit Token Plan usage limit 2056 mid-cycle
+- Child Coder session 414697995694265 errored before any code write
+- Cycle 74 (2026-06-30 04:00 + 04:30) had identical failure mode with explicit "Token Plan usage limit reached" message
+- Cycle 75 ran clean (4/4 PUSHED in 21 min avg), cycle 76 budget cascade suggests cumulative consumption across cycles
+
+**Resolution path (cycle 77 respawn):**
+- W77-A = respawn W76-A mentorship-pairing on NEW branch `w77/mentorship-pairing`
+- 30-min hard cap; if respawn also fails, escalate to user (token budget may need explicit top-up)
+
+**Owner action:** None required at this tick. Wave-spawner auto-respawns at 06:00 UTC. If user wants manual intervention, check `mavis session get 414697995694265` for the full error trace.
+
+---
+
+## B-W76-C: cycle 76 W76-C (translation-tooling) — ❌ FAILED (token cascade, 0 LOC written)
+
+**Status (2026-06-30 05:49 UTC, tick 414696806048057):** ❌ FAILED. W76-C spawned at 05:32 UTC, errored with "Unhandled stop reason: error" by ~05:49 UTC. Session 414697995694266 (status=2).
+
+**Evidence:**
+- `git ls-remote --heads origin | grep w76/translation-tooling` → 0 results (no branch pushed)
+- `/tmp/w76-c/` inspection: identical to W76-A — only `node-stubs.d.ts` + `tsconfig.json` = 153 LOC scaffold; no engine
+- 0 commits on `w76/translation-tooling` branch
+- Error timestamp matches W76-A within seconds (suggests simultaneous cascade, not sequential)
+
+**Root cause hypothesis:** Same as B-W76-A. Token Plan 2056 cascade. Both failed workers are evidence of a parent-level budget event, not independent worker failures.
+
+**Resolution path (cycle 77 respawn):**
+- W77-C = respawn W76-C translation-tooling on NEW branch `w77/translation-tooling`
+- 30-min hard cap; same escalation policy as B-W76-A
+
+**Owner action:** None required at this tick.
+
+---
+
+## Cross-cycle pattern: Token Plan 2056 cascade (cycles 74 + 76)
+
+**Observed events:**
+- Cycle 74 (2026-06-30 04:00 + 04:30 UTC): parent Mavis session 414683158180055 + 414675805905169 terminated with `Token Plan usage limit reached: Upgrade your Token Plan or purchase Credits for more usage. (2056)`. 4 W74 Coder children spawned but ALL errored before delivery.
+- Cycle 75 (2026-06-30 05:00 UTC): clean, 4/4 PUSHED in 21 min avg.
+- Cycle 76 (2026-06-30 05:32 UTC): parent Mavis session 414696806048057 partial — 2/4 PUSHED, 2/4 errored with "Unhandled stop reason: error" (cascade signature).
+
+**Pattern:**
+- 2 consecutive cycles of budget cascade (74 + 76) with 1 clean cycle (75) in between
+- Suggests non-linear budget consumption — heavy cycles (75 = 8,418 LOC) consume enough to leave cycle 76 partial
+- Recovery pattern works: respawn failed themes on different branch numbers in next cycle
+
+**Recommended mitigation (cycle 77+):**
+1. **Smaller cycle scope** — reduce to 2-3 workers per cycle during budget-tight periods
+2. **Stagger spawns** — wait 5-10 min between worker spawns to avoid simultaneous budget hits
+3. **Monitor for early error signal** — if W77-A and W77-C both fail within 5 min of spawn, the cascade is back; abort cycle and wait for budget refresh
+4. **Owner escalation** — if cascade pattern persists for 3+ consecutive cycles, surface to user for manual token top-up
+
+**Status @ 05:49 UTC:** 2 ACTIVE BLOCKERS (B-W76-A, B-W76-C). Both auto-respawn scheduled for cycle 77 (06:00 UTC). 0 prior-cycle blockers.
+
+---

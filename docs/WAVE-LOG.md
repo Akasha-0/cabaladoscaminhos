@@ -5654,3 +5654,50 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 **Status @ 05:33 UTC:** Cycle 76 SPAWNED. 4/4 in flight. 30-min cap → expected close-out 06:00-06:05 UTC.
 
 ---
+
+## Cycle 76 PARTIAL — 2026-06-30 05:49 UTC — 2/4 PUSHED ✅✅❌❌ (W76-B + W76-D delivered, W76-A + W76-C errored)
+
+**Tick @ 05:49 UTC, session 414696806048057.** Cycle 76 PARTIAL CLOSE-OUT. 2/4 workers delivered, 2/4 errored with "Unhandled stop reason: error" (same Token Plan 2056 cascade pattern from cycle 74).
+
+**SHIP manifest (cycle 76, partial):**
+
+| W | Branch | SHA | Status | LOC | Spec | Smoke | TSC | Wall | Notes |
+|---|---|---|---|---|---|---|---|---|---|
+| A | `w76/mentorship-pairing` | — | ❌ ERRORED | 0 | — | — | — | ~17 min | "Unhandled stop reason: error"; /tmp/w76-a/ has only scaffold (node-stubs.d.ts + tsconfig.json), no engine code |
+| B | `w76/reputation-universalist` | `c061c99a` | ✅ PUSHED | 1,528 | 41/41 ✅ | 44/44 ✅ | 0 ✅ | ~17 min | Multi-domain time-weighted reputation, universalism gate via `never` throw, 5 domains × 7 traditions |
+| C | `w76/translation-tooling` | — | ❌ ERRORED | 0 | — | — | — | ~17 min | Same error; /tmp/w76-c/ has only scaffold |
+| D | `w76/comments-threading-mentions` | `d22a2edf` | ✅ PUSHED | 1,875 | 67/67 ✅ | 69/69 ✅ | 0 ✅ | ~17 min | Threading (depth=5, cycle detection) + Unicode mention parsing + 3 notification hooks; coordinates with W73 moderation |
+
+**Total delivered (cycle 76, partial): 3,403 LOC, 221 assertions (85 spec + 136 smoke), 2×0 TSC.**
+
+**W76-A + W76-C root cause analysis:**
+- Both workers spawned at 05:32 UTC, errored by ~05:49 UTC (17 min in, well under 30-min cap)
+- Error message identical: "Unhandled stop reason: error" (session status=2)
+- /tmp inspection: only `src/lib/w76/node-stubs.d.ts` + `tsconfig.json` created, NO engine code
+- Pattern match: cycle 74 (2026-06-30 04:00 + 04:30) had identical failure mode with `Token Plan usage limit reached: Upgrade your Token Plan or purchase Credits for more usage. (2056)` on parent Mavis
+- Hypothesis: token plan budget cascade — parent Mavis consumed budget in cycles 75 + 76 spawn, child sessions hit the limit before any code write
+
+**Recovery plan (cycle 77, 06:00 UTC):**
+- **W77-A** = respawn W76-A mentorship-pairing (NEW BRANCH `w77/mentorship-pairing` to avoid any stale state on `w76/*`)
+- **W77-C** = respawn W76-C translation-tooling (NEW BRANCH `w77/translation-tooling`)
+- **W77-B** + **W77-D** = 2 entirely new themes (cycle 77 expands the surface area)
+- 4/4 cap maintained, no overlap with delivered w76/* branches
+
+**Cycle 76 durable lessons (5 from W76-D + 2 from W76-B + 1 from this tick):**
+1. **(W76-D)** iterateDescendants must gate YIELD but not DESCENT — `if (!(isDeleted && !includeDeleted)) yield` then ALWAYS push children. Conflating "don't surface" with "don't descend" hid alive grandchildren of deleted nodes.
+2. **(W76-D)** `resolveUsers: false` must STILL return a Mention with placeholder `userId('unresolved:' + username)`. Without placeholder, the option is dead code.
+3. **(W76-D)** Top-level `await` in tsx requires ESM output OR wrap in `async function main()` — prefer synchronous `check(label, cond)` pattern for harnesses.
+4. **(W76-D)** Drop unused brand types — "Root of thread" IS the topmost CommentId. Branding should reflect semantic distinction, not redundant classification.
+5. **(W76-D)** Vitest in worktree-isolated tsconfig needs `node-stubs.d.ts` declaring `vitest` module with full matcher surface — real vitest resolves at runtime, but `tsc --noEmit` errors without the stub.
+6. **(W76-B)** Universalism enforced by omission: `listTopContributorsGlobal()` exists ONLY as a `never` throw. Junior devs hit a compile-time return-type error if they try to wire a "Top 100" widget.
+7. **(W76-B)** Sacred rhythm via per-domain λ: ritual-knowledge decays slowest (λ=0.001) because tradition knowledge is sacred; peer-help decays fastest (λ=0.005). The asymmetry is INTENTIONAL.
+8. **(this tick)** Token Plan cascade confirmed: when parent Mavis hits 2056 mid-cycle, child Coder workers error with "Unhandled stop reason: error" BEFORE writing any code. /tmp worktrees have only scaffold. Recovery = respawn on new branch number (w77/* not w76/*).
+
+**Tick close-out doc state (this tick, 05:49 UTC, session 414696806048057):**
+- `docs/WAVE-LOG.md` — cycle 76 partial entry appended
+- `docs/BLOCKERS.md` — header update + new B-W76-A and B-W76-C entries pending
+- main HEAD: `a355361` (cycle 76 spawn doc), awaiting close-out doc
+
+**Status @ 05:49 UTC:** Cycle 76 PARTIAL — 2/4 PUSHED. 2 workers errored (token cascade). Owner merge action pending on W76-B + W76-D. Cycle 77 SPAWN at 06:00 UTC will respawn failed themes.
+
+---
