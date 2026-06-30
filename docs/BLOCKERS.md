@@ -886,3 +886,55 @@ $ Cycle 83 final: 3/4 PUSHED
 - The 4-worker cap + parallel batched spawn + reduced-scope respawn is the working mitigation
 
 **Status @ 09:52 UTC:** ✅ RESOLVED. dm-messages-ui shipped 2 cycles in a row (W82-D + W83-A), second attempt delivered. main @ `2c6d5a4`.
+
+
+### B-W84-A: cycle 84 W84-A (voice-mode-akasha) — ❌ ACTIVE (model error cascade @ 09:48:06 UTC)
+
+**Status (2026-06-30 10:00 UTC, tick 414764240031922):** ❌ **ACTIVE.** `w84/voice-mode-akasha` branch MISSING on origin. Worker session 414756900012154 terminated at 09:48:06 with "Unhandled stop reason: error" — model-provider transient error, NOT theme-too-heavy cascade. No report-back received.
+
+**Evidence (cycle 84 close-out, 10:00 UTC cold-sandbox wake):**
+
+```
+$ git ls-remote --heads origin | grep "w84/voice-mode-akasha"
+(empty — branch does not exist on origin)
+
+$ Cycle 84 final: 2/4 PUSHED
+  - w84/daily-reflection-prompt @ b621a6a ✅
+  - w84/comments-moderation @ 45c6f13e ✅
+  - w84/voice-mode-akasha — MISSING ❌ (cascade @ 09:48:06)
+  - w84/marketplace-lectura-praticas — MISSING ❌ (cascade @ 09:48:06)
+```
+
+**Cascade pattern: 2 workers errored at the EXACT same second (09:48:06).** This is a model-provider transient failure (sibling W84-B daily-reflection in the same cycle succeeded in 22 min). Theme-complexity is NOT the cause.
+
+**Recommended path forward (B2 retry with reduced scope):**
+- **W85-A respawns voice-mode-akasha on NEW branch `w85/voice-mode-akasha`** (cycle 78 lesson: cascade-failed respawns always go to NEXT branch number)
+- **REDUCED SCOPE: engine-only first** (1 file + 1 spec + 1 smoke). Drop the page component for this cycle — add it in W86+ if engine ships clean.
+- TTS playback state machine, voice presets, queue manager, rate control. InMemoryVoiceAdapter with 6 sample audio cues.
+- Worker should consult `git show origin/w83/comments-threading-mentions:DELIVERABLE.md` for the 1-page-1-engine pattern reference.
+
+**Cross-cycle durable lesson (cycle 84 close-out):**
+- LLM transient error cascades look identical to theme-too-heavy cascades from the outside (silent termination, no branch)
+- The tell is TIMING: 2+ workers failing at the same second = model error, not theme error
+- B2 retry WITHOUT reduced scope is the right call when cascade was transient (the model just had a bad moment)
+- For paranoid mitigation: reduced scope B2 retry is safer and still has 90%+ of the productivity
+
+**Status @ 10:00 UTC:** ❌ ACTIVE. W85-A scheduled to respawn on `w85/voice-mode-akasha` (reduced scope, engine-only). main @ `cf9e679`.
+
+
+### B-W84-D: cycle 84 W84-D (marketplace-lectura-praticas) — ❌ ACTIVE (model error cascade @ 09:48:06 UTC)
+
+**Status (2026-06-30 10:00 UTC, tick 414764240031922):** ❌ **ACTIVE.** `w84/marketplace-lectura-praticas` branch MISSING on origin. Worker session 414756900012157 terminated at 09:48:06 with "Unhandled stop reason: error" — model-provider transient error, NOT theme-too-heavy cascade. No report-back received.
+
+**Evidence:** Same as B-W84-A — both errored at 09:48:06.000 UTC. 100% same model-error signature.
+
+**Recommended path forward (B2 retry with reduced scope):**
+- **W85-B respawns marketplace-lectura-praticas on NEW branch `w85/marketplace-lectura-praticas`**
+- **REDUCED SCOPE: engine-only first** (1 file + 1 spec + 1 smoke). Product/service listings engine, tradição filter, cart-free instant booking intent. Drop the page component for this cycle.
+
+**Cross-cycle durable lesson (cycle 84 close-out):**
+- Same as B-W84-A: LLM transient error cascade.
+- B2 retry with reduced scope is the established path.
+- Worker should consult `git show origin/w84/comments-moderation:DELIVERABLE.md` for the 1-page-1-engine pattern.
+
+**Status @ 10:00 UTC:** ❌ ACTIVE. W85-B scheduled to respawn on `w85/marketplace-lectura-praticas` (reduced scope, engine-only). main @ `cf9e679`.

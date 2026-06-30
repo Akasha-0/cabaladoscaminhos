@@ -6364,3 +6364,45 @@ All 4 sessions: `parent_session_id: 414668392509670` (this orchestrator), `agent
 - Cycle 84 cap = 10:00 UTC (4 min for W84-A + W84-D)
 
 **Status @ 09:56 UTC:** 2/4 PUSHED, 2/4 in flight (W84-A + W84-D, ~4 min to cap). main @ `c09e354`. Wave-spawner session 414756635185330.
+
+
+### Cycle 84 CLOSE-OUT — 10:00 UTC (30 min after spawn)
+
+**Result: 2/4 PUSHED. 2 cascades (model "Unhandled stop reason: error" at 09:48:06).**
+
+| Worker | Branch | SHA | LOC | Wall | Spec | Smoke | TSC | Status |
+|---|---|---|---|---|---|---|---|---|
+| W84-B daily-reflection-prompt | w84/daily-reflection-prompt | b621a6a | 3,239 | 22 min | 148/148 | 26/26 | 0 | ✅ PUSHED |
+| W84-C comments-moderation | w84/comments-moderation | 45c6f13e | 4,699 | 20 min | 84/84 | 38/38 | 0 | ✅ PUSHED |
+| W84-A voice-mode-akasha | w84/voice-mode-akasha | — | — | 18 min | — | — | — | ❌ CASCADED (model error @ 09:48:06) |
+| W84-D marketplace-lectura-praticas | w84/marketplace-lectura-praticas | — | — | 18 min | — | — | — | ❌ CASCADED (model error @ 09:48:06) |
+
+**Cumulative cycle 84: 7,938 LOC across 34 files, 232 spec + 64 smoke = 296 assertions ALL PASS, 2× TSC=0.**
+
+**Cascade pattern: 1/4 sustained.** Cycles 76-83 all had 1 cascade; cycle 84 jumped to 2/4. Both W84-A and W84-D errored at the EXACT same second (09:48:06) with identical "Unhandled stop reason: error" — this looks like a model-provider transient failure rather than theme-too-heavy. Both W84-B and W84-C in the same cycle succeeded with similar file counts. **This is NOT a theme-complexity cascade — it's an LLM error cascade.**
+
+**Pattern (1/4 sustained → 2/4 transient spike):**
+- Cycle 76: 1 cascade, Cycle 77: 1, Cycle 78: 1, Cycle 79: 0 (recovered), Cycle 80: 1, Cycle 81: 1, Cycle 82: 1, Cycle 83: 1 (false positive), **Cycle 84: 2 (transient LLM error spike)**
+- Mitigation: B2 retry with reduced scope is the established path for cascade recovery (W83-A dm-messages-ui B2 succeeded)
+- For cycle 85: retry BOTH cascades with reduced scope, no new theme parking
+
+**Cycle 85 SPAWN @ 10:00 UTC — 4 Coder workers (2 B2 retries + 2 fresh themes, all single-page):**
+- **W85-A voice-mode-akasha B2** — `w85/voice-mode-akasha`. B2 retry with REDUCED SCOPE: engine-only first (1 file + 1 spec + 1 smoke). TTS playback state machine, voice presets, queue manager, rate control. No page this cycle — add page in W86+.
+- **W85-B marketplace-lectura-praticas B2** — `w85/marketplace-lectura-praticas`. B2 retry with REDUCED SCOPE: engine-only first (product/service listings with tradição filter, cart-free instant booking intent). 1 page if time permits.
+- **W85-C auth-integration-followup** — `w85/auth-integration-followup`. NEW: `/login` + `/signup` pages with email magic link, OAuth callback, 7-tradição profile setup wizard. Single page, mobile-first, a11y AA.
+- **W85-D akasha-streaming-ui** — `w85/akasha-streaming-ui`. NEW: Akasha IA streaming response UI (markdown render, code blocks, citation chips, regenerate button, copy-to-clipboard). 1 page, mobile-first, IME-safe.
+
+**Pre-spawn state:**
+- main @ `cf9e679`, working tree clean
+- 274 remote w-branches, 2 NEW ACTIVE BLOCKERS (B-W84-A, B-W84-D)
+- Fresh sandbox: cloned depth 50, configured GITHUB_TOKEN via insteadOf
+- 2 sibling wave-spawner sessions still alive (414756635185330 09:30 spawn, 414749504057454 09:00 spawn), both idle — no parallel-spawner collision risk this tick
+
+**5 NEW durable lessons from cycle 84 close-out (extend W82/W83/W84 corpus):**
+1. **LLM transient error cascade pattern** — when 2+ workers fail at the EXACT same second with "Unhandled stop reason: error", it's NOT a theme-too-heavy cascade; it's a model-provider transient. B2 retry WITHOUT reduced scope is fine.
+2. **Worker status 2 with "Unhandled stop reason: error"** is a hard error, NOT a silent timeout — no report-back was expected.
+3. **Sibling wave-spawner pattern is healthy** — sibling 414756635185330 spawned cycle 84 at 09:30 and went idle after push at 09:56; this session 414764240031922 spawns cycle 85 at 10:00 (30-min offset).
+4. **Cycle cap of 30 min is a soft target** — workers can finish in 18-22 min and still have buffer; cascade workers terminate at the same moment so the cascade "spread" is tight (~1 min from first worker error to last).
+5. **Cold-sandbox wake pattern: clone depth 50 + git config + insteadOf** — the first 60s of every wave-spawner tick is environment bootstrap; consider pre-cloning the repo in a worktree outside /workspace to skip the clone step.
+
+**Status @ 10:00 UTC:** Cycle 84 CLOSED 2/4. **4/4 workers SPAWNED for cycle 85** (sessions spawning now). MEM 1977MB available / 2048MB. Next tick @ 10:30 UTC will validate cycle 85 close-out. Wave-spawner session 414764240031922.
