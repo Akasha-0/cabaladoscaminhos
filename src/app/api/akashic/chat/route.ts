@@ -24,6 +24,7 @@ import { sendMessage, AIError, CircuitBreakerOpenError } from '@/lib/ai/openai';
 import { checkRateLimit } from '@/lib/rate-limit';
 import type { ChatMessage } from '@/lib/ai/types';
 import { trackAkashicMessageSent } from '@/lib/analytics/events-catalog';
+import { augmentAkashaWithW32, measureW32Response } from '@/lib/ai/w32-integration';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -71,6 +72,21 @@ interface ChatResponse {
       completion: number;
       total: number;
     };
+    /** Wave 32 — augmentos aplicados (safety, context, multi-tradition, memory) */
+    w32_augmentations?: string[];
+    /** Wave 32 — métricas de qualidade (citation rate, cultural sensitivity) */
+    w32_quality?: {
+      overall: string;
+      seal: 'GREEN' | 'YELLOW' | 'RED';
+      citation_rate: string;
+      cultural_sensitivity: string;
+    };
+    /** Wave 32 — contexto detectado do user */
+    w32_context?: {
+      sentiment: string;
+      knowledge: string;
+      intent: string;
+    } | null;
   };
 }
 
@@ -149,7 +165,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const trimmedHistory = (history ?? []).slice(-10);
 
   // 6. Monta system prompt (identidade + tradição + RAG + deepMode + recap)
-  const systemPrompt = buildAkashaPrompt({
+  const basePrompt = buildAkashaPrompt({
     tradition: rag.effectiveTradition ?? tradition ?? null,
     sources: rag.sources,
     deepMode,
@@ -158,6 +174,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       content: h.content,
     })),
   });
+
+  // 6b. Wave 32 — augmenta com safety + context + multi-tradição + memory
+  const w32 = augmentAkashaWithW32({
+    basePrompt,
+    userMessage: cleanMessage,
+    tradition: rag.effectiveTradition ?? tradition ?? null,
+    shortTerm: {
+      messages: trimmedHistory.map((h) => ({ role: h.role, content: h.content, timestamp: Date.now() })),
+      tradition: rag.effectiveTradition ?? null,
+    },
+  });
+  const systemPrompt = w32.systemPrompt;
 
   // 7. Monta histórico (apenas user/assistant; limit a 10 — Wave 18)
   const historyMessages: ChatMessage[] = trimmedHistory.map((h) => ({
@@ -236,6 +264,29 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         : {}),
     },
   };
+
+  // 8b. Wave 32 — mede qualidade (citation rate, cultural sensitivity)
+  const quality = measureW32Response({
+    response: aiResponse.content,
+    userMessage: cleanMessage,
+    tradition: rag.effectiveTradition ?? null,
+  });
+
+  // 8c. Wave 32 — augmentation aplicado (para debug/analytics)
+  response.meta.w32_augmentations = w32.appliedAugmentations;
+  response.meta.w32_quality = {
+    overall: `${(quality.overallScore * 100).toFixed(0)}%`,
+    seal: quality.seal,
+    citation_rate: `${(quality.citationRate * 100).toFixed(0)}%`,
+    cultural_sensitivity: `${(quality.culturalSensitivity * 100).toFixed(0)}%`,
+  };
+  response.meta.w32_context = w32.context
+    ? {
+        sentiment: w32.context.sentiment,
+        knowledge: w32.context.knowledge,
+        intent: w32.context.intent,
+      }
+    : null;
 
   // Wave 18 — analytics: akashic_message_sent (fire-and-forget)
   trackAkashicMessageSent({
