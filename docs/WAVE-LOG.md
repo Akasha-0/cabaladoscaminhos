@@ -8538,3 +8538,66 @@ Wave-spawner 414830652506374.
 3. **First-cycle npm install precisa rodar no orquestrador, não em workers** — workers com 30min cap não têm budget pra 60-180s install. Padrão: install 1× no main worktree, symlink em cada worktree (~5s cada). Validado @ W93 setup.
 
 **Status @ 15:05 UTC:** 4/4 SPAWNED, awaiting self-reports. Cap 15:30 UTC. Wave-spawner 414838017175841 monitoring. Próximo check-in: 15:15 UTC.
+
+## Cycle 93 — interim 1 @ 15:21 UTC — W93-A SHIPPED ✅
+
+**Branch:** `w93/reputation-system` @ `4eddf853c5d4aaa97394b0eaf1ecb3be4e7f125b` (PUSHED @ 15:25 UTC, ~17 min wall)
+
+**Validation (all green):**
+- TSC: 0 errors in W93 files (tsconfig.w93.json per-file scope, 8 files)
+- Spec: **46/46 PASS** via `node --experimental-strip-types src/lib/w93/__tests__/reputation-engine.spec.ts`
+- Smoke: **37/37 PASS** via `node --experimental-strip-types scripts/smoke-reputation-engine.mjs`
+- Sacred-cultural: 0 banned-vocab hits via stripComments() source scan (orishas/ashé/ashá); orixás, axé, Iemanjá, Candomblé, Umbanda, Ifá, Akasha preservados verbatim
+
+**W93-A files (10, 3,724 LOC):**
+- `src/lib/w93/reputation-types.ts` (315) — branded types, 5 eixos, 5 tradições, pesos não-comparativos
+- `src/lib/w93/reputation-engine.ts` (584) — pure engine: decay half-life 60d + floor 0.05, multi-eixo scoring, trend detection (rising/stable/falling/new), stripReporterIdentities, purgeExpired
+- `src/lib/w93/reputation-storage.ts` (389) — in-memory store: opt-in/out, dedupe 5min, índices received/given, LGPD-first purge
+- `src/components/reputation/ReputationCard.tsx` (254) — mobile-first 44px tap, aria-live, LGPD opt-in/out buttons
+- `src/components/reputation/AxisRadar.tsx` (305) — SVG pentagonal radar 5 eixos, ARIA rich, reduced-motion
+- `src/app/reputacao/page.tsx` (455) — demo: card + radar + trad×axis table 25 cells + history público + context breakdown
+- `src/lib/w93/__tests__/reputation-engine.spec.ts` (891) — 46 asserts em 14 sections
+- `scripts/smoke-reputation-engine.mjs` (307) — 37 asserts + banned-vocab scan
+- `docs/DELIVERABLE-W93-A.md` — runbook + tradition handling matrix
+- `tsconfig.w93.json` — per-file scope
+
+**7 NEW durable lessons (W93-A):**
+
+1. **`as const satisfies Record<...>` literal-type narrowing** — comparar valores literais (`0.2` vs `0.25`) gera TS2367. Workaround: `const c: number = CONST.x` antes da comparação. Reusable: any const object with `as const satisfies` + numeric fields.
+
+2. **Next.js 14 + JSX namespace** — server components retornam `JSX.Element` falham em strict mode. Usar `React.ReactElement` ou `import type { JSX }`. Reusable: any Next.js 14+ server component returning JSX.
+
+3. **`@/*` path alias em CLI TSC** — `--paths` não aceita valor via CLI. Workaround: criar `tsconfig.w93.json` no worktree com `include` específico. Reusable per-cycle: worktree-scoped tsconfig for `tsc --noEmit`.
+
+4. **Multi-eixo reputation = LGPD-by-design obrigatório** — single-score é tentador mas antiético. 5 eixos + opt-in + opt-out imediato + 90 dias é o mínimo. Reusable: any community reputation feature requiring ethical multi-dimensional scoring.
+
+5. **DECAY_FLOOR > 0** — sem floor, `decayFactor(99999 dias)` = 0 quebra a soma. `0.05` evita "zero histórico". Reusable: any time-decay function with bounded sum invariant.
+
+6. **Smoke-script self-contained banned-vocab scan** — `stripComments()` + `readFileSync` inline garante CI fail se alguém reintroduzir grafia errada. Reusable: any CI-grade source vocabulary check that must fail-loud.
+
+7. **Trend 'new' janela curta** — 7 dias para primeira atribuição, depois rising/stable/falling. Reusable: any first-time vs established distinction in metric trends.
+
+**Sacred-cultural compliance verified:**
+- ZERO banned vocab em UI/API/error/path/import
+- 5 eixos canônicos SEM "overall" (multi-eixo, não single-score)
+- Termos pt-BR preservados verbatim: orixás, axé, Iemanjá, Odu, Odus, entidades, Cigano Ramiro, Akasha, pemba, Candomblé, Umbanda, Ifá
+- Pesos por tradição = não-comparativo (Candomblé presencia 0.30 > Cabala 0.20, Astrologia contribuicao 0.25 > Candomblé 0.10) — valores diferentes, mas NENHUMA é "melhor"
+
+**LGPD layers verified (6 layers per cycle 78 lessons):**
+1. Opt-in bloqueante: `validateAttribution()` rejeita consentGiven=false
+2. Opt-out purga tudo: `setConsent(opted-out)` deleta received + given imediato
+3. Auto-purge 90 dias: `purgeExpired()` em todo write + read
+4. Strip reporter: `stripReporterIdentities()` remove fromPersonId + note
+5. Stats sem PII: `stats()` retorna apenas counts
+6. Retention tracking: `retentionDays` no snapshot para transparência
+
+**W93 status @ 15:25 UTC:**
+
+| Worker | Session | Branch | SHA | LOC | Status |
+|---|---|---|---|---|---|
+| **W93-A** | 414839828439312 | `w93/reputation-system` | `4eddf85` | 3,724 (10 files) | ✅ **SHIPPED** @ 15:25 UTC (17 min) |
+| W93-B | 414839169331501 | `w93/auth-followup` | TBD | TBD | 🟡 in flight (21 min in) |
+| W93-C | 414839210520741 | `w93/i18n-rollout` | TBD | TBD | 🟡 in flight (21 min in) |
+| W93-D | 414839210520742 | `w93/events-workshops` | TBD | TBD | 🟡 in flight (21 min in) |
+
+**Cycle 93 cumulative: 1/4 SHIPPED (3,724 LOC), 3/4 in flight (under 30-min cap). Applying 5× cap rule (150 min, so cap+120 = ~17:30 UTC) for silent-stuck CASCADE declaration.**
