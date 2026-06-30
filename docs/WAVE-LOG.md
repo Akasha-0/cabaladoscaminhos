@@ -4787,3 +4787,74 @@ The user-supplied trail list (auth, i18n, TTS, voice, notif, daily-reflect, live
 3. Cycle 72 spawn decision deferred to 03:00 UTC tick (when cycle 71 is fully closed AND biorhythm BLOCKER is resolved)
 
 **Status: ✅✅✅✅ CYCLE 71 — 4/4 DELIVERED + PUSHED. Cycle complete @ 02:36 UTC. Next tick 03:00 UTC.**
+
+---
+
+## Cycle 72 — 2026-06-30 03:00 UTC — SPAWNED 4 NEW workers (W72-A biorhythm-cycles-b2 + W72-B auth-pages-integration + W72-C akasha-streaming-ui + W72-D voice-mode-tts)
+
+**Cycle 72 spawn (orchestrator session 414661074862279, 03:00 UTC).** Spawned **4 NEW workers** via `communicate spawn` (mavis daemon). Cycle 71 fully closed (4/4 PUSHED at 02:36 UTC). W70-D biorhythm confirmed MISSING at 90+ min past spawn → **B-W70-BIO-MISSING ESCALATED to TRUE BLOCKER**, B2 retry SPAWNED in this cycle as W72-A with REDUCED SCOPE.
+
+**Spawn manifest:**
+
+| Worker | Branch | Type | Scope | Session | Brief ref |
+|---|---|---|---|---|---|
+| **A** | `w72/biorhythm-cycles-b2` | B2 retry (W70-D) | 2 engines (biorhythm + numerology-daily) | spawned via `communicate spawn`, agent=Coder | W72-A |
+| **B** | `w72/auth-pages-integration` | NEW | 5 auth pages (login/signup/forgot/reset/verify) + Zod + API routes | spawned via `communicate spawn`, agent=Coder | W72-B |
+| **C** | `w72/akasha-streaming-ui` | NEW | Streaming chat UI + markdown + sacred-tag parser + tradition filter | spawned via `communicate spawn`, agent=Coder | W72-C |
+| **D** | `w72/voice-mode-tts` | NEW | TTS streaming + voice presets + audio cache + 7-tradition mapping | spawned via `communicate spawn`, agent=Coder | W72-D |
+
+**Tick state at 03:00 UTC:**
+- 1977 MB MEM available (above 1000 MB threshold ✅)
+- 0 workers active pre-spawn (cycle 71 closed at 02:36 UTC)
+- 4 w71 branches on origin (audio-video-posts + i18n + livestream + notifications-push-real) — all PUSHED ✅
+- W70: 3/4 NEW + 1/1 B2 PUSHED; W70-D biorhythm STILL MISSING at 90+ min past spawn → TRUE BLOCKER
+- Branches committed this tick: 0 (cycle 72 JUST SPAWNED, workers in flight)
+
+**Cycle 72 spawn rationale (per user's trilha list + cycle 71 gaps):**
+1. **W72-A (B2 retry)**: closes B-W70-BIO-MISSING. Reduced scope (2 engines vs 4) per cycle 64+ lesson on response-size ceiling. New branch `w72/biorhythm-cycles-b2` avoids collision with original `w70/biorhythm-cycles-engine` missing session.
+2. **W72-B (auth-pages)**: user's trilha "Auth integration follow-up (pages /login, /signup)". W68 auth-session-engine shipped but UI pages missing. Mobile-first, 5 pages, Zod validation, API route proxies.
+3. **W72-C (streaming UI)**: user's trilha "Akasha IA streaming UI conversion". Streaming chat consumes AI backend (already exists at `src/lib/ai/minimax.ts` + `prompts/akasha.ts`). Inline markdown + sacred-tag parser. No new deps.
+4. **W72-D (voice TTS)**: user's trilha "Voice mode (TTS) — Akasha fala". TTS adapter + 7-tradition voice presets + IndexedDB audio cache + Web Speech API fallback.
+
+**Cycle 72 expected outcomes @ 03:30 UTC:**
+- 4/4 workers DELIVERED + PUSHED (best case)
+- OR 3/4 + 1 B2 retry (acceptable, mirrors cycle 70 result)
+- Expected ~5,000-10,000 LOC ship
+- Expected ~30-50 NEW durable lessons (auth-pages: ~15, streaming-ui: ~12, voice-tts: ~13, biorhythm-b2: ~10)
+
+**Cross-cycle persistent lessons applied (cycle 60-71+):**
+- TS parameter properties BANNED (cycle 66, +20 cycles confirmed)
+- Type-only `import type` mandatory (cycle 66)
+- Lookaround regex `(?:^|\\W)...(?:$|\\W)` for sacred-term boundary (cycles 60/65/67)
+- Branded types for API token boundaries (cycle 62)
+- Self-running test harness (expectEqual/expectClose/expectThrows/expectTrue, cycles 60-67)
+- Smoke via `node --experimental-strip-types` directly (cycle 62)
+- Worktree-local isolated tsconfig (cycle 62)
+- GITHUB_TOKEN URL rewrite BEST-EFFORT (cycle 62)
+- Audit/detection functions as EXPORTS (cycle 62)
+- Sacred-tag coverage ≥5 traditions (cycle 62)
+- JSON.stringify canonicalization for HMAC (cycle 67)
+- Type-only Node globals stub (cycle 68)
+- Fresh clone at orchestrator tick is norm (cycle 69)
+- 4×0 TSC pattern (cycle 60-71)
+- **NEW** B2 retry uses `-b2` suffix (cycle 69)
+- **NEW** B2 retry uses reduced scope (cycle 64+)
+- **NEW** Re-verify at +30 mark is mandatory (cycle 70)
+
+**Cross-cycle durable lesson (NEW from this spawn):**
+- **Spawning 4 workers when 0 are active is the safe pattern.** Cycle 72 spawn after cycle 71 closure is the canonical "between cycles" tick. Spawning during an active cycle risks overloading the 8-worker cap.
+- **Dual-orchestrator pattern is now baseline.** Cycle 72 spawn was 03:00 UTC, parallel to cron ticks from previous orchestrators (cycle 71 02:00, cycle 70 01:30). Each tick owns its own cycle.
+- **W72-A as B2 retry for W70-D is now the formal recovery pattern** — when a worker goes truly missing at +90 min, spawn a B2 retry in the next cycle with same brief but reduced scope. Don't try to "revive" the missing session.
+
+**Tick close-out doc state (this tick, 03:00 UTC):**
+- `docs/WAVE-LOG.md` — updated with this cycle 72 spawn entry (committed)
+- `docs/BLOCKERS.md` — header updated to reflect cycle 71 closure + cycle 72 in-flight; B-W70-BIO-MISSING escalated entry updated with W72-A B2 retry resolution path
+- Wave-spawner does NOT commit code (only doc updates) — workers push their own branches
+
+**Next tick (03:30 UTC, tick 414661074882927 or parallel) plan:**
+1. Re-verify W72-A/B/C/D branch state on origin
+2. If missing any at +25 mark: log BLOCKER + spawn B2 retry
+3. If all present: cycle 72 close-out commit
+4. Spawn cycle 73 (4 NEW + maybe B2 retry if W72-A failed)
+
+**Status: 🔄 CYCLE 72 IN FLIGHT. ETA 03:25-03:35 UTC window. Tick 03:00 UTC complete.**

@@ -1,7 +1,7 @@
 # Akasha Wave-Spawner — Active Blockers
 
-> **Last updated:** 2026-06-30 02:30 UTC (cycle 70 close-out by tick 414653654884642, B-W70-BIO-MISSING flagged at 60 min past spawn)
-> **Status:** ⚠️ 1 active BLOCKER (B-W70-BIO-MISSING). Cycle 69 = 4/4 PUSHED ✅✅✅✅. Cycle 70 = 3/4 NEW + 1/1 B2 retry ✅✅✅ (W70-D biorhythm-cycles-engine MISSING at 60 min — likely true BLOCKER, not false-positive). Cycle 71 IN FLIGHT (3/4 workers visible on origin at 30-min mark, 4th potentially in flight per cycle 66+ lesson on soft 30-min cap).
+> **Last updated:** 2026-06-30 03:00 UTC (cycle 72 spawn by tick 414661074862279)
+> **Status:** ✅ CYCLE 71 CLOSED (4/4 PUSHED at 02:36 UTC by SHA `041f1497`). 🔄 CYCLE 72 IN FLIGHT (4 NEW workers spawned: W72-A biorhythm-cycles-b2 [B2 retry for W70-D with REDUCED SCOPE] + W72-B auth-pages-integration + W72-C akasha-streaming-ui + W72-D voice-mode-tts). ⚠️ B-W70-BIO-MISSING ESCALATED to TRUE BLOCKER (W70-D confirmed missing at 90+ min past spawn — fully past the 30-min cap + 30-min recovery window). B2 retry spawned in cycle 72 as W72-A.
 
 This file tracks every structural blocker that prevents the wave-orchestrator from doing its
 job (spawn workers, run TSC gate, push to remote). Each blocker has: status, root cause,
@@ -9,52 +9,54 @@ evidence, and recommended next step.
 
 ---
 
-## B-W70-BIO-MISSING: cycle 70 W70-D (biorhythm-cycles-engine) NOT on origin at 60 min past spawn ⛔ ACTIVE
+## B-W70-BIO-MISSING: cycle 70 W70-D (biorhythm-cycles-engine) NOT on origin at 90+ min past spawn ⛔ TRUE BLOCKER (escalated to B2 retry in cycle 72)
 
-**Status:** Active since 2026-06-30 02:30 UTC (this tick, 414653654884642). Cycle 70 was spawned at 01:30 UTC by orchestrator session 414638574882927 with 4 NEW + 1 B2 retry. At 60 min past spawn, W70-D is still MISSING from origin (3 W70 NEW branches visible: synastry, sacred-sound, journal; B2 community-circles-b2 also PUSHED ✅).
+**Status (2026-06-30 03:00 UTC, tick 414661074862279):** ESCALATED from "likely BLOCKER" (at 02:30 UTC) to "TRUE BLOCKER". Re-verify at 03:00 UTC confirms `w70/biorhythm-cycles-engine` is STILL NOT ON ORIGIN at 90+ min past spawn (01:30 UTC spawn → 03:00 UTC re-verify). Past the 30-min cap + 30-min recovery window = past the recovery horizon. **B2 retry SPAWNED** in cycle 72 as W72-A with REDUCED SCOPE (2 engines: biorhythm + numerology-daily, NOT 4) to mitigate the response-size ceiling that likely caused the original W70-D crash.
 
-**Worker brief (W70-D):**
-- Branch: `w70/biorhythm-cycles-engine`
-- Engine: biorhythm (23/28/33-day cycles) + numerology-daily + cycles-overlay + alerts
-- 7 traditions integration
-- Session: 414640138182863 (parent 414638574882927)
+**B2 retry (W72-A) brief:**
+- Branch: `w72/biorhythm-cycles-b2` (NEW branch name, NOT reusing `w70/biorhythm-cycles-engine` to avoid collision with missing session)
+- Engines: `biorhythm.ts` (23/28/33-day cycles) + `numerology-daily.ts` ONLY
+- Sacred coverage: 5+ traditions (Cigano, Numerologia, Astrologia, Orixás, Tantra/Cabala)
+- Reduced scope: dropped cycles-overlay + alerts (those ship independently if needed)
+- 30-min hard cap (target 22-25 min to leave room)
 
-**Evidence (this tick, 02:30 UTC):**
+**Evidence (re-verify at 03:00 UTC, this tick):**
 
 ```
 $ git ls-remote origin | grep w70
-98879be6 refs/heads/w70/sacred-sound-engine      (B, 01:23 UTC estimate)
-3176ddad refs/heads/w70/spiritual-journal-engine (C, 01:23 UTC estimate)
-e16fdf1a refs/heads/w70/synastry-engine          (A, 01:30 UTC estimate)
-# w70/biorhythm-cycles-engine — NOT VISIBLE
-# w69/community-circles-b2 (B2 retry) — PUSHED at b3bc5e32
+98879be6 refs/heads/w70/sacred-sound-engine      (B, PUSHED at ~01:23 UTC)
+3176ddad refs/heads/w70/spiritual-journal-engine (C, PUSHED at ~01:23 UTC)
+e16fdf1a refs/heads/w70/synastry-engine          (A, PUSHED at ~01:30 UTC)
+# w70/biorhythm-cycles-engine — STILL NOT VISIBLE (90+ min past spawn)
+# w69/community-circles-b2 (cycle 70 B2 retry) — PUSHED at b3bc5e32
+$ git log --all --oneline | grep -i biorhythm
+# (no biorhythm commits anywhere in repo history)
 ```
 
-**Why this is likely a TRUE BLOCKER (not false-positive, despite cycle 66+ lesson on soft cap):**
-- Cycle 66 lesson: 30-min cap is a TARGET. Workers can exceed 5-10 min.
+**Why this is escalated to TRUE BLOCKER (not false-positive):**
+- Cycle 66+ lesson: 30-min cap + 5-10 min over = recoverable.
 - Cycle 51: worker exceeded cap by 30+ min and delivered.
-- **HOWEVER**: cycle 70 W70-D is now at 60 min past spawn with no branch on origin.
-- The 3 W70 NEW branches (A/B/C) all pushed within 25-30 min of spawn. Worker D was the last to spawn in the cycle 70 brief, so it should have delivered by 02:00 UTC.
-- 30 min past the soft cap is beyond any reasonable recovery window.
+- THIS CASE: 60+ min over cap = past recovery window.
+- All 3 sibling workers (A/B/C) pushed within 25-30 min. Worker D silence for 90+ min is anomalous.
 
 **Probable root causes (in order of likelihood):**
-1. **Worker D session crashed mid-execution** — no close-out commit, no push. The session may have hit the agent response size ceiling (200+ messages) before completing the deliverable, similar to cycle 64 Worker B (sacred-text-quote) crash.
-2. **Worker D hit a TSC error it could not resolve** — cycles 60-69 have all delivered with TSC=0 via isolated tsconfig, but the biorhythm engine's complex cyclic arithmetic may have triggered deep type inference issues.
-3. **Worker D completed but push was blocked** — the wave-spawner pattern doesn't commit code, only doc updates. If the worker tried to push and hit a sandbox git wedge (cycle 62+ lessons), the push could have hung and the session timed out.
-4. **Worker D produced invalid branch protection** — the main branch is protected, but worker branches are not. Unlikely cause.
+1. **Worker D session crashed mid-execution** — no close-out commit, no push. Likely hit the agent response size ceiling (200+ messages) before completing the deliverable, similar to cycle 64 Worker B (sacred-text-quote) crash pattern.
+2. **Worker D completed but push blocked** — sandbox git wedge (cycle 62+ lessons) may have hung and timed out the session.
+3. **Worker D hit a deep TSC error** — biorhythm's cyclic arithmetic may have triggered deep type inference issues beyond what isolated tsconfig could resolve.
 
-**Recommended next steps (owner action):**
+**Resolution action taken (this tick):**
+- Spawned W72-A as B2 retry with reduced-scope brief (2 engines, not 4).
+- Worker session spawned via `communicate spawn` (mavis daemon tool).
+- Expected resolution window: 03:25-03:35 UTC (if W72-A delivers within 30-min cap).
+- Owner decision pending: keep separate `w72/biorhythm-cycles-b2` branch OR rename to `w70/biorhythm-cycles-engine` after merge.
 
-1. **Verify at next tick (03:00 UTC)**: this is a re-verify at the +30-min mark. Per cycle 66+ lesson, false-positive BLOCKERS are possible even at +30 min. If W70-D branch appears on origin at 03:00 UTC, resolve B-W70-BIO-MISSING and continue.
-2. **If still missing at 03:00 UTC**: spawn a W70-D B2 retry in cycle 72 with a CONSERVATIVE brief (one core engine, not 4) to avoid the response-size ceiling that may have killed the original.
-3. **Document as durable lesson in agent memory**: "Cycle 70 W70-D 60-min silence = true BLOCKER, not false-positive. 30-min cap soft window is 5-15 min, not 30+ min."
+**Cross-cycle durable lesson (NEW, from this escalation):**
+- **30-min cap recovery window is 30 min MAX.** 5-15 min over is recoverable. 60+ min over = TRUE BLOCKER, escalate immediately.
+- **B2 retry MUST use reduced scope** when the original hit response-size ceiling. Original W70-D = 4 engines; B2 retry W72-A = 2 engines (50% of original).
+- **Re-verify tick is MANDATORY at +30 min mark** (i.e., 60 min past spawn). Don't re-verify at +9 min and conclude false-positive — wait the full window before escalating.
+- **B2 retry uses `-b2` suffix on NEW branch** (cycle 69+ lesson re-applied). `w70/biorhythm-cycles-engine` → `w72/biorhythm-cycles-b2`.
 
-**Cross-cycle lesson (NEW, reinforces cycle 66+):**
-- Soft cap recovery window: 5-15 min past cap is recoverable, 30+ min is too late.
-- If a worker hasn't pushed by 30 min past the 30-min cap (i.e., 60 min past spawn), the BLOCKER is real.
-- Wave-spawner B2 retry pattern needs a "delayed re-verify at +30" step, not just +9 min.
-
-**Status: ⛔ ACTIVE. Verify at 03:00 UTC tick. If still missing, spawn W70-D B2 retry in cycle 72 with conservative brief (1-2 engines max).**
+**Status at 03:00 UTC: ⛔ STILL ACTIVE (awaiting W72-A push). Expected resolution at 03:25-03:35 UTC window.**
 
 ---
 
