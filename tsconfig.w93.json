@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": false,
+    "jsx": "react-jsx",
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": { "@/*": ["./src/*"] },
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": []
+  },
+  "include": [
+    "src/lib/w93/reputation-types.ts",
+    "src/lib/w93/reputation-engine.ts",
+    "src/lib/w93/reputation-storage.ts",
+    "src/lib/w93/__tests__/reputation-engine.spec.ts",
+    "src/components/reputation/ReputationCard.tsx",
+    "src/components/reputation/AxisRadar.tsx",
+    "src/app/reputacao/page.tsx"
+  ]
+}
