@@ -8915,3 +8915,70 @@ Infra:
 - **Total: ~50,000 LOC across 4 cycles, all features fully delivered to origin**
 
 **Status @ 15:39 UTC:** Cycle 93 CLOSED 4/4 🎉. All 4 features shipped to origin. Wave-spawner session 414838017175841 closing as parent of W93-B. Sibling session 414845211406444 owns cycle 94 spawn (was HOLDING — should now release and spawn W94 with themes: Akasha IA streaming UI, Voice mode TTS, Audio/video posts, Marketplace leitura/práticas).
+
+## Cycle 94 — SPAWN @ 16:05 UTC (2026-06-30)
+
+**Wave-spawner session:** 414852747096288 (this session, fresh sandbox cloned at 16:01 UTC).
+
+**State snapshot @ spawn:**
+- main @ `f9ce209d` (cycle 93 FINAL CLOSE landed at 15:39 UTC, no local drift)
+- MEM available: 1,977MB (>> 1000MB threshold ✅)
+- Active workers (this session): 0
+- Active workers (system-wide): 0 (cycle 93 all closed)
+- Git config: `url..insteadof` set with GITHUB_TOKEN, identity `wave-spawner@akasha.local` configured
+- node_modules: installed fresh in main (881 packages, 2 min), symlinked to 4 worktrees
+
+**Cycle 94 theme selection — 4 untouched high-value themes (auth W93-B just shipped):**
+
+| Worker | Theme | Branch | Worktree | Worker Session | LOC Target |
+|---|---|---|---|---|---|
+| W94-A | Akasha IA Streaming UI | `w94/akasha-streaming-ui` | `/workspace/wt-w94-streaming` | 414854202277960 | 2,400-3,400 |
+| W94-B | Voice Mode TTS (Akasha fala) | `w94/voice-mode-tts` | `/workspace/wt-w94-voice` | 414853955768476 | 2,400-3,400 |
+| W94-C | Audio/Video Posts (Carrossel de Ayan) | `w94/audio-video-posts` | `/workspace/wt-w94-media` | 414853955768478 | 2,400-3,400 |
+| W94-D | Marketplace Leituras/Práticas (W93-D events bridge) | `w94/marketplace-leituras` | `/workspace/wt-w94-market` | 414853955768493 | 2,400-3,400 |
+
+**Cycle 94 cumulative target: 4 workers, 8-9 files each, 9,600-13,600 LOC total.**
+
+**Spawn brief:** `docs/W94-SPAWN-BRIEF.md` (155 lines) — 32 MUST-include lessons (cycles 87-93 cumulative), sacred-cultural gates (orixás/axé/Iemanjá verbatim, "orishas" banned), per-file TSC contract (NOT whole-repo tsc), per-worker spec/smoke targets, hard 30-min cap, 5× rule (150 min) for silent-stuck CASCADE.
+
+**Per-worker scope highlights:**
+- W94-A: SSE/fetch streaming with ReadableStream, sacred pacing (12-40ms token render cadence), reconnect with exponential backoff, `RENDER_DELAY_MIN/MAX` jitter, mock SSE endpoint at `/api/mock-stream`
+- W94-B: 3 voice presets (calma/presente/sabia — Cabala wisdom tones), Web Speech API + fallback, FNV-1a hash for LGPD consent log, PRONUNCIATION_HINTS map (axé→a-chê, Iemanjá→Ie-man-já), LGPD consent modal OBRIGATÓRIO
+- W94-C: Discriminated union `AudioPost | VideoPost | CarrosselAyanPost | TextPost`, custom canvas waveform player, chapter extraction from `[0:30]` markers, LGPD PII redaction in transcription, sacred metadata validation (reject "orishas")
+- W94-D: Provider profiles + Listing discriminated union (Leitura/Pratica), full booking flow with LGPD consent, **bridge to W93-D events** (prática booked → createEvent), MarketplaceError discriminated union (5 kinds), PIX-only payment
+
+**Sacred-cultural + LGPD compliance gates (all workers MUST verify):**
+- 0 banned-vocab hits via `stripComments()` source scan: "orishas", "ashé", "iemanja" (without nasal)
+- pt-BR canonical: orixás, axé, Odu, Cigano Ramiro, Akasha, pemba
+- LGPD: FNV-1a hash determinism verified, `maskEmail()`/`maskPhone()` in all logs, consent OBRIGATÓRIO (z.literal(true))
+- Forbidden: "orishas", "ashé", "iemanja" without nasal, "odù" lowercase, "gypsy" (use "cigano")
+
+**3 NEW cross-project lessons (spawn-time):**
+
+1. **Fresh sandbox `npm install` is ~2 min for cabaladoscaminhos** — 881 packages from scratch (vs. W93 reused symlink). Reusable: any Mavis wave-spawner session in a fresh sandbox should budget 2-3 min for `npm install --no-audit --no-fund --ignore-scripts` BEFORE creating worktrees.
+
+2. **Worktree creation in CSI-mounted repo shows two paths** — git worktree stores the path you give it, but `git worktree list` shows the canonical path under `/run/csi/mount-root/nas/...` while `/workspace/wt-w94-...` is the bind mount visible to tools. Reusable: always use the `/workspace/wt-*` paths in worker briefs (they're the ones bash can `cd` to).
+
+3. **Spawning 4 workers in parallel via 4 `communicate spawn` calls is safe** — each returns immediately with the new session id, no blocking on the spawn itself. The workers run concurrently in their own contexts. Reusable: any wave-spawner that needs to fan out N workers should use N parallel `communicate spawn` calls in a single tool block.
+
+**Spawn pattern (this cycle):**
+```bash
+# 1. Worktrees (4)
+git worktree add /workspace/wt-w94-streaming -b w94/akasha-streaming-ui main
+git worktree add /workspace/wt-w94-voice -b w94/voice-mode-tts main
+git worktree add /workspace/wt-w94-media -b w94/audio-video-posts main
+git worktree add /workspace/wt-w94-market -b w94/marketplace-leituras main
+
+# 2. Symlink node_modules in each
+ln -sf /workspace/cabaladoscaminhos/node_modules /workspace/wt-w94-{streaming,voice,media,market}/node_modules
+
+# 3. Spawn 4 workers in parallel via communicate spawn (agent_name=General)
+# (delivered above)
+
+# 4. Workers commit + push to their feature branches
+# 5. Wave-spawner merges to main after all 4 ship (next cycle)
+```
+
+**State @ 16:05 UTC:** main @ `911d812f` (W94-SPAWN-BRIEF.md committed), 4 workers in flight (W94-A/B/C/D), 4 feature branches on origin pending. MEM 1,976MB available. Wave-spawner 414852747096288 monitoring.
+
+**Next cron tick:** 16:30 UTC — re-check W94 worker state, monitor pushes, expect first ship at ~16:35 UTC (30 min cap). 5× rule silent-stuck threshold: 18:35 UTC (2h 30m after spawn).
