@@ -8683,6 +8683,100 @@ Seeded from `w92/translation-tooling` @ `03d978c` (since W92-C wasn't merged to 
 
 **Cycle 93 cumulative: 2/4 SHIPPED (8,027 LOC shipped across both) at 30-min cap mark. 2/4 borderline (W93-B + W93-D at cap, applying 5× rule for late pushes per cycle 90 W90s-D lesson — late ship window 15-30 min past cap).**
 
+## Cycle 93 — interim 3 @ 15:32 UTC — W93-D events-workshops SHIPPED ✅
+
+**Branch:** `w93/events-workshops` @ `3e927097563e4798444b9cff17604f8f9e0a76ec` (PUSHED @ 15:32 UTC, ~22 min wall)
+
+**Validation (all green):**
+- TSC: 0 errors on W93-D files via `tsc --project tsconfig.w93.json` (17 files, 6,587 LOC)
+- Spec: **112/112 PASS** via `node --import tsx --test` (3 specs, 26 describes)
+- Smoke: **69/69 PASS** via `node --experimental-strip-types scripts/smoke-events-workshops.ts`
+- Sacred-cultural: 0 banned-vocab hits via stripComments() source scan across 19 W93-D files
+- iCal RFC 5545: VCALENDAR/VEVENT shell validado, CRLF garantido, UTC com sufixo Z, escape `\,`, `\;`, `\\`, `\n`
+
+**W93-D files (17, 6,587 LOC):**
+
+Engines (1,935 LOC):
+- `src/lib/w93/events-types.ts` (368) — branded types, EventKind pt-BR (roda/workshop/curso/cerimonia/gira), EventsError discriminant
+- `src/lib/w93/events-engine.ts` (698) — EventsEngine: create/list/RSVP/cancel/cancelAll/waitlist + computeSignupStatus + makeHost + buildEventDraft
+- `src/lib/w93/workshops-engine.ts` (553) — WorkshopsEngine multi-session: attend/unattend/waitlist/progress/addSession + buildWorkshopDraft
+- `src/lib/w93/ics-export.ts` (281) — RFC 5545 subset: eventToIcs/workshopToIcs/sessionToVEvent/formatUtc/escapeIcsText/foldLine/stripMarkdown
+- `src/lib/w93/notification-hook.ts` (135) — eventsNotificationToCreateInput + makeNotifier (W91-A bridge) + assertNoPiiInNotification
+
+UI Components (531 LOC):
+- `src/components/events/EventCardNew.tsx` (178) — mobile-first, badges tipo/tradição/modalidade, preserva pt-BR
+- `src/components/events/RSVPButton.tsx` (256) — optimistic UI + 5 estados + 4 cenários (não logado/inscrito/lotado/fechado)
+- `src/components/events/CalendarExport.tsx` (97) — download .ics client-side com BOM UTF-8
+
+Pages (1,850 LOC):
+- `src/app/eventos/page.tsx` (304) — lista com filtros tipo/modalidade/tradição/busca
+- `src/app/eventos/_components/EventsExplorer.tsx` (181) — client component de filtros
+- `src/app/eventos/[id]/page.tsx` (465) — detalhe + RSVP + calendar export + sidebar
+- `src/app/eventos/criar/page.tsx` (562) — form organizer com validação + preview .ics
+- `src/app/workshops/[id]/page.tsx` (338) — workshop multi-sessão + iCal multi-VEVENT
+
+Specs (1,433 LOC) — node:test via `--import tsx`:
+- `src/lib/w93/__tests__/events-engine.spec.ts` (576) — 37 testes
+- `src/lib/w93/__tests__/workshops-engine.spec.ts` (438) — 26 testes
+- `src/lib/w93/__tests__/ics-export.spec.ts` (419) — 49 testes
+
+Smoke (397 LOC):
+- `scripts/smoke-events-workshops.ts` (397) — 69 asserts
+
+Infra:
+- `tsconfig.w93.json` — subset do tsconfig.json com allowImportingTsExtensions
+- `docs/DELIVERABLE-W93-D.md` (341) — runbook + lessons
+
+**10 NEW durable lessons (W93-D):**
+
+1. **`\r\n` em regex sem `m` flag** falha em match no meio de string multi-linha.
+2. **Branded types exigem factory functions explícitas** (`eventId(s: string): EventId`) para ergonomia.
+3. **`closedByOrganizer` flag persiste override** vs recompute a cada refresh — invariantes importam.
+4. **Smoke `.mjs` vs `.ts`** — `--experimental-strip-types` funciona APENAS em `.ts`. Type imports em `.mjs` quebram com SyntaxError.
+5. **`assert.match` mostra `actual` normalizado para LF** em erros — verificar bytes reais com JSON.stringify.
+6. **Pré-fixar interface central antes de adicionar campos obrigatórios** — listar callers ANTES de rodar TSC.
+7. **`WorkshopSession` (não `Session`)** evita colisão com NextAuth types em componentes client.
+8. **Workshops multi-session delegam RSVP** para Event engine quando session tem eventId — single source of truth.
+9. **foldLine para DESCRIPTION < 75 chars é overhead** — implementar só se Apple Calendar reclamar.
+10. **EventsError discriminant** (`code + meta`) > string matching em error.message — consumers fazem UX decision sem regex.
+
+**Sacred-cultural compliance verified:**
+- 0 hits: orishas, ashé, iemanja (após stripComments)
+- 5 EventKinds: roda, workshop, curso, cerimonia, gira (preservados)
+- 12 Traditions: cabala, ifa, astrologia, tantra, reiki, meditacao, xamanismo, cristianismo-mistico, sufismo, taoismo, umbanda, candomble
+- Smoke asserts: `event JSON NÃO contém "ceremony"`, `workshop NÃO contém "ritual" genérico`
+
+**LGPD compliance:**
+- Rsvp storage SEM email — apenas userId opaco
+- listRsvps() retorna apenas Rsvp shape (sem email/PII)
+- assertNoPiiInNotification valida antes de emitir
+- Notification hook traduz para SYSTEM_ALERT + payload.eventKind discriminador
+
+**Cross-cycle pattern (W93-D reaffirmation):**
+- W87-A tentativa de events-workshops foi B2 retry que não completou; W93-D completa o feature full com 4 engines + 5 pages
+- iCal RFC 5545 strict validation (cycle 66 lesson reaffirmed: CRLF + VTIMEZONE-free UTC + escape `\,`/`\;`/`\\`/`\n`)
+- Notification bridge W91-A (cycle 91 W91-A SHIPPED, integration direta via `eventsNotificationToCreateInput`)
+- 112 spec asserts (3 specs merged) + 69 smoke asserts = 181 assertions on this theme alone
+- Worktree-local tsconfig pattern (cycle 60+73+85) — per-file `tsconfig.w93.json` with `allowImportingTsExtensions`
+
+**W93 status @ 15:32 UTC:**
+
+| Worker | Session | Branch | SHA | LOC | Status |
+|---|---|---|---|---|---|
+| **W93-A** | 414839828439312 | `w93/reputation-system` | `4eddf85` | 3,724 (10 files) | ✅ **SHIPPED** @ 15:25 UTC (17 min) |
+| **W93-C** | 414839210520741 | `w93/i18n-rollout` | `edaa33e` | 3,205 W93 + 1,098 seeded = 4,303 (19 files) | ✅ **SHIPPED** @ 15:31 UTC (25 min) |
+| **W93-D** | 414839210520742 | `w93/events-workshops` | `3e92709` | 6,587 (17 files) | ✅ **SHIPPED** @ 15:32 UTC (22 min) |
+| W93-B | 414839169331501 | `w93/auth-followup` | TBD | TBD | 🟡 in flight (32 min in) — worktree @ acb080f (no local commit yet) |
+
+**Cycle 93 cumulative: 3/4 SHIPPED (14,614 LOC shipped across 3 themes) at +2 min past cap. 1/4 borderline (W93-B at cap, worktree still on main commit acb080f — concerning but applying 5× rule per cycle 90 W90s-D lesson).**
+
+**W93-B risk assessment:**
+- Worktree `/workspace/wt-w93-auth` @ `acb080f` (no local commit) at 32 min in
+- Sibling session `414845211406444` [cron] akasha-wave-spawner spawned @ 15:32 UTC (likely W94 SPAWN by sibling)
+- Apply 5× cap rule: spawn 15:00 → 5× threshold = 17:30 UTC for definitive CASCADE declaration
+- Late-ship window per cycle 90 W90s-D: 5-17 min past cap is recoverable (now +2 min past cap, still in window)
+- Next check-in: 16:00 UTC (60 min past cap) to re-verify worktree state and decide B2 retry
+
 **Cross-cycle pattern (W93 dual-shipment at cap):**
 - Cycle 90 W90s-D pushed at +17 min past cap (late ship pattern)
 - Cycle 86 W86-D crashed late-wave (~23 min in, did NOT recover)
