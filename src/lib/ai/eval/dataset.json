@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0",
+  "wave": 36,
+  "date": "2026-07-01",
+  "schema": "akasha-eval-v1",
+  "stats": {
+    "total": 110,
+    "byCategory": {
+      "tradition": 96,
+      "cross_tradition": 6,
+      "lgpd": 8,
+      "prohibited": 10,
+      "citation": 10,
+      "cultural": 10,
+      "refusal": 10
+    },
+    "expectedRefusals": 38,
+    "expectedAnswers": 72
+  },
+  "spec": {
+    "targetCases": 100,
+    "actualCases": 110,
+    "targetTraditions": 7,
+    "actualTraditions": 12,
+    "targetCrossTradition": 2,
+    "actualCrossTradition": 6
+  },
+  "references": [
+    "docs/AKASHA-EVAL-W36.md",
+    "src/lib/ai/eval/dataset.ts (canonical)",
+    "src/lib/ai/akasha-principles.ts (W30)",
+    "src/lib/ai/safety/guardrails.ts (W36)"
+  ],
+  "note": "Full dataset (110 cases) is in src/lib/ai/eval/dataset.ts. This JSON file is a manifest for tools that prefer JSON over TS."
+}
