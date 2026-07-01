@@ -1,0 +1,31 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "incremental": false,
+    "skipLibCheck": true,
+    "types": ["vitest/globals"]
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/lib/analytics/engagement-score.ts",
+    "src/lib/analytics/abuse-detect.ts",
+    "src/lib/analytics/cohorts.ts",
+    "src/lib/analytics/funnels.ts",
+    "src/app/(community)/me/analytics/page.tsx",
+    "src/app/(community)/me/analytics/PersonalAnalyticsClient.tsx",
+    "src/app/admin/cohorts/page.tsx",
+    "src/app/admin/cohorts/CohortsClient.tsx",
+    "src/app/admin/funnels/page.tsx",
+    "src/app/admin/funnels/FunnelsClient.tsx",
+    "src/app/admin/features/adoption/page.tsx",
+    "src/app/admin/features/adoption/FeatureAdoptionClient.tsx",
+    "src/app/admin/metrics/export/page.tsx",
+    "src/app/admin/metrics/export/MetricsExportClient.tsx",
+    "src/app/api/me/analytics/route.ts",
+    "src/app/api/admin/cohorts/route.ts",
+    "src/app/api/admin/funnels/[id]/route.ts",
+    "src/app/api/admin/features/[id]/adoption/route.ts",
+    "src/types/**/*.d.ts"
+  ]
+}
