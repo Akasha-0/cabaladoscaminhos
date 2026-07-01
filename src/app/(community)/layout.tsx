@@ -17,6 +17,7 @@ import React from 'react';
 import { CommunityShell } from '@/components/community/CommunityShell';
 import type { CommunityUser } from '@/components/community/CommunityNav';
 import { createClient } from '@/lib/supabase/server';
+import { SkipLinks } from '@/components/a11y/SkipLinks';
 
 export default async function CommunityLayout({
   children,
@@ -24,7 +25,18 @@ export default async function CommunityLayout({
   children: React.ReactNode;
 }) {
   const user = await loadCurrentUser();
-  return <CommunityShell user={user}>{children}</CommunityShell>;
+  return (
+    <>
+      {/*
+        W34 a11y polish — Skip links multi-alvo (WCAG 2.4.1 Bypass Blocks).
+        Renderizado fora do CommunityShell para ser o PRIMEIRO item focável
+        em toda página da comunidade. Default targets: main-content /
+        primary-nav / site-footer.
+      */}
+      <SkipLinks />
+      <CommunityShell user={user}>{children}</CommunityShell>
+    </>
+  );
 }
 
 /**

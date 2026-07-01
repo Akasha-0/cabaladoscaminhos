@@ -15,10 +15,13 @@ interface CommunityShellProps {
 export function CommunityShell({ user, children }: CommunityShellProps) {
   return (
     <div className="min-h-screen bg-slate-950">
-      <CommunityNav user={user} />
+      <div id="primary-nav">
+        <CommunityNav user={user} />
+      </div>
       {/* Padding-bottom no mobile pra dar espaço pra bottom nav.
           tabIndex={-1} + id="main-content" permitem o skip-to-content
-          (WCAG 2.4.1) focar este main quando ativado via teclado. */}
+          (WCAG 2.4.1) focar este main quando ativado via teclado.
+          W34: SkipLinks multi-target referencia este id e #primary-nav. */}
       <main
         id="main-content"
         tabIndex={-1}
