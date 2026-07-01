@@ -9,8 +9,16 @@
     "sourceName": "Ministério da Saúde do Brasil — Biblioteca Virtual em Saúde",
     "sourceUrl": "https://www.gov.br/saude/pt-br/acesso-a-informacao/acoes-e-programas/pnpics/legislacao-pnpic",
     "year": 2017,
-    "tags": ["SUS", "PNPIC", "Brasil", "politica-publica", "reiki"],
-    "authors": ["Ministério da Saúde do Brasil"],
+    "tags": [
+      "SUS",
+      "PNPIC",
+      "Brasil",
+      "politica-publica",
+      "reiki"
+    ],
+    "authors": [
+      "Ministério da Saúde do Brasil"
+    ],
     "doi": null,
     "language": "pt-BR",
     "curatorNotes": "Marco regulatório importante. Reconhecimento institucional não é sinônimo de evidência científica forte para eficácia clínica, mas amplia o acesso e legitima a prática em contexto público. Vale conferir versão atualizada das portarias no portal gov.br/saude.",
@@ -26,8 +34,19 @@
     "sourceName": "Revista Latino-Americana de Enfermagem (SciELO)",
     "sourceUrl": "https://www.scielo.br/j/rlae/a/3TL7Js8bFzHXtSDwSgpQVvJ/?lang=pt",
     "year": 2018,
-    "tags": ["SUS", "PNPIC", "revisão", "implantação", "saude-publica"],
-    "authors": ["Tesser CD", "Souza IMCFD", "Vanderlei LCM", "Neto SMC"],
+    "tags": [
+      "SUS",
+      "PNPIC",
+      "revisão",
+      "implantação",
+      "saude-publica"
+    ],
+    "authors": [
+      "Tesser CD",
+      "Souza IMCFD",
+      "Vanderlei LCM",
+      "Neto SMC"
+    ],
     "doi": "10.1590/1518-8345.1854.2885",
     "language": "pt-BR",
     "curatorNotes": "Útil para entender o contexto institucional das práticas integrativas no Brasil. Discute limites e contradições sem cair em ufanismo nem em negação total.",
@@ -43,8 +62,16 @@
     "sourceName": "Journal of Evidence-Based Complementary & Alternative Medicine",
     "sourceUrl": "https://journals.sagepub.com/doi/full/10.1177/2156587217728644",
     "year": 2017,
-    "tags": ["reiki", "meta-analise", "dor", "ansiedade", "depressao"],
-    "authors": ["McManus DE"],
+    "tags": [
+      "reiki",
+      "meta-analise",
+      "dor",
+      "ansiedade",
+      "depressao"
+    ],
+    "authors": [
+      "McManus DE"
+    ],
     "doi": "10.1177/2156587217728644",
     "language": "en",
     "curatorNotes": "Estudo favorável, mas é de autor único e patrocinado parcialmente por fundação de Reiki. Ler criticamente; revisões independentes pedem mais rigor metodológico. Marcar como MEDIUM e usar como ponto de entrada, não como palavra final.",
@@ -60,8 +87,20 @@
     "sourceName": "BMJ Supportive & Palliative Care / Integrative Cancer Therapies",
     "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/29084533/",
     "year": 2017,
-    "tags": ["reiki", "oncologia", "cuidados-paliativos", "dor", "ansiedade"],
-    "authors": ["Baldwin AL", "Vitale A", "Brownell E", "Kryak E", "Tanzi NL"],
+    "tags": [
+      "reiki",
+      "oncologia",
+      "cuidados-paliativos",
+      "dor",
+      "ansiedade"
+    ],
+    "authors": [
+      "Baldwin AL",
+      "Vitale A",
+      "Brownell E",
+      "Kryak E",
+      "Tanzi NL"
+    ],
     "doi": "10.1177/1534735417749636",
     "language": "en",
     "curatorNotes": "Bom exemplo de evidência emergente em cuidados integrativos oncológicos. Resultados modestos mas úteis como terapia complementar, nunca isolada.",
@@ -77,8 +116,24 @@
     "sourceName": "Journal of Clinical Psychopharmacology",
     "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/26650973/",
     "year": 2016,
-    "tags": ["ayahuasca", "depressao", "neuroimagem", "SPECT"],
-    "authors": ["Sanches RF", "de Lima Osório F", "Dos Santos RG", "Macedo LR", "Maia-de-Oliveira JP", "Wichert-Ana L", "de Araujo DB", "Riba J", "Crippa JA", "Hallak JE"],
+    "tags": [
+      "ayahuasca",
+      "depressao",
+      "neuroimagem",
+      "SPECT"
+    ],
+    "authors": [
+      "Sanches RF",
+      "de Lima Osório F",
+      "Dos Santos RG",
+      "Macedo LR",
+      "Maia-de-Oliveira JP",
+      "Wichert-Ana L",
+      "de Araujo DB",
+      "Riba J",
+      "Crippa JA",
+      "Hallak JE"
+    ],
     "doi": "10.1097/JCP.0000000000000436",
     "language": "en",
     "curatorNotes": "Amostra pequena (n=6), sem grupo controle randomizado. Trabalho pioneiro — abrir caminho para estudos maiores, não ser usado como prova definitiva.",
@@ -94,8 +149,45 @@
     "sourceName": "Psychological Medicine (Cambridge University Press)",
     "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6378413/",
     "year": 2019,
-    "tags": ["ayahuasca", "depressao", "RCT", "saude-mental", "psicodelico"],
-    "authors": ["Palhano-Fontes F", "Barreto D", "Onias H", "Andrade KC", "Novaes MM", "Pessoa JA", "Mota-Rolim SA", "Osório FL", "Schuster R", "Dobkin Tufenkjian M", "Gartner M", "Karam BS", "Almeida EC", "Galvão-Coelho NL", "Liu Z", "Barrett FS", "Luan K", "Sanches M", "Ribeiro S", "Hallak J", "Araujo D", "Riba J", "Crippa JA", "McKenna DJ", "Barbosa PL", "Anderson B", "Galvao ACM", "Tofoli LF", "Bouso JC", "Araujo DB"],
+    "tags": [
+      "ayahuasca",
+      "depressao",
+      "RCT",
+      "saude-mental",
+      "psicodelico"
+    ],
+    "authors": [
+      "Palhano-Fontes F",
+      "Barreto D",
+      "Onias H",
+      "Andrade KC",
+      "Novaes MM",
+      "Pessoa JA",
+      "Mota-Rolim SA",
+      "Osório FL",
+      "Schuster R",
+      "Dobkin Tufenkjian M",
+      "Gartner M",
+      "Karam BS",
+      "Almeida EC",
+      "Galvão-Coelho NL",
+      "Liu Z",
+      "Barrett FS",
+      "Luan K",
+      "Sanches M",
+      "Ribeiro S",
+      "Hallak J",
+      "Araujo D",
+      "Riba J",
+      "Crippa JA",
+      "McKenna DJ",
+      "Barbosa PL",
+      "Anderson B",
+      "Galvao ACM",
+      "Tofoli LF",
+      "Bouso JC",
+      "Araujo DB"
+    ],
     "doi": "10.1017/S0033291718001356",
     "language": "en",
     "curatorNotes": "Um dos RCTs mais rigorosos sobre ayahuasca. Efeito agudo robusto; durabilidade a longo prazo ainda exige mais investigação.",
@@ -111,8 +203,24 @@
     "sourceName": "Brain Research Bulletin",
     "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0361923016300386",
     "year": 2016,
-    "tags": ["ayahuasca", "farmacologia", "DMT", "harmina", "revisao"],
-    "authors": ["Domínguez-Clavé E", "Soler J", "Elices M", "Pascual JC", "Álvarez E", "de la Fuente Revenga M", "Friedlander P", "Feilding A", "Riba J"],
+    "tags": [
+      "ayahuasca",
+      "farmacologia",
+      "DMT",
+      "harmina",
+      "revisao"
+    ],
+    "authors": [
+      "Domínguez-Clavé E",
+      "Soler J",
+      "Elices M",
+      "Pascual JC",
+      "Álvarez E",
+      "de la Fuente Revenga M",
+      "Friedlander P",
+      "Feilding A",
+      "Riba J"
+    ],
     "doi": "10.1016/j.brainresbull.2016.03.002",
     "language": "en",
     "curatorNotes": "Excelente ponto de entrada acadêmico. Cobre mecanismos (inibição da MAO por harmina, agonismo 5-HT2A pelo DMT) e clínica.",
@@ -128,8 +236,23 @@
     "sourceName": "Journal of Psychopharmacology",
     "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/27909165/",
     "year": 2016,
-    "tags": ["psilocybina", "cancer", "ansiedade", "depressao", "RCT"],
-    "authors": ["Griffiths RR", "Johnson MW", "Carducci MA", "Umbricht A", "Richards WA", "Richards BD", "Cosimano MP", "Klinedinst MA"],
+    "tags": [
+      "psilocybina",
+      "cancer",
+      "ansiedade",
+      "depressao",
+      "RCT"
+    ],
+    "authors": [
+      "Griffiths RR",
+      "Johnson MW",
+      "Carducci MA",
+      "Umbricht A",
+      "Richards WA",
+      "Richards BD",
+      "Cosimano MP",
+      "Klinedinst MA"
+    ],
     "doi": "10.1177/0269881116675513",
     "language": "en",
     "curatorNotes": "Estudo pivotal da Johns Hopkins. Replicado e ampliado por outros centros. Contexto: terapia辅助 com preparação psicológica e supervisão durante a experiência.",
@@ -145,8 +268,77 @@
     "sourceName": "Journal of Psychopharmacology",
     "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/27909164/",
     "year": 2016,
-    "tags": ["psilocybina", "cancer", "ansiedade", "depressao", "existencial"],
-    "authors": ["Ross S", "Bossis A", "Guss J", "Agin-Liebes G", "Malone T", "Cohen B", "Mennenga SE", "Belser A", "Krystallas K", "Barskova I", "Vaughan T", "Schmidt B", "Maberley P", "Sweet H", "Muench J", "Polanco M", "Bailey J", "Korus J", "Friedman H", "DeLorenzo J", "Berger S", "Sullivan P", "Metcalf K", "Hendricks P", "Temple L", "MacLean K", "Cole S", "Burdick B", "Stewart T", "Pisano V", "Brennecke N", "Karkazis K", "Badman A", "Swift T", "Bonn-Miller M", "Mallick T", "Strickland T", "Mithoefer M", "Grob C", "Berkland C", "Flowers J", "Carlin J", "Bache K", "Singe B", "Sweat J", "Boulton J", "Nguyen Q", "Golding R", "Gukasyan N", "Taylor N", "Tracy B", "Wagner M", "Reeder J", "Robinson Z", "Sahlem G", "Lyles J", "Kelley N", "Steinkellner T", "Coker A", "Whitt V", "Bremmer D", "Woolley J"],
+    "tags": [
+      "psilocybina",
+      "cancer",
+      "ansiedade",
+      "depressao",
+      "existencial"
+    ],
+    "authors": [
+      "Ross S",
+      "Bossis A",
+      "Guss J",
+      "Agin-Liebes G",
+      "Malone T",
+      "Cohen B",
+      "Mennenga SE",
+      "Belser A",
+      "Krystallas K",
+      "Barskova I",
+      "Vaughan T",
+      "Schmidt B",
+      "Maberley P",
+      "Sweet H",
+      "Muench J",
+      "Polanco M",
+      "Bailey J",
+      "Korus J",
+      "Friedman H",
+      "DeLorenzo J",
+      "Berger S",
+      "Sullivan P",
+      "Metcalf K",
+      "Hendricks P",
+      "Temple L",
+      "MacLean K",
+      "Cole S",
+      "Burdick B",
+      "Stewart T",
+      "Pisano V",
+      "Brennecke N",
+      "Karkazis K",
+      "Badman A",
+      "Swift T",
+      "Bonn-Miller M",
+      "Mallick T",
+      "Strickland T",
+      "Mithoefer M",
+      "Grob C",
+      "Berkland C",
+      "Flowers J",
+      "Carlin J",
+      "Bache K",
+      "Singe B",
+      "Sweat J",
+      "Boulton J",
+      "Nguyen Q",
+      "Golding R",
+      "Gukasyan N",
+      "Taylor N",
+      "Tracy B",
+      "Wagner M",
+      "Reeder J",
+      "Robinson Z",
+      "Sahlem G",
+      "Lyles J",
+      "Kelley N",
+      "Steinkellner T",
+      "Coker A",
+      "Whitt V",
+      "Bremmer D",
+      "Woolley J"
+    ],
     "doi": "10.1177/0269881116675512",
     "language": "en",
     "curatorNotes": "Estudo NYU independente que replicou achados de Johns Hopkins. Together, esses dois trabalhos reativaram o campo de pesquisa psicodélica clínica.",
@@ -162,8 +354,28 @@
     "sourceName": "The Lancet Psychiatry",
     "sourceUrl": "https://www.sciencedirect.com/science/article/pii/S2215036616300657",
     "year": 2016,
-    "tags": ["psilocybina", "depressao-refrataria", "Imperial-College", "estudo-aberto"],
-    "authors": ["Carhart-Harris RL", "Bolstridge M", "Rucker J", "Day CMJ", "Erritzoe D", "Kaelen M", "Bloomfield M", "Rickard JA", "Forbes B", "Feilding A", "Taylor D", "Pilling S", "Curran VH", "Nutt DJ"],
+    "tags": [
+      "psilocybina",
+      "depressao-refrataria",
+      "Imperial-College",
+      "estudo-aberto"
+    ],
+    "authors": [
+      "Carhart-Harris RL",
+      "Bolstridge M",
+      "Rucker J",
+      "Day CMJ",
+      "Erritzoe D",
+      "Kaelen M",
+      "Bloomfield M",
+      "Rickard JA",
+      "Forbes B",
+      "Feilding A",
+      "Taylor D",
+      "Pilling S",
+      "Curran VH",
+      "Nutt DJ"
+    ],
     "doi": "10.1016/S2215-0366(16)30065-7",
     "language": "en",
     "curatorNotes": "Estudo-piloto (n=12, sem grupo controle). Resultado encorajador mas não conclusivo. Serviu para justificar ensaios maiores que vieram depois (Carhart-Harris 2018, Davis 2021).",
@@ -179,8 +391,22 @@
     "sourceName": "JAMA Psychiatry",
     "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/33146667/",
     "year": 2021,
-    "tags": ["psilocybina", "depressao-maior", "RCT", "psicoterapia-assistida"],
-    "authors": ["Davis AK", "Barrett FS", "May DG", "Cosimano MP", "Sepeda ND", "Johnson MW", "Finan PH", "Griffiths RR"],
+    "tags": [
+      "psilocybina",
+      "depressao-maior",
+      "RCT",
+      "psicoterapia-assistida"
+    ],
+    "authors": [
+      "Davis AK",
+      "Barrett FS",
+      "May DG",
+      "Cosimano MP",
+      "Sepeda ND",
+      "Johnson MW",
+      "Finan PH",
+      "Griffiths RR"
+    ],
     "doi": "10.1001/jamapsychiatry.2020.3285",
     "language": "en",
     "curatorNotes": "Estudo do Johns Hopkins. Amostra pequena mas desenho rigoroso. Replicação em ensaios maiores já em andamento (COMP360 trials).",
@@ -196,8 +422,31 @@
     "sourceName": "Scientific Reports (Nature)",
     "sourceUrl": "https://www.nature.com/articles/s41598-017-13282-7",
     "year": 2017,
-    "tags": ["psilocybina", "fMRI", "default-mode-network", "neuroimagem"],
-    "authors": ["Carhart-Harris RL", "Roseman L", "Bolstridge M", "Demanuele L", "Pannekoek JN", "Wall MB", "Tanner M", "Kaelen M", "McGonigle J", "Murphy K", "Curran VH", "Tyacke RJ", "Muthukumaraswamy S", "Hellyer PJ", "Lingford-Hughes A", "Feilding A", "Nutt DJ"],
+    "tags": [
+      "psilocybina",
+      "fMRI",
+      "default-mode-network",
+      "neuroimagem"
+    ],
+    "authors": [
+      "Carhart-Harris RL",
+      "Roseman L",
+      "Bolstridge M",
+      "Demanuele L",
+      "Pannekoek JN",
+      "Wall MB",
+      "Tanner M",
+      "Kaelen M",
+      "McGonigle J",
+      "Murphy K",
+      "Curran VH",
+      "Tyacke RJ",
+      "Muthukumaraswamy S",
+      "Hellyer PJ",
+      "Lingford-Hughes A",
+      "Feilding A",
+      "Nutt DJ"
+    ],
     "doi": "10.1038/s41598-017-13282-7",
     "language": "en",
     "curatorNotes": "Amostra pequena (n=19), mas abordagem mecanística relevante. Hipótese do 'reset' do DMN virou referência em revisões posteriores.",
@@ -213,8 +462,19 @@
     "sourceName": "The American Journal of Drug and Alcohol Abuse",
     "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6157925/",
     "year": 2018,
-    "tags": ["ibogaina", "opioides", "dependencia-quimica", "estudo-observacional"],
-    "authors": ["Brown LC", "Erowid E", "Erowid F", "Clemence M", "Mash DC"],
+    "tags": [
+      "ibogaina",
+      "opioides",
+      "dependencia-quimica",
+      "estudo-observacional"
+    ],
+    "authors": [
+      "Brown LC",
+      "Erowid E",
+      "Erowid F",
+      "Clemence M",
+      "Mash DC"
+    ],
     "doi": "10.1080/00952990.2017.1320802",
     "language": "en",
     "curatorNotes": "Estudo observacional (sem randomização) com potencial viés de auto-seleção (pessoas que pagaram pelo tratamento). Resultados promissores, mas exige RCT para confirmação.",
@@ -230,8 +490,15 @@
     "sourceName": "Frontiers in Pharmacology",
     "sourceUrl": "https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2018.00529/full",
     "year": 2018,
-    "tags": ["ibogaina", "farmacologia", "dependencia", "revisao"],
-    "authors": ["Mash DC"],
+    "tags": [
+      "ibogaina",
+      "farmacologia",
+      "dependencia",
+      "revisao"
+    ],
+    "authors": [
+      "Mash DC"
+    ],
     "doi": "10.3389/fphar.2018.00529",
     "language": "en",
     "curatorNotes": "Mash é pesquisador veterano no campo (Universidade de Miami). Revisão clara, mas autora de patentes comerciais — ler com consciência do conflito de interesse potencial.",
@@ -247,8 +514,23 @@
     "sourceName": "Pharmacological Research (Elsevier)",
     "sourceUrl": "https://www.sciencedirect.com/science/article/pii/S1043661822005667",
     "year": 2022,
-    "tags": ["ibogaina", "farmacologia", "politica-de-drogas", "revisao-sistematica"],
-    "authors": ["Ona G", "Bouso JC", "Katz S", "Apesteguía JR", "Beloate L", "Carvalho MC", "Schnitman R", "Mash DC", "de Souza JB"],
+    "tags": [
+      "ibogaina",
+      "farmacologia",
+      "politica-de-drogas",
+      "revisao-sistematica"
+    ],
+    "authors": [
+      "Ona G",
+      "Bouso JC",
+      "Katz S",
+      "Apesteguía JR",
+      "Beloate L",
+      "Carvalho MC",
+      "Schnitman R",
+      "Mash DC",
+      "de Souza JB"
+    ],
     "doi": "10.1016/j.phrs.2022.106556",
     "language": "en",
     "curatorNotes": "Revisão institucional recente. Boa para entender o estado da arte sem ufanismo.",
@@ -264,8 +546,19 @@
     "sourceName": "Journal of Psychosomatic Research",
     "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/25818837/",
     "year": 2015,
-    "tags": ["MBSR", "meditacao", "meta-analise", "saude-mental", "estresse"],
-    "authors": ["Khoury B", "Sharma M", "Rush SE", "Fournier C"],
+    "tags": [
+      "MBSR",
+      "meditacao",
+      "meta-analise",
+      "saude-mental",
+      "estresse"
+    ],
+    "authors": [
+      "Khoury B",
+      "Sharma M",
+      "Rush SE",
+      "Fournier C"
+    ],
     "doi": "10.1016/j.jpsychores.2015.03.009",
     "language": "en",
     "curatorNotes": "Meta-análise robusta. Reconhece que os benefícios variam por contexto e que MBSR não é 'cura para tudo' — efeito moderado, não dramático.",
@@ -281,8 +574,19 @@
     "sourceName": "Schizophrenia Research",
     "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0920996413004337",
     "year": 2013,
-    "tags": ["MBSR", "mindfulness", "psicose", "esquizofrenia", "meta-analise"],
-    "authors": ["Khoury B", "Lecomte T", "Gaudiano BA", "Paquin K"],
+    "tags": [
+      "MBSR",
+      "mindfulness",
+      "psicose",
+      "esquizofrenia",
+      "meta-analise"
+    ],
+    "authors": [
+      "Khoury B",
+      "Lecomte T",
+      "Gaudiano BA",
+      "Paquin K"
+    ],
     "doi": "10.1016/j.schres.2013.11.001",
     "language": "en",
     "curatorNotes": "Conclusão importante: mindfulness pode ser adaptada para populações psiquiátricas graves. Não é 'apenas para saudáveis'. Exige adaptação por profissionais.",
@@ -298,8 +602,20 @@
     "sourceName": "Proceedings of the National Academy of Sciences (PNAS)",
     "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3250176/",
     "year": 2011,
-    "tags": ["meditacao", "default-mode-network", "neuroimagem", "fMRI"],
-    "authors": ["Brewer JA", "Worhunsky PD", "Gray JR", "Tang YY", "Weber J", "Kober H"],
+    "tags": [
+      "meditacao",
+      "default-mode-network",
+      "neuroimagem",
+      "fMRI"
+    ],
+    "authors": [
+      "Brewer JA",
+      "Worhunsky PD",
+      "Gray JR",
+      "Tang YY",
+      "Weber J",
+      "Kober H"
+    ],
     "doi": "10.1073/pnas.1112029108",
     "language": "en",
     "curatorNotes": "Estudo da Yale. Limitações: amostra pequena, meditadores auto-selecionados. Mas marca referência para entender mudança neural com prática sustentada.",
@@ -315,8 +631,16 @@
     "sourceName": "Emotion (APA)",
     "sourceUrl": "https://psycnet.apa.org/record/2010-02287-004",
     "year": 2010,
-    "tags": ["MBSR", "ansiedade-social", "neuroimagem", "regulacao-emocional"],
-    "authors": ["Goldin PR", "Gross JJ"],
+    "tags": [
+      "MBSR",
+      "ansiedade-social",
+      "neuroimagem",
+      "regulacao-emocional"
+    ],
+    "authors": [
+      "Goldin PR",
+      "Gross JJ"
+    ],
     "doi": "10.1037/a0018441",
     "language": "en",
     "curatorNotes": "Combina dados comportamentais e de neuroimagem. Bom exemplo de pesquisa mecanística em MBSR.",
@@ -332,8 +656,32 @@
     "sourceName": "The Lancet Neurology",
     "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/26724101/",
     "year": 2016,
-    "tags": ["cannabis", "CBD", "epilepsia", "ensaio-clinico", "pediatria"],
-    "authors": ["Devinsky O", "Marsh E", "Friedman D", "Thiele E", "Laux L", "Sullivan J", "Miller I", "Fletcher R", "Duncan J", "Glass M", "Gonzalez G", "Chen K", "Ljungman M", "Francois D", "Lehman A", "Liu T", "Blumenfeld T"],
+    "tags": [
+      "cannabis",
+      "CBD",
+      "epilepsia",
+      "ensaio-clinico",
+      "pediatria"
+    ],
+    "authors": [
+      "Devinsky O",
+      "Marsh E",
+      "Friedman D",
+      "Thiele E",
+      "Laux L",
+      "Sullivan J",
+      "Miller I",
+      "Fletcher R",
+      "Duncan J",
+      "Glass M",
+      "Gonzalez G",
+      "Chen K",
+      "Ljungman M",
+      "Francois D",
+      "Lehman A",
+      "Liu T",
+      "Blumenfeld T"
+    ],
     "doi": "10.1016/S1474-4422(15)00379-8",
     "language": "en",
     "curatorNotes": "Estudo pivotal que fundamentou a aprovação do Epidiolex (canabidiol) pela FDA (2018) para síndromes de Dravet e Lennox-Gastaut.",
@@ -349,8 +697,25 @@
     "sourceName": "New England Journal of Medicine",
     "sourceUrl": "https://www.nejm.org/doi/full/10.1056/NEJMoa1611618",
     "year": 2017,
-    "tags": ["CBD", "cannabis", "sindrome-de-dravet", "epilepsia-pediatrica", "RCT"],
-    "authors": ["Devinsky O", "Cross JH", "Laux L", "Marsh E", "Miller I", "Nabbout R", "Scheffer IE", "Thiele EA", "Wright S", "Farfel G"],
+    "tags": [
+      "CBD",
+      "cannabis",
+      "sindrome-de-dravet",
+      "epilepsia-pediatrica",
+      "RCT"
+    ],
+    "authors": [
+      "Devinsky O",
+      "Cross JH",
+      "Laux L",
+      "Marsh E",
+      "Miller I",
+      "Nabbout R",
+      "Scheffer IE",
+      "Thiele EA",
+      "Wright S",
+      "Farfel G"
+    ],
     "doi": "10.1056/NEJMoa1611618",
     "language": "en",
     "curatorNotes": "RCT definitivo (NEJM). Evidência de alto nível para uso em síndrome de Dravet refratária. Limite: eficácia comprovada só em síndromes específicas, não em todas as epilepsias.",
@@ -366,8 +731,20 @@
     "sourceName": "Proceedings of the National Academy of Sciences (PNAS)",
     "sourceUrl": "https://www.pnas.org/doi/10.1073/pnas.1322174111",
     "year": 2014,
-    "tags": ["Wim-Hof", "breathwork", "respiracao", "inflamacao", "sistema-imune"],
-    "authors": ["Kox M", "Pickkers P", "Kox MA", "Hopman MTE", "van der Hoeven JG"],
+    "tags": [
+      "Wim-Hof",
+      "breathwork",
+      "respiracao",
+      "inflamacao",
+      "sistema-imune"
+    ],
+    "authors": [
+      "Kox M",
+      "Pickkers P",
+      "Kox MA",
+      "Hopman MTE",
+      "van der Hoeven JG"
+    ],
     "doi": "10.1073/pnas.1322174111",
     "language": "en",
     "curatorNotes": "Estudo altamente citado. Mostra que técnicas respiratórias podem modular sistema imune. Limite: amostra pequena, sujeito a viés (treinados pelo próprio método).",
@@ -383,8 +760,18 @@
     "sourceName": "Medical Hypotheses (Elsevier)",
     "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0306987720302899",
     "year": 2020,
-    "tags": ["Wim-Hof", "breathwork", "hipotese", "inflammacao", "COVID-19"],
-    "authors": ["Muzik O", "Reilly KT", "Diwadkar VA"],
+    "tags": [
+      "Wim-Hof",
+      "breathwork",
+      "hipotese",
+      "inflammacao",
+      "COVID-19"
+    ],
+    "authors": [
+      "Muzik O",
+      "Reilly KT",
+      "Diwadkar VA"
+    ],
     "doi": "10.1016/j.mehy.2020.110052",
     "language": "en",
     "curatorNotes": "Artigo de hipótese (não RCT). Trata-se de proposta de pesquisa, não evidência clínica. Não usar para afirmar eficácia contra COVID.",
@@ -400,8 +787,14 @@
     "sourceName": "Journal of Alternative and Complementary Medicine",
     "sourceUrl": "https://www.liebertpub.com/doi/10.1089/acm.2017.0010",
     "year": 2018,
-    "tags": ["holotropic-breathwork", "respiracao", "bem-estar"],
-    "authors": ["Young CD"],
+    "tags": [
+      "holotropic-breathwork",
+      "respiracao",
+      "bem-estar"
+    ],
+    "authors": [
+      "Young CD"
+    ],
     "doi": "10.1089/acm.2017.0010",
     "language": "en",
     "curatorNotes": "Método desenvolvido por Stanislav Grof (psiquiatra). Evidência ainda limitada mas área de pesquisa crescente.",
@@ -417,8 +810,19 @@
     "sourceName": "Toxicon / PMC (literature review)",
     "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9061256/",
     "year": 2022,
-    "tags": ["kambo", "phyllomedusa", "peptideos", "toxicologia", "ritual"],
-    "authors": ["Carucci T", "Gambelunghe A", "Cecchi L", "Fucci N"],
+    "tags": [
+      "kambo",
+      "phyllomedusa",
+      "peptideos",
+      "toxicologia",
+      "ritual"
+    ],
+    "authors": [
+      "Carucci T",
+      "Gambelunghe A",
+      "Cecchi L",
+      "Fucci N"
+    ],
     "doi": "10.1016/j.toxicon.2022.02.014",
     "language": "en",
     "curatorNotes": "Abordagem equilibrada. Kambo tem compostos de interesse farmacológico, mas o uso ritual não tem evidência clínica consistente.",
@@ -434,8 +838,18 @@
     "sourceName": "Scientific Reports (Nature)",
     "sourceUrl": "https://www.nature.com/articles/s41598-020-78527-4",
     "year": 2020,
-    "tags": ["kambo", "phyllomedusa", "psicoativo", "cientifico-relatorio"],
-    "authors": ["Pogorzelska J", "Łapiński TW", "Kowalewska M", "Sieradzki E"],
+    "tags": [
+      "kambo",
+      "phyllomedusa",
+      "psicoativo",
+      "cientifico-relatorio"
+    ],
+    "authors": [
+      "Pogorzelska J",
+      "Łapiński TW",
+      "Kowalewska M",
+      "Sieradzki E"
+    ],
     "doi": "10.1038/s41598-020-78527-4",
     "language": "en",
     "curatorNotes": "Estudo observacional, amostra pequena. Honesto em admitir limitações. Útil para entender que Kambo não é placebo.",
@@ -451,8 +865,19 @@
     "sourceName": "Journal of Natural Products",
     "sourceUrl": "https://pubs.acs.org/doi/10.1021/np5001803",
     "year": 2014,
-    "tags": ["sananga", "tabernaemontana", "alcaloides", "fitoquimica"],
-    "authors": ["Maldini M", "Sosa S", "Ivo CL", "Carmona F", "Pizza C"],
+    "tags": [
+      "sananga",
+      "tabernaemontana",
+      "alcaloides",
+      "fitoquimica"
+    ],
+    "authors": [
+      "Maldini M",
+      "Sosa S",
+      "Ivo CL",
+      "Carmona F",
+      "Pizza C"
+    ],
     "doi": "10.1021/np5001803",
     "language": "en",
     "curatorNotes": "Evidência é pré-clínica (in vitro / modelos animais). Para o uso tradicional (percepção visual, foco espiritual), ainda não há ensaios clínicos publicados.",
@@ -468,8 +893,18 @@
     "sourceName": "Journal of Ethnopharmacology",
     "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0378874114004633",
     "year": 2014,
-    "tags": ["tabernaemontana", "fitoquimica", "etnofarmacologia", "iboga"],
-    "authors": ["Daniel BF", "Klaus FP", "Rahaus S", "Iten F"],
+    "tags": [
+      "tabernaemontana",
+      "fitoquimica",
+      "etnofarmacologia",
+      "iboga"
+    ],
+    "authors": [
+      "Daniel BF",
+      "Klaus FP",
+      "Rahaus S",
+      "Iten F"
+    ],
     "doi": "10.1016/j.jep.2014.07.025",
     "language": "en",
     "curatorNotes": "Boa referência para conectar múltiplas plantas sagradas amazônicas dentro de um mesmo gênero botânico.",
@@ -485,8 +920,17 @@
     "sourceName": "The Journal of Social Psychology",
     "sourceUrl": "https://www.tandfonline.com/doi/abs/10.1080/00224545.1978.9714086",
     "year": 1978,
-    "tags": ["astrologia", "psicologia", "estudo-empirico", "ceticismo"],
-    "authors": ["Mayo J", "White P", "Eysenck HJ"],
+    "tags": [
+      "astrologia",
+      "psicologia",
+      "estudo-empirico",
+      "ceticismo"
+    ],
+    "authors": [
+      "Mayo J",
+      "White P",
+      "Eysenck HJ"
+    ],
     "doi": "10.1080/00224545.1978.9714086",
     "language": "en",
     "curatorNotes": "Estudo antigo, mas metodologicamente sólido. Útil como referência crítica honesta. Astrologia funciona como sistema simbólico-cultural, não como ciência preditiva.",
@@ -502,8 +946,16 @@
     "sourceName": "Personality and Individual Differences",
     "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0191886918302050",
     "year": 2018,
-    "tags": ["astrologia", "Barnum", "psicologia-cognitiva", "viés"],
-    "authors": ["Clarke D", "Sokolowski T"],
+    "tags": [
+      "astrologia",
+      "Barnum",
+      "psicologia-cognitiva",
+      "viés"
+    ],
+    "authors": [
+      "Clarke D",
+      "Sokolowski T"
+    ],
     "doi": "10.1016/j.paid.2018.05.011",
     "language": "en",
     "curatorNotes": "Honesto sobre mecanismos psicológicos. Não diminui valor simbólico/cultural da astrologia — só esclarece como crença opera.",
@@ -519,8 +971,15 @@
     "sourceName": "Routledge Handbook of Religion and New Religious Movements",
     "sourceUrl": "https://www.routledge.com/The-Routledge-Handbook-of-Religion-and-New-Religious-Movements/Bromley/p/book/9781032543105",
     "year": 2010,
-    "tags": ["numerologia", "sociologia", "nova-era", "simbolismo"],
-    "authors": ["Melton JG"],
+    "tags": [
+      "numerologia",
+      "sociologia",
+      "nova-era",
+      "simbolismo"
+    ],
+    "authors": [
+      "Melton JG"
+    ],
     "doi": null,
     "language": "en",
     "curatorNotes": "Numerologia NÃO tem evidência científica robusta para previsão de personalidade ou destino. Pode ter valor simbólico, reflexivo, pedagógico — mas não preditivo. Marcar como ANECDOTAL.",
@@ -536,8 +995,15 @@
     "sourceName": "Springer Nature — Ethnopharmacology of Tobacco and Nicotine",
     "sourceUrl": "https://link.springer.com/chapter/10.1007/978-3-030-48642-5_8",
     "year": 2020,
-    "tags": ["rape", "tabaco-sagrado", "etnofarmacologia", "indigena"],
-    "authors": ["Wilbert W"],
+    "tags": [
+      "rape",
+      "tabaco-sagrado",
+      "etnofarmacologia",
+      "indigena"
+    ],
+    "authors": [
+      "Wilbert W"
+    ],
     "doi": "10.1007/978-3-030-48642-5_8",
     "language": "en",
     "curatorNotes": "Etnografia respeitosa de ritual indígena. Evidência clínica praticamente ausente — para Akasha, usar como contexto cultural, não como indicação terapêutica.",
@@ -553,8 +1019,22 @@
     "sourceName": "Journal of Clinical Psychopharmacology",
     "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/23635864/",
     "year": 2013,
-    "tags": ["kava", "ansiedade", "TAG", "RCT"],
-    "authors": ["Sarris J", "Stough C", "Teschke R", "Wahid ZT", "Bousman CA", "Murray G", "Ng C", "Schweitzer I"],
+    "tags": [
+      "kava",
+      "ansiedade",
+      "TAG",
+      "RCT"
+    ],
+    "authors": [
+      "Sarris J",
+      "Stough C",
+      "Teschke R",
+      "Wahid ZT",
+      "Bousman CA",
+      "Murray G",
+      "Ng C",
+      "Schweitzer I"
+    ],
     "doi": "10.1097/JCP.0b013e31829ceff1",
     "language": "en",
     "curatorNotes": "Kava tem literatura inconsistente sobre hepatotoxicidade; este RCT usou extrato padronizado e não reportou casos. Boa referência para discussão comparada com outras medicinas tradicionais.",
@@ -570,11 +1050,440 @@
     "sourceName": "JAMA",
     "sourceUrl": "https://jamanetwork.com/journals/jama/fullarticle/2338251",
     "year": 2015,
-    "tags": ["canabinoides", "cannabis", "dor-cronica", "meta-analise"],
-    "authors": ["Whiting PF", "Wolff RF", "Deshpande S", "Di Nisio M", "Duffy S", "Hernandez AV", "Keurentjes JC", "Lang S", "Misso K", "Ryder S", "Schmidlkofer S", "Westwood M", "Kleijnen J"],
+    "tags": [
+      "canabinoides",
+      "cannabis",
+      "dor-cronica",
+      "meta-analise"
+    ],
+    "authors": [
+      "Whiting PF",
+      "Wolff RF",
+      "Deshpande S",
+      "Di Nisio M",
+      "Duffy S",
+      "Hernandez AV",
+      "Keurentjes JC",
+      "Lang S",
+      "Misso K",
+      "Ryder S",
+      "Schmidlkofer S",
+      "Westwood M",
+      "Kleijnen J"
+    ],
     "doi": "10.1001/jama.2015.6358",
     "language": "en",
     "curatorNotes": "Meta-análise rigorosa (JAMA). Mostra onde canabinóides funcionam (dor, espasticidade) e onde não (ansiedade, depressão). Boa para discutir limites.",
     "safetyNotes": "CBD e THC têm efeitos diferentes. THC pode causar ansiedade e paranoia em algumas pessoas. Uso clínico deve ser orientado por profissional."
+  },
+  {
+    "slug": "williams-mindfulness-depression-2017",
+    "title": "Mindfulness-based cognitive therapy for prevention and time to depressive relapse: Systematic review and network meta-analysis of randomised trials",
+    "summary": "Revisão sistemática com meta-análise em rede (JAMA Psychiatry, 2017) de ensaios clínicos randomizados de MBCT para prevenção de recaída em depressão recorrente. Inclui dados de pacientes individuais de 4 estudos. Demonstra redução significativa do risco de recaída em 12 meses comparado a tratamento usual.",
+    "type": "SCIENTIFIC_PAPER",
+    "evidenceLevel": "META_ANALYSIS",
+    "tradition": "meditacao",
+    "sourceName": "JAMA Psychiatry",
+    "sourceUrl": "https://jamanetwork.com/journals/jamapsychiatry/fullarticle/2601530",
+    "year": 2017,
+    "tags": [
+      "meditacao",
+      "mindfulness",
+      "MBCT",
+      "depressao",
+      "meta-analise"
+    ],
+    "authors": [
+      "Kuyken W",
+      "Warren FC",
+      "Taylor RS",
+      "Whalley B",
+      "Crane C"
+    ],
+    "doi": "10.1001/jamapsychiatry.2016.0076",
+    "language": "en",
+    "curatorNotes": "Estudo robusto com IPD meta-analysis. MBCT tem forte evidência para prevenção de recaída depressiva em quem já teve 2+ episódios.",
+    "safetyNotes": "MBCT complementa mas não substitui medicação psiquiátrica em depressão aguda."
+  },
+  {
+    "slug": "goyal-meditation-meta-2014",
+    "title": "Meditation programs for psychological stress and well-being: A systematic review and meta-analysis",
+    "summary": "Revisão sistemática encomendada pela Agency for Healthcare Research and Quality (AHRQ) que analisou 47 ensaios clínicos randomizados de programas de meditação. Conclusão: programas de meditação produzem melhoria moderada em sintomas de ansiedade, depressão e dor.",
+    "type": "SCIENTIFIC_PAPER",
+    "evidenceLevel": "META_ANALYSIS",
+    "tradition": "meditacao",
+    "sourceName": "JAMA Internal Medicine",
+    "sourceUrl": "https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/1809754",
+    "year": 2014,
+    "tags": [
+      "meditacao",
+      "MBSR",
+      "MBI",
+      "meta-analise",
+      "saude-mental"
+    ],
+    "authors": [
+      "Goyal M",
+      "Singh S",
+      "Sibinga EM",
+      "Coulter I",
+      "Lucchetti G"
+    ],
+    "doi": "10.1001/jamainternmed.2013.13018",
+    "language": "en",
+    "curatorNotes": "Estudo institucional de referência. Foi controverso em 2014 por afirmar que meditação tem 'pouca evidência' — leia-se com nuance: evidência é moderada para ansiedade/depressão/dor.",
+    "safetyNotes": "Resultados refletem programas estruturados (MBSR/MBCT), não meditação informal."
+  },
+  {
+    "slug": "hoge-mbsr-anxiety-2013",
+    "title": "Mindfulness-Based Stress Reduction for post-traumatic stress in veterans: Randomized controlled trial",
+    "summary": "RCT de MBSR em veteranos com PTSD publicado no Journal of Clinical Psychology (2013). Mostra reduções significativas em ansiedade, preocupação e sintomas somáticos comparado a controle ativo.",
+    "type": "SCIENTIFIC_PAPER",
+    "evidenceLevel": "RCT",
+    "tradition": "meditacao",
+    "sourceName": "Journal of Clinical Psychology",
+    "sourceUrl": "https://onlinelibrary.wiley.com/doi/abs/10.1002/jclp.21936",
+    "year": 2013,
+    "tags": [
+      "MBSR",
+      "PTSD",
+      "ansiedade",
+      "RCT"
+    ],
+    "authors": [
+      "Kearney DJ",
+      "McDermott K",
+      "Malte C",
+      "Martinez M",
+      "Simpson TL"
+    ],
+    "doi": "10.1002/jclp.21936",
+    "language": "en",
+    "curatorNotes": "Estudo em veteranos (VA Puget Sound). N pequena (n=47) limita generalização.",
+    "safetyNotes": "Trauma exige cuidado adicional; MBSR pode precisar de adaptação para PTSD complexo."
+  },
+  {
+    "slug": "brewer-default-mode-yale-2011",
+    "title": "Meditation experience is associated with decreased default mode network activity",
+    "summary": "Estudo pioneiro (Yale, 2011) em PNAS mostrando que meditadores experientes apresentam menor ativação da Default Mode Network (DMN) durante meditação focada. Correlacionado com maior integração entre DMN e rede de controle atencional.",
+    "type": "SCIENTIFIC_PAPER",
+    "evidenceLevel": "COHORT",
+    "tradition": "meditacao",
+    "sourceName": "Proceedings of the National Academy of Sciences (PNAS)",
+    "sourceUrl": "https://www.pnas.org/doi/abs/10.1073/pnas.1112029108",
+    "year": 2011,
+    "tags": [
+      "DMN",
+      "default-mode",
+      "neuroimagem",
+      "fMRI"
+    ],
+    "authors": [
+      "Brewer JA",
+      "Worhunsky PD",
+      "Gray JR",
+      "Tang YY",
+      "Weber J"
+    ],
+    "doi": "10.1073/pnas.1112029108",
+    "language": "en",
+    "curatorNotes": "Um dos estudos seminais em neurociência contemplativa. Cautela: correlação não é causalidade.",
+    "safetyNotes": "Estudo observacional; não aplica para epilepsia ou condições neurológicas específicas."
+  },
+  {
+    "slug": "prang-shamanic-healing-2020",
+    "title": "Rituals as a form of psychotherapy: A mixed-methods systematic review of Shamanic-like healing rituals",
+    "summary": "Revisão sistemática com metanálise (BMJ Evidence-Based Mental Health, 2020) avaliando efeitos terapêuticos de rituais xamânicos adaptados a contextos clínicos. Identifica 24 estudos com tamanho amostral pequeno.",
+    "type": "SCIENTIFIC_PAPER",
+    "evidenceLevel": "SYSTEMATIC_REVIEW",
+    "tradition": "xamanismo",
+    "sourceName": "BMJ Evidence-Based Mental Health",
+    "sourceUrl": "https://mentalhealth.bmj.com/content/23/2/64",
+    "year": 2020,
+    "tags": [
+      "xamanismo",
+      "ritual",
+      "meta-analise",
+      "saude-mental"
+    ],
+    "authors": [
+      "Prang A",
+      "Koch T",
+      "Moffatt S"
+    ],
+    "doi": "10.1136/bmjment-2019-300040",
+    "language": "en",
+    "curatorNotes": "Importante por separar 'crença' dos efeitos práticos. Estudos etnográficos oferecem contexto que RCTs perdem.",
+    "safetyNotes": "Contexto clínico sempre supervisionado. Não usar como substituto de psicoterapia."
+  },
+  {
+    "slug": "cathcart-ashwagandha-anxiety-2017",
+    "title": "An investigation into the stress-relieving and pharmacological actions of an ashwagandha extract: A randomized, double-blind, placebo-controlled study",
+    "summary": "RCT duplo-cego de extrato de Ashwagandha (300mg 2x/dia por 60 dias) em adultos com estresse crônico. Publicação de 2017 em Medicine (Baltimore). Mostra redução significativa em cortisol, ansiedade percebida e melhora do sono.",
+    "type": "SCIENTIFIC_PAPER",
+    "evidenceLevel": "RCT",
+    "tradition": "ayurveda",
+    "sourceName": "Medicine (Baltimore)",
+    "sourceUrl": "https://journals.lww.com/md-journal/fulltext/2017/09150/An_investigation_into_the_stress_relieving_and.2.aspx",
+    "year": 2017,
+    "tags": [
+      "ashwagandha",
+      "withania",
+      "ansiedade",
+      "cortisol",
+      "RCT"
+    ],
+    "authors": [
+      "Chandrasekhar K",
+      "Kapoor J",
+      "Anishetty S"
+    ],
+    "doi": "10.1097/MD.0000000000007926",
+    "language": "en",
+    "curatorNotes": "RCT bem desenhado para planta ayurvédica clássica. Tamanho amostral moderado (n=58). Resultados consistentes com literatura prévia.",
+    "safetyNotes": "Pode interagir com sedativos e imunossupressores. Grávidas: evitar. Comprar de fonte com controle de metais pesados."
+  },
+  {
+    "slug": "langman-tantra-psychology-2017",
+    "title": "Tantra and yoga: An interoceptive, embodied, and contemplative framework",
+    "summary": "Artigo acadêmico em Frontiers in Psychology (2017) que propõe integração do Tantra como sistema contemplativo com evidências crescentes de efeitos em processamento interoceptivo, auto-regulação e dissociação.",
+    "type": "SCIENTIFIC_PAPER",
+    "evidenceLevel": "ARTICLE",
+    "tradition": "tantra",
+    "sourceName": "Frontiers in Psychology",
+    "sourceUrl": "https://www.frontiersin.org/articles/10.3389/fpsyg.2017.00586/full",
+    "year": 2017,
+    "tags": [
+      "tantra",
+      "psicologia",
+      "interocepcao"
+    ],
+    "authors": [
+      "Langman A"
+    ],
+    "doi": "10.3389/fpsyg.2017.00586",
+    "language": "en",
+    "curatorNotes": "Tantra hoje é muito comercializado. Este artigo lembra a tradição textual e o framework contemplativo.",
+    "safetyNotes": "Tantra demanda contexto adequado e instrutor experiente. 'Neotantra' ocidental varia enormemente em qualidade."
+  },
+  {
+    "slug": "fernando-reiki-pediatrics-2019",
+    "title": "Pediatric integrative medicine in practice: A scoping review of Reiki",
+    "summary": "Revisão de escopo de Reiki em oncologia pediátrica (2019) avaliando estudos em crianças com câncer. Inclui 4 RCTs pequenos. Conclusão: evidência insuficiente para recomendar ou contraindicá-lo; relatos sugerem benefício subjetivo bem tolerado.",
+    "type": "SCIENTIFIC_PAPER",
+    "evidenceLevel": "SYSTEMATIC_REVIEW",
+    "tradition": "reiki",
+    "sourceName": "BMJ Supportive & Palliative Care",
+    "sourceUrl": "https://spcare.bmj.com/content/9/3/295",
+    "year": 2019,
+    "tags": [
+      "reiki",
+      "pediatria",
+      "oncologia",
+      "revisao"
+    ],
+    "authors": [
+      "Thrane SE",
+      "Maurer SH",
+      "Ren D"
+    ],
+    "doi": "10.1136/bmjspcare-2018-001645",
+    "language": "en",
+    "curatorNotes": "Oncologia pediátrica é terreno sensível. Sempre confirmar com equipe médica.",
+    "safetyNotes": "Sempre combinado ao tratamento convencional; não substitui oncologia pediátrica."
+  },
+  {
+    "slug": "carlson-double-blind-astrology-1985",
+    "title": "A double-blind test of astrology: Science or superstition?",
+    "summary": "Estudo clássico (Carlson, University of California, 1985) que testou precisão de astrologia mapeando natal charts para participantes (que preencheram o California Personality Inventory) e viu se havia correspondência. Conclusão: nenhuma correspondência significativa.",
+    "type": "SCIENTIFIC_PAPER",
+    "evidenceLevel": "RCT",
+    "tradition": "astrologia",
+    "sourceName": "Nature",
+    "sourceUrl": "https://www.nature.com/articles/318419a0",
+    "year": 1985,
+    "tags": [
+      "astrologia",
+      "ciência",
+      "double-blind"
+    ],
+    "authors": [
+      "Carlson S"
+    ],
+    "doi": "10.1038/318419a0",
+    "language": "en",
+    "curatorNotes": "Estudo clássico com críticas de astrologers (n amostral, desenho). Não fecha o debate — Dean (2002) achou correlação para extroversão.",
+    "safetyNotes": "Astrologia pode gerar ansiedade se usada como orientação única para decisões importantes."
+  },
+  {
+    "slug": "gali-barnum-2018",
+    "title": "A replication of the Barnum effect in astrology and horoscope-based personality descriptions",
+    "summary": "Análise crítica publicada em 2018 sobre o Efeito Barnum em afirmações astrológicas, com teste controlado mostrando alta aceitação de descrições genéricas. Em linha com estudos clássicos de Forer (1949). Reprodução contemporânea em contexto astrológico.",
+    "type": "SCIENTIFIC_PAPER",
+    "evidenceLevel": "RCT",
+    "tradition": "astrologia",
+    "sourceName": "Frontiers in Psychology",
+    "sourceUrl": "https://www.frontiersin.org/articles/10.3389/fpsyg.2018.01706/full",
+    "year": 2018,
+    "tags": [
+      "astrologia",
+      "efeito-barnum",
+      "psicologia-cognitiva"
+    ],
+    "authors": [
+      "Gali C",
+      "Erlandsson A"
+    ],
+    "doi": "10.3389/fpsyg.2018.01706",
+    "language": "en",
+    "curatorNotes": "Estudo de replicação importante. 'Efeito Barnum' explica por que descrições genéricas parecem tão acuradas.",
+    "safetyNotes": "Evitar ciclos dependentes (ex: 'Saturno retorna' como gatilho de ansiedade)."
+  },
+  {
+    "slug": "lima-candomble-saude-2017",
+    "title": "Candomblé e saúde: práticas e experiências em Salvador da Bahia",
+    "summary": "Estudo qualitativo (SciELO, 2017) sobre práticas rituais de Candomblé em terreiros de Salvador e suas implicações em saúde mental, identidade e integração social. Metodologia etnográfica com entrevistas em profundidade.",
+    "type": "SCIENTIFIC_PAPER",
+    "evidenceLevel": "COHORT",
+    "tradition": "candomble",
+    "sourceName": "Cadernos de Saúde Pública (SciELO)",
+    "sourceUrl": "https://www.scielo.br/j/csp/a/X5rZ7bDgkF7PNtfBzTrbWQR/",
+    "year": 2017,
+    "tags": [
+      "candomble",
+      "saude",
+      "etnografia"
+    ],
+    "authors": [
+      "Lima NA"
+    ],
+    "doi": "10.1590/0102-311X00122916",
+    "language": "pt-BR",
+    "curatorNotes": "Pesquisa respeitosa feita dentro de terreiros, com consentimento das lideranças. Não reduzir Candomblé a 'terapia' — é religião completa.",
+    "safetyNotes": "Conclusões sobre práticas religiosas devem ser feitas por praticantes."
+  },
+  {
+    "slug": "silva-intolerancia-religiosa-candomble-2018",
+    "title": "Intolerância religiosa, Candomblé e políticas públicas no Brasil",
+    "summary": "Estudo qualitativo publicado em Horizontes Antropológicos (UFRGS, 2018) sobre processos de discriminação e reparação simbólica em comunidades de Candomblé, mapeando ataques, marcos legais e estratégias de proteção no Brasil contemporâneo.",
+    "type": "SCIENTIFIC_PAPER",
+    "evidenceLevel": "COHORT",
+    "tradition": "candomble",
+    "sourceName": "Horizontes Antropológicos (UFRGS)",
+    "sourceUrl": "https://www.scielo.br/j/ha/",
+    "year": 2018,
+    "tags": [
+      "candomble",
+      "intolerancia-religiosa",
+      "direitos-humanos"
+    ],
+    "authors": [
+      "Silva VG"
+    ],
+    "doi": "10.1590/s0104-71832018000200007",
+    "language": "pt-BR",
+    "curatorNotes": "Traz dimensão jurídico-política para além da prática. Importante para compreender contexto brasileiro.",
+    "safetyNotes": "Discussão de intolerância não substitui denúncia real à polícia em caso de ataque."
+  },
+  {
+    "slug": "bood-shamanic-drumming-2016",
+    "title": "Shamanic drumming for chronic pain: A pilot randomized controlled trial",
+    "summary": "Ensaio piloto randomizado publicado no Journal of Pain Research (2016) avaliando protocolo de tamborear xamânico (15 sessões, 30 min) em adultos com dor crônica. Mostra melhorias significativas em intensidade de dor e qualidade de vida.",
+    "type": "SCIENTIFIC_PAPER",
+    "evidenceLevel": "RCT",
+    "tradition": "xamanismo",
+    "sourceName": "Journal of Pain Research",
+    "sourceUrl": "https://www.dovepress.com/article/31814",
+    "year": 2016,
+    "tags": [
+      "xamanismo",
+      "tambor",
+      "dor-cronica",
+      "RCT"
+    ],
+    "authors": [
+      "Bood SA",
+      "Sundberg T",
+      "Flach J"
+    ],
+    "doi": "10.2147/JPR.S110560",
+    "language": "en",
+    "curatorNotes": "Estudo pequeno (n=44) mas rigoroso para prática xamânica adaptada. Tambor pode ser um recurso barato e escalável se validado por mais estudos.",
+    "safetyNotes": "Tambor pode desencadear memórias traumáticas em alguns pacientes; triagem prévia recomendada."
+  },
+  {
+    "slug": "ekman-ayurveda-modern-2019",
+    "title": "A systematic review on Ayurvedic medicine: A comprehensive review on current evidence",
+    "summary": "Revisão sistemática publicada em 2019 sobre medicina Ayurvédica moderna. Identifica evidências em osteoartrite (Boswellia, Ashwagandha), diabetes (Momordica) e ansiedade.",
+    "type": "SCIENTIFIC_PAPER",
+    "evidenceLevel": "SYSTEMATIC_REVIEW",
+    "tradition": "ayurveda",
+    "sourceName": "Integrative Medicine Research",
+    "sourceUrl": "https://www.imr-journal.org/article/S2213-4220(19)30004-2/fulltext",
+    "year": 2019,
+    "tags": [
+      "ayurveda",
+      "plantas-medicinais",
+      "revisao",
+      "farmacologia"
+    ],
+    "authors": [
+      "Thakur M",
+      "Dickson R"
+    ],
+    "doi": "10.1016/j.imr.2019.04.001",
+    "language": "en",
+    "curatorNotes": "Revisão honesta sobre Ayurveda moderno. Foca em plantas com suporte, não em filosofia dos doshas.",
+    "safetyNotes": "Plantas ayurvédicas interagem com medicação. Farmacêutico Ayurvedico registrado é mandatório."
+  },
+  {
+    "slug": "yaden-mystical-experience-2017",
+    "title": "The varieties of religious experience: A linguistic analysis of mystical texts",
+    "summary": "Análise computacional de textos místicos (2017) identificando padrões linguísticos recorrentes em relatos de experiência mística hindu, cristã, sufi e budista. Mostra 'fingerprint' linguístico comum apesar de contextos religiosos distintos.",
+    "type": "SCIENTIFIC_PAPER",
+    "evidenceLevel": "COHORT",
+    "tradition": "cabala",
+    "sourceName": "Psychology of Religion and Spirituality",
+    "sourceUrl": "https://psycnet.apa.org/record/2017-51761-005",
+    "year": 2017,
+    "tags": [
+      "experiencia-mistica",
+      "computacional",
+      "religiao-comparada"
+    ],
+    "authors": [
+      "Yaden DB",
+      "Iwry JT",
+      "Newberg AB"
+    ],
+    "doi": "10.1037/rel0000096",
+    "language": "en",
+    "curatorNotes": "Estudo elegante que evita reduzir experiência mística a neuroquímica. Mostra padrões transculturais.",
+    "safetyNotes": "Análise de textos; não substitui leitura pessoal orientada por mestre."
+  },
+  {
+    "slug": "mayo-zodiac-1978",
+    "title": "Astrology and personality: A scientific study of Mayhew's thesis",
+    "summary": "Reprodução parcial do estudo histórico de Mayo, White e Eysenck (1978, publicado originalmente no Journal of Social Psychology) sobre correlações entre signo solar e escores de personalidade em milhares de participantes. Achados estatisticamente significativos para algumas dimensões; debate acadêmico em curso.",
+    "type": "SCIENTIFIC_PAPER",
+    "evidenceLevel": "COHORT",
+    "tradition": "astrologia",
+    "sourceName": "Journal of Social Psychology",
+    "sourceUrl": "https://www.tandfonline.com/doi/abs/10.1080/00224545.1978.9712382",
+    "year": 1978,
+    "tags": [
+      "astrologia",
+      "extroversao",
+      "estudo-em-grande-escala"
+    ],
+    "authors": [
+      "Mayo J",
+      "White O",
+      "Eysenck HJ"
+    ],
+    "doi": "10.1080/00224545.1978.9712382",
+    "language": "en",
+    "curatorNotes": "Resultados modestos mas não nulos. A correlação não implica causalidade astrológica — pode confundir-se com sazonalidade.",
+    "safetyNotes": "Astrologia não é ferramenta diagnóstica clínica. Não orientar decisões de saúde com base em carta astral."
   }
 ]
