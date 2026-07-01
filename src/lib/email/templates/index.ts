@@ -67,6 +67,7 @@ export type TemplateDataMap = {
   'waitlist-wave-invite': WaitlistWaveInviteData;
   'waitlist-wave-closed': WaitlistWaveClosedData;
   'beta-invite': BetaInviteData;
+  'curator-invite': CuratorInviteData;
 };
 
 export interface RenderOptions {
@@ -127,6 +128,8 @@ export function renderTemplate<K extends TemplateId>(
       return renderWaitlistWaveClosed(data as WaitlistWaveClosedData, opts);
     case 'beta-invite':
       return renderBetaInvite(data as BetaInviteData, opts);
+    case 'curator-invite':
+      return renderCuratorInvite(data as CuratorInviteData, opts);
     default: {
       // Exhaustiveness check — TS error se algum case faltar
       const _exhaustive: never = templateId;

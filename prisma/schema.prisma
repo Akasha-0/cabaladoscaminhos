@@ -140,6 +140,88 @@ enum MentorshipStatus {
 }
 
 // ============================================================================
+// CURADOR / USER ROLES — Wave 35 (2026-07-01)
+// ============================================================================
+// Hierarquia de papéis do sistema (UserRole) + papéis específicos do
+// subtree de curadores (CuratorRole) + ciclo de vida de convites.
+//
+// LGPD: dados de credenciais são opcionais e exigem consentimento
+// explícito no aceite do convite (Art. 7º, I).
+//
+// Universalismo:
+//  - Nenhuma tradição é superior; curadores representam com igualdade
+//  - Curador pode revisar conteúdo de outras tradições via flag cruzada
+//  - Iyá tem poder de veto + última palavra em conflito de revisão
+//
+// IMPORTANTE: estes enums são definidos aqui (antes do model User)
+// porque Prisma exige resolução forward-free.
+// ============================================================================
+
+enum UserRole {
+  USER           // membro regular da comunidade
+  ADMIN          // admin operacional (escape hatch via ADMIN_EMAILS/planoAssinatura)
+  IYA            // curadora-chefe (raiz do subtree Curator)
+  CURATOR        // curador convidado (qualquer tradição, ativo)
+  GUEST_CURATOR  // curador temporário (especialista convidado — prazo fixo)
+}
+
+enum CuratorRole {
+  IYA                 // Iyá principal (curadora-chefe)
+  CURATOR_CABALA      // curador convidado Cabala
+  CURATOR_IFA         // curador convidado Ifá
+  CURATOR_TANTRA      // curador convidado Tantra/Astrologia
+  CURATOR_ASTROLOGIA  // curador convidado Astrologia (sub-trilha)
+  GUEST_CURATOR       // curador temporário (especialista convidado)
+}
+
+enum CuratorInvitationStatus {
+  PENDING   // convite enviado, ainda não aceito
+  ACCEPTED  // curador aceitou e ativou perfil
+  DECLINED  // recusa explícita
+  EXPIRED   // passou do deadline (14d default)
+  REVOKED   // Iyá/Admin cancelou manualmente
+}
+
+// ============================================================================
+// MENTORSHIP V2 — Onda 35 (2026-07-01)
+// Aplicação estruturada, matching automático, sessões agendadas, feedback.
+// Universalismo: suporta todas as tradições canônicas (12 listadas em
+// src/app/(community)/mentorship/page.tsx).
+// LGPD Art. 7 (consentimento), Art. 18 (direitos do titular),
+// Art. 37 (registro de operações) — bio/approach/availability são tratados
+// como dados pessoais sensíveis (autoria declarada) e exigem base legal.
+// ============================================================================
+
+enum MentorApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  INACTIVE
+}
+
+enum MentorshipPairStatus {
+  PROPOSED
+  ACTIVE
+  PAUSED
+  COMPLETED
+  ENDED
+}
+
+enum MentorshipSessionStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum MentorshipSessionType {
+  INTAKE
+  REGULAR
+  CHECK_IN
+  CLOSING
+}
+
+// ============================================================================
 // USER — agregado raiz
 // ============================================================================
 // Mantido do schema legacy. Removidas relações para modelos B2B deletados
@@ -187,6 +269,11 @@ model User {
   // Histórico de 👍/👎 dados em respostas da Akasha (analytics + retreino).
   akashicFeedback AkashicFeedback[]
 
+  // 2026-07-01 — Wave 35 Akasha Personalization
+  // Memória de longo prazo do user (opt-in) + histórico de conversas
+  akashaMemory               UserAkashaMemory?
+  akashaConversationMemory   AkashaConversationMemory[]
+
   // 2026-06-30 — Wave 30 Stripe Connect marketplace
   connectAccount       ConnectAccount?
   paymentsAsReader     Payment[]       @relation("PaymentReader")
@@ -199,6 +286,36 @@ model User {
   betaInvitesSent     BetaInvite[]    @relation("BetaInviteInviter")
   betaInvitesAccepted BetaInvite[]    @relation("BetaInviteAcceptor")
 
+  // 2026-07-01 — Wave 35 Marketplace Practitioner
+  // Papel funcional (separado de planoAssinatura que é comercial):
+  //   USER        → default; pode comprar e consumir
+  //   PRACTITIONER → VERIFIED; pode publicar offerings e receber pagamentos
+  //   ADMIN       → curador Iyá + ops
+  // Transições controladas pelo admin verification dashboard.
+  practitionerRole   String  @default("USER")
+  // Status derivado da última verificação (cache p/ queries rápidas)
+  practitionerStatus String  @default("NONE")
+  // Média de reviews (0.00..5.00) — denormalizado
+  practitionerAvgRating Float  @default(0)
+  // Total de reviews recebidas
+  practitionerReviewCount Int @default(0)
+
+  // 2026-07-01 — Wave 35 reverse relations
+  practitionerVerification PractitionerVerification?
+  offeringsAsPractitioner  MarketplaceOffering[]   @relation("OfferingPractitioner")
+  reviewsWritten           MarketplaceReview[]     @relation("ReviewAuthor")
+  reviewsReceived          MarketplaceReview[]     @relation("ReviewPractitioner")
+  escrowAsBuyer            EscrowTransaction[]     @relation("EscrowBuyer")
+  escrowAsPractitioner     EscrowTransaction[]     @relation("EscrowPractitioner")
+
+  // 2026-07-01 — Wave 35 Curator System
+  // Papel do usuário na hierarquia. Default USER para novos signups.
+  // ADMIN/Iyá continuam sendo resolvidos também via ADMIN_EMAILS/planoAssinatura
+  // (defense-in-depth: a coluna aqui espelha o papel operacional).
+  role                UserRole        @default(USER)
+  curatorProfile      CuratorProfile?
+
+  @@index([role])
   @@index([planoAssinatura])
   @@index([isMentor])
   @@index([createdAt])
@@ -465,6 +582,42 @@ model SpiritualProfile {
 
   // Onboarding flag
   onboardedAt DateTime?
+
+  // 2026-07-01 — Wave 35 Beta Onboarding (1/8)
+  // Máquina de estados do primeiro acesso após convite beta.
+  // Default INVITED para usuários que vieram via convite; signup orgânico
+  // começa em SIGNED_UP (skip welcome carousel).
+  onboardingState        OnboardingState @default(INVITED)
+  // Step atual dentro do welcome carousel (0..3). Persistido para
+  // retomo entre devices (cookie + DB).
+  onboardingWelcomeStep  Int             @default(0)
+  // Tradição preferida selecionada no profile wizard (slug canônico).
+  // nullable — usuário pode pular.
+  preferredTradition     String?
+  // Práticas preferidas (multi-select): meditation, prayer, ritual, study,
+  // journaling, yoga, breathwork, divination. JSON array — flexibilidade
+  // sem nova migration ao adicionar categoria.
+  practicePreferences    String[]        @default([])
+  // Email notification prefs (5 categorias booleanas). Default tudo OFF.
+  emailPrefsNewContent   Boolean         @default(false)
+  emailPrefsCommunity    Boolean         @default(false)
+  emailPrefsMentorship   Boolean         @default(false)
+  emailPrefsMarketing    Boolean         @default(false)
+  emailPrefsNpsSurveys   Boolean         @default(true)
+  // LGPD refresh timestamp — última vez que usuário confirmou consent
+  // ativo na nova versão do privacy policy.
+  lgpdRefreshedAt        DateTime?
+  // Display name público (separado de nomeCompleto que é certidão).
+  // Default = primeira parte de nomeCompleto.
+  displayName            String?
+  // Avatar URL (Cloudinary ou similar). Default = null (iniciais).
+  avatarUrl              String?
+  // Bio pública (max 280 chars enforced em validation layer).
+  bioPublic              String?
+  // Onboarding events (analytics + retomo).
+  onboardingEvents       OnboardingEvent[]
+  // Skip-all flag — usuário pediu para nunca mais ver onboarding.
+  onboardingSkippedAll   Boolean         @default(false)
 
   // 2026-06-27 — Onda 12 Search & Discovery
   searchVector Unsupported("tsvector")?
@@ -810,6 +963,142 @@ model MentorshipMessage {
 
   @@index([mentorshipId, createdAt])
   @@map("mentorship_messages")
+}
+
+// ============================================================================
+// MENTORSHIP V2 MODELS — Onda 35 (2026-07-01)
+// ============================================================================
+
+// Aplicação estruturada de mentores. Substitui o flag `isMentor` no User
+// por um workflow de aprovação. LGPD Art. 7 (consentimento explícito).
+model MentorApplication {
+  id              String                  @id @default(cuid())
+  userId          String                  @unique
+  status          MentorApplicationStatus @default(PENDING)
+
+  // Tradições que pode mentorar (ex: ["cabala","astrologia"])
+  traditions      String[]
+
+  // Especialidades (ex: ["iniciantes","liturgia","kabbalística prática"])
+  specialties     String[]
+
+  // Anos de prática (validado: 0-99)
+  yearsOfPractice Int
+
+  // Bio pública + abordagem pedagógica
+  bio             String                  @db.Text
+  approach        String                  @db.Text
+
+  // Disponibilidade semanal (JSON): { "mon": ["18:00-20:00"], ... }
+  // Armazenado como JSON para suportar múltiplos blocos por dia.
+  availability    Json
+
+  // Limite simultâneo de mentees ativos
+  maxMentees      Int                     @default(5)
+
+  // Idiomas: ["pt-BR", "en-US", "es-ES"]
+  languages       String[]
+
+  // Audit: quem aprovou e quando
+  approvedBy      String?
+  approvedAt      DateTime?
+  rejectionReason String?
+
+  // Telemetria: rating médio + total de sessões concluídas
+  rating          Float                   @default(0)
+  totalSessions   Int                     @default(0)
+
+  createdAt       DateTime                @default(now())
+  updatedAt       DateTime                @updatedAt
+
+  @@index([status, traditions])
+  @@index([status, languages])
+  @@index([createdAt])
+  @@map("mentor_applications")
+}
+
+// Pair mentor-mentee formal (complementa Mentorship V1).
+// Suporta objetivos (goals JSON), notas internas, e ciclo de vida.
+model MentorshipPair {
+  id        String               @id @default(cuid())
+  mentorId  String
+  menteeId  String
+  tradition String
+  status    MentorshipPairStatus @default(PROPOSED)
+
+  // Objetivos do par (mentee define, mentor revisa)
+  // Schema: [{ title: string, target: string, dueDate: ISO }]
+  goals     Json
+
+  // Datas de início e fim
+  startedAt DateTime?
+  endedAt   DateTime?
+
+  // Notas privadas (audit LGPD Art. 37)
+  notes     String?              @db.Text
+
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+
+  // Um par único mentor+mentee (sem duplicatas)
+  @@unique([mentorId, menteeId])
+  @@index([status, tradition])
+  @@index([mentorId, status])
+  @@index([menteeId, status])
+  @@map("mentorship_pairs")
+}
+
+// Sessão agendada dentro de um par. Inclui agenda, notas, feedback
+// bilateral, e referência a vídeo-conferência (Daily.co stub).
+model MentorshipSession {
+  id              String                  @id @default(cuid())
+  pairId          String
+  scheduledAt     DateTime
+  durationMin     Int                     @default(60)
+  type            MentorshipSessionType   @default(REGULAR)
+
+  // Agenda planejada + notas pós-sessão
+  agenda          String?                 @db.Text
+  notes           String?                 @db.Text
+
+  // Feedback bilateral (1-5 estrelas + texto)
+  mentorFeedback  String?
+  menteeFeedback  String?
+  rating          Int?
+
+  // Status da sessão
+  status          MentorshipSessionStatus @default(SCHEDULED)
+
+  // URL da videochamada (Daily.co ou stub em dev)
+  recordingUrl    String?
+
+  // Lembretes: timestamps de envio de email 24h e 1h antes
+  reminder24hSent DateTime?
+  reminder1hSent  DateTime?
+
+  createdAt       DateTime                @default(now())
+  updatedAt       DateTime                @updatedAt
+
+  @@index([pairId, scheduledAt])
+  @@index([status, scheduledAt])
+  @@index([scheduledAt])
+  @@map("mentorship_sessions")
+}
+
+// Recursos compartilhados em um par (artigos, práticas, links externos).
+// Aponta para Article (model existente) ou URL externa.
+model MentorshipResource {
+  id          String   @id @default(cuid())
+  pairId      String
+  sharedById  String
+  title       String
+  description String?  @db.Text
+  url         String?
+  articleId   String?
+  createdAt   DateTime @default(now())
+
+  @@index([pairId, createdAt])
+  @@map("mentorship_resources")
 }
 
 // ============================================================================
@@ -1349,6 +1638,17 @@ enum AuditAction {
   // Beta invite (Wave 33)
   INVITE_EXPIRED_BATCH  // cron moveu convites vencidos para EXPIRED
   INVITE_REVOKED        // admin cancelou convite individual
+  // Curator system (Wave 35)
+  CURATOR_INVITED       // admin/Iyá enviou convite para novo curador
+  CURATOR_INVITE_ACCEPTED // curador aceitou convite + ativou perfil
+  CURATOR_INVITE_DECLINED // curador recusou explicitamente
+  CURATOR_INVITE_EXPIRED // convite venceu (14d deadline)
+  CURATOR_INVITE_REVOKED  // convite cancelado por admin/Iyá
+  CURATOR_PROFILE_UPDATED // Iyá atualizou permissions/credentials
+  CURATOR_DEACTIVATED    // admin/Iyá desativou curador
+  ARTICLE_APPROVED       // curador aprovou artigo (por tradição)
+  ARTICLE_REJECTED       // curador rejeitou artigo (por tradição)
+  POST_MODERATED_BY_CURATOR // curador moderou post sinalizado da sua tradição
 }
 
 // ============================================================================
@@ -1860,6 +2160,141 @@ enum SacredTradition {
   UNIVERSAL          // equinoxes/solstices/luas (todas as tradições)
 }
 
+enum PracticeExperience {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  SCHOLAR             // estudo formal/acadêmico
+}
+
+enum ResponseLength {
+  SHORT               // 1-2 frases
+  MEDIUM              // 1-3 parágrafos
+  LONG                // análise completa
+}
+
+enum RagChunkKind {
+  PEER_REVIEWED       // paper PubMed/arXiv
+  TRADITION_SOURCE    // livro/autor clássico
+  COMMUNITY_INSIGHT   // post/comentário indexado
+  CURATED_ARTICLE     // artigo da biblioteca Akasha
+}
+
+// ============================================================================
+// AKASHA PERSONALIZATION (Wave 35 — 2026-07-01)
+// ============================================================================
+// Memória de longo prazo por usuário para personalizar:
+//   - tradição dominante (auto-aplicada em RAG e prompt)
+//   - nível de experiência (BEGINNER..SCHOLAR) — adapta profundidade
+//   - áreas sensíveis (temas que o user marcou como delicados)
+//   - preferências de formato (tom, comprimento, uso de analogias)
+//   - últimos tópicos (rolling window) — continuidade entre conversas
+//
+// LGPD:
+//   - Opt-in obrigatório (consent flag abaixo) — default OFF
+//   - Export/delete via /api/lgpd/* herdado de Wave 11
+//   - lifeContext é categorizado (work/family/challenges) — NUNCA PII cru
+//   - citedSources são DOIs/PMIDs (público) — OK armazenar
+//   - retention: indefinite até o user pedir delete (LGPD Art. 18)
+//
+// Reuso:
+//   - refreshUserMemory() (W35) roda a cada 10 conversas
+//   - assembleContext() (W35) injeta no system prompt
+// ============================================================================
+
+model UserAkashaMemory {
+  id                  String   @id @default(cuid())
+  userId              String   @unique
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Tradições preferidas (slugs canônicos: cabala, ifa, tantra, ...).
+  // Pode ter múltiplas (universalismo ativo — Wave 32 multi-tradição).
+  preferredTraditions String[] @default([])
+
+  // Nível de prática auto-detectado ou explicitamente setado pelo user
+  practiceExperience  PracticeExperience @default(BEGINNER)
+
+  // Contexto de vida categorizado (sem PII cru).
+  //   { work: "tech", family: "mãe idosa", challenges: ["burnout"] }
+  // Validação no app garante que NÃO entra nome, CPF, endereço, telefone.
+  lifeContext         Json     @default("{}") @db.JsonB
+
+  // Contadores derivados
+  interactionCount    Int      @default(0)
+  // Última vez que foi atualizado (rolling 10-conversation refresh)
+  lastRefreshedAt     DateTime?
+
+  // Rolling window dos últimos 10 tópicos discutidos (auto-extraído via LLM)
+  lastTopics          String[] @default([])
+
+  // DOIs/PMIDs que o user citou (audit trail + cross-session continuity)
+  citedSources        String[] @default([])
+
+  // Áreas sensíveis — temas que o user marcou como delicados.
+  // Akasha evita trazer à tona sem convite explícito.
+  sensitivityAreas    String[] @default([])
+
+  // Preferências de formato
+  //   { responseLength: "MEDIUM", useAnalogies: true, preferredTone: "acolhedor" }
+  preferences         Json     @default("{}") @db.JsonB
+
+  // LGPD — opt-in flag. Default false. Required para refresh automático.
+  consentGiven        Boolean  @default(false)
+  consentGivenAt      DateTime?
+
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([preferredTraditions], type: Gin)
+  @@index([practiceExperience])
+  @@index([consentGiven])
+  @@map("user_akasha_memory")
+}
+
+/// Histórico de turnos de conversa da Akasha.
+/// Persiste SÓ quando user consentiu (Wave 35 LGPD-by-design).
+/// Usado para:
+///   - continuity cross-session (retomar conversa)
+///   - feedback analysis (qual resposta foi upvote/downvote)
+///   - retreino futuro (anonimizado + opt-in)
+model AkashaConversationMemory {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // ID da conversa (client-generated UUID — mesma sessão pode ter N turns)
+  conversationId  String
+
+  // Turn index dentro da conversa (0-based)
+  turnIndex       Int
+
+  // 'user' ou 'assistant'
+  role            String
+
+  // Conteúdo completo (NÃO usar para training sem opt-in explícito)
+  content         String   @db.Text
+
+  // Citações usadas nesta resposta (DOIs/PMIDs/URLs verificados)
+  citedSources    Json?    @db.JsonB
+
+  // Tokens consumidos (cost tracking)
+  tokensUsed      Int      @default(0)
+
+  // Feedback do user neste turn:
+  //   { vote: 'UP' | 'DOWN', citationAccuracy: 0..1, refusalAccuracy: 0..1, comment?: string }
+  feedback        Json?    @db.JsonB
+
+  // Contexto categorizado (tradição, deep mode, topicos) — sem PII
+  metadata        Json?    @db.JsonB
+
+  createdAt       DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([conversationId, turnIndex])
+  @@index([userId, conversationId])
+  @@map("akasha_conversation_memory")
+}
+
 model SacredCalendar {
   id        String @id @default(cuid())
   date      DateTime  // data local 00:00 (sem hora — datas sagradas são full-day)
@@ -2343,4 +2778,627 @@ enum NpsTrigger {
   DAY_30
   QUARTERLY
   MANUAL
+}
+
+// ============================================================================
+// Enums — Beta Onboarding Wave 35
+// ============================================================================
+// Máquina de estados do primeiro acesso após convite beta (W32-2).
+// Progressão determinística: INVITED → SIGNED_UP → PROFILE_SETUP →
+// TRADITION_CHOSEN → FIRST_ACTION → ONBOARDED (estado terminal).
+//
+// `SKIPPED` é ramificação lateral — usuário aceitou mas pulou o restante.
+// `DROPPED` é inatividade >14d (worker de cron rotula via lastSeenAt).
+// ============================================================================
+enum OnboardingState {
+  INVITED
+  SIGNED_UP
+  PROFILE_SETUP
+  TRADITION_CHOSEN
+  FIRST_ACTION
+  ONBOARDED
+  SKIPPED
+  DROPPED
+}
+
+enum OnboardingEventKind {
+  WELCOME_VIEWED
+  WELCOME_STEP_CHANGED
+  WELCOME_SKIPPED
+  WELCOME_COMPLETED
+  PROFILE_FIELD_EDITED
+  PROFILE_AVATAR_UPLOADED
+  PROFILE_LGPD_REFRESHED
+  PROFILE_NOTIFICATION_PREFS_SAVED
+  PROFILE_COMPLETED
+  TRADITION_SELECTED
+  FIRST_ACTION_CTA_CLICKED
+  FIRST_ACTION_COMPLETED
+  TOUR_STEP_VIEWED
+  TOUR_SKIPPED
+  TOUR_COMPLETED
+  ONBOARDING_SKIPPED_ALL
+  REMINDER_SENT
+  MILESTONE_REACHED
+  STATE_ADVANCED
+}
+
+// ============================================================================
+// CURATOR SYSTEM — Wave 35 (2026-07-01)
+// ============================================================================
+// Modelo de dados para os curadores convidados. Iyá (curadora-chefe)
+// é a raiz; cada curador atua focado em 1 tradição e tem permissões
+// granulares armazenadas em JSON (facilita iteração sem migration).
+//
+// LGPD:
+//   - credentials (linhagem) é opcional e requer consent explícito
+//     no aceite do convite (Art. 7º, I)
+//   - Toda escrita passa por audit log (art. 37)
+//
+// Universalismo:
+//   - Tradição = string livre (slug canônico: cabala, ifa, tantra,
+//     astrologia, xamanismo, ...) para suportar novos convites sem
+//     migration
+//   - Curadores podem revisar cross-tradição via flag (sem exlusividade)
+// ============================================================================
+
+model CuratorProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Slug canônico da tradição foco (cabala, ifa, tantra, astrologia, ...)
+  tradition   String
+
+  // Papel específico dentro do subtree de curadores
+  curatorRole CuratorRole @default(GUEST_CURATOR)
+
+  // Bio curta (até 1000 chars) — exibida em /curator/[tradition]
+  bio         String?  @db.Text
+
+  // Credenciais formais (linhagem, certificados, publicações) — opcional
+  credentials String?  @db.Text
+
+  // Quem aprovou (Iyá userId) — vazia = ainda não aprovada
+  approvedBy  String?
+
+  // Quando foi aprovado/ativado
+  approvedAt  DateTime?
+
+  // Soft-delete: curador sai mas perfil é preservado para histórico
+  active      Boolean  @default(true)
+
+  // Motivo da desativação (auditado) — último motivo registrado
+  deactivatedReason String?
+
+  // Permissões granulares em JSON:
+  // {
+  //   canApproveContent: bool,
+  //   canCurateLibrary: bool,
+  //   canModeratePosts: bool,
+  //   canInviteCurators: bool,    // só Iyá
+  //   canReviewOtherTraditions: bool
+  // }
+  permissions Json     @default("{}")
+
+  // Prazo do GUEST_CURATOR (null = permanente até revoke)
+  guestExpiresAt DateTime?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  invitations CuratorInvitation[]
+
+  @@index([tradition, active])
+  @@index([curatorRole, active])
+  @@index([userId])
+  @@map("curator_profiles")
+}
+
+model CuratorInvitation {
+  id          String   @id @default(cuid())
+  profileId   String?
+  profile     CuratorProfile? @relation(fields: [profileId], references: [id], onDelete: SetNull)
+
+  // Email do convidado (caso ainda não tenha conta — opcional)
+  email       String
+
+  // Nome completo do convidado (para personalizar email)
+  displayName String
+
+  // Tradição foco do convite
+  tradition   String
+
+  // Papel oferecido
+  curatorRole CuratorRole @default(GUEST_CURATOR)
+
+  // Token HMAC de aceite (single-use, 14d)
+  acceptToken String   @unique
+
+  // Status do convite
+  status      CuratorInvitationStatus @default(PENDING)
+
+  // Quem enviou o convite (Iyá ou admin)
+  invitedById String
+  invitedByName String
+
+  // Mensagem pessoal opcional (incluída no email)
+  personalMessage String? @db.Text
+
+  // Datas
+  expiresAt   DateTime
+  acceptedAt  DateTime?
+  declinedAt  DateTime?
+  revokedAt   DateTime?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([email])
+  @@index([status, expiresAt])
+  @@index([tradition, status])
+  @@map("curator_invitations")
+}
+
+
+// ============================================================================
+// OnboardingEvent — Wave 35 (Beta First-Run Experience)
+// ============================================================================
+// Append-only log de eventos de onboarding. Sem update/delete (LGPD art. 37:
+// trilha de auditoria imutável). Usado para:
+//   1. Analytics (funis: signup → welcome → profile → first-action)
+//   2. Retomo (qual step o usuário parou em cross-device)
+//   3. A/B tests (variants testados por usuário)
+//   4. Diagnóstico de drop-off (qual step tem mais bounce)
+//
+// Não armazena PII em `metadata` (apenas IDs e contexto técnico). Campos
+// derivados (city, device) ficam em colunas indexadas para agregação.
+// ============================================================================
+model OnboardingEvent {
+  id          String              @id @default(cuid())
+  userId      String
+  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  kind        OnboardingEventKind
+
+  // Contexto técnico (sem PII). Ex: { step: 2, variant: 'A', duration_ms: 4200 }
+  metadata    Json?
+
+  // Snapshot do estado no momento do evento (para reconstruir funis sem join)
+  stateBefore OnboardingState?
+  stateAfter  OnboardingState?
+
+  // Variant A/B (null = controle). Cada novo teste cria nova chave.
+  abVariant   String?
+
+  // Dispositivo (best-effort do user agent — server-side não tem JS)
+  device      String?
+
+  createdAt   DateTime            @default(now())
+
+  @@index([userId])
+  @@index([kind])
+  @@index([createdAt])
+  @@index([abVariant])
+  @@map("onboarding_events")
+}
+
+// ============================================================================
+// MARKETPLACE PRACTITIONER + ESCROW + REVIEWS — Wave 35 (2026-07-01)
+// ============================================================================
+// Universalismo (W32-8): credibilidade de praticantes é ponto crítico para
+// evitar charlatanismo. Este bloco implementa:
+//
+// 1) PractitionerVerification — credenciamento formal com revisão humana
+//    (curador Iyá ou admin). Tradição + anos + bio + credenciais + docs.
+//    LGPD: documentsUrls são URLs S3 privadas com signed URLs (TTL 5min).
+//
+// 2) MarketplaceOffering — oferta de serviço (leitura, mentoria, ritual).
+//    Precisa practitioner VERIFIED + Connect ACTIVE para publicar.
+//
+// 3) EscrowTransaction — ledger de escrow. HELD on payment_intent.succeeded;
+//    RELEASED 7 dias após sessionDate (configurável); REFUNDED via buyer
+//    em janela de 24h ou admin. Dispute → DISPUTED + freeze.
+//
+// 4) MarketplaceReview — avaliação 1-5 + texto. verifiedPurchase=true
+//    apenas se houver EscrowTransaction RELEASED entre buyer e practitioner.
+//    Anti-fraud: 1 review por (userId, offeringId).
+//
+// Decisões éticas:
+//   - Não temos "score de credibilidade" (risco de discriminação algorítmica).
+//   - Rejeição admin TEM que ter rejectionReason visível ao solicitante (LGPD).
+//   - Reviews são públicas mas author.displayName é opt-in (default = initials).
+//   - Practitioner pode responder 1x por review (transparência).
+// ============================================================================
+
+// -- 1. Status do credenciamento ---------------------------------------------
+enum PractitionerStatus {
+  PENDING        // submissão enviada, aguardando revisão humana
+  UNDER_REVIEW   // curador/admin assumiu a revisão (lock anti-dupla decisão)
+  VERIFIED       // aprovado; pode publicar offerings e receber pagamentos
+  REJECTED       // reprovado; solicitation pode resubmeter após 30 dias
+  SUSPENDED      // suspenso por violação de política (anti-fraud, abuse)
+}
+
+model PractitionerVerification {
+  id                String              @id @default(cuid())
+  userId            String              @unique
+  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  status            PractitionerStatus  @default(PENDING)
+
+  // -- Identidade espiritual --
+  // Tradição foco (slug canônico: cabala, ifa, candomble, umbanda, ...)
+  tradition         String
+  // Anos de prática efetiva (não inclui estudo teórico)
+  yearsOfPractice   Int
+
+  // -- Credenciais --
+  // Bio pública (mostrada no perfil do practitioner). Max 1000 chars.
+  bio               String              @db.Text
+  // Credenciais estruturadas (certificados, linhagens, formações).
+  // Format: "2018 | Kabbalah Teacher Training | Beit Shamash | Jerusalem"
+  credentials       String              @db.Text
+  // Referências da comunidade (2-3 pessoas, nome + contato opcional).
+  references        String?
+
+  // URLs dos documentos comprobatórios (S3 com signed URLs, TTL 5min).
+  // NÃO armazenamos o PDF/certificado — apenas a referência.
+  documentsUrls     String[]            @default([])
+
+  // -- Workflow --
+  // Quem assumiu a revisão (admin/curador userId). Null = ninguém ainda.
+  reviewerId        String?
+  // Quando foi aprovado/rejeitado.
+  approvedAt        DateTime?
+  approvedBy        String?
+  // Quando foi rejeitado e por quê. Visível ao solicitante (LGPD Art. 18).
+  rejectedAt        DateTime?
+  rejectedReason    String?
+  rejectionDetails  String?
+
+  // -- Suspenção --
+  suspendedAt       DateTime?
+  suspendedReason   String?
+
+  // -- LGPD Art. 7: consentimento explícito para tratamento dos dados --
+  // true = usuário aceitou que bio/credenciais sejam públicas após VERIFIED
+  lgpdPublicConsent Boolean             @default(false)
+
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  @@index([status, tradition])
+  @@index([status, createdAt])
+  @@index([reviewerId])
+  @@map("practitioner_verifications")
+}
+
+// -- 2. Offering (oferta de serviço) -----------------------------------------
+enum OfferingType {
+  READING          // leitura avulsa (tarot, búzios, runas, ...)
+  MENTORSHIP       // acompanhamento 1-on-1 (mensal / pacote)
+  RITUAL           // ritual presencial ou à distância
+  COURSE           // curso assíncrono
+  WORKSHOP         // workshop ao vivo
+}
+
+enum OfferingStatus {
+  DRAFT            // em construção; só o practitioner vê
+  PUBLISHED        // visível no marketplace
+  PAUSED           // oculto temporariamente (férias, demanda cheia)
+  ARCHIVED         // removido do marketplace (mantém histórico)
+}
+
+model MarketplaceOffering {
+  id              String          @id @default(cuid())
+
+  // Practitioner dono (precisa ser VERIFIED para publicar)
+  practitionerId  String
+  practitioner    User            @relation("OfferingPractitioner", fields: [practitionerId], references: [id], onDelete: Cascade)
+
+  // Identidade
+  slug            String          @unique
+  title           String
+  description     String          @db.Text
+  type            OfferingType
+
+  // Tradição foco (slug canônico)
+  tradition       String
+
+  // Pricing (smallest currency unit — centavos)
+  priceAmount     Int
+  currency        String          @default("brl")
+
+  // Duração estimada em minutos (ex: 60 para leitura, 90 para mentoria)
+  durationMin     Int             @default(60)
+
+  // Capacidade (1 para leitura 1-on-1; >1 para workshops)
+  maxParticipants Int             @default(1)
+
+  // Mídia
+  coverImageUrl   String?
+
+  // Status
+  status          OfferingStatus  @default(DRAFT)
+
+  // Contadores denormalizados (atualizar via trigger ou app)
+  purchasesCount  Int             @default(0)
+  avgRating       Float           @default(0)
+  reviewsCount    Int             @default(0)
+
+  // LGPD: prática que NÃO pode ser oferecida (charlatanismo, promessas mágicas)
+  // Validado por curador. Empty list = sem restrições.
+  ethicalReviewed Boolean         @default(false)
+
+  reviews         MarketplaceReview[]
+
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  publishedAt     DateTime?
+
+  @@index([practitionerId, status])
+  @@index([tradition, status])
+  @@index([type, status])
+  @@index([publishedAt])
+  @@map("marketplace_offerings")
+}
+
+// -- 3. Escrow Transaction --------------------------------------------------
+enum EscrowStatus {
+  HELD            // pagamento confirmado; valor em escrow (ainda não liberado)
+  RELEASED        // valor liberado ao practitioner (sessão confirmada / auto-release)
+  REFUNDED        // valor devolvido ao buyer
+  DISPUTED        // em disputa (freeze até resolução)
+  CANCELED        // cancelado antes do pagamento
+}
+
+model EscrowTransaction {
+  id                String          @id @default(cuid())
+
+  // Stripe payment intent (UNIQUE — 1 escrow por payment intent)
+  paymentIntentId   String          @unique
+
+  // Partes
+  buyerId           String
+  buyer             User            @relation("EscrowBuyer", fields: [buyerId], references: [id], onDelete: Restrict)
+  practitionerId    String
+  practitioner      User            @relation("EscrowPractitioner", fields: [practitionerId], references: [id], onDelete: Restrict)
+
+  // Opcional: offering relacionada (snapshot para analytics)
+  offeringId        String?
+
+  // Valor (smallest currency unit)
+  amount            Int
+  currency          String          @default("brl")
+
+  // Status + lifecycle
+  status            EscrowStatus    @default(HELD)
+
+  // Quando o serviço vai acontecer (data da sessão). Usado para calcular
+  // scheduledRelease (sessionDate + 7 dias).
+  sessionDate       DateTime?
+  // Quando o auto-release vai disparar (cron diário checa esta coluna)
+  scheduledRelease  DateTime
+
+  // Timestamps de estado
+  releasedAt        DateTime?
+  refundedAt        DateTime?
+  canceledAt        DateTime?
+  disputedAt        DateTime?
+
+  // Quem iniciou cada transição
+  releasedBy        String?
+  refundedBy        String?
+
+  // Motivo (dispute, refund reason, etc)
+  reason            String?
+
+  // Janela de refund manual do buyer: 24h após createdAt
+  refundDeadline    DateTime
+
+  // Metadata livre (sem PII): { stripeChargeId, disputeId, ... }
+  metadata          Json            @default("{}")
+
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  @@index([status, scheduledRelease])
+  @@index([buyerId, status])
+  @@index([practitionerId, status])
+  @@index([paymentIntentId])
+  @@index([refundDeadline])
+  @@map("escrow_transactions")
+}
+
+// -- 4. Reviews & Ratings ---------------------------------------------------
+model MarketplaceReview {
+  id                String          @id @default(cuid())
+
+  // Alvo da review
+  offeringId        String
+  offering          MarketplaceOffering @relation(fields: [offeringId], references: [id], onDelete: Cascade)
+
+  // Quem escreveu
+  userId            String
+  user              User            @relation("ReviewAuthor", fields: [userId], references: [id], onDelete: Cascade)
+
+  // Practitioner dono da offering (denormalizado para queries)
+  practitionerId    String
+  practitioner      User            @relation("ReviewPractitioner", fields: [practitionerId], references: [id], onDelete: Cascade)
+
+  // 1-5 (validado na API)
+  rating            Int
+
+  // Conteúdo
+  title             String
+  body              String          @db.Text
+
+  // Anti-fraud: true apenas se houver EscrowTransaction RELEASED entre
+  // userId e practitionerId para esta offering
+  verifiedPurchase  Boolean         @default(false)
+
+  // Upvotes de "útil" (não gamificado — apenas contador)
+  helpful           Int             @default(0)
+
+  // Resposta do practitioner (1x por review)
+  practitionerResponse     String?   @db.Text
+  practitionerRespondedAt  DateTime?
+
+  // Moderação (Wave 14 review flow)
+  hidden            Boolean         @default(false)
+  hiddenReason      String?
+
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  // Idempotência: 1 review por (userId, offeringId)
+  @@unique([userId, offeringId])
+  @@index([offeringId, rating])
+  @@index([practitionerId, rating])
+  @@index([hidden, createdAt])
+  @@index([verifiedPurchase])
+  @@map("marketplace_reviews")
+}
+
+
+// ============================================================================
+// CommunityEvent — Wave 35 (Events + Workshops + RSVP + Live Streaming)
+// ============================================================================
+// Sistema de eventos/workshops da Cábala dos Caminhos. Diferente do `Event`
+// herdado da W13 (círculos síncronos simples), este modelo cobre todo o
+// ciclo de vida de eventos comunitários:
+//
+//   • 6 tipos: WORKSHOP (pago), CIRCLE (roda gratuita mediada),
+//              LECTURE (palestra gravada), CEREMONY (ritual coletivo),
+//              MEDITATION (sessão guiada), LIVESTREAM (transmissão ao vivo)
+//
+//   • Capacidade + lista de espera
+//   • Pricing (priceCents + currency BRL)
+//   • Localização física OU URL online (ou ambos — híbrido)
+//   • Cover image + tags para descoberta
+//   • Status: DRAFT → PUBLISHED → CANCELLED → COMPLETED
+//   • Recording post-event para replay (LIVESTREAM auto-salva)
+//
+// LGPD Art. 7º, I — criação de evento com coleta de RSVP é tratamento de
+// dado de terceiro. Consent deve ser explícito no momento do RSVP (opt-in).
+// LGPD Art. 18 — usuário pode revogar RSVP a qualquer momento (status
+// CANCELLED), mantendo histórico.
+//
+// Multi-tenant tradição: indexação por (startsAt, tradition) para suportar
+// filtros por tradição + cronologicamente. Status+type para dashboards
+// admin ("workshops publicados esta semana").
+// ============================================================================
+
+enum EventType {
+  WORKSHOP         // presencial ou virtual, geralmente pago
+  CIRCLE           // grupo pequeno (até 12), gratuito, mediado
+  LECTURE          // palestra, gratuito, recorded post-event
+  CEREMONY         // ritual coletivo, gratuito ou donation-based
+  MEDITATION       // sessão guiada, gratuito
+  LIVESTREAM       // transmissão ao vivo (HLS/WebRTC)
+}
+
+model CommunityEvent {
+  id              String   @id @default(cuid())
+
+  // ---- Conteúdo ----
+  title           String
+  description     String   @db.Text
+  tradition       String                  // slug canônico: cabala, ifa, tantra, ...
+  type            EventType
+  tags            String[]                // ex: ['iniciantes', 'cabala-pratica']
+
+  // ---- Pessoas ----
+  hostId          String                  // organizer (User.id)
+  facilitatorIds  String[]                // co-hosts (array User.id)
+
+  // ---- Quando ----
+  startsAt        DateTime
+  endsAt          DateTime
+  timezone        String   @default("America/Sao_Paulo")
+
+  // ---- Onde ----
+  // Localização física (endereço legível). Null se puramente online.
+  location        String?
+  // URL online (Jitsi, Zoom, HLS, ...). Null se puramente presencial.
+  onlineUrl       String?
+
+  // ---- Capacidade + RSVP ----
+  // null = capacidade ilimitada
+  capacity        Int?
+  rsvpCount       Int      @default(0)
+  waitlistCount   Int      @default(0)
+
+  // ---- Pricing ----
+  // 0 = gratuito. Pago via Stripe (futuro W36) ou manual.
+  priceCents      Int      @default(0)
+  currency        String   @default("BRL")
+
+  // ---- Mídia ----
+  coverImage      String?                 // URL Cloudinary
+  // Recording (post-event). LIVESTREAM auto-popula via cron.
+  recordingUrl    String?
+
+  // ---- Settings ----
+  rsvpRequired    Boolean  @default(true)
+  status          String                  // DRAFT, PUBLISHED, CANCELLED, COMPLETED
+
+  // ---- Auditoria ----
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  rsvps           EventRsvp[]
+
+  @@index([startsAt, tradition])
+  @@index([status, type])
+  @@index([hostId])
+  @@index([tradition, status])
+  @@map("community_events")
+}
+
+// RSVP — confirmação de presença em CommunityEvent.
+//
+// Status:
+//   GOING       → confirmou (rsvpCount++)
+//   WAITLIST    → confirmou mas capacidade cheia (waitlistCount++)
+//   MAYBE       → marcou interesse (não conta)
+//   NOT_GOING   → recusou (não conta)
+//   CANCELLED   → era GOING/WAITLIST e cancelou (rsvpCount-- ou waitlistCount--)
+//
+// `guests` = +N acompanhantes (ex: +1, +2). Incrementa capacidade ocupada.
+// `note`   = texto livre para acessibilidade (cadeirante, vegano, etc).
+//            NÃO é dado sensível PII (LGPD Art. 5º) — apenas contexto
+//            operacional. Tamanho limitado 500 chars.
+// `checkedInAt` = timestamp de check-in no evento (host marca manualmente
+//                 ou via QR code em W37).
+//
+// @@unique([eventId, userId]) garante 1 RSVP por user/evento. Updates
+// usam upsert (idempotência natural).
+// ============================================================================
+
+model EventRsvp {
+  id          String   @id @default(cuid())
+
+  eventId     String
+  event       CommunityEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  userId      String
+  // User relation é opcional (schema-level): o app valida existência.
+
+  status      String   // GOING, WAITLIST, MAYBE, NOT_GOING, CANCELLED
+
+  guests      Int      @default(0)        // +N acompanhantes
+  note        String?                     // acessibilidade/dietary/restrição
+
+  checkedInAt DateTime?                   // check-in timestamp
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([eventId, userId])
+  @@index([eventId, status])
+  @@index([userId, status])
+  @@index([eventId, status, checkedInAt])
+  @@map("event_rsvps")
 }
