@@ -273,6 +273,15 @@ model User {
   akashaMemory               UserAkashaMemory?
   akashaConversationMemory   AkashaConversationMemory[]
 
+  // 2026-07-01 — Wave 38 Community Programs
+  // Challenges hosted, participations, badges earned, circles facilitated,
+  // engagement score (weekly, denormalized for analytics)
+  hostedChallenges       CommunityChallenge[]
+  challengeParticipations ChallengeParticipation[]
+  facilitatedCircles     Circle[]
+  badges                 BadgeAward[]
+  engagementScores       EngagementScore[]
+
   // 2026-06-30 — Wave 30 Stripe Connect marketplace
   connectAccount       ConnectAccount?
   paymentsAsReader     Payment[]       @relation("PaymentReader")
