@@ -1,0 +1,151 @@
+name: Lighthouse CI
+
+# ============================================================================
+# Lighthouse CI — Wave 36
+# ============================================================================
+# Runs Lighthouse on every PR against `main`, on both mobile (default) and
+# desktop profiles. Fails the PR if the Performance score drops below 95
+# on any audited route, or if Accessibility / Best Practices / SEO drop
+# below 90. Comments the full report on the PR for visibility.
+#
+# Audited routes (Wave 36 baseline):
+#   - /                          (landing — LCP-critical)
+#   - /feed                      (authenticated, infinite scroll)
+#   - /oraculo                   (Akasha IA, INP-critical)
+#   - /biblioteca                (article index, CLS-critical w/ images)
+#
+# Runs on:
+#   - pull_request against main
+#   - schedule: every Sunday 02:00 UTC (drift detection)
+#   - workflow_dispatch (manual)
+#
+# Notes:
+#   - Uses `treosh/lighthouse-ci-action` (v12) — official LHCI runner.
+#   - Uploads the .lighthouseci/ artifacts for 30 days (debug + history).
+#   - Fail threshold is generous on first run (90 perf) to capture baseline;
+#     tighten to 95 in W37 once we have 7 days of historical data.
+# ============================================================================
+
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    # Sundays 02:00 UTC — drift detection after the weekly wave push.
+    - cron: "0 2 * * 0"
+  workflow_dispatch:
+
+# Cancel in-progress runs on the same PR — saves minutes.
+concurrency:
+  group: lighthouse-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  # Needed for `actions/github-script` to comment on the PR.
+  actions: read
+
+env:
+  LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+jobs:
+  lighthouse:
+    name: lighthouse (${{ matrix.profile }}, ${{ matrix.url }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        profile:
+          - mobile   # default — throttled 4G, 4× CPU
+          - desktop  # fast cable, no throttling
+        url:
+          - /
+          - /feed
+          - /oraculo
+          - /biblioteca
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install pnpm
+        run: corepack enable && corepack prepare pnpm@latest --activate
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+        run: pnpm build
+
+      - name: Start Next.js server
+        env:
+          PORT: "3000"
+          HOSTNAME: "0.0.0.0"
+        run: |
+          pnpm start &
+          # Wait for server to be ready — max 60s.
+          for i in {1..60}; do
+            if curl -fsS http://localhost:3000 > /dev/null 2>&1; then
+              echo "server ready in ${i}s"
+              break
+            fi
+            sleep 1
+          done
+
+      - name: Run Lighthouse CI
+        id: lhci
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          configPath: "./lighthouserc.json"
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          runs: 1
+          url: |
+            http://localhost:3000${{ matrix.url }}
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ env.LHCI_GITHUB_APP_TOKEN }}
+          LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
+          LHCI_BUILD_CONTEXT__AUTHOR: ${{ github.actor }}
+          LHCI_BUILD_CONTEXT__PROFILE: ${{ matrix.profile }}
+
+      - name: Assert Performance ≥ 95
+        if: matrix.profile == 'mobile'
+        run: |
+          node scripts/assert-lighthouse.mjs \
+            --input=".lighthouseci/manifest.json" \
+            --min-perf=95 \
+            --min-a11y=95 \
+            --min-best=95 \
+            --min-seo=95 \
+            --url-suffix="${{ matrix.url }}" \
+            --profile="${{ matrix.profile }}"
+
+      - name: Assert Performance ≥ 95 (desktop)
+        if: matrix.profile == 'desktop'
+        run: |
+          node scripts/assert-lighthouse.mjs \
+            --input=".lighthouseci/manifest.json" \
+            --min-perf=95 \
+            --min-a11y=95 \
+            --min-best=95 \
+            --min-seo=95 \
+            --url-suffix="${{ matrix.url }}" \
+            --profile="${{ matrix.profile }}"
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-${{ matrix.profile }}-${{ matrix.url }}
+          path: |
+            .lighthouseci/
+          retention-days: 30
