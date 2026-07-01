@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "skipLibCheck": true,
+    "isolatedModules": false,
+    "types": []
+  },
+  "include": [
+    "src/lib/perf/cache-strategy-v2.ts",
+    "src/lib/perf/cdn-strategy.ts",
+    "src/lib/perf/db-optimization-v2.ts",
+    "src/lib/cache/redis-client.ts",
+    "src/lib/queue/bull-queue.ts",
+    "src/lib/security/rate-limit-v2.ts",
+    "src/lib/infra/auto-scaling.ts",
+    "scripts/load-test/load-test.ts"
+  ]
+}
