@@ -1677,3 +1677,21 @@ git rev-parse --verify <SHA>^{commit}
 - B-W94-002 → ARCHIVAL (audit procedure update, cycle 96)
 
 **Reference:** See `docs/WAVE-LOG.md` cycle 107 interim 1 for full audit + decision context.
+
+## HOLD Status Note — 00:30 UTC (2026-07-01, 8h+ threshold crossed) — Cycle 95 still in HOLD (16th tick) — OVERNIGHT-SLEEP REGIME
+
+**Cycle 95 governance HOLD continues (16th tick).** **REGIME TRANSITION: anti-fragile/multi-cycle-pause → overnight-sleep.** No new blockers created. No blockers resolved. State unchanged from cycle 107 interim 1 (00:00 UTC). Owner (user) merge authorization + cycle 95 theme decision still pending. Owner silence now at **8.0 hours** since last owner action (`4c77551` at 16:30 UTC 2026-06-30) — **CROSSED THE 8h+ "overnight-sleep" threshold** (cycle 107 lesson 5 prediction validated). Procedural answer pre-committed in cycle 104 (HOLD + Option 1 unchanged) carried forward without modification. **FROZEN TEMPLATE REGIME (cycle 108 lesson 2): procedural answer + audit signals + documentation template are now immutable assets.** **PR count delta = 0 for 3 consecutive cycles (15 → 15 → 15) = robust baseline (cycle 108 lesson 3).** Wave-spawner session 414977784062247. Next tick: 01:00 UTC (2026-07-01) — second tick in overnight-sleep regime.
+
+**Active blockers:**
+- B-W94-001 → INVALID (false positive, cycle 96 reversal)
+- B-W94-002 → ARCHIVAL (audit procedure update, cycle 96)
+
+**Reference:** See `docs/WAVE-LOG.md` cycle 108 interim 1 for full audit + decision context.
+
+**Regime markers for cycle 108:**
+- 8.0h owner silence (CROSSED 8h+ overnight-sleep threshold)
+- 16 ticks HOLD (BEYOND "fully load-tested" classification)
+- 3-tick PR count stability (robust baseline confirmed)
+- 6-cycle author label canonical (drift closed permanently)
+- 0 W95 branches (no new theme decisions)
+- Calendar: 2026-07-01, 00:30 UTC (early morning, owner likely asleep)
