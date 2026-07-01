@@ -1830,3 +1830,225 @@ A BUGS.md (2026-06-27) dizia que a migration `20260627_000000_search_discovery` 
 5. ⏭️ **Escalar pro user**: decisão de merge (Opção 1/2/3) + Supabase project + Vercel account
 6. ⏭️ **Aguardar user** → merge de feat/community-platform → deploy em staging → validação Auth E2E real
 
+---
+
+## 2026-07-01 (quarta) — gap analysis fresco pós-wave-10 — entrada do agente de evolução
+
+**Sessão:** agente de evolução (root, Mavis) — sessão `414985440297127`
+**Branch base:** `origin/feat/community-platform` @ `cd8a34b7`
+**Janela auditada:** últimos 7 dias (2026-06-24 → 2026-07-01) na branch
+**Lidos nesta análise:** `VISION.md` v3.0, `ARCHITECTURE.md` v3.0, `docs/STRATEGY-chain-of-thought.md`, `CHANGELOG.md`, `prisma/schema.prisma`, `docs/BLOCKERS.md`, `docs/HEALTH-LOG.md`, `docs/HEALTH-SNAPSHOT.md`, `docs/BUGS.md`, `src/app/(community)/feed/page.tsx`, `src/app/onboarding/page.tsx`
+**Método:** leitura de docs → `git log --since="7 days ago"` → `find`/`grep` no código → cruzamento declarado vs real
+
+### 1. Estado real (2026-07-01 01:00 UTC)
+
+| Métrica | Valor | Comentário |
+|---|---|---|
+| Schema models | **33** | `prisma/schema.prisma` — `community.prisma` mesclado, 0 modelos B2B |
+| API routes | **33** | 8 grupos: `akashic`, `auth`, `groups`, `notifications`, `posts`, `search`, `users`, `waitlist` |
+| Migrations | **2** | `pgvector_enable` + `search_discovery` (ambas idempotentes) |
+| Test files | **21** | `__tests__/` — akashic (2), api (5), community (3), components (4), hooks (2), etc |
+| Testes totais | **609+** (não rodam em sandbox) | 38 akashic + 22 security + 21 E2E spec files + community |
+| CI workflows | **7** | `ci`, `e2e`, `perf-budgets`, `preview-deploy`, `auto-merge`, `quality-evals`, `security` |
+| Artigos seeded | **70+** (79 títulos em `prisma/seed/articles*.ts`) | 3 batches: 23 + 33 + 23 |
+| Docs files | **69** | `docs/*.md` |
+| PWA | ✅ | `manifest.json` (9 ícones) + `sw.js` (4 estratégias) + `offline.html` |
+| Mobile | ✅ | Touch ≥ 44px, iOS safe-area, focus-visible, skip-target |
+| Article embeddings | ✅ | pgvector + `vector(1536)` + IVFFlat |
+| 5 feed racionais | ✅ | `all` / `seguindo` / `grupos` / `tendencias` / **`para-voce`** (scored) |
+| Mesa Real | ✅ REMOVIDO | `src/components/mesa-real/` e `src/app/(personal)/dashboard/mesa-real/` apagados |
+| B2B deps | ✅ REMOVIDAS | `grep stripe\|web-push\|bcrypt\|jsonwebtoken\|qrcode\|jspdf package.json` → 0 |
+| Mock DATA no feed | ✅ REMOVIDO | `feed/page.tsx:1-12` declara "MOCK DATA removido — agora o feed consome dados persistidos no Prisma" |
+| `.env.example` | ✅ | 137 linhas, 10 seções (commit `cd8a34b7`+ anterior) |
+| Onboarding 5 passos | 🟡 PARCIAL | existe `/onboarding/page.tsx` mas não tem passo "tradições de interesse" (VISION §8) |
+| /login + /signup pages | 🔴 FALTAM | APIs existem, componentes existem, mas páginas de rota não |
+| Citations model + UI | 🔴 FALTA | Model nem existe no schema, UI zero (era P1 #10 do gap 28/jun, ainda aberto) |
+| Ritual/Tag/Repost models | 🔴 FALTAM | Removidos no merge v3.0 (refactor Fase 1 matou 12 modelos B2B + dependents) |
+| Push notifications E2E | 🟡 PARCIAL | VAPID + templates OK, mas VAPID keys não geradas em prod, subscription UI existe mas sem teste real |
+| Akasha IA `/akashic` | ✅ | Chat UI + SSE stream + RAG + 8 regras éticas + 38 testes |
+| Notificações 13 tipos | ✅ | `/api/notifications/**` (8 endpoints) + 13 templates email + LGPD footer |
+| Search API | ✅ | full-text + pgvector + suggestions + ISR |
+| TSC | 🔴 ~2.792 erros (não rodado) | `tests/lib/*` orphans (~158 arquivos) sem `src/lib/*` correspondente (B2026-06-28-06:00-UTC-001) |
+| Cron | 7/7 healthy | `akasha-dev-implementation`, `evolution-daily`, `health-check-12h`, `planning-weekly`, `research-weekly`, `tests-pre-release`, `wave-spawner` |
+
+### 2. Drift estratégico (vs ROADMAP-Q4-2026)
+
+Comparando features entregues pelo wave-spawner em `main` (59 commits HOLD + várias waves) contra o ROADMAP-Q4-2026 declarativo (D1: 5 features depriorizadas), observamos:
+
+**Features DEPRIORITIZADAS (D1 do ROADMAP-Q4-2026) que existem em main/feat:**
+| Feature | Onde | Status D1 | Drift |
+|---|---|---|---|
+| Mentorship pairing 1-1 | `w68/mentorship-pairing-engine` em main | **DEPRIORITIZADA** ("responsabilidade legal" + "nunca substitui profissional") | 🔴 reverso |
+| Marketplace leituras | `w65/marketplace-pricing`, `w23/marketplace-content` em main | **DEPRIORITIZADA** ("gratuito, sem fins lucrativos") | 🔴 reverso |
+| Reputação/karma | `w66/reputation-system`, `w25/reputation-system` em main | **DEPRIORITIZADA** ("gamificação azeda") | 🔴 reverso |
+| Mesa Real / cigano spread | `w67/cigano-spread-visualizer`, `mesa-real/` em main (agora removido em feat) | **DEPRIORITIZADA** (refactor Fase 1 matou) | 🟢 resolvido em feat |
+| Live streams | `w66/live-streams`, `w24/live-stream-card` em main | Backlog Q1/2027 explícito | 🟡 scope creep |
+
+**Conclusão:** `feat/community-platform` está MAIS alinhado com VISION/ROADMAP que `main`. A divergência é boa para a estratégia — main virou "sandbox de features", feat virou "MVP disciplinado".
+
+### 3. Tarefas priorizadas para próxima sprint
+
+**Regras:** cada item linka com VISION/STRATEGY/ARCHITECTURE/ROADMAP. Esforço: P (<½ dia) / M (1-3 dias) / G (>3 dias). Critério de pronto = verificável sem projeto Supabase real OU handoff claro pro owner.
+
+#### P0 — Bloqueio absoluto (mesmo branch, sem esperar decisão)
+
+1. **Criar páginas `/login` e `/signup`**
+   - O QUE: rotas `src/app/(auth)/login/page.tsx` e `signup/page.tsx` que importam `LoginForm`, `RegisterForm`, `GoogleOAuthButton` (já existem em `src/components/auth/`)
+   - POR QUE: CHANGELOG marca como **BLOCKED** ("Worker rodou mais de 30 min sem commits"); AUTH-FLOW.md descreve fluxo; sem páginas, signup nunca acontece → nenhum usuário real → zero validação VISION §8 "100 usuários ativos"
+   - CRITÉRIO: `curl http://localhost:3000/login` retorna 200 com form renderizado; Playwright `e2e/signup-onboarding-feed.spec.ts` passa do zero
+   - ESFORÇO: M (1-2 dias)
+   - DOCS REF: VISION §8 Fase 1, AUTH-FLOW.md, CHANGELOG "Wave 10 — Não entregue"
+
+2. **Deletar orphan tests em `tests/lib/*` (~158 arquivos)**
+   - O QUE: loop `rm -rf` em todos os dirs `tests/lib/*/` que não têm par em `src/lib/*/` (134 dirs) + root-level orphans
+   - POR QUE: B2026-06-28-06:00-UTC-001 marca como **P0 gate TSC=0**; 96% dos 2.792 erros TSC vêm desses orphans
+   - CRITÉRIO: `npx tsc --noEmit --skipLibCheck` retorna < 100 erros (residuais); opção A do BLOCKERS.md executada
+   - ESFORÇO: P (½ dia)
+   - DOCS REF: BLOCKERS.md B2026-06-28-06:00-UTC-001, EVOLUTION-LOG gap 2026-06-28
+
+3. **Adicionar campo `traditions String[]` em `SpiritualProfile` + migration**
+   - O QUE: `model SpiritualProfile { traditions String[] @default([]) }` + migration aditiva + inserir passo 3 ("Quais tradições te interessam?") no `/onboarding/page.tsx` com multi-select de 3-5 opções (cabala, ifá, xamanismo, tantra, reiki, ayurveda, ...)
+   - POR QUE: VISION §8 "Onboarding espiritual (gera mapa)" + STRATEGY §5 Persona 1 + STRATEGY §6.3 (algoritmo "Para você" usa tradição do mapa como sinal +5)
+   - CRITÉRIO: usuário pode selecionar 3-5 tradições no onboarding; dado persiste; query `SpiritualProfile.traditions` retorna array; feed "Para você" prioriza posts das tradições selecionadas
+   - ESFORÇO: M (1-2 dias)
+   - DOCS REF: VISION §8, STRATEGY §5 Persona 1, STRATEGY §6.3
+
+4. **Criar `scripts/validate-migrations.sh` (sandbox-friendly)**
+   - O QUE: script que valida migrations via `prisma migrate diff --from-migrations prisma/migrations --to-schema-datamodel prisma/schema.prisma --script --shadow-database-url` (Postgres descartável via Docker) OU fallback para SQLite em memória se Docker indisponível
+   - POR QUE: BUGS.md BUG-001 está "CANDIDATE-RESOLVED" mas sem teste real; HEALTH-SNAPSHOT pediu "adicionar `prisma migrate status` ao pre-deploy hook + cron"
+   - CRITÉRIO: `bash scripts/validate-migrations.sh` retorna exit 0 + relatório com diff vazio (= schema bate com migrations)
+   - ESFORÇO: P (1 dia)
+   - DOCS REF: BUGS.md BUG-001, HEALTH-SNAPSHOT.md §Próximo desbloqueio
+
+#### P1 — Definition of Done Fase 1 (após P0)
+
+5. **Adicionar Citation model + UI inline em posts/comments/articles**
+   - O QUE: `model Citation { id, type (BOOK|PAPER|ARTICLE|VIDEO|LINK), title, authors?, year?, doi?, url?, postId?, commentId?, articleId?, addedById, verified, createdAt }` + migration + componente `<CitationList>` que renderiza lista + botão "Adicionar fonte" no ComposeBox com validação Zod
+   - POR QUE: STRATEGY §9.3 define o model; VISION §9 "SEMPRE cita. Nunca inventa dado"; STRATEGY §7.1 "Saber parar. Há visões diferentes"
+   - CRITÉRIO: post pode ter 1-N citations com DOI/url; renderiza link clicável clicável (não apenas texto); moderação pode marcar `verified=true`
+   - ESFORÇO: M (2-3 dias)
+   - DOCS REF: STRATEGY §9.3 (model proposto), VISION §9 (8 regras éticas), AI-PROMPT-base.md "Sempre citar"
+
+6. **Implementar `Ritual` model + UI (tipo especial de post)**
+   - O QUE: `model Ritual { id, postId @unique, intention, materials[], steps (Json), contextCulture, warnings[], tradition, difficulty (BEGINNER|INTERMEDIATE|ADVANCED|TEACHER_REQUIRED) }` + migration + seletor de tipo "Ritual" no ComposeBox + página de exibição com warnings destacados
+   - POR QUE: STRATEGY §9.3 define model; STRATEGY §4.2 "tradição + tópico + prática" (Ritual é prática compartilhada)
+   - CRITÉRIO: post tipo RITUAL persiste; renderiza com box "Contexto cultural" + "Contraindicações" + "Consulte praticante local"
+   - ESFORÇO: M (2-3 dias)
+   - DOCS REF: STRATEGY §9.3, STRATEGY §4.2 taxonomia 3-camadas
+
+7. **Implementar `Tag` model + sistema cross-tradição**
+   - O QUE: `model Tag { id, slug @unique, name, description?, color?, usedInTraditions String[] }` + `model PostTag { postId, tagId }` + UI de multi-tag no ComposeBox + página `/tags/[slug]` com feed filtrado
+   - POR QUE: STRATEGY §4.2 camada 2 (tópico = cross-tradição); ROADMAP-Q3 Marco 2 "Sistema de Tags cross-tradição"
+   - CRITÉRIO: post pode ter N tags; `/tags/meditacao` mostra todos os posts cross-tradição; `usedInTraditions` filtra discovery
+   - ESFORÇO: M (2-3 dias)
+   - DOCS REF: STRATEGY §4.2, ROADMAP-Q3 Marco 2
+
+8. **Validar push notifications E2E (VAPID + subscription)**
+   - O QUE: gerar VAPID keys (`npx web-push generate-vapid-keys`), adicionar ao `.env.example` (já documentado, falta as keys), testar `/api/notifications/push` POST/GET/DELETE com browser real, validar recebimento em Chrome/Firefox
+   - POR QUE: P1 #13 do gap 2026-06-30 ficou "MAIORIA FEITA" mas sem teste real; ROADMAP-Q3 Feature 2 (ICE 24, I=8 C=9 E=7) é **Top 3 de Q4** no ROADMAP-Q4-2026
+   - CRITÉRIO: subscribe via UI → push chega no SO; unsubscribe via UI → push para; LGPD opt-in respeitado (default `enabled: false`)
+   - ESFORÇO: M (1-2 dias, depende de browser real)
+   - DOCS REF: NOTIFICATIONS-SPEC.md, APIS-PUSH-W21.md, ROADMAP-Q4-2026 Feature 2
+
+#### P2 — Crescimento orgânico (Fase 2+ roadmap)
+
+9. **Refinar algoritmo "Para você" com sinais do STRATEGY §6.3**
+   - O QUE: implementar score completo (`+5 tradição do mapa, +3 tópico salvo, +2 autor útil, +1 ref científica, +1 <48h; -3 reportado, -1 daily cap`); mostrar "Por que estou vendo isso" no hover
+   - POR QUE: STRATEGY §6.3 "Algoritmo 'Para você' (simples, transparente)" — base está em `getFeedPersonalized` mas scoring é binário (tradição match/não)
+   - CRITÉRIO: usuário com mapa + salvos vê posts ranqueados diferentes do "Tudo" com tooltip explicativo
+   - ESFORÇO: G (4-5 dias)
+   - DOCS REF: STRATEGY §6.3
+
+10. **Citation verification por moderador (queue + flag)**
+    - O QUE: rota `/api/admin/citations/pending` (mod only) + UI em `/admin/citations` + flag `verified` + email ao autor quando verificado
+    - POR QUE: STRATEGY §9.3 "verified Boolean @default(false) — verificado por moderador"
+    - CRITÉRIO: mod vê fila de citations não verificadas; pode aprovar/rejeitar; usuário recebe feedback
+    - ESFORÇO: M (2-3 dias)
+    - DOCS REF: STRATEGY §9.3, VISION §9.4
+
+11. **Migration seed: 5 tradições × 3-5 artigos = 15-25 entries curados**
+    - O QUE: adicionar ao `prisma/seed.ts` 5 artigos curados extras com `evidenceLevel` (RCT/Meta-analysis/Peer-reviewed/Anecdotal) — foco em práticas da EVIDENCE-MAP.md (rapé, kambo, cannabis medicinal, qigong, banhos de ervas)
+    - POR QUE: STRATEGY §10 Fase 2 "50+ artigos curados com nível de evidência" (já temos 70, falta formalizar `evidenceLevel`)
+    - CRITÉRIO: artigo seed tem campo `evidenceLevel`; UI `/library` mostra badge "Revisado por pares / Estudo clínico / Anecdótico"
+    - ESFORÇO: P-M (1-2 dias)
+    - DOCS REF: STRATEGY §10 Fase 2, EVIDENCE-MAP.md, AI-PROMPT-base.md "Evidência ≠ eficácia pessoal"
+
+12. **Setup Supabase Realtime como default em `useCommunityNotifications`**
+    - O QUE: mudar `enableRealtime: false` (default) → `enableRealtime: true` em `src/hooks/useCommunityNotifications.ts`; documentar fallback pra polling se Realtime falhar
+    - POR QUE: P1 #13 do gap 2026-06-30 marcou "MAIORIA FEITA" mas Realtime está opt-in — UX é inferior (delay 30s)
+    - CRITÉRIO: like em post gera notif em <1s no cliente do autor; se Realtime cair, fallback polling em <30s sem crash
+    - ESFORÇO: P (½ dia)
+    - DOCS REF: NOTIFICATIONS-SPEC.md, EVOLUTION-LOG gap 2026-06-30 P1 #13
+
+#### P3 — Polish + observabilidade
+
+13. **Implementar digest semanal (cron job)**
+    - O QUE: `src/app/api/cron/weekly-digest/route.ts` que agrega posts do usuário (Top 5 da semana) + envia email via Resend; trigger via cron `0 9 * * 1` (segunda 9h)
+    - POR QUE: STRATEGY §10 Fase 2 "Notificações" + ROADMAP-Q4-2026 OKR O2 "Engajamento multimodal"
+    - CRITÉRIO: todo segunda 9h UTC, usuário recebe email "Sua semana na Akasha" com 5 posts + 1 grupo sugerido
+    - ESFORÇO: M (1-2 dias)
+    - DOCS REF: STRATEGY §10 Fase 2, ROADMAP-Q4-2026 OKR O2
+
+14. **Test coverage de Citation/Ritual/Tag (após P1 #5-7)**
+    - O QUE: 1 spec por feature em `__tests__/api/` cobrindo CRUD + auth + validation Zod
+    - POR QUE: CHANGELOG "Quality bar mantida" — todo PR novo precisa de testes
+    - CRITÉRIO: `pnpm test __tests__/api/citations.test.ts __tests__/api/rituals.test.ts __tests__/api/tags.test.ts` todos passam
+    - ESFORÇO: P-M (1-2 dias, depende de P1 #5-7)
+    - DOCS REF: QUALITY-STANDARDS.md
+
+15. **Bundle budget CI gate (consolidar)**
+    - O QUE: completar `.github/workflows/perf-budgets.yml` (existe desde wave 10) + adicionar budget por rota (ex: `/akashic` < 200KB JS, `/feed` < 150KB)
+    - POR QUE: CHANGELOG "Bundle budgets CI gate (runner only)" — runner only, falta gate
+    - CRITÉRIO: PR com bundle > budget falha o check; comentário no PR com diff
+    - ESFORÇO: M (1-2 dias)
+    - DOCS REF: CHANGELOG [0.1.0-rc.1], PERF-FIXES-WAVE10.md
+
+### 4. Métricas de validação (próxima revisão = 2026-07-08)
+
+- **Schema**: `prisma migrate status` → 0 drift, 33 models (já ✅), campo `SpiritualProfile.traditions String[]` adicionado
+- **Auth**: `/login` + `/signup` pages retornam 200, Playwright signup E2E passa
+- **TSC**: `npx tsc --noEmit --skipLibCheck` retorna < 100 erros (após deletar orphans)
+- **Migration validator**: `bash scripts/validate-migrations.sh` exit 0
+- **Citations**: `pnpm test __tests__/api/citations.test.ts` passa
+- **5 feeds**: todos os 5 racionais retornam dados reais
+- **Push E2E**: subscription via UI → push chega no SO (Chrome)
+- **Bundle budget**: `pnpm check:bundle` exit 0, todos os chunks dentro do budget
+
+### 5. Decisões que ainda precisam do user
+
+Reaproveitando §8 do ARCHITECTURE e §12 do STRATEGY:
+1. **Mesa Real**: ✅ decidido (removido) — branch atual está correta
+2. **Dashboard pessoal**: 🟡 ainda tem `/dashboard` em `feat/community-platform`? — verificar se `(personal)/` foi 100% removido (CHANGELOG diz "sim, 1178 arquivos deletados")
+3. **Onboarding**: obrigatoriedade? (ARCHITECTURE §8 pergunta 3) — recomendação: tornar **opcional** pós-MVP, mas persistir mapa mesmo se parcial
+4. **Anônimo**: postar sem conta? (ARCHITECTORY §8 pergunta 4) — recomendação: **não** (moderação precisa de identidade)
+5. **Monetização**: zero (VISION §1) — confirmado
+6. **DRIFT main↔feat**: estratégia de merge? Recomendação: **manter feat como source-of-truth, main é wave-spawner playground, não há merge planejado** (documentar em VISION §8 ou novo ADR)
+7. **Depriorizadas em main**: deletar branches `w68/mentorship-pairing-engine`, `w65/marketplace-pricing`, `w66/reputation-system` para evitar re-merge acidental? Recomendação: **sim, deletar** (mantém main limpo)
+
+### 6. Próximo ciclo do agente (auto-assigned)
+
+1. ✅ Esta entrada do EVOLUTION-LOG (commit + push em `feat/community-platform`)
+2. ⏭️ **P0 #2** (deletar orphan tests): reduzir TSC de 2792 → < 100
+3. ⏭️ **P0 #4** (criar `scripts/validate-migrations.sh`): sandbox-friendly, exit 0 esperado
+4. ⏭️ **Escalar pro user**: decisão sobre P0 #1 (login/signup) + P0 #3 (campo traditions) + D5 (drift main↔feat)
+5. ⏭️ Após aprovação: merge de P1 #5 (Citation model + UI) — desbloqueia P3 #14 (testes)
+
+### 7. Cross-project lessons (durable)
+
+1. **"Branch x commits ahead" é métrica enganosa** — `feat/community-platform` está 1929 commits ahead de `main`, mas 99% são waves de um orchestrator autônomo com scope creep. Métrica real: alinhamento com VISION/ROADMAP, não volume. **Lição:** wave-spawner deveria ter "scope gate" que valida cada brief contra ROADMAP-Q4 §D1 antes de spawnar.
+2. **"Mesa Real removido" foi decisão de governance > decisão técnica** — ARCHITECTURE §7 Fase 1 já dizia para remover; só foi executado depois que VISION §1 cravou "NÃO é ferramenta de zelador/terapeuta". **Lição:** decisões de pivô de produto precisam de 2 docs alinhados (VISION + ARCHITECTURE) antes do código sair.
+3. **Schema merge sobreviveu a 6 dias de waves** — `community.prisma` foi mesclado em `schema.prisma` no commit `0db6c4f` (2026-06-28); desde então 2 migrations idempotentes + 30+ commits, 0 deriva. **Lição:** "single schema file" > "schema + extensions" em projetos médios.
+4. **5 feed racionais são UI/API/UI (full stack) — implementar todos de uma vez é alto risco, fazer incremental também** — feed "Para você" foi o último a entrar (cycle 56+), mas API `getFeedPersonalized` existia desde Wave 4. **Lição:** API + UI + algoritmo de scoring são 3 trabalhos; sequenciar API → UI → algoritmo é mais barato que tentar tudo junto.
+5. **TSC=0 em sandboxes 2GB é ilusão** — `npx tsc` no sandbox OOMs; precisa `--max-old-space-size=1536`. Mas 96% dos 2792 erros são orphans dead-code (não bugs reais). **Lição:** em sandbox, **erro TSC ≠ bug**, é signal de hygiene (delete orphans first).
+6. **Drift entre `main` e `feat` é feature, não bug** — `main` virou "wave-spawner playground" (32+ features/semana, 44% em drift), `feat/community-platform` virou "MVP disciplinado". A divergência é boa: força triage antes de merge. **Lição:** em projetos com orchestrator autônomo, ter 2 branches paralelos (autonomous + curated) é mais saudável que tentar forçar merge.
+
+---
+
+### 8. Notas operacionais desta sessão
+
+- **Sandbox fresh**: `/workspace/cabaladoscaminhos` clonado `--depth=50`; bash funciona para `git`, `ls`, `cat`, `grep`, `find` em paths pequenos
+- **Bash degrado para**: `pnpm`, `npx`, `npm` (>5s timeout esperado — wave-spawner registry mostra padrão)
+- **Git config**: `user.name=Akasha Evolution Agent`, `user.email=akasha-evolution@users.noreply.github.com`
+- **Branch state**: `feat/community-platform` @ `cd8a34b7` (clean working tree, ahead of `main` by 1929 commits, behind by 59 wave-spawner HOLD commits)
+- **Próximo ciclo**: 2026-07-01 09:00 UTC (`akasha-evolution-daily`) — esta entrada alimenta o log
+
