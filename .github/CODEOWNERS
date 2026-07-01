@@ -1,0 +1,148 @@
+# ╔════════════════════════════════════════════════════════════════════╗
+# ║  CODEOWNERS — Cabala dos Caminhos                                 ║
+# ║  Define quem revisa automaticamente cada área do repositório.    ║
+# ║                                                                  ║
+# ║  Formato: <pattern>  <@owner1> <@owner2>                         ║
+# ║  Última regra que casa prevalece (mais embaixo = maior prioridade)║
+# ║                                                                  ║
+# ║  GitHub Docs: https://docs.github.com/en/repositories/            ║
+# ║    managing-your-repositorys-settings-and-features/              ║
+# ║    customizing-your-repository/about-code-owners                 ║
+# ╚════════════════════════════════════════════════════════════════════╝
+
+# ─── Padrão global: requer revisão de maintainers core ─────────────
+# (Descomente para tornar tudo obrigatório de review do core team)
+/*
+* @akasha-maintainers
+
+# ─── IA / Akasha Engine ─────────────────────────────────────────────
+# Tudo relacionado a engines de IA, prompts, model orchestration.
+/src/lib/ai/                @akasha-ia-team
+/src/lib/akasha/            @akasha-ia-team
+/src/lib/prompts/           @akasha-ia-team
+/docs/AI-*                  @akasha-ia-team
+/docs/AKASHA-*              @akasha-ia-team
+/docs/AI-ETHICS*            @akasha-ia-team @iyá-curator
+*.prompt.yml                @akasha-ia-team
+*.prompt.ts                 @akasha-ia-team
+
+# ─── Curadoria / Conteúdo Espiritual ────────────────────────────────
+# Curadoria, validação cultural, glossário, terminologia.
+/src/lib/curation/          @iyá-curator
+/src/lib/sacred/            @iyá-curator
+/src/data/glossario/        @iyá-curator
+/src/data/tradicoes/        @iyá-curator
+/docs/CURATOR*              @iyá-curator
+/docs/GLOSSARY*             @iyá-curator
+/docs/SACRED-*              @iyá-curator
+docs/AI-ETHICS*             @iyá-curator @akasha-ia-team
+
+# ─── Comunidade / Social ────────────────────────────────────────────
+# Posts, comentários, círculos, social graph, moderação.
+/src/lib/community/         @community-team
+/src/lib/social/            @community-team
+/src/app/(community)/       @community-team
+/src/app/api/community/     @community-team
+/src/app/api/posts/         @community-team
+/src/app/api/comments/      @community-team
+/src/app/api/circulos/      @community-team
+/src/app/api/moderacao/     @community-team
+/docs/COMMUNITY-*           @community-team
+docs/AI-ETHICS*             @community-team @iyá-curator
+
+# ─── Banco / Schema / Migrations ────────────────────────────────────
+# Prisma schema, migrations, dados seed.
+/prisma/                    @data-team
+/prisma/schema.prisma       @data-team
+/prisma/migrations/         @data-team
+/prisma/seed/               @data-team
+/src/lib/prisma/            @data-team
+
+# ─── Documentação geral ─────────────────────────────────────────────
+# Docs de feature, dev guide, API reference.
+/docs/                      @docs-team
+/README.md                  @docs-team
+/CONTRIBUTING.md            @docs-team
+/CHANGELOG.md               @docs-team
+/docs/dev/                  @docs-team
+/docs/api/                  @docs-team
+docs/CURATOR*               @iyá-curator @docs-team
+docs/COMMUNITY-*            @community-team @docs-team
+
+# ─── Design System v2 ───────────────────────────────────────────────
+# Componentes UI v2 (Design System Lina), tokens, primitives.
+/src/components/ui/v2/      @lina-designer
+/src/components/design-system/ @lina-designer
+/src/styles/tokens/         @lina-designer
+/tailwind.config.ts         @lina-designer
+docs/DESIGN-*               @lina-designer
+docs/A11Y-*                 @lina-designer @qa-team
+
+# ─── QA / Testes ────────────────────────────────────────────────────
+# Test infrastructure, e2e specs, regression tests.
+/tests/                     @qa-team
+/e2e/                       @qa-team
+/playwright.config.ts       @qa-team
+/vitest.config.ts           @qa-team
+/src/**/*.test.ts           @qa-team
+/src/**/*.spec.ts           @qa-team
+docs/TEST-*                 @qa-team
+docs/QA-*                   @qa-team
+docs/A11Y-*                 @qa-team @lina-designer
+
+# ─── Performance ────────────────────────────────────────────────────
+# Web vitals, bundle optimization, caching, monitoring.
+/src/lib/perf/              @perf-team
+/src/app/api/perf/          @perf-team
+/next.config.js             @perf-team
+/perf-budgets.yml           @perf-team
+docs/PERFORMANCE-*          @perf-team
+docs/PERF-*                 @perf-team
+
+# ─── Segurança / LGPD / Auth ────────────────────────────────────────
+# Auth, autorização, LGPD, criptografia, rate limiting.
+/src/lib/auth/              @security-team
+/src/lib/security/          @security-team
+/src/lib/lgpd/              @security-team
+/src/lib/rate-limit/        @security-team
+/src/app/api/auth/          @security-team
+/src/middleware.ts          @security-team
+SECURITY.md                 @security-team
+docs/SECURITY-*             @security-team
+docs/LGPD-*                 @security-team
+
+# ─── Pagamentos / Stripe ────────────────────────────────────────────
+# Integração Stripe, subscriptions, marketplace, payouts.
+/src/lib/stripe/            @payments-team
+/src/lib/billing/           @payments-team
+/src/app/api/stripe/        @payments-team
+/src/app/api/billing/       @payments-team
+/src/app/api/payments/      @payments-team
+docs/STRIPE-*               @payments-team
+docs/PAYMENTS-*             @payments-team
+
+# ─── Infra / DevOps / CI/CD ─────────────────────────────────────────
+# GitHub workflows, Docker, deploy, monitoring.
+/.github/workflows/         @devops-team
+/Dockerfile                 @devops-team
+/docker-compose*.yml        @devops-team
+/.vercelignore              @devops-team
+/vercel.json                @devops-team
+docs/DEPLOY-*               @devops-team
+docs/INFRA-*                @devops-team
+
+# ─── Configs de tooling ─────────────────────────────────────────────
+# ESLint, Prettier, TSConfig, configs de build.
+/.eslintrc*                 @devops-team
+/.prettierrc*               @devops-team
+/tsconfig*.json             @devops-team
+/package.json               @devops-team
+/pnpm-workspace.yaml        @devops-team
+/.env.example               @security-team @devops-team
+
+# ─── Dependabot ─────────────────────────────────────────────────────
+/.github/dependabot.yml     @devops-team
+
+# ─── Fallback para qualquer arquivo não listado acima ──────────────
+# (última regra prevalece — mantenha no fim)
+/.github/CODEOWNERS         @akasha-maintainers
