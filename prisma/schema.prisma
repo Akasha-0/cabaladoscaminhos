@@ -1346,6 +1346,9 @@ enum AuditAction {
   // Admin / moderação
   ADMIN_USER_BAN
   ADMIN_CONTENT_REMOVE
+  // Beta invite (Wave 33)
+  INVITE_EXPIRED_BATCH  // cron moveu convites vencidos para EXPIRED
+  INVITE_REVOKED        // admin cancelou convite individual
 }
 
 // ============================================================================
@@ -2067,6 +2070,53 @@ model ProcessedStripeEvent {
   @@map("processed_stripe_events")
 }
 
+// ============================================================================
+// WebhookEvent — log completo de eventos Stripe recebidos (Wave 33)
+// ============================================================================
+// Diferente de ProcessedStripeEvent (apenas idempotência), WebhookEvent guarda
+// o payload COMPLETO de cada evento recebido — incluindo os que falharam,
+// duplicados e desconhecidos — para auditoria LGPD Art. 37 (registro de
+// operações de tratamento) e forense.
+//
+// LGPD: payload completo inclui email/PI do objeto `customer` etc. Para
+// analytics, usar `metadata.lite` (PII-stripped). Para LGPD-DPO export,
+// filtrar por userId via metadata.actorId quando aplicável.
+// ============================================================================
+model WebhookEvent {
+  id          String    @id @default(cuid())
+  // event.id da Stripe (evt_...). UNIQUE garante dedupe por evento bruto
+  stripeId    String    @unique
+  // event.type (payment_intent.succeeded, account.updated, etc)
+  type        String
+  // API version da Stripe que originou o evento
+  apiVersion  String?
+  // livemode (true = produção, false = test)
+  livemode    Boolean   @default(false)
+  // Evento foi processado com sucesso (side-effects aplicados)?
+  processed   Boolean   @default(false)
+  // Evento é duplicado de outro stripeId já visto (idempotência)
+  duplicate   Boolean   @default(false)
+  // Payload COMPLETO do evento (sem criptografia; restrito via RLS + logs)
+  payload     Json
+  // Versão PII-stripped para analytics (sem email/nome/phone do customer)
+  metadata    Json?
+  // Erro de processamento (se houver) — null em sucesso
+  error       String?
+  // Tempo total de processamento em ms (handler latency)
+  durationMs  Int?
+  // Origem do request (Connect account se Connect webhook)
+  accountId   String?
+  // Quando foi criado/recebido e quando foi processado
+  createdAt   DateTime  @default(now())
+  processedAt DateTime?
+
+  @@index([type, processed])
+  @@index([processed, type])
+  @@index([createdAt])
+  @@index([duplicate])
+  @@map("webhook_events")
+}
+
 // Audit log específico de operações financeiras (LGPD Art. 37 — registro de operações)
 model PaymentAuditLog {
   id          String   @id @default(cuid())
@@ -2148,4 +2198,149 @@ model BetaInvite {
   @@index([status, expiresAt])
   @@index([inviterId])
   @@map("beta_invites")
+}
+
+// ============================================================================
+// FeedbackSubmission — feedback in-app (Wave 33)
+// ============================================================================
+// Captura bug reports, feature requests, conteúdo e usabilidade de forma
+// estruturada. Rate limit (3/dia/usuário) é enforced no endpoint.
+//
+// LGPD Art. 7: precisa de consentimento (analyticsConsent ou explicit
+// submit). userId é opcional para permitir feedback anônimo de visitantes
+// autenticados via cookie fingerprint (metadata.fingerprintHash).
+//
+// LGPD Art. 18: titular pode solicitar exclusão — endpoint admin ou
+// self-service apaga + audit log.
+// ============================================================================
+model FeedbackSubmission {
+  id          String          @id @default(cuid())
+  userId      String?         // null = anônimo (fingerprint em metadata)
+  type        FeedbackType
+  category    String?         // sub-categoria livre (ex: "notifications", "ux")
+  rating      Int?            // 1-5 (UX geral)
+  nps         Int?            // 0-10 (snapshot no momento do submit)
+  message     String          @db.Text
+  metadata    Json?           // { url, userAgent, fingerprintHash, ... }
+  status      FeedbackStatus  @default(NEW)
+  priority    Int             @default(0) // 0=normal, 1=high, 2=urgent (admin manual)
+  createdAt   DateTime        @default(now())
+  reviewedAt  DateTime?
+  reviewedBy  String?         // userId do admin
+  reviewNote  String?         @db.Text
+
+  @@index([userId, type])
+  @@index([status, createdAt])
+  @@index([type, createdAt])
+  @@index([priority, createdAt])
+  @@map("feedback_submissions")
+}
+
+// ============================================================================
+// NpsResponse — respostas do NPS automatizado (Day 1/3/7/14/30)
+// ============================================================================
+// Uma linha por (userId, trigger) — upsert no cron de NPS. Score 0-10
+// conforme metodologia Net Promoter Score. Trigger identifica o dia da
+// jornada em que o prompt foi exibido.
+//
+// LGPD Art. 7: usuário pode recusar (skip = não criar row) ou aceitar
+// anônimo (userId real + flag ANONYMOUS em metadata).
+//
+// Net Promoter, Net Promoter Score, NPS e os emojis relacionado são
+// marcas registradas da Bain & Company, Inc., Fred Reichheld e Satmetrix.
+// Implementação compatível com a metodologia, não afiliada.
+// ============================================================================
+model NpsResponse {
+  id          String        @id @default(cuid())
+  userId      String
+  score       Int           // 0-10 (validado no endpoint, zod refine)
+  reason      String?       @db.Text
+  trigger     NpsTrigger
+  triggerAt   DateTime      // quando o prompt foi exibido (cron)
+  metadata    Json?         // { source: 'cron'|'manual', channel, ... }
+  createdAt   DateTime      @default(now())
+
+  @@unique([userId, trigger, triggerAt]) // 1 NPS por usuário por trigger por dia
+  @@index([userId, trigger])
+  @@index([trigger, createdAt])
+  @@map("nps_responses")
+}
+
+// ============================================================================
+// WeeklySurveyResponse — micro-survey semanal (Wave 33)
+// ============================================================================
+// Cada resposta captura uma única pergunta da survey. Permite granularidade
+// temporal sem modelar JSON no banco — queries de tendência são triviais.
+//
+// Perguntas rotativas (3-5 por semana) vivem em código (WeeklySurvey.tsx)
+// e são versionadas pelo campo `version`. Respostas antigas não são
+// "deletadas" — apenas marcadas com `supersededAt` quando o tema muda.
+// ============================================================================
+model WeeklySurveyResponse {
+  id          String    @id @default(cuid())
+  userId      String
+  weekIso     String    // ex: "2026-W27" (ISO week date)
+  questionId  String    // ex: "satisfaction", "nps_alt", "feature_use"
+  version     Int       @default(1) // version da survey
+  answer      Json      // resposta (string, number, string[])
+  metadata    Json?     // { durationMs, skipped, ... }
+  createdAt   DateTime  @default(now())
+  supersededAt DateTime?
+
+  @@unique([userId, weekIso, questionId, version])
+  @@index([userId, weekIso])
+  @@index([questionId, weekIso])
+  @@map("weekly_survey_responses")
+}
+
+// ============================================================================
+// NpsPromptSchedule — controle de quando mostrar o NPS por usuário
+// ============================================================================
+// Cron job DAY_1/3/7/14/30 verifica User.createdAt e cria/atualiza
+// a row. Next prompt é deduzido (createdAt + day_offset).
+//
+// Reset: usuário pode pedir reset (LGPD "right to be forgotten") —
+// DELETE desta tabela + nps_responses.
+// ============================================================================
+model NpsPromptSchedule {
+  id              String      @id @default(cuid())
+  userId          String      @unique
+  triggersShown   String[]    @default([]) // ["DAY_1", "DAY_3", ...]
+  lastPromptedAt  DateTime?
+  skippedAt       DateTime?
+  pausedUntil     DateTime?   // opt-out temporário
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@map("nps_prompt_schedule")
+}
+
+// ============================================================================
+// Enums — Feedback Wave 33
+// ============================================================================
+enum FeedbackType {
+  BUG
+  FEATURE
+  CONTENT
+  USABILITY
+  COMMUNITY
+  OTHER
+}
+
+enum FeedbackStatus {
+  NEW
+  IN_REVIEW
+  PLANNED
+  DONE
+  WONT_FIX
+}
+
+enum NpsTrigger {
+  DAY_1
+  DAY_3
+  DAY_7
+  DAY_14
+  DAY_30
+  QUARTERLY
+  MANUAL
 }
