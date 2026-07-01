@@ -27,8 +27,15 @@ set -euo pipefail
 readonly TIMESTAMP=$(date -u +%Y%m%d-%H%M%S)
 readonly DATE=$(date -u +%Y%m%d)
 readonly BACKUP_DIR="/tmp/akasha-backups/verify"
-readonly S3_BUCKET="${S3_BACKUP_BUCKET:-akasha-backups}"
+readonly S3_BUCKET="${BACKUP_S3_BUCKET:-${S3_BACKUP_BUCKET:-akasha-backups}}"
+readonly S3_ENDPOINT="${BACKUP_S3_ENDPOINT:-}"
 readonly S3_PREFIX="db/daily"
+
+# Args extras para aws CLI (endpoint customizado se S3-compatible)
+declare -a AWS_EXTRA_ARGS=()
+if [[ -n "$S3_ENDPOINT" ]]; then
+  AWS_EXTRA_ARGS+=(--endpoint-url "$S3_ENDPOINT")
+fi
 readonly LOG_FILE="${LOG_FILE:-/var/log/akasha/backup.log}"
 readonly DAYS_TO_CHECK="${DAYS_TO_CHECK:-7}"
 
@@ -167,7 +174,12 @@ do_restore_test() {
 list_recent_backups() {
   log "Listando últimos ${DAYS_TO_CHECK} dias de backups em S3..."
 
-  aws s3 ls "s3://${S3_BUCKET}/${S3_PREFIX}/" \
+  local aws_extra=()
+  if [[ -n "$S3_ENDPOINT" ]]; then
+    aws_extra+=(--endpoint-url "$S3_ENDPOINT")
+  fi
+
+  aws s3 ls "s3://${S3_BUCKET}/${S3_PREFIX}/" "${AWS_EXTRA_ARGS[@]}" \
     | sort -k 1,2 | tail -n "$DAYS_TO_CHECK" | awk '{print $4}' | grep '\.dump$' || true
 }
 
@@ -188,14 +200,14 @@ download_backup() {
 
   log "Download s3://${S3_BUCKET}/${S3_PREFIX}/${backup_name}..."
   if ! aws s3 cp "s3://${S3_BUCKET}/${S3_PREFIX}/${backup_name}" "$local_path" \
-      --only-show-errors 2>>"$LOG_FILE"; then
+      "${AWS_EXTRA_ARGS[@]}" --only-show-errors 2>>"$LOG_FILE"; then
     err "Download falhou: $backup_name"
     return 1
   fi
 
   # Download checksum também
   aws s3 cp "s3://${S3_BUCKET}/${S3_PREFIX}/${backup_name}.sha256" \
-    "${local_path}.sha256" --only-show-errors 2>>"$LOG_FILE" || \
+    "${local_path}.sha256" "${AWS_EXTRA_ARGS[@]}" --only-show-errors 2>>"$LOG_FILE" || \
     warn "Download checksum falhou: ${backup_name}.sha256"
 
   ok "Download OK: $local_path"

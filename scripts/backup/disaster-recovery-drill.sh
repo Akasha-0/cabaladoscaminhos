@@ -116,8 +116,15 @@ parse_args() {
   done
 
   # Defaults
-  [[ -z "$S3_BUCKET" ]] && S3_BUCKET="${S3_BACKUP_BUCKET:-akasha-backups}"
+  [[ -z "$S3_BUCKET" ]] && S3_BUCKET="${BACKUP_S3_BUCKET:-${S3_BACKUP_BUCKET:-akasha-backups}}"
+  [[ -z "$S3_ENDPOINT" ]] && S3_ENDPOINT="${BACKUP_S3_ENDPOINT:-}"
   [[ -z "$S3_PREFIX" ]] && S3_PREFIX="db/daily"
+
+  # Build AWS CLI extra args (endpoint customizado se S3-compatible)
+  declare -ga AWS_EXTRA_ARGS=()
+  if [[ -n "${S3_ENDPOINT:-}" ]]; then
+    AWS_EXTRA_ARGS+=(--endpoint-url "$S3_ENDPOINT")
+  fi
 
   # Validação
   if [[ -z "$SOURCE" ]]; then
@@ -181,7 +188,7 @@ locate_backup() {
     if [[ -z "$BACKUP_NAME" ]]; then
       # Listar últimos 5 backups e usar o mais recente
       info "Listando backups em s3://${S3_BUCKET}/${S3_PREFIX}/..."
-      BACKUP_NAME=$(aws s3 ls "s3://${S3_BUCKET}/${S3_PREFIX}/" \
+      BACKUP_NAME=$(aws s3 ls "s3://${S3_BUCKET}/${S3_PREFIX}/" "${AWS_EXTRA_ARGS[@]}" \
         | sort -k 1,2 | tail -1 | awk '{print $4}' | grep '\.dump$' || echo "")
 
       if [[ -z "$BACKUP_NAME" ]]; then
@@ -194,7 +201,7 @@ locate_backup() {
     BACKUP_PATH="${STAGING_DIR}/${BACKUP_NAME}"
 
     info "Download s3://${S3_BUCKET}/${S3_PREFIX}/${BACKUP_NAME}..."
-    if ! aws s3 cp "s3://${S3_BUCKET}/${S3_PREFIX}/${BACKUP_NAME}" "$BACKUP_PATH" \
+    if ! aws s3 cp "s3://${S3_BUCKET}/${S3_PREFIX}/${BACKUP_NAME}" "$BACKUP_PATH" "${AWS_EXTRA_ARGS[@]}" \
         --only-show-errors 2>>"$LOG_FILE"; then
       err "Download falhou"
       exit 1
@@ -218,7 +225,7 @@ verify_checksum() {
   # Baixar checksum do S3 se aplicável
   if [[ "$SOURCE" == "s3" ]] && [[ ! -f "$checksum_path" ]]; then
     aws s3 cp "s3://${S3_BUCKET}/${S3_PREFIX}/${BACKUP_NAME}.sha256" \
-      "$checksum_path" --only-show-errors 2>/dev/null || \
+      "$checksum_path" "${AWS_EXTRA_ARGS[@]}" --only-show-errors 2>/dev/null || \
       warn "Checksum não disponível em S3 (pulando verify)"
   fi
 

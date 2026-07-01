@@ -37,10 +37,18 @@ readonly BACKUP_DIR="/tmp/akasha-backups/db/daily"
 readonly BACKUP_FILE="${BACKUP_DIR}/akasha-db-${DATE}.dump"
 readonly CHECKSUM_FILE="${BACKUP_FILE}.sha256"
 readonly LOG_FILE="${LOG_FILE:-/var/log/akasha/backup.log}"
-readonly S3_BUCKET="${S3_BACKUP_BUCKET:-akasha-backups}"
+readonly S3_BUCKET="${BACKUP_S3_BUCKET:-${S3_BACKUP_BUCKET:-akasha-backups}}"
+readonly S3_ENDPOINT="${BACKUP_S3_ENDPOINT:-}"
+readonly S3_ACCESS_KEY="${BACKUP_S3_ACCESS_KEY:-${AWS_ACCESS_KEY_ID:-}}"
+readonly S3_SECRET_KEY="${BACKUP_S3_SECRET_KEY:-${AWS_SECRET_ACCESS_KEY:-}}"
+readonly KMS_KEY_ID="${BACKUP_S3_KMS_KEY_ID:-${KMS_KEY_ID:-alias/akasha-backup}}"
+readonly RETENTION_DAYS="${BACKUP_RETENTION_DAYS:-${LOCAL_RETENTION_DAYS:-30}}"
 readonly S3_PREFIX="db/daily"
 readonly S3_PATH="s3://${S3_BUCKET}/${S3_PREFIX}/akasha-db-${DATE}.dump"
 readonly START_TIME=$(date +%s)
+
+# Log effective config (sem expor segredos)
+log "Config: S3_BUCKET=$S3_BUCKET S3_ENDPOINT=${S3_ENDPOINT:-<default-aws>} RETENTION_DAYS=$RETENTION_DAYS"
 
 # Cores para output
 readonly RED='\033[0;31m'
@@ -139,11 +147,17 @@ do_upload_s3() {
   # Server-side encryption: AES256 + KMS key
   # Metadata: tag para auditoria
 
+  local aws_extra=()
+  if [[ -n "$S3_ENDPOINT" ]]; then
+    aws_extra+=(--endpoint-url "$S3_ENDPOINT")
+  fi
+
   if ! aws s3 cp "$BACKUP_FILE" "$S3_PATH" \
+      "${aws_extra[@]}" \
       --storage-class STANDARD_IA \
       --sse aws:kms \
-      --sse-kms-key-id "${KMS_KEY_ID:-alias/akasha-backup}" \
-      --metadata "encrypted=true,backup-date=${DATE},retention-days=30,wave=W34" \
+      --sse-kms-key-id "$KMS_KEY_ID" \
+      --metadata "encrypted=true,backup-date=${DATE},retention-days=${RETENTION_DAYS},wave=W34" \
       --only-show-errors 2>>"$LOG_FILE"; then
     err "Upload S3 falhou"
     return 1
@@ -151,9 +165,10 @@ do_upload_s3() {
 
   # Upload checksum também
   if ! aws s3 cp "$CHECKSUM_FILE" "${S3_PATH}.sha256" \
+      "${aws_extra[@]}" \
       --storage-class STANDARD_IA \
       --sse aws:kms \
-      --sse-kms-key-id "${KMS_KEY_ID:-alias/akasha-backup}" \
+      --sse-kms-key-id "$KMS_KEY_ID" \
       --only-show-errors 2>>"$LOG_FILE"; then
     warn "Upload checksum S3 falhou (não crítico)"
   fi

@@ -24,7 +24,9 @@ set -euo pipefail
 readonly TIMESTAMP=$(date -u +%Y%m%d-%H%M%S)
 readonly DATE=$(date -u +%Y%m%d)
 readonly LOCAL_RETENTION_DAYS="${LOCAL_RETENTION_DAYS:-7}"
-readonly S3_BUCKET="${S3_BACKUP_BUCKET:-akasha-backups}"
+readonly S3_BUCKET="${BACKUP_S3_BUCKET:-${S3_BACKUP_BUCKET:-akasha-backups}}"
+readonly S3_ENDPOINT="${BACKUP_S3_ENDPOINT:-}"
+readonly RETENTION_DAYS_VAR="${BACKUP_RETENTION_DAYS:-${LOCAL_RETENTION_DAYS:-30}}"
 readonly BACKUP_DIR="/tmp/akasha-backups/db/daily"
 readonly LOG_FILE="${LOG_FILE:-/var/log/akasha/backup.log}"
 readonly AUDIT_LOG="/var/log/akasha/cleanup-audit.log"
